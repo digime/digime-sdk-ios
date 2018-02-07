@@ -1,0 +1,6 @@
+framework module DigiMeSDK {
+  umbrella header "DigiMeSDK-umbrella.h"
+
+  export *
+  module * { export * }
+}
