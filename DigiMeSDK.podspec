@@ -12,4 +12,32 @@ Pod::Spec.new do |s|
   s.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security"
   s.resources       = ["DigiMeSDK/Assets/*.{der}"]
 
+  s.subspec 'Callbacks' do |cb|
+    cb.source_files = 'Callbacks/*.{h}'
+  end
+
+  s.subspec 'Core' do |ss|
+    ss.source_files = 'Core/*.{h,m}'
+  end
+
+  s.subspec 'Entities' do |ss|
+    ss.source_files = 'Entities/*.{h,m}'
+  end
+
+  s.subspec 'Errors' do |ss|
+    ss.source_files = 'Errors/*.{h,m}'
+  end
+
+  s.subspec 'Network' do |ss|
+    ss.source_files = 'Network/*.{h,m}'
+  end
+
+  s.subspec 'Security' do |ss|
+    ss.source_files = 'Security/*.{h,m}'
+  end
+
+  s.subspec 'Utility' do |ss|
+    ss.source_files = 'Utility/*.{h,m}'
+  end
+
 end
