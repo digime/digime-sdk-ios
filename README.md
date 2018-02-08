@@ -538,7 +538,7 @@ pod install
 to 
   
 ```objective-c
-#import "DigiMeSDK.h"
+#import "DMEClient.h"
 ```
 
 #### App Delegate
