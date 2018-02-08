@@ -17,27 +17,27 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Core' do |ss|
-    ss.source_files = 'Core/*.{h,m}'
+    ss.source_files = 'DigiMeSDK/Core/*.{h,m}'
   end
 
   s.subspec 'Entities' do |ss|
-    ss.source_files = 'Entities/*.{h,m}'
+    ss.source_files = 'DigiMeSDK/Entities/*.{h,m}'
   end
 
   s.subspec 'Errors' do |ss|
-    ss.source_files = 'Errors/*.{h,m}'
+    ss.source_files = 'DigiMeSDK/Errors/*.{h,m}'
   end
 
   s.subspec 'Network' do |ss|
-    ss.source_files = 'Network/*.{h,m}'
+    ss.source_files = 'DigiMeSDK/Network/*.{h,m}'
   end
 
   s.subspec 'Security' do |ss|
-    ss.source_files = 'Security/*.{h,m}'
+    ss.source_files = 'DigiMeSDK/Security/*.{h,m}'
   end
 
   s.subspec 'Utility' do |ss|
-    ss.source_files = 'Utility/*.{h,m}'
+    ss.source_files = 'DigiMeSDK/Utility/*.{h,m}'
   end
 
 end
