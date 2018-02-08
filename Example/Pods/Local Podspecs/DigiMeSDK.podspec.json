@@ -18,15 +18,7 @@
     "branch": "2.0.0",
     "tag": "2.0.0"
   },
-  "source_files": [
-    "DigiMeSDK/Callbacks/*.{h,m}",
-    "DigiMeSDK/Core/*.{h,m}",
-    "DigiMeSDK/Entities/*.{h,m}",
-    "DigiMeSDK/Errors/*.{h,m}",
-    "DigiMeSDK/Network/*.{h,m}",
-    "DigiMeSDK/Security/*.{h,m}",
-    "DigiMeSDK/Utility/*.{h,m}"
-  ],
+  "source_files": "DigiMeSDK/**/*.{h,m}",
   "frameworks": [
     "Foundation",
     "UIKit",
