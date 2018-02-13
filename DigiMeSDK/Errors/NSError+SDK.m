@@ -19,18 +19,18 @@
 {
     switch (sdkError) {
         case SDKErrorInvalidContract:
-            return NSLocalizedString(@"Provided contractId has invalid format.", @"");
+            return @"Provided contractId has invalid format.";
             break;
             
         case SDKErrorNoContract:
-            return NSLocalizedString(@"No contracts registered! You must have forgotten to set contractId on DMEClient.", @"");
+            return @"No contracts registered! You must have forgotten to set contractId on DMEClient.";
             break;
             
         case SDKErrorDecryptionFailed:
-            return NSLocalizedString(@"Could not decrypt file content.", nil);
+            return @"Could not decrypt file content.";
             
         case SDKErrorInvalidData:
-            return NSLocalizedString(@"Could not serialize data.", nil);
+            return @"Could not serialize data.";
             
         default:
             return @"";

@@ -19,27 +19,27 @@
 {
     switch (authError) {
         case AuthErrorGeneral:
-            return NSLocalizedString(@"Unknown authorization error has occurred.", nil);
+            return @"Unknown authorization error has occurred.";
             break;
             
         case AuthErrorInvalidSession:
-            return NSLocalizedString(@"Invalid session.", nil);
+            return @"Invalid session.";
             break;
         
         case AuthErrorAppId:
-            return NSLocalizedString(@"App Id is not set. Please set appId property of DMEClient and try again.", nil);
+            return @"App Id is not set. Please set appId property of DMEClient and try again.";
             break;
             
         case AuthErrorContract:
-            return NSLocalizedString(@"Contract not set. Please set contractId property of DMEClient and try again.", nil);
+            return @"Contract not set. Please set contractId property of DMEClient and try again.";
             break;
             
         case AuthErrorCancelled:
-            return NSLocalizedString(@"User cancelled authorization.", nil);
+            return @"User cancelled authorization.";
             break;
             
         case AuthErrorInProgress:
-            return NSLocalizedString(@"Authorization already in progress.", nil);
+            return @"Authorization already in progress.";
             break;
             
         case AuthErrorPrivateHex:
@@ -51,11 +51,11 @@
             break;
             
         case AuthErrorNotOnboarded:
-            return NSLocalizedString(@"Digi.me app is not connected to a library. SDK currently only supports CA when Digi.me app is conencted to a library.", nil);
+            return @"Digi.me app is not connected to a library. SDK currently only supports CA when Digi.me app is conencted to a library.";
             break;
             
         case AuthErrorInvalidSessionKey:
-            return NSLocalizedString(@"Digi.me app returned an invalid session key.", nil);
+            return @"Digi.me app returned an invalid session key.";
             break;
             
         default:
