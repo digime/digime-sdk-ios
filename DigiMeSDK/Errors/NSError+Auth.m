@@ -47,7 +47,7 @@
             break;
             
         case AuthErrorAppNotFound:
-            return NSLocalizedString(@"Digi.me app is not installed.", nil);
+            return @"Digi.me app is not installed.";
             break;
             
         case AuthErrorNotOnboarded:
