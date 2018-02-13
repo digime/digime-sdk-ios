@@ -43,7 +43,7 @@
             break;
             
         case AuthErrorPrivateHex:
-            return NSLocalizedString(@"RSA private key hex not set. Please set the privateKeyHex property of DMEClient and try again.", nil);
+            return @"RSA private key hex not set. Please set the privateKeyHex property of DMEClient and try again.";
             break;
             
         case AuthErrorAppNotFound:
