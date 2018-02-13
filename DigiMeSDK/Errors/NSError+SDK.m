@@ -12,10 +12,10 @@
 
 + (NSError *)sdkError:(SDKError)sdkError
 {
-    return [NSError errorWithDomain:SDK_ERROR code:sdkError userInfo:@{ NSLocalizedDescriptionKey: [[self class] authDescription:sdkError]}];
+    return [NSError errorWithDomain:SDK_ERROR code:sdkError userInfo:@{ NSLocalizedDescriptionKey: [[self class] sdkDescription:sdkError]}];
 }
 
-+ (NSString *)authDescription:(SDKError)sdkError
++ (NSString *)sdkDescription:(SDKError)sdkError
 {
     switch (sdkError) {
         case SDKErrorInvalidContract:
