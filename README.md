@@ -54,7 +54,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
 target 'TargetName' do
-pod 'DigiMeSDK', '~> 2.0.0'
+pod 'DigiMeSDK'
 end
 ```
 
@@ -143,7 +143,7 @@ Before you start interacting with it in your app, however - you will need to con
 Set the private key hex - [See above for details](#contract-private-key):
 
 ```objective-c
-[DMEClient shared].privateKeyHex = privateKeyHex;
+[DMEClient sharedClient].privateKeyHex = privateKeyHex;
 ```
 
 
@@ -625,7 +625,7 @@ to
 In the new delegate method `authorizeSucceeded:` you can request the fileList:
 
 ```objective-c
-[[DMEClient SharedClient] getFileList];
+[[DMEClient sharedClient] getFileList];
 ```
 
 Int the new delegate method `clientRetrievedFileList:` you can iterate through `files.fileIds` and request content for each file, for example:

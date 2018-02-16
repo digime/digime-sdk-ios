@@ -42,7 +42,7 @@
 /**
  DigiMe client delegate. This should only be set if you do not with to use DMEClientCallbacks.
  */
-@property (nonatomic, strong) id<DMEClientDelegate> delegate;
+@property (nonatomic, weak) id<DMEClientDelegate> delegate;
 
 
 /**
