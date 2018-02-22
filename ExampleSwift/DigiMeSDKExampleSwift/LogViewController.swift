@@ -28,60 +28,60 @@ class LogViewController: UIView {
   }
   
   func increaseFontSize() {
-    
-    if (self.currentFontSize >= loggingViewMaxFontSize) {
-      return
+    guard currentFontSize < loggingViewMaxFontSize else {
+        return
     }
-    self.currentFontSize = self.currentFontSize + 1
-    self.textView.font = UIFont (name: loggingViewDefaultFont, size: self.currentFontSize)
+    
+    currentFontSize = currentFontSize + 1
+    textView.font = UIFont (name: loggingViewDefaultFont, size: currentFontSize)
   }
   
   func decreaseFontSize() {
-    
-    if (self.currentFontSize <= loggingViewMinFontSize) {
-      return
+    guard currentFontSize > loggingViewMinFontSize else {
+        return
     }
-    self.currentFontSize = self.currentFontSize - 1
-    self.textView.font = UIFont (name: loggingViewDefaultFont, size: self.currentFontSize)
+    
+    currentFontSize = currentFontSize - 1
+    textView.font = UIFont (name: loggingViewDefaultFont, size: currentFontSize)
   }
   
   func reset() {
     
-    if let textView = self.textView {
+    if let textView = textView {
       textView.removeFromSuperview()
     }
-    self.generateTextView()
+    generateTextView()
   }
   
   func generateTextView() {
     
-    self.textView = UITextView(frame: frame)
-    self.textView.backgroundColor = .black
-    self.textView.isEditable = false
-    self.textView.font = UIFont (name: loggingViewDefaultFont, size: self.currentFontSize)
-    self.textView.textColor = .white
-    self.textView.text = ""
-    self.textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    self.addSubview(textView)
-    self.bringSubview(toFront: textView)
+    textView = UITextView(frame: frame)
+    textView.backgroundColor = .black
+    textView.isEditable = false
+    textView.font = UIFont (name: loggingViewDefaultFont, size: currentFontSize)
+    textView.textColor = .white
+    textView.text = ""
+    textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    addSubview(textView)
+    bringSubview(toFront: textView)
   }
   
   func scrollToBottom() {
     
-    let stringLength:Int = self.textView.text.count
-    self.textView.scrollRangeToVisible(NSMakeRange(stringLength-1, 1))
+    let stringLength:Int = textView.text.count
+    textView.scrollRangeToVisible(NSMakeRange(stringLength-1, 1))
   }
   
   func log(message: String) {
-    
-    if message.isEmpty {
-      return
+    guard !message.isEmpty else {
+        return
     }
+    
     let now = Date()
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
     let dateString = formatter.string(from: now)
-    self.textView.text = self.textView.text + "\n" + dateString + " " + message
-//    scrollToBottom()
+    textView.text = textView.text + "\n" + dateString + " " + message
+    scrollToBottom()
   }
 }
