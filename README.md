@@ -29,7 +29,8 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
   * [Fetched Files](#fetched-files)
      * [CAFileObject](#cafileobject) 
   * [Decryption](#decryption)
-  * [Example](#example)
+  * [Example Objective-C](#example-objective-c)
+  * [Example Swift](#example-swift)
   * [Migration Guide](#migration-guide)
   * [Digi.me App](#digime-app)
 
@@ -85,7 +86,7 @@ All content retrieved by the SDK is encrypted in transit using the public key bo
 
 Digi.me SDK accepts PKCS #12 encoded files as the default key storage format.
 
-Digi.me SDK provides a to helper method to read and extract keys from p12 files.
+Digi.me SDK provides a helper method to read and extract keys from p12 files.
 
 1. Drag and drop your `<YOUR_P12_FILENAME>.p12` anywhere in your project.
 
@@ -304,7 +305,7 @@ To fetch the list of available files for your contract:
 > if not using a delegate.
  
 
-Upon success DigiMeClient returns a CAFiles object which contains a single field `fileIds` (NSArray<NSString>), a list of file IDs.
+Upon success `DMEClient` returns a `CAFiles` object which contains a single field - `fileIds` (NSArray<NSString>), a list of file IDs.
 
 Finally you can use the returned file IDs to fetch their data:
 
@@ -365,12 +366,12 @@ The following delegate methods can be implemented for the fetching stage:
 Due to asynchronous nature of Consent Access architecture, it is possible for the CA services to return the `404` HTTP response. `404` errors in this context indicate that **"File is not ready"**. In other words CA services have yet to finish copying and encrypting the content for your created session.
 
 
-Digi.me SDK handles those errors internally and retries those requests with exponential backoff policy. The defaults are set to 3 retries with base interval of 750ms.
+Digi.me SDK handles those errors internally and retries those requests with exponential backoff policy. The defaults are set to 5 retries with base interval of 750ms.
 
 > In the event that content is not ready even after retrying, SDK will return an `NSError` object to appropriate completionBlock/delegate.
 
 
-These settings can be creating your own `DMEClientConfiguration` object, and setting it in the `DMEClient`:
+These settings can be customized by creating your own `DMEClientConfiguration` object, and setting it in the `DMEClient`:
 
 ```objective-c
 DMEClientConfiguration *config = [DMEClientConfiguration new];
@@ -460,12 +461,12 @@ This object also contains json serialzed into properties, but its use and implem
 ## Decryption
 There are no additional steps necessary to decrypt the data, the SDK handles the decryption and cryptography management behind the scenes.
 
-## Example
-To see SDK in action first:
+## Example Objective-C
+To see SDK in action in an Objective-C project:
 
 1. Follow above steps to request App ID, and p12 password from Digi.me Ltd
 
-> Contract ID from Digi.me, p12 file are already provided in the Example app.
+	> Contract ID from Digi.me, p12 file are already provided in the Example app.
 
 2. Copy this repository and open `Example/DigiMeSDKExample.xcworkspace`
 
@@ -513,6 +514,60 @@ it would look like
 > NOTE: you will need to have Digi.me app installed and onboarded.
 
 
+## Example Swift
+To see SDK in action in a Swift project:
+
+1. Follow above steps to request App ID, and p12 password from Digi.me Ltd
+
+	> Contract ID from Digi.me, p12 file are already provided in the Example app.
+
+2. Copy this repository and open `ExampleSwift/DigiMeSDKExampleSwift.xcworkspace`
+
+3. Open `ViewController.swift`
+
+4. in `viewDidLoad` find these lines, and follow instruction in the comments:
+
+```swift
+// - GET STARTED -
+    
+// - INSERT your App ID here -
+    
+dmeClient.appId = "YOUR_APP_ID"
+    
+// - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
+    
+dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "CA_RSA_PRIVATE_KEY", password: "YOUR_P12_PASSWORD")
+
+```
+
+5. Open up Info.plist, and replace the `digime-ca-YOUR_APP_ID` value found under `CFBundleURLTypes`->`Consent Access` key. 
+
+The `YOUR_APP_ID` part is the App Id you requested from Digi.me Ltd.
+For Example, if your AppID is `7hgUT835HFYhtgweh35`, 
+it would look like
+
+```xml
+...
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Consent Access</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>digime-ca-7hgUT835HFYhtgweh35</string>
+			</array>
+		</dict>
+	</array>
+...
+```
+
+6. Build and run.
+
+> NOTE: you will need to have Digi.me app installed and onboarded.
+
 ## Migration Guide
 Follow these steps if you are migrating existing implementation of `DigiMeFramework` to `DigiMeSDK`.
 
@@ -544,9 +599,9 @@ to
 #### App Delegate
 In `AppDelegate` replace the implementation inside `application:openURL:options` to:
 	
-	```objective-c
-	return [[DMEClient sharedClient] openURL:url options:options];
-	```
+```objective-c
+return [[DMEClient sharedClient] openURL:url options:options];
+```
 	
 #### SDK Delegate
 

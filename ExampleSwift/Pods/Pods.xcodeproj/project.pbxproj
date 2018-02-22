@@ -1,0 +1,1023 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01B8770700AEC3F1E667CEBA4B56D452 /* DMEClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 490814472354E631DA44C3A7D9B7DB37 /* DMEClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0725456253A71148780B366C5DDF2C16 /* CASessionDeserializer.h in Headers */ = {isa = PBXBuildFile; fileRef = DF3674F2925B7C8982A7C71AAC3F5013 /* CASessionDeserializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07F812B592A94A5151A8BA45F714D1A5 /* DMEAPIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F76B2B2E3A3A35368E9672B28292DA7B /* DMEAPIClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		086DB92B0500F4D2DC6D97ED698837AB /* CASessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = A9248F06F2774F7AD56D7EA29CAC64B2 /* CASessionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		089D433358567E14B9B4534701A845FF /* Pods-DigiMeSDKExampleSwiftTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F97E648E93ABE2069B5D3D8243064C3 /* Pods-DigiMeSDKExampleSwiftTests-dummy.m */; };
+		0977DCA9FA7120DD74B7E31645814837 /* DMEClientConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 0119445DAE808E769DF62D9F4BD4377F /* DMEClientConfiguration.m */; };
+		0ADC1DAFF05AE2A3EE1C7579BAF25FFE /* NSString+DMECrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3A4FDEE6368E09ED43490902B4527 /* NSString+DMECrypto.m */; };
+		165AB86591EE9B8BF94BF4435A43048F /* DMERequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = AB207C462B80F17496BFE041E97D8ACD /* DMERequestFactory.m */; };
+		1B31DF1ABF28814834AEFD4BB8FCE8CF /* CADataDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ACF175CF7ED9606463091619DD0AA21 /* CADataDecryptor.m */; };
+		1EE5B14511DCA6C853D0626C479354FC /* DMECryptoUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 21520CC00338EE27F42D1EF85944D033 /* DMECryptoUtilities.m */; };
+		1FC9B2E7F7A19D45CDD78449302D9E9D /* CAFilesDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 975C45D8128AF3313B383FFA0830EB1B /* CAFilesDeserializer.m */; };
+		3564CF36D7C68D7A309CA044ADDF2FEE /* CAFileObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5253B31A2494AC40E72D8D64438F0A3F /* CAFileObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3CC5D53FF32A724E2BB882B90202DC0D /* DMECrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = B69A2F7D3CF2ACC50837CF79E465835B /* DMECrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		439EE7FC303ED050E88D850FE7361FA9 /* DMECryptoUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D173AD637E720D714CAD760A65DD9F2 /* DMECryptoUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		44FAD03616384C93EF80441350512D9C /* Pods-DigiMeSDKExampleSwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = CA9EAB30FD03C2578CA78FB9F666A6DA /* Pods-DigiMeSDKExampleSwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		46D0B029A0DE03D8A8D8EAA3CAABEE20 /* Pods-DigiMeSDKExampleSwift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F466A0AB1ABEF02D47BE7E5FB8B3C7 /* Pods-DigiMeSDKExampleSwift-dummy.m */; };
+		48B5A4E2766D75AD57BC5EDAE227BB7E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA1A56705C5693D93DB4454EA47F058 /* Foundation.framework */; };
+		50C56E08FA812F9C71AD81ABABC5C4D8 /* CAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = B7F050CB85E3CC3B43A5CB301272E383 /* CAFile.m */; };
+		54C005C412AC31DC01236A5A079EB9A1 /* NSString+DMECrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = B58341E2C100930A4ED99CD3DA6460D6 /* NSString+DMECrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		65EACAD1E66ED074F11A68746243516F /* NSError+SDK.h in Headers */ = {isa = PBXBuildFile; fileRef = B0F0DFD235239180B5FE9B4E9A5B1C04 /* NSError+SDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		678E5B4D8A9294020E5A2C6F5C2CF86E /* DMEAuthorizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A320E58CA9343B35C9741535CAD0E4C4 /* DMEAuthorizationManager.m */; };
+		6E401200A9E0853266FAC07E8F3D22D0 /* CAAccounts.m in Sources */ = {isa = PBXBuildFile; fileRef = 9266F350AE87CF5178C8A88397C99FAD /* CAAccounts.m */; };
+		769374CC08C049C607762E0560E1CCEE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F68BF4FA45DB99044ADA609DB800482 /* UIKit.framework */; };
+		8057E74710D9874D0EC31080A9C56754 /* CASessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E82B9A2EFE6F090C6D529477019E4AAA /* CASessionManager.m */; };
+		80B51FC56E5174016C5550F1DF2DA1E5 /* DMEOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 786FE1705D10CDBD971CB4666BF411D2 /* DMEOperation.m */; };
+		891365A0F63D5A133833F2255986F5B1 /* Pods-DigiMeSDKExampleSwiftTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CDF08BEB803F3A3F9C8A79E4A797C64 /* Pods-DigiMeSDKExampleSwiftTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9038AC4EDF61EDF2BBDA67BEA5A887BA /* DMEAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 034F47E4A7E7A4053110FD5BB03189BA /* DMEAPIClient.m */; };
+		92A7028CC172AFC1E7AC3E28FA0EE170 /* NSError+SDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAFD694E732F64FFADC3A75E36522F9 /* NSError+SDK.m */; };
+		92B56241C1E591C7371EF854EEC84247 /* DMEClientCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = 0207264249074E4D3D99BD03D4D8F12D /* DMEClientCallbacks.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		94CE22B4E2339A689222EA1842C42ADE /* CAAccounts.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F29E612BEDA493FDD3FA9B8B6250A6 /* CAAccounts.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		95CA1D88AAEA0608B73117DCAE53D730 /* NSError+Auth.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F6B27CC92E59C5F33EE6733B51EBCFD /* NSError+Auth.m */; };
+		9748F827A12C12A3A988101B48225F1B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA1A56705C5693D93DB4454EA47F058 /* Foundation.framework */; };
+		9BE327227E50A1FE4C716E2DC1A94D23 /* CAFiles.h in Headers */ = {isa = PBXBuildFile; fileRef = 16322605D58D8EE5DC9F9D95B6B9D248 /* CAFiles.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A2B0B3E79F2769FCCDC07154654577A7 /* DMEClientDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C7AD3A24BA42E19CF80F40D22321C2C /* DMEClientDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A3AC59245C7E08B980A4B4D3BF9111EE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BE511317A1252950CC6027B1FE2BE79 /* Security.framework */; };
+		AA524D25AA68ABC68913AC36559BC886 /* DMEClientConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 1610C80266BE3828A5A57C070BF48626 /* DMEClientConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AB02D6B2F9EA8C73092292BC6FD4E0C1 /* DMECertificatePinner.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE49158F1D74D82DF76E54E913F3BAE /* DMECertificatePinner.m */; };
+		AB522FF4C2F78055ADD8DF4811272C5E /* CASession.h in Headers */ = {isa = PBXBuildFile; fileRef = 38B9E76510741647497490BD7A0A7ECA /* CASession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B0767024DC06EB02B5F5ABB256F1BD50 /* NSData+DMECrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 411B6976848C73DBCBB0402F888F33AA /* NSData+DMECrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B81689C79DF73EDF2ADB5FDAAEDE7BA2 /* NSError+Auth.h in Headers */ = {isa = PBXBuildFile; fileRef = 004E8ED9014B9B525B0F39B817F4E6DF /* NSError+Auth.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BAE1FBDDF861729947D0E2F4E67F96A9 /* CASession.m in Sources */ = {isa = PBXBuildFile; fileRef = A10E635F1C9F8381360D59B105CCB472 /* CASession.m */; };
+		BCD04586D53C516AAD6603D12FAD41E6 /* DMERequestFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 34228344C2C3C6CCAF0EF887D151DE22 /* DMERequestFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C3816D96A795D636DE529D33FE223807 /* NSError+API.m in Sources */ = {isa = PBXBuildFile; fileRef = D86009B0A08605D176DB2C67AEB1BB97 /* NSError+API.m */; };
+		C689F77968313220492A036455B1148D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FA1A56705C5693D93DB4454EA47F058 /* Foundation.framework */; };
+		C7CF9F0E820FA0215991E314A0676254 /* DMECrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 512BB2A73F530B5A4D8B150F762ADFCA /* DMECrypto.m */; };
+		CA2F8729DDF04CF7003894028C848A39 /* DMEClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2E214A369FCF0C7117F5C5B5C571DB /* DMEClient.m */; };
+		CD85883EB1AE92922B0A8FD6E61597C8 /* CAFile.h in Headers */ = {isa = PBXBuildFile; fileRef = E3E5E36D10E5B9A947AC026D38528A44 /* CAFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CF88CE4B169DC9C29CBF9E3B556E9965 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FBCB61A8B65994A590EC4A468B843F /* CoreGraphics.framework */; };
+		D0CFF7232B1749AAE9D4D4CCB71AB5DC /* CADataDecryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8DBBFA6F9CDA273C982269C9F83DF156 /* CADataDecryptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D47905F3082BB8913E52CB40F658ED8C /* apiCert2.der in Resources */ = {isa = PBXBuildFile; fileRef = 22410EDA622EC8C8271CFA88944F4A6C /* apiCert2.der */; };
+		D6114557D9276407D2BF3332DCBC1993 /* CAFileObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CA7777955EFFB39F2500FA4466C7DA /* CAFileObject.m */; };
+		D88E81F672681CB843980191907DDE01 /* NSData+DMECrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D7A3F88D6A20EE094E72E35AF303DB /* NSData+DMECrypto.m */; };
+		DD0C67A27FF5B3B1DFE260B10146541C /* DMECertificatePinner.h in Headers */ = {isa = PBXBuildFile; fileRef = 58C2E4D0EC984E14503B88DA214DAEE7 /* DMECertificatePinner.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E1EDD11D9709FE92BAAFD2AB23EE80E5 /* DMEOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5CB0F8023B7909D48B59F28A366985AA /* DMEOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EBEB0B0C61E092A7E7DA7324642E80AE /* apiCert1.der in Resources */ = {isa = PBXBuildFile; fileRef = 269496CCE84584952BBCD8972C0AB0B8 /* apiCert1.der */; };
+		EDE4B24CC2133D90F40A194CDBD31D19 /* NSError+API.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EC5DCB2DC68D4978846292D1212545F /* NSError+API.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F1263EEDF10A499313E721583B7F5DF6 /* CAFilesDeserializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 855B83D586358D373729AFDB6EC69B09 /* CAFilesDeserializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F351375007239362BF67174054E1772F /* DigiMeSDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0096553FB5026E535752F88933CBC7C7 /* DigiMeSDK-dummy.m */; };
+		FC2024A5982DF59287BCE1A3472ABF8A /* apiCert3.der in Resources */ = {isa = PBXBuildFile; fileRef = 885DBA4250D41E937C894531718736AF /* apiCert3.der */; };
+		FC96337A86B8B42E8E5BFFE24DAB8363 /* DigiMeSDK-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 009974BB467190EC66FB0ED372ABF7EB /* DigiMeSDK-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FCE4E9826A31FF65B79E442435C6AAD4 /* CAFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = E87A0BD1FD020D73D591C89768E500DA /* CAFiles.m */; };
+		FEEB456DBFF52CEEA24A04CB5A3E045C /* CASessionDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A318EF5D2ECB975E72E40A801635969C /* CASessionDeserializer.m */; };
+		FF5EE51F5EC849917436026B7A3186FE /* DMEAuthorizationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = DA10310B2B407153D9843BB3FAD6B923 /* DMEAuthorizationManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8567FB6E24432E399A43619B7665F503 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 638562EFB5CDAD73C745AD5AC1D5993F;
+			remoteInfo = DigiMeSDK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		004E8ED9014B9B525B0F39B817F4E6DF /* NSError+Auth.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSError+Auth.h"; sourceTree = "<group>"; };
+		0096553FB5026E535752F88933CBC7C7 /* DigiMeSDK-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DigiMeSDK-dummy.m"; sourceTree = "<group>"; };
+		009974BB467190EC66FB0ED372ABF7EB /* DigiMeSDK-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DigiMeSDK-umbrella.h"; sourceTree = "<group>"; };
+		0119445DAE808E769DF62D9F4BD4377F /* DMEClientConfiguration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEClientConfiguration.m; sourceTree = "<group>"; };
+		0207264249074E4D3D99BD03D4D8F12D /* DMEClientCallbacks.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientCallbacks.h; sourceTree = "<group>"; };
+		034F47E4A7E7A4053110FD5BB03189BA /* DMEAPIClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEAPIClient.m; sourceTree = "<group>"; };
+		0BE511317A1252950CC6027B1FE2BE79 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		0FA1A56705C5693D93DB4454EA47F058 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		10A1B3D2F898F4CB4CFD9320AE88ED28 /* Pods-DigiMeSDKExampleSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExampleSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
+		12CA7777955EFFB39F2500FA4466C7DA /* CAFileObject.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFileObject.m; sourceTree = "<group>"; };
+		1610C80266BE3828A5A57C070BF48626 /* DMEClientConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientConfiguration.h; sourceTree = "<group>"; };
+		16322605D58D8EE5DC9F9D95B6B9D248 /* CAFiles.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFiles.h; sourceTree = "<group>"; };
+		1C7AD3A24BA42E19CF80F40D22321C2C /* DMEClientDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientDelegate.h; sourceTree = "<group>"; };
+		1F6B27CC92E59C5F33EE6733B51EBCFD /* NSError+Auth.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+Auth.m"; sourceTree = "<group>"; };
+		1F97E648E93ABE2069B5D3D8243064C3 /* Pods-DigiMeSDKExampleSwiftTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DigiMeSDKExampleSwiftTests-dummy.m"; sourceTree = "<group>"; };
+		21520CC00338EE27F42D1EF85944D033 /* DMECryptoUtilities.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMECryptoUtilities.m; sourceTree = "<group>"; };
+		22410EDA622EC8C8271CFA88944F4A6C /* apiCert2.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert2.der; path = DigiMeSDK/Assets/apiCert2.der; sourceTree = "<group>"; };
+		269496CCE84584952BBCD8972C0AB0B8 /* apiCert1.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert1.der; path = DigiMeSDK/Assets/apiCert1.der; sourceTree = "<group>"; };
+		2AB28C1EB3C34466A0EA62340916CD84 /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExampleSwiftTests.framework; path = "Pods-DigiMeSDKExampleSwiftTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31C97CB33991393AEFAF9DE5693783C0 /* Pods-DigiMeSDKExampleSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExampleSwift.debug.xcconfig"; sourceTree = "<group>"; };
+		34228344C2C3C6CCAF0EF887D151DE22 /* DMERequestFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMERequestFactory.h; sourceTree = "<group>"; };
+		384A8B7BC78359A3801E7C68F87CEC7B /* Pods-DigiMeSDKExampleSwiftTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DigiMeSDKExampleSwiftTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		38B9E76510741647497490BD7A0A7ECA /* CASession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASession.h; sourceTree = "<group>"; };
+		38D3A4FDEE6368E09ED43490902B4527 /* NSString+DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSString+DMECrypto.m"; sourceTree = "<group>"; };
+		39EF22D79B1CA86E25783685DC0A9E25 /* Pods-DigiMeSDKExampleSwiftTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DigiMeSDKExampleSwiftTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		3AF4AF02F7EB7AA53780F1D899DF7A8B /* DigiMeSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		3EC5DCB2DC68D4978846292D1212545F /* NSError+API.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSError+API.h"; sourceTree = "<group>"; };
+		411B6976848C73DBCBB0402F888F33AA /* NSData+DMECrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSData+DMECrypto.h"; sourceTree = "<group>"; };
+		490814472354E631DA44C3A7D9B7DB37 /* DMEClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClient.h; sourceTree = "<group>"; };
+		4ACF175CF7ED9606463091619DD0AA21 /* CADataDecryptor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CADataDecryptor.m; sourceTree = "<group>"; };
+		4CDF08BEB803F3A3F9C8A79E4A797C64 /* Pods-DigiMeSDKExampleSwiftTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DigiMeSDKExampleSwiftTests-umbrella.h"; sourceTree = "<group>"; };
+		512BB2A73F530B5A4D8B150F762ADFCA /* DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMECrypto.m; sourceTree = "<group>"; };
+		5253B31A2494AC40E72D8D64438F0A3F /* CAFileObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFileObject.h; sourceTree = "<group>"; };
+		52CAAD7A890D6E2C277596BC28F7582F /* Pods-DigiMeSDKExampleSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-DigiMeSDKExampleSwift.modulemap"; sourceTree = "<group>"; };
+		58C2E4D0EC984E14503B88DA214DAEE7 /* DMECertificatePinner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMECertificatePinner.h; sourceTree = "<group>"; };
+		5CB0F8023B7909D48B59F28A366985AA /* DMEOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEOperation.h; sourceTree = "<group>"; };
+		64416A2D22DD60D109E458BB501F3AAE /* Pods_DigiMeSDKExampleSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExampleSwift.framework; path = "Pods-DigiMeSDKExampleSwift.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6983A1AADF8A5BD5669A7A783016AF89 /* Pods-DigiMeSDKExampleSwift-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExampleSwift-frameworks.sh"; sourceTree = "<group>"; };
+		6C2E214A369FCF0C7117F5C5B5C571DB /* DMEClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEClient.m; sourceTree = "<group>"; };
+		6FA904A4EEF9DDE96DFF793879205018 /* Pods-DigiMeSDKExampleSwiftTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-DigiMeSDKExampleSwiftTests.modulemap"; sourceTree = "<group>"; };
+		786FE1705D10CDBD971CB4666BF411D2 /* DMEOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEOperation.m; sourceTree = "<group>"; };
+		7C01C1AADB84D22E6E36181DCAD3C5A4 /* DigiMeSDK-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DigiMeSDK-prefix.pch"; sourceTree = "<group>"; };
+		7D173AD637E720D714CAD760A65DD9F2 /* DMECryptoUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMECryptoUtilities.h; sourceTree = "<group>"; };
+		7F68BF4FA45DB99044ADA609DB800482 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		855B83D586358D373729AFDB6EC69B09 /* CAFilesDeserializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFilesDeserializer.h; sourceTree = "<group>"; };
+		8653DBF06D0B9CE56DA9B2E8C8950B01 /* Pods-DigiMeSDKExampleSwiftTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExampleSwiftTests-resources.sh"; sourceTree = "<group>"; };
+		885DBA4250D41E937C894531718736AF /* apiCert3.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert3.der; path = DigiMeSDK/Assets/apiCert3.der; sourceTree = "<group>"; };
+		8BAFD694E732F64FFADC3A75E36522F9 /* NSError+SDK.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+SDK.m"; sourceTree = "<group>"; };
+		8DBBFA6F9CDA273C982269C9F83DF156 /* CADataDecryptor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CADataDecryptor.h; sourceTree = "<group>"; };
+		8F29CA565EB3B5E0119768E146F37BFE /* Pods-DigiMeSDKExampleSwift-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DigiMeSDKExampleSwift-acknowledgements.markdown"; sourceTree = "<group>"; };
+		9266F350AE87CF5178C8A88397C99FAD /* CAAccounts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAAccounts.m; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		975C45D8128AF3313B383FFA0830EB1B /* CAFilesDeserializer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFilesDeserializer.m; sourceTree = "<group>"; };
+		A10E635F1C9F8381360D59B105CCB472 /* CASession.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CASession.m; sourceTree = "<group>"; };
+		A13946E4032F6C07A14F8BB2B6DBE3C2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		A318EF5D2ECB975E72E40A801635969C /* CASessionDeserializer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CASessionDeserializer.m; sourceTree = "<group>"; };
+		A320E58CA9343B35C9741535CAD0E4C4 /* DMEAuthorizationManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEAuthorizationManager.m; sourceTree = "<group>"; };
+		A7F466A0AB1ABEF02D47BE7E5FB8B3C7 /* Pods-DigiMeSDKExampleSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DigiMeSDKExampleSwift-dummy.m"; sourceTree = "<group>"; };
+		A9248F06F2774F7AD56D7EA29CAC64B2 /* CASessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASessionManager.h; sourceTree = "<group>"; };
+		AAD51130952A87D84C1C228A0C6A723A /* Pods-DigiMeSDKExampleSwiftTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExampleSwiftTests-frameworks.sh"; sourceTree = "<group>"; };
+		AAE09695F50DDD646B9757178745F38C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB207C462B80F17496BFE041E97D8ACD /* DMERequestFactory.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMERequestFactory.m; sourceTree = "<group>"; };
+		AD1319A8711F6F6C1234C44018A03337 /* Pods-DigiMeSDKExampleSwift-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DigiMeSDKExampleSwift-acknowledgements.plist"; sourceTree = "<group>"; };
+		B0F0DFD235239180B5FE9B4E9A5B1C04 /* NSError+SDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSError+SDK.h"; sourceTree = "<group>"; };
+		B47F76A825ECA407BEF99C5B08D66083 /* Pods-DigiMeSDKExampleSwift-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExampleSwift-resources.sh"; sourceTree = "<group>"; };
+		B58341E2C100930A4ED99CD3DA6460D6 /* NSString+DMECrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSString+DMECrypto.h"; sourceTree = "<group>"; };
+		B69A2F7D3CF2ACC50837CF79E465835B /* DMECrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMECrypto.h; sourceTree = "<group>"; };
+		B7F050CB85E3CC3B43A5CB301272E383 /* CAFile.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFile.m; sourceTree = "<group>"; };
+		BBF9F59D9D778963345690CD7C05E9CC /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD365F753C89E04274027EF606009B06 /* DigiMeSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DigiMeSDK.xcconfig; sourceTree = "<group>"; };
+		C53D3F30A14FBF9B79B54EF71F11BE2E /* Pods-DigiMeSDKExampleSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExampleSwift.release.xcconfig"; sourceTree = "<group>"; };
+		C6B43BC29F413A6BFCC03180A7DC9486 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		C6D7A3F88D6A20EE094E72E35AF303DB /* NSData+DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSData+DMECrypto.m"; sourceTree = "<group>"; };
+		CA9EAB30FD03C2578CA78FB9F666A6DA /* Pods-DigiMeSDKExampleSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DigiMeSDKExampleSwift-umbrella.h"; sourceTree = "<group>"; };
+		D6F29E612BEDA493FDD3FA9B8B6250A6 /* CAAccounts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAAccounts.h; sourceTree = "<group>"; };
+		D86009B0A08605D176DB2C67AEB1BB97 /* NSError+API.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+API.m"; sourceTree = "<group>"; };
+		DA10310B2B407153D9843BB3FAD6B923 /* DMEAuthorizationManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEAuthorizationManager.h; sourceTree = "<group>"; };
+		DA551233F9922E113F4C29157A9D4429 /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = DigiMeSDK.framework; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF3674F2925B7C8982A7C71AAC3F5013 /* CASessionDeserializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASessionDeserializer.h; sourceTree = "<group>"; };
+		E3E5E36D10E5B9A947AC026D38528A44 /* CAFile.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFile.h; sourceTree = "<group>"; };
+		E82B9A2EFE6F090C6D529477019E4AAA /* CASessionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CASessionManager.m; sourceTree = "<group>"; };
+		E87A0BD1FD020D73D591C89768E500DA /* CAFiles.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFiles.m; sourceTree = "<group>"; };
+		F76B2B2E3A3A35368E9672B28292DA7B /* DMEAPIClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEAPIClient.h; sourceTree = "<group>"; };
+		F7EEF43DD0CA0A995F5FD626C10D512A /* DigiMeSDK.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = DigiMeSDK.modulemap; sourceTree = "<group>"; };
+		F8FBCB61A8B65994A590EC4A468B843F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		FCE87B8E00F76F91D16E95FB8E694506 /* Pods-DigiMeSDKExampleSwiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExampleSwiftTests.debug.xcconfig"; sourceTree = "<group>"; };
+		FEF6B9AB58AACF0128E466E7ABE6C540 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFE49158F1D74D82DF76E54E913F3BAE /* DMECertificatePinner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMECertificatePinner.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		39137CC122B356C868418B82D0B3AEA1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF88CE4B169DC9C29CBF9E3B556E9965 /* CoreGraphics.framework in Frameworks */,
+				48B5A4E2766D75AD57BC5EDAE227BB7E /* Foundation.framework in Frameworks */,
+				A3AC59245C7E08B980A4B4D3BF9111EE /* Security.framework in Frameworks */,
+				769374CC08C049C607762E0560E1CCEE /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63B49415311E0412F9F4B1E99B2ABC26 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9748F827A12C12A3A988101B48225F1B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A70A0A436961225F288B3B2A7EC0798 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C689F77968313220492A036455B1148D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		007AB8D32F4B56337D30ACFD92A052AF /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				8DBBFA6F9CDA273C982269C9F83DF156 /* CADataDecryptor.h */,
+				4ACF175CF7ED9606463091619DD0AA21 /* CADataDecryptor.m */,
+				58C2E4D0EC984E14503B88DA214DAEE7 /* DMECertificatePinner.h */,
+				FFE49158F1D74D82DF76E54E913F3BAE /* DMECertificatePinner.m */,
+				B69A2F7D3CF2ACC50837CF79E465835B /* DMECrypto.h */,
+				512BB2A73F530B5A4D8B150F762ADFCA /* DMECrypto.m */,
+			);
+			name = Security;
+			path = DigiMeSDK/Security;
+			sourceTree = "<group>";
+		};
+		08C1C912C7058DA89FA56E24A29F9E9F /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				12EC389F4EE6BC53F3435617474F2129 /* DigiMeSDK */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		0C73251747005321F163FCDF92A8D129 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				3AF4AF02F7EB7AA53780F1D899DF7A8B /* DigiMeSDK.podspec */,
+				C6B43BC29F413A6BFCC03180A7DC9486 /* LICENSE */,
+				A13946E4032F6C07A14F8BB2B6DBE3C2 /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		0FE96FF97E87BC844C369FC37B8BE5B4 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				F76B2B2E3A3A35368E9672B28292DA7B /* DMEAPIClient.h */,
+				034F47E4A7E7A4053110FD5BB03189BA /* DMEAPIClient.m */,
+				5CB0F8023B7909D48B59F28A366985AA /* DMEOperation.h */,
+				786FE1705D10CDBD971CB4666BF411D2 /* DMEOperation.m */,
+				34228344C2C3C6CCAF0EF887D151DE22 /* DMERequestFactory.h */,
+				AB207C462B80F17496BFE041E97D8ACD /* DMERequestFactory.m */,
+			);
+			name = Network;
+			path = DigiMeSDK/Network;
+			sourceTree = "<group>";
+		};
+		12EC389F4EE6BC53F3435617474F2129 /* DigiMeSDK */ = {
+			isa = PBXGroup;
+			children = (
+				97836A0D88547FA78C886E8D1A13EDCC /* Callbacks */,
+				309BCDD01581E574E0B439253F8C371B /* Core */,
+				B7F788DEDA1AD3AAFB505A75150ECE9A /* Entities */,
+				FD4EFE25CD175D6A8BB4B04980E2B27E /* Errors */,
+				0FE96FF97E87BC844C369FC37B8BE5B4 /* Network */,
+				0C73251747005321F163FCDF92A8D129 /* Pod */,
+				EDEA48CFE533451470BAE636D847F627 /* Resources */,
+				007AB8D32F4B56337D30ACFD92A052AF /* Security */,
+				53AF0B76D67488505F0C9D1427D7DA23 /* Support Files */,
+				98A21CDA8F2E751A07DCA0222E399F91 /* Utility */,
+			);
+			name = DigiMeSDK;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		14B8B9B15ECBE87983FF987239AB2D7B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8BB405BF0E4DA3F703AE8C5F6AC54218 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		309BCDD01581E574E0B439253F8C371B /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A9248F06F2774F7AD56D7EA29CAC64B2 /* CASessionManager.h */,
+				E82B9A2EFE6F090C6D529477019E4AAA /* CASessionManager.m */,
+				DA10310B2B407153D9843BB3FAD6B923 /* DMEAuthorizationManager.h */,
+				A320E58CA9343B35C9741535CAD0E4C4 /* DMEAuthorizationManager.m */,
+				490814472354E631DA44C3A7D9B7DB37 /* DMEClient.h */,
+				6C2E214A369FCF0C7117F5C5B5C571DB /* DMEClient.m */,
+				1610C80266BE3828A5A57C070BF48626 /* DMEClientConfiguration.h */,
+				0119445DAE808E769DF62D9F4BD4377F /* DMEClientConfiguration.m */,
+			);
+			name = Core;
+			path = DigiMeSDK/Core;
+			sourceTree = "<group>";
+		};
+		53AF0B76D67488505F0C9D1427D7DA23 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				F7EEF43DD0CA0A995F5FD626C10D512A /* DigiMeSDK.modulemap */,
+				BD365F753C89E04274027EF606009B06 /* DigiMeSDK.xcconfig */,
+				0096553FB5026E535752F88933CBC7C7 /* DigiMeSDK-dummy.m */,
+				7C01C1AADB84D22E6E36181DCAD3C5A4 /* DigiMeSDK-prefix.pch */,
+				009974BB467190EC66FB0ED372ABF7EB /* DigiMeSDK-umbrella.h */,
+				AAE09695F50DDD646B9757178745F38C /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "ExampleSwift/Pods/Target Support Files/DigiMeSDK";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				08C1C912C7058DA89FA56E24A29F9E9F /* Development Pods */,
+				14B8B9B15ECBE87983FF987239AB2D7B /* Frameworks */,
+				FEA431E08FEFD87DC0F8E0D769CE2897 /* Products */,
+				F80E742583123B958B3AB9A18A2AB635 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		8BB405BF0E4DA3F703AE8C5F6AC54218 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				F8FBCB61A8B65994A590EC4A468B843F /* CoreGraphics.framework */,
+				0FA1A56705C5693D93DB4454EA47F058 /* Foundation.framework */,
+				0BE511317A1252950CC6027B1FE2BE79 /* Security.framework */,
+				7F68BF4FA45DB99044ADA609DB800482 /* UIKit.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		97836A0D88547FA78C886E8D1A13EDCC /* Callbacks */ = {
+			isa = PBXGroup;
+			children = (
+				0207264249074E4D3D99BD03D4D8F12D /* DMEClientCallbacks.h */,
+				1C7AD3A24BA42E19CF80F40D22321C2C /* DMEClientDelegate.h */,
+			);
+			name = Callbacks;
+			path = DigiMeSDK/Callbacks;
+			sourceTree = "<group>";
+		};
+		98A21CDA8F2E751A07DCA0222E399F91 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				855B83D586358D373729AFDB6EC69B09 /* CAFilesDeserializer.h */,
+				975C45D8128AF3313B383FFA0830EB1B /* CAFilesDeserializer.m */,
+				DF3674F2925B7C8982A7C71AAC3F5013 /* CASessionDeserializer.h */,
+				A318EF5D2ECB975E72E40A801635969C /* CASessionDeserializer.m */,
+				7D173AD637E720D714CAD760A65DD9F2 /* DMECryptoUtilities.h */,
+				21520CC00338EE27F42D1EF85944D033 /* DMECryptoUtilities.m */,
+				411B6976848C73DBCBB0402F888F33AA /* NSData+DMECrypto.h */,
+				C6D7A3F88D6A20EE094E72E35AF303DB /* NSData+DMECrypto.m */,
+				B58341E2C100930A4ED99CD3DA6460D6 /* NSString+DMECrypto.h */,
+				38D3A4FDEE6368E09ED43490902B4527 /* NSString+DMECrypto.m */,
+			);
+			name = Utility;
+			path = DigiMeSDK/Utility;
+			sourceTree = "<group>";
+		};
+		B7F788DEDA1AD3AAFB505A75150ECE9A /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				D6F29E612BEDA493FDD3FA9B8B6250A6 /* CAAccounts.h */,
+				9266F350AE87CF5178C8A88397C99FAD /* CAAccounts.m */,
+				E3E5E36D10E5B9A947AC026D38528A44 /* CAFile.h */,
+				B7F050CB85E3CC3B43A5CB301272E383 /* CAFile.m */,
+				5253B31A2494AC40E72D8D64438F0A3F /* CAFileObject.h */,
+				12CA7777955EFFB39F2500FA4466C7DA /* CAFileObject.m */,
+				16322605D58D8EE5DC9F9D95B6B9D248 /* CAFiles.h */,
+				E87A0BD1FD020D73D591C89768E500DA /* CAFiles.m */,
+				38B9E76510741647497490BD7A0A7ECA /* CASession.h */,
+				A10E635F1C9F8381360D59B105CCB472 /* CASession.m */,
+			);
+			name = Entities;
+			path = DigiMeSDK/Entities;
+			sourceTree = "<group>";
+		};
+		CC05FB4A24EF884BEE0594C31D52FDA3 /* Pods-DigiMeSDKExampleSwift */ = {
+			isa = PBXGroup;
+			children = (
+				FEF6B9AB58AACF0128E466E7ABE6C540 /* Info.plist */,
+				52CAAD7A890D6E2C277596BC28F7582F /* Pods-DigiMeSDKExampleSwift.modulemap */,
+				8F29CA565EB3B5E0119768E146F37BFE /* Pods-DigiMeSDKExampleSwift-acknowledgements.markdown */,
+				AD1319A8711F6F6C1234C44018A03337 /* Pods-DigiMeSDKExampleSwift-acknowledgements.plist */,
+				A7F466A0AB1ABEF02D47BE7E5FB8B3C7 /* Pods-DigiMeSDKExampleSwift-dummy.m */,
+				6983A1AADF8A5BD5669A7A783016AF89 /* Pods-DigiMeSDKExampleSwift-frameworks.sh */,
+				B47F76A825ECA407BEF99C5B08D66083 /* Pods-DigiMeSDKExampleSwift-resources.sh */,
+				CA9EAB30FD03C2578CA78FB9F666A6DA /* Pods-DigiMeSDKExampleSwift-umbrella.h */,
+				31C97CB33991393AEFAF9DE5693783C0 /* Pods-DigiMeSDKExampleSwift.debug.xcconfig */,
+				C53D3F30A14FBF9B79B54EF71F11BE2E /* Pods-DigiMeSDKExampleSwift.release.xcconfig */,
+			);
+			name = "Pods-DigiMeSDKExampleSwift";
+			path = "Target Support Files/Pods-DigiMeSDKExampleSwift";
+			sourceTree = "<group>";
+		};
+		EDEA48CFE533451470BAE636D847F627 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				269496CCE84584952BBCD8972C0AB0B8 /* apiCert1.der */,
+				22410EDA622EC8C8271CFA88944F4A6C /* apiCert2.der */,
+				885DBA4250D41E937C894531718736AF /* apiCert3.der */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		F80E742583123B958B3AB9A18A2AB635 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				CC05FB4A24EF884BEE0594C31D52FDA3 /* Pods-DigiMeSDKExampleSwift */,
+				FC62B3621BB74781D34DA466AF3EE7B7 /* Pods-DigiMeSDKExampleSwiftTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		FC62B3621BB74781D34DA466AF3EE7B7 /* Pods-DigiMeSDKExampleSwiftTests */ = {
+			isa = PBXGroup;
+			children = (
+				BBF9F59D9D778963345690CD7C05E9CC /* Info.plist */,
+				6FA904A4EEF9DDE96DFF793879205018 /* Pods-DigiMeSDKExampleSwiftTests.modulemap */,
+				384A8B7BC78359A3801E7C68F87CEC7B /* Pods-DigiMeSDKExampleSwiftTests-acknowledgements.markdown */,
+				39EF22D79B1CA86E25783685DC0A9E25 /* Pods-DigiMeSDKExampleSwiftTests-acknowledgements.plist */,
+				1F97E648E93ABE2069B5D3D8243064C3 /* Pods-DigiMeSDKExampleSwiftTests-dummy.m */,
+				AAD51130952A87D84C1C228A0C6A723A /* Pods-DigiMeSDKExampleSwiftTests-frameworks.sh */,
+				8653DBF06D0B9CE56DA9B2E8C8950B01 /* Pods-DigiMeSDKExampleSwiftTests-resources.sh */,
+				4CDF08BEB803F3A3F9C8A79E4A797C64 /* Pods-DigiMeSDKExampleSwiftTests-umbrella.h */,
+				FCE87B8E00F76F91D16E95FB8E694506 /* Pods-DigiMeSDKExampleSwiftTests.debug.xcconfig */,
+				10A1B3D2F898F4CB4CFD9320AE88ED28 /* Pods-DigiMeSDKExampleSwiftTests.release.xcconfig */,
+			);
+			name = "Pods-DigiMeSDKExampleSwiftTests";
+			path = "Target Support Files/Pods-DigiMeSDKExampleSwiftTests";
+			sourceTree = "<group>";
+		};
+		FD4EFE25CD175D6A8BB4B04980E2B27E /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				3EC5DCB2DC68D4978846292D1212545F /* NSError+API.h */,
+				D86009B0A08605D176DB2C67AEB1BB97 /* NSError+API.m */,
+				004E8ED9014B9B525B0F39B817F4E6DF /* NSError+Auth.h */,
+				1F6B27CC92E59C5F33EE6733B51EBCFD /* NSError+Auth.m */,
+				B0F0DFD235239180B5FE9B4E9A5B1C04 /* NSError+SDK.h */,
+				8BAFD694E732F64FFADC3A75E36522F9 /* NSError+SDK.m */,
+			);
+			name = Errors;
+			path = DigiMeSDK/Errors;
+			sourceTree = "<group>";
+		};
+		FEA431E08FEFD87DC0F8E0D769CE2897 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA551233F9922E113F4C29157A9D4429 /* DigiMeSDK.framework */,
+				64416A2D22DD60D109E458BB501F3AAE /* Pods_DigiMeSDKExampleSwift.framework */,
+				2AB28C1EB3C34466A0EA62340916CD84 /* Pods_DigiMeSDKExampleSwiftTests.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		3824B79A1AC310E6F2FCE5318FEEABBE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				891365A0F63D5A133833F2255986F5B1 /* Pods-DigiMeSDKExampleSwiftTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C50B1461602773DEEFB609247318A60F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44FAD03616384C93EF80441350512D9C /* Pods-DigiMeSDKExampleSwift-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E68EA04A6FE0B99F71C3810875EC6229 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94CE22B4E2339A689222EA1842C42ADE /* CAAccounts.h in Headers */,
+				D0CFF7232B1749AAE9D4D4CCB71AB5DC /* CADataDecryptor.h in Headers */,
+				CD85883EB1AE92922B0A8FD6E61597C8 /* CAFile.h in Headers */,
+				3564CF36D7C68D7A309CA044ADDF2FEE /* CAFileObject.h in Headers */,
+				9BE327227E50A1FE4C716E2DC1A94D23 /* CAFiles.h in Headers */,
+				F1263EEDF10A499313E721583B7F5DF6 /* CAFilesDeserializer.h in Headers */,
+				AB522FF4C2F78055ADD8DF4811272C5E /* CASession.h in Headers */,
+				0725456253A71148780B366C5DDF2C16 /* CASessionDeserializer.h in Headers */,
+				086DB92B0500F4D2DC6D97ED698837AB /* CASessionManager.h in Headers */,
+				FC96337A86B8B42E8E5BFFE24DAB8363 /* DigiMeSDK-umbrella.h in Headers */,
+				07F812B592A94A5151A8BA45F714D1A5 /* DMEAPIClient.h in Headers */,
+				FF5EE51F5EC849917436026B7A3186FE /* DMEAuthorizationManager.h in Headers */,
+				DD0C67A27FF5B3B1DFE260B10146541C /* DMECertificatePinner.h in Headers */,
+				01B8770700AEC3F1E667CEBA4B56D452 /* DMEClient.h in Headers */,
+				92B56241C1E591C7371EF854EEC84247 /* DMEClientCallbacks.h in Headers */,
+				AA524D25AA68ABC68913AC36559BC886 /* DMEClientConfiguration.h in Headers */,
+				A2B0B3E79F2769FCCDC07154654577A7 /* DMEClientDelegate.h in Headers */,
+				3CC5D53FF32A724E2BB882B90202DC0D /* DMECrypto.h in Headers */,
+				439EE7FC303ED050E88D850FE7361FA9 /* DMECryptoUtilities.h in Headers */,
+				E1EDD11D9709FE92BAAFD2AB23EE80E5 /* DMEOperation.h in Headers */,
+				BCD04586D53C516AAD6603D12FAD41E6 /* DMERequestFactory.h in Headers */,
+				B0767024DC06EB02B5F5ABB256F1BD50 /* NSData+DMECrypto.h in Headers */,
+				EDE4B24CC2133D90F40A194CDBD31D19 /* NSError+API.h in Headers */,
+				B81689C79DF73EDF2ADB5FDAAEDE7BA2 /* NSError+Auth.h in Headers */,
+				65EACAD1E66ED074F11A68746243516F /* NSError+SDK.h in Headers */,
+				54C005C412AC31DC01236A5A079EB9A1 /* NSString+DMECrypto.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4DC2F6F334EEB1254013CD172F369509 /* Pods-DigiMeSDKExampleSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4AA4420A580D1BD019B791CCEF0F0A4C /* Build configuration list for PBXNativeTarget "Pods-DigiMeSDKExampleSwift" */;
+			buildPhases = (
+				935BE66893EC11380DD15A7AD5D851C4 /* Sources */,
+				63B49415311E0412F9F4B1E99B2ABC26 /* Frameworks */,
+				C50B1461602773DEEFB609247318A60F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0523D1CB29D7131439D14E4DCA340758 /* PBXTargetDependency */,
+			);
+			name = "Pods-DigiMeSDKExampleSwift";
+			productName = "Pods-DigiMeSDKExampleSwift";
+			productReference = 64416A2D22DD60D109E458BB501F3AAE /* Pods_DigiMeSDKExampleSwift.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		638562EFB5CDAD73C745AD5AC1D5993F /* DigiMeSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0DA6EF3BEE465A317237AE89D4474515 /* Build configuration list for PBXNativeTarget "DigiMeSDK" */;
+			buildPhases = (
+				B9EC83B02AED01E29A916258B0FFA724 /* Sources */,
+				39137CC122B356C868418B82D0B3AEA1 /* Frameworks */,
+				E68EA04A6FE0B99F71C3810875EC6229 /* Headers */,
+				F900C7E31FF83EA5816081D540A97108 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DigiMeSDK;
+			productName = DigiMeSDK;
+			productReference = DA551233F9922E113F4C29157A9D4429 /* DigiMeSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		ECEFE1B5F256D77019979B0E52D95CDF /* Pods-DigiMeSDKExampleSwiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 94501C67CA62F56DDB68C9DF373B673D /* Build configuration list for PBXNativeTarget "Pods-DigiMeSDKExampleSwiftTests" */;
+			buildPhases = (
+				1978AC1EBC671E41B9BBA31BCDDA5893 /* Sources */,
+				8A70A0A436961225F288B3B2A7EC0798 /* Frameworks */,
+				3824B79A1AC310E6F2FCE5318FEEABBE /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-DigiMeSDKExampleSwiftTests";
+			productName = "Pods-DigiMeSDKExampleSwiftTests";
+			productReference = 2AB28C1EB3C34466A0EA62340916CD84 /* Pods_DigiMeSDKExampleSwiftTests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0930;
+				LastUpgradeCheck = 0930;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = FEA431E08FEFD87DC0F8E0D769CE2897 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				638562EFB5CDAD73C745AD5AC1D5993F /* DigiMeSDK */,
+				4DC2F6F334EEB1254013CD172F369509 /* Pods-DigiMeSDKExampleSwift */,
+				ECEFE1B5F256D77019979B0E52D95CDF /* Pods-DigiMeSDKExampleSwiftTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F900C7E31FF83EA5816081D540A97108 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBEB0B0C61E092A7E7DA7324642E80AE /* apiCert1.der in Resources */,
+				D47905F3082BB8913E52CB40F658ED8C /* apiCert2.der in Resources */,
+				FC2024A5982DF59287BCE1A3472ABF8A /* apiCert3.der in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1978AC1EBC671E41B9BBA31BCDDA5893 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				089D433358567E14B9B4534701A845FF /* Pods-DigiMeSDKExampleSwiftTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		935BE66893EC11380DD15A7AD5D851C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46D0B029A0DE03D8A8D8EAA3CAABEE20 /* Pods-DigiMeSDKExampleSwift-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B9EC83B02AED01E29A916258B0FFA724 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E401200A9E0853266FAC07E8F3D22D0 /* CAAccounts.m in Sources */,
+				1B31DF1ABF28814834AEFD4BB8FCE8CF /* CADataDecryptor.m in Sources */,
+				50C56E08FA812F9C71AD81ABABC5C4D8 /* CAFile.m in Sources */,
+				D6114557D9276407D2BF3332DCBC1993 /* CAFileObject.m in Sources */,
+				FCE4E9826A31FF65B79E442435C6AAD4 /* CAFiles.m in Sources */,
+				1FC9B2E7F7A19D45CDD78449302D9E9D /* CAFilesDeserializer.m in Sources */,
+				BAE1FBDDF861729947D0E2F4E67F96A9 /* CASession.m in Sources */,
+				FEEB456DBFF52CEEA24A04CB5A3E045C /* CASessionDeserializer.m in Sources */,
+				8057E74710D9874D0EC31080A9C56754 /* CASessionManager.m in Sources */,
+				F351375007239362BF67174054E1772F /* DigiMeSDK-dummy.m in Sources */,
+				9038AC4EDF61EDF2BBDA67BEA5A887BA /* DMEAPIClient.m in Sources */,
+				678E5B4D8A9294020E5A2C6F5C2CF86E /* DMEAuthorizationManager.m in Sources */,
+				AB02D6B2F9EA8C73092292BC6FD4E0C1 /* DMECertificatePinner.m in Sources */,
+				CA2F8729DDF04CF7003894028C848A39 /* DMEClient.m in Sources */,
+				0977DCA9FA7120DD74B7E31645814837 /* DMEClientConfiguration.m in Sources */,
+				C7CF9F0E820FA0215991E314A0676254 /* DMECrypto.m in Sources */,
+				1EE5B14511DCA6C853D0626C479354FC /* DMECryptoUtilities.m in Sources */,
+				80B51FC56E5174016C5550F1DF2DA1E5 /* DMEOperation.m in Sources */,
+				165AB86591EE9B8BF94BF4435A43048F /* DMERequestFactory.m in Sources */,
+				D88E81F672681CB843980191907DDE01 /* NSData+DMECrypto.m in Sources */,
+				C3816D96A795D636DE529D33FE223807 /* NSError+API.m in Sources */,
+				95CA1D88AAEA0608B73117DCAE53D730 /* NSError+Auth.m in Sources */,
+				92A7028CC172AFC1E7AC3E28FA0EE170 /* NSError+SDK.m in Sources */,
+				0ADC1DAFF05AE2A3EE1C7579BAF25FFE /* NSString+DMECrypto.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0523D1CB29D7131439D14E4DCA340758 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = DigiMeSDK;
+			target = 638562EFB5CDAD73C745AD5AC1D5993F /* DigiMeSDK */;
+			targetProxy = 8567FB6E24432E399A43619B7665F503 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		09A3DF62C6DA698D65EA36C3BE9FDCB2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		164184F126E91728DBC3AF7A817241EC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 31C97CB33991393AEFAF9DE5693783C0 /* Pods-DigiMeSDKExampleSwift.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-DigiMeSDKExampleSwift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-DigiMeSDKExampleSwift/Pods-DigiMeSDKExampleSwift.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_DigiMeSDKExampleSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		50DD418139B8BA1BCE18C392AC49AA1F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD365F753C89E04274027EF606009B06 /* DigiMeSDK.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/DigiMeSDK/DigiMeSDK-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/DigiMeSDK/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/DigiMeSDK/DigiMeSDK.modulemap";
+				PRODUCT_NAME = DigiMeSDK;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		62FF89F00ED9838E2988AD30FA89E414 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		63E9D0223C9B0E2D01AD55A73F194AF2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCE87B8E00F76F91D16E95FB8E694506 /* Pods-DigiMeSDKExampleSwiftTests.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-DigiMeSDKExampleSwiftTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-DigiMeSDKExampleSwiftTests/Pods-DigiMeSDKExampleSwiftTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_DigiMeSDKExampleSwiftTests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6FC7ADFFADB48D112851BE6E38239ADD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10A1B3D2F898F4CB4CFD9320AE88ED28 /* Pods-DigiMeSDKExampleSwiftTests.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-DigiMeSDKExampleSwiftTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-DigiMeSDKExampleSwiftTests/Pods-DigiMeSDKExampleSwiftTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_DigiMeSDKExampleSwiftTests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B6AFB1D9E75DFD0AF93E1DCC6F55DC72 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C53D3F30A14FBF9B79B54EF71F11BE2E /* Pods-DigiMeSDKExampleSwift.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-DigiMeSDKExampleSwift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-DigiMeSDKExampleSwift/Pods-DigiMeSDKExampleSwift.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_DigiMeSDKExampleSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D20334349A87662CE0D520609A0C0A16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD365F753C89E04274027EF606009B06 /* DigiMeSDK.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/DigiMeSDK/DigiMeSDK-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/DigiMeSDK/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/DigiMeSDK/DigiMeSDK.modulemap";
+				PRODUCT_NAME = DigiMeSDK;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0DA6EF3BEE465A317237AE89D4474515 /* Build configuration list for PBXNativeTarget "DigiMeSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50DD418139B8BA1BCE18C392AC49AA1F /* Debug */,
+				D20334349A87662CE0D520609A0C0A16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				62FF89F00ED9838E2988AD30FA89E414 /* Debug */,
+				09A3DF62C6DA698D65EA36C3BE9FDCB2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4AA4420A580D1BD019B791CCEF0F0A4C /* Build configuration list for PBXNativeTarget "Pods-DigiMeSDKExampleSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				164184F126E91728DBC3AF7A817241EC /* Debug */,
+				B6AFB1D9E75DFD0AF93E1DCC6F55DC72 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		94501C67CA62F56DDB68C9DF373B673D /* Build configuration list for PBXNativeTarget "Pods-DigiMeSDKExampleSwiftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63E9D0223C9B0E2D01AD55A73F194AF2 /* Debug */,
+				6FC7ADFFADB48D112851BE6E38239ADD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}
