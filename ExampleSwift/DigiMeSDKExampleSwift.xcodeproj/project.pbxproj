@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		06BCAF21203F11270032D040 /* CA_RSA_PRIVATE_KEY.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 06BCAF20203F11270032D040 /* CA_RSA_PRIVATE_KEY.p12 */; };
+		06BD81C9203F1B0100A89001 /* CA_RSA_PRIVATE_KEY.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 06BD81C8203F1B0100A89001 /* CA_RSA_PRIVATE_KEY.p12 */; };
 		5C16D5E3203ECABA00947940 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E2203ECABA00947940 /* AppDelegate.swift */; };
 		5C16D5E5203ECABA00947940 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E4203ECABA00947940 /* ViewController.swift */; };
 		5C16D5E8203ECABA00947940 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C16D5E6203ECABA00947940 /* Main.storyboard */; };
@@ -38,7 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		06BCAF20203F11270032D040 /* CA_RSA_PRIVATE_KEY.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; name = CA_RSA_PRIVATE_KEY.p12; path = ../../Example/CA_RSA_PRIVATE_KEY.p12; sourceTree = "<group>"; };
+		06BD81C8203F1B0100A89001 /* CA_RSA_PRIVATE_KEY.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = CA_RSA_PRIVATE_KEY.p12; sourceTree = "<group>"; };
 		284FACD609865A7CEDB8C49B /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C16D5DF203ECABA00947940 /* DigiMeSDKExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C16D5E2203ECABA00947940 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -127,7 +127,7 @@
 				5C16D5E2203ECABA00947940 /* AppDelegate.swift */,
 				5C16D5E4203ECABA00947940 /* ViewController.swift */,
 				5C16D614203ED12800947940 /* LogViewController.swift */,
-				06BCAF20203F11270032D040 /* CA_RSA_PRIVATE_KEY.p12 */,
+				06BD81C8203F1B0100A89001 /* CA_RSA_PRIVATE_KEY.p12 */,
 				5C16D5EE203ECABB00947940 /* Info.plist */,
 				5C16D5E6203ECABA00947940 /* Main.storyboard */,
 				5C16D5E9203ECABA00947940 /* Assets.xcassets */,
@@ -278,7 +278,7 @@
 			files = (
 				5C16D5ED203ECABA00947940 /* LaunchScreen.storyboard in Resources */,
 				5C16D5EA203ECABA00947940 /* Assets.xcassets in Resources */,
-				06BCAF21203F11270032D040 /* CA_RSA_PRIVATE_KEY.p12 in Resources */,
+				06BD81C9203F1B0100A89001 /* CA_RSA_PRIVATE_KEY.p12 in Resources */,
 				5C16D5E8203ECABA00947940 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
