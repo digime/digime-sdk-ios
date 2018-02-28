@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,8 @@
 		0ADC1DAFF05AE2A3EE1C7579BAF25FFE /* NSString+DMECrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 38D3A4FDEE6368E09ED43490902B4527 /* NSString+DMECrypto.m */; };
 		165AB86591EE9B8BF94BF4435A43048F /* DMERequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = AB207C462B80F17496BFE041E97D8ACD /* DMERequestFactory.m */; };
 		1B31DF1ABF28814834AEFD4BB8FCE8CF /* CADataDecryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ACF175CF7ED9606463091619DD0AA21 /* CADataDecryptor.m */; };
+		1E35B0802047348600624684 /* UIViewController+DMEExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E35B07E2047348600624684 /* UIViewController+DMEExtension.m */; };
+		1E35B0812047348600624684 /* UIViewController+DMEExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E35B07F2047348600624684 /* UIViewController+DMEExtension.h */; };
 		1EE5B14511DCA6C853D0626C479354FC /* DMECryptoUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 21520CC00338EE27F42D1EF85944D033 /* DMECryptoUtilities.m */; };
 		1FC9B2E7F7A19D45CDD78449302D9E9D /* CAFilesDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 975C45D8128AF3313B383FFA0830EB1B /* CAFilesDeserializer.m */; };
 		3564CF36D7C68D7A309CA044ADDF2FEE /* CAFileObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5253B31A2494AC40E72D8D64438F0A3F /* CAFileObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -96,19 +98,21 @@
 		1610C80266BE3828A5A57C070BF48626 /* DMEClientConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientConfiguration.h; sourceTree = "<group>"; };
 		16322605D58D8EE5DC9F9D95B6B9D248 /* CAFiles.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFiles.h; sourceTree = "<group>"; };
 		1C7AD3A24BA42E19CF80F40D22321C2C /* DMEClientDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientDelegate.h; sourceTree = "<group>"; };
+		1E35B07E2047348600624684 /* UIViewController+DMEExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DMEExtension.m"; sourceTree = "<group>"; };
+		1E35B07F2047348600624684 /* UIViewController+DMEExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DMEExtension.h"; sourceTree = "<group>"; };
 		1F6B27CC92E59C5F33EE6733B51EBCFD /* NSError+Auth.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+Auth.m"; sourceTree = "<group>"; };
 		1F97E648E93ABE2069B5D3D8243064C3 /* Pods-DigiMeSDKExampleSwiftTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DigiMeSDKExampleSwiftTests-dummy.m"; sourceTree = "<group>"; };
 		21520CC00338EE27F42D1EF85944D033 /* DMECryptoUtilities.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMECryptoUtilities.m; sourceTree = "<group>"; };
-		22410EDA622EC8C8271CFA88944F4A6C /* apiCert2.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert2.der; path = DigiMeSDK/Assets/apiCert2.der; sourceTree = "<group>"; };
-		269496CCE84584952BBCD8972C0AB0B8 /* apiCert1.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert1.der; path = DigiMeSDK/Assets/apiCert1.der; sourceTree = "<group>"; };
-		2AB28C1EB3C34466A0EA62340916CD84 /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExampleSwiftTests.framework; path = "Pods-DigiMeSDKExampleSwiftTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22410EDA622EC8C8271CFA88944F4A6C /* apiCert2.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert2.der; path = DigiMeSDK/Assets/apiCert2.der; sourceTree = "<group>"; };
+		269496CCE84584952BBCD8972C0AB0B8 /* apiCert1.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert1.der; path = DigiMeSDK/Assets/apiCert1.der; sourceTree = "<group>"; };
+		2AB28C1EB3C34466A0EA62340916CD84 /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		31C97CB33991393AEFAF9DE5693783C0 /* Pods-DigiMeSDKExampleSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExampleSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		34228344C2C3C6CCAF0EF887D151DE22 /* DMERequestFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMERequestFactory.h; sourceTree = "<group>"; };
 		384A8B7BC78359A3801E7C68F87CEC7B /* Pods-DigiMeSDKExampleSwiftTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DigiMeSDKExampleSwiftTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		38B9E76510741647497490BD7A0A7ECA /* CASession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASession.h; sourceTree = "<group>"; };
 		38D3A4FDEE6368E09ED43490902B4527 /* NSString+DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSString+DMECrypto.m"; sourceTree = "<group>"; };
 		39EF22D79B1CA86E25783685DC0A9E25 /* Pods-DigiMeSDKExampleSwiftTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DigiMeSDKExampleSwiftTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		3AF4AF02F7EB7AA53780F1D899DF7A8B /* DigiMeSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		3AF4AF02F7EB7AA53780F1D899DF7A8B /* DigiMeSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3EC5DCB2DC68D4978846292D1212545F /* NSError+API.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSError+API.h"; sourceTree = "<group>"; };
 		411B6976848C73DBCBB0402F888F33AA /* NSData+DMECrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSData+DMECrypto.h"; sourceTree = "<group>"; };
 		490814472354E631DA44C3A7D9B7DB37 /* DMEClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClient.h; sourceTree = "<group>"; };
@@ -119,7 +123,7 @@
 		52CAAD7A890D6E2C277596BC28F7582F /* Pods-DigiMeSDKExampleSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-DigiMeSDKExampleSwift.modulemap"; sourceTree = "<group>"; };
 		58C2E4D0EC984E14503B88DA214DAEE7 /* DMECertificatePinner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMECertificatePinner.h; sourceTree = "<group>"; };
 		5CB0F8023B7909D48B59F28A366985AA /* DMEOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEOperation.h; sourceTree = "<group>"; };
-		64416A2D22DD60D109E458BB501F3AAE /* Pods_DigiMeSDKExampleSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExampleSwift.framework; path = "Pods-DigiMeSDKExampleSwift.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		64416A2D22DD60D109E458BB501F3AAE /* Pods_DigiMeSDKExampleSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6983A1AADF8A5BD5669A7A783016AF89 /* Pods-DigiMeSDKExampleSwift-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExampleSwift-frameworks.sh"; sourceTree = "<group>"; };
 		6C2E214A369FCF0C7117F5C5B5C571DB /* DMEClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEClient.m; sourceTree = "<group>"; };
 		6FA904A4EEF9DDE96DFF793879205018 /* Pods-DigiMeSDKExampleSwiftTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-DigiMeSDKExampleSwiftTests.modulemap"; sourceTree = "<group>"; };
@@ -129,15 +133,15 @@
 		7F68BF4FA45DB99044ADA609DB800482 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		855B83D586358D373729AFDB6EC69B09 /* CAFilesDeserializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFilesDeserializer.h; sourceTree = "<group>"; };
 		8653DBF06D0B9CE56DA9B2E8C8950B01 /* Pods-DigiMeSDKExampleSwiftTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExampleSwiftTests-resources.sh"; sourceTree = "<group>"; };
-		885DBA4250D41E937C894531718736AF /* apiCert3.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert3.der; path = DigiMeSDK/Assets/apiCert3.der; sourceTree = "<group>"; };
+		885DBA4250D41E937C894531718736AF /* apiCert3.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert3.der; path = DigiMeSDK/Assets/apiCert3.der; sourceTree = "<group>"; };
 		8BAFD694E732F64FFADC3A75E36522F9 /* NSError+SDK.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+SDK.m"; sourceTree = "<group>"; };
 		8DBBFA6F9CDA273C982269C9F83DF156 /* CADataDecryptor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CADataDecryptor.h; sourceTree = "<group>"; };
 		8F29CA565EB3B5E0119768E146F37BFE /* Pods-DigiMeSDKExampleSwift-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DigiMeSDKExampleSwift-acknowledgements.markdown"; sourceTree = "<group>"; };
 		9266F350AE87CF5178C8A88397C99FAD /* CAAccounts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAAccounts.m; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		975C45D8128AF3313B383FFA0830EB1B /* CAFilesDeserializer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFilesDeserializer.m; sourceTree = "<group>"; };
 		A10E635F1C9F8381360D59B105CCB472 /* CASession.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CASession.m; sourceTree = "<group>"; };
-		A13946E4032F6C07A14F8BB2B6DBE3C2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		A13946E4032F6C07A14F8BB2B6DBE3C2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A318EF5D2ECB975E72E40A801635969C /* CASessionDeserializer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CASessionDeserializer.m; sourceTree = "<group>"; };
 		A320E58CA9343B35C9741535CAD0E4C4 /* DMEAuthorizationManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEAuthorizationManager.m; sourceTree = "<group>"; };
 		A7F466A0AB1ABEF02D47BE7E5FB8B3C7 /* Pods-DigiMeSDKExampleSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DigiMeSDKExampleSwift-dummy.m"; sourceTree = "<group>"; };
@@ -154,13 +158,13 @@
 		BBF9F59D9D778963345690CD7C05E9CC /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD365F753C89E04274027EF606009B06 /* DigiMeSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DigiMeSDK.xcconfig; sourceTree = "<group>"; };
 		C53D3F30A14FBF9B79B54EF71F11BE2E /* Pods-DigiMeSDKExampleSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExampleSwift.release.xcconfig"; sourceTree = "<group>"; };
-		C6B43BC29F413A6BFCC03180A7DC9486 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		C6B43BC29F413A6BFCC03180A7DC9486 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		C6D7A3F88D6A20EE094E72E35AF303DB /* NSData+DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSData+DMECrypto.m"; sourceTree = "<group>"; };
 		CA9EAB30FD03C2578CA78FB9F666A6DA /* Pods-DigiMeSDKExampleSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DigiMeSDKExampleSwift-umbrella.h"; sourceTree = "<group>"; };
 		D6F29E612BEDA493FDD3FA9B8B6250A6 /* CAAccounts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAAccounts.h; sourceTree = "<group>"; };
 		D86009B0A08605D176DB2C67AEB1BB97 /* NSError+API.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+API.m"; sourceTree = "<group>"; };
 		DA10310B2B407153D9843BB3FAD6B923 /* DMEAuthorizationManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEAuthorizationManager.h; sourceTree = "<group>"; };
-		DA551233F9922E113F4C29157A9D4429 /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = DigiMeSDK.framework; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA551233F9922E113F4C29157A9D4429 /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF3674F2925B7C8982A7C71AAC3F5013 /* CASessionDeserializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASessionDeserializer.h; sourceTree = "<group>"; };
 		E3E5E36D10E5B9A947AC026D38528A44 /* CAFile.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFile.h; sourceTree = "<group>"; };
 		E82B9A2EFE6F090C6D529477019E4AAA /* CASessionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CASessionManager.m; sourceTree = "<group>"; };
@@ -351,6 +355,8 @@
 				C6D7A3F88D6A20EE094E72E35AF303DB /* NSData+DMECrypto.m */,
 				B58341E2C100930A4ED99CD3DA6460D6 /* NSString+DMECrypto.h */,
 				38D3A4FDEE6368E09ED43490902B4527 /* NSString+DMECrypto.m */,
+				1E35B07F2047348600624684 /* UIViewController+DMEExtension.h */,
+				1E35B07E2047348600624684 /* UIViewController+DMEExtension.m */,
 			);
 			name = Utility;
 			path = DigiMeSDK/Utility;
@@ -482,6 +488,7 @@
 				3564CF36D7C68D7A309CA044ADDF2FEE /* CAFileObject.h in Headers */,
 				9BE327227E50A1FE4C716E2DC1A94D23 /* CAFiles.h in Headers */,
 				F1263EEDF10A499313E721583B7F5DF6 /* CAFilesDeserializer.h in Headers */,
+				1E35B0812047348600624684 /* UIViewController+DMEExtension.h in Headers */,
 				AB522FF4C2F78055ADD8DF4811272C5E /* CASession.h in Headers */,
 				0725456253A71148780B366C5DDF2C16 /* CASessionDeserializer.h in Headers */,
 				086DB92B0500F4D2DC6D97ED698837AB /* CASessionManager.h in Headers */,
@@ -643,6 +650,7 @@
 				80B51FC56E5174016C5550F1DF2DA1E5 /* DMEOperation.m in Sources */,
 				165AB86591EE9B8BF94BF4435A43048F /* DMERequestFactory.m in Sources */,
 				D88E81F672681CB843980191907DDE01 /* NSData+DMECrypto.m in Sources */,
+				1E35B0802047348600624684 /* UIViewController+DMEExtension.m in Sources */,
 				C3816D96A795D636DE529D33FE223807 /* NSError+API.m in Sources */,
 				95CA1D88AAEA0608B73117DCAE53D730 /* NSError+Auth.m in Sources */,
 				92A7028CC172AFC1E7AC3E28FA0EE170 /* NSError+SDK.m in Sources */,
