@@ -39,7 +39,6 @@
 
 /* Begin PBXFileReference section */
 		06BD81C8203F1B0100A89001 /* CA_RSA_PRIVATE_KEY.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = CA_RSA_PRIVATE_KEY.p12; sourceTree = "<group>"; };
-		1E831EE92045D50D008F0650 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		284FACD609865A7CEDB8C49B /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C16D5DF203ECABA00947940 /* DigiMeSDKExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C16D5E2203ECABA00947940 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -158,7 +157,6 @@
 		7058F6A2AB3BA75BDAB6308C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1E831EE92045D50D008F0650 /* StoreKit.framework */,
 				EBD7BB4CB287E88154AF9DE0 /* Pods_DigiMeSDKExampleSwift.framework */,
 				284FACD609865A7CEDB8C49B /* Pods_DigiMeSDKExampleSwiftTests.framework */,
 			);
