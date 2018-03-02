@@ -22,6 +22,7 @@ static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
 static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 static NSInteger  const kDMEClientAppstoreID = 1234541790;
+static NSTimeInterval const kCATimerInterval = 0.5;
 
 @interface DMEAuthorizationManager() <SKStoreProductViewControllerDelegate>
 
@@ -64,12 +65,14 @@ static NSInteger  const kDMEClientAppstoreID = 1234541790;
             if (self.authCompletionBlock)
             {
                 self.authCompletionBlock(self.session, [NSError authError:AuthErrorGeneral]);
+                self.authCompletionBlock = nil;
             }
         }
     };
     
     UIApplication *app = [UIApplication sharedApplication];
-    NSURL *url = [self buildDigiMeUrl];
+    NSURL *url = [self digiMeUrl];
+    
     if (@available(iOS 10.0, *))
     {
         NSDictionary *options = @{UIApplicationOpenURLOptionUniversalLinksOnly : @NO};
@@ -105,7 +108,7 @@ static NSInteger  const kDMEClientAppstoreID = 1234541790;
     dispatch_async(dispatch_get_main_queue(), ^{
         
         UIApplication *app = [UIApplication sharedApplication];
-        NSURL *url = [self buildDigiMeUrl];
+        NSURL *url = [self digiMeUrl];
         if ([app canOpenURL:url])
         {
             [self continueAuthorization];
@@ -122,7 +125,7 @@ static NSInteger  const kDMEClientAppstoreID = 1234541790;
     dispatch_async(dispatch_get_main_queue(), ^{
         
         UIApplication *app = [UIApplication sharedApplication];
-        NSURL *url = [self buildDigiMeUrl];
+        NSURL *url = [self digiMeUrl];
         if ([app canOpenURL:url])
         {
             [self.storeViewController dismissViewControllerAnimated:YES completion:^{
@@ -131,11 +134,11 @@ static NSInteger  const kDMEClientAppstoreID = 1234541790;
         }
         else
         {
-            [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(checkIfDigimeIsInstalled) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:self selector:@selector(checkIfDigimeIsInstalled) userInfo:nil repeats:NO];
         }
     });
 }
-- (NSURL *)buildDigiMeUrl
+- (NSURL *)digiMeUrl
 {
     NSURLQueryItem *sessionKeyComponent = [NSURLQueryItem queryItemWithName:kCARequestSessionKey value:self.session.sessionKey];
     NSURLQueryItem *registereAppIdComponent = [NSURLQueryItem queryItemWithName:kCARequestRegisteredAppID value:self.appId];
@@ -152,7 +155,7 @@ static NSInteger  const kDMEClientAppstoreID = 1234541790;
 {
     self.storeViewController = [[SKStoreProductViewController alloc] init];
     self.storeViewController.delegate = self;
-    NSDictionary *parameters = @{SKStoreProductParameterITunesItemIdentifier:[NSNumber numberWithInteger:kDMEClientAppstoreID]};
+    NSDictionary *parameters = @{SKStoreProductParameterITunesItemIdentifier:@(kDMEClientAppstoreID)};
     
     __weak __typeof(self) weakSelf = self;
     [self.storeViewController loadProductWithParameters:parameters
@@ -162,7 +165,7 @@ static NSInteger  const kDMEClientAppstoreID = 1234541790;
                                                 __strong __typeof(weakSelf) strongSelf = weakSelf;
                                                 [[strongSelf.storeViewController topmostViewController] presentViewController:strongSelf.storeViewController animated:YES completion:^{
                                                     
-                                                    [NSTimer scheduledTimerWithTimeInterval:1.0 target:strongSelf selector:@selector(checkIfDigimeIsInstalled) userInfo:nil repeats:NO];
+                                                    [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:strongSelf selector:@selector(checkIfDigimeIsInstalled) userInfo:nil repeats:NO];
                                                 }];
                                             }
                                         }];
@@ -172,6 +175,7 @@ static NSInteger  const kDMEClientAppstoreID = 1234541790;
 
 -(void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController
 {
+    [NSTimer cancelPreviousPerformRequestsWithTarget:self];
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
