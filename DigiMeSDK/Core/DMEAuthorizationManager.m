@@ -9,22 +9,29 @@
 #import "DMEAuthorizationManager.h"
 #import "CASessionManager.h"
 #import "DMEClient.h"
+
 #import "NSError+Auth.h"
+#import "UIViewController+DMEExtension.h"
+
 #import <UIKit/UIKit.h>
+#import <StoreKit/StoreKit.h>
 
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
 static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
+static NSInteger  const kDMEClientAppstoreID = 1234541790;
+static NSTimeInterval const kCATimerInterval = 0.5;
 
-@interface DMEAuthorizationManager()
+@interface DMEAuthorizationManager() <SKStoreProductViewControllerDelegate>
 
 @property (nonatomic, strong) NSString *appId;
 @property (nonatomic, strong) CASession *session;
 @property (nonatomic, strong) CASessionManager *sessionManager;
 @property (nonatomic) BOOL authInProgress;
 @property (nonatomic, copy, nullable) AuthorizationCompletionBlock authCompletionBlock;
+@property (nonatomic, strong) SKStoreProductViewController *storeViewController;
 
 @end
 
@@ -46,6 +53,39 @@ static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 
 #pragma mark - Authorization
 
+- (void)continueAuthorization
+{
+    void (^completionBlock)(BOOL success) = ^void(BOOL success) {
+        if(success)
+        {
+            NSLog(@"[DMEClient] Authorization begun.");
+        }
+        else
+        {
+            if (self.authCompletionBlock)
+            {
+                self.authCompletionBlock(self.session, [NSError authError:AuthErrorGeneral]);
+                self.authCompletionBlock = nil;
+            }
+        }
+    };
+    
+    UIApplication *app = [UIApplication sharedApplication];
+    NSURL *url = [self digiMeUrl];
+    
+    if (@available(iOS 10.0, *))
+    {
+        NSDictionary *options = @{UIApplicationOpenURLOptionUniversalLinksOnly : @NO};
+        [app openURL:url options:options completionHandler:completionBlock];
+    }
+    else
+    {
+        //iOS 9 support
+        BOOL success = [app openURL:url];
+        completionBlock(success);
+    }
+}
+
 -(void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
 {
     if (self.authInProgress)
@@ -63,53 +103,80 @@ static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
     
     self.authInProgress = YES;
     
-    NSURLQueryItem*  sessionKeyComponent = [NSURLQueryItem queryItemWithName:kCARequestSessionKey value:self.session.sessionKey];
-    NSURLQueryItem*  registereAppIdComponent = [NSURLQueryItem queryItemWithName:kCARequestRegisteredAppID value:self.appId];
-    NSURLComponents* components = [NSURLComponents new];
+    self.authCompletionBlock = completion;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        UIApplication *app = [UIApplication sharedApplication];
+        NSURL *url = [self digiMeUrl];
+        if ([app canOpenURL:url])
+        {
+            [self continueAuthorization];
+        }
+        else
+        {
+            [self presentAppstoreView];
+        }
+    });
+}
+
+- (void)checkIfDigimeIsInstalled
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        UIApplication *app = [UIApplication sharedApplication];
+        NSURL *url = [self digiMeUrl];
+        if ([app canOpenURL:url])
+        {
+            [self.storeViewController dismissViewControllerAnimated:YES completion:^{
+                [self continueAuthorization];
+            }];
+        }
+        else
+        {
+            [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:self selector:@selector(checkIfDigimeIsInstalled) userInfo:nil repeats:NO];
+        }
+    });
+}
+- (NSURL *)digiMeUrl
+{
+    NSURLQueryItem *sessionKeyComponent = [NSURLQueryItem queryItemWithName:kCARequestSessionKey value:self.session.sessionKey];
+    NSURLQueryItem *registereAppIdComponent = [NSURLQueryItem queryItemWithName:kCARequestRegisteredAppID value:self.appId];
+    NSURLComponents *components = [NSURLComponents new];
     
     [components setQueryItems: @[sessionKeyComponent,registereAppIdComponent]];
     [components setScheme:kDMEClientScheme];
     [components setHost:@"data"];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        UIApplication *app = [UIApplication sharedApplication];
-        NSURL *url = components.URL;
-        if ([app canOpenURL:url])
-        {
-            void (^completionBlock)(BOOL success) = ^void(BOOL success) {
-                if(success)
-                {
-                    NSLog(@"[DMEClient] Authorization begun.");
-                }
-                else
-                {
-                    self.authCompletionBlock = nil;
-                    completion(self.session, [NSError authError:AuthErrorGeneral]);
-                    return;
-                }
-            };
-            
-            self.authCompletionBlock = completion;
-            
-            if (@available(iOS 10.0, *))
-            {
-                NSDictionary *options = @{UIApplicationOpenURLOptionUniversalLinksOnly : @NO};
-                
-                [app openURL:url options:options completionHandler:completionBlock];
-            }
-            else
-            {
-                //iOS 9 support
-                BOOL success = [app openURL:url];
-                completionBlock(success);
-            }
-        }
-        else
-        {
-            completion(nil, [NSError authError:AuthErrorAppNotFound]);
-        }
-    });
+    return components.URL;
+}
+
+- (void)presentAppstoreView
+{
+    self.storeViewController = [[SKStoreProductViewController alloc] init];
+    self.storeViewController.delegate = self;
+    NSDictionary *parameters = @{SKStoreProductParameterITunesItemIdentifier:@(kDMEClientAppstoreID)};
+    
+    __weak __typeof(self) weakSelf = self;
+    [self.storeViewController loadProductWithParameters:parameters
+                                        completionBlock:^(BOOL result, NSError *error) {
+                                            if (result)
+                                            {
+                                                __strong __typeof(weakSelf) strongSelf = weakSelf;
+                                                [[strongSelf.storeViewController topmostViewController] presentViewController:strongSelf.storeViewController animated:YES completion:^{
+                                                    
+                                                    [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:strongSelf selector:@selector(checkIfDigimeIsInstalled) userInfo:nil repeats:NO];
+                                                }];
+                                            }
+                                        }];
+}
+
+#pragma mark - SKStoreProductViewControllerDelegate
+
+-(void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController
+{
+    [NSTimer cancelPreviousPerformRequestsWithTarget:self];
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Digi.me App openURL handling

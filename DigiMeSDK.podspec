@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.platform     	= :ios, "8.0"
   s.source       	= { :git => "https://github.com/digime/digime-sdk-ios.git", :branch => "#{s.version}", :tag => "#{s.version}" } 
   s.source_files  	= "DigiMeSDK/**/*.{h,m}"
-  s.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security"
+  s.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
   s.resources       = ["DigiMeSDK/Assets/*.{der}"]
 
 end
