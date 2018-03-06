@@ -18,6 +18,7 @@
 
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
+static NSString * const kCARequest3dPartyAppName = @"CARequest3dPartyAppName";
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
 static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
@@ -140,11 +141,19 @@ static NSTimeInterval const kCATimerInterval = 0.5;
 }
 - (NSURL *)digiMeUrl
 {
+    NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    
+    if (!appName)
+    {
+        appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+    }
+    
+    NSURLQueryItem *appNamePublic = [NSURLQueryItem queryItemWithName:kCARequest3dPartyAppName value:appName];
     NSURLQueryItem *sessionKeyComponent = [NSURLQueryItem queryItemWithName:kCARequestSessionKey value:self.session.sessionKey];
     NSURLQueryItem *registereAppIdComponent = [NSURLQueryItem queryItemWithName:kCARequestRegisteredAppID value:self.appId];
     NSURLComponents *components = [NSURLComponents new];
     
-    [components setQueryItems: @[sessionKeyComponent,registereAppIdComponent]];
+    [components setQueryItems: @[sessionKeyComponent, registereAppIdComponent, appNamePublic]];
     [components setScheme:kDMEClientScheme];
     [components setHost:@"data"];
     
