@@ -368,4 +368,9 @@
     return [self.authManager openURL:url options:options];
 }
 
+- (BOOL)canOpenDigiMeApp
+{
+    return [self.authManager canOpenDigiMeApp];
+}
+
 @end

@@ -226,6 +226,14 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     return canHandle;
 }
 
+- (BOOL)canOpenDigiMeApp
+{
+    NSURLComponents *components = [NSURLComponents new];
+    [components setScheme:kDMEClientScheme];
+    
+    return [[UIApplication sharedApplication] canOpenURL:components.URL];
+}
+
 #pragma mark - Private
 
 - (void)executeCompletionWithSession:(CASession *)session error:(NSError *)error

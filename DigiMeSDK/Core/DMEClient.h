@@ -128,5 +128,11 @@
  */
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options;
 
+/**
+ Determines whether the digi.me application is installed and can therefore be opened.
+
+ @return YES if digi.me app is installed, NO if not.
+ */
+- (BOOL)canOpenDigiMeApp;
 
 @end

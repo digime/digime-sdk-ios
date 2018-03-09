@@ -29,4 +29,6 @@
  */
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options;
 
+- (BOOL)canOpenDigiMeApp;
+
 @end
