@@ -51,13 +51,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Date sesison was created.
+ Date session was created.
  */
 @property (nonatomic, strong, readonly) NSDate *createdDate;
 
 
 /**
- Sesison Identifier - this is currently set to a contract identifier.
+ Session Identifier - this is currently set to a contract identifier.
  */
 @property (nonatomic, strong, readonly) NSString *sessionId;
 

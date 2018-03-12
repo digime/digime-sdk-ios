@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, AuthError) {
     AuthErrorInvalidSession = 7, //invalid session
     AuthErrorAppNotFound = 8, //Digi.me app not installed
     AuthErrorNotOnboarded = 9, //Digi.me app is not connected to library
-    AuthErrorInvalidSessionKey = 10, //sesison key returned by Digi.me app is invalid
+    AuthErrorInvalidSessionKey = 10, //session key returned by Digi.me app is invalid
 };
 
 @interface NSError (Auth)
