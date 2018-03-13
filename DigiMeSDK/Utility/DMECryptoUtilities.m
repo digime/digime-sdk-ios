@@ -34,6 +34,8 @@
     CFArrayRef results_ref = NULL;
 
     OSStatus err = SecPKCS12Import(pkcs12_data_ref, options_ref, &results_ref);
+    CFRelease(pkcs12_data_ref);
+    CFRelease(options_ref);
 
     if (err != errSecSuccess)
     {
@@ -48,6 +50,7 @@
     SecKeyRef private_key_ref = NULL;
     
     OSStatus copy_err = SecIdentityCopyPrivateKey(identity_ref, &private_key_ref);
+    CFRelease(identity_ref);
     
     if (copy_err != errSecSuccess)
     {
@@ -60,16 +63,16 @@
         CFErrorRef error_ref;
         CFDataRef data_ref = SecKeyCopyExternalRepresentation(private_key_ref, &error_ref);
         
-        if (data_ref != NULL)
-        {
-            NSData *data = (__bridge NSData *)data_ref;
-            return [data hexString];
-        }
-        else
+        if (data_ref == NULL)
         {
             NSLog(@"[DMECrypto] Error copying external key representation");
             return nil;
         }
+
+        NSData *data = (__bridge NSData *)data_ref;
+        NSString *hexKey = [data hexString];
+        CFRelease(data_ref);
+        return hexKey;
     }
     else
     {
@@ -79,7 +82,9 @@
                                 (__bridge id)kSecReturnData : (__bridge id)kCFBooleanTrue
                                 };
         CFTypeRef result_ref;
-        OSStatus copy_err = SecItemCopyMatching((__bridge_retained CFDictionaryRef)query, &result_ref);
+        CFDictionaryRef query_ref = (__bridge_retained CFDictionaryRef)query;
+        OSStatus copy_err = SecItemCopyMatching(query_ref, &result_ref);
+        CFRelease(query_ref);
         
         if (copy_err != noErr)
         {

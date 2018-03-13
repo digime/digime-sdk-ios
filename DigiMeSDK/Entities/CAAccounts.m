@@ -23,7 +23,11 @@
         return accounts;
     }
     
-    *error = [NSError sdkError:SDKErrorInvalidData];
+    if (error != nil)
+    {
+        *error = [NSError sdkError:SDKErrorInvalidData];
+    }
+    
     return nil;
 }
 
