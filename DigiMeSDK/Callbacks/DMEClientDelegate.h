@@ -15,9 +15,7 @@
 #import "CAFiles.h"
 #import "CAFile.h"
 
-
-#ifndef DMEClientDelegate_h
-#define DMEClientDelegate_h
+#pragma once
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -98,12 +96,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)fileRetrieveFailed:(NSString *)fileId error:(NSError *)error;
 
 
-- (void)accountsRetreived:(CAAccounts *)accounts;
+/**
+ Executed when DMEClient has retrieved accounts available for the contract
 
+ @param accounts available accounts
+ */
+- (void)accountsRetrieved:(CAAccounts *)accounts;
+
+
+/**
+ Executed when accounts could not be retrieved
+
+ @param error error NSError
+ */
 - (void)accountsRetrieveFailed:(NSError *)error;
 
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif

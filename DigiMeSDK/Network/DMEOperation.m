@@ -76,9 +76,9 @@
 
 - (void)start
 {
-    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
     _isExecuting = YES;
-    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
     
     _requiresRunLoop = YES;  // depends on your situation.
     if(_requiresRunLoop)
@@ -181,14 +181,14 @@
 - (void)finish
 {
     // generate the KVO necessary for the queue to remove him
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
+    [self willChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
+    [self willChangeValueForKey:NSStringFromSelector(@selector(isFinished))];
     
     _isExecuting = NO;
     _isFinished = YES;
     
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
+    [self didChangeValueForKey:NSStringFromSelector(@selector(isFinished))];
 }
 
 @end

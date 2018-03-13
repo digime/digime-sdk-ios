@@ -31,10 +31,6 @@
             
         case SDKErrorInvalidData:
             return @"Could not serialize data.";
-            
-        default:
-            return @"";
-            break;
     }
 }
 

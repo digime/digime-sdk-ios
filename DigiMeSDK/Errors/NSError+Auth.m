@@ -57,10 +57,8 @@
         case AuthErrorInvalidSessionKey:
             return @"Digi.me app returned an invalid session key.";
             break;
-            
-        default:
-            break;
     }
+    
     return NSLocalizedString(@"", @"");
 }
 

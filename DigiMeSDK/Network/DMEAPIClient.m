@@ -216,6 +216,11 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
             //check response message
             NSError *parsingError = nil;
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&parsingError];
+            if (!responseDictionary)
+            {
+                failure(parsingError);
+                return;
+            }
             
             NSDictionary *errorDict = responseDictionary[@"error"];
             

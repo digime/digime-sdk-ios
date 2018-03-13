@@ -11,8 +11,7 @@
 #import "CAFile.h"
 #import "CAAccounts.h"
 
-#ifndef DMEClientCallbacks_h
-#define DMEClientCallbacks_h
+#pragma once
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -53,5 +52,3 @@ typedef void (^FileContentCompletionBlock) (CAFile * _Nullable file, NSError * _
 typedef void (^AccountsCompletionBlock) (CAAccounts * _Nullable accounts, NSError * _Nullable error);
 
 NS_ASSUME_NONNULL_END
-
-#endif /* DMEClientCallbacks_h */

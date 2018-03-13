@@ -19,7 +19,7 @@
     if ([content isKindOfClass:[NSDictionary class]])
     {
         NSDictionary *json = (NSDictionary *)content;
-        CAAccounts *accounts = [[CAAccounts alloc] initWithFileId:@"accounts.json" json:json];
+        CAAccounts *accounts = [[self alloc] initWithFileId:@"accounts.json" json:json];
         return accounts;
     }
     

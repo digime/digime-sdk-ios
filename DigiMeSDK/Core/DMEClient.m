@@ -328,9 +328,9 @@
                     [strongSelf.delegate accountsRetrieveFailed:error];
                 }
             }
-            else if ([strongSelf.delegate respondsToSelector:@selector(accountsRetreived:)])
+            else if ([strongSelf.delegate respondsToSelector:@selector(accountsRetrieved:)])
             {
-                [strongSelf.delegate accountsRetreived:accounts];
+                [strongSelf.delegate accountsRetrieved:accounts];
             }
             
         });

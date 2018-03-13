@@ -39,7 +39,8 @@
                 }
             }
         }
-        self.localCerts = certs.copy;
+        
+        _localCerts = certs.copy;
 #endif
     }
     
