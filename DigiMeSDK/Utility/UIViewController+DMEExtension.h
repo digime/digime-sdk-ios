@@ -1,6 +1,6 @@
 //
 //  UIViewController+DMEExtension.h
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 28/02/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.

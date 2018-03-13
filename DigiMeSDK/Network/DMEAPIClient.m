@@ -1,6 +1,6 @@
 //
 //  DMEAPIClient.m
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 26/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.

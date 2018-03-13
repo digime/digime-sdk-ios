@@ -52,7 +52,7 @@ To integrate the DigiMeSDK into your own existing Xcode project using CocoaPods,
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
+platform :ios, '10.0'
 
 target 'TargetName' do
 pod 'DigiMeSDK'

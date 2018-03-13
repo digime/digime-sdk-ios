@@ -1,6 +1,6 @@
 //
 //  CASessionManager.h
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 29/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
