@@ -22,14 +22,14 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - Keychain
 
-- (BOOL)addPrivateKeyHex:(NSString*)privateKeyHex
+- (BOOL)addPrivateKeyHex:(NSString *)privateKeyHex
 {
     NSData* privateKeyData = [privateKeyHex hexToBytes];
     BOOL result = [self saveRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyData:privateKeyData keyTagString:kPrivateKeyIdentifier overwrite:YES];
     return result;
 }
 
-- (NSData*)privateKeyHex
+- (NSData *)privateKeyHex
 {
     NSData* keyData = [self loadRSAKeyDataWithKeyClass:kSecAttrKeyClassPrivate keyTagString:kPrivateKeyIdentifier];
     return keyData;
@@ -37,7 +37,7 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - Log
 
-- (void)logCCCryptorStatus: (CCCryptorStatus) status
+- (void)logCCCryptorStatus:(CCCryptorStatus)status
 {
     switch ( status )
     {
@@ -77,7 +77,7 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - Decrypt file content
 
-- (NSData*)getDataFromEncryptedBytes:(NSData*)encryptedData privateKeyData:(NSData*)privateKeyData
+- (NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData privateKeyData:(NSData *)privateKeyData
 {
     //convert data back to privateKey.
     [self saveRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyData:privateKeyData keyTagString:kPrivateKeyIdentifier overwrite:YES];
@@ -125,7 +125,7 @@ static const NSInteger kHashLength = 64;
     return jfsData;
 }
 
-- (NSData *)decryptAes256UsingKey:(NSData*)keyData initializationVector:(NSData*)ivData data:(NSData*)data error:(NSError **)error
+- (NSData *)decryptAes256UsingKey:(NSData*)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error
 {
     CCCryptorStatus status = kCCSuccess;
     NSData * result = [self decryptedDataUsingAlgorithm:kCCAlgorithmAES128
@@ -244,11 +244,11 @@ static const NSInteger kHashLength = 64;
 }
 
 - (NSData *)decryptedDataUsingAlgorithm:(CCAlgorithm)algorithm
-                                    key:(NSData*)keyData
-                   initializationVector:(NSData*)ivData
+                                    key:(NSData *)keyData
+                   initializationVector:(NSData *)ivData
                                 options:(CCOptions)options
-                              keyLength:(NSInteger)keyLength
-                                   data:(NSData*)data
+                              keyLength:(NSUInteger)keyLength
+                                   data:(NSData *)data
                                   error:(CCCryptorStatus *)error
 {
     CCCryptorRef cryptor = NULL;
@@ -276,7 +276,7 @@ static const NSInteger kHashLength = 64;
     return result;
 }
 
-- (NSData *)runCryptor: (CCCryptorRef) cryptor result: (CCCryptorStatus *) status data:(NSData*)data
+- (NSData *)runCryptor:(CCCryptorRef)cryptor result:(CCCryptorStatus *)status data:(NSData *)data
 {
     size_t bufsize = CCCryptorGetOutputLength( cryptor, (size_t)[data length], true );
     void * buf = malloc( bufsize );

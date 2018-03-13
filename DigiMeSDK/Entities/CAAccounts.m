@@ -50,7 +50,7 @@
 
 - (void)populateWithJSON:(NSArray *)json
 {
-    NSMutableArray *accounts = [NSMutableArray new];
+    NSMutableArray<CAAccount *> *accounts = [NSMutableArray new];
     
     for (NSDictionary *account in json)
     {
@@ -68,8 +68,8 @@
         NSString *name = account[@"name"];
         NSString *number = account[@"number"];
         
-        CAAccount *account = [[CAAccount alloc] initWithId:identifier name:name number:number service:service];
-        [accounts addObject:account];
+        CAAccount *mappedAccount = [[CAAccount alloc] initWithId:identifier name:name number:number service:service];
+        [accounts addObject:mappedAccount];
     }
     
     _accounts = accounts;

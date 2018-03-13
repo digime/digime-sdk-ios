@@ -11,7 +11,7 @@
 
 @implementation CASessionDeserializer
 
-+ (CASession *)deserialize:(NSData *)jsonData error:(NSError **)error
++ (CASession *)deserialize:(NSData *)jsonData error:(NSError * __autoreleasing *)error
 {
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:error];
     

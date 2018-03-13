@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param error NSError
  @return CASession
  */
-+ (nullable CASession *)deserialize:(NSData *)jsonData error:(NSError **)error;
++ (nullable CASession *)deserialize:(NSData *)jsonData error:(NSError * __autoreleasing *)error;
 
 @end
 

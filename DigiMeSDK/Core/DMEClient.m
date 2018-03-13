@@ -79,20 +79,19 @@
     }
     
     //get session
-    __weak __typeof(DMEClient *)weakSelf = self;
+    __weak __typeof(self)weakSelf = self;
     [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
         //begin authorization
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        [strongSelf.authManager beginAuthorizationWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        [weakSelf.authManager beginAuthorizationWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
             
             //notify on main thread.
-            if (self.clientConfiguration.debugLogEnabled)
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            if (strongSelf.clientConfiguration.debugLogEnabled)
             {
                 NSLog(@"[DMEClient] isMain thread: %@", ([NSThread currentThread].isMainThread ? @"YES" : @"NO"));
             }
             
-            __strong __typeof(DMEClient *)strongSelf = weakSelf;
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (authorizationCompletion)
                 {
