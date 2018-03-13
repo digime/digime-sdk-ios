@@ -74,17 +74,8 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     UIApplication *app = [UIApplication sharedApplication];
     NSURL *url = [self digiMeUrl];
     
-    if (@available(iOS 10.0, *))
-    {
-        NSDictionary *options = @{UIApplicationOpenURLOptionUniversalLinksOnly : @NO};
-        [app openURL:url options:options completionHandler:completionBlock];
-    }
-    else
-    {
-        //iOS 9 support
-        BOOL success = [app openURL:url];
-        completionBlock(success);
-    }
+    NSDictionary *options = @{ UIApplicationOpenURLOptionUniversalLinksOnly : @NO };
+    [app openURL:url options:options completionHandler:completionBlock];
 }
 
 -(void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion

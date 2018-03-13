@@ -58,50 +58,19 @@
         return nil;
     }
 
-    if (@available(iOS 10.0, *))
+    CFErrorRef error_ref;
+    CFDataRef data_ref = SecKeyCopyExternalRepresentation(private_key_ref, &error_ref);
+    
+    if (data_ref == NULL)
     {
-        CFErrorRef error_ref;
-        CFDataRef data_ref = SecKeyCopyExternalRepresentation(private_key_ref, &error_ref);
-        
-        if (data_ref == NULL)
-        {
-            NSLog(@"[DMECrypto] Error copying external key representation");
-            return nil;
-        }
-
-        NSData *data = (__bridge NSData *)data_ref;
-        NSString *hexKey = [data hexString];
-        CFRelease(data_ref);
-        return hexKey;
+        NSLog(@"[DMECrypto] Error copying external key representation");
+        return nil;
     }
-    else
-    {
-        NSDictionary *query = @{
-                                (__bridge id)kSecClass : (__bridge id)kSecClassKey,
-                                (__bridge id)kSecAttrApplicationTag : (__bridge id)private_key_ref,
-                                (__bridge id)kSecReturnData : (__bridge id)kCFBooleanTrue
-                                };
-        CFTypeRef result_ref;
-        CFDictionaryRef query_ref = (__bridge_retained CFDictionaryRef)query;
-        OSStatus copy_err = SecItemCopyMatching(query_ref, &result_ref);
-        CFRelease(query_ref);
-        
-        if (copy_err != noErr)
-        {
-            NSLog(@"[DMECrypto] Error extracting key data: %@", @((NSInteger) err));
-            return nil;
-        }
-        
-        NSData *data = (__bridge NSData *)result_ref;
-        
-        if (!data)
-        {
-            NSLog(@"[DMECrypto] Unknown Error occurred");
-            return nil;
-        }
-        
-        return [data hexString];
-    }
+    
+    NSData *data = (__bridge NSData *)data_ref;
+    NSString *hexKey = [data hexString];
+    CFRelease(data_ref);
+    return hexKey;
 }
 
 + (BOOL)validateContractId:(NSString *)contractId
