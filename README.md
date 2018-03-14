@@ -1,8 +1,8 @@
 # Digi.me SDK for iOS
-The Digi.me SDK allow seamless authentication with Consent Access service, making content requests and core decryption services. For details on the API and general CA architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access-flow.html)
+The Digi.me SDK allow seamless authentication with Consent Access service, making content requests and core decryption services. For details on the API and general CA architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access.html)
 
 ## Preamble
-Digi.me SDK depends on digi.me app being installed to enabled user initiate authorization of requests. For detailed explanation of the Consent Acess architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access-flow.html).
+Digi.me SDK depends on digi.me app being installed to enabled user initiate authorization of requests. For detailed explanation of the Consent Acess architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access.html).
 
 ## Requirements
 
@@ -692,7 +692,7 @@ for (NSString *fileId in files.fileIds)
 }
 ```
 
-For more details please see [Example implementation](#example).
+For more details please see [Example implementation](#example-objective-c).
 
 
 ## Digi.me App
