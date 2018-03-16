@@ -1,6 +1,6 @@
 //
 //  CASessionManager.h
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 29/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -19,7 +19,7 @@
 @property (nonatomic, strong, readonly) DMEClient *client;
 
 /**
- Will return session object. Either existing sesison will be re-used, or new session will be created.
+ Will return session object. Either existing session will be re-used, or new session will be created.
 
  @param completion AuthorizationCompletionBlock
  */

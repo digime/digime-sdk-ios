@@ -54,7 +54,7 @@ static unsigned char decodeBase64[256] = {
     NSMutableData* data = [[NSMutableData alloc] init];
     unsigned char whole_byte;
     char byte_chars[3] = {'\0','\0','\0'};
-    for (int i=0; i < [cleanedString length]/2; i++) {
+    for (NSUInteger i=0; i < [cleanedString length]/2; i++) {
         byte_chars[0] = [cleanedString characterAtIndex:i*2];
         byte_chars[1] = [cleanedString characterAtIndex:i*2+1];
         whole_byte = strtol(byte_chars, NULL, 16);
@@ -102,7 +102,7 @@ static unsigned char decodeBase64[256] = {
     theData = [NSMutableData dataWithCapacity: [self length]];
     
     short accumulateIndex = 0;
-    for (int index = 0; index < [self length]; index++) {
+    for (NSUInteger index = 0; index < [self length]; index++) {
         
         ch = decodeBase64[charString [index]];
         

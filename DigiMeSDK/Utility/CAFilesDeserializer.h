@@ -1,6 +1,6 @@
 //
 //  CAFilesDeserializer.h
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 30/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.

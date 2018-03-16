@@ -1,6 +1,6 @@
 //
 //  DMEAuthorizationManager.h
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 29/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -28,5 +28,7 @@
  @return YES if redirect could be handled, otherwise NO;
  */
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options;
+
+- (BOOL)canOpenDigiMeApp;
 
 @end

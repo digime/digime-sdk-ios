@@ -1,6 +1,6 @@
 //
 //  DMEAuthorizationManager.m
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 29/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -52,6 +52,15 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     return self;
 }
 
+- (void)dealloc
+{
+    if (self.storeViewController)
+    {
+        self.storeViewController.delegate = nil;
+        self.storeViewController = nil;
+    }
+}
+
 #pragma mark - Authorization
 
 - (void)continueAuthorization
@@ -74,17 +83,8 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     UIApplication *app = [UIApplication sharedApplication];
     NSURL *url = [self digiMeUrl];
     
-    if (@available(iOS 10.0, *))
-    {
-        NSDictionary *options = @{UIApplicationOpenURLOptionUniversalLinksOnly : @NO};
-        [app openURL:url options:options completionHandler:completionBlock];
-    }
-    else
-    {
-        //iOS 9 support
-        BOOL success = [app openURL:url];
-        completionBlock(success);
-    }
+    NSDictionary *options = @{ UIApplicationOpenURLOptionUniversalLinksOnly : @NO };
+    [app openURL:url options:options completionHandler:completionBlock];
 }
 
 -(void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
@@ -121,7 +121,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     });
 }
 
-- (void)checkIfDigimeIsInstalled
+- (void)checkIfDigiMeIsInstalled
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         
@@ -135,7 +135,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
         }
         else
         {
-            [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:self selector:@selector(checkIfDigimeIsInstalled) userInfo:nil repeats:NO];
+            [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:self selector:@selector(checkIfDigiMeIsInstalled) userInfo:nil repeats:NO];
         }
     });
 }
@@ -174,7 +174,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
                                                 __strong __typeof(weakSelf) strongSelf = weakSelf;
                                                 [[strongSelf.storeViewController topmostViewController] presentViewController:strongSelf.storeViewController animated:YES completion:^{
                                                     
-                                                    [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:strongSelf selector:@selector(checkIfDigimeIsInstalled) userInfo:nil repeats:NO];
+                                                    [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:strongSelf selector:@selector(checkIfDigiMeIsInstalled) userInfo:nil repeats:NO];
                                                 }];
                                             }
                                         }];
@@ -224,6 +224,14 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     }
     
     return canHandle;
+}
+
+- (BOOL)canOpenDigiMeApp
+{
+    NSURLComponents *components = [NSURLComponents new];
+    [components setScheme:kDMEClientScheme];
+    
+    return [[UIApplication sharedApplication] canOpenURL:components.URL];
 }
 
 #pragma mark - Private
