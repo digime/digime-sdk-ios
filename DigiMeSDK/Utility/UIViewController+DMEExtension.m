@@ -10,12 +10,12 @@
 
 @implementation UIViewController (DMEExtension)
 
-- (UIViewController *)topmostViewController
++ (UIViewController *)topmostViewController
 {
     return [self topmostViewControllerFromRootViewController:[UIApplication sharedApplication].delegate.window.rootViewController];
 }
 
-- (UIViewController *)topmostViewControllerFromRootViewController:(UIViewController *)rootViewController
++ (UIViewController *)topmostViewControllerFromRootViewController:(UIViewController *)rootViewController
 {
     if (rootViewController == nil)
     {

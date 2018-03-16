@@ -10,7 +10,7 @@
 
 @interface UIViewController (DMEExtension)
 
-- (UIViewController *)topmostViewController;
++ (UIViewController *)topmostViewController;
 
 @end
 
