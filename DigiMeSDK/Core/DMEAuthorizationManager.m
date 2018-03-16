@@ -172,7 +172,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
                                             if (result)
                                             {
                                                 __strong __typeof(weakSelf) strongSelf = weakSelf;
-                                                [[strongSelf.storeViewController topmostViewController] presentViewController:strongSelf.storeViewController animated:YES completion:^{
+                                                [[UIViewController topmostViewController] presentViewController:strongSelf.storeViewController animated:YES completion:^{
                                                     
                                                     [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:strongSelf selector:@selector(checkIfDigiMeIsInstalled) userInfo:nil repeats:NO];
                                                 }];
@@ -186,6 +186,8 @@ static NSTimeInterval const kCATimerInterval = 0.5;
 {
     [NSTimer cancelPreviousPerformRequestsWithTarget:self];
     [viewController dismissViewControllerAnimated:YES completion:nil];
+    self.authInProgress = NO;
+    [self executeCompletionWithSession:self.session error:[NSError authError:AuthErrorCancelled]];
 }
 
 #pragma mark - Digi.me App openURL handling
