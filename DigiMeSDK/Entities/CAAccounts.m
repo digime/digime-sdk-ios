@@ -19,15 +19,11 @@
     if ([content isKindOfClass:[NSDictionary class]])
     {
         NSDictionary *json = (NSDictionary *)content;
-        CAAccounts *accounts = [[self alloc] initWithFileId:@"accounts.json" json:json];
+        CAAccounts *accounts = [[CAAccounts alloc] initWithFileId:@"accounts.json" json:json];
         return accounts;
     }
     
-    if (error != nil)
-    {
-        *error = [NSError sdkError:SDKErrorInvalidData];
-    }
-    
+    *error = [NSError sdkError:SDKErrorInvalidData];
     return nil;
 }
 
@@ -50,7 +46,7 @@
 
 - (void)populateWithJSON:(NSArray *)json
 {
-    NSMutableArray<CAAccount *> *accounts = [NSMutableArray new];
+    NSMutableArray *accounts = [NSMutableArray new];
     
     for (NSDictionary *account in json)
     {
@@ -68,8 +64,8 @@
         NSString *name = account[@"name"];
         NSString *number = account[@"number"];
         
-        CAAccount *mappedAccount = [[CAAccount alloc] initWithId:identifier name:name number:number service:service];
-        [accounts addObject:mappedAccount];
+        CAAccount *account = [[CAAccount alloc] initWithId:identifier name:name number:number service:service];
+        [accounts addObject:account];
     }
     
     _accounts = accounts;

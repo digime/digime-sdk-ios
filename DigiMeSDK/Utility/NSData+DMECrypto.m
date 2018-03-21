@@ -1,6 +1,6 @@
 //
 //  NSData+DMECrypto.m
-//  DigiMeSDK
+//  CASDK
 //
 //  Created on 25/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -22,7 +22,7 @@
     NSUInteger          dataLength  = [self length];
     NSMutableString     *hexString  = [NSMutableString stringWithCapacity:(dataLength * 2)];
     
-    for (NSUInteger i = 0; i < dataLength; ++i)
+    for (int i = 0; i < dataLength; ++i)
         [hexString appendString:[NSString stringWithFormat:@"%02lx", (unsigned long)dataBuffer[i]]];
     
     return [NSString stringWithString:hexString];

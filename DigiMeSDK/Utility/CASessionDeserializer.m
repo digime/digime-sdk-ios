@@ -1,6 +1,6 @@
 //
 //  CASessionDeserializer.m
-//  DigiMeSDK
+//  CASDK
 //
 //  Created on 29/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -11,7 +11,7 @@
 
 @implementation CASessionDeserializer
 
-+ (CASession *)deserialize:(NSData *)jsonData error:(NSError * __autoreleasing *)error
++ (CASession *)deserialize:(NSData *)jsonData error:(NSError **)error
 {
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:error];
     

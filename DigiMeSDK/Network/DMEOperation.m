@@ -1,6 +1,6 @@
 //
 //  DMEOperation.m
-//  DigiMeSDK
+//  CASDK
 //
 //  Created on 26/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -76,9 +76,9 @@
 
 - (void)start
 {
-    [self willChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
+    [self willChangeValueForKey:@"isExecuting"];
     _isExecuting = YES;
-    [self didChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
+    [self didChangeValueForKey:@"isExecuting"];
     
     _requiresRunLoop = YES;  // depends on your situation.
     if(_requiresRunLoop)
@@ -181,14 +181,14 @@
 - (void)finish
 {
     // generate the KVO necessary for the queue to remove him
-    [self willChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
-    [self willChangeValueForKey:NSStringFromSelector(@selector(isFinished))];
+    [self willChangeValueForKey:@"isExecuting"];
+    [self willChangeValueForKey:@"isFinished"];
     
     _isExecuting = NO;
     _isFinished = YES;
     
-    [self didChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
-    [self didChangeValueForKey:NSStringFromSelector(@selector(isFinished))];
+    [self didChangeValueForKey:@"isExecuting"];
+    [self didChangeValueForKey:@"isFinished"];
 }
 
 @end

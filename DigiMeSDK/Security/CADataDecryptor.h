@@ -18,7 +18,7 @@ Decrypts encrypted JSON data using private key.
 @param error NSError
 @return NSData if decryption was successful, otherwise nil.
 */
-+ (nullable NSData *)decrypt:(NSData *)jsonData error:(NSError * __autoreleasing *)error;
++ (nullable NSData *)decrypt:(NSData *)jsonData error:(NSError **)error;
 
 @end
 

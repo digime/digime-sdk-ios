@@ -35,7 +35,6 @@
 #import "DMECryptoUtilities.h"
 #import "NSData+DMECrypto.h"
 #import "NSString+DMECrypto.h"
-#import "UIViewController+DMEExtension.h"
 
 FOUNDATION_EXPORT double DigiMeSDKVersionNumber;
 FOUNDATION_EXPORT const unsigned char DigiMeSDKVersionString[];

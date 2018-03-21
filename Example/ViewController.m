@@ -74,7 +74,6 @@
 
 - (void)runTapped
 {
-    self.progress = 0;
     [self.logVC reset];
     [self.dmeClient authorize];
 }

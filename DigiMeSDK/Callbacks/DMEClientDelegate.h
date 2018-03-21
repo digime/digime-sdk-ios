@@ -1,6 +1,6 @@
 //
 //  DMEClientDelegate.h
-//  DigiMeSDK
+//  CASDK
 //
 //  Created on 24/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -15,7 +15,9 @@
 #import "CAFiles.h"
 #import "CAFile.h"
 
-#pragma once
+
+#ifndef DMEClientDelegate_h
+#define DMEClientDelegate_h
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -96,21 +98,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)fileRetrieveFailed:(NSString *)fileId error:(NSError *)error;
 
 
-/**
- Executed when DMEClient has retrieved accounts available for the contract
+- (void)accountsRetreived:(CAAccounts *)accounts;
 
- @param accounts available accounts
- */
-- (void)accountsRetrieved:(CAAccounts *)accounts;
-
-
-/**
- Executed when accounts could not be retrieved
-
- @param error error NSError
- */
 - (void)accountsRetrieveFailed:(NSError *)error;
 
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

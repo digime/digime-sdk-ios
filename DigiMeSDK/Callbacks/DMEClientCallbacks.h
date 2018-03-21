@@ -1,6 +1,6 @@
 //
 //  DMEClientCallbacks.h
-//  DigiMeSDK
+//  CASDK
 //
 //  Created on 29/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -11,7 +11,8 @@
 #import "CAFile.h"
 #import "CAAccounts.h"
 
-#pragma once
+#ifndef DMEClientCallbacks_h
+#define DMEClientCallbacks_h
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -52,3 +53,5 @@ typedef void (^FileContentCompletionBlock) (CAFile * _Nullable file, NSError * _
 typedef void (^AccountsCompletionBlock) (CAAccounts * _Nullable accounts, NSError * _Nullable error);
 
 NS_ASSUME_NONNULL_END
+
+#endif /* DMEClientCallbacks_h */
