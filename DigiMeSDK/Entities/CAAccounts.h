@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CAAccount : NSObject
 
 /**
- -init unavailable. Use -initWithId:name:number:service::
+ -init unavailable. Use -initWithJson:
  
  @return instancetype.
  */
@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param service CAServiceDecriptor
  @return instancetype
  */
-- (instancetype)initWithId:(nullable NSString *)identifier name:(nullable NSString *)name number:(nullable NSString *)number service:(nullable CAServiceDescriptor *)service NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithId:(NSString *)identifier name:(NSString *)name number:(NSString *)number service:(CAServiceDescriptor *)service NS_DESIGNATED_INITIALIZER;
 
 
 /**
@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CAAccounts : NSObject
 
-+ (nullable CAAccounts *)deserialize:(NSData *)data error:(NSError **)error;
++ (CAAccounts *)deserialize:(NSData *)data error:(NSError **)error;
 
 
 /**

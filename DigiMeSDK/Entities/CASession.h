@@ -1,6 +1,6 @@
 //
 //  CASession.h
-//  DigiMeSDK
+//  CASDK
 //
 //  Created on 24/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -51,13 +51,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Date session was created.
+ Date sesison was created.
  */
 @property (nonatomic, strong, readonly) NSDate *createdDate;
 
 
 /**
- Session Identifier - this is currently set to a contract identifier.
+ Sesison Identifier - this is currently set to a contract identifier.
  */
 @property (nonatomic, strong, readonly) NSString *sessionId;
 

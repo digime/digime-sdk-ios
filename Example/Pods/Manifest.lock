@@ -1,5 +1,5 @@
 PODS:
-  - DigiMeSDK (2.1.0)
+  - DigiMeSDK (2.0.0)
 
 DEPENDENCIES:
   - DigiMeSDK (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  DigiMeSDK: 47d481a33a665f8771189c63e25d39b3837118f2
+  DigiMeSDK: fef64c16d80b6afcebc1fad212b6f7bce355c32a
 
 PODFILE CHECKSUM: 2e7974eb28775b63f139abb58708349471f434bf
 

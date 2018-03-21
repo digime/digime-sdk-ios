@@ -1,6 +1,6 @@
 //
 //  DMECrypto.h
-//  DigiMeSDK
+//  CASDK
 //
 //  Created on 25/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -18,7 +18,7 @@
  @param privateKeyHex NSString
  @return YES if saved successfully, otherwise NO
  */
-- (BOOL)addPrivateKeyHex:(NSString *)privateKeyHex;
+- (BOOL)addPrivateKeyHex:(NSString*)privateKeyHex;
 
 
 /**
@@ -26,7 +26,7 @@
 
  @return NSData
  */
-- (NSData *)privateKeyHex;
+- (NSData*)privateKeyHex;
 
 
 /**
@@ -36,7 +36,7 @@
  @param privateKeyData NSData
  @return NSData - decrypted data
  */
-- (NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData privateKeyData:(NSData *)privateKeyData;
+- (NSData*)getDataFromEncryptedBytes:(NSData*)encryptedData privateKeyData:(NSData*)privateKeyData;
 
 
 /**
@@ -48,6 +48,6 @@
  @param error NSError
  @return NSData - decrypted data
  */
-- (NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
+- (NSData *)decryptAes256UsingKey:(NSData*)keyData initializationVector:(NSData*)ivData data:(NSData*)data error:(NSError **)error;
 
 @end
