@@ -1,6 +1,6 @@
 //
 //  DMEAPIClient.m
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 26/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -161,7 +161,7 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
 
 
 /**
- Create NSURLSesison object with headers.
+ Create NSURLSession object with headers.
 
  @param headers NSDictionary request headers
  @return NSURLSession
@@ -191,7 +191,7 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
 /**
  Default handler for API responses.
 
- @param domain NSStrint - error domain to use if an error has been encountered
+ @param domain NSString - error domain to use if an error has been encountered
  @param success success block
  @param failure failure block
  @return HandlerBlock
@@ -216,6 +216,11 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
             //check response message
             NSError *parsingError = nil;
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&parsingError];
+            if (!responseDictionary)
+            {
+                failure(parsingError);
+                return;
+            }
             
             NSDictionary *errorDict = responseDictionary[@"error"];
             

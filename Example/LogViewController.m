@@ -53,22 +53,60 @@ static NSString * const kMALoggingViewDefaultFont = @"Courier-Bold";
 
 - (void)reset
 {
-    if (self.textView)
-    {
-        [self.textView removeFromSuperview];
-    }
-    [self generateTextView];
+    self.textView.text = nil;
 }
 
 - (void)generateTextView
 {
     self.textView = [[UITextView alloc] initWithFrame:self.view.frame];
     self.textView.backgroundColor = [UIColor blackColor];
-    self.textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.textView.editable = NO;
     self.textView.font = [UIFont fontWithName:kMALoggingViewDefaultFont size:self.currentFontSize];
     self.textView.textColor = [UIColor whiteColor];
     [self.view addSubview:self.textView];
+    self.textView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    //Trailing
+    NSLayoutConstraint *trailing =[NSLayoutConstraint
+                                   constraintWithItem:self.textView
+                                   attribute:NSLayoutAttributeTrailing
+                                   relatedBy:NSLayoutRelationEqual
+                                   toItem:self.view
+                                   attribute:NSLayoutAttributeTrailing
+                                   multiplier:1.f
+                                   constant:0.f];
+    
+    //Leading
+    NSLayoutConstraint *leading = [NSLayoutConstraint
+                                   constraintWithItem:self.textView
+                                   attribute:NSLayoutAttributeLeading
+                                   relatedBy:NSLayoutRelationEqual
+                                   toItem:self.view
+                                   attribute:NSLayoutAttributeLeading
+                                   multiplier:1.f
+                                   constant:0.f];
+    
+    //Bottom
+    NSLayoutConstraint *bottom =[NSLayoutConstraint
+                                 constraintWithItem:self.textView
+                                 attribute:NSLayoutAttributeBottom
+                                 relatedBy:NSLayoutRelationEqual
+                                 toItem:self.view
+                                 attribute:NSLayoutAttributeBottom
+                                 multiplier:1.f
+                                 constant:-self.bottomLayoutGuide.length];
+    
+    //Top
+    NSLayoutConstraint *top =[NSLayoutConstraint
+                              constraintWithItem:self.textView
+                              attribute:NSLayoutAttributeTop
+                              relatedBy:NSLayoutRelationEqual
+                              toItem:self.view
+                              attribute:NSLayoutAttributeTop
+                              multiplier:1.f
+                              constant:self.topLayoutGuide.length];
+    
+    [self.view addConstraints:@[top, bottom, leading, trailing]];
 }
 
 - (void)scrollToBottom

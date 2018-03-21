@@ -1,6 +1,6 @@
 //
 //  CAFiles.h
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 24/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.

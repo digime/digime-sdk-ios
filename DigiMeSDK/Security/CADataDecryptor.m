@@ -27,7 +27,11 @@
         
         if (!privateKeyData)
         {
-            *error = [NSError authError:AuthErrorPrivateHex];
+            if (error != nil)
+            {
+                *error = [NSError authError:AuthErrorPrivateHex];
+            }
+            
             return nil;
         }
         
@@ -35,7 +39,11 @@
         
         if (!decryptedData)
         {
-            *error = [NSError sdkError:SDKErrorDecryptionFailed];
+            if (error != nil)
+            {
+                *error = [NSError sdkError:SDKErrorDecryptionFailed];
+            }
+            
             return nil;
         }
         

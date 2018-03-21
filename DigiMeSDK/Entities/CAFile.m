@@ -1,6 +1,6 @@
 //
 //  CAFile.m
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 24/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -15,7 +15,7 @@
 {
     NSArray *content = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
     
-    CAFile *file = [[CAFile alloc] initWithFileId:fileId];
+    CAFile *file = [[self alloc] initWithFileId:fileId];
     [file populateWithContent:content];
     return file;
 }

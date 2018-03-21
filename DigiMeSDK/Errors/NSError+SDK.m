@@ -1,6 +1,6 @@
 //
 //  NSError+SDK.m
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 24/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -31,10 +31,6 @@
             
         case SDKErrorInvalidData:
             return @"Could not serialize data.";
-            
-        default:
-            return @"";
-            break;
     }
 }
 
