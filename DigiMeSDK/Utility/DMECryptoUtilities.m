@@ -1,6 +1,6 @@
 //
 //  DMECryptoUtilities.m
-//  CASDK
+//  DigiMeSDK
 //
 //  Created on 24/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -34,6 +34,8 @@
     CFArrayRef results_ref = NULL;
 
     OSStatus err = SecPKCS12Import(pkcs12_data_ref, options_ref, &results_ref);
+    CFRelease(pkcs12_data_ref);
+    CFRelease(options_ref);
 
     if (err != errSecSuccess)
     {
@@ -48,6 +50,7 @@
     SecKeyRef private_key_ref = NULL;
     
     OSStatus copy_err = SecIdentityCopyPrivateKey(identity_ref, &private_key_ref);
+    CFRelease(identity_ref);
     
     if (copy_err != errSecSuccess)
     {
@@ -55,48 +58,19 @@
         return nil;
     }
 
-    if (@available(iOS 10.0, *))
+    CFErrorRef error_ref;
+    CFDataRef data_ref = SecKeyCopyExternalRepresentation(private_key_ref, &error_ref);
+    
+    if (data_ref == NULL)
     {
-        CFErrorRef error_ref;
-        CFDataRef data_ref = SecKeyCopyExternalRepresentation(private_key_ref, &error_ref);
-        
-        if (data_ref != NULL)
-        {
-            NSData *data = (__bridge NSData *)data_ref;
-            return [data hexString];
-        }
-        else
-        {
-            NSLog(@"[DMECrypto] Error copying external key representation");
-            return nil;
-        }
+        NSLog(@"[DMECrypto] Error copying external key representation");
+        return nil;
     }
-    else
-    {
-        NSDictionary *query = @{
-                                (__bridge id)kSecClass : (__bridge id)kSecClassKey,
-                                (__bridge id)kSecAttrApplicationTag : (__bridge id)private_key_ref,
-                                (__bridge id)kSecReturnData : (__bridge id)kCFBooleanTrue
-                                };
-        CFTypeRef result_ref;
-        OSStatus copy_err = SecItemCopyMatching((__bridge_retained CFDictionaryRef)query, &result_ref);
-        
-        if (copy_err != noErr)
-        {
-            NSLog(@"[DMECrypto] Error extracting key data: %@", @((NSInteger) err));
-            return nil;
-        }
-        
-        NSData *data = (__bridge NSData *)result_ref;
-        
-        if (!data)
-        {
-            NSLog(@"[DMECrypto] Unknown Error occurred");
-            return nil;
-        }
-        
-        return [data hexString];
-    }
+    
+    NSData *data = (__bridge NSData *)data_ref;
+    NSString *hexKey = [data hexString];
+    CFRelease(data_ref);
+    return hexKey;
 }
 
 + (BOOL)validateContractId:(NSString *)contractId

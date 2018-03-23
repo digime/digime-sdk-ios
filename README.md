@@ -1,8 +1,8 @@
 # Digi.me SDK for iOS
-The Digi.me SDK allow seamless authentication with Consent Access service, making content requests and core decryption services. For details on the API and general CA architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access-flow.html)
+The Digi.me SDK allow seamless authentication with Consent Access service, making content requests and core decryption services. For details on the API and general CA architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access.html)
 
 ## Preamble
-Digi.me SDK depends on digi.me app being installed to enabled user initiate authorization of requests. For detailed explanation of the Consent Acess architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access-flow.html).
+Digi.me SDK depends on digi.me app being installed to enabled user initiate authorization of requests. For detailed explanation of the Consent Acess architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access.html).
 
 ## Requirements
 
@@ -52,7 +52,7 @@ To integrate the DigiMeSDK into your own existing Xcode project using CocoaPods,
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
+platform :ios, '10.0'
 
 target 'TargetName' do
 pod 'DigiMeSDK'
@@ -82,7 +82,7 @@ Additionally it also specifies how the data is encrypted in transit.
 To register a Consent Access contract check out [Digi.me Dev Support](https://developers.digi.me). There you can request a Contract ID and App ID to which it is bound.
 
 ### Contract Private Key
-All content retrieved by the SDK is encrypted in transit using the public key bound to the certificate that was created when the Consent Access contract was created. For SDK to be able to decrypt content transparently matching private key must be provided (ie. from the keypair created for contract).
+All content retrieved by the SDK is encrypted in transit using the public key bound to the certificate that was created when the Consent Access contract was created. For SDK to be able to decrypt content transparently matching private key must be provided (i.e. from the key pair created for contract).
 
 Digi.me SDK accepts PKCS #12 encoded files as the default key storage format.
 
@@ -90,7 +90,7 @@ Digi.me SDK provides a helper method to read and extract keys from p12 files.
 
 1. Drag and drop your `<YOUR_P12_FILENAME>.p12` anywhere in your project.
 
-2. Make sure yout add it to your build target when presented with the copy dialog.
+2. Make sure you add it to your build target when presented with the copy dialog.
 
 3. It does not matter what the filename is, but the `p12` extension does.
 
@@ -119,7 +119,7 @@ NSString *privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"YOUR_P1
 #import "DMEClient.h"
 ```
 
-And you access it through it's singleton accessor:
+And you access it through its singleton accessor:
 
 ```objective-c
 [DMEClient sharedClient]
@@ -439,7 +439,7 @@ Each file you fetch from Consent Access is represented by `CAFile` object. Each 
 
 ```
 
-You can access serialzed json content (NSArray) of the entire file using the following property on the `CAFile`:
+You can access serialized json content (NSArray) of the entire file using the following property on the `CAFile`:
 
 ```objective-c
 @property (nullable, nonatomic, strong, readonly) NSArray *json;
@@ -455,7 +455,7 @@ caFile.content.first.json;
 ```
 
 ### CAFileObject
-This object also contains json serialzed into properties, but its use and implementation remains experimental for now.
+This object also contains json serialized into properties, but its use and implementation remain experimental for now.
 
 
 ## Decryption
@@ -485,7 +485,7 @@ To see SDK in action in an Objective-C project:
 
 ```
 
-5. Open up Info.plist, and replace the `digime-ca-YOUR_APP_ID` value found under `CFBundleURLTypes`->`Consent Access` key. 
+5. Open up Info.plist and replace the `digime-ca-YOUR_APP_ID` value found under `CFBundleURLTypes`->`Consent Access` key.
 
 The `YOUR_APP_ID` part is the App Id you requested from Digi.me Ltd.
 For Example, if your AppID is `7hgUT835HFYhtgweh35`, 
@@ -677,13 +677,13 @@ to
 
 ##### Delegate Calls
 
-In the new delegate method `authorizeSucceeded:` you can request the fileList:
+In the new delegate method `authorizeSucceeded:` you can request the file list:
 
 ```objective-c
 [[DMEClient sharedClient] getFileList];
 ```
 
-Int the new delegate method `clientRetrievedFileList:` you can iterate through `files.fileIds` and request content for each file, for example:
+In the new delegate method `clientRetrievedFileList:` you can iterate through `files.fileIds` and request content for each file, for example:
 
 ```objective-c
 for (NSString *fileId in files.fileIds)
@@ -692,12 +692,12 @@ for (NSString *fileId in files.fileIds)
 }
 ```
 
-For more details please see [Example implementation](#example).
+For more details please see [Example implementation](#example-objective-c).
 
 
 ## Digi.me App
 
-Digi.me for iOS is the main hub for giving permission to download an individual's data to your app. Digi.me for iOS will show the indiviual the contract details and provide a preview of the data that will be shared. The individual must consent to sharing the data. [Download digi.me for iOS here](https://itunes.apple.com/us/app/digi-me/id1234541790)
+Digi.me for iOS is the main hub for giving permission to download an individual's data to your app. Digi.me for iOS will show the individual the contract details and provide a preview of the data that will be shared. The individual must consent to sharing the data. [Download digi.me for iOS here](https://itunes.apple.com/us/app/digi-me/id1234541790)
 
 
 ##
