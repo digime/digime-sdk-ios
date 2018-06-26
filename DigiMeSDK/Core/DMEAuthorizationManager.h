@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClientCallbacks.h"
+#import "DMEMercuryInterfacer.h"
 
-@interface DMEAuthorizationManager : NSObject
+@interface DMEAuthorizationManager : NSObject <DMEMercuryInterfacee>
 
 
 /**
@@ -18,17 +19,5 @@
  @param completion AuthorizationCompletionBlock
  */
 - (void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion;
-
-
-/**
- Handles redirect back from Digi.me app.
-
- @param url NSURL
- @param options options
- @return YES if redirect could be handled, otherwise NO;
- */
-- (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options;
-
-- (BOOL)canOpenDigiMeApp;
 
 @end

@@ -11,14 +11,16 @@
 #import "CAFilesDeserializer.h"
 #import "CADataDecryptor.h"
 #import "DMECrypto.h"
+#import "DMEMercuryInterfacer.h"
 
 @interface DMEClient()
 
-@property (nonatomic, strong) DMEAuthorizationManager *authManager;
 @property (nonatomic, strong, readwrite) CASessionManager *sessionManager;
 @property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
 @property (nonatomic, strong) DMECrypto *crypto;
 
+@property (nonatomic, strong) DMEMercuryInterfacer *mercuryInterfacer;
+@property (nonatomic, weak) DMEAuthorizationManager *authManager;
 @end
 
 @implementation DMEClient
@@ -42,11 +44,16 @@
     self = [super init];
     if (self)
     {
-        _authManager = [DMEAuthorizationManager new];
         _clientConfiguration = [DMEClientConfiguration new];
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];;
         _sessionManager = [CASessionManager new];
         _crypto = [DMECrypto new];
+        
+        // Configure mercury interfacer.
+        _mercuryInterfacer = [DMEMercuryInterfacer new];
+        DMEAuthorizationManager *authMgr = [DMEAuthorizationManager new];
+        [_mercuryInterfacer addInterfacee:authMgr];
+        _authManager = authMgr;
     }
     
     return self;
@@ -115,6 +122,27 @@
                 }
             });
         }];
+        
+    }];
+}
+
+#pragma mark - Postbox
+
+- (void)createPostbox
+{
+    
+}
+
+- (void)createPostboxWithCompletion:(PostboxCreationCompletionBox)completion
+{
+    //get session
+    [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        
+        if (!session)
+        {
+            completion(nil, error);
+            return;
+        }
         
     }];
 }
@@ -364,12 +392,12 @@
 
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options
 {
-    return [self.authManager openURL:url options:options];
+    return [self.mercuryInterfacer openURL:url options:options];
 }
 
 - (BOOL)canOpenDigiMeApp
 {
-    return [self.authManager canOpenDigiMeApp];
+    return [self.mercuryInterfacer canOpenDigiMeApp];
 }
 
 @end

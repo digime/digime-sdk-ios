@@ -14,6 +14,7 @@
 #import "CAAccounts.h"
 #import "CAFiles.h"
 #import "CAFile.h"
+#import "CAPostbox.h"
 
 #pragma once
 
@@ -61,6 +62,22 @@ NS_ASSUME_NONNULL_BEGIN
  @param error NSError
  */
 - (void)authorizeFailed:(NSError *)error;
+
+
+/**
+ Executed when a Postbox is created successfuly.
+
+ @param postbox The created Postbox.
+ */
+- (void)postboxCreationSucceeded:(CAPostbox *)postbox;
+
+
+/**
+ Executed when a Postbox cannot be created.
+
+ @param error The error that occurred.
+ */
+- (void)postboxCreationFailed:(NSError *)error;
 
 
 /**

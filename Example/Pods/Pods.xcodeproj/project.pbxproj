@@ -14,6 +14,12 @@
 		07B1A8BB7D78E2D50586EB5B81BA1605 /* CASessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A18086277448044E6C74888116A4CDCD /* CASessionManager.m */; };
 		08A458E78DD96245B074A4620920050A /* DMECryptoUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = B16B903DE7F4F2F39FA4F7C31B50E7D3 /* DMECryptoUtilities.m */; };
 		093C3C0099213504EA6B43CEA64FEA9F /* DMECertificatePinner.h in Headers */ = {isa = PBXBuildFile; fileRef = 22C37347AADFDAD2F9A3184C52DDB2A7 /* DMECertificatePinner.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		16062C8B20E290770097983D /* DMEMercuryInterfacer.h in Headers */ = {isa = PBXBuildFile; fileRef = 16062C8720E290770097983D /* DMEMercuryInterfacer.h */; };
+		16062C8C20E290770097983D /* DMEMercuryInterfacer.m in Sources */ = {isa = PBXBuildFile; fileRef = 16062C8820E290770097983D /* DMEMercuryInterfacer.m */; };
+		16062C8D20E290770097983D /* DMEPostboxManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 16062C8920E290770097983D /* DMEPostboxManager.h */; };
+		16062C8E20E290770097983D /* DMEPostboxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 16062C8A20E290770097983D /* DMEPostboxManager.m */; };
+		16062C9120E290AA0097983D /* CAPostbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 16062C8F20E290AA0097983D /* CAPostbox.h */; };
+		16062C9220E290AA0097983D /* CAPostbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 16062C9020E290AA0097983D /* CAPostbox.m */; };
 		164A14CF28E410B11C8C41F7165696EB /* apiCert2.der in Resources */ = {isa = PBXBuildFile; fileRef = E264437B6C4DA6D21B855ECF0EF0E777 /* apiCert2.der */; };
 		1B8C501D3BB0BFA90167E252196837E6 /* UIViewController+DMEExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 48DA66358E0D1A7ACAAF12F691B893AA /* UIViewController+DMEExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		24B373AADE102D43165498EEF1EE35CD /* CASession.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DF6A46D96898ED45017CADBE1CC9913 /* CASession.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -97,6 +103,12 @@
 		1096DF90919585265FAF3A5995FC6A44 /* CASessionDeserializer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CASessionDeserializer.m; sourceTree = "<group>"; };
 		10CA348F340E791CF079287FCB6DBEA8 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		15EA0E3B1A037D49B448114BDBDF70D2 /* Pods_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		16062C8720E290770097983D /* DMEMercuryInterfacer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMEMercuryInterfacer.h; sourceTree = "<group>"; };
+		16062C8820E290770097983D /* DMEMercuryInterfacer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMEMercuryInterfacer.m; sourceTree = "<group>"; };
+		16062C8920E290770097983D /* DMEPostboxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMEPostboxManager.h; sourceTree = "<group>"; };
+		16062C8A20E290770097983D /* DMEPostboxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMEPostboxManager.m; sourceTree = "<group>"; };
+		16062C8F20E290AA0097983D /* CAPostbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAPostbox.h; sourceTree = "<group>"; };
+		16062C9020E290AA0097983D /* CAPostbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAPostbox.m; sourceTree = "<group>"; };
 		17940145909EF0F3986120147B22B179 /* Pods-DigiMeSDKExample_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DigiMeSDKExample_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		1B8B144A96D26FE547298A5FD6F940FB /* Pods-DigiMeSDKExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DigiMeSDKExample-acknowledgements.plist"; sourceTree = "<group>"; };
 		1B976EF6D7111A8F4D0E38068DC23E4F /* DMEClientCallbacks.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientCallbacks.h; sourceTree = "<group>"; };
@@ -400,6 +412,8 @@
 		B5E46CA0A8D27B9A796585B824A6090A /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				16062C8F20E290AA0097983D /* CAPostbox.h */,
+				16062C9020E290AA0097983D /* CAPostbox.m */,
 				B945796EA6541C47032C5EAF92A4E0B2 /* CAAccounts.h */,
 				66FD521723CD2401BBB337FF6F3F0364 /* CAAccounts.m */,
 				FED649F24FA3F0656B90491ACBF8E78F /* CAFile.h */,
@@ -436,6 +450,10 @@
 		F6720CD276F9FDEA481BCD3576EC015E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				16062C8720E290770097983D /* DMEMercuryInterfacer.h */,
+				16062C8820E290770097983D /* DMEMercuryInterfacer.m */,
+				16062C8920E290770097983D /* DMEPostboxManager.h */,
+				16062C8A20E290770097983D /* DMEPostboxManager.m */,
 				0466C62B707E65365FB1F6763DED6FDE /* CASessionManager.h */,
 				A18086277448044E6C74888116A4CDCD /* CASessionManager.m */,
 				A70699D543FC6F3F3DEF10A6D807F701 /* DMEAuthorizationManager.h */,
@@ -481,6 +499,7 @@
 				24B373AADE102D43165498EEF1EE35CD /* CASession.h in Headers */,
 				483DA18B8C0F403E9446F8B478569F06 /* CASessionDeserializer.h in Headers */,
 				BE95CD6C6766E4671B3C93E6205B76B9 /* CASessionManager.h in Headers */,
+				16062C8D20E290770097983D /* DMEPostboxManager.h in Headers */,
 				EE5693CD61D462D72865C73B51764E89 /* DigiMeSDK-umbrella.h in Headers */,
 				E196178A16B7ADD9BEC183DCFEBC5B08 /* DMEAPIClient.h in Headers */,
 				F254D7E031D91D8E3A091E7764E763C2 /* DMEAuthorizationManager.h in Headers */,
@@ -492,10 +511,12 @@
 				28AD6F02874972F5511F9595F8D6E6C3 /* DMECrypto.h in Headers */,
 				5DEDBC7E80EC0CBDAEFC4EDE1DA93859 /* DMECryptoUtilities.h in Headers */,
 				05D972962AFD6EF6DEDA843CAD562883 /* DMEOperation.h in Headers */,
+				16062C8B20E290770097983D /* DMEMercuryInterfacer.h in Headers */,
 				AE361C1543C0BE2DCA73803CD41CE203 /* DMERequestFactory.h in Headers */,
 				F7F97089CDC1F3D9CFA88CA69BEC2B9B /* NSData+DMECrypto.h in Headers */,
 				89FB4415750331B6F88902E8347C872C /* NSError+API.h in Headers */,
 				82C0361A16F7DA2FFAE191131C9372A3 /* NSError+Auth.h in Headers */,
+				16062C9120E290AA0097983D /* CAPostbox.h in Headers */,
 				CEE9CD3DB7999A8245BC34B47E8E38B2 /* NSError+SDK.h in Headers */,
 				8294A8E6C02AC571011423436A5045D9 /* NSString+DMECrypto.h in Headers */,
 				1B8C501D3BB0BFA90167E252196837E6 /* UIViewController+DMEExtension.h in Headers */,
@@ -608,8 +629,10 @@
 			files = (
 				55B08CBC1473EAF026AF9AE635388924 /* CAAccounts.m in Sources */,
 				27D5393BB6C1A084739792B223717CDD /* CADataDecryptor.m in Sources */,
+				16062C8E20E290770097983D /* DMEPostboxManager.m in Sources */,
 				394DCDE18FB354B96C2499A0F83A30F1 /* CAFile.m in Sources */,
 				AF7580DDE3543F763DDB4BE9EC94E03C /* CAFileObject.m in Sources */,
+				16062C9220E290AA0097983D /* CAPostbox.m in Sources */,
 				C3B09BA998E454360867E5C8CF20C9C5 /* CAFiles.m in Sources */,
 				9D5373B90E60CBD7EC5F8577BEF4D80F /* CAFilesDeserializer.m in Sources */,
 				4BF6BC2C8ECD51A91AAEABB55208408E /* CASession.m in Sources */,
@@ -623,6 +646,7 @@
 				6DAB0FB3096857EC4F001B3512E25CE3 /* DMEClientConfiguration.m in Sources */,
 				325F54FFD6EBA472E25AFE07BFF30640 /* DMECrypto.m in Sources */,
 				08A458E78DD96245B074A4620920050A /* DMECryptoUtilities.m in Sources */,
+				16062C8C20E290770097983D /* DMEMercuryInterfacer.m in Sources */,
 				04058648CAA1FD11A1B13520A2E13023 /* DMEOperation.m in Sources */,
 				68C34E68AC0F0FDFBA9EAE391B1DDA16 /* DMERequestFactory.m in Sources */,
 				44BA112285B86A9549CD94ADB72784F2 /* NSData+DMECrypto.m in Sources */,

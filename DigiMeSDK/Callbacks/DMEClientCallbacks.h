@@ -10,6 +10,7 @@
 #import "CAFiles.h"
 #import "CAFile.h"
 #import "CAAccounts.h"
+#import "CAPostbox.h"
 
 #pragma once
 
@@ -24,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 typedef void (^AuthorizationCompletionBlock) (CASession * _Nullable session, NSError * _Nullable error);
 
+
+typedef void (^PostboxCreationCompletionBox) (CAPostbox * _Nullable postbox, NSError * _Nullable error);
 
 /**
  FileListCompletionBlock - executed when file list has been retrieved.
