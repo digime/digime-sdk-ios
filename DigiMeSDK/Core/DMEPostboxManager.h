@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "DMEMercuryInterfacer.h"
 
-@interface DMEPostboxManager : DMEMercuryInterfacer
+@interface DMEPostboxManager : NSObject <DMEMercuryInterfacee>
+
+- (void)requestPostboxWithCompletion:(PostboxCreationCompletionBox)completion
 
 @end

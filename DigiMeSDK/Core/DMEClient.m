@@ -7,11 +7,12 @@
 //
 
 #import "DMEClient.h"
-#import "DMEAuthorizationManager.h"
 #import "CAFilesDeserializer.h"
 #import "CADataDecryptor.h"
 #import "DMECrypto.h"
 #import "DMEMercuryInterfacer.h"
+#import "DMEAuthorizationManager.h"
+#import "DMEPostboxManager.h"
 
 @interface DMEClient()
 
@@ -21,6 +22,7 @@
 
 @property (nonatomic, strong) DMEMercuryInterfacer *mercuryInterfacer;
 @property (nonatomic, weak) DMEAuthorizationManager *authManager;
+@property (nonatomic, weak) DMEPostboxManager *postboxManager;
 @end
 
 @implementation DMEClient
@@ -52,8 +54,11 @@
         // Configure mercury interfacer.
         _mercuryInterfacer = [DMEMercuryInterfacer new];
         DMEAuthorizationManager *authMgr = [DMEAuthorizationManager new];
+        DMEPostboxManager *pbxMgr = [DMEPostboxManager new];
         [_mercuryInterfacer addInterfacee:authMgr];
+        [_mercuryInterfacer addInterfacee:pbxMgr];
         _authManager = authMgr;
+        _postboxManager = pbxMgr;
     }
     
     return self;
@@ -144,6 +149,9 @@
             return;
         }
         
+        [self.postboxManager requestPostboxWithCompletion:^(CAPostbox * _Nullable postbox, NSError * _Nullable error) {
+            completion(postbox, error);
+        }];
     }];
 }
 
