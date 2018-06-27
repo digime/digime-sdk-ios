@@ -31,7 +31,7 @@ typedef void (^AuthorizationCompletionBlock) (CASession * _Nullable session, NSE
  @param postbox CAPostbox
  @param error NSError
  */
-typedef void (^PostboxCreationCompletionBox) (CAPostbox * _Nullable postbox, NSError * _Nullable error);
+typedef void (^PostboxCreationCompletionBlock) (CAPostbox * _Nullable postbox, NSError * _Nullable error);
 
 /**
  FileListCompletionBlock - executed when file list has been retrieved.

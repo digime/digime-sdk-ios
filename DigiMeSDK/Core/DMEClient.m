@@ -138,7 +138,7 @@
     
 }
 
-- (void)createPostboxWithCompletion:(PostboxCreationCompletionBox)completion
+- (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
 {
     //get session
     [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {

@@ -8,6 +8,7 @@
 
 #import "DMEPostboxManager.h"
 #import "CASessionManager.h"
+#import "DMEClient.h"
 
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
@@ -16,7 +17,7 @@ static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
 
 @property (nonatomic, strong, readonly) CASession *session;
 @property (nonatomic, strong, readonly) CASessionManager *sessionManager;
-@property (nonatomic, copy, nullable) PostboxCreationCompletionBox postboxCompletionBlock;
+@property (nonatomic, copy, nullable) PostboxCreationCompletionBlock postboxCompletionBlock;
 
 @end
 
@@ -68,33 +69,8 @@ static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
     }
 }
 
-#pragma mark - Authorization
 
--(void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
-{
-    if (self.authInProgress)
-    {
-        NSError *authError = [NSError authError:AuthErrorInProgress];
-        completion(self.session, authError);
-        return;
-    }
-    
-    if (![self.sessionManager isSessionValid])
-    {
-        completion(nil, [NSError authError:AuthErrorInvalidSession]);
-        return;
-    }
-    
-    self.authInProgress = YES;
-    self.authCompletionBlock = completion;
-    
-    DMEDigiMeOpenAction *action = @"data";
-    NSDictionary *params = @{kCARequestSessionKey: self.session.sessionKey};
-    
-    [self.interfacer openDigiMeAppWithAction:action parameters:params];
-}
-
-- (void)requestPostboxWithCompletion:(PostboxCreationCompletionBox)completion
+- (void)requestPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
 {
     if (![self.sessionManager isSessionValid])
     {
