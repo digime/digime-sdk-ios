@@ -82,7 +82,7 @@
 - (void)authorizeWithCompletion:(AuthorizationCompletionBlock)authorizationCompletion;
 
 
-- (void)createPostboxWithCompletion:(PostboxCreationCompletionBox)completion
+- (void)createPostboxWithCompletion:(PostboxCreationCompletionBox)completion;
 
 /**
  Fetches file list that's available for the authorized contract.
