@@ -76,6 +76,12 @@ static NSTimeInterval const kCATimerInterval = 0.5;
         [newQueryItems addObject:[NSURLQueryItem queryItemWithName:key value:obj]];
     }];
     components.queryItems = newQueryItems;
+    
+    NSURL *openURL = components.URL;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIApplication.sharedApplication openURL:openURL options:@{} completionHandler:nil];
+    });
 }
 
 #pragma mark - Callback Forwarding
@@ -174,6 +180,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
 {
     if (![self.interfacees containsObject:interfacee])
     {
+        interfacee.interfacer = self;
         [self.interfacees addObject:interfacee];
     }
 }

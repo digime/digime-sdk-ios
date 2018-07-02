@@ -12,6 +12,7 @@
 
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
+static NSString * const kCARequestPostboxPublicKey = @"kCARequestPostboxPublicKey";
 
 @interface DMEPostboxManager()
 
@@ -46,19 +47,24 @@ static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
 {
     NSString *sessionKey = parameters[kCARequestSessionKey];
     NSString *postboxId = parameters[kCARequestPostboxId];
+    NSString *postboxPublicKey = parameters[kCARequestPostboxPublicKey];
     
     NSError *err;
+    CAPostbox *postbox;
     
     if(![self.sessionManager isSessionKeyValid:sessionKey])
     {
-//        err = [NSError authError:AuthErrorInvalidSessionKey];
+        err = [NSError authError:AuthErrorInvalidSessionKey];
     }
     else if(!postboxId.length)
     {
-//        err = [NSError authError:AuthErrorCancelled];
+        err = [NSError authError:AuthErrorGeneral];
     }
-    
-    CAPostbox *postbox = [[CAPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
+    else
+    {
+        postbox = [[CAPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
+        postbox.postboxSymmetricKey = postboxPublicKey;
+    }
     
     if (self.postboxCompletionBlock)
     {
@@ -68,7 +74,6 @@ static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
         });
     }
 }
-
 
 - (void)requestPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
 {
