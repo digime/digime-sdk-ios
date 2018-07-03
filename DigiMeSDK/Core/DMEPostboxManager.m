@@ -12,7 +12,7 @@
 
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
-static NSString * const kCARequestPostboxPublicKey = @"kCARequestPostboxPublicKey";
+static NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey";
 
 @interface DMEPostboxManager()
 
