@@ -63,7 +63,7 @@ static NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey
     else
     {
         postbox = [[CAPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
-        postbox.postboxSymmetricKey = postboxPublicKey;
+        postbox.postboxRSAPublicKey = postboxPublicKey;
     }
     
     if (self.postboxCompletionBlock)
