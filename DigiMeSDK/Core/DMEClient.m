@@ -232,9 +232,13 @@
         NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
         CAFile *file;
         
-        if (!error)
+        if (!error && decryptedData)
         {
             file = [CAFile deserialize:decryptedData fileId:fileId error:&error];
+        }
+        else if (data)
+        {
+            file = [CAFile deserialize:data fileId:fileId error:&error];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
