@@ -135,4 +135,9 @@
  */
 - (BOOL)canOpenDigiMeApp;
 
+/**
+ Executed when DMEClient has finished to retrieving data for the ongoing session.
+ */
+- (void)dataRetrieveFinished;
+
 @end

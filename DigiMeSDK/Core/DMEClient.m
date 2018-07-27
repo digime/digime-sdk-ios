@@ -279,6 +279,14 @@
     }];
 }
 
+- (void)dataRetrieveFinished
+{
+    if ([self.delegate respondsToSelector:@selector(dataRetrieveFinished)])
+    {
+        [self.delegate dataRetrieveFinished];
+    }
+}
+
 #pragma mark - Accounts
 - (void)getAccounts
 {
