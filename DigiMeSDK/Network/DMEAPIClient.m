@@ -284,7 +284,6 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
         if ([change[NSKeyValueChangeNewKey] integerValue] == 0)
         {
             NSLog(@"[DMEAPIClient] Queued downloads completed.");
-            [self.client dataRetrieveFinished];
         }
     }
     else

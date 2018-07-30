@@ -111,11 +111,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)accountsRetrieveFailed:(NSError *)error;
 
-/**
- Executed when DMEClient has finished to retrieving data for the ongoing session.
- */
-- (void)dataRetrieveFinished;
-
 @end
 
 NS_ASSUME_NONNULL_END
