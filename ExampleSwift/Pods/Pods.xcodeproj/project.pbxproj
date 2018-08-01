@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -91,7 +91,7 @@
 		067FE79ED8349AAAEFA94CF647A66B8C /* DMEOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEOperation.m; sourceTree = "<group>"; };
 		07A6DE91D462F977B45883A990CAD677 /* DMEAPIClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEAPIClient.h; sourceTree = "<group>"; };
 		0929FD6C2A9E9B9C5E4A4B7E4C38F77D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
-		1991627ED099027843F7E78080384805 /* Pods-DigiMeSDKExampleSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-DigiMeSDKExampleSwift.modulemap"; sourceTree = "<group>"; };
+		1991627ED099027843F7E78080384805 /* Pods-DigiMeSDKExampleSwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-DigiMeSDKExampleSwift.modulemap"; sourceTree = "<group>"; };
 		19C174F983D92242651A2FFF7C76BADF /* DigiMeSDK-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DigiMeSDK-dummy.m"; sourceTree = "<group>"; };
 		1B7ABBC53EAAAB5F8D04D2D56201D845 /* NSError+SDK.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+SDK.m"; sourceTree = "<group>"; };
 		1BCCA23D6558E537F0EB73820DB3E061 /* CASessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASessionManager.h; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 		22FA609D1ED9E5E887509A7A2591C6EF /* Pods-DigiMeSDKExampleSwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DigiMeSDKExampleSwift-dummy.m"; sourceTree = "<group>"; };
 		23A03AED4BD74334AF4A26E2EE9B4543 /* NSError+API.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+API.m"; sourceTree = "<group>"; };
 		25B8703AA7F953A78C7B90F46BC4CD71 /* DMEClientConfiguration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEClientConfiguration.m; sourceTree = "<group>"; };
-		2AB28C1EB3C34466A0EA62340916CD84 /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExampleSwiftTests.framework; path = "Pods-DigiMeSDKExampleSwiftTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AB28C1EB3C34466A0EA62340916CD84 /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B5236D62BEF0F7088570066E75857FF /* Pods-DigiMeSDKExampleSwiftTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DigiMeSDKExampleSwiftTests-acknowledgements.plist"; sourceTree = "<group>"; };
 		2B60E230AD605A5E1BF84F792DA3A678 /* NSError+SDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSError+SDK.h"; sourceTree = "<group>"; };
 		2BC68E78CF53AEC8A58577ECE0F05066 /* Pods-DigiMeSDKExampleSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExampleSwift.release.xcconfig"; sourceTree = "<group>"; };
@@ -113,26 +113,26 @@
 		4D7D10477DADDA07443DC5EEECE6DCB2 /* DMERequestFactory.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMERequestFactory.m; sourceTree = "<group>"; };
 		56654D8D792FCA2F58B34E255CAF8170 /* CADataDecryptor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CADataDecryptor.h; sourceTree = "<group>"; };
 		597D05EF2BE105A1DAB26974E99D8EC7 /* CAAccounts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAAccounts.m; sourceTree = "<group>"; };
-		5B057CB2919A1CB66000091FC378F32F /* apiCert2.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert2.der; path = DigiMeSDK/Assets/apiCert2.der; sourceTree = "<group>"; };
+		5B057CB2919A1CB66000091FC378F32F /* apiCert2.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert2.der; path = DigiMeSDK/Assets/apiCert2.der; sourceTree = "<group>"; };
 		5CF0CD799B0A743E00D68804FFAC83A1 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5E460247BC900EF3248FD36307E2B9E8 /* apiCert1.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert1.der; path = DigiMeSDK/Assets/apiCert1.der; sourceTree = "<group>"; };
+		5E460247BC900EF3248FD36307E2B9E8 /* apiCert1.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert1.der; path = DigiMeSDK/Assets/apiCert1.der; sourceTree = "<group>"; };
 		5F0A262ED6C584A4A8B125598D0698A5 /* Pods-DigiMeSDKExampleSwift-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DigiMeSDKExampleSwift-acknowledgements.plist"; sourceTree = "<group>"; };
 		61E05F83D27099B96AC585985E091ED8 /* NSError+Auth.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSError+Auth.h"; sourceTree = "<group>"; };
-		64416A2D22DD60D109E458BB501F3AAE /* Pods_DigiMeSDKExampleSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExampleSwift.framework; path = "Pods-DigiMeSDKExampleSwift.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		64416A2D22DD60D109E458BB501F3AAE /* Pods_DigiMeSDKExampleSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64DEC1852AC97620FF9E767616B2279C /* Pods-DigiMeSDKExampleSwift-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExampleSwift-resources.sh"; sourceTree = "<group>"; };
 		64FBFD4BC994FFA70C7679E487ED3CA3 /* DMEClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEClient.m; sourceTree = "<group>"; };
 		66BCA10923A2578782AC92333901DDD6 /* Pods-DigiMeSDKExampleSwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DigiMeSDKExampleSwift-umbrella.h"; sourceTree = "<group>"; };
 		67BE1592171982F86EB8052123F00477 /* DMECryptoUtilities.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMECryptoUtilities.m; sourceTree = "<group>"; };
-		6BB6C63764A758F9ADE73D7D6CFC527C /* apiCert3.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert3.der; path = DigiMeSDK/Assets/apiCert3.der; sourceTree = "<group>"; };
+		6BB6C63764A758F9ADE73D7D6CFC527C /* apiCert3.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert3.der; path = DigiMeSDK/Assets/apiCert3.der; sourceTree = "<group>"; };
 		6CF2AFBFCE6F2CD3BF24CADE79FFFE88 /* NSError+Auth.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+Auth.m"; sourceTree = "<group>"; };
 		707080A44685DEA761DA9B9E36CD08C0 /* DMEAuthorizationManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEAuthorizationManager.m; sourceTree = "<group>"; };
 		777F4035FD541AFC5A0E3A792626C67B /* CAFile.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFile.h; sourceTree = "<group>"; };
 		7A339A555FDA548ADD39BB7F614339B4 /* CAFiles.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFiles.h; sourceTree = "<group>"; };
 		7CF0124608A4F5FC93ABD33A82F8ED99 /* DMEAuthorizationManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEAuthorizationManager.h; sourceTree = "<group>"; };
-		7EEB5CAF28A303377ADB2EEEB3B93D83 /* Pods-DigiMeSDKExampleSwiftTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-DigiMeSDKExampleSwiftTests.modulemap"; sourceTree = "<group>"; };
+		7EEB5CAF28A303377ADB2EEEB3B93D83 /* Pods-DigiMeSDKExampleSwiftTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-DigiMeSDKExampleSwiftTests.modulemap"; sourceTree = "<group>"; };
 		7F56BD61C71A6790D61CF4F34E3DACB0 /* DMEClientConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientConfiguration.h; sourceTree = "<group>"; };
 		81F0C4FE46229397FDA4135B246D6440 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
-		841072F06BE9BE2F12AC6D15A765A017 /* DigiMeSDK.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = DigiMeSDK.modulemap; sourceTree = "<group>"; };
+		841072F06BE9BE2F12AC6D15A765A017 /* DigiMeSDK.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = DigiMeSDK.modulemap; sourceTree = "<group>"; };
 		84C7FA83DDE6580D764227ACE7951C76 /* Pods-DigiMeSDKExampleSwiftTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExampleSwiftTests-frameworks.sh"; sourceTree = "<group>"; };
 		84ECFC9D19557F83E7476EA075D234C3 /* CADataDecryptor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CADataDecryptor.m; sourceTree = "<group>"; };
 		85636A6561732E9DDF39AA8C6B68E364 /* Pods-DigiMeSDKExampleSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExampleSwift.debug.xcconfig"; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 		8AAE760CE96D7CD1D89EE51210271AA9 /* Pods-DigiMeSDKExampleSwiftTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DigiMeSDKExampleSwiftTests-dummy.m"; sourceTree = "<group>"; };
 		8BFBD7BC12E511F487A015ABA0F4BAD4 /* DigiMeSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DigiMeSDK.xcconfig; sourceTree = "<group>"; };
 		901449459F57B7178424087F4D8EDBD0 /* DMERequestFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMERequestFactory.h; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		96BAB652178FEDFE2B19D21085BEE59C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		970D2034C4C8FC00A7891A729E0BD508 /* DMEClientDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientDelegate.h; sourceTree = "<group>"; };
 		99E3D52BBC2FBD0214495A2E55F25350 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -164,7 +164,7 @@
 		D1AC36172C1134FAF79A11B76F9D2AF8 /* NSData+DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSData+DMECrypto.m"; sourceTree = "<group>"; };
 		D46994DDFDD7C4A5B167F65CC2E4F6D9 /* DMEAPIClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEAPIClient.m; sourceTree = "<group>"; };
 		D8BF49839B774CF6087F9742A550956B /* CAAccounts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAAccounts.h; sourceTree = "<group>"; };
-		DA551233F9922E113F4C29157A9D4429 /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = DigiMeSDK.framework; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA551233F9922E113F4C29157A9D4429 /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1216E2968C3216032BD3CC745B7FAEA /* CASession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASession.h; sourceTree = "<group>"; };
 		E7B7BEFD6CC3086B0480B71527190132 /* DigiMeSDK-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DigiMeSDK-prefix.pch"; sourceTree = "<group>"; };
 		EA4AEB48CAC39837166A7996471BAD81 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -565,7 +565,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0940;
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -706,22 +706,32 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"POD_CONFIGURATION_RELEASE=1",
 					"$(inherited)",
@@ -786,23 +796,33 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"POD_CONFIGURATION_DEBUG=1",

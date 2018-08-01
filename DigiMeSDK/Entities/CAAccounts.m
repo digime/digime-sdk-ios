@@ -14,6 +14,11 @@
 
 + (CAAccounts *)deserialize:(NSData *)data error:(NSError * _Nullable __autoreleasing *)error
 {
+    if (!data)
+    {
+        return nil;
+    }
+
     id content = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
     
     if ([content isKindOfClass:[NSDictionary class]])
