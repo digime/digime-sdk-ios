@@ -13,23 +13,10 @@
 #pragma mark - Deserialization
 + (CAFile *)deserialize:(NSData *)data fileId:(NSString *)fileId error:(NSError * _Nullable __autoreleasing *)error
 {
-    NSObject *content = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
+    NSArray *content = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
 
     CAFile *file = [[self alloc] initWithFileId:fileId];
-    
-    if ([content isKindOfClass: [NSDictionary class]])
-    {
-        NSArray *contentArray = ((NSDictionary*)content)[@"fileContent"];
-        if (contentArray)
-        {
-            [file populateWithContent:contentArray];
-        }
-    }
-    else if ([content isKindOfClass: [NSArray class]])
-    {
-        [file populateWithContent:((NSArray*)content)];
-    }
-
+    [file populateWithContent:content];
     return file;
 }
 
