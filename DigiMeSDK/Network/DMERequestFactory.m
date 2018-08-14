@@ -76,7 +76,12 @@
         NSString *domain = dict[@"DME_DOMAIN"];
         if (!domain)
         {
-            domain = @"digi.me";
+             domain = @"digi.me";
+            // domain = @"integration.sandboxdigi.me";
+            // domain = @"alpha.devdigi.me";
+            // domain = @"integration.devdigi.me";
+            //domain = @"development.devdigi.me";
+
         }
         _baseUrl = [NSString stringWithFormat:@"https://api.%@/", domain];
     }

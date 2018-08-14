@@ -81,7 +81,9 @@ class LogViewController: UIView {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
     let dateString = formatter.string(from: now)
-    textView.text = textView.text + "\n" + dateString + " " + message
+    let logMessage = "\n" + dateString + " " + message
+    textView.text = textView.text + logMessage
+    print(logMessage)
     scrollToBottom()
   }
 }

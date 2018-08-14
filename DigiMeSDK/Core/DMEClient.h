@@ -56,6 +56,13 @@
  */
 @property (nonatomic, strong, readonly) CASessionManager *sessionManager;
 
+#ifdef TIMING
+/**
+ DigiMe connection debug info.
+ */
+@property (nonatomic, strong) NSMutableDictionary <NSString *, NSString *> *logs;
+#endif
+
 /**
  Singleton initializer;
 

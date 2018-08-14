@@ -12,13 +12,25 @@
 #import "CADataDecryptor.h"
 #import "DMECrypto.h"
 
+#import <QuartzCore/QuartzCore.h>
+
+#ifdef TIMING
+static NSString *kTimingDataGetFile = @"timingDataGetFile";
+static NSString *kTimingFetchSessionKey = @"timingFetchSessionKey";
+static NSString *kTimingFetchDataGetAccount = @"timingFetchDataGetAccount";
+static NSString *kTimingFetchDataGetFileList = @"timingFetchDataGetFileList";
+static NSString *kTimingFetchContractPermission = @"timingFetchContractPermission";
+static NSString *kTimingUpdateContractPermission = @"timingUpdateContractPermission";
+static NSString *kTimingDataRequest = @"timingDataRequest";
+static NSString *kDebugBundleVersion = @"debugBundleVersion";
+#endif
+
 @interface DMEClient()
 
 @property (nonatomic, strong) DMEAuthorizationManager *authManager;
 @property (nonatomic, strong, readwrite) CASessionManager *sessionManager;
 @property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
 @property (nonatomic, strong) DMECrypto *crypto;
-
 @end
 
 @implementation DMEClient
@@ -61,6 +73,12 @@
 
 - (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
 {
+#ifdef TIMING
+    self.logs = [NSMutableDictionary new];
+    NSString *version =  [NSBundle bundleWithIdentifier:[[NSBundle mainBundle] bundleIdentifier]].infoDictionary[@"CFBundleShortVersionString"];
+    self.logs[kDebugBundleVersion] = version;
+#endif
+    
     //private key validation
     if (!self.privateKeyHex)
     {
@@ -77,11 +95,18 @@
         
         return;
     }
-    
+#ifdef TIMING
+    __block CFTimeInterval startTime = CFAbsoluteTimeGetCurrent();
+#endif
     //get session
     __weak __typeof(self)weakSelf = self;
     [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
+        __strong __typeof(weakSelf)strong = weakSelf;
+#ifdef TIMING
+        CFTimeInterval elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+        strong.logs[kTimingFetchSessionKey] = [NSString stringWithFormat:@"%.2f", elapsedTime];
+#endif
         //begin authorization
         [weakSelf.authManager beginAuthorizationWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
             
@@ -144,12 +169,17 @@
         
         return;
     }
-    
+#ifdef TIMING
+     __block CFTimeInterval startTime = CFAbsoluteTimeGetCurrent();
+#endif
     //initiate file list request
     __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileListWithSuccess:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
+#ifdef TIMING
+        CFTimeInterval elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+        strongSelf.logs[kTimingFetchDataGetFileList] = [NSString stringWithFormat:@"%.2f", elapsedTime];
+#endif
         NSError *error;
         CAFiles *files = [CAFilesDeserializer deserialize:data error:&error];
         
@@ -173,7 +203,10 @@
         });
     } failure:^(NSError * _Nonnull error) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
+#ifdef TIMING
+        CFTimeInterval elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+        strongSelf.logs[kTimingFetchDataGetFileList] = [NSString stringWithFormat:@"%.2f error", elapsedTime];
+#endif
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion)
             {
@@ -223,10 +256,20 @@
         return;
     }
     
+#ifdef TIMING
+     __block CFTimeInterval startTime = CFAbsoluteTimeGetCurrent();
+#endif
+    
     //initiate file content request
     __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileWithId:fileId success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
+
+#ifdef TIMING
+        CFTimeInterval elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+        strongSelf.logs[kTimingDataGetFile] = [NSString stringWithFormat:@"%.2f", elapsedTime];
+        [strongSelf.logs setValue:[NSString stringWithFormat:@"%.2f", elapsedTime] forKey:fileId];
+#endif
         
         NSError *error;
         NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
@@ -264,7 +307,11 @@
         
     } failure:^(NSError * _Nonnull error) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
+#ifdef TIMING
+        CFTimeInterval elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+        strongSelf.logs[kTimingDataGetFile] = [NSString stringWithFormat:@"%.2f error", elapsedTime];
+        [strongSelf.logs setValue:[NSString stringWithFormat:@"%.2f error", elapsedTime] forKey:fileId];
+#endif
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion)
             {
@@ -304,10 +351,19 @@
         return;
     }
     
+#ifdef TIMING
+     CFTimeInterval startTime = CFAbsoluteTimeGetCurrent();
+#endif
+    
     //initiate accounts request
     __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileWithId:@"accounts.json" success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
+
+#ifdef TIMING
+        CFTimeInterval elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+        strongSelf.logs[kTimingFetchDataGetAccount] = [NSString stringWithFormat:@"%.2f", elapsedTime];
+#endif
         
         NSError *error;
         NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
@@ -341,7 +397,10 @@
         
     } failure:^(NSError * _Nonnull error) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
+#ifdef TIMING
+        CFTimeInterval elapsedTime = CFAbsoluteTimeGetCurrent() - startTime;
+        strongSelf.logs[kTimingFetchDataGetAccount] = [NSString stringWithFormat:@"%.2f error", elapsedTime];
+#endif
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion)
             {
@@ -368,6 +427,13 @@
 
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options
 {
+#ifdef TIMING
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:YES];
+    for (NSURLQueryItem * item in components.queryItems)
+    {
+        self.logs[item.name] = item.value;
+    }
+#endif
     return [self.authManager openURL:url options:options];
 }
 
