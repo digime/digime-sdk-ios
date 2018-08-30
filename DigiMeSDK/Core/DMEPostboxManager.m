@@ -1,34 +1,28 @@
 //
-//  DMEAuthorizationManager.m
+//  DMEPostboxManager.m
 //  DigiMeSDK
 //
-//  Created on 29/01/2018.
-//  Copyright © 2018 DigiMe. All rights reserved.
+//  Created on 26/06/2018.
+//  Copyright © 2018 me.digi. All rights reserved.
 //
 
-#import "DMEAuthorizationManager.h"
+#import "DMEPostboxManager.h"
 #import "CASessionManager.h"
 #import "DMEClient.h"
 
-#import "NSError+Auth.h"
-#import "UIViewController+DMEExtension.h"
-
-#import <UIKit/UIKit.h>
-#import <StoreKit/StoreKit.h>
-
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
-static NSString * const kCADigimeResponse = @"CADigimeResponse";
+static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
+static NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey";
 
-@interface DMEAuthorizationManager()
+@interface DMEPostboxManager()
 
 @property (nonatomic, strong, readonly) CASession *session;
 @property (nonatomic, strong, readonly) CASessionManager *sessionManager;
-@property (nonatomic) BOOL authInProgress;
-@property (nonatomic, copy, nullable) AuthorizationCompletionBlock authCompletionBlock;
+@property (nonatomic, copy, nullable) PostboxCreationCompletionBlock postboxCompletionBlock;
 
 @end
 
-@implementation DMEAuthorizationManager
+@implementation DMEPostboxManager
 
 #pragma mark - CallbackHandler Conformance
 
@@ -46,60 +40,52 @@ static NSString * const kCADigimeResponse = @"CADigimeResponse";
 
 - (BOOL)canHandleAction:(DMEOpenAction *)action
 {
-    return [action isEqualToString:@"data"];
+    return [action isEqualToString:@"postbox"];
 }
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    if (!self.authInProgress)
-    {
-        return;
-    }
-    
-    BOOL result = [parameters[kCADigimeResponse] boolValue];
     NSString *sessionKey = parameters[kCARequestSessionKey];
+    NSString *postboxId = parameters[kCARequestPostboxId];
+    NSString *postboxPublicKey = parameters[kCARequestPostboxPublicKey];
     
     NSError *err;
+    CAPostbox *postbox;
     
     if(![self.sessionManager isSessionKeyValid:sessionKey])
     {
         err = [NSError authError:AuthErrorInvalidSessionKey];
     }
-    else if(!result)
+    else if(!postboxId.length)
     {
-        err = [NSError authError:AuthErrorCancelled];
+        err = [NSError authError:AuthErrorGeneral];
+    }
+    else
+    {
+        postbox = [[CAPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
+        postbox.postboxRSAPublicKey = postboxPublicKey;
     }
     
-    if (self.authCompletionBlock)
+    if (self.postboxCompletionBlock)
     {
         // Need to know if we succeeded.
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.authCompletionBlock(self.session, err);
+            self.postboxCompletionBlock(postbox, err);
         });
     }
 }
 
-#pragma mark - Authorization
-
--(void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)requestPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
 {
-    if (self.authInProgress)
-    {
-        NSError *authError = [NSError authError:AuthErrorInProgress];
-        completion(self.session, authError);
-        return;
-    }
-    
     if (![self.sessionManager isSessionValid])
     {
-        completion(nil, [NSError authError:AuthErrorInvalidSession]);
+        completion(nil, nil);
         return;
     }
     
-    self.authInProgress = YES;
-    self.authCompletionBlock = completion;
+    self.postboxCompletionBlock = completion;
     
-    DMEOpenAction *action = @"data";
+    DMEOpenAction *action = @"postbox";
     NSDictionary *params = @{kCARequestSessionKey: self.session.sessionKey};
     
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];

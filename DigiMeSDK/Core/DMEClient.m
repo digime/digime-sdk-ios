@@ -7,18 +7,22 @@
 //
 
 #import "DMEClient.h"
-#import "DMEAuthorizationManager.h"
 #import "CAFilesDeserializer.h"
 #import "CADataDecryptor.h"
 #import "DMECrypto.h"
+#import "DMEAppCommunicator.h"
+#import "DMEAuthorizationManager.h"
+#import "DMEPostboxManager.h"
 
 @interface DMEClient()
 
-@property (nonatomic, strong) DMEAuthorizationManager *authManager;
 @property (nonatomic, strong, readwrite) CASessionManager *sessionManager;
 @property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
 @property (nonatomic, strong) DMECrypto *crypto;
 
+@property (nonatomic, strong) DMEAppCommunicator *appCommunicator;
+@property (nonatomic, weak) DMEAuthorizationManager *authManager;
+@property (nonatomic, weak) DMEPostboxManager *postboxManager;
 @end
 
 @implementation DMEClient
@@ -42,11 +46,19 @@
     self = [super init];
     if (self)
     {
-        _authManager = [DMEAuthorizationManager new];
         _clientConfiguration = [DMEClientConfiguration new];
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];;
         _sessionManager = [CASessionManager new];
         _crypto = [DMECrypto new];
+        
+        // Configure mercury appCommunicator.
+        _appCommunicator = [DMEAppCommunicator new];
+        DMEAuthorizationManager *authMgr = [[DMEAuthorizationManager alloc] initWithAppCommunicator:_appCommunicator];
+        DMEPostboxManager *pbxMgr = [[DMEPostboxManager alloc] initWithAppCommunicator:_appCommunicator];
+        [_appCommunicator addCallbackHandler:authMgr];
+        [_appCommunicator addCallbackHandler:pbxMgr];
+        _authManager = authMgr;
+        _postboxManager = pbxMgr;
     }
     
     return self;
@@ -116,6 +128,30 @@
             });
         }];
         
+    }];
+}
+
+#pragma mark - Postbox
+
+- (void)createPostbox
+{
+    [self createPostboxWithCompletion:nil];
+}
+
+- (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
+{
+    //get session
+    [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        
+        if (!session)
+        {
+            completion(nil, error);
+            return;
+        }
+        
+        [self.postboxManager requestPostboxWithCompletion:^(CAPostbox * _Nullable postbox, NSError * _Nullable error) {
+            completion(postbox, error);
+        }];
     }];
 }
 
@@ -364,12 +400,12 @@
 
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options
 {
-    return [self.authManager openURL:url options:options];
+    return [self.appCommunicator openURL:url options:options];
 }
 
 - (BOOL)canOpenDigiMeApp
 {
-    return [self.authManager canOpenDigiMeApp];
+    return [self.appCommunicator canOpenDigiMeApp];
 }
 
 @end
