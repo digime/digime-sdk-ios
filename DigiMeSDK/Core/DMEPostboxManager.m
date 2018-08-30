@@ -2,7 +2,7 @@
 //  DMEPostboxManager.m
 //  DigiMeSDK
 //
-//  Created by Jacob King on 26/06/2018.
+//  Created on 26/06/2018.
 //  Copyright © 2018 me.digi. All rights reserved.
 //
 
@@ -24,26 +24,26 @@ static NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey
 
 @implementation DMEPostboxManager
 
-#pragma mark - Interfacee Conformance
+#pragma mark - CallbackHandler Conformance
 
-@synthesize interfacer = _interfacer;
+@synthesize appCommunicator = _appCommunicator;
 
-- (instancetype)initWithInterfacer:(DMEMercuryInterfacer *__weak)interfacer
+- (instancetype)initWithAppCommunicator:(DMEAppCommunicator *__weak)appCommunicator
 {
     self = [super init];
     if (self)
     {
-        _interfacer = interfacer;
+        _appCommunicator = appCommunicator;
     }
     return self;
 }
 
-- (BOOL)canHandleAction:(DMEDigiMeOpenAction *)action
+- (BOOL)canHandleAction:(DMEOpenAction *)action
 {
     return [action isEqualToString:@"postbox"];
 }
 
-- (void)handleAction:(DMEDigiMeOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
+- (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
     NSString *sessionKey = parameters[kCARequestSessionKey];
     NSString *postboxId = parameters[kCARequestPostboxId];
@@ -85,10 +85,10 @@ static NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey
     
     self.postboxCompletionBlock = completion;
     
-    DMEDigiMeOpenAction *action = @"postbox";
+    DMEOpenAction *action = @"postbox";
     NSDictionary *params = @{kCARequestSessionKey: self.session.sessionKey};
     
-    [self.interfacer openDigiMeAppWithAction:action parameters:params];
+    [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
 }
 
 #pragma mark - Convenience

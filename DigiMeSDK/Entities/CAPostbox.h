@@ -2,7 +2,7 @@
 //  CAPostbox.h
 //  DigiMeSDK
 //
-//  Created by Jacob King on 25/06/2018.
+//  Created on 25/06/2018.
 //  Copyright © 2018 me.digi. All rights reserved.
 //
 

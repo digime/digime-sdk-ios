@@ -30,26 +30,26 @@ static NSString * const kCADigimeResponse = @"CADigimeResponse";
 
 @implementation DMEAuthorizationManager
 
-#pragma mark - Interfacee Conformance
+#pragma mark - CallbackHandler Conformance
 
-@synthesize interfacer = _interfacer;
+@synthesize appCommunicator = _appCommunicator;
 
-- (instancetype)initWithInterfacer:(DMEMercuryInterfacer *__weak)interfacer
+- (instancetype)initWithAppCommunicator:(DMEAppCommunicator *__weak)appCommunicator
 {
     self = [super init];
     if (self)
     {
-        _interfacer = interfacer;
+        _appCommunicator = appCommunicator;
     }
     return self;
 }
 
-- (BOOL)canHandleAction:(DMEDigiMeOpenAction *)action
+- (BOOL)canHandleAction:(DMEOpenAction *)action
 {
     return [action isEqualToString:@"data"];
 }
 
-- (void)handleAction:(DMEDigiMeOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
+- (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
     if (!self.authInProgress)
     {
@@ -99,10 +99,10 @@ static NSString * const kCADigimeResponse = @"CADigimeResponse";
     self.authInProgress = YES;
     self.authCompletionBlock = completion;
     
-    DMEDigiMeOpenAction *action = @"data";
+    DMEOpenAction *action = @"data";
     NSDictionary *params = @{kCARequestSessionKey: self.session.sessionKey};
     
-    [self.interfacer openDigiMeAppWithAction:action parameters:params];
+    [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
 }
 
 #pragma mark - Convenience

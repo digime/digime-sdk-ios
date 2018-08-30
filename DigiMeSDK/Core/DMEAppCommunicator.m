@@ -1,12 +1,12 @@
 //
-//  DMEMercuryInterfacer.m
+//  DMEAppCommunicator.m
 //  DigiMeSDK
 //
-//  Created by Jacob King on 25/06/2018.
+//  Created on 25/06/2018.
 //  Copyright © 2018 me.digi. All rights reserved.
 //
 
-#import "DMEMercuryInterfacer.h"
+#import "DMEAppCommunicator.h"
 #import "DMEClient.h"
 #import <StoreKit/StoreKit.h>
 #import "UIViewController+DMEExtension.h"
@@ -20,19 +20,19 @@ static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 static NSInteger  const kDMEClientAppstoreID = 1234541790;
 static NSTimeInterval const kCATimerInterval = 0.5;
 
-@interface DMEMercuryInterfacer () <SKStoreProductViewControllerDelegate>
+@interface DMEAppCommunicator () <SKStoreProductViewControllerDelegate>
 
 @property (nonatomic, strong) NSTimer *pendingInstallationPollingTimer;
 @property (nonatomic, strong) SKStoreProductViewController *storeViewController;
 
-@property (nonatomic, strong) DMEDigiMeOpenAction *sentAction;
+@property (nonatomic, strong) DMEOpenAction *sentAction;
 @property (nonatomic, strong) NSDictionary *sentParameters;
 
-@property (nonatomic, strong) NSMutableArray<id<DMEMercuryInterfacee>> *interfacees;
+@property (nonatomic, strong) NSMutableArray<id<DMEAppCallbackHandler>> *callbackHandlers;
 
 @end
 
-@implementation DMEMercuryInterfacer
+@implementation DMEAppCommunicator
 
 #pragma mark - Initialisation
 
@@ -42,7 +42,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     
     if (self)
     {
-        _interfacees = [NSMutableArray array];
+        _callbackHandlers = [NSMutableArray array];
     }
     
     return self;
@@ -56,7 +56,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     return [self digiMeAppIsInstalled];
 }
 
-- (void)openDigiMeAppWithAction:(DMEDigiMeOpenAction *)action parameters:(NSDictionary *)parameters
+- (void)openDigiMeAppWithAction:(DMEOpenAction *)action parameters:(NSDictionary *)parameters
 {
     
     self.sentAction = action;
@@ -96,21 +96,21 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     
     // Grab the action.
     NSURLComponents *comps = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-    DMEDigiMeOpenAction *action = comps.host;
+    DMEOpenAction *action = comps.host;
     
-    for (id<DMEMercuryInterfacee> interfacee in self.interfacees)
+    for (id<DMEAppCallbackHandler> callbackHandler in self.callbackHandlers)
     {
-        if ([interfacee canHandleAction:action])
+        if ([callbackHandler canHandleAction:action])
         {
-            // Great, an interfacee can handle the action, grab the params.
+            // Great, a callbackHandler can handle the action, grab the params.
             NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:comps.queryItems.count];
             for (NSURLQueryItem *queryItem in comps.queryItems)
             {
                 params[queryItem.name] = queryItem.value;
             }
             
-            // Pass values to interfacee to handle.
-            [interfacee handleAction:action withParameters:params];
+            // Pass values to callbackHandler to handle.
+            [callbackHandler handleAction:action withParameters:params];
             // Exit method, we've handled the URL.
             return YES;
         }
@@ -174,22 +174,22 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     
 }
 
-#pragma mark - Interfacee Management
+#pragma mark - CallbackHandler Management
 
-- (void)addInterfacee:(id<DMEMercuryInterfacee>)interfacee
+- (void)addCallbackHandler:(id<DMEAppCallbackHandler>)callbackHandler
 {
-    if (![self.interfacees containsObject:interfacee])
+    if (![self.callbackHandlers containsObject:callbackHandler])
     {
-        interfacee.interfacer = self;
-        [self.interfacees addObject:interfacee];
+        callbackHandler.appCommunicator = self;
+        [self.callbackHandlers addObject:callbackHandler];
     }
 }
 
-- (void)removeInterfacee:(id<DMEMercuryInterfacee>)interfacee
+- (void)removeCallbackHandler:(id<DMEAppCallbackHandler>)callbackHandler
 {
-    if ([self.interfacees containsObject:interfacee])
+    if ([self.callbackHandlers containsObject:callbackHandler])
     {
-        [self.interfacees removeObject:interfacee];
+        [self.callbackHandlers removeObject:callbackHandler];
     }
 }
 

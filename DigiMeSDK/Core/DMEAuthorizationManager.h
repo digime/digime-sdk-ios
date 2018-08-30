@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClientCallbacks.h"
-#import "DMEMercuryInterfacer.h"
+#import "DMEAppCommunicator.h"
 
-@interface DMEAuthorizationManager : NSObject <DMEMercuryInterfacee>
+@interface DMEAuthorizationManager : NSObject <DMEAppCallbackHandler>
 
 
 /**

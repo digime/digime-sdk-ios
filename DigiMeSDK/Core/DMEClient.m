@@ -10,7 +10,7 @@
 #import "CAFilesDeserializer.h"
 #import "CADataDecryptor.h"
 #import "DMECrypto.h"
-#import "DMEMercuryInterfacer.h"
+#import "DMEAppCommunicator.h"
 #import "DMEAuthorizationManager.h"
 #import "DMEPostboxManager.h"
 
@@ -20,7 +20,7 @@
 @property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
 @property (nonatomic, strong) DMECrypto *crypto;
 
-@property (nonatomic, strong) DMEMercuryInterfacer *mercuryInterfacer;
+@property (nonatomic, strong) DMEAppCommunicator *appCommunicator;
 @property (nonatomic, weak) DMEAuthorizationManager *authManager;
 @property (nonatomic, weak) DMEPostboxManager *postboxManager;
 @end
@@ -51,12 +51,12 @@
         _sessionManager = [CASessionManager new];
         _crypto = [DMECrypto new];
         
-        // Configure mercury interfacer.
-        _mercuryInterfacer = [DMEMercuryInterfacer new];
-        DMEAuthorizationManager *authMgr = [DMEAuthorizationManager new];
-        DMEPostboxManager *pbxMgr = [DMEPostboxManager new];
-        [_mercuryInterfacer addInterfacee:authMgr];
-        [_mercuryInterfacer addInterfacee:pbxMgr];
+        // Configure mercury appCommunicator.
+        _appCommunicator = [DMEAppCommunicator new];
+        DMEAuthorizationManager *authMgr = [[DMEAuthorizationManager alloc] initWithAppCommunicator:_appCommunicator];
+        DMEPostboxManager *pbxMgr = [[DMEPostboxManager alloc] initWithAppCommunicator:_appCommunicator];
+        [_appCommunicator addCallbackHandler:authMgr];
+        [_appCommunicator addCallbackHandler:pbxMgr];
         _authManager = authMgr;
         _postboxManager = pbxMgr;
     }
@@ -135,7 +135,7 @@
 
 - (void)createPostbox
 {
-    
+    [self createPostboxWithCompletion:nil];
 }
 
 - (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
@@ -400,12 +400,12 @@
 
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options
 {
-    return [self.mercuryInterfacer openURL:url options:options];
+    return [self.appCommunicator openURL:url options:options];
 }
 
 - (BOOL)canOpenDigiMeApp
 {
-    return [self.mercuryInterfacer canOpenDigiMeApp];
+    return [self.appCommunicator canOpenDigiMeApp];
 }
 
 @end
