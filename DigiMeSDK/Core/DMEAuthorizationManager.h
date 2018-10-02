@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "DMEClientCallbacks.h"
 
-@interface DMEAuthorizationManager : NSObject
+NS_ASSUME_NONNULL_BEGIN
 
+@interface DMEAuthorizationManager : NSObject
 
 /**
  Initiates contract authorization launching Digi.me App if there is a valid active session.
@@ -32,3 +33,5 @@
 - (BOOL)canOpenDigiMeApp;
 
 @end
+
+NS_ASSUME_NONNULL_END

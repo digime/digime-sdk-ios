@@ -48,7 +48,7 @@ static unsigned char decodeBase64[256] = {
 
 @implementation NSString (DMECrypto)
 
-- (NSMutableData *)hexToBytes
+- (NSData *)hexToBytes
 {
     NSString* cleanedString = [self stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSMutableData* data = [[NSMutableData alloc] init];
@@ -61,9 +61,7 @@ static unsigned char decodeBase64[256] = {
         [data appendBytes:&whole_byte length:1];
     }
     
-    NSAssert(data != nil, @"Output data cannot be nil");
-    
-    return data;
+    return [data copy];
 }
 
 -(BOOL)isBase64
@@ -82,9 +80,6 @@ static unsigned char decodeBase64[256] = {
 #pragma mark - Base 64
 - (NSData *)base64Data
 {
-    unsigned char ch, accumulated[kBASE64QUANTUMREP], outbuf[kBASE64QUANTUM];
-    const unsigned char *charString;
-    NSMutableData *theData;
     const int OUTOFRANGE = 64;
     const unsigned char LASTCHARACTER = '=';
     
@@ -93,18 +88,20 @@ static unsigned char decodeBase64[256] = {
         return [NSData data];
     }
     
+    unsigned char accumulated[kBASE64QUANTUMREP];
     for (int i = 0; i < kBASE64QUANTUMREP; i++) {
         accumulated[i] = 0;
     }
     
-    charString = (const unsigned char *)[self UTF8String];
+    const unsigned char *charString = (const unsigned char *)[self UTF8String];
     
-    theData = [NSMutableData dataWithCapacity: [self length]];
+    NSMutableData *theData = [NSMutableData dataWithCapacity:self.length];
     
+    unsigned char outbuf[kBASE64QUANTUM];
     short accumulateIndex = 0;
-    for (NSUInteger index = 0; index < [self length]; index++) {
+    for (NSUInteger index = 0; index < self.length; index++) {
         
-        ch = decodeBase64[charString [index]];
+        unsigned char ch = decodeBase64[charString [index]];
         
         if (ch < OUTOFRANGE)
         {
@@ -148,12 +145,10 @@ static unsigned char decodeBase64[256] = {
                     [theData appendBytes: &outbuf[i] length: 1];
                 }
             }
-            
         }
-        
     }
     
-    return theData;
+    return [theData copy];
 }
 
 @end

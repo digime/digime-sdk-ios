@@ -10,11 +10,13 @@
 #import "DMEClientCallbacks.h"
 #import "CASession.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class DMEClient;
 
 @interface CASessionManager : NSObject
 
-@property (nonatomic, strong, readonly) CASession *currentSession;
+@property (nonatomic, strong, nullable, readonly) CASession *currentSession;
 
 @property (nonatomic, strong, readonly) DMEClient *client;
 
@@ -43,3 +45,5 @@
 - (BOOL)isSessionKeyValid:(NSString *)sessionKey;
 
 @end
+
+NS_ASSUME_NONNULL_END

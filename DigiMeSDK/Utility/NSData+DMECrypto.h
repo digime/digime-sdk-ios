@@ -13,7 +13,7 @@
 /**
  Returns NSString as hex representation of NSData.
 
- @return hexString. Nil if NSData is empty
+ @return hexString
  */
 - (NSString *)hexString;
 

@@ -44,7 +44,7 @@
     {
         _authManager = [DMEAuthorizationManager new];
         _clientConfiguration = [DMEClientConfiguration new];
-        _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];;
+        _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];
         _sessionManager = [CASessionManager new];
         _crypto = [DMECrypto new];
     }

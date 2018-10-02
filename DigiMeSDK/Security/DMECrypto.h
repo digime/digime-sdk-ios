@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "DMECryptoUtilities.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface DMECrypto : NSObject
 
 
@@ -24,9 +26,9 @@
 /**
  Returns private key hex data, if it was previously saved.
 
- @return NSData
+ @return NSData - previously saved private hex key data or nil if none
  */
-- (NSData *)privateKeyHex;
+- (nullable NSData *)privateKeyHex;
 
 
 /**
@@ -34,9 +36,9 @@
 
  @param encryptedData NSData
  @param privateKeyData NSData
- @return NSData - decrypted data
+ @return NSData - decrypted data or nil if decryption failed
  */
-- (NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData privateKeyData:(NSData *)privateKeyData;
+- (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData privateKeyData:(NSData *)privateKeyData;
 
 
 /**
@@ -46,8 +48,10 @@
  @param ivData NSData
  @param data NSData
  @param error NSError
- @return NSData - decrypted data
+ @return NSData - decrypted data or nil if decryption failed
  */
-- (NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
+- (nullable NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
 
 @end
+
+NS_ASSUME_NONNULL_END

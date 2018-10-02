@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface DMEClientConfiguration : NSObject
 
 /**
@@ -52,3 +54,5 @@
 @property (nonatomic) BOOL debugLogEnabled;
 
 @end
+
+NS_ASSUME_NONNULL_END

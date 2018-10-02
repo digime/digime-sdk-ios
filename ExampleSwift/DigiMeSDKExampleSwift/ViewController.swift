@@ -112,7 +112,7 @@ extension ViewController: DMEClientDelegate {
     logVC.log(message: "Failed to retrieve content for fileId: " + fileId + " Error: " + error.localizedDescription)
   }
   
-  func accountsRetreived(_ accounts: CAAccounts) {
+  func accountsRetrieved(_ accounts: CAAccounts) {
     logVC.log(message: "Account Content: " + "\(String(describing: accounts.json!))")
   }
   
