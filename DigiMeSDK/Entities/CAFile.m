@@ -14,7 +14,7 @@
 + (CAFile *)deserialize:(NSData *)data fileId:(NSString *)fileId error:(NSError * _Nullable __autoreleasing *)error
 {
     NSArray *content = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
-    
+
     CAFile *file = [[self alloc] initWithFileId:fileId];
     [file populateWithContent:content];
     return file;

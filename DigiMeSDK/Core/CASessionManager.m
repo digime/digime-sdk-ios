@@ -38,13 +38,7 @@
         return;
     }
     
-    if ([self isSessionValid])
-    {
-        completion(self.currentSession, nil);
-        return;
-    }
-    
-    //create new session.
+    //create new session. We always retrieve new session when requesting authorization
     [self invalidateCurrentSession];
     
     [self.apiClient requestSessionWithSuccess:^(NSData * _Nonnull data) {
