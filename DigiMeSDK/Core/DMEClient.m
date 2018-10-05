@@ -61,18 +61,17 @@
 
 - (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
 {
-    //private key validation
-    if (!self.privateKeyHex)
+    // Validation
+    NSError *validationError = [self validateClient];
+    if (validationError != nil)
     {
-        NSError *error = [NSError authError:AuthErrorPrivateHex];
         if (authorizationCompletion)
         {
-            authorizationCompletion(nil, error);
+            authorizationCompletion(nil, validationError);
         }
-        
-        if ([self.delegate respondsToSelector:@selector(authorizeFailed:)])
+        else if ([self.delegate respondsToSelector:@selector(sessionCreateFailed:)])
         {
-            [self.delegate authorizeFailed:error];
+            [self.delegate sessionCreateFailed:validationError];
         }
         
         return;
@@ -82,40 +81,105 @@
     __weak __typeof(self)weakSelf = self;
     [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
-        //begin authorization
-        [weakSelf.authManager beginAuthorizationWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
-            
-            //notify on main thread.
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            if (strongSelf.clientConfiguration.debugLogEnabled)
-            {
-                NSLog(@"[DMEClient] isMain thread: %@", ([NSThread currentThread].isMainThread ? @"YES" : @"NO"));
-            }
-            
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        if (session == nil)
+        {
+            // Notify on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
+                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
                 if (authorizationCompletion)
                 {
-                    authorizationCompletion(session, error);
+                    authorizationCompletion(nil, errorToReport);
+                    return;
                 }
                 
-                if (error)
+                // No completion block, so notify via delegate
+                if ([strongSelf.delegate respondsToSelector:@selector(sessionCreateFailed:)])
                 {
-                    if ([error.domain isEqualToString:DME_AUTHORIZATION_ERROR] && error.code == AuthErrorCancelled && [strongSelf.delegate respondsToSelector:@selector(authorizeDenied:)])
-                    {
-                        [strongSelf.delegate authorizeDenied:error];
-                    }
-                    else if ([strongSelf.delegate respondsToSelector:@selector(authorizeFailed:)])
-                    {
-                        [strongSelf.delegate authorizeFailed:error];
-                    }
-                }
-                else if ([strongSelf.delegate respondsToSelector:@selector(authorizeSucceeded:)])
-                {
-                    [strongSelf.delegate authorizeSucceeded:session];
+                    NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+                    [strongSelf.delegate sessionCreateFailed:errorToReport];
                 }
             });
-        }];
+            
+            return;
+        }
         
+        // Can only notify session creation success via delegate, not completion block
+        if ([strongSelf.delegate respondsToSelector:@selector(sessionCreated:)])
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [strongSelf.delegate sessionCreated:session];
+            });
+        }
+        
+        //begin authorization
+        [strongSelf userAuthorizationWithCompletion:authorizationCompletion];
+    }];
+}
+
+- (nullable NSError *)validateClient
+{
+    if (!self.appId)
+    {
+        return [NSError sdkError:SDKErrorNoAppId];
+    }
+    
+    if (!self.privateKeyHex)
+    {
+        return [NSError sdkError:SDKErrorNoPrivateKeyHex];
+    }
+    
+    if (!self.contractId)
+    {
+        return [NSError sdkError:SDKErrorNoContract];
+    }
+    
+    if (![DMECryptoUtilities validateContractId:self.contractId])
+    {
+        return [NSError sdkError:SDKErrorInvalidContract];
+    }
+    
+    return nil;
+}
+
+- (void)userAuthorizationWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
+{
+    __weak __typeof(self)weakSelf = self;
+    [self.authManager beginAuthorizationWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        
+        //notify on main thread.
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        if (strongSelf.clientConfiguration.debugLogEnabled)
+        {
+            NSLog(@"[DMEClient] isMain thread: %@", ([NSThread currentThread].isMainThread ? @"YES" : @"NO"));
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (authorizationCompletion)
+            {
+                authorizationCompletion(session, error);
+                return;
+            }
+            
+            // No completion block, so notify via delegate
+            if (error)
+            {
+                if ([error.domain isEqualToString:DME_AUTHORIZATION_ERROR] &&
+                    error.code == AuthErrorCancelled &&
+                    [strongSelf.delegate respondsToSelector:@selector(authorizeDenied:)])
+                {
+                    [strongSelf.delegate authorizeDenied:error];
+                }
+                else if ([strongSelf.delegate respondsToSelector:@selector(authorizeFailed:)])
+                {
+                    [strongSelf.delegate authorizeFailed:error];
+                }
+            }
+            else if ([strongSelf.delegate respondsToSelector:@selector(authorizeSucceeded:)])
+            {
+                [strongSelf.delegate authorizeSucceeded:session];
+            }
+        });
     }];
 }
 

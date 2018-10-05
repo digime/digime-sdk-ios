@@ -69,7 +69,7 @@ This will sync latest repository changes, and install the DigiMeSDK pod.
 
 ### Directly from source code
 
-Download the [latest release](https://github.com/digime/digime-ios-sdk/releases). Extract the files from the archive, and copy `DigiMeSDK` folder into your project.
+Download the [latest release](https://github.com/digime/digime-sdk-ios/releases). Extract the files from the archive, and copy `DigiMeSDK` folder into your project.
 
 ## Configuring SDK usage
 

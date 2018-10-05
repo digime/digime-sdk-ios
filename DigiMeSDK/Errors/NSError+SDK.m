@@ -20,17 +20,25 @@
     switch (sdkError) {
         case SDKErrorInvalidContract:
             return @"Provided contractId has invalid format.";
-            break;
             
         case SDKErrorNoContract:
-            return @"No contracts registered! You must have forgotten to set contractId on DMEClient.";
-            break;
+            return @"No contracts registered! You must have forgotten to set contractId property on DMEClient.";
             
         case SDKErrorDecryptionFailed:
             return @"Could not decrypt file content.";
             
         case SDKErrorInvalidData:
             return @"Could not serialize data.";
+            
+        case SDKErrorInvalidVersion:
+            return @"This SDK version is no longer supported.  Please update to a newer version.";
+        
+        case SDKErrorNoAppId:
+            return @"No application registered! Please set appId property on DMEClient.";
+            
+        case SDKErrorNoPrivateKeyHex:
+            return @"RSA private key hex not set. Please set the privateKeyHex property on DMEClient.";
+            break;
     }
 }
 

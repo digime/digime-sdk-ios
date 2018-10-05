@@ -1,8 +1,8 @@
 {
   "name": "DigiMeSDK",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "summary": "digi.me iOS Consent Access SDK",
-  "homepage": "http://www.digi.me",
+  "homepage": "https://github.com/digime/digime-sdk-ios",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -11,12 +11,12 @@
     "digi.me Ltd.": "ios@digi.me"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "10.0"
   },
   "source": {
     "git": "https://github.com/digime/digime-sdk-ios.git",
-    "branch": "2.1.0",
-    "tag": "2.1.0"
+    "branch": "2.1.1",
+    "tag": "2.1.1"
   },
   "source_files": "DigiMeSDK/**/*.{h,m}",
   "frameworks": [

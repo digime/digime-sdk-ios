@@ -29,7 +29,7 @@
         {
             if (error != nil)
             {
-                *error = [NSError authError:AuthErrorPrivateHex];
+                *error = [NSError sdkError:SDKErrorNoPrivateKeyHex];
             }
             
             return nil;
