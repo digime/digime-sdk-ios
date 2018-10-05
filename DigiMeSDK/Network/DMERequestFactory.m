@@ -8,10 +8,13 @@
 
 #import "DMERequestFactory.h"
 
+static NSString * const kDigiMeAPIVersion = @"v1.1";
+
 @interface DMERequestFactory()
 
 @property (nonatomic, strong) NSString *baseUrl;
 @property (nonatomic, strong, readwrite) DMEClientConfiguration *config;
+@property (nonatomic, strong) NSString *userAgentString;
 
 @end
 
@@ -34,10 +37,14 @@
 
 - (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@v1/permission-access/session", self.baseUrl]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/session", self.baseUrlPath]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     
-    NSDictionary *postKeys = @{@"appId" : appId, @"contractId" : contractId};
+    NSDictionary *postKeys = @{
+                               @"appId" : appId,
+                               @"contractId" : contractId,
+                               @"sdkAgent" : self.userAgentString,
+                               };
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postKeys options:0 error:nil];
     
     [request setHTTPBody:postData];
@@ -47,7 +54,7 @@
 
 - (NSURLRequest *)fileListRequestWithSessionKey:(NSString *)sessionKey
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@v1/permission-access/query/%@", self.baseUrl, sessionKey]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/query/%@", self.baseUrlPath, sessionKey]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     [request setHTTPMethod:@"GET"];
     return request;
@@ -55,13 +62,13 @@
 
 - (NSURLRequest *)fileRequestWithId:(NSString *)fileId sessionKey:(NSString *)sessionKey
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@v1/permission-access/query/%@/%@", self.baseUrl, sessionKey, fileId]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/query/%@/%@", self.baseUrlPath, sessionKey, fileId]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     [request setHTTPMethod:@"GET"];
     return request;
 }
 
-- (NSString*)baseUrl
+- (NSString *)baseUrl
 {
     if (!_baseUrl)
     {
@@ -73,15 +80,30 @@
             dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
         }
         
-        NSString *domain = dict[@"DME_DOMAIN"];
-        if (!domain)
-        {
-            domain = @"digi.me";
-        }
+        NSString *domain = dict[@"DME_DOMAIN"] ?: @"digi.me";
         _baseUrl = [NSString stringWithFormat:@"https://api.%@/", domain];
     }
     
     return _baseUrl;
+}
+
+- (NSString *)baseUrlPath
+{
+    return [NSString stringWithFormat:@"%@%@/permission-access", self.baseUrl, kDigiMeAPIVersion];
+}
+
+- (NSString *)userAgentString
+{
+    if (_userAgentString == nil)
+    {
+        NSString *sdkVersion = [[NSBundle bundleForClass:self.class] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+        UIDevice *device = UIDevice.currentDevice;
+        NSString *deviceModel = device.model;
+        NSString *osVersion = device.systemVersion;
+        _userAgentString = [NSString stringWithFormat:@"digi.me.sdk/%@ (%@; iOS; %@)", sdkVersion, deviceModel, osVersion];
+    }
+    
+    return _userAgentString;
 }
 
 @end
