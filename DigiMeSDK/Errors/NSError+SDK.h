@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 static NSString * const SDK_ERROR = @"me.digi.sdk";
 
 typedef NS_ENUM(NSInteger, SDKError) {
@@ -25,3 +27,5 @@ typedef NS_ENUM(NSInteger, SDKError) {
 + (NSError *)sdkError:(SDKError)sdkError;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -14,9 +14,9 @@
 /**
  Hex to Bytes conversion
 
- @return NSMutableData
+ @return NSData
  */
-- (NSMutableData *)hexToBytes;
+- (NSData *)hexToBytes;
 
 
 /**

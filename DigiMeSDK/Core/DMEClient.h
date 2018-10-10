@@ -13,24 +13,26 @@
 #import "DMEAPIClient.h"
 #import "CASessionManager.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface DMEClient : NSObject
 
 /**
  Your application Id. This property MUST be set before you can call authorize.
  */
-@property (nonatomic, copy) NSString *appId;
+@property (nonatomic, nullable, copy) NSString *appId;
 
 
 /**
  Your contract Id. This property MUST be set before you can call authorize.
  */
-@property (nonatomic, copy) NSString *contractId;
+@property (nonatomic, nullable, copy) NSString *contractId;
 
 
 /**
  Your rsa private key hex. This property MUST be set before you can call authorize.
  */
-@property (nonatomic, copy) NSString *privateKeyHex;
+@property (nonatomic, nullable, copy) NSString *privateKeyHex;
 
 
 /**
@@ -42,7 +44,7 @@
 /**
  DigiMe client delegate. This should only be set if you do not with to use DMEClientCallbacks.
  */
-@property (nonatomic, weak) id<DMEClientDelegate> delegate;
+@property (nonatomic, nullable, weak) id<DMEClientDelegate> delegate;
 
 
 /**
@@ -79,7 +81,7 @@
 
  @param authorizationCompletion AuthorizationCompletionBlock
  */
-- (void)authorizeWithCompletion:(AuthorizationCompletionBlock)authorizationCompletion;
+- (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion;
 
 
 /**
@@ -94,7 +96,7 @@
  NOTE: If using this method, the delegate must NOT be set.
  @param completion FileListCompletionBlock.
  */
-- (void)getFileListWithCompletion:(FileListCompletionBlock)completion;
+- (void)getFileListWithCompletion:(nullable FileListCompletionBlock)completion;
 
 
 /**
@@ -113,11 +115,21 @@
  @param fileId NSString id if the file to fetch.
  @param completion FileContentCompletionBlock
  */
-- (void)getFileWithId:(NSString *)fileId completion:(FileContentCompletionBlock)completion;
+- (void)getFileWithId:(NSString *)fileId completion:(nullable FileContentCompletionBlock)completion;
 
+/**
+ Fetches the accounts available for the authorized contract.
+ NOTE: If using this method, the delegate must be set.
+ */
 - (void)getAccounts;
 
-- (void)getAccountsWithCompletion:(AccountsCompletionBlock)completion;
+/**
+ Fetches the accounts available for the authorized contract.
+ NOTE: If using this method, the delegate must NOT be set.
+
+ @param completion AccountsCompletionBlock
+ */
+- (void)getAccountsWithCompletion:(nullable AccountsCompletionBlock)completion;
 
 /**
  Handles returning from digi.me application.
@@ -136,3 +148,5 @@
 - (BOOL)canOpenDigiMeApp;
 
 @end
+
+NS_ASSUME_NONNULL_END

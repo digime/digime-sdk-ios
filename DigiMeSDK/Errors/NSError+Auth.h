@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 static NSString * const DME_AUTHORIZATION_ERROR = @"me.digi.authorization";
 
 typedef NS_ENUM(NSInteger, AuthError) {
@@ -23,3 +25,5 @@ typedef NS_ENUM(NSInteger, AuthError) {
 + (NSError *)authError:(AuthError)authError;
 
 @end
+
+NS_ASSUME_NONNULL_END

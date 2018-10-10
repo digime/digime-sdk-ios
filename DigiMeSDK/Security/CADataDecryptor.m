@@ -3,6 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 05/02/2018.
+//  Copyright © 2018 DigiMe. All rights reserved.
 //
 
 #import "CADataDecryptor.h"

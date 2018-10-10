@@ -8,9 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIViewController (DMEExtension)
 
-+ (UIViewController *)topmostViewController;
++ (nullable UIViewController *)topmostViewController;
 
 @end
 
+NS_ASSUME_NONNULL_END
