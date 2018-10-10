@@ -25,19 +25,6 @@
 
 - (void)sessionWithCompletion:(AuthorizationCompletionBlock)completion
 {
-    //validation
-    if (!self.client.contractId)
-    {
-        completion(nil, [NSError sdkError:SDKErrorNoContract]);
-        return;
-    }
-    
-    if (![DMECryptoUtilities validateContractId:self.client.contractId])
-    {
-        completion(nil, [NSError sdkError:SDKErrorInvalidContract]);
-        return;
-    }
-    
     //create new session. We always retrieve new session when requesting authorization
     [self invalidateCurrentSession];
     
@@ -48,20 +35,11 @@
         
         self.currentSession = session;
         
-        if (session)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([self.client.delegate respondsToSelector:@selector(sessionCreated:)])
-                {
-                    [self.client.delegate sessionCreated:session];
-                }
-            });
-        }
-        else if (error)
+        if (error != nil)
         {
             NSLog(@"[CASessionManager] Failed to create session: %@", error.localizedDescription);
         }
-        else
+        else if (session == nil)
         {
             //something unknown occurred.
             error = [NSError authError:AuthErrorGeneral];
@@ -71,11 +49,10 @@
         
     } failure:^(NSError * _Nonnull error) {
         
-        if ([self.client.delegate respondsToSelector:@selector(sessionCreateFailed:)])
+        if (error.code == 403 && [error.userInfo[@"code"] isEqualToString:@"SDKVersionInvalid"])
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.client.delegate sessionCreateFailed:error];
-            });
+            completion(nil, [NSError sdkError:SDKErrorInvalidVersion]);
+            return;
         }
         
         completion(nil, error);

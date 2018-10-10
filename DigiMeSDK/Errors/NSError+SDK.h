@@ -11,10 +11,13 @@
 static NSString * const SDK_ERROR = @"me.digi.sdk";
 
 typedef NS_ENUM(NSInteger, SDKError) {
-    SDKErrorNoContract = 1,
-    SDKErrorInvalidContract = 2,
-    SDKErrorDecryptionFailed = 3,
-    SDKErrorInvalidData = 4
+    SDKErrorNoContract = 1,         // No contract id set
+    SDKErrorInvalidContract = 2,    // Contract id has invalid format
+    SDKErrorDecryptionFailed = 3,   // Could not decrypt file content
+    SDKErrorInvalidData = 4,        // Could not serialize data
+    SDKErrorInvalidVersion = 5,     // This SDK version is no longer supported
+    SDKErrorNoAppId = 6,            // No app id set
+    SDKErrorNoPrivateKeyHex = 7,    // No private key hex set
 };
 
 @interface NSError (SDK)

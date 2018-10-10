@@ -25,14 +25,6 @@
         case AuthErrorInvalidSession:
             return @"Invalid session.";
             break;
-        
-        case AuthErrorAppId:
-            return @"App Id is not set. Please set appId property of DMEClient and try again.";
-            break;
-            
-        case AuthErrorContract:
-            return @"Contract not set. Please set contractId property of DMEClient and try again.";
-            break;
             
         case AuthErrorCancelled:
             return @"User cancelled authorization.";
@@ -40,18 +32,6 @@
             
         case AuthErrorInProgress:
             return @"Authorization already in progress.";
-            break;
-            
-        case AuthErrorPrivateHex:
-            return @"RSA private key hex not set. Please set the privateKeyHex property of DMEClient and try again.";
-            break;
-            
-        case AuthErrorAppNotFound:
-            return @"Digi.me app is not installed.";
-            break;
-            
-        case AuthErrorNotOnboarded:
-            return @"Digi.me app is not connected to a library. SDK currently only supports CA when Digi.me app is conencted to a library.";
             break;
             
         case AuthErrorInvalidSessionKey:
