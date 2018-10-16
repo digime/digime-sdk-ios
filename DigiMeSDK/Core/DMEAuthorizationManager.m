@@ -19,6 +19,7 @@
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 static NSString * const kCARequest3dPartyAppName = @"CARequest3dPartyAppName";
+static NSString * const kCASdkVersion = @"CASdkVersion";
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
 static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
@@ -150,10 +151,13 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     
     NSURLQueryItem *appNamePublic = [NSURLQueryItem queryItemWithName:kCARequest3dPartyAppName value:appName];
     NSURLQueryItem *sessionKeyComponent = [NSURLQueryItem queryItemWithName:kCARequestSessionKey value:self.session.sessionKey];
-    NSURLQueryItem *registereAppIdComponent = [NSURLQueryItem queryItemWithName:kCARequestRegisteredAppID value:self.appId];
+    NSURLQueryItem *registeredAppIdComponent = [NSURLQueryItem queryItemWithName:kCARequestRegisteredAppID value:self.appId];
+    NSString *sdkVersion = [[NSBundle bundleForClass:self.class] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+
+    NSURLQueryItem *sdkVersionComponent = [NSURLQueryItem queryItemWithName:kCASdkVersion value:sdkVersion];
     NSURLComponents *components = [NSURLComponents new];
     
-    [components setQueryItems: @[sessionKeyComponent, registereAppIdComponent, appNamePublic]];
+    [components setQueryItems: @[sessionKeyComponent, registeredAppIdComponent, appNamePublic, sdkVersion]];
     [components setScheme:kDMEClientScheme];
     [components setHost:@"data"];
     
