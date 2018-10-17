@@ -19,6 +19,6 @@ Pod::Spec.new do |s|
   #s.default_subspec = 'Core'
   #s.subspec 'Core' do |ss|
   
-  end
+  #end
 
 end
