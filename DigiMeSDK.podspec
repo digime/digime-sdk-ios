@@ -19,6 +19,7 @@ Pod::Spec.new do |s|
   s.default_subspec = 'Core'
   s.subspec 'Core' do |ss|
     ss.source_files  	= "DigiMeSDK/**/*.{h,m}"
+    ss.preserve_path = "*"
   end
 
 end
