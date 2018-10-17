@@ -12,13 +12,13 @@ Pod::Spec.new do |s|
 	:branch => s.version,
 	:tag => s.version
   } 
-  s.source_files  	= "DigiMeSDK/**/*.{h,m}"
+  #s.source_files  	= "DigiMeSDK/**/*.{h,m}"
   s.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
   s.resources       = ["DigiMeSDK/Assets/*.{der}"]
   
-  #s.default_subspec = 'Core'
-  #s.subspec 'Core' do |ss|
-  
-  #end
+  s.default_subspec = 'Core'
+  s.subspec 'Core' do |ss|
+    ss.source_files  	= "DigiMeSDK/**/*.{h,m}"
+  end
 
 end
