@@ -7,10 +7,8 @@
 //
 
 #import "DMECryptoUtilities.h"
-#import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonKeyDerivation.h>
-#import "NSString+DMECrypto.h"
 #import "NSData+DMECrypto.h"
 
 @implementation DMECryptoUtilities
@@ -71,13 +69,6 @@
     NSString *hexKey = [data hexString];
     CFRelease(data_ref);
     return hexKey;
-}
-
-+ (BOOL)validateContractId:(NSString *)contractId
-{
-    NSRange range = [contractId rangeOfString:@"^[a-zA-Z0-9_]+$" options:NSRegularExpressionSearch];
-    
-    return (range.location != NSNotFound && contractId.length > 5 && contractId.length < 64);
 }
 
 @end

@@ -6,18 +6,19 @@
 //  Copyright © 2018 DigiMe. All rights reserved.
 //
 
+#import "DMEAPIClient.h"
 #import "DMEClient.h"
 #import "DMEAuthorizationManager.h"
 #import "CAFilesDeserializer.h"
 #import "CADataDecryptor.h"
 #import "DMECrypto.h"
+#import "DMEValidator.h"
 
 @interface DMEClient()
 
-@property (nonatomic, strong) DMEAuthorizationManager *authManager;
-@property (nonatomic, strong, readwrite) CASessionManager *sessionManager;
-@property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
-@property (nonatomic, strong) DMECrypto *crypto;
+@property (nonatomic, strong, readonly) DMEAuthorizationManager *authManager;
+@property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
+@property (nonatomic, strong, readonly) DMECrypto *crypto;
 
 @end
 
@@ -45,7 +46,7 @@
         _authManager = [DMEAuthorizationManager new];
         _clientConfiguration = [DMEClientConfiguration new];
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];
-        _sessionManager = [CASessionManager new];
+        _sessionManager = [[CASessionManager alloc] initWithApiClient:_apiClient];
         _crypto = [DMECrypto new];
     }
     
@@ -134,7 +135,7 @@
         return [NSError sdkError:SDKErrorNoContract];
     }
     
-    if (![DMECryptoUtilities validateContractId:self.contractId])
+    if (![DMEValidator validateContractId:self.contractId])
     {
         return [NSError sdkError:SDKErrorInvalidContract];
     }

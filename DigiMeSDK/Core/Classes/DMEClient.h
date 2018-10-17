@@ -10,7 +10,6 @@
 #import "DMEClientDelegate.h"
 #import "DMEClientConfiguration.h"
 #import "DMEClientCallbacks.h"
-#import "DMEAPIClient.h"
 #import "CASessionManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -50,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  DigiMe API client.
  */
-@property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
+//@property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
 
 
 /**
