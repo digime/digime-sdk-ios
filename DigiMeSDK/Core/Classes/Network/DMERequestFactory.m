@@ -43,7 +43,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.1";
     NSDictionary *postKeys = @{
                                @"appId" : appId,
                                @"contractId" : contractId,
-//                               @"sdkAgent" : self.userAgentString,
+                               @"sdkAgent" : self.userAgentString,
                                };
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postKeys options:0 error:nil];
     
@@ -100,7 +100,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.1";
         UIDevice *device = UIDevice.currentDevice;
         NSString *deviceModel = device.model;
         NSString *osVersion = device.systemVersion;
-        _userAgentString = [NSString stringWithFormat:@"digi.me.sdk/%@ (%@; iOS; %@)", sdkVersion, deviceModel, osVersion];
+        _userAgentString = [NSString stringWithFormat:@"digi.me.sdk/%@ (%@; ios; %@)", sdkVersion, deviceModel, osVersion];
     }
     
     return _userAgentString;
