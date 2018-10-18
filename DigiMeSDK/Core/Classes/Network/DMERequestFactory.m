@@ -43,7 +43,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.1";
     NSDictionary *postKeys = @{
                                @"appId" : appId,
                                @"contractId" : contractId,
-                               @"sdkAgent" : self.userAgentString,
+//                               @"sdkAgent" : self.userAgentString,
                                };
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postKeys options:0 error:nil];
     
