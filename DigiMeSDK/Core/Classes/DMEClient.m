@@ -11,6 +11,7 @@
 #import "DMEAuthorizationManager.h"
 #import "CAFilesDeserializer.h"
 #import "CADataDecryptor.h"
+#import "CASessionManager.h"
 #import "DMECrypto.h"
 #import "DMEValidator.h"
 
