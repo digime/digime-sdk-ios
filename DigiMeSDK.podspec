@@ -19,7 +19,10 @@ Pod::Spec.new do |s|
     ss.source_files  	= "DigiMeSDK/Core/Classes/**/*.{h,m}"
     ss.resources       = ["DigiMeSDK/Core/Assets/*.{der}"]
     ss.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
-    ss.private_header_files = 'DigiMeSDK/Core/Classes/Network/*.h', 'DigiMeSDK/Core/Classes/Security/*.h', 'DigiMeSDK/Core/Classes/Utility/*.h'
+    ss.private_header_files = 'DigiMeSDK/Core/Classes/Network/*.h', 
+    	'DigiMeSDK/Core/Classes/Security/*.h',
+    	'DigiMeSDK/Core/Classes/Utility/*.h',
+    	'DigiMeSDK/Core/Classes/DMEAuthorizationManager.h'
   end
 
 end
