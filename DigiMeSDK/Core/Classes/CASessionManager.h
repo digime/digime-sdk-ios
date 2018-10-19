@@ -12,6 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class DMEAPIClient;
 @class DMEClient;
 
 @interface CASessionManager : NSObject
@@ -19,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable, readonly) CASession *currentSession;
 
 @property (nonatomic, strong, readonly) DMEClient *client;
+
+- (instancetype)initWithApiClient:(DMEAPIClient *)apiClient;
 
 /**
  Will return session object. Either existing session will be re-used, or new session will be created.

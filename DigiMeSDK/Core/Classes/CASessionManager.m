@@ -21,6 +21,17 @@
 
 @implementation CASessionManager
 
+- (instancetype)initWithApiClient:(DMEAPIClient *)apiClient
+{
+    self = [super init];
+    if (self)
+    {
+        _apiClient = apiClient;
+    }
+    
+    return self;
+}
+
 #pragma mark - Public
 
 - (void)sessionWithCompletion:(AuthorizationCompletionBlock)completion
@@ -80,11 +91,6 @@
 - (DMEClient *)client
 {
     return [DMEClient sharedClient];
-}
-
-- (DMEAPIClient *)apiClient
-{
-    return self.client.apiClient;
 }
 
 @end

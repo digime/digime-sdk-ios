@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClientConfiguration.h"
-#import "DMEClientCallbacks.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
