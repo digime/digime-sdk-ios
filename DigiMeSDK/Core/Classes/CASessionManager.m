@@ -36,7 +36,13 @@
 
 - (void)sessionWithCompletion:(AuthorizationCompletionBlock)completion
 {
-    //create new session. We always retrieve new session when requesting authorization
+    if ([self isSessionValid])
+    {
+        completion(self.currentSession, nil);
+        return;
+    }
+    
+    //create new session.
     [self invalidateCurrentSession];
     
     [self.apiClient requestSessionWithSuccess:^(NSData * _Nonnull data) {
@@ -63,7 +69,6 @@
         if (error.code == 403 && [error.userInfo[@"code"] isEqualToString:@"SDKVersionInvalid"])
         {
             completion(nil, [NSError sdkError:SDKErrorInvalidVersion]);
-            return;
         }
         
         completion(nil, error);

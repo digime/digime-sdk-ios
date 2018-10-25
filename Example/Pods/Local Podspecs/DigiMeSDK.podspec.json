@@ -1,8 +1,8 @@
 {
   "name": "DigiMeSDK",
-  "version": "2.1.0",
+  "version": "2.4.0",
   "summary": "digi.me iOS Consent Access SDK",
-  "homepage": "http://www.digi.me",
+  "homepage": "https://github.com/digime/digime-sdk-ios",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -11,14 +11,14 @@
     "digi.me Ltd.": "ios@digi.me"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "10.0"
   },
   "source": {
     "git": "https://github.com/digime/digime-sdk-ios.git",
-    "branch": "2.1.0",
-    "tag": "2.1.0"
+    "branch": "2.4.0",
+    "tag": "2.4.0"
   },
-  "source_files": "DigiMeSDK/**/*.{h,m}",
+  "source_files": "DigiMeSDK/DigiMeSDK.h",
   "frameworks": [
     "Foundation",
     "UIKit",
@@ -26,7 +26,43 @@
     "Security",
     "StoreKit"
   ],
-  "resources": [
-    "DigiMeSDK/Assets/*.{der}"
+  "default_subspecs": "Core",
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": "DigiMeSDK/Core/Classes/**/*.{h,m}",
+      "resources": [
+        "DigiMeSDK/Core/Assets/*.{der}"
+      ],
+      "frameworks": [
+        "Foundation",
+        "UIKit",
+        "CoreGraphics",
+        "Security",
+        "StoreKit"
+      ],
+      "private_header_files": [
+        "DigiMeSDK/Core/Classes/Network/*.h",
+        "DigiMeSDK/Core/Classes/Utility/*.h",
+        "DigiMeSDK/Core/Classes/Security/*.h",
+        "DigiMeSDK/Core/Classes/DMEAuthorizationManager.h",
+        "DigiMeSDK/Core/Classes/DMEClient+Private.h"
+      ]
+    },
+    {
+      "name": "Postbox",
+      "source_files": "DigiMeSDK/Postbox/Classes/**/*.{h,m}",
+      "frameworks": [
+        "Foundation",
+        "UIKit",
+        "CoreGraphics",
+        "Security",
+        "StoreKit"
+      ],
+      "private_header_files": "DigiMeSDK/Core/Classes/DMEPostboxManager.h",
+      "xcconfig": {
+        "OTHER_CFLAGS": "$(inherited) -DDigiMeSDKPostbox"
+      }
+    }
   ]
 }

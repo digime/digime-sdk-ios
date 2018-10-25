@@ -7,9 +7,9 @@
 //
 
 #import "ViewController.h"
-#import "DMEClient.h"
-#import "DMECryptoUtilities.h"
 #import "LogViewController.h"
+
+@import DigiMeSDK;
 
 @interface ViewController () <DMEClientDelegate>
 
@@ -39,6 +39,7 @@
     self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"CA_RSA_PRIVATE_KEY" password:@"YOUR_P12_PASSWORD"];
     
     self.dmeClient.contractId = @"gzqYsbQ1V1XROWjmqiFLcH2AF1jvcKcg";
+    
     self.fileCount = 0;
     self.progress = 0;
     
@@ -52,14 +53,12 @@
     
     [self.logVC logMessage:@"Please press 'Start' to begin requesting data. Also make sure that digi.me app is installed and onboarded."];
     
-    
     self.navigationController.toolbarHidden = NO;
     NSArray *barButtonItems = @[
                                 [[UIBarButtonItem alloc] initWithTitle:@"➖" style:UIBarButtonItemStylePlain target:self action:@selector(zoomOut)],
                                 [[UIBarButtonItem alloc] initWithTitle:@"➕" style:UIBarButtonItemStylePlain target:self action:@selector(zoomIn)]
                                 ];
 
-    
     self.toolbarItems = barButtonItems;
 }
 
@@ -149,6 +148,11 @@
 - (void)accountsRetrieveFailed:(NSError *)error
 {
     [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
+}
+
+- (void)postboxCreationFailed:(NSError *)error
+{
+    [self.logVC logMessage:[NSString stringWithFormat:@"Failed to create postbox: %@", error.localizedDescription]];
 }
 
 @end

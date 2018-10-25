@@ -111,18 +111,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)getFileWithId:(NSString *)fileId completion:(nullable FileContentCompletionBlock)completion;
 
-/**
- Fetches the accounts available for the authorized contract.
- NOTE: If using this method, the delegate must be set.
- */
 - (void)getAccounts;
 
-/**
- Fetches the accounts available for the authorized contract.
- NOTE: If using this method, the delegate must NOT be set.
-
- @param completion AccountsCompletionBlock
- */
 - (void)getAccountsWithCompletion:(nullable AccountsCompletionBlock)completion;
 
 /**

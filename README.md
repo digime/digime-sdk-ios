@@ -24,12 +24,12 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
      * [Handling app callback](#handling-app-callback)
      * [Delegate Calls (authorize)](#delegate-calls-authorize)
   * [Fetching data](#fetching-data)
-     * [Fetching Accounts data](#fetching-accounts-data)
      * [Delegate Calls (fetching)](#delegate-calls-fetching)
      * [Automatic exponential backoff](#automatic-exponential-backoff)
   * [Fetched Files](#fetched-files)
      * [CAFileObject](#cafileobject) 
   * [Decryption](#decryption)
+  * [Postbox](#postbox---experimental)
   * [Example Objective-C](#example-objective-c)
   * [Example Swift](#example-swift)
   * [Migration Guide](#migration-guide)
@@ -69,7 +69,7 @@ This will sync latest repository changes, and install the DigiMeSDK pod.
 
 ### Directly from source code
 
-Download the [latest release](https://github.com/digime/digime-sdk-ios/releases). Extract the files from the archive, and copy `DigiMeSDK` folder into your project.
+Download the [latest release](https://github.com/digime/digime-ios-sdk/releases). Extract the files from the archive, and copy `DigiMeSDK` folder into your project.
 
 ## Configuring SDK usage
 
@@ -322,24 +322,6 @@ Finally you can use the returned file IDs to fetch their data:
 > if not using a delegate.
 
 
-### Fetching Accounts Data
-Additionally, you can also request to get account information for a user. This will return all accounts that data belongs to, which will contain service names, account identifiers and logos (of applicable).
-
-To fetch accounts data:
-
-```objective-c
-[[DMEClient sharedClient] getAccounts];
-```
-
-
-
-> Or
-> 
-> ```objective-c
-> [[DMEClient sharedClient] getAccountsWithCompletion:(CAAccounts * _Nullable accounts, NSError * _Nullable error){ ... }];
-> ```
-
-
 ### Delegate Calls (fetching)
 
 The following delegate methods can be implemented for the fetching stage:
@@ -377,21 +359,6 @@ The following delegate methods can be implemented for the fetching stage:
  @param error NSError
  */
 - (void)fileRetrieveFailed:(NSString *)fileId error:(NSError *)error;
-
-/**
- Executed when DMEClient has retrieved accounts available for the contract
-
- @param accounts available accounts
- */
-- (void)accountsRetrieved:(CAAccounts *)accounts;
-
-
-/**
- Executed when accounts could not be retrieved
-
- @param error error NSError
- */
-- (void)accountsRetrieveFailed:(NSError *)error;
 
 ```
 
@@ -494,6 +461,53 @@ This object also contains json serialized into properties, but its use and imple
 
 ## Decryption
 There are no additional steps necessary to decrypt the data, the SDK handles the decryption and cryptography management behind the scenes.
+
+
+## Postbox - EXPERIMENTAL
+
+**This functionality is part of an experimental API and is NOT officially supported in production yet! Please contact us for more information.**
+
+The SDK may also be used effectively in reverse, to send data to a user's digi.me library. This feature is known as Postbox. To use Postbox, you must first request consent from the user to send data to their library. This is done via a consent contract, similarly to receiving data. If consent is given, digi.me will callback to your app, similarly to consent access, with a postbox ID and session key. You may then use a RESTful interface to send data, normalised to our standards, to a user's 'Postbox'.
+
+As with our other APIs, there are 2 means to handle callbacks from the creation of a Postbox. The use of a block on the create method, or via a delegate. The method signatures are as follows:
+
+```objective-c
+- (void)createPostbox;
+- (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion;
+```
+
+The respective delegate callbacks look like this:
+
+```objective-c
+- (void)postboxCreationSucceeded:(CAPostbox *)postbox;
+- (void)postboxCreationFailed:(NSError *)error;
+```
+
+Once a user has authorized your Postbox request, you can use the following endpoint to 'post' data to the 'Postbox':
+
+`POST https://api.digi.me/v1.3/permission-access/postbox/<POSTBOX_ID>`
+
+You should provide the session key received from the SDK as a header:
+
+`sessionKey: <CA_SESSION_KEY>`
+
+The body of the request should be JSON in the following structure:
+
+```json
+{
+    "symmetricalKey": <BASE64_ENCODED_ENCRYPTION_KEY>,
+    "iv": <BASE16_ENCODED_ENCRYPTION_INITIALIZATION_VECTOR>,
+    "content": <BASE64_ENCODED_CONTENT>
+}
+```
+
+The content should be normalised to the format we expect. You can find more info on this in our [developer docs](https://developers.digi.me). This data should then be encrypted using AES256.
+
+If your submission is successful, you will receive a `200 OK` from our API. If not, you will receive a detailed error message with guidence on what needs addressing.
+
+When a user next open's digi.me, we will check your Postbox for any new data. If data is found, we'll parse it into our internal data structure and import it into the user's library.
+
+If data is left in the Postbox for more than 7 days without import, it will be flushed.
 
 ## Example Objective-C
 To see SDK in action in an Objective-C project:

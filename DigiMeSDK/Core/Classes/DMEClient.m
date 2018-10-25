@@ -8,20 +8,14 @@
 
 #import "DMEAPIClient.h"
 #import "DMEClient.h"
-#import "DMEAuthorizationManager.h"
 #import "CAFilesDeserializer.h"
 #import "CADataDecryptor.h"
 #import "CASessionManager.h"
 #import "DMECrypto.h"
 #import "DMEValidator.h"
-
-@interface DMEClient()
-
-@property (nonatomic, strong, readonly) DMEAuthorizationManager *authManager;
-@property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
-@property (nonatomic, strong, readonly) DMECrypto *crypto;
-
-@end
+#import "DMEAppCommunicator.h"
+#import "DMEAuthorizationManager.h"
+#import "DMEClient+Private.h"
 
 @implementation DMEClient
 @synthesize privateKeyHex = _privateKeyHex;
@@ -44,11 +38,16 @@
     self = [super init];
     if (self)
     {
-        _authManager = [DMEAuthorizationManager new];
         _clientConfiguration = [DMEClientConfiguration new];
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];
         _sessionManager = [[CASessionManager alloc] initWithApiClient:_apiClient];
         _crypto = [DMECrypto new];
+        
+        // Configure mercury appCommunicator.
+        _appCommunicator = [DMEAppCommunicator new];
+        DMEAuthorizationManager *authMgr = [[DMEAuthorizationManager alloc] initWithAppCommunicator:_appCommunicator];
+        [_appCommunicator addCallbackHandler:authMgr];
+        _authManager = authMgr;
     }
     
     return self;
@@ -84,15 +83,14 @@
     [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
+        //begin authorization
         if (session == nil)
         {
-            // Notify on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
                 if (authorizationCompletion)
                 {
                     authorizationCompletion(nil, errorToReport);
-                    return;
                 }
                 
                 // No completion block, so notify via delegate
@@ -102,10 +100,8 @@
                     [strongSelf.delegate sessionCreateFailed:errorToReport];
                 }
             });
-            
             return;
         }
-        
         // Can only notify session creation success via delegate, not completion block
         if ([strongSelf.delegate respondsToSelector:@selector(sessionCreated:)])
         {
@@ -118,7 +114,6 @@
         [strongSelf userAuthorizationWithCompletion:authorizationCompletion];
     }];
 }
-
 - (nullable NSError *)validateClient
 {
     if (!self.appId)
@@ -143,7 +138,6 @@
     
     return nil;
 }
-
 - (void)userAuthorizationWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
 {
     __weak __typeof(self)weakSelf = self;
@@ -430,12 +424,12 @@
 
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options
 {
-    return [self.authManager openURL:url options:options];
+    return [self.appCommunicator openURL:url options:options];
 }
 
 - (BOOL)canOpenDigiMeApp
 {
-    return [self.authManager canOpenDigiMeApp];
+    return [self.appCommunicator canOpenDigiMeApp];
 }
 
 @end

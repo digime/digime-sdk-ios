@@ -7,22 +7,33 @@ Pod::Spec.new do |s|
   s.license      	= { :type => "MIT", :file => "LICENSE" }
   s.author       	= { "digi.me Ltd." => "ios@digi.me" }
   s.platform     	= :ios, "10.0"
+  s.source       	= { :git => "https://github.com/digime/digime-sdk-ios.git", :branch => "#{s.version}", :tag => "#{s.version}" } 
+  s.source_files  	= "DigiMeSDK/DigiMeSDK.h"
+  s.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
+
   s.source       	= { 
-	:git => "https://github.com/digime/digime-sdk-ios.git",
-	:branch => s.version,
-	:tag => s.version
-  } 
+    :git => "https://github.com/digime/digime-sdk-ios.git",
+    :branch => s.version,
+    :tag => s.version
+    } 
+    
+    s.default_subspec = 'Core'
+    
+    s.subspec 'Core' do |ss|
+      ss.source_files  	= "DigiMeSDK/Core/Classes/**/*.{h,m}"
+      ss.resources       = ["DigiMeSDK/Core/Assets/*.{der}"]
+      ss.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
+      ss.private_header_files = 'DigiMeSDK/Core/Classes/Network/*.h', 
+        'DigiMeSDK/Core/Classes/Utility/*.h',
+        'DigiMeSDK/Core/Classes/Security/*.h',
+        'DigiMeSDK/Core/Classes/DMEAuthorizationManager.h',
+        'DigiMeSDK/Core/Classes/DMEClient+Private.h'
+    end
 
-  s.default_subspec = 'Core'
-  
-  s.subspec 'Core' do |ss|
-    ss.source_files  	= "DigiMeSDK/Core/Classes/**/*.{h,m}"
-    ss.resources       = ["DigiMeSDK/Core/Assets/*.{der}"]
-    ss.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
-    ss.private_header_files = 'DigiMeSDK/Core/Classes/Network/*.h', 
-    	'DigiMeSDK/Core/Classes/Security/*.h',
-    	'DigiMeSDK/Core/Classes/Utility/*.h',
-    	'DigiMeSDK/Core/Classes/DMEAuthorizationManager.h'
-  end
-
+    s.subspec 'Postbox' do |ss|
+      ss.source_files  	= "DigiMeSDK/Postbox/Classes/**/*.{h,m}"
+      ss.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
+      ss.private_header_files = 'DigiMeSDK/Core/Classes/DMEPostboxManager.h'
+      ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKPostbox' }
+    end
 end
