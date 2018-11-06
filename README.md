@@ -24,6 +24,7 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
      * [Handling app callback](#handling-app-callback)
      * [Delegate Calls (authorize)](#delegate-calls-authorize)
   * [Fetching data](#fetching-data)
+  * [Fetching Accounts data](#fetching-accounts-data)
      * [Delegate Calls (fetching)](#delegate-calls-fetching)
      * [Automatic exponential backoff](#automatic-exponential-backoff)
   * [Fetched Files](#fetched-files)
@@ -69,7 +70,7 @@ This will sync latest repository changes, and install the DigiMeSDK pod.
 
 ### Directly from source code
 
-Download the [latest release](https://github.com/digime/digime-ios-sdk/releases). Extract the files from the archive, and copy `DigiMeSDK` folder into your project.
+Download the [latest release](https://github.com/digime/digime-sdk-ios/releases). Extract the files from the archive, and copy `DigiMeSDK` folder into your project.
 
 ## Configuring SDK usage
 
@@ -322,6 +323,22 @@ Finally you can use the returned file IDs to fetch their data:
 > if not using a delegate.
 
 
+### Fetching Accounts Data
+Additionally, you can also request to get account information for a user. This will return all accounts that data belongs to, which will contain service names, account identifiers and logos (of applicable).
+
+To fetch accounts data:
+
+```objective-c
+[[DMEClient sharedClient] getAccounts];
+```
+
+> Or
+> 
+> ```objective-c
+> [[DMEClient sharedClient] getAccountsWithCompletion:(CAAccounts * _Nullable accounts, NSError * _Nullable error){ ... }];
+> ```
+
+
 ### Delegate Calls (fetching)
 
 The following delegate methods can be implemented for the fetching stage:
@@ -359,6 +376,21 @@ The following delegate methods can be implemented for the fetching stage:
  @param error NSError
  */
 - (void)fileRetrieveFailed:(NSString *)fileId error:(NSError *)error;
+
+/**
+Executed when DMEClient has retrieved accounts available for the contract
+
+@param accounts available accounts
+*/
+- (void)accountsRetrieved:(CAAccounts *)accounts;
+
+
+/**
+Executed when accounts could not be retrieved
+
+@param error error NSError
+*/
+- (void)accountsRetrieveFailed:(NSError *)error;
 
 ```
 

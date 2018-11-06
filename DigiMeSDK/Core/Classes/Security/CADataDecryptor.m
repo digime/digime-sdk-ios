@@ -50,6 +50,19 @@
         
         return decryptedData;
     }
+    else
+        {
+            NSError *serializationError;
+            NSData *unencryptedData = [NSJSONSerialization dataWithJSONObject:json[@"fileContent"] options:kNilOptions error:&serializationError];
+            
+            if (!unencryptedData)
+            {
+                *error = [NSError sdkError:SDKErrorDecryptionFailed];
+                return nil;
+            }
+            
+            return unencryptedData;
+        }
     
     return nil;
 }

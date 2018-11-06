@@ -80,6 +80,7 @@
     
     //get session
     __weak __typeof(self)weakSelf = self;
+    //begin authorization
     [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -91,6 +92,7 @@
                 if (authorizationCompletion)
                 {
                     authorizationCompletion(nil, errorToReport);
+                    return;
                 }
                 
                 // No completion block, so notify via delegate
@@ -114,6 +116,7 @@
         [strongSelf userAuthorizationWithCompletion:authorizationCompletion];
     }];
 }
+
 - (nullable NSError *)validateClient
 {
     if (!self.appId)
@@ -138,6 +141,7 @@
     
     return nil;
 }
+
 - (void)userAuthorizationWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
 {
     __weak __typeof(self)weakSelf = self;

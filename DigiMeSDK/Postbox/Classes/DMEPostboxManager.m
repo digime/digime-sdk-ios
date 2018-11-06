@@ -16,7 +16,6 @@ static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
 static NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey";
 static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
-static NSString * const kCASdkVersion = @"CASdkVersion";
 
 @interface DMEPostboxManager()
 
@@ -103,7 +102,6 @@ static NSString * const kCASdkVersion = @"CASdkVersion";
     NSDictionary *params = @{
                              kCARequestSessionKey: self.session.sessionKey,
                              kCARequestRegisteredAppID: self.sessionManager.client.appId,
-                             kCASdkVersion: [[NSBundle bundleForClass:self.class] objectForInfoDictionaryKey: @"CFBundleShortVersionString"]
                              };
     
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];

@@ -7,7 +7,7 @@
 
 #import "DMEClient.h"
 
-@class DMECrypto, DMEAuthorizationManager, DMEAPIClient;
+@class DMECrypto, DMEAuthorizationManager, DMEAPIClient, DMEAppCommunicator;
 
 @interface DMEClient ()
 

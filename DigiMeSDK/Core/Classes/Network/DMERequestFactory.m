@@ -37,7 +37,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.1";
 
 - (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@v1/permission-access/session", self.baseUrlPath]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/session", self.baseUrlPath]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     
     NSDictionary *postKeys = @{
@@ -54,7 +54,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.1";
 
 - (NSURLRequest *)fileListRequestWithSessionKey:(NSString *)sessionKey
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@v1/permission-access/query/%@", self.baseUrlPath, sessionKey]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/query/%@", self.baseUrlPath, sessionKey]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     [request setHTTPMethod:@"GET"];
     return request;
@@ -62,7 +62,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.1";
 
 - (NSURLRequest *)fileRequestWithId:(NSString *)fileId sessionKey:(NSString *)sessionKey
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@v1/permission-access/query/%@/%@", self.baseUrlPath, sessionKey, fileId]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/query/%@/%@", self.baseUrlPath, sessionKey, fileId]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     [request setHTTPMethod:@"GET"];
     return request;
@@ -91,6 +91,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.1";
 {
     return [NSString stringWithFormat:@"%@%@/permission-access", self.baseUrl, kDigiMeAPIVersion];
 }
+
 - (NSString *)userAgentString
 {
     if (_userAgentString == nil)

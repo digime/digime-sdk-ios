@@ -10,16 +10,19 @@
 #import "DMECryptoUtilities.h"
 #import "DMEAPIClient.h"
 #import "CASessionDeserializer.h"
-#import "DMEClient.h"
+#import "DMEClient+Private.h"
+#import "DMEValidator.h"
 
 @interface CASessionManager()
 
-@property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
+@property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
 @property (nonatomic, strong, readwrite) CASession *currentSession;
 
 @end
 
 @implementation CASessionManager
+
+#pragma mark - Public
 
 - (instancetype)initWithApiClient:(DMEAPIClient *)apiClient
 {
@@ -32,17 +35,22 @@
     return self;
 }
 
-#pragma mark - Public
-
 - (void)sessionWithCompletion:(AuthorizationCompletionBlock)completion
 {
-    if ([self isSessionValid])
+    //validation
+    if (!self.client.contractId)
     {
-        completion(self.currentSession, nil);
+        completion(nil, [NSError sdkError:SDKErrorNoContract]);
         return;
     }
     
-    //create new session.
+    if (![DMEValidator validateContractId:self.client.contractId])
+    {
+        completion(nil, [NSError sdkError:SDKErrorInvalidContract]);
+        return;
+    }
+    
+    //create new session. We always retrieve new session when requesting authorization
     [self invalidateCurrentSession];
     
     [self.apiClient requestSessionWithSuccess:^(NSData * _Nonnull data) {
@@ -52,11 +60,20 @@
         
         self.currentSession = session;
         
-        if (error != nil)
+        if (session)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([self.client.delegate respondsToSelector:@selector(sessionCreated:)])
+                {
+                    [self.client.delegate sessionCreated:session];
+                }
+            });
+        }
+        else if (error)
         {
             NSLog(@"[CASessionManager] Failed to create session: %@", error.localizedDescription);
         }
-        else if (session == nil)
+        else
         {
             //something unknown occurred.
             error = [NSError authError:AuthErrorGeneral];
@@ -66,9 +83,11 @@
         
     } failure:^(NSError * _Nonnull error) {
         
-        if (error.code == 403 && [error.userInfo[@"code"] isEqualToString:@"SDKVersionInvalid"])
+        if ([self.client.delegate respondsToSelector:@selector(sessionCreateFailed:)])
         {
-            completion(nil, [NSError sdkError:SDKErrorInvalidVersion]);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.client.delegate sessionCreateFailed:error];
+            });
         }
         
         completion(nil, error);
@@ -96,6 +115,11 @@
 - (DMEClient *)client
 {
     return [DMEClient sharedClient];
+}
+
+- (DMEAPIClient *)apiClient
+{
+    return self.client.apiClient;
 }
 
 @end

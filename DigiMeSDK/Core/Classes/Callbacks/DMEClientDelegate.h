@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Executed when a Postbox is created successfuly.
+ Executed when a Postbox is created successfully.
 
  @param postbox The created Postbox.
  */

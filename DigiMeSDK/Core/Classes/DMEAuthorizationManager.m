@@ -19,7 +19,6 @@
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
-static NSString * const kCASdkVersion = @"CASdkVersion";
 
 @interface DMEAuthorizationManager()
 
@@ -105,7 +104,6 @@ static NSString * const kCASdkVersion = @"CASdkVersion";
     NSDictionary *params = @{
                              kCARequestSessionKey: self.session.sessionKey,
                              kCARequestRegisteredAppID: self.sessionManager.client.appId,
-                             kCASdkVersion: [[NSBundle bundleForClass:self.class] objectForInfoDictionaryKey: @"CFBundleShortVersionString"]
                              };
     
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];

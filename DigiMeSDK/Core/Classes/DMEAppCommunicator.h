@@ -24,7 +24,6 @@ typedef NSString DMEOpenAction;
 
 @end
 
-// Not a typo.
 @protocol DMEAppCallbackHandler <NSObject>
 
 @property (weak, nonatomic) DMEAppCommunicator *appCommunicator;

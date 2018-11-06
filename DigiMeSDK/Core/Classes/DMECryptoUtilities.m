@@ -70,4 +70,5 @@
     CFRelease(data_ref);
     return hexKey;
 }
+
 @end

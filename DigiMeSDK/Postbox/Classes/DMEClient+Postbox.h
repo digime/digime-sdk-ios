@@ -2,7 +2,8 @@
 //  DMEClient+Postbox.h
 //  DigiMeSDK
 //
-//  Created by Jacob King on 16/10/2018.
+//  Created on 16/10/2018.
+//  Copyright © 2018 DigiMe. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

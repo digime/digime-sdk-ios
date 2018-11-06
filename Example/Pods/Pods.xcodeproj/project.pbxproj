@@ -16,6 +16,12 @@
 		129679F18CBAE13DC61B166ADFB03F30 /* DMERequestFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F4127E74F99091058F6A4B99A391731 /* DMERequestFactory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		13FBF76AA0F0C957776AD190C76AC1DD /* NSData+DMECrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2F35290D91596A48064F998BED088D /* NSData+DMECrypto.m */; };
 		14DCD44E4EC7FE39F2EE143733085B7A /* CAFilesDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = B1EBF212D1B61F2BC96CFDC144546036 /* CAFilesDeserializer.m */; };
+		164D4BF52190591100B51EC3 /* DMEClient+Postbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 164D4BEF2190591100B51EC3 /* DMEClient+Postbox.m */; };
+		164D4BF62190591100B51EC3 /* DMEPostboxManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 164D4BF02190591100B51EC3 /* DMEPostboxManager.h */; };
+		164D4BF72190591100B51EC3 /* CAPostbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 164D4BF12190591100B51EC3 /* CAPostbox.m */; };
+		164D4BF82190591100B51EC3 /* DMEPostboxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 164D4BF22190591100B51EC3 /* DMEPostboxManager.m */; };
+		164D4BF92190591100B51EC3 /* DMEClient+Postbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 164D4BF32190591100B51EC3 /* DMEClient+Postbox.h */; };
+		164D4BFA2190591100B51EC3 /* CAPostbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 164D4BF42190591100B51EC3 /* CAPostbox.h */; };
 		18E32A6134D51F82B0CD7AFCBD539E50 /* apiCert2.der in Resources */ = {isa = PBXBuildFile; fileRef = B748F68DC6075C1A1FC57CF07FF9FBC9 /* apiCert2.der */; };
 		18F0E5F2B83828497933B7C425459657 /* DMEAPIClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 17F745E6695A0586FC260CB6A82CEC97 /* DMEAPIClient.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1DB84687CB5C848B2CF419788686737E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC05D01040287F247C6B8F208CD5AD21 /* Foundation.framework */; };
@@ -101,7 +107,13 @@
 /* Begin PBXFileReference section */
 		018459EFB1E54BC3E13845DC436A953A /* CAFileObject.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFileObject.m; sourceTree = "<group>"; };
 		0BE49444AA233E7C756799C584CC4236 /* DMEValidator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEValidator.m; sourceTree = "<group>"; };
-		15EA0E3B1A037D49B448114BDBDF70D2 /* Pods_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExample_Tests.framework; path = "Pods-DigiMeSDKExample_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		15EA0E3B1A037D49B448114BDBDF70D2 /* Pods_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		164D4BEF2190591100B51EC3 /* DMEClient+Postbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DMEClient+Postbox.m"; sourceTree = "<group>"; };
+		164D4BF02190591100B51EC3 /* DMEPostboxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMEPostboxManager.h; sourceTree = "<group>"; };
+		164D4BF12190591100B51EC3 /* CAPostbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAPostbox.m; sourceTree = "<group>"; };
+		164D4BF22190591100B51EC3 /* DMEPostboxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMEPostboxManager.m; sourceTree = "<group>"; };
+		164D4BF32190591100B51EC3 /* DMEClient+Postbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DMEClient+Postbox.h"; sourceTree = "<group>"; };
+		164D4BF42190591100B51EC3 /* CAPostbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAPostbox.h; sourceTree = "<group>"; };
 		17F745E6695A0586FC260CB6A82CEC97 /* DMEAPIClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEAPIClient.h; sourceTree = "<group>"; };
 		193582F1F4C5C668532B6D7B6E495C05 /* DMECryptoUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DMECryptoUtilities.h; path = DigiMeSDK/Core/Classes/DMECryptoUtilities.h; sourceTree = "<group>"; };
 		1ACACC65F4167D35E4B3F8148C95FE9D /* DMEAPIClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEAPIClient.m; sourceTree = "<group>"; };
@@ -117,14 +129,14 @@
 		48D7925D7D6CF7F3712F1A85F1D33E6D /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		48F27312CCE106186865E6DC50E24778 /* NSData+DMECrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSData+DMECrypto.h"; sourceTree = "<group>"; };
 		498C5B21399B831884B38F66D6BBD31A /* NSError+Auth.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+Auth.m"; sourceTree = "<group>"; };
-		4A40F77EB4A209973D84AA77C54E1B47 /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = DigiMeSDK.framework; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A40F77EB4A209973D84AA77C54E1B47 /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D4211511486AD1BD33E33F70AF0FA20 /* Pods-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		4DA5E73BADA25F7E9C76FE18EAB58002 /* CASession.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CASession.m; sourceTree = "<group>"; };
 		4EC125EBA6CDF6C204218B87A34AA6E1 /* CASessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CASessionManager.h; path = DigiMeSDK/Core/Classes/CASessionManager.h; sourceTree = "<group>"; };
 		52157A4DCAD318B56B26CF30B7342934 /* DMEClient+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "DMEClient+Private.h"; path = "DigiMeSDK/Core/Classes/DMEClient+Private.h"; sourceTree = "<group>"; };
 		56BB0E401C914CAA57392027E6EF4E9F /* NSString+DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSString+DMECrypto.m"; sourceTree = "<group>"; };
 		58E70AAD060031EFB49B534AE67DFA42 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
-		5A215EBF96C6EC8DAFED935B5F2A4790 /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExample.framework; path = "Pods-DigiMeSDKExample.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A215EBF96C6EC8DAFED935B5F2A4790 /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B499D0861AC302828E2E48FFEF36413 /* DMEValidator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEValidator.h; sourceTree = "<group>"; };
 		5C516A23DF351CC71E4923BA03448F5E /* CASession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASession.h; sourceTree = "<group>"; };
 		5DCC967A601A8727A4128330C273F16A /* Pods-DigiMeSDKExample_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExample_Tests-frameworks.sh"; sourceTree = "<group>"; };
@@ -138,11 +150,11 @@
 		82826CBD59E21C9AC18F09671C2C230F /* DMECryptoUtilities.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DMECryptoUtilities.m; path = DigiMeSDK/Core/Classes/DMECryptoUtilities.m; sourceTree = "<group>"; };
 		83319CD721C38CBBB978693F141D69B1 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84348944ADD5B6CF16C901FBC768AE12 /* UIViewController+DMEExtension.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DMEExtension.m"; sourceTree = "<group>"; };
-		85C823D998CE4879D0FCA2237EFD5683 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		85C823D998CE4879D0FCA2237EFD5683 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		8DAA45FCCA4CB900C079DD798E0DCCB5 /* DMEClientDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientDelegate.h; sourceTree = "<group>"; };
 		903C548AA7733E2E547DBC2648F7D05B /* Pods-DigiMeSDKExample_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExample_Tests-resources.sh"; sourceTree = "<group>"; };
 		92268D4C58F067CC00ECB51717B55FAC /* Pods-DigiMeSDKExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DigiMeSDKExample-acknowledgements.markdown"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		979318EAC1D6176113A9A410CA6805CB /* DMECrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMECrypto.h; sourceTree = "<group>"; };
 		991FC83205BA6E71248B191A4AB50AD0 /* NSError+API.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSError+API.h"; sourceTree = "<group>"; };
 		9AA748A2E55CDED4384F813C5349A4ED /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -151,24 +163,24 @@
 		A55BADEDED1B01C7F6C087FB261637DA /* DMEAppCommunicator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DMEAppCommunicator.h; path = DigiMeSDK/Core/Classes/DMEAppCommunicator.h; sourceTree = "<group>"; };
 		A70BD0A7565EF6C5D8BB0946735A5F5A /* CAFileObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFileObject.h; sourceTree = "<group>"; };
 		A74C3899511C3224F901F9649A1307D3 /* DMECertificatePinner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMECertificatePinner.h; sourceTree = "<group>"; };
-		A77C8F7629EE6E6C50DF74BAF1682EEC /* DigiMeSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A77C8F7629EE6E6C50DF74BAF1682EEC /* DigiMeSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A877B8F7E607ACB957DBCAFD43B2801D /* Pods-DigiMeSDKExample-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExample-frameworks.sh"; sourceTree = "<group>"; };
 		AC626C41F7C6F3FD0A287F866836E9D3 /* DMEAuthorizationManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DMEAuthorizationManager.m; path = DigiMeSDK/Core/Classes/DMEAuthorizationManager.m; sourceTree = "<group>"; };
 		ADEEC70239EB1FFB4C575CCDE4143E93 /* DigiMeSDK.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = DigiMeSDK.modulemap; sourceTree = "<group>"; };
 		AF196917083F4930D81D9C57ED37D800 /* Pods-DigiMeSDKExample-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DigiMeSDKExample-umbrella.h"; sourceTree = "<group>"; };
 		B1EBF212D1B61F2BC96CFDC144546036 /* CAFilesDeserializer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFilesDeserializer.m; sourceTree = "<group>"; };
 		B4B98203B32E512D886963190694C786 /* CAFile.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFile.m; sourceTree = "<group>"; };
-		B748F68DC6075C1A1FC57CF07FF9FBC9 /* apiCert2.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert2.der; path = DigiMeSDK/Core/Assets/apiCert2.der; sourceTree = "<group>"; };
-		B966C496C4E5182A7A4E6089DE82A5B6 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		B748F68DC6075C1A1FC57CF07FF9FBC9 /* apiCert2.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert2.der; path = DigiMeSDK/Core/Assets/apiCert2.der; sourceTree = "<group>"; };
+		B966C496C4E5182A7A4E6089DE82A5B6 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BAF55347CC93E2C5F823763A2A6A6ED7 /* DMEClient.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DMEClient.m; path = DigiMeSDK/Core/Classes/DMEClient.m; sourceTree = "<group>"; };
 		BC05D01040287F247C6B8F208CD5AD21 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		BEBE566B5531C4C4BC42555480779FB7 /* DMEClientCallbacks.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientCallbacks.h; sourceTree = "<group>"; };
 		C25DF8004D0865017684626946FFD2DB /* DigiMeSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DigiMeSDK.xcconfig; sourceTree = "<group>"; };
 		C613626E9D9E7FD9FFA7B3B45EF4DFED /* DMEClientConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DMEClientConfiguration.h; path = DigiMeSDK/Core/Classes/DMEClientConfiguration.h; sourceTree = "<group>"; };
-		C6224B6D28033B0D135373AA91F1DCA0 /* apiCert3.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert3.der; path = DigiMeSDK/Core/Assets/apiCert3.der; sourceTree = "<group>"; };
+		C6224B6D28033B0D135373AA91F1DCA0 /* apiCert3.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert3.der; path = DigiMeSDK/Core/Assets/apiCert3.der; sourceTree = "<group>"; };
 		C6ADC6D3059A393A8DE34A93D1F1DE9B /* NSError+SDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSError+SDK.h"; sourceTree = "<group>"; };
 		C85855ADC829612A053DEEEF39C95F2E /* Pods-DigiMeSDKExample.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-DigiMeSDKExample.modulemap"; sourceTree = "<group>"; };
-		CB730B86675859FA42AA7C55410CCB6D /* apiCert1.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert1.der; path = DigiMeSDK/Core/Assets/apiCert1.der; sourceTree = "<group>"; };
+		CB730B86675859FA42AA7C55410CCB6D /* apiCert1.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert1.der; path = DigiMeSDK/Core/Assets/apiCert1.der; sourceTree = "<group>"; };
 		CC816EA30C37D2FE5FF20EB24F206AD3 /* DMEClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DMEClient.h; path = DigiMeSDK/Core/Classes/DMEClient.h; sourceTree = "<group>"; };
 		CDC3876C565A3F9FC733E748D1C54847 /* DMEClientConfiguration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DMEClientConfiguration.m; path = DigiMeSDK/Core/Classes/DMEClientConfiguration.m; sourceTree = "<group>"; };
 		D0A0C6A780FF6BB3DB111C6F54F0DABE /* Pods-DigiMeSDKExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExample.release.xcconfig"; sourceTree = "<group>"; };
@@ -240,6 +252,28 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		164D4BED2190591100B51EC3 /* Postbox */ = {
+			isa = PBXGroup;
+			children = (
+				164D4BEE2190591100B51EC3 /* Classes */,
+			);
+			name = Postbox;
+			path = DigiMeSDK/Postbox;
+			sourceTree = "<group>";
+		};
+		164D4BEE2190591100B51EC3 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				164D4BEF2190591100B51EC3 /* DMEClient+Postbox.m */,
+				164D4BF02190591100B51EC3 /* DMEPostboxManager.h */,
+				164D4BF12190591100B51EC3 /* CAPostbox.m */,
+				164D4BF22190591100B51EC3 /* DMEPostboxManager.m */,
+				164D4BF32190591100B51EC3 /* DMEClient+Postbox.h */,
+				164D4BF42190591100B51EC3 /* CAPostbox.h */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		16F1496C87E014CCEA362069CA45F23B /* Callbacks */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,6 +333,7 @@
 			children = (
 				DD6C41C974C5646DBAE883514B5166CE /* DigiMeSDK.h */,
 				FF5EF1E96CA7C0BB95D7346CCF8F7AFD /* Core */,
+				164D4BED2190591100B51EC3 /* Postbox */,
 				85ED18F94B56E04751245938DAEE2337 /* Pod */,
 				DF0AEFE0C884153CE586962494AD2FFE /* Support Files */,
 			);
@@ -510,6 +545,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				164D4BF92190591100B51EC3 /* DMEClient+Postbox.h in Headers */,
 				2359D82EF6F4FF4C7021DEEA06B67FE2 /* CAAccounts.h in Headers */,
 				37D40F3CAB0797DEDEFC45CE8BC59CB5 /* CADataDecryptor.h in Headers */,
 				31A7AFCA377892F28C8E6A6649A08CE8 /* CAFile.h in Headers */,
@@ -519,6 +555,7 @@
 				E5ED3FA3ED070DDA240E5CE4538CD458 /* CASession.h in Headers */,
 				20669F13C308067DA34384867B253D20 /* CASessionDeserializer.h in Headers */,
 				24FBFF1A41B407B2404D04ECEC50FF28 /* CASessionManager.h in Headers */,
+				164D4BF62190591100B51EC3 /* DMEPostboxManager.h in Headers */,
 				0B15BC5BAF027C2B2C0234F179D63C6A /* DigiMeSDK-umbrella.h in Headers */,
 				4841DE955C6C2531D92FF8255F88567C /* DigiMeSDK.h in Headers */,
 				18F0E5F2B83828497933B7C425459657 /* DMEAPIClient.h in Headers */,
@@ -540,6 +577,7 @@
 				D8A61043B197EBB0039078F698752BCC /* NSError+Auth.h in Headers */,
 				FC3913AA48213F81CA812747D0F42735 /* NSError+SDK.h in Headers */,
 				95F3DE70A8FDB24B30994717787EB6CD /* NSString+DMECrypto.h in Headers */,
+				164D4BFA2190591100B51EC3 /* CAPostbox.h in Headers */,
 				06DA70C8A7B267232A7ABA51D7780101 /* UIViewController+DMEExtension.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -672,11 +710,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DD8B636993D7AB5910E5F45D2215F19 /* CAAccounts.m in Sources */,
+				164D4BF72190591100B51EC3 /* CAPostbox.m in Sources */,
 				717AF134D4CD2478F82CF7BE2498858F /* CADataDecryptor.m in Sources */,
 				9AD36DA98AD1DCABD6212BE0C242AD9A /* CAFile.m in Sources */,
 				D83EE911D9F42282C3489FCE3DCF8B22 /* CAFileObject.m in Sources */,
 				509D3C41685726A51D94C4960B1CDB47 /* CAFiles.m in Sources */,
+				164D4BF52190591100B51EC3 /* DMEClient+Postbox.m in Sources */,
 				14DCD44E4EC7FE39F2EE143733085B7A /* CAFilesDeserializer.m in Sources */,
+				164D4BF82190591100B51EC3 /* DMEPostboxManager.m in Sources */,
 				24DB7FAA304612E1970EE932192E056E /* CASession.m in Sources */,
 				CDC8EE473FE087D20A5575A9960CAABE /* CASessionDeserializer.m in Sources */,
 				FB1B56C2F9A72AF0856C918AF1E1E44F /* CASessionManager.m in Sources */,
