@@ -50,7 +50,7 @@
         {
             NSLog(@"[CASessionManager] Failed to create session: %@", error.localizedDescription);
         }
-        else
+        else if (session == nil)
         {
             //something unknown occurred.
             error = [NSError authError:AuthErrorGeneral];
