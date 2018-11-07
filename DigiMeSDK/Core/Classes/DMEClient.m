@@ -80,13 +80,12 @@
     
     //get session
     __weak __typeof(self)weakSelf = self;
-    //begin authorization
     [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
-        //begin authorization
         if (session == nil)
         {
+            // Notify on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
                 if (authorizationCompletion)
@@ -104,6 +103,7 @@
             });
             return;
         }
+        
         // Can only notify session creation success via delegate, not completion block
         if ([strongSelf.delegate respondsToSelector:@selector(sessionCreated:)])
         {
