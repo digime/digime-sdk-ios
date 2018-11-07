@@ -11,11 +11,10 @@
 #import "DMEAPIClient.h"
 #import "CASessionDeserializer.h"
 #import "DMEClient+Private.h"
-#import "DMEValidator.h"
 
 @interface CASessionManager()
 
-@property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
+@property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
 @property (nonatomic, strong, readwrite) CASession *currentSession;
 
 @end
@@ -37,19 +36,6 @@
 
 - (void)sessionWithCompletion:(AuthorizationCompletionBlock)completion
 {
-    //validation
-    if (!self.client.contractId)
-    {
-        completion(nil, [NSError sdkError:SDKErrorNoContract]);
-        return;
-    }
-    
-    if (![DMEValidator validateContractId:self.client.contractId])
-    {
-        completion(nil, [NSError sdkError:SDKErrorInvalidContract]);
-        return;
-    }
-    
     //create new session. We always retrieve new session when requesting authorization
     [self invalidateCurrentSession];
     
@@ -60,16 +46,7 @@
         
         self.currentSession = session;
         
-        if (session)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([self.client.delegate respondsToSelector:@selector(sessionCreated:)])
-                {
-                    [self.client.delegate sessionCreated:session];
-                }
-            });
-        }
-        else if (error)
+        if (error != nil)
         {
             NSLog(@"[CASessionManager] Failed to create session: %@", error.localizedDescription);
         }
@@ -83,13 +60,12 @@
         
     } failure:^(NSError * _Nonnull error) {
         
-        if ([self.client.delegate respondsToSelector:@selector(sessionCreateFailed:)])
+        if (error.code == 403 && [error.userInfo[@"code"] isEqualToString:@"SDKVersionInvalid"])
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.client.delegate sessionCreateFailed:error];
-            });
+            completion(nil, [NSError sdkError:SDKErrorInvalidVersion]);
+            return;
         }
-        
+
         completion(nil, error);
     }];
 }
@@ -100,7 +76,8 @@
 {
     return (self.currentSession && self.currentSession.expiryDate && [self.currentSession.expiryDate compare:[NSDate date]] == NSOrderedDescending && [self.currentSession.sessionId isEqualToString:self.client.contractId]);
 }
--(BOOL)isSessionKeyValid:(NSString *)sessionKey
+
+- (BOOL)isSessionKeyValid:(NSString *)sessionKey
 {
     return (sessionKey.length > 0 && [sessionKey isEqualToString:self.currentSession.sessionKey]);
 }
@@ -115,11 +92,6 @@
 - (DMEClient *)client
 {
     return [DMEClient sharedClient];
-}
-
-- (DMEAPIClient *)apiClient
-{
-    return self.client.apiClient;
 }
 
 @end
