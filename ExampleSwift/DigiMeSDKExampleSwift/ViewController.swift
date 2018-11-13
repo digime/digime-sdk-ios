@@ -25,11 +25,11 @@ class ViewController: UIViewController {
     
     // - INSERT your App ID here -
     
-    dmeClient.appId = "YOUR_APP_ID"
+    dmeClient.appId = "bUhFT9fJYUIfwzcb9GxdiFq8sx1WTZIq"
     
     // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
     
-    dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "CA_RSA_PRIVATE_KEY", password: "YOUR_P12_PASSWORD")
+    dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "CA_RSA_PRIVATE_KEY", password: "monkey periscope")
     
     dmeClient.contractId = "gzqYsbQ1V1XROWjmqiFLcH2AF1jvcKcg"
     

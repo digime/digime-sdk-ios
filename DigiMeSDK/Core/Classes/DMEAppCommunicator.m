@@ -219,7 +219,19 @@ static NSTimeInterval const kCATimerInterval = 0.5;
 
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController
 {
+    // Handle case where user cancels the store VC.
+    [self.pendingInstallationPollingTimer invalidate];
+    self.pendingInstallationPollingTimer = nil;
     
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    
+    for (id<DMEAppCallbackHandler> callbackHandler in self.callbackHandlers)
+    {
+        if ([callbackHandler canHandleAction:@"data"] && ![self digiMeAppIsInstalled])
+        {
+            [callbackHandler handleAction:@"data" withParameters:@{kCADigimeResponse: @NO}];
+        }
+    }
 }
 
 @end
