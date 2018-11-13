@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param encryptedData NSData
  @param privateKeyData NSData
- @return NSData - decrypted data or nil if decryption failed
+ @return NSData - decrypted data or nil if decryption failed.
  */
 - (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData privateKeyData:(NSData *)privateKeyData;
 
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param ivData NSData
  @param data NSData
  @param error NSError
- @return NSData - decrypted data or nil if decryption failed
+ @return NSData - decrypted data or nil if decryption failed.
  */
 - (nullable NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
 

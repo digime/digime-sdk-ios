@@ -8,20 +8,14 @@
 
 #import "DMEAPIClient.h"
 #import "DMEClient.h"
-#import "DMEAuthorizationManager.h"
 #import "CAFilesDeserializer.h"
 #import "CADataDecryptor.h"
 #import "CASessionManager.h"
 #import "DMECrypto.h"
 #import "DMEValidator.h"
-
-@interface DMEClient()
-
-@property (nonatomic, strong, readonly) DMEAuthorizationManager *authManager;
-@property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
-@property (nonatomic, strong, readonly) DMECrypto *crypto;
-
-@end
+#import "DMEAppCommunicator.h"
+#import "DMEAuthorizationManager.h"
+#import "DMEClient+Private.h"
 
 @implementation DMEClient
 @synthesize privateKeyHex = _privateKeyHex;
@@ -44,11 +38,16 @@
     self = [super init];
     if (self)
     {
-        _authManager = [DMEAuthorizationManager new];
         _clientConfiguration = [DMEClientConfiguration new];
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];
         _sessionManager = [[CASessionManager alloc] initWithApiClient:_apiClient];
         _crypto = [DMECrypto new];
+        
+        // Configure mercury appCommunicator.
+        _appCommunicator = [DMEAppCommunicator new];
+        DMEAuthorizationManager *authMgr = [[DMEAuthorizationManager alloc] initWithAppCommunicator:_appCommunicator];
+        [_appCommunicator addCallbackHandler:authMgr];
+        _authManager = authMgr;
     }
     
     return self;
@@ -102,7 +101,6 @@
                     [strongSelf.delegate sessionCreateFailed:errorToReport];
                 }
             });
-            
             return;
         }
         
@@ -430,12 +428,12 @@
 
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options
 {
-    return [self.authManager openURL:url options:options];
+    return [self.appCommunicator openURL:url options:options];
 }
 
 - (BOOL)canOpenDigiMeApp
 {
-    return [self.authManager canOpenDigiMeApp];
+    return [self.appCommunicator canOpenDigiMeApp];
 }
 
 @end

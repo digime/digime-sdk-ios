@@ -32,13 +32,12 @@
             
         case SDKErrorInvalidVersion:
             return @"This SDK version is no longer supported.  Please update to a newer version.";
-        
+            
         case SDKErrorNoAppId:
             return @"No application registered! Please set appId property on DMEClient.";
             
         case SDKErrorNoPrivateKeyHex:
             return @"RSA private key hex not set. Please set the privateKeyHex property on DMEClient.";
-            break;
     }
 }
 

@@ -13,6 +13,8 @@
 
 #pragma once
 
+@class CAPostbox;
+
 NS_ASSUME_NONNULL_BEGIN
 
 
@@ -24,6 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 typedef void (^AuthorizationCompletionBlock) (CASession * _Nullable session, NSError * _Nullable error);
 
+/**
+ PostboxCompletionBlock - executed when a Postbox is retrieved.
+
+ @param postbox CAPostbox
+ @param error NSError
+ */
+typedef void (^PostboxCreationCompletionBlock) (CAPostbox * _Nullable postbox, NSError * _Nullable error);
 
 /**
  FileListCompletionBlock - executed when file list has been retrieved.

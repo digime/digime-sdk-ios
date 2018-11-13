@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClientCallbacks.h"
+#import "DMEAppCommunicator.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DMEAuthorizationManager : NSObject
+@interface DMEAuthorizationManager : NSObject <DMEAppCallbackHandler>
 
 /**
  Initiates contract authorization launching Digi.me App if there is a valid active session.
@@ -19,18 +20,6 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion AuthorizationCompletionBlock
  */
 - (void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion;
-
-
-/**
- Handles redirect back from Digi.me app.
-
- @param url NSURL
- @param options options
- @return YES if redirect could be handled, otherwise NO;
- */
-- (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options;
-
-- (BOOL)canOpenDigiMeApp;
 
 @end
 

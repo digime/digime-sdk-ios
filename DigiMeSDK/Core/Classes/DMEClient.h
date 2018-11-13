@@ -120,7 +120,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Fetches the accounts available for the authorized contract.
  NOTE: If using this method, the delegate must NOT be set.
-
  @param completion AccountsCompletionBlock
  */
 - (void)getAccountsWithCompletion:(nullable AccountsCompletionBlock)completion;

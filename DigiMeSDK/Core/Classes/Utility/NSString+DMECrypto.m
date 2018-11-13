@@ -95,7 +95,7 @@ static unsigned char decodeBase64[256] = {
     
     const unsigned char *charString = (const unsigned char *)[self UTF8String];
     
-    NSMutableData *theData = [NSMutableData dataWithCapacity:self.length];
+    NSMutableData *theData = [NSMutableData dataWithCapacity:[self length]];
     
     unsigned char outbuf[kBASE64QUANTUM];
     short accumulateIndex = 0;

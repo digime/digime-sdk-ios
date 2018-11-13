@@ -10,7 +10,7 @@
 #import "DMECryptoUtilities.h"
 #import "DMEAPIClient.h"
 #import "CASessionDeserializer.h"
-#import "DMEClient.h"
+#import "DMEClient+Private.h"
 
 @interface CASessionManager()
 
@@ -20,6 +20,8 @@
 @end
 
 @implementation CASessionManager
+
+#pragma mark - Public
 
 - (instancetype)initWithApiClient:(DMEAPIClient *)apiClient
 {
@@ -31,8 +33,6 @@
     
     return self;
 }
-
-#pragma mark - Public
 
 - (void)sessionWithCompletion:(AuthorizationCompletionBlock)completion
 {
@@ -65,7 +65,7 @@
             completion(nil, [NSError sdkError:SDKErrorInvalidVersion]);
             return;
         }
-        
+
         completion(nil, error);
     }];
 }
@@ -76,7 +76,8 @@
 {
     return (self.currentSession && self.currentSession.expiryDate && [self.currentSession.expiryDate compare:[NSDate date]] == NSOrderedDescending && [self.currentSession.sessionId isEqualToString:self.client.contractId]);
 }
--(BOOL)isSessionKeyValid:(NSString *)sessionKey
+
+- (BOOL)isSessionKeyValid:(NSString *)sessionKey
 {
     return (sessionKey.length > 0 && [sessionKey isEqualToString:self.currentSession.sessionKey]);
 }

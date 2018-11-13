@@ -17,76 +17,70 @@
 #import <StoreKit/StoreKit.h>
 
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
-static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
-static NSString * const kCARequest3dPartyAppName = @"CARequest3dPartyAppName";
-static NSString * const kCASdkVersion = @"CASdkVersion";
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
-static NSString * const kDMEClientScheme = @"digime-ca-master";
-static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
-static NSInteger  const kDMEClientAppstoreID = 1234541790;
-static NSTimeInterval const kCATimerInterval = 0.5;
+static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 
-@interface DMEAuthorizationManager() <SKStoreProductViewControllerDelegate>
+@interface DMEAuthorizationManager()
 
-@property (nonatomic, strong) NSString *appId;
-@property (nonatomic, strong) CASession *session;
-@property (nonatomic, strong) CASessionManager *sessionManager;
+@property (nonatomic, strong, readonly) CASession *session;
+@property (nonatomic, strong, readonly) CASessionManager *sessionManager;
 @property (nonatomic) BOOL authInProgress;
 @property (nonatomic, copy, nullable) AuthorizationCompletionBlock authCompletionBlock;
-@property (nonatomic, strong) SKStoreProductViewController *storeViewController;
 
 @end
 
 @implementation DMEAuthorizationManager
 
-#pragma mark - Initialization
+#pragma mark - CallbackHandler Conformance
 
-- (instancetype)init
+@synthesize appCommunicator = _appCommunicator;
+
+- (instancetype)initWithAppCommunicator:(DMEAppCommunicator *__weak)appCommunicator
 {
     self = [super init];
     if (self)
     {
-        _authInProgress = NO;
-        _session = nil;
+        _appCommunicator = appCommunicator;
     }
-    
     return self;
 }
 
-- (void)dealloc
+- (BOOL)canHandleAction:(DMEOpenAction *)action
 {
-    if (self.storeViewController)
+    return [action isEqualToString:@"data"];
+}
+
+- (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
+{
+    if (!self.authInProgress)
     {
-        self.storeViewController.delegate = nil;
-        self.storeViewController = nil;
+        return;
+    }
+    
+    BOOL result = [parameters[kCADigimeResponse] boolValue];
+    NSString *sessionKey = parameters[kCARequestSessionKey];
+    
+    NSError *err;
+    
+    if(![self.sessionManager isSessionKeyValid:sessionKey])
+    {
+        err = [NSError authError:AuthErrorInvalidSessionKey];
+    }
+    else if(!result)
+    {
+        err = [NSError authError:AuthErrorCancelled];
+    }
+    
+    if (self.authCompletionBlock)
+    {
+        // Need to know if we succeeded.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.authCompletionBlock(self.session, err);
+        });
     }
 }
 
 #pragma mark - Authorization
-
-- (void)continueAuthorization
-{
-    void (^completionBlock)(BOOL success) = ^void(BOOL success) {
-        if(success)
-        {
-            NSLog(@"[DMEClient] Authorization begun.");
-        }
-        else
-        {
-            if (self.authCompletionBlock)
-            {
-                self.authCompletionBlock(self.session, [NSError authError:AuthErrorGeneral]);
-                self.authCompletionBlock = nil;
-            }
-        }
-    };
-    
-    UIApplication *app = [UIApplication sharedApplication];
-    NSURL *url = [self digiMeUrl];
-    
-    NSDictionary *options = @{ UIApplicationOpenURLOptionUniversalLinksOnly : @NO };
-    [app openURL:url options:options completionHandler:completionBlock];
-}
 
 -(void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
 {
@@ -104,180 +98,22 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     }
     
     self.authInProgress = YES;
-    
     self.authCompletionBlock = completion;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        UIApplication *app = [UIApplication sharedApplication];
-        NSURL *url = [self digiMeUrl];
-        if ([app canOpenURL:url])
-        {
-            [self continueAuthorization];
-        }
-        else
-        {
-            [self presentAppstoreView];
-        }
-    });
-}
-
-- (void)checkIfDigiMeIsInstalled
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        UIApplication *app = [UIApplication sharedApplication];
-        NSURL *url = [self digiMeUrl];
-        if ([app canOpenURL:url])
-        {
-            [self.storeViewController dismissViewControllerAnimated:YES completion:^{
-                [self continueAuthorization];
-            }];
-        }
-        else
-        {
-            [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:self selector:@selector(checkIfDigiMeIsInstalled) userInfo:nil repeats:NO];
-        }
-    });
-}
-- (NSURL *)digiMeUrl
-{
-    NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    DMEOpenAction *action = @"data";
+    NSDictionary *params = @{
+                             kCARequestSessionKey: self.session.sessionKey,
+                             kCARequestRegisteredAppID: self.sessionManager.client.appId,
+                             };
     
-    if (!appName)
-    {
-        appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
-    }
-    
-    NSURLQueryItem *appNamePublic = [NSURLQueryItem queryItemWithName:kCARequest3dPartyAppName value:appName];
-    NSURLQueryItem *sessionKeyComponent = [NSURLQueryItem queryItemWithName:kCARequestSessionKey value:self.session.sessionKey];
-    NSURLQueryItem *registeredAppIdComponent = [NSURLQueryItem queryItemWithName:kCARequestRegisteredAppID value:self.appId];
-    NSString *sdkVersion = [[NSBundle bundleForClass:self.class] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
-
-    NSURLQueryItem *sdkVersionComponent = [NSURLQueryItem queryItemWithName:kCASdkVersion value:sdkVersion];
-    NSURLComponents *components = [NSURLComponents new];
-    
-    [components setQueryItems: @[sessionKeyComponent, registeredAppIdComponent, appNamePublic, sdkVersion]];
-    [components setScheme:kDMEClientScheme];
-    [components setHost:@"data"];
-    
-    return components.URL;
-}
-
-- (void)presentAppstoreView
-{
-    self.storeViewController = [[SKStoreProductViewController alloc] init];
-    self.storeViewController.delegate = self;
-    NSDictionary *parameters = @{SKStoreProductParameterITunesItemIdentifier:@(kDMEClientAppstoreID)};
-    
-    __weak __typeof(self) weakSelf = self;
-    [self.storeViewController loadProductWithParameters:parameters
-                                        completionBlock:^(BOOL result, NSError *error) {
-                                            if (result)
-                                            {
-                                                __strong __typeof(weakSelf) strongSelf = weakSelf;
-                                                [[UIViewController topmostViewController] presentViewController:strongSelf.storeViewController animated:YES completion:^{
-                                                    
-                                                    [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:strongSelf selector:@selector(checkIfDigiMeIsInstalled) userInfo:nil repeats:NO];
-                                                }];
-                                            }
-                                        }];
-}
-
-#pragma mark - SKStoreProductViewControllerDelegate
-
--(void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController
-{
-    [NSTimer cancelPreviousPerformRequestsWithTarget:self];
-    [viewController dismissViewControllerAnimated:YES completion:nil];
-    self.authInProgress = NO;
-    [self executeCompletionWithSession:self.session error:[NSError authError:AuthErrorCancelled]];
-}
-
-#pragma mark - Digi.me App openURL handling
-
-- (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options
-{
-    //if we are not expecting a return, then skip logic.
-    if (!self.authInProgress) { return NO; }
-    
-    BOOL canHandle = NO;
-    if([url.absoluteString hasPrefix:kDMEClientSchemePrefix])
-    {
-        NSLog(@"[DMEClient] Digi.me callback intercepted.");
-        
-        canHandle = YES;
-        NSURLComponents* urlComponents = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-        NSArray*         queryItems    = urlComponents.queryItems;
-        
-        BOOL result = [[self valueForKey:kCADigimeResponse inItems:queryItems] boolValue];
-        NSString* sessionKey = [self valueForKey:kCARequestSessionKey inItems:queryItems];
-        
-        if(![self.sessionManager isSessionKeyValid:sessionKey])
-        {
-            [self executeCompletionWithSession:self.session error:[NSError authError:AuthErrorInvalidSessionKey]];
-        }
-        else if(result)
-        {
-            [self executeCompletionWithSession:self.session error:nil];
-        }
-        else
-        {
-            [self executeCompletionWithSession:self.session error:[NSError authError:AuthErrorCancelled]];
-        }
-        
-        self.authInProgress = NO;
-    }
-    
-    return canHandle;
-}
-
-- (BOOL)canOpenDigiMeApp
-{
-    NSURLComponents *components = [NSURLComponents new];
-    [components setScheme:kDMEClientScheme];
-    
-    return [[UIApplication sharedApplication] canOpenURL:components.URL];
-}
-
-#pragma mark - Private
-
-- (void)executeCompletionWithSession:(CASession *)session error:(NSError *)error
-{
-    if (self.authCompletionBlock)
-    {
-        //all callbacks should be returned on main thread.
-        if (![NSThread currentThread].isMainThread)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self executeCompletionWithSession:session error:error];
-            });
-            return;
-        }
-        
-        self.authCompletionBlock(session, error);
-        self.authCompletionBlock = nil;
-    }
+    [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
 }
 
 #pragma mark - Convenience
 
--(nullable NSString *)appId
-{
-    return [DMEClient sharedClient].appId;
-}
-
 - (CASession *)session
 {
     return self.sessionManager.currentSession;
-}
-
-#pragma mark - Utilities
-- (NSString *)valueForKey:(NSString *)key inItems:(NSArray *)queryItems
-{
-    NSPredicate*    predicate = [NSPredicate predicateWithFormat:@"name=%@", key];
-    NSURLQueryItem* queryItem = [[queryItems filteredArrayUsingPredicate:predicate] firstObject];
-    return queryItem.value;
 }
 
 -(CASessionManager *)sessionManager
