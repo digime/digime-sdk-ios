@@ -38,6 +38,9 @@
             
         case SDKErrorNoPrivateKeyHex:
             return @"RSA private key hex not set. Please set the privateKeyHex property on DMEClient.";
+
+        case SDKErrorEncryptedDataCallback:
+            return @"Non-nil completion block is not supported when 'decryptsData' is set to NO.";
     }
 }
 

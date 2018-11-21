@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMEClientDelegate.h"
-#import "DMEClientConfiguration.h"
+#import "DMEClientAuthorizationDelegate.h"
 #import "DMEClientCallbacks.h"
+#import "DMEClientConfiguration.h"
+#import "DMEClientDownloadDelegate.h"
+#import "DMEClientPostboxDelegate.h"
 
 @class CASessionManager;
 
@@ -42,15 +44,35 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- DigiMe client delegate. This should only be set if you do not with to use DMEClientCallbacks.
+ DigiMe authorization delegate. This should only be set if you do not with to use DMEClientCallbacks.
  */
-@property (nonatomic, nullable, weak) id<DMEClientDelegate> delegate;
+@property (nonatomic, weak) id<DMEClientAuthorizationDelegate> authorizationDelegate;
+
+
+/**
+ DigiMe download delegate. This should only be set if you do not wish to use DMEClientCallbacks.
+ */
+@property (nonatomic, weak) id<DMEClientDownloadDelegate> downloadDelegate;
+
+
+/**
+ DigiMe postbox delegate. This should only be set if you do not wish to use DMEClientCallbacks.
+ */
+@property (nonatomic, weak) id<DMEClientPostboxDelegate> postboxDelegate;
 
 
 /**
  DigiMe Consent Access Session Manager.
  */
 @property (nonatomic, strong, readonly) CASessionManager *sessionManager;
+
+
+/**
+ Defaults to YES. If set to NO, then when data is downloaded it will be passed as raw to the download delegate. We recommend this setting is left at default.
+ 
+ N.B. When set to NO, the download delegate must be set as this is not compatible with DMEClientCallbacks.
+ */
+@property (nonatomic) BOOL decryptsData;
 
 /**
  Singleton initializer;

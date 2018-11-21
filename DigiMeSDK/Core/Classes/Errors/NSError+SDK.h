@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, SDKError) {
     SDKErrorInvalidVersion = 5,     // This SDK version is no longer supported
     SDKErrorNoAppId = 6,            // No app id set
     SDKErrorNoPrivateKeyHex = 7,    // No private key hex set
+    SDKErrorEncryptedDataCallback = 8,  // Attempting to retrieve encrypted data with client callback (which is not allowed)
 };
 
 @interface NSError (SDK)

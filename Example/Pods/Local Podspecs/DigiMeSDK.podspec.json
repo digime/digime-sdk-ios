@@ -13,19 +13,12 @@
   "platforms": {
     "ios": "10.0"
   },
+  "source_files": "DigiMeSDK/DigiMeSDK.h",
   "source": {
     "git": "https://github.com/digime/digime-sdk-ios.git",
     "branch": "2.4.0",
     "tag": "2.4.0"
   },
-  "source_files": "DigiMeSDK/DigiMeSDK.h",
-  "frameworks": [
-    "Foundation",
-    "UIKit",
-    "CoreGraphics",
-    "Security",
-    "StoreKit"
-  ],
   "default_subspecs": "Core",
   "subspecs": [
     {
@@ -54,14 +47,16 @@
       "source_files": "DigiMeSDK/Postbox/Classes/**/*.{h,m}",
       "frameworks": [
         "Foundation",
-        "UIKit",
-        "CoreGraphics",
-        "Security",
-        "StoreKit"
+        "UIKit"
       ],
       "private_header_files": "DigiMeSDK/Core/Classes/DMEPostboxManager.h",
       "xcconfig": {
         "OTHER_CFLAGS": "$(inherited) -DDigiMeSDKPostbox"
+      },
+      "dependencies": {
+        "DigiMeSDK/Core": [
+
+        ]
       }
     }
   ]

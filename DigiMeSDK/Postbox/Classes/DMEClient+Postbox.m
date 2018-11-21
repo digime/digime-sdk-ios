@@ -47,11 +47,12 @@
                 if (completion)
                 {
                     completion(nil, error);
+                    return;
                 }
                 
-                if ([strongSelf.delegate respondsToSelector:@selector(postboxCreationFailed:)])
+                if ([strongSelf.postboxDelegate respondsToSelector:@selector(postboxCreationFailed:)])
                 {
-                    [strongSelf.delegate postboxCreationFailed:error];
+                    [strongSelf.postboxDelegate postboxCreationFailed:error];
                 }
             });
             
@@ -64,18 +65,19 @@
                 if (completion)
                 {
                     completion(postbox, error);
+                    return;
                 }
                 
                 if (error)
                 {
-                    if ([strongSelf.delegate respondsToSelector:@selector(postboxCreationFailed:)])
+                    if ([strongSelf.postboxDelegate respondsToSelector:@selector(postboxCreationFailed:)])
                     {
-                        [strongSelf.delegate postboxCreationFailed:error];
+                        [strongSelf.postboxDelegate postboxCreationFailed:error];
                     }
                 }
-                else if ([strongSelf.delegate respondsToSelector:@selector(postboxCreationSucceeded:)])
+                else if ([strongSelf.postboxDelegate respondsToSelector:@selector(postboxCreationSucceeded:)])
                 {
-                    [strongSelf.delegate postboxCreationSucceeded:postbox];
+                    [strongSelf.postboxDelegate postboxCreationSucceeded:postbox];
                 }
             });
         }];

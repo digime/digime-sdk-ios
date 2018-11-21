@@ -11,8 +11,10 @@
 #endif
 
 #import "DigiMeSDK.h"
+#import "DMEClientAuthorizationDelegate.h"
 #import "DMEClientCallbacks.h"
-#import "DMEClientDelegate.h"
+#import "DMEClientDownloadDelegate.h"
+#import "DMEClientPostboxDelegate.h"
 #import "CASessionManager.h"
 #import "DMEAppCommunicator.h"
 #import "DMEClient.h"
