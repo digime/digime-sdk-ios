@@ -19,7 +19,8 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    dmeClient.delegate = self
+    dmeClient.authorizationDelegate = self
+    dmeClient.downloadDelegate = self
     
     // - GET STARTED -
     
@@ -63,7 +64,7 @@ class ViewController: UIViewController {
   }
 }
 
-extension ViewController: DMEClientDelegate {
+extension ViewController: DMEClientAuthorizationDelegate {
   
   func sessionCreated(_ session: CASession) {
     logVC.log(message: "Session created: " + session.sessionKey)
@@ -87,7 +88,9 @@ extension ViewController: DMEClientDelegate {
   func authorizeFailed(_ error: Error) {
     logVC.log(message: "Authorization failed: " + error.localizedDescription)
   }
-  
+}
+
+extension ViewController: DMEClientDownloadDelegate {
   func clientFailed(toRetrieveFileList error: Error) {
     logVC.log(message: "Client retrieve fileList failed: " + error.localizedDescription)
   }
