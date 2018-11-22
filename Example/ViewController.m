@@ -39,7 +39,7 @@
     // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
     self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"CA_RSA_PRIVATE_KEY" password:@"YOUR_P12_PASSWORD"];
     
-    self.dmeClient.contractId = @"gzqYsbQ1V1XROWjmqiFLcH2AF1jvcKcg";
+    self.dmeClient.contractId = @"YOUR_CONTRACT_ID";
     
     self.fileCount = 0;
     self.progress = 0;
