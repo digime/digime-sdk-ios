@@ -56,28 +56,6 @@ import Foundation
         super.init()
         client.downloadDelegate = self
         client.decryptsData = false
-        
-//        let accounts = self.accounts
-        
-//        self.query(Transaction.self, dateRange: nil, predicate: { transaction -> Bool in
-//            transaction.amount > 0
-//        }, completion: { transactions in
-//            guard transactions != nil else {
-//                return
-//            }
-//        })
-        
-//        self.query(Post.self, dateRange: nil, predicate: nil, completion: { transactions in
-//            guard transactions != nil else {
-//                return
-//            }
-//        })
-        
-        self.query(PostMedia.self, dateRange: nil, predicate: nil) { transactions in
-            guard transactions != nil else {
-                return
-            }
-        }
     }
     
     @objc public func update() {
