@@ -6,7 +6,6 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-import DigiMeSDK
 import Foundation
 
 class DMEDataReader {
