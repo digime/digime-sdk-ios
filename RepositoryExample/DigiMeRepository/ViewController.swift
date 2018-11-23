@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         client.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "CA_RSA_PRIVATE_KEY", password: "YOUR_P12_PASSWORD")
         
         // - INSERT your Contract ID here -
-        client.contractId = "YOUR_CONTRACT_ID"
+        client.contractId = "gzqYsbQ1V1XROWjmqiFLcH2AF1jvcKcg"
 
         repository.delegate = self
 

@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     
     dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "CA_RSA_PRIVATE_KEY", password: "YOUR_P12_PASSWORD")
     
-    dmeClient.contractId = "YOUR_CONTRACT_ID"
+    dmeClient.contractId = "gzqYsbQ1V1XROWjmqiFLcH2AF1jvcKcg"
     
     logVC = LogViewController(frame: UIScreen.main.bounds)
     view.addSubview(logVC)
