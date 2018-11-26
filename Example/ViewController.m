@@ -33,12 +33,12 @@
     // - GET STARTED -
     
     // - INSERT your App ID here -
-    self.dmeClient.appId = @"YOUR_APP_ID";
+    self.dmeClient.appId = @"0X0ZPZE4EJ4BGehA7r8Nq6LdnykYIF7L";
     
     // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
-    self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"CA_RSA_PRIVATE_KEY" password:@"YOUR_P12_PASSWORD"];
+    self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"integration" password:@"digime"];
     
-    self.dmeClient.contractId = @"gzqYsbQ1V1XROWjmqiFLcH2AF1jvcKcg";
+    self.dmeClient.contractId = @"j9pcaXD9A3krdV7BlMinrB6Kp1kxbJcU";
     
     self.fileCount = 0;
     self.progress = 0;

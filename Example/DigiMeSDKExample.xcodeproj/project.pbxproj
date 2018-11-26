@@ -11,6 +11,8 @@
 		0643264A20222B2500B10CD9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264820222B2500B10CD9 /* ViewController.m */; };
 		0643264D20222D6000B10CD9 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264C20222D6000B10CD9 /* LogViewController.m */; };
 		0643264F202234CD00B10CD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264E202234CD00B10CD9 /* main.m */; };
+		16AFEB1221A6EF38009ED9AB /* integration.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 16AFEB1121A6EF38009ED9AB /* integration.p12 */; };
+		16AFEB1421A6EFCA009ED9AB /* DMEConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16AFEB1321A6EFCA009ED9AB /* DMEConfig.plist */; };
 		16E28A1A214FEEF2006AD9E1 /* CA_RSA_PRIVATE_KEY.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 16E28A19214FEEF2006AD9E1 /* CA_RSA_PRIVATE_KEY.p12 */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
@@ -43,6 +45,8 @@
 		0F8DC0A9C8329629993FF78A /* DigiMeSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DigiMeSDK.podspec; path = ../DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		11F31C7781F77A960C818F33 /* Pods_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		16AFEB1121A6EF38009ED9AB /* integration.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = integration.p12; sourceTree = "<group>"; };
+		16AFEB1321A6EFCA009ED9AB /* DMEConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = DMEConfig.plist; sourceTree = "<group>"; };
 		16E28A19214FEEF2006AD9E1 /* CA_RSA_PRIVATE_KEY.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = CA_RSA_PRIVATE_KEY.p12; sourceTree = "<group>"; };
 		1E8749911F77A39600D4E028 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		369F4AD06777F8F602971B23 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
@@ -102,6 +106,8 @@
 				0643264620222B2500B10CD9 /* ViewController.h */,
 				0643264820222B2500B10CD9 /* ViewController.m */,
 				16E28A19214FEEF2006AD9E1 /* CA_RSA_PRIVATE_KEY.p12 */,
+				16AFEB1321A6EFCA009ED9AB /* DMEConfig.plist */,
+				16AFEB1121A6EF38009ED9AB /* integration.p12 */,
 				0643264E202234CD00B10CD9 /* main.m */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -248,6 +254,8 @@
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				16E28A1A214FEEF2006AD9E1 /* CA_RSA_PRIVATE_KEY.p12 in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				16AFEB1421A6EFCA009ED9AB /* DMEConfig.plist in Resources */,
+				16AFEB1221A6EF38009ED9AB /* integration.p12 in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,10 +313,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Brotli/Brotli.framework",
 				"${BUILT_PRODUCTS_DIR}/DigiMeSDK/DigiMeSDK.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Brotli.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DigiMeSDK.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
