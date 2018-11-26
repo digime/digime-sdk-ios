@@ -64,6 +64,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong) DMEClientConfiguration *config;
 
+/**
+ Base url used for all API calls.
+ */
+@property (nonatomic, strong, readonly) NSString *baseUrl;
+
 @end
 
 NS_ASSUME_NONNULL_END
