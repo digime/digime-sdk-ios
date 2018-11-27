@@ -1,51 +1,51 @@
 //
-//  DMEClient+Quark.m
+//  DMEClient+GuestConsent.m
 //  DigiMeSDK
 //
 //  Created on 22/11/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
 //
 
-#import "DMEClient+Quark.h"
-#import "DMEQuarkManager.h"
+#import "DMEClient+GuestConsent.h"
+#import "DMEGuestConsentManager.h"
 #import "DMEClient+Private.h"
 #import "CASessionManager.h"
 #import "DMEAPIClient.h"
 
 @interface DMEClient ()
 
-@property (nonatomic, weak) DMEQuarkManager *quarkManager;
+@property (nonatomic, weak) DMEGuestConsentManager *guestConsentManager;
 
 @end
 
-@implementation DMEClient (Quark)
+@implementation DMEClient (GuestConsent)
 
 @dynamic useGuestConsent;
 
-DMEQuarkManager *_quarkManager;
+DMEGuestConsentManager *_guestConsentManager;
 
--(DMEQuarkManager *)quarkManager
+-(DMEGuestConsentManager *)guestConsentManager
 {
-    return _quarkManager;
+    return _guestConsentManager;
 }
 
--(void)setQuarkManager:(DMEQuarkManager *)manager
+-(void)setGuestConsentManager:(DMEGuestConsentManager *)manager
 {
-    _quarkManager = manager;
+    _guestConsentManager = manager;
 }
 
-- (void)createQuark
+- (void)startWithGuestConsent
 {
-    [self createQuarkWithCompletion:nil];
+    [self startWithGuestConsentWithCompletion:nil];
 }
 
-- (void)createQuarkWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)startWithGuestConsentWithCompletion:(AuthorizationCompletionBlock)completion
 {
-    if (!self.quarkManager)
+    if (!self.guestConsentManager)
     {
-        DMEQuarkManager *manager = [[DMEQuarkManager alloc] initWithAppCommunicator:self.appCommunicator];
+        DMEGuestConsentManager *manager = [[DMEGuestConsentManager alloc] initWithAppCommunicator:self.appCommunicator];
         [self.appCommunicator addCallbackHandler:manager];
-        self.quarkManager = manager;
+        self.guestConsentManager = manager;
     }
     
     __weak __typeof(self)weakSelf = self;
@@ -70,7 +70,7 @@ DMEQuarkManager *_quarkManager;
             return;
         }
         
-        [strongSelf.quarkManager requestQuarkWithBaseUrl:self.apiClient.baseUrl withCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        [strongSelf.guestConsentManager requestGuestConsentWithBaseUrl:self.apiClient.baseUrl withCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (completion)

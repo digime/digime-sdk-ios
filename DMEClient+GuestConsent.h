@@ -1,5 +1,5 @@
 //
-//  DMEClient+Quark.h
+//  DMEClient+GuestConsent.h
 //  DigiMeSDK
 //
 //  Created on 22/11/2018.
@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "DMEClient.h"
 
-@interface DMEClient (Quark)
+@interface DMEClient (GuestConsent)
 
 @property (nonatomic) BOOL useGuestConsent;
 
-- (void)createQuark;
-- (void)createQuarkWithCompletion:(AuthorizationCompletionBlock)completion;
+- (void)startWithGuestConsent;
+- (void)startWithGuestConsentWithCompletion:(AuthorizationCompletionBlock)completion;
 
 @end

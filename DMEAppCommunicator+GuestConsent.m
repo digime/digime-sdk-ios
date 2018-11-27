@@ -1,5 +1,5 @@
 //
-//  DMEAppCommunicator+Quark.m
+//  DMEAppCommunicator+GuestConsent.m
 //  DigiMeSDK
 //
 //  Created on 26/11/2018.
@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-#import "DMEAppCommunicator+Quark.h"
+#import "DMEAppCommunicator+GuestConsent.h"
 #import "CASessionManager.h"
 #import "UIViewController+DMEExtension.h"
 
@@ -25,7 +25,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 @end
 
-@implementation DMEAppCommunicator (Quark)
+@implementation DMEAppCommunicator (GuestConsent)
 
 SFSafariViewController *_safariViewController;
 
@@ -45,9 +45,9 @@ SFSafariViewController *_safariViewController;
 
         NSString *sessionKey = parameters[kCARequestSessionKey];
         NSString *baseUrl = parameters[kDMEAPIClientBaseUrl];
-        NSString *callbackSuffix = @"%3A%2F%2Fquark-return%2F";
+        NSString *callbackSuffix = @"%3A%2F%2FguestConsent-return%2F";
         NSString *callbackUrl = [NSString stringWithFormat:@"%@%@%@", kDMEClientSchemePrefix, [DMEClient sharedClient].appId, callbackSuffix];
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@apps/quark/direct-onboarding?sessionKey=%@&callbackUrl=%@", baseUrl, sessionKey, callbackUrl]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@apps/guestConsent/direct-onboarding?sessionKey=%@&callbackUrl=%@", baseUrl, sessionKey, callbackUrl]];
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:url];
         self.safariViewController.delegate = self;
         if (@available(iOS 11.0, *)) {
@@ -81,7 +81,7 @@ SFSafariViewController *_safariViewController;
     self.safariViewController = nil;
 }
 
-- (NSError *)handleQuarkCallbackWithParameters:(NSDictionary<NSString *,id> *)parameters
+- (NSError *)handleGuestConsentCallbackWithParameters:(NSDictionary<NSString *,id> *)parameters
 {
     NSError *error = nil;
     

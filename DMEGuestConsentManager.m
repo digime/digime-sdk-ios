@@ -1,30 +1,30 @@
 //
-//  DMEQuarkManager.m
+//  DMEGuestConsentManager.m
 //  DigiMeSDK
 //
 //  Created on 22/11/2018.
 //  Copyright © 2018 me.digi. All rights reserved.
 //
 
-#import "DMEQuarkManager.h"
+#import "DMEGuestConsentManager.h"
 #import "CASessionManager.h"
 #import "DMEClient.h"
-#import "DMEAppCommunicator+Quark.h"
+#import "DMEAppCommunicator+GuestConsent.h"
 
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
-@interface DMEQuarkManager()
+@interface DMEGuestConsentManager()
 
 @property (nonatomic, strong, readonly) CASession *session;
 @property (nonatomic, strong, readonly) CASessionManager *sessionManager;
-@property (nonatomic, copy, nullable) AuthorizationCompletionBlock quarkCompletionBlock;
+@property (nonatomic, copy, nullable) AuthorizationCompletionBlock guestConsentCompletionBlock;
 
 @end
 
-@implementation DMEQuarkManager
+@implementation DMEGuestConsentManager
 
 #pragma mark - CallbackHandler Conformance
 
@@ -42,28 +42,28 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 - (BOOL)canHandleAction:(DMEOpenAction *)action
 {
-    return [action isEqualToString:@"quark-return"];
+    return [action isEqualToString:@"guestConsent-return"];
 }
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    NSError *err = [self.appCommunicator handleQuarkCallbackWithParameters:parameters];
+    NSError *err = [self.appCommunicator handleGuestConsentCallbackWithParameters:parameters];
 
-    if (self.quarkCompletionBlock)
+    if (self.guestConsentCompletionBlock)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.quarkCompletionBlock(self.session, err);
+            self.guestConsentCompletionBlock(self.session, err);
         });
     }
 }
 
-- (void)requestQuarkWithBaseUrl:(NSString *)baseUrl withCompletion:(AuthorizationCompletionBlock)completion
+- (void)requestGuestConsentWithBaseUrl:(NSString *)baseUrl withCompletion:(AuthorizationCompletionBlock)completion
 {
     
     if (![NSThread currentThread].isMainThread)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self requestQuarkWithBaseUrl:baseUrl withCompletion:completion];
+            [self requestGuestConsentWithBaseUrl:baseUrl withCompletion:completion];
         });
         return;
     }
@@ -74,7 +74,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
         return;
     }
     
-    self.quarkCompletionBlock = completion;
+    self.guestConsentCompletionBlock = completion;
     
     NSDictionary *params = @{
                              kDMEAPIClientBaseUrl: baseUrl,
