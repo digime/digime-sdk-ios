@@ -14,9 +14,9 @@
 {
     switch (algorithm)
     {
-        case 0:
+        case DMECompressionAlgorithmGZIP:
             return [self gzipCompressData:data];
-        case 1:
+        case DMECompressionAlgorithmBrotli:
             return [self brotliCompressData:data];
         default:
             [NSException raise:NSInternalInconsistencyException format:@"Algorithm type %@ doesn't exist.", @(algorithm)];
@@ -27,9 +27,9 @@
 {
     switch (algorithm)
     {
-        case 0:
+        case DMECompressionAlgorithmGZIP:
             return [self gzipDecompressData:data];
-        case 1:
+        case DMECompressionAlgorithmBrotli:
             return [self brotliDecompressData:data];
         default:
             [NSException raise:NSInternalInconsistencyException format:@"Algorithm type %@ doesn't exist.", @(algorithm)];
