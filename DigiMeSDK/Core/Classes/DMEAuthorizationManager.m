@@ -78,6 +78,8 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
             self.authCompletionBlock(self.session, err);
         });
     }
+    
+    self.authInProgress = NO;
 }
 
 #pragma mark - Authorization
