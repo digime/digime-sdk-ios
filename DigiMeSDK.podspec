@@ -28,12 +28,4 @@ Pod::Spec.new do |s|
         'DigiMeSDK/Core/Classes/DMEAuthorizationManager.h',
         'DigiMeSDK/Core/Classes/DMEClient+Private.h'
     end
-
-    s.subspec 'Postbox' do |ss|
-      ss.source_files  	= "DigiMeSDK/Postbox/Classes/**/*.{h,m}"
-      ss.frameworks    	= "Foundation", "UIKit"
-      ss.private_header_files = 'DigiMeSDK/Core/Classes/DMEPostboxManager.h'
-      ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKPostbox' }
-      ss.dependency "DigiMeSDK/Core"
-    end
 end

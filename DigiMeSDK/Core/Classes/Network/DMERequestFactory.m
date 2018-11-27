@@ -8,7 +8,7 @@
 
 #import "DMERequestFactory.h"
 
-static NSString * const kDigiMeAPIVersion = @"v1.1";
+static NSString * const kDigiMeAPIVersion = @"v1";
 
 @interface DMERequestFactory()
 

@@ -120,9 +120,17 @@
 
 - (nullable NSError *)validateClient
 {
-    if (!self.appId)
+    if (!self.appId || [self.appId isEqualToString:@"YOUR_APP_ID"])
     {
         return [NSError sdkError:SDKErrorNoAppId];
+    }
+    
+    NSArray *urlTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
+    NSArray *urlSchemes = [[urlTypes valueForKey:@"CFBundleURLSchemes"] valueForKeyPath: @"@unionOfArrays.self"];
+    NSString *expectedUrlScheme = [NSString stringWithFormat:@"digime-ca-%@", self.appId];
+    if (![urlSchemes containsObject:expectedUrlScheme])
+    {
+        return [NSError sdkError:SDKErrorNoURLScheme];
     }
     
     if (!self.privateKeyHex)
@@ -130,7 +138,7 @@
         return [NSError sdkError:SDKErrorNoPrivateKeyHex];
     }
     
-    if (!self.contractId)
+    if (!self.contractId || [self.contractId isEqualToString:@"YOUR_CONTRACT_ID"])
     {
         return [NSError sdkError:SDKErrorNoContract];
     }

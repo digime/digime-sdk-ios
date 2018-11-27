@@ -1,6 +1,0 @@
-framework module Pods_DigiMeSDKExample_Tests {
-  umbrella header "Pods-DigiMeSDKExample_Tests-umbrella.h"
-
-  export *
-  module * { export * }
-}

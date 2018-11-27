@@ -46,23 +46,6 @@
         "DigiMeSDK/Core/Classes/DMEAuthorizationManager.h",
         "DigiMeSDK/Core/Classes/DMEClient+Private.h"
       ]
-    },
-    {
-      "name": "Postbox",
-      "source_files": "DigiMeSDK/Postbox/Classes/**/*.{h,m}",
-      "frameworks": [
-        "Foundation",
-        "UIKit"
-      ],
-      "private_header_files": "DigiMeSDK/Core/Classes/DMEPostboxManager.h",
-      "xcconfig": {
-        "OTHER_CFLAGS": "$(inherited) -DDigiMeSDKPostbox"
-      },
-      "dependencies": {
-        "DigiMeSDK/Core": [
-
-        ]
-      }
     }
   ]
 }
