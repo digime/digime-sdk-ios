@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, SDKError) {
     SDKErrorNoAppId = 6,            // No app id set
     SDKErrorNoPrivateKeyHex = 7,    // No private key hex set
     SDKErrorNoURLScheme = 8,        // URL Scheme not set in Info.plist
+    SDKErrorSerializationError = 9, // Failed to serialize data
 };
 
 @interface NSError (SDK)

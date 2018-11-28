@@ -10,6 +10,7 @@
 #import "DMEClientConfiguration.h"
 
 NS_ASSUME_NONNULL_BEGIN
+@protocol CADataRequest;
 
 @interface DMEAPIClient : NSObject
 
@@ -34,10 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Initiates session key request.
 
+ @param scope optional CADataRequest scope filter
  @param success completion block receiving NSData
  @param failure failure block receiving NSError
  */
-- (void)requestSessionWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+- (void)requestSessionWithScope:(nullable id<CADataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 
 /**

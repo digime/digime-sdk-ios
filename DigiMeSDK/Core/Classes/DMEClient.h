@@ -10,6 +10,7 @@
 #import "DMEClientDelegate.h"
 #import "DMEClientConfiguration.h"
 #import "DMEClientCallbacks.h"
+#import "CAScope.h"
 
 @class CASessionManager;
 
@@ -61,11 +62,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Initilizes contract authentication. This will attempt to create a session and redirect
+ Initializes contract authentication. This will attempt to create a session and redirect
  to the Digi.me application.
  NOTE: If using this method, the delegate must be set.
  */
 - (void)authorize;
+
+
+/**
+ Initializes contract authentication with custom scope. This will attempt to create and redirect
+ to the Digi.me application.
+ NOTE: If using this method, the delegate must be set.
+ 
+ @param scope custom scope that will be applied to available data.
+ */
+- (void)authorizeWithScope:(id<CADataRequest>)scope;
 
 
 /**
@@ -77,6 +88,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion;
 
+
+/**
+ Initilizes contract authentication with custom scope. This will attempt to create a session and redirect
+ to the Digi.me application.
+ NOTE: If using this method, the delegate must NOT be set.
+
+ @param scope custom scope that will be applied to available data.
+ @param authorizationCompletion AuthorizationCompletionBlock
+ */
+- (void)authorizeWithScope:(nullable id<CADataRequest>)scope completion:(nullable AuthorizationCompletionBlock)authorizationCompletion;
 
 /**
  Fetches file list that's available for the authorized contract.

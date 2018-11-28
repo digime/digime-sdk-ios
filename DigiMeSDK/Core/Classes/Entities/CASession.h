@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @class CASessionManager;
+@protocol CADataRequest;
 
 @interface CASession : NSObject
 
@@ -60,6 +61,12 @@ NS_ASSUME_NONNULL_BEGIN
  Session Identifier - this is currently set to a contract identifier.
  */
 @property (nonatomic, strong, readonly) NSString *sessionId;
+
+
+/**
+ Session Scope - this is the limiting scope object used to create session.
+ */
+@property (nonatomic, strong, readonly, nullable) id<CADataRequest> scope;
 
 @end
 

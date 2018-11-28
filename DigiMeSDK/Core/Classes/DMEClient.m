@@ -57,10 +57,20 @@
 
 - (void)authorize
 {
-    [self authorizeWithCompletion:nil];
+    [self authorizeWithScope:nil completion:nil];
+}
+
+- (void)authorizeWithScope:(id<CADataRequest>)scope
+{
+    [self authorizeWithScope:scope completion:nil];
 }
 
 - (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
+{
+    [self authorizeWithScope:nil completion:authorizationCompletion];
+}
+
+- (void)authorizeWithScope:(id<CADataRequest>)scope completion:(nullable AuthorizationCompletionBlock)authorizationCompletion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -80,7 +90,7 @@
     
     //get session
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
