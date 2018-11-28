@@ -24,7 +24,6 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 
 @property (nonatomic, strong, readonly) CASession *session;
 @property (nonatomic, strong, readonly) CASessionManager *sessionManager;
-@property (nonatomic) BOOL authInProgress;
 @property (nonatomic, copy, nullable) AuthorizationCompletionBlock authCompletionBlock;
 
 @end
@@ -52,11 +51,6 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    if (!self.authInProgress)
-    {
-        return;
-    }
-    
     BOOL result = [parameters[kCADigimeResponse] boolValue];
     NSString *sessionKey = parameters[kCARequestSessionKey];
     
@@ -84,20 +78,11 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 
 -(void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
 {
-    if (self.authInProgress)
-    {
-        NSError *authError = [NSError authError:AuthErrorInProgress];
-        completion(self.session, authError);
-        return;
-    }
-    
     if (![self.sessionManager isSessionValid])
     {
         completion(nil, [NSError authError:AuthErrorInvalidSession]);
         return;
     }
-    
-    self.authInProgress = YES;
     self.authCompletionBlock = completion;
     
     DMEOpenAction *action = @"data";

@@ -148,6 +148,8 @@ static const NSInteger kHashLength = 64;
     CFDataRef ref       = NULL;
     NSData*   peerTag   = [[NSData alloc] initWithBytes:(const void *)[keyTagString UTF8String] length:[keyTagString length]];
     
+    NSAssert(keyData, @"DigiMeSDK: Failed to extract key data. Did you set your P12 password?");
+    
     NSDictionary* attr = @{
                            (__bridge id)kSecClass               : (__bridge id)kSecClassKey,
                            (__bridge id)kSecAttrKeyType         : (__bridge id)kSecAttrKeyTypeRSA,
