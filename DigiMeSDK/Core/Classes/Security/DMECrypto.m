@@ -83,8 +83,6 @@ static const NSInteger kHashLength = 64;
     [self saveRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyData:privateKeyData keyTagString:kPrivateKeyIdentifier overwrite:YES];
     SecKeyRef privateKey = [self loadRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyTagString:kPrivateKeyIdentifier];
     
-    NSAssert(encryptedData.length >= 352, @"CA raw file size is wrong");
-    NSAssert(0 == (encryptedData.length %16), @"CA raw file size mod 16 is wrong");
     NSData* encryptedDsk = [encryptedData subdataWithRange:NSMakeRange(0,256)];
     
     OSStatus status             = noErr;
@@ -149,6 +147,8 @@ static const NSInteger kHashLength = 64;
 {
     CFDataRef ref       = NULL;
     NSData*   peerTag   = [[NSData alloc] initWithBytes:(const void *)[keyTagString UTF8String] length:[keyTagString length]];
+    
+    NSAssert(keyData, @"DigiMeSDK: Failed to extract key data. Did you set your P12 password?");
     
     NSDictionary* attr = @{
                            (__bridge id)kSecClass               : (__bridge id)kSecClassKey,

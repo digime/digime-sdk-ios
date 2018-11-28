@@ -8,6 +8,7 @@
 
 #import "CAAccounts.h"
 #import "NSError+SDK.h"
+#import "DMECompressor.h"
 
 @implementation CAAccounts
 
