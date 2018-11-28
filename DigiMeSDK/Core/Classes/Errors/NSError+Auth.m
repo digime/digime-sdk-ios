@@ -30,10 +30,6 @@
             return @"User cancelled authorization.";
             break;
             
-        case AuthErrorInProgress:
-            return @"Authorization already in progress.";
-            break;
-            
         case AuthErrorInvalidSessionKey:
             return @"Digi.me app returned an invalid session key.";
             break;
