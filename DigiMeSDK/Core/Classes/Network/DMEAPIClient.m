@@ -274,6 +274,11 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
     self.requestFactory = [[DMERequestFactory alloc] initWithConfiguration:_config];
 }
 
+- (NSString *)baseUrl
+{
+    return self.requestFactory.baseUrl;
+}
+
 #pragma mark - Key Value Observing
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object

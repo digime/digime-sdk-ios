@@ -16,7 +16,6 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 static NSString * const kCARequest3dPartyAppName = @"CARequest3dPartyAppName";
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
-static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 static NSString * const kCASdkVersion = @"CASdkVersion";
 static NSInteger  const kDMEClientAppstoreID = 1234541790;
 static NSTimeInterval const kCATimerInterval = 0.5;

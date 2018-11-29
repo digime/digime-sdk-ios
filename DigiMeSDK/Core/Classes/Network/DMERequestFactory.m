@@ -71,21 +71,7 @@ static NSString * const kDigiMeAPIVersion = @"v1";
 
 - (NSString *)baseUrl
 {
-    if (!_baseUrl)
-    {
-        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"DMEConfig" ofType:@"plist"];
-        NSDictionary *dict;
-        
-        if (filePath)
-        {
-            dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
-        }
-        
-        NSString *domain = dict[@"DME_DOMAIN"] ?: @"digi.me";
-        _baseUrl = [NSString stringWithFormat:@"https://api.%@/", domain];
-    }
-    
-    return _baseUrl;
+    return self.config.baseUrl;
 }
 
 - (NSString *)baseUrlPath

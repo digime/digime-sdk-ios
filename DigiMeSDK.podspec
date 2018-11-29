@@ -28,4 +28,5 @@ Pod::Spec.new do |s|
         'DigiMeSDK/Core/Classes/DMEAuthorizationManager.h',
         'DigiMeSDK/Core/Classes/DMEClient+Private.h'
     end
+
 end
