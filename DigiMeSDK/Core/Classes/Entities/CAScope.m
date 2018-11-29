@@ -3,6 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 27/11/2018.
+//  Copyright © 2018 DigiMe. All rights reserved.
 //
 
 #import "CAScope.h"

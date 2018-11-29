@@ -3,6 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 27/11/2018.
+//  Copyright © 2018 DigiMe. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -24,7 +25,7 @@ typedef NS_ENUM(NSInteger, CATimeRangeUnit) {
 + (CATimeRange *)from:(NSDate *)from;
 + (CATimeRange *)priorTo:(NSDate *)priorTo;
 + (CATimeRange *)from:(NSDate *)from to:(NSDate *)to;
-+ (CATimeRange *)last:(int)x unit:(CATimeRangeUnit)unit;
++ (CATimeRange *)last:(NSUInteger)x unit:(CATimeRangeUnit)unit;
 
 @end
 
