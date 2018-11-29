@@ -14,6 +14,11 @@
     "ios": "10.0"
   },
   "source_files": "DigiMeSDK/DigiMeSDK.h",
+  "dependencies": {
+    "Brotli": [
+
+    ]
+  },
   "source": {
     "git": "https://github.com/digime/digime-sdk-ios.git",
     "branch": "2.4.0",

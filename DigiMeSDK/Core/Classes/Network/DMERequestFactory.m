@@ -8,7 +8,7 @@
 
 #import "DMERequestFactory.h"
 
-static NSString * const kDigiMeAPIVersion = @"v1.1";
+static NSString * const kDigiMeAPIVersion = @"v1";
 
 @interface DMERequestFactory()
 
@@ -43,7 +43,8 @@ static NSString * const kDigiMeAPIVersion = @"v1.1";
     NSDictionary *postKeys = @{
                                @"appId" : appId,
                                @"contractId" : contractId,
-                               @"sdkAgent" : self.userAgentString
+                               @"sdkAgent" : self.userAgentString,
+                               @"accept" : @{ @"compression" : @"brotli" }
                                };
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postKeys options:0 error:nil];
     

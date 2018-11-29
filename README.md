@@ -84,7 +84,7 @@ Additionally it also specifies how the data is encrypted in transit.
 To register a Consent Access contract check out [Digi.me Dev Support](https://developers.digi.me). There you can request a Contract ID and App ID to which it is bound.
 
 ### Contract Private Key
-All content retrieved by the SDK is encrypted in transit using the public key bound to the certificate that was created when the Consent Access contract was created. For SDK to be able to decrypt content transparently matching private key must be provided (i.e. from the key pair created for contract).
+All content retrieved by the SDK is encrypted in transit using the public key bound to the certificate that was created when the Consent Access contract was created. For the SDK to be able to decrypt content transparently matching private key must be provided (i.e. from the key pair created for contract).
 
 Digi.me SDK accepts PKCS #12 encoded files as the default key storage format.
 
@@ -110,7 +110,7 @@ NSString *privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"YOUR_P1
 > 
 > `YOUR_P12_FILENAME ` is the name of your p12 file without `p12` extension. The file must be in the bundle.
 > 
-> `YOUR_CONTRACT_ID` is the Contract ID issued to you by Digi.me Ltd. 
+> `YOUR_P12_PASSWORD` is the password used to unlock the p12 file. 
 
 ### DMEClient and SDK configuration
 
