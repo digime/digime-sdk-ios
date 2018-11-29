@@ -38,6 +38,9 @@
             
         case SDKErrorNoPrivateKeyHex:
             return @"RSA private key hex not set. Please set the privateKeyHex property on DMEClient.";
+            
+        case SDKErrorNoURLScheme:
+            return @"Missing CFBundleURLScheme in Info.plist. Please refer to the README file to see how to set the callback URL Scheme";
     }
 }
 

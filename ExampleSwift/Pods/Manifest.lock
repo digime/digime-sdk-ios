@@ -1,18 +1,26 @@
 PODS:
+  - Brotli (1.0.0)
   - DigiMeSDK (2.4.0):
+    - Brotli
     - DigiMeSDK/Core (= 2.4.0)
-  - DigiMeSDK/Core (2.4.0)
+  - DigiMeSDK/Core (2.4.0):
+    - Brotli
 
 DEPENDENCIES:
   - DigiMeSDK (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Brotli
 
 EXTERNAL SOURCES:
   DigiMeSDK:
     :path: "../"
 
 SPEC CHECKSUMS:
-  DigiMeSDK: afc2a0bbc4a18ee923aad9377f81d782f8a662c7
+  Brotli: 7bddf661d47b849ea345944caa0e6baa0a5cbd1f
+  DigiMeSDK: aa31b1ec6e191f907023a0236c46f8e5193b1ce7
 
-PODFILE CHECKSUM: ec2af410704bad254c620919f11c5e779e077fd8
+PODFILE CHECKSUM: e7aa38fd1ca0b626b7149c24460b5074381f65bb
 
 COCOAPODS: 1.5.3
