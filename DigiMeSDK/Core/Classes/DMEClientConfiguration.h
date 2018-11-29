@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString * const kDMEClientSchemePrefix;
+
 @interface DMEClientConfiguration : NSObject
 
 /**
@@ -52,6 +54,12 @@ NS_ASSUME_NONNULL_BEGIN
  Determines whether additional SDK DEBUG logging is enabled. Defaults to NO.
  */
 @property (nonatomic) BOOL debugLogEnabled;
+
+
+/**
+ Base URL for all outgoing Network operations.
+ */
+@property (nonatomic, strong, readonly) NSString *baseUrl;
 
 @end
 

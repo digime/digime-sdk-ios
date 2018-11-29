@@ -10,8 +10,10 @@
 #import "DMEAppCommunicator.h"
 #import "DMEClientCallbacks.h"
 
+@class DMEClientConfiguration;
+
 @interface DMEGuestConsentManager : NSObject <DMEAppCallbackHandler>
 
-- (void)requestGuestConsentWithBaseUrl:(NSString *)baseUrl withCompletion:(AuthorizationCompletionBlock)completion;
+- (void)requestGuestConsentWithCompletion:(AuthorizationCompletionBlock)completion;
 
 @end

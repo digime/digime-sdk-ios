@@ -10,7 +10,6 @@
 #import "DMEGuestConsentManager.h"
 #import "DMEClient+Private.h"
 #import "CASessionManager.h"
-#import "DMEAPIClient.h"
 
 @interface DMEClient ()
 
@@ -19,8 +18,6 @@
 @end
 
 @implementation DMEClient (GuestConsent)
-
-@dynamic useGuestConsent;
 
 DMEGuestConsentManager *_guestConsentManager;
 
@@ -34,18 +31,19 @@ DMEGuestConsentManager *_guestConsentManager;
     _guestConsentManager = manager;
 }
 
-- (void)startWithGuestConsent
+- (void)authorizeGuest
 {
-    [self startWithGuestConsentWithCompletion:nil];
+    [self authorizeGuestWithCompletion:nil];
 }
 
-- (void)startWithGuestConsentWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion
 {
     if (!self.guestConsentManager)
     {
-        DMEGuestConsentManager *manager = [[DMEGuestConsentManager alloc] initWithAppCommunicator:self.appCommunicator];
-        [self.appCommunicator addCallbackHandler:manager];
-        self.guestConsentManager = manager;
+        // Prepare manager.
+        DMEGuestConsentManager *guestConsentManager = [[DMEGuestConsentManager alloc] initWithAppCommunicator:self.appCommunicator];
+        [self.appCommunicator addCallbackHandler:guestConsentManager];
+        self.guestConsentManager = guestConsentManager;
     }
     
     __weak __typeof(self)weakSelf = self;
@@ -70,7 +68,7 @@ DMEGuestConsentManager *_guestConsentManager;
             return;
         }
         
-        [strongSelf.guestConsentManager requestGuestConsentWithBaseUrl:self.apiClient.baseUrl withCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (completion)

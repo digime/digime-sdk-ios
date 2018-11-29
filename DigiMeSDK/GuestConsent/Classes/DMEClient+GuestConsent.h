@@ -11,9 +11,7 @@
 
 @interface DMEClient (GuestConsent)
 
-@property (nonatomic) BOOL useGuestConsent;
-
-- (void)startWithGuestConsent;
-- (void)startWithGuestConsentWithCompletion:(AuthorizationCompletionBlock)completion;
+- (void)authorizeGuest;
+- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion;
 
 @end
