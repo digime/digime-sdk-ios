@@ -14,6 +14,7 @@
 #import "DMECertificatePinner.h"
 #import "DMEClient.h"
 #import "DMERequestFactory.h"
+#import "CADataRequest.h"
 
 static const NSString* kDigimeConsentAccessVersion              = @"1.0.0";
 static const NSString* kDigimeConsentAccessPathSessionKeyCreate = @"v1/permission-access/session";
@@ -93,11 +94,11 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
 
 #pragma mark - Session
 
-- (void)requestSessionWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+- (void)requestSessionWithScope:(nullable id<CADataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
 {
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
-    NSURLRequest *request = [self.requestFactory sessionRequestWithAppId:self.client.appId contractId:self.client.contractId];
+    NSURLRequest *request = [self.requestFactory sessionRequestWithAppId:self.client.appId contractId:self.client.contractId scope:scope];
     HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClientConfiguration.h"
+#import "CADataRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,12 +33,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Creates NSURLRequest for creating a new session.
-
+ 
  @param appId NSString
  @param contractId NSString
+ @param scope id<DataRequest>
  @return NSURLRequest
  */
-- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId;
+- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<CADataRequest>)scope;
 
 
 /**

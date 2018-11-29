@@ -9,12 +9,13 @@
 #import "CASession.h"
 #import "CASessionManager.h"
 #import "DMEClient.h"
+#import "CADataRequest.h"
 
 @implementation CASession
 
 #pragma mark - Initialization
 
--(instancetype)initWithSessionKey:(NSString *)sessionKey expiryDate:(NSDate *)expiryDate sessionManager:(CASessionManager *)sessionManager
+-(instancetype)initWithSessionKey:(NSString *)sessionKey expiryDate:(NSDate *)expiryDate sessionManager:(nonnull CASessionManager *)sessionManager
 {
     self = [super init];
     if (self)
@@ -24,6 +25,7 @@
         _sessionManager = sessionManager;
         _sessionId = sessionManager.client.contractId;
         _createdDate = [NSDate date];
+        _scope = sessionManager.scope;
     }
     
     return self;

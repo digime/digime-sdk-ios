@@ -34,12 +34,12 @@
     return self;
 }
 
-- (void)sessionWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)sessionWithScope:(id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion
 {
     //create new session. We always retrieve new session when requesting authorization
     [self invalidateCurrentSession];
     
-    [self.apiClient requestSessionWithSuccess:^(NSData * _Nonnull data) {
+    [self.apiClient requestSessionWithScope:scope success:^(NSData * _Nonnull data) {
         
         NSError *error;
         CASession *session = [CASessionDeserializer deserialize:data error:&error];

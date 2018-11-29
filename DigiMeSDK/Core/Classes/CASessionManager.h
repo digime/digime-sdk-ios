@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable, readonly) CASession *currentSession;
 
+@property (nonatomic, strong, nullable, readonly) id<CADataRequest> scope;
+
 @property (nonatomic, strong, readonly) DMEClient *client;
 
 - (instancetype)initWithApiClient:(DMEAPIClient *)apiClient;
@@ -26,9 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Will return session object. Either existing session will be re-used, or new session will be created.
 
+ @param scope optional CADataRequest that sets scope filter for the session.
  @param completion AuthorizationCompletionBlock
  */
-- (void)sessionWithCompletion:(AuthorizationCompletionBlock)completion;
+- (void)sessionWithScope:(nullable id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion;
 
 
 /**
