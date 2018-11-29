@@ -12,6 +12,8 @@
 		06BED1157014646CAC3447DF68454D46 /* NSString+DMECrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 699B9B566B5E8B34B507EF9297E7BE53 /* NSString+DMECrypto.m */; };
 		0ADB8B6A3F130953D3DA2D1598FCD5C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E32E15C16354ED5B9F1C52E01B3F0C6 /* Foundation.framework */; };
 		0AE118084B366DE4C3B7C26B16791ED5 /* CAFileObject.h in Headers */ = {isa = PBXBuildFile; fileRef = E612064CBF64F50E5D829A4DD1B0121D /* CAFileObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1644C7A021AED1A0007BC68F /* DMEDataUnpacker.h in Headers */ = {isa = PBXBuildFile; fileRef = 1644C79E21AED1A0007BC68F /* DMEDataUnpacker.h */; };
+		1644C7A121AED1A0007BC68F /* DMEDataUnpacker.m in Sources */ = {isa = PBXBuildFile; fileRef = 1644C79F21AED1A0007BC68F /* DMEDataUnpacker.m */; };
 		17F93BC920A076DF508FF8F924F069D7 /* UIViewController+DMEExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = DABDD5D5BA10E3E88B4A541064BB7C03 /* UIViewController+DMEExtension.m */; };
 		19D0FA93D388633C100D9117BE3D452F /* CADataDecryptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FFA5BED49C710F51C76BF15F665FBB14 /* CADataDecryptor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1A347464F73BCD19F0820AC134B9CD39 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE4D4D64E3D6BA3AA7A19BD14E08968D /* Security.framework */; };
@@ -146,23 +148,25 @@
 
 /* Begin PBXFileReference section */
 		03BED9B2A8D118829B64D91417B527FC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
-		03DA7321291E0E089648C52D88D984AB /* apiCert2.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert2.der; path = DigiMeSDK/Core/Assets/apiCert2.der; sourceTree = "<group>"; };
+		03DA7321291E0E089648C52D88D984AB /* apiCert2.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert2.der; path = DigiMeSDK/Core/Assets/apiCert2.der; sourceTree = "<group>"; };
 		0523854EA80A46105ED3307A053E42AD /* CAFiles.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFiles.m; sourceTree = "<group>"; };
 		094D0FA1149AC2ADC7F0E002764FBEA2 /* Brotli-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Brotli-umbrella.h"; sourceTree = "<group>"; };
 		09E4311414F515202690B9F74B94F7AF /* DMECryptoUtilities.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DMECryptoUtilities.h; path = DigiMeSDK/Core/Classes/DMECryptoUtilities.h; sourceTree = "<group>"; };
 		0E32E15C16354ED5B9F1C52E01B3F0C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		0FB512A9D3898174713541821F6C700B /* CAFilesDeserializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFilesDeserializer.h; sourceTree = "<group>"; };
 		103942385CB7C53FC8B137E8C0F64A50 /* NSError+API.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+API.m"; sourceTree = "<group>"; };
+		1644C79E21AED1A0007BC68F /* DMEDataUnpacker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DMEDataUnpacker.h; sourceTree = "<group>"; };
+		1644C79F21AED1A0007BC68F /* DMEDataUnpacker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DMEDataUnpacker.m; sourceTree = "<group>"; };
 		17F4FA59C9D3B57E16EAEC473CAD3843 /* CASession.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CASession.m; sourceTree = "<group>"; };
-		19B84575C6FEBAD9D8F5EA48926CF6AE /* decode.c */ = {isa = PBXFileReference; includeInIndex = 1; name = decode.c; path = Brotli/Source/c/dec/decode.c; sourceTree = "<group>"; };
+		19B84575C6FEBAD9D8F5EA48926CF6AE /* decode.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = decode.c; path = Brotli/Source/c/dec/decode.c; sourceTree = "<group>"; };
 		1B21AA8EEA66BA177C24743BFD5D859B /* DMEValidator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEValidator.h; sourceTree = "<group>"; };
 		1C206373A2A216FEE89079E3B4CAD507 /* CASessionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CASessionManager.m; path = DigiMeSDK/Core/Classes/CASessionManager.m; sourceTree = "<group>"; };
 		1D1BD34BD420E5543DADEBF3AD7FFA8E /* CADataDecryptor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CADataDecryptor.m; sourceTree = "<group>"; };
-		1D298740175572BA00E7570B36E7A832 /* histogram.c */ = {isa = PBXFileReference; includeInIndex = 1; name = histogram.c; path = Brotli/Source/c/enc/histogram.c; sourceTree = "<group>"; };
-		227817D18D0D689F4A17F163B2045978 /* utf8_util.c */ = {isa = PBXFileReference; includeInIndex = 1; name = utf8_util.c; path = Brotli/Source/c/enc/utf8_util.c; sourceTree = "<group>"; };
-		241DB6C5A215C89F65D046E20EA294B5 /* metablock.c */ = {isa = PBXFileReference; includeInIndex = 1; name = metablock.c; path = Brotli/Source/c/enc/metablock.c; sourceTree = "<group>"; };
+		1D298740175572BA00E7570B36E7A832 /* histogram.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = histogram.c; path = Brotli/Source/c/enc/histogram.c; sourceTree = "<group>"; };
+		227817D18D0D689F4A17F163B2045978 /* utf8_util.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = utf8_util.c; path = Brotli/Source/c/enc/utf8_util.c; sourceTree = "<group>"; };
+		241DB6C5A215C89F65D046E20EA294B5 /* metablock.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = metablock.c; path = Brotli/Source/c/enc/metablock.c; sourceTree = "<group>"; };
 		24D331BCDFBCC093EEDB5000160E4CFF /* DMEClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DMEClient.h; path = DigiMeSDK/Core/Classes/DMEClient.h; sourceTree = "<group>"; };
-		2544CA96982CEB9C3B0C2B62E14BCC14 /* bit_cost.c */ = {isa = PBXFileReference; includeInIndex = 1; name = bit_cost.c; path = Brotli/Source/c/enc/bit_cost.c; sourceTree = "<group>"; };
+		2544CA96982CEB9C3B0C2B62E14BCC14 /* bit_cost.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = bit_cost.c; path = Brotli/Source/c/enc/bit_cost.c; sourceTree = "<group>"; };
 		25A272D2E376AF21EFC5E708D5D9807F /* NSData+Brotli.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSData+Brotli.m"; path = "Brotli/Classes/NSData+Brotli.m"; sourceTree = "<group>"; };
 		275C594A7DA32AD96B073F78C50B7E9B /* Pods-DigiMeSDKExample_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DigiMeSDKExample_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		2818F06F73CAA570DB954A52630ABE86 /* DMEAuthorizationManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DMEAuthorizationManager.h; path = DigiMeSDK/Core/Classes/DMEAuthorizationManager.h; sourceTree = "<group>"; };
@@ -173,65 +177,65 @@
 		2FAE4E649432121789E537F81BB0393E /* CAAccounts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAAccounts.h; sourceTree = "<group>"; };
 		3341C8D02EF1B75C367BDCCECFF2F27F /* DMERequestFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMERequestFactory.h; sourceTree = "<group>"; };
 		3366F34ADBD23A70A814A8036C2D6764 /* Pods-DigiMeSDKExample-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DigiMeSDKExample-dummy.m"; sourceTree = "<group>"; };
-		342274A88A435A32230CB3802FBDCDFD /* cluster.c */ = {isa = PBXFileReference; includeInIndex = 1; name = cluster.c; path = Brotli/Source/c/enc/cluster.c; sourceTree = "<group>"; };
+		342274A88A435A32230CB3802FBDCDFD /* cluster.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = cluster.c; path = Brotli/Source/c/enc/cluster.c; sourceTree = "<group>"; };
 		368672F9C503BF9782B00781B021C606 /* CASession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASession.h; sourceTree = "<group>"; };
-		3856E31BEAD3AD184DF558FDFDACDBE3 /* Pods_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExample_Tests.framework; path = "Pods-DigiMeSDKExample_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3856E31BEAD3AD184DF558FDFDACDBE3 /* Pods_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A0BB2FD1284611A0B9E76A18F1F28FD /* DMEValidator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEValidator.m; sourceTree = "<group>"; };
 		3AA39C8621B5760D1E99A3317971ED0B /* DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMECrypto.m; sourceTree = "<group>"; };
 		3CF8C93BE8735BD706EA71F2EEFB6C11 /* CAFile.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFile.m; sourceTree = "<group>"; };
 		3FA05968DA6DB6B043C0ED1905F3DD1D /* DMEOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMEOperation.m; sourceTree = "<group>"; };
-		3FB959042FFA5F106CF43845CA6AC2D9 /* huffman.c */ = {isa = PBXFileReference; includeInIndex = 1; name = huffman.c; path = Brotli/Source/c/dec/huffman.c; sourceTree = "<group>"; };
+		3FB959042FFA5F106CF43845CA6AC2D9 /* huffman.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = huffman.c; path = Brotli/Source/c/dec/huffman.c; sourceTree = "<group>"; };
 		4275453E7A4B28BDDE55F00773F4FF95 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		4507A84739DB01BD4D41B3C9FC5C608D /* compress_fragment_two_pass.c */ = {isa = PBXFileReference; includeInIndex = 1; name = compress_fragment_two_pass.c; path = Brotli/Source/c/enc/compress_fragment_two_pass.c; sourceTree = "<group>"; };
+		4507A84739DB01BD4D41B3C9FC5C608D /* compress_fragment_two_pass.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = compress_fragment_two_pass.c; path = Brotli/Source/c/enc/compress_fragment_two_pass.c; sourceTree = "<group>"; };
 		46E1045F0441A069F3CDDE2149AC0D23 /* CASessionDeserializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CASessionDeserializer.h; sourceTree = "<group>"; };
 		481E0DBAA6F965E44B008AB876EEBF3E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48400ADA708C8E243A879D4034D69138 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48D7925D7D6CF7F3712F1A85F1D33E6D /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		4A425AA700D1E4F451E247E61EE0D192 /* Brotli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Brotli.framework; path = Brotli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4AFC8D72656C9E6554541C9021A7D8E5 /* entropy_encode.c */ = {isa = PBXFileReference; includeInIndex = 1; name = entropy_encode.c; path = Brotli/Source/c/enc/entropy_encode.c; sourceTree = "<group>"; };
+		4A425AA700D1E4F451E247E61EE0D192 /* Brotli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Brotli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AFC8D72656C9E6554541C9021A7D8E5 /* entropy_encode.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = entropy_encode.c; path = Brotli/Source/c/enc/entropy_encode.c; sourceTree = "<group>"; };
 		4CCADB51D3A825AEA76BA36E6FB9D712 /* DMEAPIClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEAPIClient.h; sourceTree = "<group>"; };
 		4D4211511486AD1BD33E33F70AF0FA20 /* Pods-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		4DA504C1FF7198B8A526F8E09DEA58B6 /* NSError+SDK.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+SDK.m"; sourceTree = "<group>"; };
 		4F1F3F50ECA01D2FE2ECA16B22E2AEB5 /* CAFileObject.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAFileObject.m; sourceTree = "<group>"; };
 		53471E37144D1CC8807E21BA5D493E02 /* Brotli-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Brotli-prefix.pch"; sourceTree = "<group>"; };
 		55FD0587F811865D48EA6A03CEC77C20 /* DMEClientDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientDelegate.h; sourceTree = "<group>"; };
-		5638367C39F192E9265F0B8E31379D56 /* compress_fragment.c */ = {isa = PBXFileReference; includeInIndex = 1; name = compress_fragment.c; path = Brotli/Source/c/enc/compress_fragment.c; sourceTree = "<group>"; };
-		56BBAD0C8DAF548E7E62F5BE9A2E7D08 /* encode.c */ = {isa = PBXFileReference; includeInIndex = 1; name = encode.c; path = Brotli/Source/c/enc/encode.c; sourceTree = "<group>"; };
+		5638367C39F192E9265F0B8E31379D56 /* compress_fragment.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = compress_fragment.c; path = Brotli/Source/c/enc/compress_fragment.c; sourceTree = "<group>"; };
+		56BBAD0C8DAF548E7E62F5BE9A2E7D08 /* encode.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = encode.c; path = Brotli/Source/c/enc/encode.c; sourceTree = "<group>"; };
 		58E70AAD060031EFB49B534AE67DFA42 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
-		59415DFEE23B52ECD2A2CD71163CC106 /* static_dict.c */ = {isa = PBXFileReference; includeInIndex = 1; name = static_dict.c; path = Brotli/Source/c/enc/static_dict.c; sourceTree = "<group>"; };
+		59415DFEE23B52ECD2A2CD71163CC106 /* static_dict.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = static_dict.c; path = Brotli/Source/c/enc/static_dict.c; sourceTree = "<group>"; };
 		5DCC967A601A8727A4128330C273F16A /* Pods-DigiMeSDKExample_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExample_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		68810C1A76E3F1F83F0BE631E3C532EC /* Brotli.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Brotli.modulemap; sourceTree = "<group>"; };
-		6915153E7CE87FA241BE579CEE6DFE04 /* backward_references_hq.c */ = {isa = PBXFileReference; includeInIndex = 1; name = backward_references_hq.c; path = Brotli/Source/c/enc/backward_references_hq.c; sourceTree = "<group>"; };
+		6915153E7CE87FA241BE579CEE6DFE04 /* backward_references_hq.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = backward_references_hq.c; path = Brotli/Source/c/enc/backward_references_hq.c; sourceTree = "<group>"; };
 		699B9B566B5E8B34B507EF9297E7BE53 /* NSString+DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSString+DMECrypto.m"; sourceTree = "<group>"; };
-		6C4FA4BE0F7BE75217E807D2C313DEB8 /* brotli_bit_stream.c */ = {isa = PBXFileReference; includeInIndex = 1; name = brotli_bit_stream.c; path = Brotli/Source/c/enc/brotli_bit_stream.c; sourceTree = "<group>"; };
+		6C4FA4BE0F7BE75217E807D2C313DEB8 /* brotli_bit_stream.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = brotli_bit_stream.c; path = Brotli/Source/c/enc/brotli_bit_stream.c; sourceTree = "<group>"; };
 		6C7EF400393F9FBABE32351FD8AF8823 /* DMEClientCallbacks.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMEClientCallbacks.h; sourceTree = "<group>"; };
-		6DFF138529C6D9B62DC3C61EB3BA2FA9 /* transform.c */ = {isa = PBXFileReference; includeInIndex = 1; name = transform.c; path = Brotli/Source/c/common/transform.c; sourceTree = "<group>"; };
+		6DFF138529C6D9B62DC3C61EB3BA2FA9 /* transform.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = transform.c; path = Brotli/Source/c/common/transform.c; sourceTree = "<group>"; };
 		6FFA6E66F897FF43F0791E2D99E96AB4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		7660733D1348D90740BF6FB3EEFE59B7 /* DMEAuthorizationManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DMEAuthorizationManager.m; path = DigiMeSDK/Core/Classes/DMEAuthorizationManager.m; sourceTree = "<group>"; };
-		7B32088DE17906E24E0B04A7E383B73E /* literal_cost.c */ = {isa = PBXFileReference; includeInIndex = 1; name = literal_cost.c; path = Brotli/Source/c/enc/literal_cost.c; sourceTree = "<group>"; };
+		7B32088DE17906E24E0B04A7E383B73E /* literal_cost.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = literal_cost.c; path = Brotli/Source/c/enc/literal_cost.c; sourceTree = "<group>"; };
 		7F5D870CD42988DDA7C750DB807AE848 /* UIViewController+DMEExtension.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DMEExtension.h"; sourceTree = "<group>"; };
-		80C1140D0CB6091CB21FD79E131DCF3B /* backward_references.c */ = {isa = PBXFileReference; includeInIndex = 1; name = backward_references.c; path = Brotli/Source/c/enc/backward_references.c; sourceTree = "<group>"; };
+		80C1140D0CB6091CB21FD79E131DCF3B /* backward_references.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = backward_references.c; path = Brotli/Source/c/enc/backward_references.c; sourceTree = "<group>"; };
 		83319CD721C38CBBB978693F141D69B1 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8499B32BCA5311971CCD30E5F6A42EE0 /* block_splitter.c */ = {isa = PBXFileReference; includeInIndex = 1; name = block_splitter.c; path = Brotli/Source/c/enc/block_splitter.c; sourceTree = "<group>"; };
-		85C823D998CE4879D0FCA2237EFD5683 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
-		8B8B983CA250C60B5DF918E051718D57 /* memory.c */ = {isa = PBXFileReference; includeInIndex = 1; name = memory.c; path = Brotli/Source/c/enc/memory.c; sourceTree = "<group>"; };
-		8D18A2E4CE392045A0085D8F5DA6E1F0 /* state.c */ = {isa = PBXFileReference; includeInIndex = 1; name = state.c; path = Brotli/Source/c/dec/state.c; sourceTree = "<group>"; };
+		8499B32BCA5311971CCD30E5F6A42EE0 /* block_splitter.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = block_splitter.c; path = Brotli/Source/c/enc/block_splitter.c; sourceTree = "<group>"; };
+		85C823D998CE4879D0FCA2237EFD5683 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		8B8B983CA250C60B5DF918E051718D57 /* memory.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = memory.c; path = Brotli/Source/c/enc/memory.c; sourceTree = "<group>"; };
+		8D18A2E4CE392045A0085D8F5DA6E1F0 /* state.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = state.c; path = Brotli/Source/c/dec/state.c; sourceTree = "<group>"; };
 		8E7749E33F61C4601BD42E19154E96B0 /* NSError+Auth.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSError+Auth.h"; sourceTree = "<group>"; };
 		903C548AA7733E2E547DBC2648F7D05B /* Pods-DigiMeSDKExample_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExample_Tests-resources.sh"; sourceTree = "<group>"; };
 		90D77586F8492CD9B71B14FD47032045 /* DMECrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMECrypto.h; sourceTree = "<group>"; };
 		92268D4C58F067CC00ECB51717B55FAC /* Pods-DigiMeSDKExample-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DigiMeSDKExample-acknowledgements.markdown"; sourceTree = "<group>"; };
-		9308764EF203E852F0DE8A2FD998B737 /* encoder_dict.c */ = {isa = PBXFileReference; includeInIndex = 1; name = encoder_dict.c; path = Brotli/Source/c/enc/encoder_dict.c; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9308764EF203E852F0DE8A2FD998B737 /* encoder_dict.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = encoder_dict.c; path = Brotli/Source/c/enc/encoder_dict.c; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		94ECE4BF39B98845B9AFEAF57F527F71 /* CAFile.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFile.h; sourceTree = "<group>"; };
 		973F1A7EDA7D8D11E34DECC045ED4786 /* NSString+DMECrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSString+DMECrypto.h"; sourceTree = "<group>"; };
 		9ABD9A7E7BEBFFF838B61F4A208CE351 /* Pods-DigiMeSDKExample-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DigiMeSDKExample-acknowledgements.plist"; sourceTree = "<group>"; };
 		A0944F89535EEF25C49256F94D9D9D7A /* DMECertificatePinner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMECertificatePinner.m; sourceTree = "<group>"; };
 		A112F09B72A97871FA4044B7324C5249 /* DigiMeSDK-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DigiMeSDK-dummy.m"; sourceTree = "<group>"; };
-		A2992B0DE0EF82FF9E76DD33C9378D6B /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DigiMeSDKExample.framework; path = "Pods-DigiMeSDKExample.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2992B0DE0EF82FF9E76DD33C9378D6B /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2BF55D9C8E86E0C089D728315A06B47 /* NSData+DMECrypto.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSData+DMECrypto.h"; sourceTree = "<group>"; };
 		A3473E40758DDA71B46ADA5E7CD60F33 /* DMECompressor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMECompressor.m; sourceTree = "<group>"; };
-		A50C88BF43F38BC16F55D33918A9EBDF /* dictionary.c */ = {isa = PBXFileReference; includeInIndex = 1; name = dictionary.c; path = Brotli/Source/c/common/dictionary.c; sourceTree = "<group>"; };
-		A77C8F7629EE6E6C50DF74BAF1682EEC /* DigiMeSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A50C88BF43F38BC16F55D33918A9EBDF /* dictionary.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = dictionary.c; path = Brotli/Source/c/common/dictionary.c; sourceTree = "<group>"; };
+		A77C8F7629EE6E6C50DF74BAF1682EEC /* DigiMeSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A877B8F7E607ACB957DBCAFD43B2801D /* Pods-DigiMeSDKExample-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExample-frameworks.sh"; sourceTree = "<group>"; };
 		A8A972933E77E100043363101621F737 /* CASessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CASessionManager.h; path = DigiMeSDK/Core/Classes/CASessionManager.h; sourceTree = "<group>"; };
 		AA5197A9B7E49A6B18F33E58185C3C51 /* DMECryptoUtilities.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DMECryptoUtilities.m; path = DigiMeSDK/Core/Classes/DMECryptoUtilities.m; sourceTree = "<group>"; };
@@ -241,14 +245,14 @@
 		B30CA451E89D54B254DAC9857A40E415 /* CAFiles.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFiles.h; sourceTree = "<group>"; };
 		B6521A05FAC5BA1DBCB3D1D3409FCF92 /* CAAccounts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = CAAccounts.m; sourceTree = "<group>"; };
 		B7B182E06BF5E7363C49BB0688E7E386 /* Brotli.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Brotli.xcconfig; sourceTree = "<group>"; };
-		B7F00B77DB3D15D615E2CD52E8F717EC /* apiCert1.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert1.der; path = DigiMeSDK/Core/Assets/apiCert1.der; sourceTree = "<group>"; };
-		B966C496C4E5182A7A4E6089DE82A5B6 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
-		B99493E7961A8D5877BF2EBDFBF85993 /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = DigiMeSDK.framework; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BC18DF79AF323A8B7B74F903FC624534 /* apiCert3.der */ = {isa = PBXFileReference; includeInIndex = 1; name = apiCert3.der; path = DigiMeSDK/Core/Assets/apiCert3.der; sourceTree = "<group>"; };
+		B7F00B77DB3D15D615E2CD52E8F717EC /* apiCert1.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert1.der; path = DigiMeSDK/Core/Assets/apiCert1.der; sourceTree = "<group>"; };
+		B966C496C4E5182A7A4E6089DE82A5B6 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B99493E7961A8D5877BF2EBDFBF85993 /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC18DF79AF323A8B7B74F903FC624534 /* apiCert3.der */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = apiCert3.der; path = DigiMeSDK/Core/Assets/apiCert3.der; sourceTree = "<group>"; };
 		BC1C3DB754EEA2747A11B9B45FEF1DC4 /* NSData+Brotli.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSData+Brotli.h"; path = "Brotli/Classes/NSData+Brotli.h"; sourceTree = "<group>"; };
 		BE4D4D64E3D6BA3AA7A19BD14E08968D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		C03C07428B8FBF1D9DD99661D0A81CBE /* NSData+DMECrypto.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSData+DMECrypto.m"; sourceTree = "<group>"; };
-		C0B17B8400B8C686F66ACE2377486685 /* bit_reader.c */ = {isa = PBXFileReference; includeInIndex = 1; name = bit_reader.c; path = Brotli/Source/c/dec/bit_reader.c; sourceTree = "<group>"; };
+		C0B17B8400B8C686F66ACE2377486685 /* bit_reader.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = bit_reader.c; path = Brotli/Source/c/dec/bit_reader.c; sourceTree = "<group>"; };
 		C0C40743BA359220B41899BCA2279666 /* DMECompressor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = DMECompressor.h; sourceTree = "<group>"; };
 		C25DF8004D0865017684626946FFD2DB /* DigiMeSDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DigiMeSDK.xcconfig; sourceTree = "<group>"; };
 		C76EDBA12BC685B2B575F3ACB732AFDA /* NSError+Auth.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSError+Auth.m"; sourceTree = "<group>"; };
@@ -266,7 +270,7 @@
 		D7FD193592D7E138C28E510FBE2F0EB6 /* Pods-DigiMeSDKExample_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DigiMeSDKExample_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		DABDD5D5BA10E3E88B4A541064BB7C03 /* UIViewController+DMEExtension.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DMEExtension.m"; sourceTree = "<group>"; };
 		DD6C41C974C5646DBAE883514B5166CE /* DigiMeSDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DigiMeSDK.h; path = DigiMeSDK/DigiMeSDK.h; sourceTree = "<group>"; };
-		E0BD4DA7F600D1268F4EA89F2862CB33 /* dictionary_hash.c */ = {isa = PBXFileReference; includeInIndex = 1; name = dictionary_hash.c; path = Brotli/Source/c/enc/dictionary_hash.c; sourceTree = "<group>"; };
+		E0BD4DA7F600D1268F4EA89F2862CB33 /* dictionary_hash.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = dictionary_hash.c; path = Brotli/Source/c/enc/dictionary_hash.c; sourceTree = "<group>"; };
 		E19A3A332FD465081571B8252C5193BB /* DMERequestFactory.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = DMERequestFactory.m; sourceTree = "<group>"; };
 		E612064CBF64F50E5D829A4DD1B0121D /* CAFileObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CAFileObject.h; sourceTree = "<group>"; };
 		E7028C01243601E5616B9C52CD502ACC /* Pods-DigiMeSDKExample-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DigiMeSDKExample-resources.sh"; sourceTree = "<group>"; };
@@ -366,7 +370,6 @@
 				227817D18D0D689F4A17F163B2045978 /* utf8_util.c */,
 				187E5A6C3DA1B0C67D013C3CD0CF303A /* Support Files */,
 			);
-			name = Brotli;
 			path = Brotli;
 			sourceTree = "<group>";
 		};
@@ -591,6 +594,8 @@
 				D3DD02DEFD4C7108AC863D142D2DF83C /* CASessionDeserializer.m */,
 				C0C40743BA359220B41899BCA2279666 /* DMECompressor.h */,
 				A3473E40758DDA71B46ADA5E7CD60F33 /* DMECompressor.m */,
+				1644C79E21AED1A0007BC68F /* DMEDataUnpacker.h */,
+				1644C79F21AED1A0007BC68F /* DMEDataUnpacker.m */,
 				1B21AA8EEA66BA177C24743BFD5D859B /* DMEValidator.h */,
 				3A0BB2FD1284611A0B9E76A18F1F28FD /* DMEValidator.m */,
 				A2BF55D9C8E86E0C089D728315A06B47 /* NSData+DMECrypto.h */,
@@ -686,6 +691,7 @@
 				CBC83F506ECA7FCB78C949DD75D273CA /* DMEAPIClient.h in Headers */,
 				041A049D7A80950045DE366B769D7D66 /* DMEAppCommunicator.h in Headers */,
 				5317971B463EFC0057DB5E860D1FBF66 /* DMEAuthorizationManager.h in Headers */,
+				1644C7A021AED1A0007BC68F /* DMEDataUnpacker.h in Headers */,
 				4F9E7B6A7BF915AFBE724026EAF74B9D /* DMECertificatePinner.h in Headers */,
 				6F6240E8BB028C44F761685384A07438 /* DMEClient+Private.h in Headers */,
 				C7CF56DBA79F0666877E1509F363601C /* DMEClient.h in Headers */,
@@ -877,6 +883,7 @@
 				4B68941D4AB0FBC1447E299C1A81A4B0 /* DMERequestFactory.m in Sources */,
 				F94F0DE8847DC8E2FFCE1502872FE67B /* DMEValidator.m in Sources */,
 				41081E7059651072F4D64E462F6AF828 /* NSData+DMECrypto.m in Sources */,
+				1644C7A121AED1A0007BC68F /* DMEDataUnpacker.m in Sources */,
 				4013B52AC6CA93BF5729BE1819245D13 /* NSError+API.m in Sources */,
 				BD4505BCAABF79B99A0FA269C21DB0F8 /* NSError+Auth.m in Sources */,
 				74DA54A52F505D95DADDBB9CCC0560C5 /* NSError+SDK.m in Sources */,

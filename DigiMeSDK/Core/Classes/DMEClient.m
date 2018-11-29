@@ -17,6 +17,7 @@
 #import "DMEAuthorizationManager.h"
 #import "DMEClient+Private.h"
 #import "DMECompressor.h"
+#import "DMEDataUnpacker.h"
 
 @implementation DMEClient
 @synthesize privateKeyHex = _privateKeyHex;
@@ -302,30 +303,10 @@
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         NSError *error;
-        
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
         
-        NSString *compression = json[@"compression"];
-        
-        CAFile *file;
-        
-        if (!error)
-        {
-            NSData *fileData;
-            
-            if ([compression isEqualToString:@"brotli"])
-            {
-                // Decompress data before serving to deserialiser.
-                fileData = [DMECompressor decompressData:decryptedData usingAlgorithm:DMECompressionAlgorithmBrotli];
-            }
-            else
-            {
-                fileData = decryptedData;
-            }
-        
-            file = [CAFile deserialize:fileData fileId:fileId error:&error];
-        }
+        NSData *fileData = [DMEDataUnpacker unpackData:decryptedData fromRootData:data];
+        CAFile *file = [CAFile deserialize:fileData fileId:fileId error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
            
@@ -396,30 +377,10 @@
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         NSError *error;
-        
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
         
-        NSString *compression = json[@"compression"];
-        
-        CAAccounts *accounts;
-        
-        if (!error)
-        {
-            NSData *fileData;
-            
-            if ([compression isEqualToString:@"brotli"])
-            {
-                // Decompress data before serving to deserialiser.
-                fileData = [DMECompressor decompressData:decryptedData usingAlgorithm:DMECompressionAlgorithmBrotli];
-            }
-            else
-            {
-                fileData = decryptedData;
-            }
-            
-            accounts = [CAAccounts deserialize:fileData error:&error];
-        }
+        NSData *fileData = [DMEDataUnpacker unpackData:decryptedData fromRootData:data];
+        CAAccounts *accounts = [CAAccounts deserialize:fileData error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
