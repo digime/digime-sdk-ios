@@ -307,7 +307,7 @@ The format of CATimeRange is as follows:
 + (CATimeRange *)from:(NSDate *)from;
 + (CATimeRange *)priorTo:(NSDate *)priorTo;
 + (CATimeRange *)from:(NSDate *)from to:(NSDate *)to;
-+ (CATimeRange *)last:(int)x unit:(CATimeRangeUnit)unit;
++ (CATimeRange *)last:(NSUInteger)x unit:(CATimeRangeUnit)unit;
 @end
 ```
 
