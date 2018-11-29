@@ -2,7 +2,8 @@
 //  DMEDataUnpacker.h
 //  DigiMeSDK
 //
-//  Created by Jacob King on 28/11/2018.
+//  Created on 28/11/2018.
+//  Copyright © 2018 DigiMe. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
