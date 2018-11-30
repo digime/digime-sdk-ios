@@ -21,7 +21,7 @@
     
     NSString *base64Encoded = json[@"fileContent"];
     
-    if (base64Encoded.length && [base64Encoded isKindOfClass:[NSString class]] && [base64Encoded isBase64])
+    if ([base64Encoded isKindOfClass:[NSString class]] && base64Encoded.length && [base64Encoded isBase64])
     {
         NSData *encryptedData = [base64Encoded base64Data];
         NSData *privateKeyData = [crypto privateKeyHex];
@@ -52,9 +52,9 @@
     }
     else
     {
-        NSDictionary *fileContent = json[@"fileContent"];
+        id fileContent = json[@"fileContent"];
         
-        if (!fileContent || ![fileContent isKindOfClass:[NSDictionary class]])
+        if (!fileContent || (![fileContent isKindOfClass:[NSDictionary class]] && ![fileContent isKindOfClass:[NSArray class]]))
         {
             *error = [NSError sdkError:SDKErrorDecryptionFailed];
             return nil;
