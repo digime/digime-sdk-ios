@@ -27,6 +27,9 @@ public class FileContainer: NSObject {
     /// The file name
     public var fileName: String
     
+    public var created: Date?
+    public var modified: Date?
+    
     init?(withFileDescriptor descriptor: String) {
         guard
             let group = descriptor.group(),

@@ -23,7 +23,12 @@ class DMEDataReader {
             return nil
         }
         
-        let containers = filePaths.compactMap { FileContainer(withFileDescriptor: $0) }
+        let containers = filePaths.compactMap { fileName -> FileContainer? in
+            let file = FileContainer(withFileDescriptor: fileName)
+            file?.created = date(fileName, FileAttributeKey.creationDate)
+            file?.modified = date(fileName, FileAttributeKey.modificationDate)
+            return file
+        }
         return containers
     }
     
@@ -43,5 +48,18 @@ class DMEDataReader {
         }
         
         return decryptedData
+    }
+    
+    func date(_ fileName: String, dateAttribute: FileAttributeKey) -> Date? {
+        let filepath = self.fileLocation.appendingPathComponent(fileName)
+        let fileManager = FileManager.default
+        
+        do {
+            let attr = try fileManager.attributesOfItem(atPath: filepath.path)
+            return attr[dateAttribute] as? Date
+        }
+        catch {
+            return nil
+        }
     }
 }
