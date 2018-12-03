@@ -23,6 +23,7 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
   * [Authorization](#authorization) 
      * [Handling app callback](#handling-app-callback)
      * [Delegate Calls (authorize)](#delegate-calls-authorize)
+  * [Specifying Scope] (#specifying-scope)
   * [Fetching data](#fetching-data)
   * [Fetching Accounts data](#fetching-accounts-data)
      * [Delegate Calls (fetching)](#delegate-calls-fetching)
@@ -84,7 +85,7 @@ Additionally it also specifies how the data is encrypted in transit.
 To register a Consent Access contract check out [Digi.me Dev Support](https://developers.digi.me). There you can request a Contract ID and App ID to which it is bound.
 
 ### Contract Private Key
-All content retrieved by the SDK is encrypted in transit using the public key bound to the certificate that was created when the Consent Access contract was created. For SDK to be able to decrypt content transparently matching private key must be provided (i.e. from the key pair created for contract).
+All content retrieved by the SDK is encrypted in transit using the public key bound to the certificate that was created when the Consent Access contract was created. For the SDK to be able to decrypt content transparently matching private key must be provided (i.e. from the key pair created for contract).
 
 Digi.me SDK accepts PKCS #12 encoded files as the default key storage format.
 
@@ -110,7 +111,7 @@ NSString *privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"YOUR_P1
 > 
 > `YOUR_P12_FILENAME ` is the name of your p12 file without `p12` extension. The file must be in the bundle.
 > 
-> `YOUR_CONTRACT_ID` is the Contract ID issued to you by Digi.me Ltd. 
+> `YOUR_P12_PASSWORD` is the password used to unlock the p12 file. 
 
 ### DMEClient and SDK configuration
 
@@ -287,6 +288,48 @@ The following delegate methods can be implemented for the authorize stage:
  */
 - (void)authorizeFailed:(NSError *)error;
 
+
+```
+
+## Specifying Scope
+Specifying a scope via `CAScope` object will allow you to retrieve only a subset of data that the contract has asked for. This might come in handy if you already have data from the existing user and you might only want to retrieve any new data that might have been added to the user's library in the last x months. 
+
+SDK currently only supports specifying scope for `CATimeRange`s.
+ 
+The format of CATimeRange is as follows:
+
+```objective-c
+@interface CATimeRange : NSObject
+@property (nonatomic, strong, readonly, nullable) NSDate *from;
+@property (nonatomic, strong, readonly, nullable) NSDate *to;
+@property (nonatomic, strong, readonly, nullable) NSString *last;
+
++ (CATimeRange *)from:(NSDate *)from;
++ (CATimeRange *)priorTo:(NSDate *)priorTo;
++ (CATimeRange *)from:(NSDate *)from to:(NSDate *)to;
++ (CATimeRange *)last:(NSUInteger)x unit:(CATimeRangeUnit)unit;
+@end
+```
+
+`from` - If this is set, we will return data created after this date.
+
+`to` - If this is set, we will return data created before this timestamp.
+
+`last` - You can set a dynamic time range based on the current date. The string is in the format of `x<unit>`, where `x` specifies a number and `<unit>` specifies the range unit. For example, if you wanted to get the last 6 month, you would set the `last` property to `6m`.
+
+`CATimeRange` has handy initializers you can use to cover most use cases.
+
+Example usage:
+
+```objective-c
+
+CAScope *scope = [CAScope new];
+
+//last 10 days
+CATimeRange *timeRange = [CATimeRange last:10 unit:CATimeRangeUnitDay];
+
+scope.timeRanges = @[timeRange];
+[[DMEClient sharedClient] authorizeWithScope:scope];
 
 ```
 

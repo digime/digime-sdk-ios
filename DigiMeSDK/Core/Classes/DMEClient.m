@@ -16,6 +16,7 @@
 #import "DMEAppCommunicator.h"
 #import "DMEAuthorizationManager.h"
 #import "DMEClient+Private.h"
+#import "DMECompressor.h"
 
 @implementation DMEClient
 @synthesize privateKeyHex = _privateKeyHex;
@@ -58,10 +59,20 @@
 
 - (void)authorize
 {
-    [self authorizeWithCompletion:nil];
+    [self authorizeWithScope:nil completion:nil];
+}
+
+- (void)authorizeWithScope:(id<CADataRequest>)scope
+{
+    [self authorizeWithScope:scope completion:nil];
 }
 
 - (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
+{
+    [self authorizeWithScope:nil completion:authorizationCompletion];
+}
+
+- (void)authorizeWithScope:(id<CADataRequest>)scope completion:(nullable AuthorizationCompletionBlock)authorizationCompletion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -81,7 +92,7 @@
     
     //get session
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
@@ -120,9 +131,17 @@
 
 - (nullable NSError *)validateClient
 {
-    if (!self.appId)
+    if (!self.appId || [self.appId isEqualToString:@"YOUR_APP_ID"])
     {
         return [NSError sdkError:SDKErrorNoAppId];
+    }
+    
+    NSArray *urlTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
+    NSArray *urlSchemes = [[urlTypes valueForKey:@"CFBundleURLSchemes"] valueForKeyPath: @"@unionOfArrays.self"];
+    NSString *expectedUrlScheme = [NSString stringWithFormat:@"digime-ca-%@", self.appId];
+    if (![urlSchemes containsObject:expectedUrlScheme])
+    {
+        return [NSError sdkError:SDKErrorNoURLScheme];
     }
     
     if (!self.privateKeyHex)
@@ -130,7 +149,7 @@
         return [NSError sdkError:SDKErrorNoPrivateKeyHex];
     }
     
-    if (!self.contractId)
+    if (!self.contractId || [self.contractId isEqualToString:@"YOUR_CONTRACT_ID"])
     {
         return [NSError sdkError:SDKErrorNoContract];
     }
@@ -337,12 +356,29 @@
 - (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
 {
     NSError *error;
+    
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
+    
+    NSString *compression = json[@"compression"];
+    
     CAFile *file;
     
     if (!error)
     {
-        file = [CAFile deserialize:decryptedData fileId:fileId error:&error];
+        NSData *fileData;
+        
+        if ([compression isEqualToString:@"brotli"])
+        {
+            // Decompress data before serving to deserialiser.
+            fileData = [DMECompressor decompressData:decryptedData usingAlgorithm:DMECompressionAlgorithmBrotli];
+        }
+        else
+        {
+            fileData = decryptedData;
+        }
+        
+        file = [CAFile deserialize:fileData fileId:fileId error:&error];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -420,12 +456,29 @@
         }
         
         NSError *error;
+        
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
+        
+        NSString *compression = json[@"compression"];
+        
         CAAccounts *accounts;
         
         if (!error)
         {
-            accounts = [CAAccounts deserialize:decryptedData error:&error];
+            NSData *fileData;
+            
+            if ([compression isEqualToString:@"brotli"])
+            {
+                // Decompress data before serving to deserialiser.
+                fileData = [DMECompressor decompressData:decryptedData usingAlgorithm:DMECompressionAlgorithmBrotli];
+            }
+            else
+            {
+                fileData = decryptedData;
+            }
+            
+            accounts = [CAAccounts deserialize:fileData error:&error];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{

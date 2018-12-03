@@ -15,7 +15,6 @@ static NSString * const DME_AUTHORIZATION_ERROR = @"me.digi.authorization";
 typedef NS_ENUM(NSInteger, AuthError) {
     AuthErrorGeneral    = 1, //general error
     AuthErrorCancelled  = 5, //authorization cancelled
-    AuthErrorInProgress = 6, //authorization already in progress
     AuthErrorInvalidSession = 7, //invalid session
     AuthErrorInvalidSessionKey = 10, //session key returned by Digi.me app is invalid
 };

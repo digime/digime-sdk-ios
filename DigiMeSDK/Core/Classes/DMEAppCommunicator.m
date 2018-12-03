@@ -16,7 +16,6 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 static NSString * const kCARequest3dPartyAppName = @"CARequest3dPartyAppName";
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
-static NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 static NSString * const kCASdkVersion = @"CASdkVersion";
 static NSInteger  const kDMEClientAppstoreID = 1234541790;
 static NSTimeInterval const kCATimerInterval = 0.5;
@@ -62,27 +61,26 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     
     self.sentAction = action;
     self.sentParameters = parameters;
-    
-    if (![self digiMeAppIsInstalled])
-    {
-        [self presentAppstoreView];
-        return; // We have a listener set up to restore this flow after.
-    }
-    
-    NSURLComponents *components = [NSURLComponents componentsWithURL:[self digiMeBaseURL] resolvingAgainstBaseURL:NO];
-    components.host = action;
-    
-    NSMutableArray *newQueryItems = [NSMutableArray arrayWithArray:components.queryItems] ?: [NSMutableArray array];
-    [newQueryItems addObject:[NSURLQueryItem queryItemWithName:kCASdkVersion value:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]]];
-    
-    [parameters enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
-        [newQueryItems addObject:[NSURLQueryItem queryItemWithName:key value:obj]];
-    }];
-    components.queryItems = newQueryItems;
-    
-    NSURL *openURL = components.URL;
-    
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (![self digiMeAppIsInstalled])
+        {
+            [self presentAppstoreView];
+            return; // We have a listener set up to restore this flow after.
+        }
+        
+        NSURLComponents *components = [NSURLComponents componentsWithURL:[self digiMeBaseURL] resolvingAgainstBaseURL:NO];
+        components.host = action;
+        
+        NSMutableArray *newQueryItems = [NSMutableArray arrayWithArray:components.queryItems] ?: [NSMutableArray array];
+        [newQueryItems addObject:[NSURLQueryItem queryItemWithName:kCASdkVersion value:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]]];
+        
+        [parameters enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+            [newQueryItems addObject:[NSURLQueryItem queryItemWithName:key value:obj]];
+        }];
+        components.queryItems = newQueryItems;
+        
+        NSURL *openURL = components.URL;
+        
         [UIApplication.sharedApplication openURL:openURL options:@{} completionHandler:nil];
     });
 }
