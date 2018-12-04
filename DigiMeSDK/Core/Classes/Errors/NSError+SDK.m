@@ -15,6 +15,14 @@
     return [NSError errorWithDomain:SDK_ERROR code:sdkError userInfo:@{ NSLocalizedDescriptionKey: [[self class] sdkDescription:sdkError]}];
 }
 
++ (void)setSDKError:(SDKError)sdkError toError:(NSError * _Nullable __autoreleasing *)error
+{
+    if (error != nil)
+    {
+        *error = [[self class] sdkError:sdkError];
+    }
+}
+
 + (NSString *)sdkDescription:(SDKError)sdkError
 {
     switch (sdkError) {
