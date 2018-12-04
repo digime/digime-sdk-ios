@@ -10,29 +10,20 @@
 #import "NSString+DMECrypto.h"
 #import "DMECrypto.h"
 #import "NSError+SDK.h"
-#import "NSError+Auth.h"
 
 @implementation CADataDecryptor
 
-+ (NSData *)decrypt:(NSData *)jsonData error:(NSError * _Nullable __autoreleasing *)error
++ (NSData *)decryptFileContent:(id)fileContent error:(NSError * _Nullable __autoreleasing *)error
 {
-    DMECrypto *crypto = [DMECrypto new];
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:error];
-    
-    NSString *base64Encoded = json[@"fileContent"];
-    
-    if ([base64Encoded isKindOfClass:[NSString class]] && base64Encoded.length && [base64Encoded isBase64])
+    if ([fileContent isKindOfClass:[NSString class]] && [fileContent length] && [fileContent isBase64])
     {
-        NSData *encryptedData = [base64Encoded base64Data];
+        DMECrypto *crypto = [DMECrypto new];
+        NSData *encryptedData = [fileContent base64Data];
         NSData *privateKeyData = [crypto privateKeyHex];
         
         if (!privateKeyData)
         {
-            if (error != nil)
-            {
-                *error = [NSError sdkError:SDKErrorNoPrivateKeyHex];
-            }
-            
+            [NSError setSDKError:SDKErrorNoPrivateKeyHex toError:error];
             return nil;
         }
         
@@ -40,38 +31,35 @@
         
         if (!decryptedData)
         {
-            if (error != nil)
-            {
-                *error = [NSError sdkError:SDKErrorDecryptionFailed];
-            }
-            
+            [NSError setSDKError:SDKErrorDecryptionFailed toError:error];
             return nil;
         }
         
         return decryptedData;
     }
-    else
+    else if ([fileContent isKindOfClass:[NSDictionary class]] || [fileContent isKindOfClass:[NSArray class]])
     {
-        id fileContent = json[@"fileContent"];
-        
-        if (!fileContent || (![fileContent isKindOfClass:[NSDictionary class]] && ![fileContent isKindOfClass:[NSArray class]]))
-        {
-            *error = [NSError sdkError:SDKErrorDecryptionFailed];
-            return nil;
-        }
-        
         NSError *serializationError;
         NSData *unencryptedData = [NSJSONSerialization dataWithJSONObject:fileContent options:kNilOptions error:&serializationError];
         
         if (!unencryptedData)
         {
-            *error = [NSError sdkError:SDKErrorDecryptionFailed];
+            [NSError setSDKError:SDKErrorInvalidData toError:error];
             return nil;
         }
         
         return unencryptedData;
     }
+    else if ([fileContent isKindOfClass:[NSString class]] && [fileContent length] > 0)
+    {
+        return [(NSString *)fileContent dataUsingEncoding:NSUTF8StringEncoding];
+    }
+    else if ([fileContent isKindOfClass:[NSData class]])
+    {
+        return (NSData *)fileContent;
+    }
     
+    [NSError setSDKError:SDKErrorInvalidData toError:error];
     return nil;
 }
 

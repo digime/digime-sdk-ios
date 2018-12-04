@@ -9,14 +9,13 @@
 #import "DMEAPIClient.h"
 #import "DMEClient.h"
 #import "CAFilesDeserializer.h"
-#import "CADataDecryptor.h"
 #import "CASessionManager.h"
 #import "DMECrypto.h"
 #import "DMEValidator.h"
 #import "DMEAppCommunicator.h"
 #import "DMEAuthorizationManager.h"
 #import "DMEClient+Private.h"
-#import "DMECompressor.h"
+#import "DMEDataUnpacker.h"
 
 @implementation DMEClient
 @synthesize privateKeyHex = _privateKeyHex;
@@ -219,8 +218,7 @@
         {
             completion(nil, error);
         }
-        
-        if ([self.delegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
+        else if ([self.delegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
         {
             [self.delegate clientFailedToRetrieveFileList:error];
         }
@@ -241,8 +239,7 @@
             {
                 completion(files, error);
             }
-            
-            if (error)
+            else if (error)
             {
                 if ([strongSelf.delegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
                 {
@@ -262,8 +259,7 @@
             {
                 completion(nil, error);
             }
-            
-            if ([strongSelf.delegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
+            else if ([strongSelf.delegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
             {
                 [strongSelf.delegate clientFailedToRetrieveFileList:error];
             }
@@ -298,11 +294,11 @@
             CAFile *file = [[CAFile alloc] initWithFileId:fileId];
             completion(file, error);
         }
-        
-        if ([self.delegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
+        else if ([self.delegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
         {
             [self.delegate fileRetrieveFailed:fileId error:error];
         }
+        
         return;
     }
     
@@ -311,30 +307,12 @@
     [self.apiClient requestFileWithId:fileId success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
-        NSError *error;
-        
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
-        
-        NSString *compression = json[@"compression"];
-        
         CAFile *file;
-        
-        if (!error)
+        NSError *error;
+        NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
+        if (unpackedData != nil)
         {
-            NSData *fileData;
-            
-            if ([compression isEqualToString:@"brotli"])
-            {
-                // Decompress data before serving to deserialiser.
-                fileData = [DMECompressor decompressData:decryptedData usingAlgorithm:DMECompressionAlgorithmBrotli];
-            }
-            else
-            {
-                fileData = decryptedData;
-            }
-        
-            file = [CAFile deserialize:fileData fileId:fileId error:&error];
+            file = [CAFile deserialize:unpackedData fileId:fileId error:&error];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -343,8 +321,7 @@
             {
                 completion(file, error);
             }
-            
-            if (error)
+            else if (error)
             {
                 if ([strongSelf.delegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
                 {
@@ -366,8 +343,7 @@
             {
                 completion(nil, error);
             }
-            
-            if ([strongSelf.delegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
+            else if ([strongSelf.delegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
             {
                 [strongSelf.delegate fileRetrieveFailed:fileId error:error];
             }
@@ -392,11 +368,11 @@
         {
             completion(nil, error);
         }
-        
-        if ([self.delegate respondsToSelector:@selector(accountsRetrieveFailed:)])
+        else if ([self.delegate respondsToSelector:@selector(accountsRetrieveFailed:)])
         {
             [self.delegate accountsRetrieveFailed:error];
         }
+        
         return;
     }
     
@@ -405,30 +381,12 @@
     [self.apiClient requestFileWithId:@"accounts.json" success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
-        NSError *error;
-        
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
-        
-        NSString *compression = json[@"compression"];
-        
         CAAccounts *accounts;
-        
-        if (!error)
+        NSError *error;
+        NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
+        if (unpackedData != nil)
         {
-            NSData *fileData;
-            
-            if ([compression isEqualToString:@"brotli"])
-            {
-                // Decompress data before serving to deserialiser.
-                fileData = [DMECompressor decompressData:decryptedData usingAlgorithm:DMECompressionAlgorithmBrotli];
-            }
-            else
-            {
-                fileData = decryptedData;
-            }
-            
-            accounts = [CAAccounts deserialize:fileData error:&error];
+            accounts = [CAAccounts deserialize:unpackedData error:&error];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -437,8 +395,7 @@
             {
                 completion(accounts, error);
             }
-            
-            if (error)
+            else if (error)
             {
                 if ([strongSelf.delegate respondsToSelector:@selector(accountsRetrieveFailed:)])
                 {
@@ -460,8 +417,7 @@
             {
                 completion(nil, error);
             }
-            
-            if ([strongSelf.delegate respondsToSelector:@selector(accountsRetrieveFailed:)])
+            else if ([strongSelf.delegate respondsToSelector:@selector(accountsRetrieveFailed:)])
             {
                 [strongSelf.delegate accountsRetrieveFailed:error];
             }
