@@ -25,8 +25,8 @@ class DMEDataReader {
         
         let containers = filePaths.compactMap { fileName -> FileContainer? in
             let file = FileContainer(withFileDescriptor: fileName)
-            file?.created = date(fileName, FileAttributeKey.creationDate)
-            file?.modified = date(fileName, FileAttributeKey.modificationDate)
+            file?.created = date(fileName, dateAttribute: FileAttributeKey.creationDate)
+            file?.modified = date(fileName, dateAttribute: FileAttributeKey.modificationDate)
             return file
         }
         return containers
