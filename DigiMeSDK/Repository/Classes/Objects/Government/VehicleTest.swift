@@ -21,7 +21,7 @@ public class VehicleTest: NSObject, BaseObjectDecodable {
     public let advisoryNotes: [String]
     public let createdDate: Date
     public let entityId: String
-    public let expiryDate: Date
+    public let expiryDate: Date?
     public let failureReasons: [String]
     public let identifier: String
     public let odometerReading: Int
@@ -46,18 +46,5 @@ public class VehicleTest: NSObject, BaseObjectDecodable {
         case odometerReading = "odometerreading"
         case odometerUnit = "odometerunit"
         case testResultRaw = "testresult"
-    }
-    
-    override public init() {
-        accountEntityId = nil
-        advisoryNotes = []
-        createdDate = Date()
-        entityId = ""
-        expiryDate = Date()
-        failureReasons = []
-        identifier = ""
-        odometerReading = 0
-        odometerUnit = ""
-        testResultRaw = 0
     }
 }

@@ -43,14 +43,18 @@ class VehicleTests: XCTestCase {
             let decoder = VehicleTest.decoder
             let vehicleTest = try decoder.decode(VehicleTest.self, from: data)
             
+            var expectedDate = Date(timeIntervalSince1970: 1521824285000 / 1000)
+            XCTAssert(vehicleTest.createdDate == expectedDate, "Expected createdDate: \(expectedDate) got \(vehicleTest.createdDate)")
+            
+            if let optionalDate = vehicleTest.expiryDate {
+                expectedDate = Date(timeIntervalSince1970: 1821824285000 / 1000)
+                XCTAssert(vehicleTest.expiryDate == optionalDate, "Expexted expiryDate: \(expectedDate) got \(optionalDate)")
+            }
+            
+            XCTAssert(vehicleTest.entityId == "25_MJ06NBA_7536 3645 5763", "Expected entityId: 25_MJ06NBA_7536 3645 5763 \(vehicleTest.entityId)")
             XCTAssert(vehicleTest.accountIdentifier == "25_MJ06NBA", "Expected accountIdentifier: 25_MJ06NBA, got \(vehicleTest.accountIdentifier)")
             XCTAssert(vehicleTest.advisoryNotes.count == 1, "Expected '1', got \(vehicleTest.advisoryNotes.count)")
             XCTAssert(vehicleTest.advisoryNotes[0] == "rear axle buses split", "Expected 'rear axle buses split', got \(vehicleTest.advisoryNotes[0])")
-            var expectedDate = Date(timeIntervalSince1970: 1521824285000)
-            XCTAssert(vehicleTest.createdDate == expectedDate, "Expected createdDate: \(expectedDate) got \(vehicleTest.createdDate)")
-            XCTAssert(vehicleTest.entityId == "25_MJ06NBA_7536 3645 5763", "Expeccted entityId: \(vehicleTest.entityId)")
-            expectedDate = Date(timeIntervalSince1970: 1821824285000)
-            XCTAssert(vehicleTest.expiryDate == expectedDate, "Expexted expirydate: \(expectedDate) got \(vehicleTest.expiryDate)")
             XCTAssert(vehicleTest.failureReasons.count == 1, "Expected '1', got \(vehicleTest.failureReasons.count)")
             XCTAssert(vehicleTest.failureReasons[0] == "Offside Headlamp aim beam image obviously incorrect (1.8.A.1b)", "Expected 'Offside Headlamp aim beam image obviously incorrect (1.8.A.1b)', got \(vehicleTest.failureReasons[0])")
             XCTAssert(vehicleTest.identifier == "7536 3645 5763", "Expected '7536 3645 5763', got \(vehicleTest.identifier)")
