@@ -19,6 +19,22 @@
 
 @implementation DMEClient (Postbox)
 
+#pragma mark - Begin ivar and accessor definitions.
+
+DMEPostboxManager* _postboxManager;
+
+- (DMEPostboxManager *)postboxManager
+{
+    return _postboxManager;
+}
+
+- (void)setPostboxManager:(DMEPostboxManager *)postboxManager
+{
+    _postboxManager = postboxManager;
+}
+
+#pragma mark - End ivar and accessor definitions.
+
 - (void)createPostbox
 {
     [self createPostboxWithCompletion:nil];
