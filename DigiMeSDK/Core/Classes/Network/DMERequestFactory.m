@@ -15,7 +15,7 @@ static NSString * const kDigiMeAPIVersion = @"v1";
 
 @property (nonatomic, strong) NSString *baseUrl;
 @property (nonatomic, strong, readwrite) DMEClientConfiguration *config;
-@property (nonatomic, strong) NSString *userAgentString;
+@property (nonatomic, strong) NSDictionary *sdkAgent;
 
 @end
 
@@ -44,7 +44,7 @@ static NSString * const kDigiMeAPIVersion = @"v1";
     NSMutableDictionary *postKeys = [NSMutableDictionary new];
     postKeys[@"appId"] = appId;
     postKeys[@"contractId"] = contractId;
-    postKeys[@"sdkAgent"] = self.userAgentString;
+    postKeys[@"sdkAgent"] = self.sdkAgent;
     postKeys[@"accept"] = @{ @"compression" : @"brotli" };
     
     if (scope != nil)
@@ -90,18 +90,19 @@ static NSString * const kDigiMeAPIVersion = @"v1";
     return [NSString stringWithFormat:@"%@%@/permission-access", self.baseUrl, kDigiMeAPIVersion];
 }
 
-- (NSString *)userAgentString
+- (NSDictionary *)sdkAgent
 {
-    if (_userAgentString == nil)
+    if (_sdkAgent == nil)
     {
         NSString *sdkVersion = [[NSBundle bundleForClass:self.class] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
-        UIDevice *device = UIDevice.currentDevice;
-        NSString *deviceModel = device.model;
-        NSString *osVersion = device.systemVersion;
-        _userAgentString = [NSString stringWithFormat:@"digi.me.sdk/%@ (%@; ios; %@)", sdkVersion, deviceModel, osVersion];
+        NSString *sdkName = @"ios";
+        _sdkAgent = @{
+                      @"name": sdkName,
+                      @"version": sdkVersion,
+                      };
     }
     
-    return _userAgentString;
+    return _sdkAgent;
 }
 
 @end
