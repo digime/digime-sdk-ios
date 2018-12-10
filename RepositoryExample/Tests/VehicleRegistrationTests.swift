@@ -2,8 +2,8 @@
 //  VehicleRegistrationTests.swift
 //  DigiMeRepository_Example
 //
-//  Created by Alex Hamilton on 10/12/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Created on 10/12/2018.
+//  Copyright © 2018 digi.me Ltd. All rights reserved.
 //
 
 import Foundation

@@ -2,8 +2,8 @@
 //  VehicleTests.swift
 //  DigiMeRepository_Example
 //
-//  Created by Alex Hamilton on 06/12/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Created on 06/12/2018.
+//  Copyright © 2018 digi.me Ltd. All rights reserved.
 //
 
 @testable import DigiMeSDK

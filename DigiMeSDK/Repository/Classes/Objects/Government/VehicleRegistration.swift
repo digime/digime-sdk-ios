@@ -3,7 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 06/12/2018.
-//
+//  Copyright © 2018 digi.me Ltd. All rights reserved.
 
 import Foundation
 
@@ -53,24 +53,6 @@ public class VehicleRegistration: NSObject, BaseObjectDecodable {
         case registrationDate = "registrationdate"
         case seatingCapacity = "seatingcapacity"
         case transmission = "transmission"
-    }
-    
-    override public init() {
-        accountEntityId = nil
-        co2Emissions = 0
-        colour = ""
-        createdDate = Date()
-        engineCapacity = ""
-        entityId = ""
-        fuelType = ""
-        gearCount = 0
-        identifier = ""
-        manufactureDate = Date()
-        make = ""
-        model = ""
-        registrationDate = Date()
-        seatingCapacity = 0
-        transmission = ""
     }
 }
 
