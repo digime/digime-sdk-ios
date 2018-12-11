@@ -10,6 +10,7 @@
 		0641182920F658640097D830 /* CA_RSA_PRIVATE_KEY.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 0641182820F658630097D830 /* CA_RSA_PRIVATE_KEY.p12 */; };
 		1E4FF12221B97AC6000A89C7 /* VehicleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4FF12021B97472000A89C7 /* VehicleTests.swift */; };
 		1E7170ED21BE7C2200743285 /* VehicleRegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7170EB21BE7B9900743285 /* VehicleRegistrationTests.swift */; };
+		1E92D01521BFF9BF0098FCD1 /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E92D01421BFF9BF0098FCD1 /* CommentTests.swift */; };
 		271EC9CB2183667C0001BEBB /* ObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 271EC9CA2183667C0001BEBB /* ObjcTests.m */; };
 		27D5673F2152A6EA00728170 /* TransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D5673E2152A6EA00728170 /* TransactionTests.swift */; };
 		5760291F05C43777D65B4800 /* Pods_DigiMeRepository_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E747F4A8CA36AB96DAD62EE1 /* Pods_DigiMeRepository_Tests.framework */; };
@@ -36,6 +37,7 @@
 		0641182820F658630097D830 /* CA_RSA_PRIVATE_KEY.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = CA_RSA_PRIVATE_KEY.p12; sourceTree = "<group>"; };
 		1E4FF12021B97472000A89C7 /* VehicleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleTests.swift; sourceTree = "<group>"; };
 		1E7170EB21BE7B9900743285 /* VehicleRegistrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleRegistrationTests.swift; sourceTree = "<group>"; };
+		1E92D01421BFF9BF0098FCD1 /* CommentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTests.swift; sourceTree = "<group>"; };
 		271EC9C92183667C0001BEBB /* DigiMeRepository_Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigiMeRepository_Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		271EC9CA2183667C0001BEBB /* ObjcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcTests.m; sourceTree = "<group>"; };
 		27D5673E2152A6EA00728170 /* TransactionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTests.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				27D5673E2152A6EA00728170 /* TransactionTests.swift */,
 				1E4FF12021B97472000A89C7 /* VehicleTests.swift */,
 				1E7170EB21BE7B9900743285 /* VehicleRegistrationTests.swift */,
+				1E92D01421BFF9BF0098FCD1 /* CommentTests.swift */,
 				271EC9CA2183667C0001BEBB /* ObjcTests.m */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 				271EC9C92183667C0001BEBB /* DigiMeRepository_Tests-Bridging-Header.h */,
@@ -355,6 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E4FF12221B97AC6000A89C7 /* VehicleTests.swift in Sources */,
+				1E92D01521BFF9BF0098FCD1 /* CommentTests.swift in Sources */,
 				27D5673F2152A6EA00728170 /* TransactionTests.swift in Sources */,
 				271EC9CB2183667C0001BEBB /* ObjcTests.m in Sources */,
 				1E7170ED21BE7C2200743285 /* VehicleRegistrationTests.swift in Sources */,
