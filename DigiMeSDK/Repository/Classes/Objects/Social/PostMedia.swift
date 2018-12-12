@@ -24,12 +24,12 @@ public class PostMedia: NSObject, BaseObjectDecodable {
     /// A unique identifier for the media
     public let identifier: String
     
-//    public let cameraModelIdentifier: String
+    public let cameraModelIdentifier: String?
     public let commentCount: Int
-    public let displayShortUrl: String
+    public let displayShortUrl: String?
     public let displayUrlIndexEnd: Int
     public let displayUrlIndexStart: Int
-    public let filter: String
+    public let filter: String?
     public let interestScore: Int
     public let latitude: Double?
     public let likeCount: Int
@@ -38,7 +38,7 @@ public class PostMedia: NSObject, BaseObjectDecodable {
     public let mediaAlbumName: String
     public let mediaIdentifier: String
     public let mediaObjectIdentifier: String
-    public let mediaObjectLikeIdentifier: String
+    public let mediaObjectLikeIdentifier: String?
     public let name: String
     public var originatorType: Int {
         return originatorTypeRaw
@@ -55,6 +55,13 @@ public class PostMedia: NSObject, BaseObjectDecodable {
         return MediaType(rawValue: typeRaw) ?? .image
     }
     public let updatedDate: Date
+    public let baseIdentifier: String
+    public let personFileRelativePath: String?
+    public let locationIdentifier: String?
+    public let itemLicenceIdentifier: String?
+    public let imageFileIdentifier: String?
+    public let imageFileRelativePath: String?
+    public let imageFileUrl: String?
     
     /**
      URL of video, if media is a video.
@@ -92,7 +99,7 @@ public class PostMedia: NSObject, BaseObjectDecodable {
     enum CodingKeys: String, CodingKey {
         case accountIdentifier = "accountentityid"
         case identifier = "entityid"
-//        case cameraModelIdentifier = "cameramodelentityid"
+        case cameraModelIdentifier = "cameramodelentityid"
         case commentCount = "commentcount"
         case createdDate = "createddate"
         case displayShortUrl = "displayshorturl"
@@ -121,5 +128,12 @@ public class PostMedia: NSObject, BaseObjectDecodable {
         case typeRaw = "type"
         case updatedDate = "updateddate"
         case videoFileUrl = "videofileurl"
+        case baseIdentifier = "baseid"
+        case personFileRelativePath = "personfilerelativepath"
+        case locationIdentifier = "locationentityid"
+        case itemLicenceIdentifier = "itemlicenceentityid"
+        case imageFileIdentifier = "imagefileentityid"
+        case imageFileRelativePath = "imagefilerelativepath"
+        case imageFileUrl = "imagefileurl"
     }
 }
