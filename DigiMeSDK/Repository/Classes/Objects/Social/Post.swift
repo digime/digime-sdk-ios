@@ -56,20 +56,19 @@ public class Post: NSObject, BaseObjectDecodable {
     public let likeCount: Int
     public let links: [Link]?
     public let longitude: Double
-//    public let originalCrossPostIdentifier: Int
-//    public let originalPostIdentifier: Int
+    public let originalPostIdentifier: String?
     public let originalPostUrl: String
     public let personIdentifier: String
     public let personFileUrl: String
     public let personFullname: String
     public let personUsername: String
     public let postIdentifier: String
-//    public let postReplyCount: String
+    public let postReplyCount: AnyJSONType?
     public let postUrl: String
-    public let rawText: String
+    public let rawText: String?
     public let shareCount: Int
-    public let source: String
-    public let text: String
+    public let source: String?
+    public let text: String?
     public let title: String
     public var type: PostType {
         return PostType(rawValue: typeRaw) ?? .standard
@@ -78,14 +77,21 @@ public class Post: NSObject, BaseObjectDecodable {
     public let updatedDate: Date
     public let userReaction: String?
 //    public let viewCount: String
-    public let visibility: String
+    public let visibility: String?
+    public let baseIdentifier: String
+    public let referenceIdentifier: String
+    public let referenceEntityType: Int
+    public let annotation: String?
+    public let postEntityIdentifier: String?
+    public let personFileRelativePath: String?
+    public var originalCrossPostIdentifier: AnyJSONType?
     
     // MARK: - Objective-C Representations of non-optional primitives
 //    @available(swift, obsoleted: 0.1)
 //    public var latitudeAsNSNumber: NSNumber? {
 //        return NSNumber(value: latitude)
 //    }
-
+    
     // MARK: - Raw Representations
     private let accountEntityId: String?
     private let socialNetworkUserEntityId: String?
@@ -115,15 +121,15 @@ public class Post: NSObject, BaseObjectDecodable {
         case likeCount = "likecount"
         case links = "links"
         case longitude = "longitude"
-//        case originalCrossPostIdentifier = "originalcrosspostid"
-//        case originalPostIdentifier = "originalpostid"
+        case originalCrossPostIdentifier = "originalcrosspostid"
+        case originalPostIdentifier = "originalpostid"
         case originalPostUrl = "originalposturl"
         case personIdentifier = "personentityid"
         case personFileUrl = "personfileurl"
         case personFullname = "personfullname"
         case personUsername = "personusername"
         case postIdentifier = "postid"
-//        case postReplyCount = "postreplycount"
+        case postReplyCount = "postreplycount"
         case postUrl = "posturl"
         case rawText = "rawtext"
         case shareCount = "sharecount"
@@ -135,6 +141,12 @@ public class Post: NSObject, BaseObjectDecodable {
         case userReaction = "userreaction"
 //        case viewCount = "viewcount"
         case visibility = "visibility"
-
+        case baseIdentifier = "baseid"
+        case referenceIdentifier = "referenceentityid"
+        case referenceEntityType = "referenceentitytype"
+        case annotation = "annotation"
+        case postEntityIdentifier = "postentityid"
+        case personFileRelativePath = "personfilerelativepath"
     }
 }
+
