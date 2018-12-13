@@ -19,6 +19,22 @@
 
 @implementation DMEClient (Postbox)
 
+#pragma mark - Begin ivar and accessor definitions.
+
+DMEPostboxManager* _postboxManager;
+
+- (DMEPostboxManager *)postboxManager
+{
+    return _postboxManager;
+}
+
+- (void)setPostboxManager:(DMEPostboxManager *)postboxManager
+{
+    _postboxManager = postboxManager;
+}
+
+#pragma mark - End ivar and accessor definitions.
+
 - (void)createPostbox
 {
     [self createPostboxWithCompletion:nil];
@@ -37,7 +53,7 @@
     
     //get session
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:nil completion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         

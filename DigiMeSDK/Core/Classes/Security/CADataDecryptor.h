@@ -15,11 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
 Decrypts encrypted JSON data using private key.
 
-@param jsonData NSData - encrypted JSON data
+@param fileContent An object containing encrypted or unencrypted data
 @param error NSError
-@return NSData if decryption was successful, otherwise nil.
+@return Decrypted data if decryption was successful, otherwise nil.
 */
-+ (nullable NSData *)decrypt:(NSData *)jsonData error:(NSError * __autoreleasing *)error;
++ (nullable NSData *)decryptFileContent:(id)fileContent error:(NSError * _Nullable __autoreleasing *)error;
 
 @end
 

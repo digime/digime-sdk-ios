@@ -9,14 +9,13 @@
 #import "DMEAPIClient.h"
 #import "DMEClient.h"
 #import "CAFilesDeserializer.h"
-#import "CADataDecryptor.h"
 #import "CASessionManager.h"
 #import "DMECrypto.h"
 #import "DMEValidator.h"
 #import "DMEAppCommunicator.h"
 #import "DMEAuthorizationManager.h"
 #import "DMEClient+Private.h"
-#import "DMECompressor.h"
+#import "DMEDataUnpacker.h"
 
 @implementation DMEClient
 @synthesize privateKeyHex = _privateKeyHex;
@@ -220,8 +219,7 @@
         {
             completion(nil, error);
         }
-        
-        if ([self.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
+        else if ([self.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
         {
             [self.downloadDelegate clientFailedToRetrieveFileList:error];
         }
@@ -242,8 +240,7 @@
             {
                 completion(files, error);
             }
-            
-            if (error)
+            else if (error)
             {
                 if ([strongSelf.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
                 {
@@ -263,8 +260,7 @@
             {
                 completion(nil, error);
             }
-            
-            if ([strongSelf.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
+            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
             {
                 [strongSelf.downloadDelegate clientFailedToRetrieveFileList:error];
             }
@@ -307,11 +303,11 @@
             CAFile *file = [[CAFile alloc] initWithFileId:fileId];
             completion(file, error);
         }
-        
-        if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
+        else if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
         {
             [self.downloadDelegate fileRetrieveFailed:fileId error:error];
         }
+        
         return;
     }
     
@@ -319,7 +315,7 @@
     __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileWithId:fileId success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
+
         if (!strongSelf.decryptsData)
         {
             if ([strongSelf.downloadDelegate respondsToSelector:@selector(dataRetrieved:fileId:)])
@@ -344,8 +340,7 @@
             {
                 completion(nil, error);
             }
-            
-            if ([strongSelf.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
+            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
             {
                 [strongSelf.downloadDelegate fileRetrieveFailed:fileId error:error];
             }
@@ -355,30 +350,12 @@
 
 - (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
 {
-    NSError *error;
-    
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
-    
-    NSString *compression = json[@"compression"];
-    
     CAFile *file;
-    
-    if (!error)
+    NSError *error;
+    NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
+    if (unpackedData != nil)
     {
-        NSData *fileData;
-        
-        if ([compression isEqualToString:@"brotli"])
-        {
-            // Decompress data before serving to deserialiser.
-            fileData = [DMECompressor decompressData:decryptedData usingAlgorithm:DMECompressionAlgorithmBrotli];
-        }
-        else
-        {
-            fileData = decryptedData;
-        }
-        
-        file = [CAFile deserialize:fileData fileId:fileId error:&error];
+        file = [CAFile deserialize:unpackedData fileId:fileId error:&error];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -387,8 +364,7 @@
         {
             completion(file, error);
         }
-        
-        if (error)
+        else if (error)
         {
             if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
             {
@@ -429,11 +405,11 @@
         {
             completion(nil, error);
         }
-        
-        if ([self.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
+        else if ([self.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
         {
             [self.downloadDelegate accountsRetrieveFailed:error];
         }
+        
         return;
     }
     
@@ -455,30 +431,12 @@
             return;
         }
         
-        NSError *error;
-        
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        NSData *decryptedData = [CADataDecryptor decrypt:data error:&error];
-        
-        NSString *compression = json[@"compression"];
-        
         CAAccounts *accounts;
-        
-        if (!error)
+        NSError *error;
+        NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
+        if (unpackedData != nil)
         {
-            NSData *fileData;
-            
-            if ([compression isEqualToString:@"brotli"])
-            {
-                // Decompress data before serving to deserialiser.
-                fileData = [DMECompressor decompressData:decryptedData usingAlgorithm:DMECompressionAlgorithmBrotli];
-            }
-            else
-            {
-                fileData = decryptedData;
-            }
-            
-            accounts = [CAAccounts deserialize:fileData error:&error];
+            accounts = [CAAccounts deserialize:unpackedData error:&error];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -487,8 +445,7 @@
             {
                 completion(accounts, error);
             }
-            
-            if (error)
+            else if (error)
             {
                 if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
                 {
@@ -510,8 +467,7 @@
             {
                 completion(nil, error);
             }
-            
-            if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
+            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
             {
                 [strongSelf.downloadDelegate accountsRetrieveFailed:error];
             }

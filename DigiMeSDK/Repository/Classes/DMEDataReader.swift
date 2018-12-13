@@ -41,7 +41,7 @@ class DMEDataReader {
         
         var decryptedData: Data?
         do {
-            decryptedData = try CADataDecryptor.decrypt(fileData)
+            decryptedData = try DMEDataUnpacker.unpack(fileData)
         }
         catch {
             print(error)

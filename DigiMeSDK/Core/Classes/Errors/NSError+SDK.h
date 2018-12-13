@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, SDKError) {
 @interface NSError (SDK)
 
 + (NSError *)sdkError:(SDKError)sdkError;
++ (void)setSDKError:(SDKError)sdkError toError:(NSError * _Nullable __autoreleasing *)error;
 
 @end
 
