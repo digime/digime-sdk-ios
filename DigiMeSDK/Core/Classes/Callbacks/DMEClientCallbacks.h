@@ -17,7 +17,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
 /**
  AuthorizationCompletionBlock - executed when authorization stage has completed.
 

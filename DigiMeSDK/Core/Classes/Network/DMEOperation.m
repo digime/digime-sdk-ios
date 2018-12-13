@@ -145,8 +145,9 @@
         return NO;
     }
     
+    
+    double delay = (double)self.config.retryDelay * pow(1.5, self.retryCount); // ms
     self.retryCount++;
-    double delay = (double)self.config.retryDelay; // ms
     
     if (self.config.debugLogEnabled)
     {

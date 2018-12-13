@@ -42,6 +42,7 @@
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];
         _sessionManager = [[CASessionManager alloc] initWithApiClient:_apiClient];
         _crypto = [DMECrypto new];
+        _decryptsData = YES;
         
         // Configure mercury appCommunicator.
         _appCommunicator = [DMEAppCommunicator new];
@@ -80,9 +81,9 @@
         {
             authorizationCompletion(nil, validationError);
         }
-        else if ([self.delegate respondsToSelector:@selector(sessionCreateFailed:)])
+        else if ([self.authorizationDelegate respondsToSelector:@selector(sessionCreateFailed:)])
         {
-            [self.delegate sessionCreateFailed:validationError];
+            [self.authorizationDelegate sessionCreateFailed:validationError];
         }
         
         return;
@@ -105,20 +106,20 @@
                 }
                 
                 // No completion block, so notify via delegate
-                if ([strongSelf.delegate respondsToSelector:@selector(sessionCreateFailed:)])
+                if ([strongSelf.authorizationDelegate respondsToSelector:@selector(sessionCreateFailed:)])
                 {
                     NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                    [strongSelf.delegate sessionCreateFailed:errorToReport];
+                    [strongSelf.authorizationDelegate sessionCreateFailed:errorToReport];
                 }
             });
             return;
         }
         
         // Can only notify session creation success via delegate, not completion block
-        if ([strongSelf.delegate respondsToSelector:@selector(sessionCreated:)])
+        if ([strongSelf.authorizationDelegate respondsToSelector:@selector(sessionCreated:)])
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [strongSelf.delegate sessionCreated:session];
+                [strongSelf.authorizationDelegate sessionCreated:session];
             });
         }
         
@@ -184,18 +185,18 @@
             {
                 if ([error.domain isEqualToString:DME_AUTHORIZATION_ERROR] &&
                     error.code == AuthErrorCancelled &&
-                    [strongSelf.delegate respondsToSelector:@selector(authorizeDenied:)])
+                    [strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeDenied:)])
                 {
-                    [strongSelf.delegate authorizeDenied:error];
+                    [strongSelf.authorizationDelegate authorizeDenied:error];
                 }
-                else if ([strongSelf.delegate respondsToSelector:@selector(authorizeFailed:)])
+                else if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeFailed:)])
                 {
-                    [strongSelf.delegate authorizeFailed:error];
+                    [strongSelf.authorizationDelegate authorizeFailed:error];
                 }
             }
-            else if ([strongSelf.delegate respondsToSelector:@selector(authorizeSucceeded:)])
+            else if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeSucceeded:)])
             {
-                [strongSelf.delegate authorizeSucceeded:session];
+                [strongSelf.authorizationDelegate authorizeSucceeded:session];
             }
         });
     }];
@@ -218,9 +219,9 @@
         {
             completion(nil, error);
         }
-        else if ([self.delegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
+        else if ([self.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
         {
-            [self.delegate clientFailedToRetrieveFileList:error];
+            [self.downloadDelegate clientFailedToRetrieveFileList:error];
         }
         
         return;
@@ -241,14 +242,14 @@
             }
             else if (error)
             {
-                if ([strongSelf.delegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
+                if ([strongSelf.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
                 {
-                    [strongSelf.delegate clientFailedToRetrieveFileList:error];
+                    [strongSelf.downloadDelegate clientFailedToRetrieveFileList:error];
                 }
             }
-            else if ([strongSelf.delegate respondsToSelector:@selector(clientRetrievedFileList:)])
+            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(clientRetrievedFileList:)])
             {
-                [strongSelf.delegate clientRetrievedFileList:files];
+                [strongSelf.downloadDelegate clientRetrievedFileList:files];
             }
         });
     } failure:^(NSError * _Nonnull error) {
@@ -259,9 +260,9 @@
             {
                 completion(nil, error);
             }
-            else if ([strongSelf.delegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
+            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
             {
-                [strongSelf.delegate clientFailedToRetrieveFileList:error];
+                [strongSelf.downloadDelegate clientFailedToRetrieveFileList:error];
             }
         });
     }];
@@ -284,6 +285,14 @@
 
 - (void)getFileWithId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
 {
+    //ensures this method cannot be called with completion *AND* no data decryption
+    if (completion != nil && !self.decryptsData)
+    {
+        NSError *sdkError = [NSError sdkError:SDKErrorEncryptedDataCallback];
+        completion(nil, sdkError);
+        return;
+    }
+    
     //validate session
     if (![self.sessionManager isSessionValid])
     {
@@ -294,9 +303,9 @@
             CAFile *file = [[CAFile alloc] initWithFileId:fileId];
             completion(file, error);
         }
-        else if ([self.delegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
+        else if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
         {
-            [self.delegate fileRetrieveFailed:fileId error:error];
+            [self.downloadDelegate fileRetrieveFailed:fileId error:error];
         }
         
         return;
@@ -306,50 +315,70 @@
     __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileWithId:fileId success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
-        CAFile *file;
-        NSError *error;
-        NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
-        if (unpackedData != nil)
+
+        if (!strongSelf.decryptsData)
         {
-            file = [CAFile deserialize:unpackedData fileId:fileId error:&error];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-           
-            if (completion)
+            if ([strongSelf.downloadDelegate respondsToSelector:@selector(dataRetrieved:fileId:)])
             {
-                completion(file, error);
-            }
-            else if (error)
-            {
-                if ([strongSelf.delegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
-                {
-                    [strongSelf.delegate fileRetrieveFailed:fileId error:error];
-                }
-            }
-            else if ([strongSelf.delegate respondsToSelector:@selector(fileRetrieved:)])
-            {
-                [strongSelf.delegate fileRetrieved:file];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [strongSelf.downloadDelegate dataRetrieved:data fileId:fileId];
+                });
             }
             
-        });
+            //completion at this point will be nil.
+            return;
+        }
+        
+        [strongSelf processFileData:data fileId:fileId completion:completion];
         
     } failure:^(NSError * _Nonnull error) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            
             if (completion)
             {
                 completion(nil, error);
             }
-            else if ([strongSelf.delegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
+            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
             {
-                [strongSelf.delegate fileRetrieveFailed:fileId error:error];
+                [strongSelf.downloadDelegate fileRetrieveFailed:fileId error:error];
             }
         });
     }];
 }
+
+- (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
+{
+    CAFile *file;
+    NSError *error;
+    NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
+    if (unpackedData != nil)
+    {
+        file = [CAFile deserialize:unpackedData fileId:fileId error:&error];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if (completion)
+        {
+            completion(file, error);
+        }
+        else if (error)
+        {
+            if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
+            {
+                [self.downloadDelegate fileRetrieveFailed:fileId error:error];
+            }
+        }
+        else if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieved:)])
+        {
+            [self.downloadDelegate fileRetrieved:file];
+        }
+        
+    });
+}
+
 
 #pragma mark - Accounts
 - (void)getAccounts
@@ -359,6 +388,14 @@
 
 - (void)getAccountsWithCompletion:(AccountsCompletionBlock)completion
 {
+    //ensures this method cannot be called with completion *AND* no data decryption
+    if (completion != nil && !self.decryptsData)
+    {
+        NSError *sdkError = [NSError sdkError:SDKErrorEncryptedDataCallback];
+        completion(nil, sdkError);
+        return;
+    }
+    
     //validate session
     if (![self.sessionManager isSessionValid])
     {
@@ -368,9 +405,9 @@
         {
             completion(nil, error);
         }
-        else if ([self.delegate respondsToSelector:@selector(accountsRetrieveFailed:)])
+        else if ([self.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
         {
-            [self.delegate accountsRetrieveFailed:error];
+            [self.downloadDelegate accountsRetrieveFailed:error];
         }
         
         return;
@@ -380,6 +417,19 @@
     __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileWithId:@"accounts.json" success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
+        
+        if (!strongSelf.decryptsData)
+        {
+            if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsDataRetrieved:)])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [strongSelf.downloadDelegate accountsDataRetrieved:data];
+                });
+            }
+            
+            //completion at this point will be nil.
+            return;
+        }
         
         CAAccounts *accounts;
         NSError *error;
@@ -397,14 +447,14 @@
             }
             else if (error)
             {
-                if ([strongSelf.delegate respondsToSelector:@selector(accountsRetrieveFailed:)])
+                if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
                 {
-                    [strongSelf.delegate accountsRetrieveFailed:error];
+                    [strongSelf.downloadDelegate accountsRetrieveFailed:error];
                 }
             }
-            else if ([strongSelf.delegate respondsToSelector:@selector(accountsRetrieved:)])
+            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsRetrieved:)])
             {
-                [strongSelf.delegate accountsRetrieved:accounts];
+                [strongSelf.downloadDelegate accountsRetrieved:accounts];
             }
             
         });
@@ -417,9 +467,9 @@
             {
                 completion(nil, error);
             }
-            else if ([strongSelf.delegate respondsToSelector:@selector(accountsRetrieveFailed:)])
+            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
             {
-                [strongSelf.delegate accountsRetrieveFailed:error];
+                [strongSelf.downloadDelegate accountsRetrieveFailed:error];
             }
         });
     }];

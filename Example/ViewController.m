@@ -11,7 +11,7 @@
 
 @import DigiMeSDK;
 
-@interface ViewController () <DMEClientDelegate>
+@interface ViewController () <DMEClientAuthorizationDelegate, DMEClientDownloadDelegate>
 
 @property (nonatomic, strong) DMEClient *dmeClient;
 @property (nonatomic) NSInteger fileCount;
@@ -28,7 +28,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.dmeClient = [DMEClient sharedClient];
-    self.dmeClient.delegate = self;
+    self.dmeClient.authorizationDelegate = self;
+    self.dmeClient.downloadDelegate = self;
     
     // - GET STARTED -
     
@@ -83,7 +84,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - DMEClientDelegate
+#pragma mark - DMEClientAuthorizationDelegate
 -(void)sessionCreated:(CASession *)session
 {
     [self.logVC logMessage:[NSString stringWithFormat:@"Session created: %@", session.sessionKey]];
@@ -112,6 +113,7 @@
     [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
 }
 
+#pragma mark - DMEClientDownloadDelegate
 -(void)clientFailedToRetrieveFileList:(NSError *)error
 {
     [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve fileList failed: %@", error.localizedDescription]];
@@ -150,6 +152,7 @@
     [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
 }
 
+#pragma mark - DMEClientPostboxDelegate
 - (void)postboxCreationFailed:(NSError *)error
 {
     [self.logVC logMessage:[NSString stringWithFormat:@"Failed to create postbox: %@", error.localizedDescription]];
