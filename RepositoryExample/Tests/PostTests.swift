@@ -9,7 +9,7 @@
 @testable import DigiMeSDK
 import XCTest
 
-class PostTests: XCTest {
+class PostTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Setup code here

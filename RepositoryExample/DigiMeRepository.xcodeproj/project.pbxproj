@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0641182920F658640097D830 /* CA_RSA_PRIVATE_KEY.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 0641182820F658630097D830 /* CA_RSA_PRIVATE_KEY.p12 */; };
+		1E2A82C721C1849800C4001D /* MediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3B949F21C1199200EB1A76 /* MediaTests.swift */; };
 		1E3B949E21C1149C00EB1A76 /* PostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3B949D21C1149C00EB1A76 /* PostTests.swift */; };
-		1E3B94A021C1199200EB1A76 /* MediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3B949F21C1199200EB1A76 /* MediaTests.swift */; };
 		1E4FF12221B97AC6000A89C7 /* VehicleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4FF12021B97472000A89C7 /* VehicleTests.swift */; };
 		1E7170ED21BE7C2200743285 /* VehicleRegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7170EB21BE7B9900743285 /* VehicleRegistrationTests.swift */; };
 		1E92D01521BFF9BF0098FCD1 /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E92D01421BFF9BF0098FCD1 /* CommentTests.swift */; };
@@ -369,7 +369,7 @@
 				1E3B949E21C1149C00EB1A76 /* PostTests.swift in Sources */,
 				271EC9CB2183667C0001BEBB /* ObjcTests.m in Sources */,
 				1E7170ED21BE7C2200743285 /* VehicleRegistrationTests.swift in Sources */,
-				1E3B94A021C1199200EB1A76 /* MediaTests.swift in Sources */,
+				1E2A82C721C1849800C4001D /* MediaTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* FileContainerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
