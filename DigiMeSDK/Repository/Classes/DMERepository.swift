@@ -96,6 +96,18 @@ import Foundation
         if let type = type as? Transaction.Type {
             query(type, dateRange: dateRange, predicate: predicate, completion: completion)
         }
+        else if let type = type as? VehicleRegistration.Type {
+            query(type, dateRange: dateRange, predicate: predicate, completion: completion)
+        }
+        else if let type = type as? VehicleTest.Type {
+            query(type, dateRange: dateRange, predicate: predicate, completion: completion)
+        }
+        else if let type = type as? Post.Type {
+            query(type, dateRange: dateRange, predicate: predicate, completion: completion)
+        }
+        else if let type = type as? PostMedia.Type {
+            query(type, dateRange: dateRange, predicate: predicate, completion: completion)
+        }
     }
     
     public func query<T>(_ type: T.Type, dateRange: DateInterval?, predicate: ((T) -> Bool)?, completion: @escaping (([T]?) -> Void)) where T: BaseObjectDecodable {
