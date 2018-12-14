@@ -14,7 +14,7 @@ public class Comment: NSObject, BaseObjectDecodable {
         return accountEntityId ?? socialNetworkUserEntityId ?? ""
     }
     
-    public var createdDate: Date
+    public let createdDate: Date
     
     public let identifier: String
     

@@ -63,7 +63,10 @@ public class Post: NSObject, BaseObjectDecodable {
     public let personFullname: String
     public let personUsername: String
     public let postIdentifier: String
-    public let postReplyCount: AnyJSONType?
+    public var postReplyCount: String? {
+        return String(describing: postReplyCountRaw)
+    }
+    
     public let postUrl: String
     public let rawText: String?
     public let shareCount: Int
@@ -84,7 +87,9 @@ public class Post: NSObject, BaseObjectDecodable {
     public let annotation: String?
     public let postEntityIdentifier: String?
     public let personFileRelativePath: String?
-    public var originalCrossPostIdentifier: AnyJSONType?
+    public var originalCrossPostIdentifier: String? {
+        return String(describing: originalCrossPostIdentifierRaw)
+    }
     
     // MARK: - Objective-C Representations of non-optional primitives
 //    @available(swift, obsoleted: 0.1)
@@ -102,6 +107,8 @@ public class Post: NSObject, BaseObjectDecodable {
     private let isSharedRaw: Int
     private let isTruncatedRaw: Int
     private let typeRaw: Int
+    private let postReplyCountRaw: AnyJSONType?
+    private let originalCrossPostIdentifierRaw: AnyJSONType?
     
     // MARK: - Decodable
     enum CodingKeys: String, CodingKey {
@@ -121,7 +128,7 @@ public class Post: NSObject, BaseObjectDecodable {
         case likeCount = "likecount"
         case links = "links"
         case longitude = "longitude"
-        case originalCrossPostIdentifier = "originalcrosspostid"
+        case originalCrossPostIdentifierRaw = "originalcrosspostid"
         case originalPostIdentifier = "originalpostid"
         case originalPostUrl = "originalposturl"
         case personIdentifier = "personentityid"
@@ -129,7 +136,7 @@ public class Post: NSObject, BaseObjectDecodable {
         case personFullname = "personfullname"
         case personUsername = "personusername"
         case postIdentifier = "postid"
-        case postReplyCount = "postreplycount"
+        case postReplyCountRaw = "postreplycount"
         case postUrl = "posturl"
         case rawText = "rawtext"
         case shareCount = "sharecount"
