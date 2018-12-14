@@ -356,7 +356,7 @@ class PostTests: XCTestCase {
 """.data(using: .utf8)!
         do {
             let decoder = Post.decoder
-            let posts = try decoder.decode([[String: AnyJSONType]].self, from: data)
+            let posts = try decoder.decode([Post].self, from: data)
             XCTAssertNotNil(posts)
             XCTAssert(posts.count == 3, "Expected 3 Posts, got \(posts.count)")
         }
@@ -504,7 +504,7 @@ class PostTests: XCTestCase {
 """.data(using: .utf8)!
         do {
             let decoder = Post.decoder
-            let posts = try decoder.decode([[String: AnyJSONType]].self, from: data)
+            let posts = try decoder.decode([Post].self, from: data)
             XCTAssertNotNil(posts)
             XCTAssert(posts.count == 3, "Expected 3 Posts, got \(posts.count)")
         }
@@ -649,7 +649,7 @@ class PostTests: XCTestCase {
 """.data(using: .utf8)!
         do {
             let decoder = Post.decoder
-            let posts = try decoder.decode([[String: AnyJSONType]].self, from: data)
+            let posts = try decoder.decode([Post].self, from: data)
             XCTAssertNotNil(posts)
             XCTAssert(posts.count == 3, "Expected 3 Posts, got \(posts.count)")
         }
@@ -794,7 +794,7 @@ class PostTests: XCTestCase {
 """.data(using: .utf8)!
         do {
             let decoder = Post.decoder
-            let posts = try decoder.decode([[String: AnyJSONType]].self, from: data)
+            let posts = try decoder.decode([Post].self, from: data)
             XCTAssertNotNil(posts)
             XCTAssert(posts.count == 3, "Expected 3 Posts, got \(posts.count)")
         }
@@ -936,7 +936,7 @@ class PostTests: XCTestCase {
 """.data(using: .utf8)!
         do {
             let decoder = Post.decoder
-            let posts = try decoder.decode([[String: AnyJSONType]].self, from: data)
+            let posts = try decoder.decode([Post].self, from: data)
             XCTAssertNotNil(posts)
             XCTAssert(posts.count == 3, "Expected 3 Posts, got \(posts.count)")
         }
