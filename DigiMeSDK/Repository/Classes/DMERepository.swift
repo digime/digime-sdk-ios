@@ -108,6 +108,9 @@ import Foundation
         else if let type = type as? PostMedia.Type {
             query(type, dateRange: dateRange, predicate: predicate, completion: completion)
         }
+        else if let type = type as? Comment.Type {
+            query(type, dateRange: dateRange, predicate: predicate, completion: completion)
+        }
     }
     
     public func query<T>(_ type: T.Type, dateRange: DateInterval?, predicate: ((T) -> Bool)?, completion: @escaping (([T]?) -> Void)) where T: BaseObjectDecodable {
