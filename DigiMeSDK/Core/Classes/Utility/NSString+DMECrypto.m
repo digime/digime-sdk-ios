@@ -1,9 +1,9 @@
 //
 //  NSString+DMECrypto.m
-//  DigiMe
+//  DigiMeSDK
 //
 //  Created on 25/01/2018.
-//  Copyright © 2018 digi.me. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import "NSString+DMECrypto.h"

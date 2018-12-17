@@ -1,6 +1,6 @@
 //
 //  AccountsContainer.swift
-//  DigiMeRepository
+//  DigiMeSDK
 //
 //  Created on 24/09/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.

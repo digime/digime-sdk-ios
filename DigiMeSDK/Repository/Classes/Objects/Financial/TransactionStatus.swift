@@ -1,6 +1,6 @@
 //
 //  TransactionStatus.swift
-//  DigiMeRepository
+//  DigiMeSDK
 //
 //  Created on 19/09/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.

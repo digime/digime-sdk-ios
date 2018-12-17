@@ -3,7 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 22/11/2018.
-//  Copyright © 2018 me.digi. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import "CASessionManager.h"

@@ -3,7 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 25/06/2018.
-//  Copyright © 2018 me.digi. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

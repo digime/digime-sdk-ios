@@ -2,8 +2,8 @@
 //  ObjcTests.m
 //  DigiMeRepository_Tests
 //
-//  Created by Mike Eustace on 26/10/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Created on 26/10/2018.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 @import DigiMeSDK;

@@ -3,7 +3,7 @@
 //  DigiMeRepository_Tests
 //
 //  Created on 12/12/2018.
-//  Copyright © 2018 digi.me. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 @testable import DigiMeSDK

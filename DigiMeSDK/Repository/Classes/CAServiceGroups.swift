@@ -1,6 +1,6 @@
 //
 //  CAServiceGroups.swift
-//  DigiMeRepository
+//  DigiMeSDK
 //
 //  Created on 12/07/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.

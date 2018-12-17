@@ -2,8 +2,8 @@
 //  TransactionTests.swift
 //  DigiMeRepository_Tests
 //
-//  Created by Mike Eustace on 19/09/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Created on 19/09/2018.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 @testable import DigiMeSDK

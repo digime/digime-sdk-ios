@@ -3,7 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 29/01/2018.
-//  Copyright © 2018 DigiMe. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import "NSError+Auth.h"

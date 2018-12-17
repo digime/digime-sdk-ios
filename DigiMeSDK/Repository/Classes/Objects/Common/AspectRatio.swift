@@ -1,6 +1,6 @@
 //
 //  AspectRatio.swift
-//  DigiMeRepository
+//  DigiMeSDK
 //
 //  Created on 26/10/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.

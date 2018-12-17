@@ -1,6 +1,6 @@
 //
 //  AnyJSONType.swift
-//  DigiMeRepository
+//  DigiMeSDK
 //
 //  Created on 13/12/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.

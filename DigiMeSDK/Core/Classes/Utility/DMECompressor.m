@@ -3,6 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 21/11/2018.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import "DMECompressor.h"

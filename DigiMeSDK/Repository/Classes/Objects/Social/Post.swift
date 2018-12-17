@@ -1,6 +1,6 @@
 //
 //  Post.swift
-//  DigiMeRepository
+//  DigiMeSDK
 //
 //  Created on 25/09/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.

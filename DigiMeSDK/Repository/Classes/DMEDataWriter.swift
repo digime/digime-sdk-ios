@@ -1,6 +1,6 @@
 //
 //  DMEDataWriter.swift
-//  DigiMeRepository
+//  DigiMeSDK
 //
 //  Created on 11/07/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
