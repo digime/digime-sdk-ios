@@ -7,7 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "DMEClient.h"
+
+@import DigiMeSDK;
 
 @interface AppDelegate ()
 

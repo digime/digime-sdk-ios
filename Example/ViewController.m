@@ -7,11 +7,11 @@
 //
 
 #import "ViewController.h"
-#import "DMEClient.h"
-#import "DMECryptoUtilities.h"
 #import "LogViewController.h"
 
-@interface ViewController () <DMEClientDelegate>
+@import DigiMeSDK;
+
+@interface ViewController () <DMEClientAuthorizationDelegate, DMEClientDownloadDelegate>
 
 @property (nonatomic, strong) DMEClient *dmeClient;
 @property (nonatomic) NSInteger fileCount;
@@ -28,7 +28,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.dmeClient = [DMEClient sharedClient];
-    self.dmeClient.delegate = self;
+    self.dmeClient.authorizationDelegate = self;
+    self.dmeClient.downloadDelegate = self;
     
     // - GET STARTED -
     
@@ -39,6 +40,7 @@
     self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"CA_RSA_PRIVATE_KEY" password:@"YOUR_P12_PASSWORD"];
     
     self.dmeClient.contractId = @"gzqYsbQ1V1XROWjmqiFLcH2AF1jvcKcg";
+    
     self.fileCount = 0;
     self.progress = 0;
     
@@ -52,14 +54,12 @@
     
     [self.logVC logMessage:@"Please press 'Start' to begin requesting data. Also make sure that digi.me app is installed and onboarded."];
     
-    
     self.navigationController.toolbarHidden = NO;
     NSArray *barButtonItems = @[
                                 [[UIBarButtonItem alloc] initWithTitle:@"➖" style:UIBarButtonItemStylePlain target:self action:@selector(zoomOut)],
                                 [[UIBarButtonItem alloc] initWithTitle:@"➕" style:UIBarButtonItemStylePlain target:self action:@selector(zoomIn)]
                                 ];
 
-    
     self.toolbarItems = barButtonItems;
 }
 
@@ -84,7 +84,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - DMEClientDelegate
+#pragma mark - DMEClientAuthorizationDelegate
 -(void)sessionCreated:(CASession *)session
 {
     [self.logVC logMessage:[NSString stringWithFormat:@"Session created: %@", session.sessionKey]];
@@ -113,6 +113,7 @@
     [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
 }
 
+#pragma mark - DMEClientDownloadDelegate
 -(void)clientFailedToRetrieveFileList:(NSError *)error
 {
     [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve fileList failed: %@", error.localizedDescription]];
@@ -149,6 +150,12 @@
 - (void)accountsRetrieveFailed:(NSError *)error
 {
     [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
+}
+
+#pragma mark - DMEClientPostboxDelegate
+- (void)postboxCreationFailed:(NSError *)error
+{
+    [self.logVC logMessage:[NSString stringWithFormat:@"Failed to create postbox: %@", error.localizedDescription]];
 }
 
 @end

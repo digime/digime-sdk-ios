@@ -1,0 +1,6 @@
+framework module DigiMeSDK {
+  header "DigiMeSDK.h"
+
+  export *
+  module * { export * }
+}

@@ -23,13 +23,15 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
   * [Authorization](#authorization) 
      * [Handling app callback](#handling-app-callback)
      * [Delegate Calls (authorize)](#delegate-calls-authorize)
+  * [Specifying Scope] (#specifying-scope)
   * [Fetching data](#fetching-data)
-     * [Fetching Accounts data](#fetching-accounts-data)
+  * [Fetching Accounts data](#fetching-accounts-data)
      * [Delegate Calls (fetching)](#delegate-calls-fetching)
      * [Automatic exponential backoff](#automatic-exponential-backoff)
   * [Fetched Files](#fetched-files)
      * [CAFileObject](#cafileobject) 
   * [Decryption](#decryption)
+  * [Postbox](#postbox---experimental)
   * [Example Objective-C](#example-objective-c)
   * [Example Swift](#example-swift)
   * [Migration Guide](#migration-guide)
@@ -69,7 +71,7 @@ This will sync latest repository changes, and install the DigiMeSDK pod.
 
 ### Directly from source code
 
-Download the [latest release](https://github.com/digime/digime-ios-sdk/releases). Extract the files from the archive, and copy `DigiMeSDK` folder into your project.
+Download the [latest release](https://github.com/digime/digime-sdk-ios/releases). Extract the files from the archive, and copy `DigiMeSDK` folder into your project.
 
 ## Configuring SDK usage
 
@@ -83,7 +85,7 @@ Additionally it also specifies how the data is encrypted in transit.
 To register a Consent Access contract check out [Digi.me Dev Support](https://developers.digi.me). There you can request a Contract ID and App ID to which it is bound.
 
 ### Contract Private Key
-All content retrieved by the SDK is encrypted in transit using the public key bound to the certificate that was created when the Consent Access contract was created. For SDK to be able to decrypt content transparently matching private key must be provided (i.e. from the key pair created for contract).
+All content retrieved by the SDK is encrypted in transit using the public key bound to the certificate that was created when the Consent Access contract was created. For the SDK to be able to decrypt content transparently matching private key must be provided (i.e. from the key pair created for contract).
 
 Digi.me SDK accepts PKCS #12 encoded files as the default key storage format.
 
@@ -109,7 +111,7 @@ NSString *privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"YOUR_P1
 > 
 > `YOUR_P12_FILENAME ` is the name of your p12 file without `p12` extension. The file must be in the bundle.
 > 
-> `YOUR_CONTRACT_ID` is the Contract ID issued to you by Digi.me Ltd. 
+> `YOUR_P12_PASSWORD` is the password used to unlock the p12 file. 
 
 ### DMEClient and SDK configuration
 
@@ -289,6 +291,48 @@ The following delegate methods can be implemented for the authorize stage:
 
 ```
 
+## Specifying Scope
+Specifying a scope via `CAScope` object will allow you to retrieve only a subset of data that the contract has asked for. This might come in handy if you already have data from the existing user and you might only want to retrieve any new data that might have been added to the user's library in the last x months. 
+
+SDK currently only supports specifying scope for `CATimeRange`s.
+ 
+The format of CATimeRange is as follows:
+
+```objective-c
+@interface CATimeRange : NSObject
+@property (nonatomic, strong, readonly, nullable) NSDate *from;
+@property (nonatomic, strong, readonly, nullable) NSDate *to;
+@property (nonatomic, strong, readonly, nullable) NSString *last;
+
++ (CATimeRange *)from:(NSDate *)from;
++ (CATimeRange *)priorTo:(NSDate *)priorTo;
++ (CATimeRange *)from:(NSDate *)from to:(NSDate *)to;
++ (CATimeRange *)last:(NSUInteger)x unit:(CATimeRangeUnit)unit;
+@end
+```
+
+`from` - If this is set, we will return data created after this date.
+
+`to` - If this is set, we will return data created before this timestamp.
+
+`last` - You can set a dynamic time range based on the current date. The string is in the format of `x<unit>`, where `x` specifies a number and `<unit>` specifies the range unit. For example, if you wanted to get the last 6 month, you would set the `last` property to `6m`.
+
+`CATimeRange` has handy initializers you can use to cover most use cases.
+
+Example usage:
+
+```objective-c
+
+CAScope *scope = [CAScope new];
+
+//last 10 days
+CATimeRange *timeRange = [CATimeRange last:10 unit:CATimeRangeUnitDay];
+
+scope.timeRanges = @[timeRange];
+[[DMEClient sharedClient] authorizeWithScope:scope];
+
+```
+
 ## Fetching data
 
 Upon successful authorization you can request user's files. 
@@ -330,8 +374,6 @@ To fetch accounts data:
 ```objective-c
 [[DMEClient sharedClient] getAccounts];
 ```
-
-
 
 > Or
 > 
@@ -379,18 +421,18 @@ The following delegate methods can be implemented for the fetching stage:
 - (void)fileRetrieveFailed:(NSString *)fileId error:(NSError *)error;
 
 /**
- Executed when DMEClient has retrieved accounts available for the contract
+Executed when DMEClient has retrieved accounts available for the contract
 
- @param accounts available accounts
- */
+@param accounts available accounts
+*/
 - (void)accountsRetrieved:(CAAccounts *)accounts;
 
 
 /**
- Executed when accounts could not be retrieved
+Executed when accounts could not be retrieved
 
- @param error error NSError
- */
+@param error error NSError
+*/
 - (void)accountsRetrieveFailed:(NSError *)error;
 
 ```
@@ -494,6 +536,53 @@ This object also contains json serialized into properties, but its use and imple
 
 ## Decryption
 There are no additional steps necessary to decrypt the data, the SDK handles the decryption and cryptography management behind the scenes.
+
+
+## Postbox - EXPERIMENTAL
+
+**This functionality is part of an experimental API and is NOT officially supported in production yet! Please contact us for more information.**
+
+The SDK may also be used effectively in reverse, to send data to a user's digi.me library. This feature is known as Postbox. To use Postbox, you must first request consent from the user to send data to their library. This is done via a consent contract, similarly to receiving data. If consent is given, digi.me will callback to your app, similarly to consent access, with a postbox ID and session key. You may then use a RESTful interface to send data, normalised to our standards, to a user's 'Postbox'.
+
+As with our other APIs, there are 2 means to handle callbacks from the creation of a Postbox. The use of a block on the create method, or via a delegate. The method signatures are as follows:
+
+```objective-c
+- (void)createPostbox;
+- (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion;
+```
+
+The respective delegate callbacks look like this:
+
+```objective-c
+- (void)postboxCreationSucceeded:(CAPostbox *)postbox;
+- (void)postboxCreationFailed:(NSError *)error;
+```
+
+Once a user has authorized your Postbox request, you can use the following endpoint to 'post' data to the 'Postbox':
+
+`POST https://api.digi.me/v1.3/permission-access/postbox/<POSTBOX_ID>`
+
+You should provide the session key received from the SDK as a header:
+
+`sessionKey: <CA_SESSION_KEY>`
+
+The body of the request should be JSON in the following structure:
+
+```json
+{
+    "symmetricalKey": <BASE64_ENCODED_ENCRYPTION_KEY>,
+    "iv": <BASE16_ENCODED_ENCRYPTION_INITIALIZATION_VECTOR>,
+    "content": <BASE64_ENCODED_CONTENT>
+}
+```
+
+The content should be normalised to the format we expect. You can find more info on this in our [developer docs](https://developers.digi.me). This data should then be encrypted using AES256.
+
+If your submission is successful, you will receive a `200 OK` from our API. If not, you will receive a detailed error message with guidence on what needs addressing.
+
+When a user next open's digi.me, we will check your Postbox for any new data. If data is found, we'll parse it into our internal data structure and import it into the user's library.
+
+If data is left in the Postbox for more than 7 days without import, it will be flushed.
 
 ## Example Objective-C
 To see SDK in action in an Objective-C project:
