@@ -57,7 +57,10 @@ public class Post: NSObject, BaseObjectDecodable {
     public let links: [Link]?
     public let longitude: Double
     public var originalPostIdentifier: String? {
-        return String(describing: originalPostIdentifierRaw)
+        guard let originalPostId = originalPostIdentifierRaw else {
+            return nil
+        }
+        return String(describing: originalPostId)
     }
     public let originalPostUrl: String
     public let personIdentifier: String
@@ -66,7 +69,10 @@ public class Post: NSObject, BaseObjectDecodable {
     public let personUsername: String
     public let postIdentifier: String
     public var postReplyCount: String? {
-        return String(describing: postReplyCountRaw)
+        guard let replayCount = postReplyCountRaw else {
+            return nil
+        }
+        return String(describing: replayCount)
     }
     
     public let postUrl: String
@@ -90,7 +96,11 @@ public class Post: NSObject, BaseObjectDecodable {
     public let postEntityIdentifier: String?
     public let personFileRelativePath: String?
     public var originalCrossPostIdentifier: String? {
-        return String(describing: originalCrossPostIdentifierRaw)
+        guard let originalCrossPostId = originalCrossPostIdentifierRaw else {
+            return nil
+        }
+        
+        return String(describing: originalCrossPostId)
     }
     
     // MARK: - Objective-C Representations of non-optional primitives
