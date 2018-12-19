@@ -60,6 +60,7 @@ public class Post: NSObject, BaseObjectDecodable {
         guard let originalPostId = originalPostIdentifierRaw else {
             return nil
         }
+        
         return String(describing: originalPostId)
     }
     public let originalPostUrl: String
@@ -69,10 +70,11 @@ public class Post: NSObject, BaseObjectDecodable {
     public let personUsername: String
     public let postIdentifier: String
     public var postReplyCount: String? {
-        guard let replayCount = postReplyCountRaw else {
+        guard let replyCount = postReplyCountRaw else {
             return nil
         }
-        return String(describing: replayCount)
+        
+        return String(describing: replyCount)
     }
     
     public let postUrl: String
