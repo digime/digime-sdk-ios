@@ -56,7 +56,9 @@ public class Post: NSObject, BaseObjectDecodable {
     public let likeCount: Int
     public let links: [Link]?
     public let longitude: Double
-    public let originalPostIdentifier: String?
+    public var originalPostIdentifier: String? {
+        return String(describing: originalPostIdentifierRaw)
+    }
     public let originalPostUrl: String
     public let personIdentifier: String
     public let personFileUrl: String
@@ -109,6 +111,7 @@ public class Post: NSObject, BaseObjectDecodable {
     private let typeRaw: Int
     private let postReplyCountRaw: AnyJSONType?
     private let originalCrossPostIdentifierRaw: AnyJSONType?
+    private let originalPostIdentifierRaw: AnyJSONType?
     
     // MARK: - Decodable
     enum CodingKeys: String, CodingKey {
@@ -129,7 +132,7 @@ public class Post: NSObject, BaseObjectDecodable {
         case links = "links"
         case longitude = "longitude"
         case originalCrossPostIdentifierRaw = "originalcrosspostid"
-        case originalPostIdentifier = "originalpostid"
+        case originalPostIdentifierRaw = "originalpostid"
         case originalPostUrl = "originalposturl"
         case personIdentifier = "personentityid"
         case personFileUrl = "personfileurl"
