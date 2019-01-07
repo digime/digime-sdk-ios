@@ -36,7 +36,17 @@ DMEGuestConsentManager *_guestConsentManager;
     [self authorizeGuestWithCompletion:nil];
 }
 
+- (void)authorizeGuestWithScope:(id<CADataRequest>)scope
+{
+    [self authorizeGuestWithScope:scope completion:nil];
+}
+
 - (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion
+{
+    [self authorizeGuestWithScope:nil completion:completion];
+}
+
+- (void)authorizeGuestWithScope:(id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion
 {
     if (!self.guestConsentManager)
     {
@@ -47,7 +57,7 @@ DMEGuestConsentManager *_guestConsentManager;
     }
     
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
@@ -59,9 +69,9 @@ DMEGuestConsentManager *_guestConsentManager;
                     completion(nil, error);
                 }
                 
-                if ([strongSelf.delegate respondsToSelector:@selector(sessionCreateFailed:)])
+                if ([strongSelf.authorizationDelegate respondsToSelector:@selector(sessionCreateFailed:)])
                 {
-                    [strongSelf.delegate sessionCreateFailed:error];
+                    [strongSelf.authorizationDelegate sessionCreateFailed:error];
                 }
             });
             
@@ -78,14 +88,14 @@ DMEGuestConsentManager *_guestConsentManager;
                 
                 if (error)
                 {
-                    if ([strongSelf.delegate respondsToSelector:@selector(authorizeFailed:)])
+                    if ([strongSelf.downloadDelegate respondsToSelector:@selector(authorizeFailed:)])
                     {
-                        [strongSelf.delegate authorizeFailed:error];
+                        [strongSelf.authorizationDelegate authorizeFailed:error];
                     }
                 }
-                else if ([strongSelf.delegate respondsToSelector:@selector(authorizeSucceeded:)])
+                else if ([strongSelf.downloadDelegate respondsToSelector:@selector(authorizeSucceeded:)])
                 {
-                    [strongSelf.delegate authorizeSucceeded:session];
+                    [strongSelf.authorizationDelegate authorizeSucceeded:session];
                 }
             });
         }];
