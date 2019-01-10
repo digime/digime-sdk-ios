@@ -45,7 +45,7 @@ static NSString * const kDigiMeAPIVersion = @"v1";
     postKeys[@"appId"] = appId;
     postKeys[@"contractId"] = contractId;
     postKeys[@"sdkAgent"] = self.sdkAgent;
-    postKeys[@"accept"] = @{ @"compression" : @"brotli" };
+    postKeys[@"accept"] = @{ @"compression" : @"gzip" };
     
     if (scope != nil)
     {

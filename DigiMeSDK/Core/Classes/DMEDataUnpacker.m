@@ -49,6 +49,16 @@
             return nil;
         }
     }
+    else if ([compression isEqualToString:@"gzip"])
+    {
+        unpackedData = [DMECompressor decompressData:unpackedData usingAlgorithm:DMECompressionAlgorithmGZIP];
+        if (!unpackedData)
+        {
+            // Decompression failed
+            [NSError setSDKError:SDKErrorInvalidData toError:error];
+            return nil;
+        }
+    }
     else if (compression != nil)
     {
         // Unknown compression. Return nil.
