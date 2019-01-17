@@ -9,6 +9,7 @@
 #import "DMEClientConfiguration.h"
 
 NSString * const kDMEClientSchemePrefix = @"digime-ca-";
+NSString * const kDMEConfigFileName = @"DMEConfig";
 
 @interface DMEClientConfiguration()
 
@@ -41,14 +42,20 @@ NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 {
     if (!_baseUrl)
     {
-        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"DMEConfig" ofType:@"plist"];
-        NSDictionary *dict;
+        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *filePath = [[documentsPath stringByAppendingPathComponent:kDMEConfigFileName] stringByAppendingPathExtension:@"plist"];
+        NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
         
-        if (filePath)
+        if (!dict)
         {
-            dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+            filePath = [[NSBundle mainBundle] pathForResource:kDMEConfigFileName ofType:@"plist"];
+            
+            if (filePath)
+            {
+                dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+            }
         }
-        
+
         NSString *domain = dict[@"DME_DOMAIN"] ?: @"digi.me";
         _baseUrl = [NSString stringWithFormat:@"https://api.%@/", domain];
     }
