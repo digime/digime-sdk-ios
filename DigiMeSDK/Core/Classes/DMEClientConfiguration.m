@@ -42,9 +42,14 @@ NSString * const kDMEConfigFileName = @"DMEConfig";
 {
     if (!_baseUrl)
     {
+        NSDictionary *dict;
         NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString *filePath = [[documentsPath stringByAppendingPathComponent:kDMEConfigFileName] stringByAppendingPathExtension:@"plist"];
-        NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+        
+        if (filePath)
+        {
+            dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
+        }
         
         if (!dict)
         {
