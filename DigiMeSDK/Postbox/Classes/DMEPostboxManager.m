@@ -10,6 +10,7 @@
 #import "CASessionManager.h"
 #import "DMEClient.h"
 #import "CAPostbox.h"
+#import "CASession+Private.h"
 
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
@@ -52,6 +53,8 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
     NSString *sessionKey = parameters[kCARequestSessionKey];
     NSString *postboxId = parameters[kCARequestPostboxId];
     NSString *postboxPublicKey = parameters[kCARequestPostboxPublicKey];
+    
+    self.session.metadata = parameters;
     
     NSError *err;
     CAPostbox *postbox;
