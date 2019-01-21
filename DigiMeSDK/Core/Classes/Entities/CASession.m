@@ -11,6 +11,10 @@
 #import "DMEClient.h"
 #import "CADataRequest.h"
 
+@interface CASession()
+@property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
+@end
+
 @implementation CASession
 
 #pragma mark - Initialization

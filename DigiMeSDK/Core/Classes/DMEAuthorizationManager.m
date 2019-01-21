@@ -8,7 +8,6 @@
 
 #import "DMEAuthorizationManager.h"
 #import "CASessionManager.h"
-#import "CASession+Private.h"
 #import "DMEClient.h"
 
 #import "NSError+Auth.h"
@@ -20,6 +19,32 @@
 static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
+static NSString * const kContractId = @"CARequestContractId";
+
+static NSString * const kTimingDataGetAllFiles = @"timingDataGetAllFiles";
+static NSString * const kTimingDataGetFile = @"timingDataGetFile";
+static NSString * const kTimingFetchContractPermission = @"timingFetchContractPermission";
+static NSString * const kTimingFetchDataGetAccount = @"timingFetchDataGetAccount";
+static NSString * const kTimingFetchDataGetFileList = @"timingFetchDataGetFileList";
+static NSString * const kTimingFetchSessionKey = @"timingFetchSessionKey";
+static NSString * const kDataRequest = @"timingDataRequest";
+static NSString * const kFetchContractDetails = @"timingFetchContractDetails";
+static NSString * const kUpdateContractPermission = @"timingUpdateContractPermission";
+static NSString * const kTimingTotal = @"timingTotal";
+
+static NSString * const kDebugAppId = @"debugAppId";
+static NSString * const kDebugBundleVersion = @"debugBundleVersion";
+static NSString * const kDebugPlatform = @"debugPlatform";
+static NSString * const kContractType = @"debugContractType";
+static NSString * const kDeviceId = @"debugDeviceId";
+static NSString * const kDigiMeVersion = @"debugDigiMeVersion";
+static NSString * const kUserId = @"debugUserId";
+static NSString * const kLibraryId = @"debugLibraryId";
+static NSString * const kPCloudType = @"debugPCloudType";
+
+@interface CASession (Private)
+@property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
+@end
 
 @interface DMEAuthorizationManager()
 
@@ -55,7 +80,7 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
     BOOL result = [parameters[kCADigimeResponse] boolValue];
     NSString *sessionKey = parameters[kCARequestSessionKey];
     
-    self.session.metadata = parameters;
+    [self filterMetadata: parameters];
     
     NSError *err;
     
@@ -107,6 +132,19 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 -(CASessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
+}
+
+-(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
+{
+    // default legacy keys
+    NSMutableArray *allowedKeys = @[kCARequestSessionKey, kCADigimeResponse, kCARequestRegisteredAppID].mutableCopy;
+    // timing keys
+    [allowedKeys addObjectsFromArray:@[kTimingDataGetAllFiles, kTimingDataGetFile, kTimingFetchContractPermission, kTimingFetchDataGetAccount, kTimingFetchDataGetFileList, kTimingFetchSessionKey, kDataRequest, kFetchContractDetails, kUpdateContractPermission, kTimingTotal]];
+    // timing debug keys
+    [allowedKeys addObjectsFromArray:@[kDebugAppId, kDebugBundleVersion, kDebugPlatform, kContractType, kDeviceId, kDigiMeVersion, kUserId, kLibraryId, kPCloudType]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
+    NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
+    self.session.metadata = whiteDictionary;
 }
 
 @end
