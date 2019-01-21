@@ -8,6 +8,7 @@
 
 #import "DMEAuthorizationManager.h"
 #import "CASessionManager.h"
+#import "CASession+Private.h"
 #import "DMEClient.h"
 
 #import "NSError+Auth.h"
@@ -53,6 +54,8 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 {
     BOOL result = [parameters[kCADigimeResponse] boolValue];
     NSString *sessionKey = parameters[kCARequestSessionKey];
+    
+    self.session.metadata = parameters;
     
     NSError *err;
     
