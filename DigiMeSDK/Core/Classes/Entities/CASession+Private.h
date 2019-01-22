@@ -7,8 +7,8 @@
 
 #import "CASession.h"
 
-@interface CASession()
+@interface CASession ()
 
-@property (strong, nonatomic) NSDictionary<NSString *, id> *metadata;
+@property (strong, nonatomic, readwrite) NSDictionary<NSString *, id> *metadata;
 
 @end
