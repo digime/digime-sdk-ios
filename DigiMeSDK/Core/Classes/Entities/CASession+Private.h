@@ -12,7 +12,6 @@ extern NSString * const kCADigimeResponse;
 extern NSString * const kCARequestRegisteredAppID;
 extern NSString * const kCARequestPostboxId;
 extern NSString * const kCARequestPostboxPublicKey;
-extern NSString * const kCARequestRegisteredAppID;
 extern NSString * const kTimingDataGetAllFiles;
 extern NSString * const kTimingDataGetFile;
 extern NSString * const kTimingFetchContractPermission;
