@@ -13,6 +13,7 @@ extern NSString * const kCADigimeResponse;
 extern NSString * const kCARequestRegisteredAppID;
 extern NSString * const kCARequestPostboxId;
 extern NSString * const kCARequestPostboxPublicKey;
+extern NSString * const kCARequest3dPartyAppName;
 extern NSString * const kTimingDataGetAllFiles;
 extern NSString * const kTimingDataGetFile;
 extern NSString * const kTimingFetchContractPermission;
@@ -96,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Metadata - exposing extra return parameters.
+ Session metadata. Contains additional debug information collected during the session lifetime.
  */
 @property (strong, nonatomic, readonly, nonnull) NSDictionary<NSString *, id> *metadata;
 

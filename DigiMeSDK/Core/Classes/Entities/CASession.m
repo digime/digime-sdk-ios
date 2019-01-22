@@ -16,9 +16,7 @@ NSString * const kCADigimeResponse = @"CADigimeResponse";
 NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 NSString * const kCARequestPostboxId = @"CARequestPostboxId";
 NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey";
-
-NSString * const kContractId = @"CARequestContractId";
-
+NSString * const kCARequest3dPartyAppName = @"CARequest3dPartyAppName";
 NSString * const kTimingDataGetAllFiles = @"timingDataGetAllFiles";
 NSString * const kTimingDataGetFile = @"timingDataGetFile";
 NSString * const kTimingFetchContractPermission = @"timingFetchContractPermission";
@@ -29,10 +27,10 @@ NSString * const kDataRequest = @"timingDataRequest";
 NSString * const kFetchContractDetails = @"timingFetchContractDetails";
 NSString * const kUpdateContractPermission = @"timingUpdateContractPermission";
 NSString * const kTimingTotal = @"timingTotal";
-
 NSString * const kDebugAppId = @"debugAppId";
 NSString * const kDebugBundleVersion = @"debugBundleVersion";
 NSString * const kDebugPlatform = @"debugPlatform";
+NSString * const kContractId = @"CARequestContractId";
 NSString * const kContractType = @"debugContractType";
 NSString * const kDeviceId = @"debugDeviceId";
 NSString * const kDigiMeVersion = @"debugDigiMeVersion";

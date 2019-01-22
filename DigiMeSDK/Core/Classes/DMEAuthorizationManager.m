@@ -8,7 +8,6 @@
 
 #import "DMEAuthorizationManager.h"
 #import "CASessionManager.h"
-#import "CASession.h"
 #import "CASession+Private.h"
 #import "DMEClient.h"
 
