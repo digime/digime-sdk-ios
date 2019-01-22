@@ -12,9 +12,6 @@
 #import <SafariServices/SFSafariViewController.h>
 #import "UIViewController+DMEExtension.h"
 
-static NSString * const kCADigimeResponse = @"CADigimeResponse";
-static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
-static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 @interface DMEGuestConsentManager() <SFSafariViewControllerDelegate>
