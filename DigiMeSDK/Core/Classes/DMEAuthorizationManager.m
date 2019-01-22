@@ -8,6 +8,8 @@
 
 #import "DMEAuthorizationManager.h"
 #import "CASessionManager.h"
+#import "CASession.h"
+#import "CASession+Private.h"
 #import "DMEClient.h"
 
 #import "NSError+Auth.h"
@@ -15,36 +17,6 @@
 
 #import <UIKit/UIKit.h>
 #import <StoreKit/StoreKit.h>
-
-static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
-static NSString * const kCADigimeResponse = @"CADigimeResponse";
-static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
-static NSString * const kContractId = @"CARequestContractId";
-
-static NSString * const kTimingDataGetAllFiles = @"timingDataGetAllFiles";
-static NSString * const kTimingDataGetFile = @"timingDataGetFile";
-static NSString * const kTimingFetchContractPermission = @"timingFetchContractPermission";
-static NSString * const kTimingFetchDataGetAccount = @"timingFetchDataGetAccount";
-static NSString * const kTimingFetchDataGetFileList = @"timingFetchDataGetFileList";
-static NSString * const kTimingFetchSessionKey = @"timingFetchSessionKey";
-static NSString * const kDataRequest = @"timingDataRequest";
-static NSString * const kFetchContractDetails = @"timingFetchContractDetails";
-static NSString * const kUpdateContractPermission = @"timingUpdateContractPermission";
-static NSString * const kTimingTotal = @"timingTotal";
-
-static NSString * const kDebugAppId = @"debugAppId";
-static NSString * const kDebugBundleVersion = @"debugBundleVersion";
-static NSString * const kDebugPlatform = @"debugPlatform";
-static NSString * const kContractType = @"debugContractType";
-static NSString * const kDeviceId = @"debugDeviceId";
-static NSString * const kDigiMeVersion = @"debugDigiMeVersion";
-static NSString * const kUserId = @"debugUserId";
-static NSString * const kLibraryId = @"debugLibraryId";
-static NSString * const kPCloudType = @"debugPCloudType";
-
-@interface CASession (Private)
-@property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
-@end
 
 @interface DMEAuthorizationManager()
 

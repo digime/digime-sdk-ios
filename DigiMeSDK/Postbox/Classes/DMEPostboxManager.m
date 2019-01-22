@@ -10,16 +10,7 @@
 #import "CASessionManager.h"
 #import "DMEClient.h"
 #import "CAPostbox.h"
-
-static NSString * const kCADigimeResponse = @"CADigimeResponse";
-static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
-static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
-static NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey";
-static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
-
-@interface CASession (Private)
-@property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
-@end
+#import "CASession+Private.h"
 
 @interface DMEPostboxManager()
 
