@@ -59,6 +59,7 @@ NSString * const kPCloudType = @"debugPCloudType";
         _sessionId = sessionManager.client.contractId;
         _createdDate = [NSDate date];
         _scope = sessionManager.scope;
+        _metadata = [NSDictionary new];
     }
     
     return self;

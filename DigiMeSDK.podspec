@@ -26,7 +26,8 @@ Pod::Spec.new do |s|
         'DigiMeSDK/Core/Classes/Utility/*.h',
         'DigiMeSDK/Core/Classes/Security/DME*.h',
         'DigiMeSDK/Core/Classes/DMEAuthorizationManager.h',
-        'DigiMeSDK/Core/Classes/DMEClient+Private.h'
+        'DigiMeSDK/Core/Classes/DMEClient+Private.h',
+        'DigiMeSDK/Core/Classes/CASession+Private.h'
     end
 
     
