@@ -10,12 +10,7 @@
 #import "CASessionManager.h"
 #import "DMEClient.h"
 #import "CAPostbox.h"
-
-static NSString * const kCADigimeResponse = @"CADigimeResponse";
-static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
-static NSString * const kCARequestPostboxId = @"CARequestPostboxId";
-static NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey";
-static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
+#import "CASession+Private.h"
 
 @interface DMEPostboxManager()
 
@@ -52,6 +47,8 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
     NSString *sessionKey = parameters[kCARequestSessionKey];
     NSString *postboxId = parameters[kCARequestPostboxId];
     NSString *postboxPublicKey = parameters[kCARequestPostboxPublicKey];
+    
+    [self filterMetadata: parameters];
     
     NSError *err;
     CAPostbox *postbox;
@@ -117,6 +114,14 @@ static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 -(CASessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
+}
+
+-(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
+{
+    NSMutableArray *allowedKeys = @[kCADigimeResponse, kCARequestSessionKey, kCARequestPostboxId, kCARequestPostboxPublicKey, kCARequestRegisteredAppID].mutableCopy;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
+    NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
+    self.session.metadata = whiteDictionary;
 }
 
 @end
