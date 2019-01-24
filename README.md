@@ -23,7 +23,7 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
   * [Authorization](#authorization) 
      * [Handling app callback](#handling-app-callback)
      * [Delegate Calls (authorize)](#delegate-calls-authorize)
-  * [Specifying Scope] (#specifying-scope)
+  * [Specifying Scope](#specifying-scope)
   * [Fetching data](#fetching-data)
   * [Fetching Accounts data](#fetching-accounts-data)
      * [Delegate Calls (fetching)](#delegate-calls-fetching)
