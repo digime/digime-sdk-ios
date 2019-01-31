@@ -34,7 +34,7 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
   * [Postbox](#postbox---experimental)
   * [Example Objective-C](#example-objective-c)
   * [Example Swift](#example-swift)
-  * [Migration Guide (2.4.0+)](#migration-guide-2-4-0-+)
+  * [Migration Guide (2.4.0+)](#migration-guide-240)
   * [Digi.me App](#digime-app)
 
 
