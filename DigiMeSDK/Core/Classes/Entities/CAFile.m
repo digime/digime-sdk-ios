@@ -38,16 +38,6 @@
 - (void)populateWithContent:(NSArray *)content
 {
     _json = content;
-    
-    NSMutableArray *objects = [NSMutableArray new];
-    
-    for (NSDictionary *obj in content)
-    {
-        CAFileObject *fileObject = [[CAFileObject alloc] initWithJson:obj];
-        [objects addObject:fileObject];
-    }
-    
-    _objects = objects;
 }
 
 #pragma mark - Overrides
@@ -56,7 +46,7 @@
 {
     NSString *description = [NSString stringWithFormat:@"FileId: %@,\n", self.fileId];
     
-    description = [NSString stringWithFormat:@"%@%i objects", description, (int)self.objects.count];
+    description = [NSString stringWithFormat:@"%@%i objects", description, (int)self.json.count];
     
     return [NSString stringWithFormat:@"\n<%@: %p,\n%@>",
             NSStringFromClass([self class]), self, description];
