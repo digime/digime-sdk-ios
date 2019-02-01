@@ -54,7 +54,6 @@ static NSTimeInterval const kCATimerInterval = 0.5;
 
 - (void)openDigiMeAppWithAction:(DMEOpenAction *)action parameters:(NSDictionary *)parameters
 {
-    
     self.sentAction = action;
     self.sentParameters = parameters;
     dispatch_async(dispatch_get_main_queue(), ^{

@@ -29,7 +29,6 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
      * [Delegate Calls (downloadDelegate)](#delegate-calls-downloadDelegate)
      * [Automatic exponential backoff](#automatic-exponential-backoff)
   * [Fetched Files](#fetched-files)
-     * [CAFileObject](#cafileobject) 
   * [Decryption](#decryption)
   * [Postbox](#postbox---experimental)
   * [Example Objective-C](#example-objective-c)
@@ -510,14 +509,7 @@ The following properties can be configured:
 
 ## Fetched Files
 
-Each file you fetch from Consent Access is represented by `CAFile` object. Each CAFile can contain 1 or more objects, represented by `CAFileObject`.
-
-`CAFile` contains an array of these objects, accessible via:
-
-```objective-c
-@property (nullable, nonatomic, strong, readonly) NSArray<CAFileObject *> *objects;
-
-```
+Each file you fetch from Consent Access is represented by `CAFile` object. 
 
 You can access serialized json content (NSArray) of the entire file using the following property on the `CAFile`:
 
@@ -526,17 +518,7 @@ You can access serialized json content (NSArray) of the entire file using the fo
 
 ```
 
-Additionally, you can access each object's own serialized json:
-
-```objective-c
-//NSDictionary
-caFile.content.first.json;
-
-```
-
-### CAFileObject
-This object also contains json serialized into properties, but its use and implementation remain experimental for now.
-
+For more details about JSON object formats, please see [this guide](http://developers.digi.me/reference-objects)
 
 ## Decryption
 There are no additional steps necessary to decrypt the data, the SDK handles the decryption and cryptography management behind the scenes.
@@ -743,7 +725,7 @@ Digi.me for iOS is the main hub for giving permission to download an individual'
 
 
 ##
-Copyright © 2018 digi.me Ltd. All rights reserved.
+Copyright © 2019 digi.me Ltd. All rights reserved.
 
 
 
