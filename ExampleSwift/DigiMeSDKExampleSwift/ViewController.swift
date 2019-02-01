@@ -30,9 +30,9 @@ class ViewController: UIViewController {
     
     // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
     
-    dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "CA_RSA_PRIVATE_KEY", password: "YOUR_P12_PASSWORD")
+    dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF", password: "YOUR_P12_PASSWORD")
     
-    dmeClient.contractId = "gzqYsbQ1V1XROWjmqiFLcH2AF1jvcKcg"
+    dmeClient.contractId = "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF"
     
     logVC = LogViewController(frame: UIScreen.main.bounds)
     view.addSubview(logVC)
