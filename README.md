@@ -806,7 +806,7 @@ Digi.me for iOS is the main hub for giving permission to download an individual'
 
 
 ##
-Copyright © 2018 digi.me Ltd. All rights reserved.
+Copyright © 2019 digi.me Ltd. All rights reserved.
 
 
 
