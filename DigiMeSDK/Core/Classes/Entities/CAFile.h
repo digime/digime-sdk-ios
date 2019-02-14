@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CAFileObject.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -51,12 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nullable, nonatomic, strong, readonly) NSArray *json;
 
-
-/**
- Array of CAFileObjects found in the file.
- */
-@property (nullable, nonatomic, strong, readonly) NSArray<CAFileObject *> *objects;
+@end
 
 NS_ASSUME_NONNULL_END
-
-@end

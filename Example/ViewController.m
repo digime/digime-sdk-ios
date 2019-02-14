@@ -18,7 +18,6 @@
 @property (nonatomic) NSInteger progress;
 @property (nonatomic, strong) LogViewController *logVC;
 
-
 @end
 
 @implementation ViewController
@@ -37,9 +36,9 @@
     self.dmeClient.appId = @"YOUR_APP_ID";
     
     // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
-    self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"CA_RSA_PRIVATE_KEY" password:@"YOUR_P12_PASSWORD"];
+    self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF" password:@"YOUR_P12_PASSWORD"];
     
-    self.dmeClient.contractId = @"gzqYsbQ1V1XROWjmqiFLcH2AF1jvcKcg";
+    self.dmeClient.contractId = @"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF";
     
     self.fileCount = 0;
     self.progress = 0;

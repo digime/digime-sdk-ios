@@ -11,10 +11,6 @@
 #import <StoreKit/StoreKit.h>
 #import "UIViewController+DMEExtension.h"
 
-static NSString * const kCARequestSessionKey = @"CARequestSessionKey";
-static NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
-static NSString * const kCARequest3dPartyAppName = @"CARequest3dPartyAppName";
-static NSString * const kCADigimeResponse = @"CADigimeResponse";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
 static NSString * const kCASdkVersion = @"CASdkVersion";
 static NSInteger  const kDMEClientAppstoreID = 1234541790;
@@ -58,7 +54,6 @@ static NSTimeInterval const kCATimerInterval = 0.5;
 
 - (void)openDigiMeAppWithAction:(DMEOpenAction *)action parameters:(NSDictionary *)parameters
 {
-    
     self.sentAction = action;
     self.sentParameters = parameters;
     dispatch_async(dispatch_get_main_queue(), ^{

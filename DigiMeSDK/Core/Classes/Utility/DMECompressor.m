@@ -8,6 +8,7 @@
 
 #import "DMECompressor.h"
 @import Brotli;
+@import GZIP;
 
 @implementation DMECompressor
 
@@ -39,14 +40,12 @@
 
 + (nullable NSData *)gzipCompressData:(NSData *)data
 {
-    [NSException raise:NSInternalInconsistencyException format:@"%@ is unimplemented.", NSStringFromSelector(_cmd)];
-    return nil;
+    return [data gzippedData];
 }
 
 + (nullable NSData *)gzipDecompressData:(NSData *)data
 {
-    [NSException raise:NSInternalInconsistencyException format:@"%@ is unimplemented.", NSStringFromSelector(_cmd)];
-    return nil;
+    return [data gunzippedData];
 }
 
 + (nullable NSData *)brotliCompressData:(NSData *)data

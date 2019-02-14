@@ -22,19 +22,18 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
   * [Callbacks and responses](#callbacks-and-responses)
   * [Authorization](#authorization) 
      * [Handling app callback](#handling-app-callback)
-     * [Delegate Calls (authorize)](#delegate-calls-authorize)
-  * [Specifying Scope] (#specifying-scope)
+     * [Delegate Calls (authorizationDelegate)](#delegate-calls-authorizationDelegate)
+  * [Specifying Scope](#specifying-scope)
   * [Fetching data](#fetching-data)
   * [Fetching Accounts data](#fetching-accounts-data)
-     * [Delegate Calls (fetching)](#delegate-calls-fetching)
+     * [Delegate Calls (downloadDelegate)](#delegate-calls-downloadDelegate)
      * [Automatic exponential backoff](#automatic-exponential-backoff)
   * [Fetched Files](#fetched-files)
-     * [CAFileObject](#cafileobject) 
   * [Decryption](#decryption)
   * [Postbox](#postbox---experimental)
   * [Example Objective-C](#example-objective-c)
   * [Example Swift](#example-swift)
-  * [Migration Guide](#migration-guide)
+  * [Migration Guide (2.4.0+)](#migration-guide-240)
   * [Digi.me App](#digime-app)
 
 
@@ -185,7 +184,7 @@ Extend your `Info.plist` to support a new Custom URL Scheme. This scheme is used
 ## Callbacks and responses
  
 Digi.me SDK is built to be asynchronous and thread-safe and as such it provides a couple of mechanisms of redirecting results back to the application.
-For that purpose the SDK provides **DMEClientCallbacks** block based interface and **DMEClientDelegate** delegate based interface. 
+For that purpose the SDK provides **DMEClientCallbacks** block based interface and **DMEClientAuthorizationDelegate** / **DMEClientDownloadDelegate** delegate based interfaces. 
 
 > NOTE:
 > Both of them are interchangeable and can be used depending on preference. 
@@ -200,14 +199,15 @@ Each method that returns data has an alternative name which accepts a completion
 
 ```
 
-If you wish to use the delegate instead, simply set the `DMEClient`'s `delegate` property:
+If you wish to use the delegate pattern, simply set the `DMEClient`'s `authorizationDelegate` and/or `downloadDelegate` property:
 
 ```objective-c
-[DMEClient sharedClient].delegate = self;
+[DMEClient sharedClient].authorizationDelegate = self;
+[DMEClient sharedClient].downloadDelegate = self;
 ```
 
-> NOTE: Make sure you declare that your class implements `DMEClientDelegate`.
-
+> NOTE: Make sure you declare that your class implements `DMEClientAuthorizationDelegate` / `DMEClientDownloadDelegate`.
+ 
 
 ## Authorization
 
@@ -243,7 +243,9 @@ Since `authorize` automatically opens Digi.me app, you will need some way of han
 
 ```
 
-### Delegate Calls (authorize)
+### Delegate Calls (authorizationDelegate)
+
+##### DMEClientAuthorizationDelegate
 
 The following delegate methods can be implemented for the authorize stage:
 
@@ -382,7 +384,8 @@ To fetch accounts data:
 > ```
 
 
-### Delegate Calls (fetching)
+### Delegate Calls (downloadDelegate)
+##### DMEClientDownloadDelegate
 
 The following delegate methods can be implemented for the fetching stage:
 
@@ -506,14 +509,7 @@ The following properties can be configured:
 
 ## Fetched Files
 
-Each file you fetch from Consent Access is represented by `CAFile` object. Each CAFile can contain 1 or more objects, represented by `CAFileObject`.
-
-`CAFile` contains an array of these objects, accessible via:
-
-```objective-c
-@property (nullable, nonatomic, strong, readonly) NSArray<CAFileObject *> *objects;
-
-```
+Each file you fetch from Consent Access is represented by `CAFile` object. 
 
 You can access serialized json content (NSArray) of the entire file using the following property on the `CAFile`:
 
@@ -522,17 +518,7 @@ You can access serialized json content (NSArray) of the entire file using the fo
 
 ```
 
-Additionally, you can access each object's own serialized json:
-
-```objective-c
-//NSDictionary
-caFile.content.first.json;
-
-```
-
-### CAFileObject
-This object also contains json serialized into properties, but its use and implementation remain experimental for now.
-
+For more details about JSON object formats, please see [this guide](http://developers.digi.me/reference-objects)
 
 ## Decryption
 There are no additional steps necessary to decrypt the data, the SDK handles the decryption and cryptography management behind the scenes.
@@ -691,40 +677,8 @@ it would look like
 
 > NOTE: you will need to have Digi.me app installed and onboarded.
 
-## Migration Guide
-Follow these steps if you are migrating existing implementation of `DigiMeFramework` to `DigiMeSDK`.
-
-#### Pod Installation
-Open up your `Podfile` and replace the line with `DigiMeFramework` to:
- 
-```ruby
-pod 'DigiMeSDK', '~> 2.0.0'
-```
-On the command line type the following command and hit Enter. This will remove `DigiMeFramework` and install `DigiMeSDK` pod:
-
-```bash
-pod install
-```
-
-#### Import Statements
- In files that implement `DigiMeFramework`, change the import statements from:
-
-```objective-c
-#import "DigiMeFramework.h"
-``` 
-  
-to 
-  
-```objective-c
-#import "DMEClient.h"
-```
-
-#### App Delegate
-In `AppDelegate` replace the implementation inside `application:openURL:options` to:
-	
-```objective-c
-return [[DMEClient sharedClient] openURL:url options:options];
-```
+## Migration Guide (2.4.0+)
+Follow these steps if you are migrating existing implementation of `DigiMeSDK` to `DigiMeSDK` v2.4.0+.
 	
 #### SDK Delegate
 
@@ -733,7 +687,7 @@ return [[DMEClient sharedClient] openURL:url options:options];
 From:
 
 ```objective-c
-@interface <YourClass> (DigiMeFrameworkDelegate)
+@interface <YourClass> (DMEClientDelegate)
 ...
 @end
 ```
@@ -741,7 +695,7 @@ From:
 To:
 
 ```objective-c
-@interface <YourClass> (DMEClientDelegate)
+@interface <YourClass> (DMEClientAuthorizationDelegate, DMEClientDownloadDelegate)
 ...
 @end
 ```
@@ -757,65 +711,12 @@ From:
 To:
 
 ```objective-c
-[DMEClient sharedClient].delegate = self;
+[DMEClient sharedClient].authorizationDelegate = self;
+[DMEClient sharedClient].downloadDelegate = self;
 ```
-
-##### Remove old delegate methods:
-
-Remove the following:
-
-```objective-c
-- (void)digimeFrameworkReceiveDataWithFileNames:(NSArray<NSString *>*)fileNames filesWithContent:(NSDictionary *) filesWithContent error:(NSError *)error;
-
-- (void)digimeFrameworkLogWithMessage:(NSString*) message;
-
-- (void)digimeFrameworkDidChangeOperationState:(DigiMeFrameworkOperationState)state;
-
-- (void)digimeFrameworkJsonFilesDownloadProgress:(float)progress;
-```
-
-> NOTE: you may wish to use implementation inside some of these in the new delegate methods
 
 
 Implement delegates described in [Authorize](#delegate-calls-authorize) and [Fetching Data](#delegate-calls-fetching) sections.
-
-##### Main Implementation
-
-In a file that implements "initiate data request", change the following line:
-
-```objective-c
-[[DigiMeFramework sharedInstance] digimeFrameworkInitiateDataRequestWithAppID:@"<your appId>" contractID:@"<your contractId>" rsaPrivateKeyHex:@"<your private key hex>"];
-```
-
-to 
-
-```objective-c
-[[DMEClient sharedClient].appId = @"<your appId>";
-[[DMEClient sharedClient].contractId = @"<your contractId>";
-[[DMEClient sharedClient].privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"<your private key filename>" password:@"<your p12 password>"];
-[[DMEClient sharedClient] authorize];
-```
-
-> NOTE: If you have p12 hex already extracted, you can use that instead of `DMECryptoUtilities` extraction.
-
-##### Delegate Calls
-
-In the new delegate method `authorizeSucceeded:` you can request the file list:
-
-```objective-c
-[[DMEClient sharedClient] getFileList];
-```
-
-In the new delegate method `clientRetrievedFileList:` you can iterate through `files.fileIds` and request content for each file, for example:
-
-```objective-c
-for (NSString *fileId in files.fileIds)
-{
-    [[DMEClient sharedClient] getFileWithId:fileId];
-}
-```
-
-For more details please see [Example implementation](#example-objective-c).
 
 
 ## Digi.me App
@@ -824,7 +725,7 @@ Digi.me for iOS is the main hub for giving permission to download an individual'
 
 
 ##
-Copyright © 2018 digi.me Ltd. All rights reserved.
+Copyright © 2019 digi.me Ltd. All rights reserved.
 
 
 
