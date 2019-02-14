@@ -30,25 +30,10 @@ Pod::Spec.new do |s|
         'DigiMeSDK/Core/Classes/CASession+Private.h'
     end
 
-    s.subspec 'Postbox' do |ss|
-      ss.source_files  	= "DigiMeSDK/Postbox/Classes/**/*.{h,m}"
-      ss.frameworks    	= "Foundation", "UIKit"
-      ss.private_header_files = 'DigiMeSDK/Core/Classes/DMEPostboxManager.h'
-      ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKPostbox' }
-      ss.dependency "DigiMeSDK/Core"
-    end
-
     s.subspec 'Repository' do |ss|
       ss.source_files  	= "DigiMeSDK/Repository/Classes/**/*.swift"
       ss.frameworks    	= "Foundation"
       ss.dependency "DigiMeSDK/Core"
     end
 
-    s.subspec 'GuestConsent' do |ss|
-      ss.source_files      = "DigiMeSDK/GuestConsent/Classes/**/*.{h,m}"
-      ss.frameworks        = "Foundation", "UIKit"
-      ss.private_header_files = 'DigiMeSDK/GuestConsent/Classes/DMEGuestConsentManager.h'
-      ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKGuestConsent' }
-      ss.dependency "DigiMeSDK/Core"
-    end
 end
