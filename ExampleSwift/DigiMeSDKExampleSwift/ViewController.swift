@@ -36,7 +36,7 @@ class ViewController: UIViewController {
     
     logVC = LogViewController(frame: UIScreen.main.bounds)
     view.addSubview(logVC)
-    view.bringSubview(toFront: logVC)
+    view.bringSubviewToFront(logVC)
     
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start", style: .plain, target: self, action: #selector(ViewController.runTapped))
