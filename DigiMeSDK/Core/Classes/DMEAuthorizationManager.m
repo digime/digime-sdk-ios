@@ -112,7 +112,7 @@
     // timing keys
     [allowedKeys addObjectsFromArray:@[kTimingDataGetAllFiles, kTimingDataGetFile, kTimingFetchContractPermission, kTimingFetchDataGetAccount, kTimingFetchDataGetFileList, kTimingFetchSessionKey, kDataRequest, kFetchContractDetails, kUpdateContractPermission, kTimingTotal]];
     // timing debug keys
-    [allowedKeys addObjectsFromArray:@[kDebugAppId, kDebugBundleVersion, kDebugPlatform, kContractType, kDeviceId, kDigiMeVersion, kUserId, kLibraryId, kPCloudType]];
+    [allowedKeys addObjectsFromArray:@[kDebugAppId, kDebugBundleVersion, kDebugPlatform, kContractType, kDeviceId, kDigiMeVersion, kUserId, kLibraryId, kPCloudType, kContractId, kCARequest3dPartyAppName]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
     NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
     self.session.metadata = whiteDictionary;
