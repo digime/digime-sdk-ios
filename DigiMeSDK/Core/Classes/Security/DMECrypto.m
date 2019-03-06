@@ -99,8 +99,14 @@ static const NSInteger kHashLength = 64;
                            &plainBufferSize);
     
     NSAssert(status == noErr, @"RSA decryption failed");
+    if (status != noErr)
+    {
+        free(plainBuffer);
+        return nil;
+    }
     
     NSData* decryptedDsk = [NSData dataWithBytes:plainBuffer length:plainBufferSize];
+    free(plainBuffer);
     NSAssert(decryptedDsk.length == kDataSymmetricKeyLength, @"Decrypted DSK size is wrong");
     
     NSData* div = [encryptedData subdataWithRange:NSMakeRange(kDataSymmetricKeyLengthCA,kDataInitializationVectorLength)];

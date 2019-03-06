@@ -65,8 +65,9 @@
                 break; /* failed */
             }
             
-            OSStatus status = SecTrustEvaluate(serverTrust, NULL);
-            if (errSecSuccess != status)
+            SecTrustResultType result;
+            OSStatus status = SecTrustEvaluate(serverTrust, &result);
+            if (errSecSuccess != status || (result != kSecTrustResultProceed && result != kSecTrustResultUnspecified))
             {
                 break; /* failed */
             }
@@ -86,12 +87,13 @@
             const UInt8* const data = CFDataGetBytePtr(serverCertificateData);
             const CFIndex size = CFDataGetLength(serverCertificateData);
             NSData* remoteCert = [NSData dataWithBytes:data length:(NSUInteger)size];
+            CFRelease(serverCertificateData);
             if (remoteCert == nil || [remoteCert isEqual:[NSNull class]])
             {
                 break; /* failed */
             }
             
-            if(![self isRemoteCertIsEqualToAnyLocalCert:self.localCerts remoteCert:remoteCert])
+            if (![self isRemoteCertIsEqualToAnyLocalCert:self.localCerts remoteCert:remoteCert])
             {
                 break; /* failed */
             }
