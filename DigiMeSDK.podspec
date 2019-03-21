@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         	= "DigiMeSDK"
-  s.version      	= "2.4.1"
+  s.version      	= "2.4.2"
   s.summary      	= "digi.me iOS Consent Access SDK"
   s.homepage     	= "https://github.com/digime/digime-sdk-ios"
   s.license      	= { :type => "MIT", :file => "LICENSE" }
@@ -28,14 +28,6 @@ Pod::Spec.new do |s|
         'DigiMeSDK/Core/Classes/DMEAuthorizationManager.h',
         'DigiMeSDK/Core/Classes/DMEClient+Private.h',
         'DigiMeSDK/Core/Classes/CASession+Private.h'
-    end
-
-    s.subspec 'Postbox' do |ss|
-      ss.source_files  	= "DigiMeSDK/Postbox/Classes/**/*.{h,m}"
-      ss.frameworks    	= "Foundation", "UIKit"
-      ss.private_header_files = 'DigiMeSDK/Core/Classes/DMEPostboxManager.h'
-      ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKPostbox' }
-      ss.dependency "DigiMeSDK/Core"
     end
 
     s.subspec 'Repository' do |ss|
