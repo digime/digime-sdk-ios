@@ -63,7 +63,7 @@ class LogViewController: UIView {
     textView.text = ""
     textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     addSubview(textView)
-    bringSubview(toFront: textView)
+    bringSubviewToFront(textView)
   }
   
   func scrollToBottom() {
