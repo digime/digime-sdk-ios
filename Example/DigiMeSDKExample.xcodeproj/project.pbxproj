@@ -11,6 +11,8 @@
 		0643264A20222B2500B10CD9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264820222B2500B10CD9 /* ViewController.m */; };
 		0643264D20222D6000B10CD9 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264C20222D6000B10CD9 /* LogViewController.m */; };
 		0643264F202234CD00B10CD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264E202234CD00B10CD9 /* main.m */; };
+		1EC4E0DF2279EA7900157E65 /* PreConsentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4E0DE2279EA7900157E65 /* PreConsentViewController.m */; };
+		1EC4E0E22279EF0100157E65 /* PreConsentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC4E0E12279EF0100157E65 /* PreConsentView.m */; };
 		27BE504922047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
@@ -43,6 +45,10 @@
 		11F31C7781F77A960C818F33 /* Pods_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		1E8749911F77A39600D4E028 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		1EC4E0DD2279EA7900157E65 /* PreConsentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreConsentViewController.h; sourceTree = "<group>"; };
+		1EC4E0DE2279EA7900157E65 /* PreConsentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreConsentViewController.m; sourceTree = "<group>"; };
+		1EC4E0E02279EF0100157E65 /* PreConsentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreConsentView.h; sourceTree = "<group>"; };
+		1EC4E0E12279EF0100157E65 /* PreConsentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreConsentView.m; sourceTree = "<group>"; };
 		27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
 		369F4AD06777F8F602971B23 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* DigiMeSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +106,10 @@
 				0643264C20222D6000B10CD9 /* LogViewController.m */,
 				0643264620222B2500B10CD9 /* ViewController.h */,
 				0643264820222B2500B10CD9 /* ViewController.m */,
+				1EC4E0E02279EF0100157E65 /* PreConsentView.h */,
+				1EC4E0E12279EF0100157E65 /* PreConsentView.m */,
+				1EC4E0DD2279EA7900157E65 /* PreConsentViewController.h */,
+				1EC4E0DE2279EA7900157E65 /* PreConsentViewController.m */,
 				27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */,
 				0643264E202234CD00B10CD9 /* main.m */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
@@ -224,6 +234,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -302,7 +313,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Brotli/Brotli.framework",
 				"${BUILT_PRODUCTS_DIR}/DigiMeSDK/DigiMeSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/GZIP/GZIP.framework",
@@ -315,7 +326,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -328,7 +339,9 @@
 				0643264D20222D6000B10CD9 /* LogViewController.m in Sources */,
 				0643264A20222B2500B10CD9 /* ViewController.m in Sources */,
 				0643264F202234CD00B10CD9 /* main.m in Sources */,
+				1EC4E0DF2279EA7900157E65 /* PreConsentViewController.m in Sources */,
 				0643264920222B2500B10CD9 /* AppDelegate.m in Sources */,
+				1EC4E0E22279EF0100157E65 /* PreConsentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

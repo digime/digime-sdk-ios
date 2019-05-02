@@ -6,18 +6,53 @@
 //  Copyright © 2018 DigiMe. All rights reserved.
 //
 
+#import <objc/runtime.h>
+
 #import "DMEClient+GuestConsent.h"
 #import "DMEGuestConsentManager.h"
 #import "DMEClient+Private.h"
 #import "CASessionManager.h"
+#import "PreConsentViewController.h"
+#import "UIViewController+DMEExtension.h"
 
-@interface DMEClient ()
+@interface DMEClient () <PreConsentViewControllerDelegate>
 
 @property (nonatomic, weak) DMEGuestConsentManager *guestConsentManager;
+@property (nonatomic, strong) PreConsentViewController *preconsentViewController;
 
 @end
 
 @implementation DMEClient (GuestConsent)
+
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class class = [self class];
+        
+        SEL originalSelector = @selector(authorize);
+        SEL swizzledSelector = @selector(checkAuthorizationOptions);
+        
+        Method originalMethod = class_getInstanceMethod(class, originalSelector);
+        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
+        
+        BOOL didAddMethod =
+        class_addMethod(class,
+                        originalSelector,
+                        method_getImplementation(swizzledMethod),
+                        method_getTypeEncoding(swizzledMethod));
+        
+        if (didAddMethod) {
+            class_replaceMethod(class,
+                                swizzledSelector,
+                                method_getImplementation(originalMethod),
+                                method_getTypeEncoding(originalMethod));
+        } else {
+            method_exchangeImplementations(originalMethod, swizzledMethod);
+        }
+    });
+}
+
+#pragma mark - class property accessors
 
 DMEGuestConsentManager *_guestConsentManager;
 
@@ -31,9 +66,40 @@ DMEGuestConsentManager *_guestConsentManager;
     _guestConsentManager = manager;
 }
 
+PreConsentViewController *_preconsentViewController;
+
+-(PreConsentViewController *)preconsentViewController
+{
+    return _preconsentViewController;
+}
+
+-(void)setPreconsentViewController:(PreConsentViewController *)controller
+{
+    _preconsentViewController = controller;
+}
+
+#pragma mark - authorization
+
 - (void)authorizeGuest
 {
     [self authorizeGuestWithCompletion:nil];
+}
+
+- (void)checkAuthorizationOptions
+{
+    if ([self canOpenDigiMeApp])
+    {
+        [self authorizeWithCompletion:nil];
+    }
+    else
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.preconsentViewController = [PreConsentViewController new];
+            self.preconsentViewController.delegate = self;
+            self.preconsentViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+            [[UIViewController topmostViewController] presentViewController:self.preconsentViewController animated:YES completion:nil];
+        });
+    }
 }
 
 - (void)authorizeGuestWithScope:(id<CADataRequest>)scope
@@ -102,4 +168,21 @@ DMEGuestConsentManager *_guestConsentManager;
     }];
 }
 
+#pragma mark - Preconsent View Controller delegate methods
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-protocol-method-implementation"
+- (void)downloadDigimeFromAppstore
+{
+    [self.preconsentViewController dismissViewControllerAnimated:YES completion:^{
+        [self authorizeWithCompletion:nil];
+    }];
+}
+
+- (void)authenticateUsingGuestConsent
+{
+    [self.preconsentViewController dismissViewControllerAnimated:YES completion:^{
+        [self authorizeGuestWithCompletion:nil];
+    }];
+}
+#pragma clang diagnostic pop
 @end
