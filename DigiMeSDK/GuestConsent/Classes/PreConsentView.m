@@ -81,7 +81,7 @@ static NSUInteger const kAppstoreButtonHeight = 50;
 
 - (void)appstoreButtonTapped
 {
-    if ([self.delegate respondsToSelector:@selector(appstoreButtonClicked)])
+    if ([self.delegate respondsToSelector:@selector(appstoreButtonTapped)])
     {
         [self.delegate appstoreButtonTapped];
     }
