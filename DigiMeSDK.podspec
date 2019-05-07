@@ -46,6 +46,7 @@ Pod::Spec.new do |s|
 
     s.subspec 'GuestConsent' do |ss|
       ss.source_files      = "DigiMeSDK/GuestConsent/Classes/**/*.{h,m}"
+      ss.resources         = ["DigiMeSDK/Core/Assets/*.xcassets"]
       ss.frameworks        = "Foundation", "UIKit"
       ss.private_header_files = 'DigiMeSDK/GuestConsent/Classes/DMEGuestConsentManager.h'
       ss.xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKGuestConsent' }
