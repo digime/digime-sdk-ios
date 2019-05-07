@@ -88,12 +88,12 @@ DMEGuestConsentManager *_guestConsentManager;
                 
                 if (error)
                 {
-                    if ([strongSelf.downloadDelegate respondsToSelector:@selector(authorizeFailed:)])
+                    if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeFailed:)])
                     {
                         [strongSelf.authorizationDelegate authorizeFailed:error];
                     }
                 }
-                else if ([strongSelf.downloadDelegate respondsToSelector:@selector(authorizeSucceeded:)])
+                else if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeSucceeded:)])
                 {
                     [strongSelf.authorizationDelegate authorizeSucceeded:session];
                 }
