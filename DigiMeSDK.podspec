@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         	= "DigiMeSDK"
-  s.version      	= "2.4.1"
+  s.version      	= "2.4.2"
   s.summary      	= "digi.me iOS Consent Access SDK"
   s.homepage     	= "https://github.com/digime/digime-sdk-ios"
   s.license      	= { :type => "MIT", :file => "LICENSE" }
