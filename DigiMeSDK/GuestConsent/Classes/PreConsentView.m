@@ -59,7 +59,7 @@ static NSUInteger const kAppstoreButtonHeight = 50;
     self.appstoreButton = [UIButton new];
     self.appstoreButton.frame = CGRectMake((self.frame.size.width / 2) - (kAppstoreButtonWidth / 2), self.frame.size.height - kAppstoreButtonHeight - kInset, kAppstoreButtonWidth, kAppstoreButtonHeight);
     [self.appstoreButton setImage:[UIImage imageNamed:@"appstore" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-    [self.appstoreButton addTarget:self action:@selector(appstoreButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.appstoreButton addTarget:self action:@selector(appstoreButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     
     self.titleLabel = [UILabel new];
     self.titleLabel.frame = CGRectMake(kInset, self.digimeLogoImageView.frame.origin.y + kDigimeImageHeight, self.frame.size.width - (kInset * 2), self.appstoreButton.frame.origin.y - (self.digimeLogoImageView.frame.origin.y + kDigimeImageHeight));
@@ -79,11 +79,11 @@ static NSUInteger const kAppstoreButtonHeight = 50;
     [self addSubview:self.appstoreButton];
 }
 
-- (void)appstoreButtonClicked
+- (void)appstoreButtonTapped
 {
     if ([self.delegate respondsToSelector:@selector(appstoreButtonClicked)])
     {
-        [self.delegate appstoreButtonClicked];
+        [self.delegate appstoreButtonTapped];
     }
 }
 

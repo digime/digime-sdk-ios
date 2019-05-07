@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol PreConsentViewDelegate <NSObject>
 
-- (void)appstoreButtonClicked;
+- (void)appstoreButtonTapped;
 
 @end
 

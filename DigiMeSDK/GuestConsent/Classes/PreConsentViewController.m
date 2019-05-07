@@ -71,7 +71,7 @@ static NSUInteger const kModalViewHeight = 400;
     [self.view addSubview:self.preConsentView];
 }
 
-- (void)appstoreButtonClicked
+- (void)appstoreButtonTapped
 {
     if ([self.delegate respondsToSelector:@selector(downloadDigimeFromAppstore)])
     {
