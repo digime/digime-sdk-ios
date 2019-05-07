@@ -17,6 +17,7 @@ static NSUInteger const kModalViewHeight = 400;
 
 @property (nonatomic, retain) PreConsentView *preConsentView;
 @property (nonatomic, retain) UILabel *guestLabel;
+@property (nonatomic, retain) UIVisualEffectView *blurEffectView;
 
 @end
 
@@ -26,22 +27,36 @@ static NSUInteger const kModalViewHeight = 400;
 {
     [super viewDidLoad];
     
+    [self buildUiAndRotate:NO];
+}
+
+- (void)buildUiAndRotate:(BOOL)rotate
+{
     if (!UIAccessibilityIsReduceTransparencyEnabled())
     {
         self.view.backgroundColor = [UIColor clearColor];
         UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        blurEffectView.frame = self.view.bounds;
-        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [self.view addSubview:blurEffectView];
+        self.blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        self.blurEffectView.frame = self.view.bounds;
+        self.blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        if(!rotate)
+        {
+            [self.view addSubview:self.blurEffectView];
+        }
     }
     else
     {
         self.view.backgroundColor = [UIColor blackColor];
     }
     
-    CGRect frame = CGRectMake((self.view.frame.size.width / 2) - (kModalViewWidth / 2), (self.view.frame.size.height / 2) - (kModalViewHeight / 2), kModalViewWidth, kModalViewHeight);
-    self.preConsentView = [[PreConsentView alloc]initWithFrame:frame];
+    if(rotate)
+    {
+        [self.guestLabel removeFromSuperview];
+        [self.preConsentView removeFromSuperview];
+    }
+    
+    CGRect viewFrame = CGRectMake((self.view.frame.size.width / 2) - (kModalViewWidth / 2), (self.view.frame.size.height / 2) - (kModalViewHeight / 2), kModalViewWidth, kModalViewHeight);
+    self.preConsentView = [[PreConsentView alloc]initWithFrame:viewFrame];
     self.preConsentView.delegate = self;
     
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
@@ -66,7 +81,7 @@ static NSUInteger const kModalViewHeight = 400;
     self.guestLabel.adjustsFontSizeToFitWidth = YES;
     self.guestLabel.minimumScaleFactor = 0.5;
     [self.guestLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(guestConsentClicked)]];
-
+    
     [self.view addSubview:self.guestLabel];
     [self.view addSubview:self.preConsentView];
 }
@@ -85,6 +100,15 @@ static NSUInteger const kModalViewHeight = 400;
     {
         [self.delegate authenticateUsingGuestConsent];
     }
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         [self buildUiAndRotate:YES];
+     } completion:nil];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
 @end
