@@ -17,7 +17,6 @@ static NSUInteger const kModalViewHeight = 400;
 
 @property (nonatomic, retain) PreConsentView *preConsentView;
 @property (nonatomic, retain) UILabel *guestLabel;
-@property (nonatomic, retain) UIVisualEffectView *blurEffectView;
 
 @end
 
@@ -27,28 +26,29 @@ static NSUInteger const kModalViewHeight = 400;
 {
     [super viewDidLoad];
     
-    [self buildUI];
+    [self buildBackgroundUI];
+    [self buildPromptUI];
 }
 
-- (void)buildUI
+- (void)buildBackgroundUI
 {
-    if (self.blurEffectView == nil)
+    if (!UIAccessibilityIsReduceTransparencyEnabled())
     {
-        if (!UIAccessibilityIsReduceTransparencyEnabled())
-        {
-            self.view.backgroundColor = [UIColor clearColor];
-            UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-            self.blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-            self.blurEffectView.frame = self.view.bounds;
-            self.blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            [self.view addSubview:self.blurEffectView];
-        }
-        else
-        {
-            self.view.backgroundColor = [UIColor blackColor];
-        }
+        self.view.backgroundColor = [UIColor clearColor];
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        blurEffectView.frame = self.view.bounds;
+        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.view addSubview:blurEffectView];
     }
-    
+    else
+    {
+        self.view.backgroundColor = [UIColor blackColor];
+    }
+}
+
+- (void)buildPromptUI
+{
     CGRect viewFrame = CGRectMake((self.view.frame.size.width / 2) - (kModalViewWidth / 2), (self.view.frame.size.height / 2) - (kModalViewHeight / 2), kModalViewWidth, kModalViewHeight);
     self.preConsentView = [[PreConsentView alloc]initWithFrame:viewFrame];
     self.preConsentView.delegate = self;
@@ -106,10 +106,10 @@ static NSUInteger const kModalViewHeight = 400;
 {
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         
-         [self teardownUI];
-         [self buildUI];
+        [self teardownUI];
+        [self buildPromptUI];
         
-     } completion:nil];
+    } completion:nil];
     
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
