@@ -27,32 +27,26 @@ static NSUInteger const kModalViewHeight = 400;
 {
     [super viewDidLoad];
     
-    [self buildUiAndRotate:NO];
+    [self buildUI];
 }
 
-- (void)buildUiAndRotate:(BOOL)rotate
+- (void)buildUI
 {
-    if (!UIAccessibilityIsReduceTransparencyEnabled())
+    if (self.blurEffectView == nil)
     {
-        self.view.backgroundColor = [UIColor clearColor];
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-        self.blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        self.blurEffectView.frame = self.view.bounds;
-        self.blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        if(!rotate)
+        if (!UIAccessibilityIsReduceTransparencyEnabled())
         {
+            self.view.backgroundColor = [UIColor clearColor];
+            UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            self.blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+            self.blurEffectView.frame = self.view.bounds;
+            self.blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             [self.view addSubview:self.blurEffectView];
         }
-    }
-    else
-    {
-        self.view.backgroundColor = [UIColor blackColor];
-    }
-    
-    if(rotate)
-    {
-        [self.guestLabel removeFromSuperview];
-        [self.preConsentView removeFromSuperview];
+        else
+        {
+            self.view.backgroundColor = [UIColor blackColor];
+        }
     }
     
     CGRect viewFrame = CGRectMake((self.view.frame.size.width / 2) - (kModalViewWidth / 2), (self.view.frame.size.height / 2) - (kModalViewHeight / 2), kModalViewWidth, kModalViewHeight);
@@ -86,6 +80,12 @@ static NSUInteger const kModalViewHeight = 400;
     [self.view addSubview:self.preConsentView];
 }
 
+- (void)teardownUI
+{
+    [self.guestLabel removeFromSuperview];
+    [self.preConsentView removeFromSuperview];
+}
+
 - (void)appstoreButtonTapped
 {
     if ([self.delegate respondsToSelector:@selector(downloadDigimeFromAppstore)])
@@ -104,10 +104,13 @@ static NSUInteger const kModalViewHeight = 400;
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         [self buildUiAndRotate:YES];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        
+         [self teardownUI];
+         [self buildUI];
+        
      } completion:nil];
+    
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
