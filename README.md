@@ -230,7 +230,19 @@ SDK starts and handles these steps automatically by calling:
 > [[DMEClient sharedClient] authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error){...}];
 > ```
 > if not using a delegate.
- 
+
+## Guest Consent
+
+If Guest Consent component is added to the project by using SDK's subfolder in the pod file:
+
+```ruby
+pod 'DigiMeSDK/GuestConsent'
+```
+
+then on `authorizeGuest` method user will be offered additional choice in the UI for your end user to choose between two options if digi.me client app is not installed on the device:
+- "Install digi.me app from appstore" - this prompts your user to install the digi.me app and passes the consent session over so that your user can consent to share after creating their digi.me
+- "Share as a guest" - opens a browserview and starts a single consent session. Once complete the browserview closes and the sdk retrieves the consented data.
+
 ### Handling app callback
 
 Since `authorize` automatically opens Digi.me app, you will need some way of handling the switch back to your app. You will accomplish this by overriding the following method in your Application's Delegate (typically AppDelegate):
