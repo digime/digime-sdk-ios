@@ -239,7 +239,7 @@ If Guest Consent component is added to the project by using SDK's subfolder in t
 pod 'DigiMeSDK/GuestConsent'
 ```
 
-then `authorize` method will be intercepted by offering additional choice in the UI for your end user to choose between two options if digi.me client app is not installed on the device:
+then on `authorizeGuest` method user will be offering additional choice in the UI for your end user to choose between two options if digi.me client app is not installed on the device:
 - "Install digi.me app from appstore" - this prompts your user to install the digi.me app and passes the consent session over so that your user can consent to share after creating their digi.me
 - "Share as a guest" - opens a browserview and starts a single consent session. Once complete the browserview closes and the sdk retrieves the consented data.
 
