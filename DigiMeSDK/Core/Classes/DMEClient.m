@@ -495,4 +495,37 @@
     return [self.appCommunicator canOpenDigiMeApp];
 }
 
+- (void)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error
+{
+    // Check we have both the appId and clientId, required for this.
+    if (!self.contractId.length)
+    {
+        *error = [NSError sdkError:SDKErrorNoContract];
+        return;
+    }
+    
+    if (!self.appId.length)
+    {
+        *error = [NSError sdkError:SDKErrorNoAppId];
+        return;
+    }
+    
+    // Check the digime app can be opened (ie is installed).
+    if (![self canOpenDigiMeApp])
+    {
+        *error = [NSError sdkError:SDKErrorDigiMeAppNotFound];
+        return;
+    }
+    
+    // Prerequesits cleared, build URL.
+    NSURLComponents *components = [NSURLComponents new];
+    components.scheme = @"digime";
+    components.host = @"receipt";
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"contractId" value:self.contractId],
+                              [NSURLQueryItem queryItemWithName:@"appId" value:self.appId]];
+    
+    NSURL *deeplinkingURL = components.URL;
+    [self openURL:deeplinkingURL options:nil];
+}
+
 @end
