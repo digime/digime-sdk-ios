@@ -1,4 +1,4 @@
-# Digi.me SDK for iOS
+# digi.me SDK for iOS
 The Digi.me SDK allow seamless authentication with Consent Access service, making content requests and core decryption services. For details on the API and general CA architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access.html)
 
 ## Preamble
@@ -30,6 +30,7 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
      * [Automatic exponential backoff](#automatic-exponential-backoff)
   * [Fetched Files](#fetched-files)
   * [Decryption](#decryption)
+  * [Viewing Share Receipts](#viewing-share-receipts)
   * [Postbox](#postbox---experimental)
   * [Example Objective-C](#example-objective-c)
   * [Example Swift](#example-swift)
@@ -534,6 +535,24 @@ For more details about JSON object formats, please see [this guide](http://devel
 
 ## Decryption
 There are no additional steps necessary to decrypt the data, the SDK handles the decryption and cryptography management behind the scenes.
+
+
+## Viewing Share Receipts
+
+A user may wish to view a transaction receipt for the data they have just shared with you. As such, we advise developers to include a feature in their app which allows for a user to be taken straight from your app to the share receipt pertaining to your app, within digi.me.
+
+We have created a convenience method to make this easy, simply invoke it to hand-off to the digi.me app, which will then open the receipts UI with your app's receipt displayed.
+
+```objective-c
+NSError *error;
+[[DMEClient sharedClient] viewReceiptInDigiMeAppWithError:&error];
+```
+
+It is not mandatory to pass an error pointer into this method, but is advisable as it can throw an error for a number of reasons; including but not limited to:
+
+- digi.me app not being installed.
+- contractId not being configured.
+- appId not being configured.
 
 
 ## Postbox - EXPERIMENTAL
