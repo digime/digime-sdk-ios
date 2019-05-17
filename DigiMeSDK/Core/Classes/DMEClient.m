@@ -525,7 +525,7 @@
                               [NSURLQueryItem queryItemWithName:@"appid" value:self.appId]];
     
     NSURL *deeplinkingURL = components.URL;
-    [self openURL:deeplinkingURL options:nil];
+    [self openURL:deeplinkingURL options:@{}];
 }
 
 @end
