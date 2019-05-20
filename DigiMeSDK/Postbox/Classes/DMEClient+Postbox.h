@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "DMEClient.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface DMEClient (Postbox)
 
 /**
@@ -25,4 +27,24 @@
  */
 - (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion;
 
+/**
+ Push data to Postbox, to a user's library.
+ 
+ @param postboxId NSString
+ @param sessionKey NSString
+ @param publicKey NSString
+ @param metadata NSData
+ @param data NSData
+ @param completion PostboxDataPushCompletionBlock
+ */
+- (void)pushDataToPostboxWithPostboxId:(NSString *)postboxId
+                            sessionKey:(NSString *)sessionKey
+                   postboxRSAPublicKey:(NSString *)publicKey
+                        metadataToPush:(NSData *)metadata
+                            dataToPush:(NSData *)data
+                            completion:(PostboxDataPushCompletionBlock)completion;
+
+
 @end
+
+NS_ASSUME_NONNULL_END

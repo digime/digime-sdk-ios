@@ -60,6 +60,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSURLRequest *)fileRequestWithId:(NSString *)fileId sessionKey:(NSString *)sessionKey;
 
+/**
+ Creates NSURLRequest for pushing data content.
+ 
+ @param postboxId NSString
+ @param postData NSData
+ @return NSURLRequest
+ */
+- (NSURLRequest *)dataPushWithPostboxId:(NSString *)postboxId dataToPush:(NSData *)postData headerParameters:(NSDictionary *)headers;
 
 /**
  Base url used for all API calls. You can override this with DMEConfig.plist

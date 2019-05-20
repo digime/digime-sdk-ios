@@ -10,6 +10,7 @@
 #import "DMEPostboxManager.h"
 #import "DMEClient+Private.h"
 #import "CASessionManager.h"
+#import "DMEAPIClient.h"
 
 @interface DMEClient ()
 
@@ -97,6 +98,18 @@ DMEPostboxManager* _postboxManager;
                 }
             });
         }];
+    }];
+}
+
+- (void)pushDataToPostboxWithPostboxId:(NSString *)postboxId
+                            sessionKey:(NSString *)sessionKey
+                   postboxRSAPublicKey:(NSString *)publicKey
+                        metadataToPush:(NSData *)metadata
+                            dataToPush:(NSData *)data
+                            completion:(PostboxDataPushCompletionBlock)completion
+{
+    [self.apiClient pushDataToPostboxWithPostboxId:postboxId sessionKey:sessionKey postboxRSAPublicKey:publicKey metadataToPush:metadata dataToPush:data completion:^(NSError * _Nullable error) {
+        completion(error);
     }];
 }
 
