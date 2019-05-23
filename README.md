@@ -605,21 +605,19 @@ We have created a convenience method to make this easy, simply invoke it to send
 
 ```objective-c
 /**
- * Push data to Postbox, to a user's library.
- * @param postboxId NSString
- * @param sessionKey NSString
- * @param publicKey NSString
+ * Pushes data to user's Postbox.
+ *
+ * @param postbox CAPostbox
  * @param metadata NSData
  * @param data NSData
  * @param completion PostboxDataPushCompletionBlock
  */
-- (void)pushDataToPostboxWithPostboxId:(NSString *)postboxId
-                            sessionKey:(NSString *)sessionKey
-                   postboxRSAPublicKey:(NSString *)publicKey
-                        metadataToPush:(NSData *)metadata
-                            dataToPush:(NSData *)data
-                            completion:(PostboxDataPushCompletionBlock)completion;
+- (void)pushDataToPostboxWithPostbox:(CAPostbox *)postbox
+                      metadataToPush:(NSData *)metadata
+                          dataToPush:(NSData *)data
+                          completion:(PostboxDataPushCompletionBlock)completion;
 ```
+
 ```objective-c
 /**
  * PostboxDataPushCompletionBlock - executed when a Postbox data is pushed.
