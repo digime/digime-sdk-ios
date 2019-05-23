@@ -16,22 +16,14 @@
 #import "DMEClient.h"
 #import "DMERequestFactory.h"
 #import "CADataRequest.h"
+#import "DMEAPIClient+Private.h"
 
 static const NSString *kDigimeConsentAccessPathSessionKeyCreate = @"v1.3/permission-access/session";
 static const NSString *kDigimeConsentAccessPathDataGet          = @"v1.3/permission-access/query";
 static const NSString *kDigimeConsentAccessPathDataPush         = @"v1.3/permission-access/postbox";
 static const NSString *kWorkQueue                               = @"kWorkQueue";
 
-
-typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
-
 @interface DMEAPIClient() <NSURLSessionDelegate>
-
-@property (nonatomic, strong) NSOperationQueue *queue;
-@property (nonatomic, strong) DMECrypto *crypto;
-@property (nonatomic, strong) DMECertificatePinner *certPinner;
-@property (nonatomic, strong) DMEClient *client;
-@property (nonatomic, strong) DMERequestFactory *requestFactory;
 
 @end
 

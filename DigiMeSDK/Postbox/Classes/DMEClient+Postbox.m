@@ -102,14 +102,12 @@ DMEPostboxManager* _postboxManager;
     }];
 }
 
-- (void)pushDataToPostboxWithPostboxId:(NSString *)postboxId
-                            sessionKey:(NSString *)sessionKey
-                   postboxRSAPublicKey:(NSString *)publicKey
-                        metadataToPush:(NSData *)metadata
-                            dataToPush:(NSData *)data
-                            completion:(PostboxDataPushCompletionBlock)completion
+- (void)pushDataToPostboxWithPostbox:(CAPostbox *)postbox
+                      metadataToPush:(NSData *)metadata
+                          dataToPush:(NSData *)data
+                          completion:(void(^)(NSError * _Nullable error))completion
 {
-    [self.apiClient pushDataToPostboxWithPostboxId:postboxId sessionKey:sessionKey postboxRSAPublicKey:publicKey metadataToPush:metadata dataToPush:data completion:^(NSError * _Nullable error) {
+    [self.apiClient pushDataToPostboxWithPostbox:postbox metadataToPush:metadata dataToPush:data completion:^(NSError * _Nullable error) {
         completion(error);
     }];
 }

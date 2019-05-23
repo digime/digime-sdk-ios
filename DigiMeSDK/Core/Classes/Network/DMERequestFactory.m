@@ -111,9 +111,9 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
     
     [body appendData:[[NSString stringWithFormat:@"--%@--\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:body];
-    NSString *postLength = [NSString stringWithFormat:@"%lu", [body length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[body length]];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    
+
     return request;
 }
 

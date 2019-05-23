@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClient.h"
+#import "CAPostbox.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

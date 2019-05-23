@@ -1,23 +1,24 @@
 //
-//  DMEAPIClient.m
+//  DMEAPIClient+Postbox.m
 //  DigiMeSDK
 //
-//  Created on 26/01/2018.
-//  Copyright © 2018 digi.me Limited. All rights reserved.
+//  Created on 23/05/2019.
+//  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 
-#import "CASessionManager.h"
-#import "DMEAPIClient.h"
-#import "DMEAPIClient+Postbox.h"
+
 #import "DMEOperation.h"
+#import "DMEClient.h"
+#import "DMECrypto.h"
+#import "DMERequestFactory.h"
+#import "CAPostbox.h"
+
 #import "NSString+DMECrypto.h"
 #import "NSData+DMECrypto.h"
-#import "DMECrypto.h"
-#import "DMECertificatePinner.h"
-#import "DMEClient.h"
-#import "DMERequestFactory.h"
-#import "CADataRequest.h"
-#import "CAPostbox.h"
+#import "DMEAPIClient+Postbox.h"
+
+#import "DMEClient+Private.h"
+#import "DMEAPIClient+Private.h"
 
 @implementation DMEAPIClient (Postbox)
 
@@ -38,8 +39,8 @@
         NSData *iv = [self.crypto getRandomUnsignedCharacters:16];
         NSString *metadataEncryptedString = [self.crypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
         NSData *payload = [self.crypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
-        NSString *keyEncrypted = [self.crypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.publicKey];
-        NSDictionary *metadataHeaders = [self postboxHeadersWithSessionKey:sessionKey symmetricalKey:keyEncrypted initializationVector:[iv hexString] metadata:metadataEncryptedString];
+        NSString *keyEncrypted = [self.crypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey];
+        NSDictionary *metadataHeaders = [self postboxHeadersWithSessionKey:postbox.sessionKey symmetricalKey:keyEncrypted initializationVector:[iv hexString] metadata:metadataEncryptedString];
         NSDictionary *headers = [self defaultPostboxHeaders];
         NSURLSession *session = [self sessionWithHeaders:headers];
         NSURLRequest *request = [self.requestFactory pushRequestWithPostboxId:postbox.postboxId payload:payload headerParameters:metadataHeaders];

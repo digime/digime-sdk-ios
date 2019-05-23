@@ -1,13 +1,14 @@
 //
-//  DMEAPIClient.h
+//  DMEAPIClient+Postbox.h
 //  DigiMeSDK
 //
-//  Created on 26/01/2018.
-//  Copyright © 2018 digi.me Limited. All rights reserved.
+//  Created on 23/05/2019.
+//  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import "DMEClientConfiguration.h"
+#import "DMEAPIClient.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
