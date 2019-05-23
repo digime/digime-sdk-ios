@@ -22,12 +22,14 @@ Pod::Spec.new do |s|
       ss.source_files  	= "DigiMeSDK/Core/Classes/**/*.{h,m}", "DigiMeSDK/DigiMeSDK.h"
       ss.resources       = ["DigiMeSDK/Core/Assets/*.{der}"]
       ss.frameworks    	= "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
-      ss.private_header_files = 'DigiMeSDK/Core/Classes/Network/*.h', 
+      ss.private_header_files = 'DigiMeSDK/Core/Classes/Network/DMEOperation.h', 
+	'DigiMeSDK/Core/Classes/Network/DMERequestFactory.h', 
         'DigiMeSDK/Core/Classes/Utility/*.h',
         'DigiMeSDK/Core/Classes/Security/DME*.h',
         'DigiMeSDK/Core/Classes/DMEAuthorizationManager.h',
         'DigiMeSDK/Core/Classes/DMEClient+Private.h',
-        'DigiMeSDK/Core/Classes/CASession+Private.h'
+        'DigiMeSDK/Core/Classes/CASession+Private.h',
+	'DigiMeSDK/Core/Classes/DMEAPIClient+Private.h'
     end
 
     s.subspec 'Postbox' do |ss|
