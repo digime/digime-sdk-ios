@@ -64,10 +64,11 @@ NS_ASSUME_NONNULL_BEGIN
  Creates NSURLRequest for pushing data content.
  
  @param postboxId NSString
- @param postData NSData
+ @param payload NSData
+ @param headers NSDictionary
  @return NSURLRequest
  */
-- (NSURLRequest *)dataPushWithPostboxId:(NSString *)postboxId dataToPush:(NSData *)postData headerParameters:(NSDictionary *)headers;
+- (NSURLRequest *)pushRequestWithPostboxId:(NSString *)postboxId payload:(NSData *)payload headerParameters:(NSDictionary *)headers;
 
 /**
  Base url used for all API calls. You can override this with DMEConfig.plist

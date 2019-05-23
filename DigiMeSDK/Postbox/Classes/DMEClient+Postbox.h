@@ -28,22 +28,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion;
 
 /**
- Push data to Postbox, to a user's library.
+ Pushes data to user's Postbox.
  
- @param postboxId NSString
- @param sessionKey NSString
- @param publicKey NSString
+ @param postbox CAPostbox
  @param metadata NSData
  @param data NSData
  @param completion PostboxDataPushCompletionBlock
  */
-- (void)pushDataToPostboxWithPostboxId:(NSString *)postboxId
-                            sessionKey:(NSString *)sessionKey
-                   postboxRSAPublicKey:(NSString *)publicKey
-                        metadataToPush:(NSData *)metadata
-                            dataToPush:(NSData *)data
-                            completion:(PostboxDataPushCompletionBlock)completion;
-
+- (void)pushDataToPostboxWithPostbox:(CAPostbox *)postbox
+                      metadataToPush:(NSData *)metadata
+                          dataToPush:(NSData *)data
+                          completion:(void(^)(NSError * _Nullable error))completion;
 
 @end
 

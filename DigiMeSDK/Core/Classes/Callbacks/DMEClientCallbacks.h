@@ -34,7 +34,7 @@ typedef void (^AuthorizationCompletionBlock) (CASession * _Nullable session, NSE
 typedef void (^PostboxCreationCompletionBlock) (CAPostbox * _Nullable postbox, NSError * _Nullable error);
 
 /**
- PostboxDataPushCompletionBlock - executed when a Postbox data is pushed.
+ PostboxDataPushCompletionBlock - executed when data has been pushed to Postbox.
  
  @param error NSError
  */

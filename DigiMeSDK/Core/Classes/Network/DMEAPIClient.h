@@ -61,23 +61,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)requestFileWithId:(NSString *)fileId success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 /**
- Push data to Postbox, to a user's library.
- 
- @param postboxId NSString
- @param sessionKey NSString
- @param publicKey NSString
- @param metadata NSData
- @param data NSData
- @param completion PostboxDataPushCompletionBlock
- */
-- (void)pushDataToPostboxWithPostboxId:(NSString *)postboxId
-                            sessionKey:(NSString *)sessionKey
-                   postboxRSAPublicKey:(NSString *)publicKey
-                        metadataToPush:(NSData *)metadata
-                            dataToPush:(NSData *)data
-                            completion:(void(^)(NSError * _Nullable error))completion;
-
-/**
  DMEClientConfiguration object set on the DMEClient. This should not be modified directly.
  */
 @property (nonatomic, strong) DMEClientConfiguration *config;

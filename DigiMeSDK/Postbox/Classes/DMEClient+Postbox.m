@@ -11,6 +11,7 @@
 #import "DMEClient+Private.h"
 #import "CASessionManager.h"
 #import "DMEAPIClient.h"
+#import "DMEAPIClient+Postbox.h"
 
 @interface DMEClient ()
 

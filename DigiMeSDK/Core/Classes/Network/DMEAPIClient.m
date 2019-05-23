@@ -17,7 +17,6 @@
 #import "DMERequestFactory.h"
 #import "CADataRequest.h"
 
-static const NSString *kDigimeConsentAccessVersion              = @"2.4.2";
 static const NSString *kDigimeConsentAccessPathSessionKeyCreate = @"v1.3/permission-access/session";
 static const NSString *kDigimeConsentAccessPathDataGet          = @"v1.3/permission-access/query";
 static const NSString *kDigimeConsentAccessPathDataPush         = @"v1.3/permission-access/postbox";
@@ -162,59 +161,6 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
     [self.queue addOperation:operation];
 }
 
-#pragma mark - Data Push
-
-- (void)pushDataToPostboxWithPostboxId:(NSString *)postboxId
-                            sessionKey:(NSString *)sessionKey
-                   postboxRSAPublicKey:(NSString *)publicKey
-                        metadataToPush:(NSData *)metadata
-                            dataToPush:(NSData *)data
-                            completion:(PostboxDataPushCompletionBlock)completion
-{
-    DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.config];
-    
-    __weak __typeof(DMEOperation *) weakOperation = operation;
-    
-    operation.workBlock = ^{
-        
-        NSData *symmetricalKey = [self.crypto getRandomUnsignedCharacters:32];
-        NSData *iv = [self.crypto getRandomUnsignedCharacters:16];
-        NSString *metadataEncryptedString = [self.crypto preparePostboxMetadataWithKey:symmetricalKey initializationVector:iv metadata:metadata];
-        NSData *dataToPush = [self.crypto preparePostboxDataWithKey:symmetricalKey initializationVector:iv dataToPush:data];
-        NSString *keyEncrypted = [self.crypto preparePostboxSymmetricalKeyWithData:symmetricalKey rsaPublicKeyForEncryption:publicKey];
-        NSDictionary *headersToPush = [self postboxHeadersWithSessionKey:sessionKey symmetricalKey:keyEncrypted initializationVector:[iv hexString] metadata:metadataEncryptedString];
-        NSDictionary *headers = [self defaultPostboxHeaders];
-        NSURLSession *session = [self sessionWithHeaders:headers];
-        NSURLRequest *request = [self.requestFactory dataPushWithPostboxId:postboxId dataToPush:dataToPush headerParameters:headersToPush];
-        HandlerBlock defaultHandler = [self pushDataResponseHandlerForDomain:DME_API_ERROR completion:completion];
-        
-        NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            
-            NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
-            
-            if (httpResp.statusCode == 404)
-            {
-                if (![weakOperation retry])
-                {
-                    defaultHandler(data, response, error);
-                    [weakOperation finishDoingWork];
-                }
-                
-                //return if operation will retry
-                //return if operation cannot retry
-                return;
-            }
-            
-            defaultHandler(data, response, error);
-            [weakOperation finishDoingWork];
-        }];
-        
-        [dataTask resume];
-    };
-    
-    [self.queue addOperation:operation];
-}
-
 #pragma mark - Private
 
 /**
@@ -231,7 +177,6 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
     return session;
 }
 
-
 /**
  Convenience method.
 
@@ -241,29 +186,6 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
 {
     return @{ @"Content-Type" : @"application/json",
               @"Accept" : @"application/json"
-              };
-}
-
-- (NSDictionary *)defaultPostboxHeaders
-{
-    return @{ @"Content-Type" : @"multipart/form-data",
-              @"Accept" : @"application/json"
-              };
-}
-
-/**
- Convenience method.
- 
- @return NSDictionary headers required for Postbox data push.
- */
-- (NSDictionary *)postboxHeadersWithSessionKey:(NSString *)sessionKey symmetricalKey:(NSString *)symmetricalKey initializationVector:(NSString *)iv metadata:(NSString *)metadata
-{
-    return @{ @"Content-Type": @"multipart/form-data",
-              @"Accept": @"application/json",
-              @"sessionKey": sessionKey,
-              @"symmetricalKey": symmetricalKey,
-              @"iv": iv,
-              @"metadata": metadata, //[metadata stringByReplacingOccurrencesOfString:@"\n" withString:@""]
               };
 }
 
@@ -312,46 +234,6 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
         else
         {
             failure(error);
-        }
-    };
-    
-    return handlerBlock;
-}
-
-- (HandlerBlock)pushDataResponseHandlerForDomain:(NSString *)domain completion:(void(^)(NSError * _Nullable error))completion
-{
-    HandlerBlock handlerBlock = ^void(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
-        NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
-        
-        if (httpResp.statusCode == 202 || httpResp.statusCode == 200)
-        {
-            completion(nil);
-            return;
-        }
-        
-        if (!error)
-        {
-            //check response message
-            NSError *parsingError = nil;
-            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&parsingError];
-            if (!responseDictionary)
-            {
-                completion(parsingError);
-                return;
-            }
-            
-            NSDictionary *errorDict = responseDictionary[@"error"];
-            
-            if (errorDict)
-            {
-                NSError *apiError = [NSError errorWithDomain:domain code:httpResp.statusCode userInfo:errorDict];
-                completion(apiError);
-            }
-        }
-        else
-        {
-            completion(error);
         }
     };
     

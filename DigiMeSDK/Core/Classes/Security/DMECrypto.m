@@ -749,7 +749,7 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - Postbox
 
-- (NSString *)preparePostboxMetadataWithKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv metadata:(NSData *)metadata
+- (NSString *)encryptMetadata:(NSData *)metadata symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv
 {
     NSError *error;
     NSData *encryptedData = [self encryptAes256UsingKey:symmetricalKey initializationVector:iv data:metadata error:&error];
@@ -757,17 +757,17 @@ static const NSInteger kHashLength = 64;
     return [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 
-- (NSString *)preparePostboxSymmetricalKeyWithData:(NSData *)dataToEncrypt rsaPublicKeyForEncryption:(NSString *)publicKey
+- (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey
 {
     SecKeyRef publicKeyRef = [self addPublicKey:publicKey];
-    NSData* encryptedLongData = [self encryptLargeData:dataToEncrypt publicKey:publicKeyRef];
-    return [encryptedLongData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSData* encryptedData = [self encryptLargeData:symmetricalKey publicKey:publicKeyRef];
+    return [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 
-- (NSData *)preparePostboxDataWithKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv dataToPush:(NSData *)data
+- (NSData *)encryptData:(NSData *)payload symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv
 {
     NSError *error;
-    NSData *encryptedData = [self encryptAes256UsingKey:symmetricalKey initializationVector:iv data:data error:&error];
+    NSData *encryptedData = [self encryptAes256UsingKey:symmetricalKey initializationVector:iv data:payload error:&error];
     NSAssert(error == nil, @"Postbox data. An encryption error occured");
     return encryptedData;
 }
