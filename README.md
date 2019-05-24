@@ -612,10 +612,10 @@ We have created a convenience method to make this easy, simply invoke it to send
  * @param data NSData
  * @param completion PostboxDataPushCompletionBlock
  */
-- (void)pushDataToPostboxWithPostbox:(CAPostbox *)postbox
-                      metadataToPush:(NSData *)metadata
-                          dataToPush:(NSData *)data
-                          completion:(PostboxDataPushCompletionBlock)completion;
+- (void)pushDataToPostbox:(CAPostbox *)postbox
+                 metadata:(NSData *)metadata
+                     data:(NSData *)data
+               completion:(PostboxDataPushCompletionBlock)completion;
 ```
 
 ```objective-c

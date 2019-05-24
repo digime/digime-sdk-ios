@@ -1,9 +1,9 @@
 //
-//  DMEClient+Private.h
+//  DMEAPIClient+Private.h
 //  DigiMeSDK
 //
-//  Created on 16/10/2018.
-//  Copyright © 2018 digi.me Limited. All rights reserved.
+//  Created on 24/05/2019.
+//  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 
 #import "DMEAPIClient.h"

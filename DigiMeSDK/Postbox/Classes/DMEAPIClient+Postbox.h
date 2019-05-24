@@ -22,10 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
  @param data NSData
  @param completion PostboxDataPushCompletionBlock
  */
-- (void)pushDataToPostboxWithPostbox:(CAPostbox *)postbox
-                      metadataToPush:(NSData *)metadata
-                          dataToPush:(NSData *)data
-                          completion:(void(^)(NSError * _Nullable error))completion;
+- (void)pushDataToPostbox:(CAPostbox *)postbox
+                 metadata:(NSData *)metadata
+                     data:(NSData *)data
+               completion:(PostboxDataPushCompletionBlock)completion;
 
 @end
 

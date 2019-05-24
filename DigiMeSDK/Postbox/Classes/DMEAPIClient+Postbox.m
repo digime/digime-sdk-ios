@@ -24,10 +24,10 @@
 
 #pragma mark - Data Push
 
-- (void)pushDataToPostboxWithPostbox:(CAPostbox *)postbox
-                      metadataToPush:(NSData *)metadata
-                          dataToPush:(NSData *)data
-                          completion:(PostboxDataPushCompletionBlock)completion
+- (void)pushDataToPostbox:(CAPostbox *)postbox
+                 metadata:(NSData *)metadata
+                     data:(NSData *)data
+               completion:(PostboxDataPushCompletionBlock)completion
 {
     DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.config];
     

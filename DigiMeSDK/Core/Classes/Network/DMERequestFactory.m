@@ -10,8 +10,6 @@
 #import "CADataRequestSerializer.h"
 #import "NSData+DMECrypto.h"
 
-@import MobileCoreServices;
-
 static NSString * const kDigiMeAPIVersion = @"v1.3";
 
 @interface DMERequestFactory()
@@ -121,45 +119,6 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
     
     return request;
 
-}
-
-- (NSData *)createBodyWithBoundary:(NSString *)boundary
-                        parameters:(NSDictionary *)parameters
-                              file:(NSData *)data
-{
-    NSMutableData *httpBody = [NSMutableData data];
-    
-    [parameters enumerateKeysAndObjectsUsingBlock:^(NSString *parameterKey, NSString *parameterValue, BOOL *stop) {
-        [httpBody appendData:[[NSString stringWithFormat:@"--%@\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [httpBody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\n\n", parameterKey] dataUsingEncoding:NSUTF8StringEncoding]];
-        [httpBody appendData:[[NSString stringWithFormat:@"%@\n", parameterValue] dataUsingEncoding:NSUTF8StringEncoding]];
-    }];
-    
-    NSString *mimetype = @"application/json";
-    
-    [httpBody appendData:[[NSString stringWithFormat:@"--%@\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [httpBody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; file=\"%@\"\n", [data hexString]] dataUsingEncoding:NSUTF8StringEncoding]];
-    [httpBody appendData:[[NSString stringWithFormat:@"Content-Type: %@\n\n", mimetype] dataUsingEncoding:NSUTF8StringEncoding]];
-    [httpBody appendData:data];
-    [httpBody appendData:[@"\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [httpBody appendData:[[NSString stringWithFormat:@"--%@--\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    return httpBody;
-}
-
-- (NSString *)mimeTypeForPath:(NSString *)path {
-    // get mime type for an extension using MobileCoreServices.framework
-    
-    CFStringRef extension = (__bridge CFStringRef)[path pathExtension];
-    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, extension, NULL);
-    assert(UTI != NULL);
-    
-    NSString *mimetype = CFBridgingRelease(UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassMIMEType));
-    assert(mimetype != NULL);
-    
-    CFRelease(UTI);
-    
-    return mimetype;
 }
 
 - (NSString *)generateBoundaryString {
