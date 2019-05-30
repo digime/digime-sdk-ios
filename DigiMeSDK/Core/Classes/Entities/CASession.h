@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const kCARequestSessionKey;
 extern NSString * const kCADigimeResponse;
 extern NSString * const kCARequestRegisteredAppID;
@@ -35,7 +37,6 @@ extern NSString * const kUserId;
 extern NSString * const kLibraryId;
 extern NSString * const kPCloudType;
 
-NS_ASSUME_NONNULL_BEGIN
 @class CASessionManager;
 @protocol CADataRequest;
 

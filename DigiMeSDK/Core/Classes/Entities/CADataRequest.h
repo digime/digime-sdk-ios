@@ -13,8 +13,12 @@
 
 @protocol CADataRequest <NSObject>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @property (nonatomic, strong, nullable) NSArray<CATimeRange *> *timeRanges;
 @property (nonatomic, strong, readonly) NSString *context;
+
+NS_ASSUME_NONNULL_END
 
 @end
 

@@ -8,12 +8,11 @@
 
 #import "CASession.h"
 #import "CAFiles.h"
-#import "CAFile.h"
 #import "CAAccounts.h"
 
 #pragma once
 
-@class CAPostbox;
+@class CAPostbox, CAFile;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -75,6 +75,17 @@ Download the [latest release](https://github.com/digime/digime-sdk-ios/releases)
 
 ## Configuring SDK usage
 
+### Importing the SDK Symbols
+
+For ease of compatibility with both Objective-C and Swift, the SDK is build as a module. As such, please use module import directives in Objective-C rather than a legacy header import, as these are not supported. For example:
+
+```objective-c
+@import DigiMeSDK;
+```
+```swift
+import DigiMeSDK
+```
+
 ### Obtaining your Contract ID and App ID
 
 Before accessing the public APIs, a valid Contract ID needs to be registered for an App ID.
@@ -516,7 +527,7 @@ The following properties can be configured:
 /**
  Determines whether additional SDK DEBUG logging is enabled. Defaults to NO.
  */
-@property (nonatomic) BOOL debugLogEnabled;
+@property (nonatomic) BOOL debugLogEnabled; 
 
 ```
 
@@ -524,12 +535,18 @@ The following properties can be configured:
 
 Each file you fetch from Consent Access is represented by `CAFile` object. 
 
-You can access serialized json content (NSArray) of the entire file using the following property on the `CAFile`:
+`CAFile` has a `fileContent` property which is the binary data blob of the file. In the vast majority of use cases, the files returned will be serialised JSON which can be deduced from this data blob.
+
+In some use cases, the data returned may be of another type and not serialisable to JSON. You can inspect the `mimeType` property of `CAFile` to see exactly what type the data is.
+
+As the most common types of data are JSON and images, we provide two convenience methods for easy deduction:
 
 ```objective-c
-@property (nullable, nonatomic, strong, readonly) NSArray *json;
-
+- (NSArray * _Nullable)fileContentAsJSON;
+- (UIImage * _Nullable)fileContentAsImage;
 ```
+
+Note that if the data is not compatible, null will be returned. You should check a file's mime type before attempting deduction. If a mime type is not that of an image or JSON, you should manipulate the raw data how you see fit.
 
 For more details about JSON object formats, please see [this guide](http://developers.digi.me/reference-objects)
 
