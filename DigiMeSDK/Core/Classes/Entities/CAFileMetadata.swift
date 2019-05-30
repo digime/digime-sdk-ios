@@ -11,7 +11,7 @@ import Foundation
 public class CAFileMetadata: NSObject, Decodable {
 
     var mimeType: CAMimeType
-    var reference: String
+    var reference: [String]
     var tags: [String]
     var contractId: String
     
@@ -24,7 +24,7 @@ public class CAFileMetadata: NSObject, Decodable {
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.reference = try container.decode(String.self, forKey: .reference)
+        self.reference = try container.decode([String].self, forKey: .reference)
         self.contractId = try container.decode(String.self, forKey: .contractId)
         self.tags = try container.decode([String].self, forKey: .tags)
         
