@@ -25,7 +25,7 @@
     }
     
     NSDictionary *metadataJSON = json[@"fileMetadata"];
-    if (metadataJSON)
+    if (metadataJSON && resolvedMetadata)
     {
         *resolvedMetadata = [CAFileMetadata metadataFromJSON:metadataJSON];
     }
