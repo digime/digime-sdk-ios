@@ -523,11 +523,11 @@
     NSURLComponents *components = [NSURLComponents new];
     components.scheme = @"digime";
     components.host = @"receipt";
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"contractId" value:self.contractId],
-                              [NSURLQueryItem queryItemWithName:@"appId" value:self.appId]];
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"contractid" value:self.contractId],
+                              [NSURLQueryItem queryItemWithName:@"appid" value:self.appId]];
     
     NSURL *deeplinkingURL = components.URL;
-    [self openURL:deeplinkingURL options:nil];
+    [[UIApplication sharedApplication] openURL:deeplinkingURL options:@{} completionHandler:nil];
 }
 
 @end

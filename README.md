@@ -618,6 +618,181 @@ When a user next open's digi.me, we will check your Postbox for any new data. If
 
 If data is left in the Postbox for more than 7 days without import, it will be flushed.
 
+We have created a convenience method to make this easy, simply invoke it to send data to user's library.
+
+```objective-c
+/**
+ * Pushes data to user's Postbox.
+ *
+ * @param postbox CAPostbox
+ * @param metadata NSData
+ * @param data NSData
+ * @param completion PostboxDataPushCompletionBlock
+ */
+- (void)pushDataToPostbox:(CAPostbox *)postbox
+                 metadata:(NSData *)metadata
+                     data:(NSData *)data
+               completion:(PostboxDataPushCompletionBlock)completion;
+```
+
+```objective-c
+/**
+ * PostboxDataPushCompletionBlock - executed when a Postbox data is pushed.
+ * @param error NSError
+ */
+typedef void (^PostboxDataPushCompletionBlock) (NSError * _Nullable error);
+```
+#### Postbox Metadata
+
+meta.json file
+
+```json
+{
+    "providername": "<provider name IE. Coca Cola>",
+    "files": [
+        {
+            "metadata: {
+                "accounts": [
+                    {
+                        "accountid": "<accountId>",
+                        "jfsid": "<jfsId>",
+                        "references": ["<JSON path reference>"]
+                    },
+                ],
+                "mimetype": <mime type of file>,
+                "created": <timestamp>,
+                "objecttypes": [{
+                    "name": "<objectType name>",
+                    "references": ["<JSON path reference>"],
+                    "typedef": {
+                        "<attribute1>": "<type1>",
+                        .
+                        .
+                        "<attributen>": "<typen>"
+                    }
+                }],
+                "reference": "[<filename>]
+                "tags": ["<tag>"]            
+            },
+            "name": "<filename>",
+        }
+    ]
+}
+
+```
+
+Along with attributes specified for content field in API request, meta_{td}.json contains additional fields:
+
+* accounts - Array of Account Objects (MANDATORY)
+	* accountId - id specified by third party (MANDATORY)
+	* references - array of JSON paths to data for respective accountId in JSON path 		notation (OPTIONAL)
+	* username - username specified by third party (OPTIONAL)
+* mimeType - mime type of file sent in a request (MANDATORY)
+* object types - Array of ObjectType objects (OPTIONAL)
+	* name - object type name as specified by third party (MANDATORY) - can be used in 	CA query (IE. posts, likes, transactions ...)
+	* references - array of JSON paths in file for respective objectType in JSON path 	notation (OPTIONAL)
+	* typeDef - object type descriptor using primitives from master ontology and/or 	basic data types (String, Number, Date, Object ...). If defined it can be used for 	more "granular" CA queries. Also based on types description clients could implement 	component for RAW files preview. (OPTIONAL)
+* serviceGroups - array of service group ids as defined in digi.me (OPTIONAL)
+* providerName - name of provider pushing data t postbox IE. Coca Cola (OPTIONAL)
+* reference - filename as specified by third party that can be used in CA query (OPTIONAL)
+* tags - array of tags defined by third party that are describing file. If defined they can be used in CA query (OPTIONAL)
+
+meta.json example
+
+```json
+{
+    "files": [
+        {
+            "metadata": {
+                "accounts": [
+                    {
+                        "accountid": "12345",
+                        "jfsid": "1",
+                        "references": ["$.data.items[0]"]
+                    }
+                ],
+                "mimetype": "application/json",
+                "objecttypes": [
+                    {
+                        "name": "transactions",
+                        "references": ["$.data.items[0].transactions"],
+                        "typedef": {
+                            "amount": "number",
+                            "currency": "string"
+                        }
+                    },
+                    {
+                        "name": "buyers",
+                        "references": ["$.data.items[0].buyers"]
+                    }
+                ],
+                "providername": ["ACME Inc."],
+                "reference": ["transactionsAndBuyers.json"]
+            },
+            "name": "19_A910A1638411A1D7498B38DC4B63AF8F_0.json"
+        }
+    ]
+}
+```
+To push metadata json file you should convert it to NSData type.
+
+Raw data directory structure:
+
+```json
+/raw
+    /push/{partnerId}
+        /meta_0.json
+        /19_dh1_0.json
+        .
+        .
+        /19_dhn_0.json
+```
+
+#### Postbox data
+
+Example third party data file
+
+```json
+{
+    "data": {
+        "items": [
+            {
+                "transactions": [
+                    {
+                        "amount": 100,
+                        "currency": "dollars"
+                    },
+                    {
+                        "amount": 123,
+                        "currency": "dollars"
+                    }
+                ],
+ 
+                "buyers": [
+                    {
+                        "id": "1234567",
+                        "name": "John Smith"
+                    },
+                    {
+                        "id": "56789000",
+                        "name": "John Doe"
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
+
+Postbox supports the following mime types:
+
+* text data formatted in `json` notation ("application/json")
+* PDF files ("application/pdf")
+* imges ("image/jpeg")
+
+To push file you should convert them into NSData type.
+
+
 ## Example Objective-C
 To see SDK in action in an Objective-C project:
 

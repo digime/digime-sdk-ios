@@ -57,7 +57,7 @@
             return @"Non-nil completion block is not supported when 'decryptsData' is set to NO.";
             
         case SDKErrorDigiMeAppNotFound:
-            return @"";
+            return @"DigiMe app is not installed";
     }
 }
 
