@@ -16,6 +16,7 @@
 #import "DMEAuthorizationManager.h"
 #import "DMEClient+Private.h"
 #import "DMEDataUnpacker.h"
+#import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 @implementation DMEClient
 @synthesize privateKeyHex = _privateKeyHex;
@@ -300,7 +301,7 @@
         
         if (completion)
         {
-            CAFile *file = [[CAFile alloc] initWithFileId:fileId];
+            CAFile *file = [[CAFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
             completion(file, error);
         }
         else if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
@@ -352,10 +353,11 @@
 {
     CAFile *file;
     NSError *error;
-    NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
+    CAFileMetadata *metadata;
+    NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:&metadata error:&error];
     if (unpackedData != nil)
     {
-        file = [CAFile deserialize:unpackedData fileId:fileId error:&error];
+        file = [[CAFile alloc] initWithFileId:fileId fileContent:unpackedData fileMetadata:metadata];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -433,7 +435,7 @@
         
         CAAccounts *accounts;
         NSError *error;
-        NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
+        NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:NULL error:&error];
         if (unpackedData != nil)
         {
             accounts = [CAAccounts deserialize:unpackedData error:&error];
