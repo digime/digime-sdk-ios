@@ -61,11 +61,11 @@ NSString * const kDMEConfigFileName = @"DMEConfig";
             }
         }
 
-        NSString *domain = dict[@"DME_DOMAIN"] ?: @"integration.devdigi.me";
+        NSString *domain = dict[@"DME_DOMAIN"] ?: @"digi.me";
         _baseUrl = [NSString stringWithFormat:@"https://api.%@/", domain];
     }
     
-    return @"https://api.integration.devdigi.me/";
+    return _baseUrl;
 }
 
 @end
