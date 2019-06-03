@@ -14,7 +14,7 @@
 
 @implementation DMEDataUnpacker
 
-+ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(CAFileMetadata * _Nullable __autoreleasing *)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error
++ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(CAFileMetadata * _Nullable __autoreleasing * _Nullable)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error
 {
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
     
