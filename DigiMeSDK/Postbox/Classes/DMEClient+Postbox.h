@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param completion PostboxCreationCompletionBlock
  */
-- (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion;
+- (void)createPostboxWithCompletion:(nullable PostboxCreationCompletionBlock)completion;
 
 /**
  Pushes data to user's Postbox.

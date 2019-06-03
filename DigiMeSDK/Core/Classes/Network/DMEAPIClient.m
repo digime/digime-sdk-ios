@@ -76,7 +76,6 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 - (void)cancelAllOperations
 {
     [self.queue cancelAllOperations];
-    self.queue = nil;
     
     for (NSOperation* o in [[NSOperationQueue mainQueue] operations])
     {
