@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  Unpacks (i.e. decrypts and decompresses if necessary) the JSON data using private key.
  
  @param data The file's data
+ @param resolvedMetadata The optional metadata which is populated upon unpacking
  @param error The optional error which is populated if unpacking fails
  @return Unpacked data if successful, otherwise nil
  */
