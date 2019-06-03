@@ -8,12 +8,11 @@
 
 #import "CASession.h"
 #import "CAFiles.h"
-#import "CAFile.h"
 #import "CAAccounts.h"
 
 #pragma once
 
-@class CAPostbox;
+@class CAPostbox, CAFile;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,6 +31,13 @@ typedef void (^AuthorizationCompletionBlock) (CASession * _Nullable session, NSE
  @param error NSError
  */
 typedef void (^PostboxCreationCompletionBlock) (CAPostbox * _Nullable postbox, NSError * _Nullable error);
+
+/**
+ PostboxDataPushCompletionBlock - executed when data has been pushed to Postbox.
+ 
+ @param error NSError
+ */
+typedef void (^PostboxDataPushCompletionBlock) (NSError * _Nullable error);
 
 /**
  FileListCompletionBlock - executed when file list has been retrieved.

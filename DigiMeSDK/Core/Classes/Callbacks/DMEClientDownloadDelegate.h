@@ -13,7 +13,6 @@
 #import "NSError+API.h"
 #import "CAAccounts.h"
 #import "CAFiles.h"
-#import "CAFile.h"
 
 #pragma once
 

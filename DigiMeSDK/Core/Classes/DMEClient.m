@@ -16,6 +16,7 @@
 #import "DMEAuthorizationManager.h"
 #import "DMEClient+Private.h"
 #import "DMEDataUnpacker.h"
+#import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 @implementation DMEClient
 @synthesize privateKeyHex = _privateKeyHex;
@@ -300,7 +301,7 @@
         
         if (completion)
         {
-            CAFile *file = [[CAFile alloc] initWithFileId:fileId];
+            CAFile *file = [[CAFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
             completion(file, error);
         }
         else if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
@@ -352,10 +353,11 @@
 {
     CAFile *file;
     NSError *error;
-    NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
+    CAFileMetadata *metadata;
+    NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:&metadata error:&error];
     if (unpackedData != nil)
     {
-        file = [CAFile deserialize:unpackedData fileId:fileId error:&error];
+        file = [[CAFile alloc] initWithFileId:fileId fileContent:unpackedData fileMetadata:metadata];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -433,7 +435,7 @@
         
         CAAccounts *accounts;
         NSError *error;
-        NSData *unpackedData = [DMEDataUnpacker unpackData:data error:&error];
+        NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:NULL error:&error];
         if (unpackedData != nil)
         {
             accounts = [CAAccounts deserialize:unpackedData error:&error];
@@ -493,6 +495,39 @@
 - (BOOL)canOpenDigiMeApp
 {
     return [self.appCommunicator canOpenDigiMeApp];
+}
+
+- (void)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error
+{
+    // Check we have both the appId and clientId, required for this.
+    if (!self.contractId.length)
+    {
+        *error = [NSError sdkError:SDKErrorNoContract];
+        return;
+    }
+    
+    if (!self.appId.length)
+    {
+        *error = [NSError sdkError:SDKErrorNoAppId];
+        return;
+    }
+    
+    // Check the digime app can be opened (ie is installed).
+    if (![self canOpenDigiMeApp])
+    {
+        *error = [NSError sdkError:SDKErrorDigiMeAppNotFound];
+        return;
+    }
+    
+    // Prerequesits cleared, build URL.
+    NSURLComponents *components = [NSURLComponents new];
+    components.scheme = @"digime";
+    components.host = @"receipt";
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"contractid" value:self.contractId],
+                              [NSURLQueryItem queryItemWithName:@"appid" value:self.appId]];
+    
+    NSURL *deeplinkingURL = components.URL;
+    [[UIApplication sharedApplication] openURL:deeplinkingURL options:@{} completionHandler:nil];
 }
 
 @end

@@ -10,10 +10,11 @@
 #import "DMECompressor.h"
 #import "DMEDataUnpacker.h"
 #import "NSError+SDK.h"
+#import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 @implementation DMEDataUnpacker
 
-+ (nullable NSData *)unpackData:(NSData *)data error:(NSError * _Nullable __autoreleasing *)error
++ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(CAFileMetadata * _Nullable __autoreleasing *)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error
 {
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
     
@@ -21,6 +22,12 @@
     {
         [NSError setSDKError:SDKErrorInvalidData toError:error];
         return nil;
+    }
+    
+    NSDictionary *metadataJSON = json[@"fileMetadata"];
+    if (metadataJSON && resolvedMetadata)
+    {
+        *resolvedMetadata = [CAFileMetadata metadataFromJSON:metadataJSON];
     }
     
     id fileContent = json[@"fileContent"];

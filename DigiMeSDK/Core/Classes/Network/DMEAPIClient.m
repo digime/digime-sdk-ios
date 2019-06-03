@@ -10,26 +10,20 @@
 #import "DMEAPIClient.h"
 #import "DMEOperation.h"
 #import "NSString+DMECrypto.h"
+#import "NSData+DMECrypto.h"
 #import "DMECrypto.h"
 #import "DMECertificatePinner.h"
 #import "DMEClient.h"
 #import "DMERequestFactory.h"
 #import "CADataRequest.h"
+#import "DMEAPIClient+Private.h"
 
-static const NSString* kDigimeConsentAccessVersion              = @"1.0.0";
-static const NSString* kDigimeConsentAccessPathSessionKeyCreate = @"v1/permission-access/session";
-static const NSString* kDigimeConsentAccessPathDataGet          = @"v1/permission-access/query";
-static const NSString* kDownloadQueue                           = @"kDownloadQueue";
-
-typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
+static const NSString *kDigimeConsentAccessPathSessionKeyCreate = @"v1.3/permission-access/session";
+static const NSString *kDigimeConsentAccessPathDataGet          = @"v1.3/permission-access/query";
+static const NSString *kDigimeConsentAccessPathDataPush         = @"v1.3/permission-access/postbox";
+static const NSString *kWorkQueue                               = @"kWorkQueue";
 
 @interface DMEAPIClient() <NSURLSessionDelegate>
-
-@property (nonatomic, strong) NSOperationQueue *queue;
-@property (nonatomic, strong) DMECrypto *crypto;
-@property (nonatomic, strong) DMECertificatePinner *certPinner;
-@property (nonatomic, strong) DMEClient *client;
-@property (nonatomic, strong) DMERequestFactory *requestFactory;
 
 @end
 
@@ -60,9 +54,9 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
     _queue.maxConcurrentOperationCount = _config.maxConcurrentRequests;
     
     [_queue addObserver:self
-                     forKeyPath:NSStringFromSelector(@selector(operationCount))
-                        options:NSKeyValueObservingOptionNew
-                context:&kDownloadQueue];
+             forKeyPath:NSStringFromSelector(@selector(operationCount))
+                options:NSKeyValueObservingOptionNew
+                context:&kWorkQueue];
 }
 
 #pragma mark - Lifecycle
@@ -71,8 +65,8 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
 {
     @try {
         [self.queue removeObserver:self
-                                forKeyPath:NSStringFromSelector(@selector(operationCount))
-                                   context:&kDownloadQueue];
+                        forKeyPath:NSStringFromSelector(@selector(operationCount))
+                           context:&kWorkQueue];
     }
     @catch (NSException * __unused exception) {}
     
@@ -161,7 +155,6 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
 
 #pragma mark - Private
 
-
 /**
  Create NSURLSession object with headers.
 
@@ -176,7 +169,6 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
     return session;
 }
 
-
 /**
  Convenience method.
 
@@ -188,7 +180,6 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
               @"Accept" : @"application/json"
               };
 }
-
 
 /**
  Default handler for API responses.
@@ -242,6 +233,7 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
 }
 
 #pragma mark - Convenicence
+
 - (DMEClient *)client
 {
     return [DMEClient sharedClient];
@@ -286,7 +278,7 @@ typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable r
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if (context == &kDownloadQueue && [keyPath isEqualToString:NSStringFromSelector(@selector(operationCount))])
+    if (context == &kWorkQueue && [keyPath isEqualToString:NSStringFromSelector(@selector(operationCount))])
     {
         if ([change[NSKeyValueChangeNewKey] integerValue] == 0)
         {

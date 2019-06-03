@@ -1,4 +1,4 @@
-# Digi.me SDK for iOS
+# digi.me SDK for iOS
 The Digi.me SDK allow seamless authentication with Consent Access service, making content requests and core decryption services. For details on the API and general CA architecture - visit [Dev Support Docs](https://developers.digi.me/consent-access.html)
 
 ## Preamble
@@ -30,6 +30,7 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
      * [Automatic exponential backoff](#automatic-exponential-backoff)
   * [Fetched Files](#fetched-files)
   * [Decryption](#decryption)
+  * [Viewing Share Receipts](#viewing-share-receipts)
   * [Postbox](#postbox---experimental)
   * [Example Objective-C](#example-objective-c)
   * [Example Swift](#example-swift)
@@ -73,6 +74,17 @@ This will sync latest repository changes, and install the DigiMeSDK pod.
 Download the [latest release](https://github.com/digime/digime-sdk-ios/releases). Extract the files from the archive, and copy `DigiMeSDK` folder into your project.
 
 ## Configuring SDK usage
+
+### Importing the SDK Symbols
+
+For ease of compatibility with both Objective-C and Swift, the SDK is built as a module. As such, please use module import directives in Objective-C rather than a legacy header import, as these are not supported. For example:
+
+```objective-c
+@import DigiMeSDK;
+```
+```swift
+import DigiMeSDK
+```
 
 ### Obtaining your Contract ID and App ID
 
@@ -230,7 +242,19 @@ SDK starts and handles these steps automatically by calling:
 > [[DMEClient sharedClient] authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error){...}];
 > ```
 > if not using a delegate.
- 
+
+## Guest Consent
+
+If Guest Consent component is added to the project by using SDK's subfolder in the pod file:
+
+```ruby
+pod 'DigiMeSDK/GuestConsent'
+```
+
+then on `authorizeGuest` method user will be offered additional choice in the UI for your end user to choose between two options if digi.me client app is not installed on the device:
+- "Install digi.me app from appstore" - this prompts your user to install the digi.me app and passes the consent session over so that your user can consent to share after creating their digi.me
+- "Share as a guest" - opens a browserview and starts a single consent session. Once complete the browserview closes and the sdk retrieves the consented data.
+
 ### Handling app callback
 
 Since `authorize` automatically opens Digi.me app, you will need some way of handling the switch back to your app. You will accomplish this by overriding the following method in your Application's Delegate (typically AppDelegate):
@@ -503,7 +527,7 @@ The following properties can be configured:
 /**
  Determines whether additional SDK DEBUG logging is enabled. Defaults to NO.
  */
-@property (nonatomic) BOOL debugLogEnabled;
+@property (nonatomic) BOOL debugLogEnabled; 
 
 ```
 
@@ -511,17 +535,62 @@ The following properties can be configured:
 
 Each file you fetch from Consent Access is represented by `CAFile` object. 
 
-You can access serialized json content (NSArray) of the entire file using the following property on the `CAFile`:
+`CAFile` has a `fileContent` property which is the binary data blob of the file. In the vast majority of use cases, the files returned will be serialised JSON which can be deduced from this data blob.
+
+In some use cases, the data returned may be of another type and not serialisable to JSON. You can inspect the `mimeType` property of `CAFile` to see exactly what type the data is.
+
+The `CAMimeType` enum represents the various mime types that are currently supported, with those that aren't defaulting to raw bytes (octet stream).
+
+The supported mime types are detailed below:
+
+```swift
+public enum CAMimeType: Int, CaseIterable, ExpressibleByStringLiteral {
+    
+    case application_json
+    case application_octetStream
+    
+    case image_jpeg
+    case image_tiff
+    case image_png
+    case image_gif
+    case image_bmp
+    
+    case text_plain
+    case text_json
+}
+```
+
+As the most common types of data are JSON and images, we provide two convenience methods for easy deduction:
 
 ```objective-c
-@property (nullable, nonatomic, strong, readonly) NSArray *json;
-
+- (NSArray * _Nullable)fileContentAsJSON;
+- (UIImage * _Nullable)fileContentAsImage;
 ```
+
+Note that if the data is not compatible, null will be returned. You should check a file's mime type before attempting deduction. If a mime type is not that of an image or JSON, you should manipulate the raw data how you see fit.
 
 For more details about JSON object formats, please see [this guide](http://developers.digi.me/reference-objects)
 
 ## Decryption
 There are no additional steps necessary to decrypt the data, the SDK handles the decryption and cryptography management behind the scenes.
+
+
+## Viewing Share Receipts
+
+A user may wish to view a transaction receipt for the data they have just shared with you. As such, we advise developers to include a feature in their app which allows for a user to be taken straight from your app to the share receipt pertaining to your app, within digi.me.
+
+We have created a convenience method to make this easy, simply invoke it to hand-off to the digi.me app, which will then open the receipts UI with your app's receipt displayed.
+
+```objective-c
+NSError *error;
+[[DMEClient sharedClient] viewReceiptInDigiMeAppWithError:&error];
+```
+
+It is not mandatory to pass an error pointer into this method, but is advisable as it can throw an error for a number of reasons; including but not limited to:
+
+- digi.me app not being installed.
+- contractId not being configured.
+- appId not being configured.
 
 
 ## Postbox - EXPERIMENTAL
@@ -569,6 +638,181 @@ If your submission is successful, you will receive a `200 OK` from our API. If n
 When a user next open's digi.me, we will check your Postbox for any new data. If data is found, we'll parse it into our internal data structure and import it into the user's library.
 
 If data is left in the Postbox for more than 7 days without import, it will be flushed.
+
+We have created a convenience method to make this easy, simply invoke it to send data to user's library.
+
+```objective-c
+/**
+ * Pushes data to user's Postbox.
+ *
+ * @param postbox CAPostbox
+ * @param metadata NSData
+ * @param data NSData
+ * @param completion PostboxDataPushCompletionBlock
+ */
+- (void)pushDataToPostbox:(CAPostbox *)postbox
+                 metadata:(NSData *)metadata
+                     data:(NSData *)data
+               completion:(PostboxDataPushCompletionBlock)completion;
+```
+
+```objective-c
+/**
+ * PostboxDataPushCompletionBlock - executed when a Postbox data is pushed.
+ * @param error NSError
+ */
+typedef void (^PostboxDataPushCompletionBlock) (NSError * _Nullable error);
+```
+#### Postbox Metadata
+
+meta.json file
+
+```json
+{
+    "providername": "<provider name IE. Coca Cola>",
+    "files": [
+        {
+            "metadata: {
+                "accounts": [
+                    {
+                        "accountid": "<accountId>",
+                        "jfsid": "<jfsId>",
+                        "references": ["<JSON path reference>"]
+                    },
+                ],
+                "mimetype": <mime type of file>,
+                "created": <timestamp>,
+                "objecttypes": [{
+                    "name": "<objectType name>",
+                    "references": ["<JSON path reference>"],
+                    "typedef": {
+                        "<attribute1>": "<type1>",
+                        .
+                        .
+                        "<attributen>": "<typen>"
+                    }
+                }],
+                "reference": "[<filename>]
+                "tags": ["<tag>"]            
+            },
+            "name": "<filename>",
+        }
+    ]
+}
+
+```
+
+Along with attributes specified for content field in API request, meta_{td}.json contains additional fields:
+
+* accounts - Array of Account Objects (MANDATORY)
+	* accountId - id specified by third party (MANDATORY)
+	* references - array of JSON paths to data for respective accountId in JSON path 		notation (OPTIONAL)
+	* username - username specified by third party (OPTIONAL)
+* mimeType - mime type of file sent in a request (MANDATORY)
+* object types - Array of ObjectType objects (OPTIONAL)
+	* name - object type name as specified by third party (MANDATORY) - can be used in 	CA query (IE. posts, likes, transactions ...)
+	* references - array of JSON paths in file for respective objectType in JSON path 	notation (OPTIONAL)
+	* typeDef - object type descriptor using primitives from master ontology and/or 	basic data types (String, Number, Date, Object ...). If defined it can be used for 	more "granular" CA queries. Also based on types description clients could implement 	component for RAW files preview. (OPTIONAL)
+* serviceGroups - array of service group ids as defined in digi.me (OPTIONAL)
+* providerName - name of provider pushing data t postbox IE. Coca Cola (OPTIONAL)
+* reference - filename as specified by third party that can be used in CA query (OPTIONAL)
+* tags - array of tags defined by third party that are describing file. If defined they can be used in CA query (OPTIONAL)
+
+meta.json example
+
+```json
+{
+    "files": [
+        {
+            "metadata": {
+                "accounts": [
+                    {
+                        "accountid": "12345",
+                        "jfsid": "1",
+                        "references": ["$.data.items[0]"]
+                    }
+                ],
+                "mimetype": "application/json",
+                "objecttypes": [
+                    {
+                        "name": "transactions",
+                        "references": ["$.data.items[0].transactions"],
+                        "typedef": {
+                            "amount": "number",
+                            "currency": "string"
+                        }
+                    },
+                    {
+                        "name": "buyers",
+                        "references": ["$.data.items[0].buyers"]
+                    }
+                ],
+                "providername": ["ACME Inc."],
+                "reference": ["transactionsAndBuyers.json"]
+            },
+            "name": "19_A910A1638411A1D7498B38DC4B63AF8F_0.json"
+        }
+    ]
+}
+```
+To push metadata json file you should convert it to NSData type.
+
+Raw data directory structure:
+
+```json
+/raw
+    /push/{partnerId}
+        /meta_0.json
+        /19_dh1_0.json
+        .
+        .
+        /19_dhn_0.json
+```
+
+#### Postbox data
+
+Example third party data file
+
+```json
+{
+    "data": {
+        "items": [
+            {
+                "transactions": [
+                    {
+                        "amount": 100,
+                        "currency": "dollars"
+                    },
+                    {
+                        "amount": 123,
+                        "currency": "dollars"
+                    }
+                ],
+ 
+                "buyers": [
+                    {
+                        "id": "1234567",
+                        "name": "John Smith"
+                    },
+                    {
+                        "id": "56789000",
+                        "name": "John Doe"
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
+
+Postbox supports the following mime types:
+
+* text data formatted in `json` notation ("application/json")
+* PDF files ("application/pdf")
+* imges ("image/jpeg")
+
+To push file you should convert them into NSData type.
+
 
 ## Example Objective-C
 To see SDK in action in an Objective-C project:

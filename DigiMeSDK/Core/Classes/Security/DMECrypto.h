@@ -52,6 +52,42 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
 
+/**
+ Generates random data using length as a parameter.
+ 
+ @param length int
+ @return NSData - random bytes for the specified length.
+ */
+- (NSData *)getRandomUnsignedCharacters:(int)length;
+
+/**
+ Encrypts metadata for Postbox with AES encryption
+ 
+ @param metadata NSData
+ @param symmetricalKey NSData
+ @param iv NSData
+ @return NSString - AES encrypted metadata to push to postbox in Base64 encoding.
+ */
+- (NSString *)encryptMetadata:(NSData *)metadata symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
+
+/**
+ Encrypts data for Postbox with AES encryption
+ 
+ @param payload NSData
+ @param symmetricalKey NSData
+ @param iv NSData
+ @return NSString - AES encrypted data to push to postbox in a hexadecimal representation.
+ */
+- (NSData *)encryptData:(NSData *)payload symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
+
+/**
+ Encrypts Symmetrical Key for Postbox with RSA public key and return it as Base64 encoded.
+ 
+ @param symmetricalKey NSData
+ @param publicKey NSString
+ */
+- (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey;
+
 @end
 
 NS_ASSUME_NONNULL_END

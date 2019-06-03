@@ -60,7 +60,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)requestFileWithId:(NSString *)fileId success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
-
 /**
  DMEClientConfiguration object set on the DMEClient. This should not be modified directly.
  */

@@ -21,6 +21,12 @@
 @property (nonatomic, strong, readonly) NSString *postboxId;
 
 /**
+ The RSA public key in .pem format.
+ */
+@property (nonatomic, strong, readonly) NSString *publicKey;
+
+
+/**
  Symetric RSA2048 public key used to encrypt data being sent to the Postbox.
  This is not populated automatically, and will require you fetch the public key yourself.
  */
