@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param error The optional error which is populated if unpacking fails
  @return Unpacked data if successful, otherwise nil
  */
-+ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(CAFileMetadata * _Nullable __autoreleasing *)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error;
++ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(CAFileMetadata * _Nullable __autoreleasing * _Nullable)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error;
 
 @end
 
