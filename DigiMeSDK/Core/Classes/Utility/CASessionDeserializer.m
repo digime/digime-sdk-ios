@@ -16,11 +16,12 @@
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:error];
     
     NSString *sessionKey = json[@"sessionKey"];
+    NSString *sessionExchangeToken = json[@"sessionExchangeToken"];
     NSDate *expiry = [NSDate dateWithTimeIntervalSince1970:[json[@"expiry"] doubleValue]/1000];
     
-    if (sessionKey && expiry)
+    if (sessionKey && sessionExchangeToken && expiry)
     {
-        return [[CASession alloc] initWithSessionKey:sessionKey expiryDate:expiry sessionManager:[DMEClient sharedClient].sessionManager];
+        return [[CASession alloc] initWithSessionKey:sessionKey exchangeToken:sessionExchangeToken expiryDate:expiry sessionManager:[DMEClient sharedClient].sessionManager];
     }
     
     return nil;

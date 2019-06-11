@@ -54,11 +54,12 @@ extern NSString * const kPCloudType;
  Designated object initializer.
  
  @param sessionKey NSString
+ @param exchangeToken NSString
  @param expiryDate NSDate
- @param sessionManager CASessionmanager
+ @param sessionManager CASessionManager
  @return instancetype
  */
-- (instancetype)initWithSessionKey:(NSString *)sessionKey expiryDate:(NSDate *)expiryDate sessionManager:(CASessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate sessionManager:(CASessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
 
 
 /**
@@ -66,6 +67,10 @@ extern NSString * const kPCloudType;
  */
 @property (nonatomic, strong, readonly) NSString *sessionKey;
 
+/**
+ Session key exchange token.
+ */
+@property (nonatomic, strong, readonly) NSString *sessionExchangeToken;
 
 /**
  Date when session will expire.
