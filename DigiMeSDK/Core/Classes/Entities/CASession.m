@@ -46,12 +46,13 @@ NSString * const kPCloudType = @"debugPCloudType";
 
 #pragma mark - Initialization
 
--(instancetype)initWithSessionKey:(NSString *)sessionKey expiryDate:(NSDate *)expiryDate sessionManager:(nonnull CASessionManager *)sessionManager
+-(instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate sessionManager:(nonnull CASessionManager *)sessionManager
 {
     self = [super init];
     if (self)
     {
         _sessionKey = sessionKey;
+        _sessionExchangeToken = exchangeToken;
         _expiryDate = expiryDate;
         _sessionManager = sessionManager;
         _sessionId = sessionManager.client.contractId;
