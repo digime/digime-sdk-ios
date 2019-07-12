@@ -9,13 +9,18 @@
 /* Begin PBXBuildFile section */
 		27BE504B22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		5C16D5E3203ECABA00947940 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E2203ECABA00947940 /* AppDelegate.swift */; };
-		5C16D5E5203ECABA00947940 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E4203ECABA00947940 /* ViewController.swift */; };
+		5C16D5E5203ECABA00947940 /* CAExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E4203ECABA00947940 /* CAExampleViewController.swift */; };
 		5C16D5E8203ECABA00947940 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C16D5E6203ECABA00947940 /* Main.storyboard */; };
 		5C16D5EA203ECABA00947940 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C16D5E9203ECABA00947940 /* Assets.xcassets */; };
 		5C16D5ED203ECABA00947940 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C16D5EB203ECABA00947940 /* LaunchScreen.storyboard */; };
 		5C16D5F8203ECABB00947940 /* DigiMeSDKExampleSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5F7203ECABB00947940 /* DigiMeSDKExampleSwiftTests.swift */; };
 		5C16D603203ECABB00947940 /* DigiMeSDKExampleSwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D602203ECABB00947940 /* DigiMeSDKExampleSwiftUITests.swift */; };
 		5C16D615203ED12800947940 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D614203ED12800947940 /* LogViewController.swift */; };
+		5C28158822D608A50052CCD7 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C28158722D608A50052CCD7 /* WelcomeViewController.swift */; };
+		5C28158A22D610390052CCD7 /* PostboxExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C28158922D610390052CCD7 /* PostboxExampleViewController.swift */; };
+		5C28158C22D833A00052CCD7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C28158B22D833A00052CCD7 /* Constants.swift */; };
+		5C28158F22D8343D0052CCD7 /* POSTBOXMETADATA.json in Resources */ = {isa = PBXBuildFile; fileRef = 5C28158D22D8343D0052CCD7 /* POSTBOXMETADATA.json */; };
+		5C28159022D8343D0052CCD7 /* POSTBOXDATA.json in Resources */ = {isa = PBXBuildFile; fileRef = 5C28158E22D8343D0052CCD7 /* POSTBOXDATA.json */; };
 		643065A0557489D15C5ABE8E /* Pods_DigiMeSDKExampleSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBD7BB4CB287E88154AF9DE0 /* Pods_DigiMeSDKExampleSwift.framework */; };
 		A6BA1ED7C4F44AEA1945120C /* Pods_DigiMeSDKExampleSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284FACD609865A7CEDB8C49B /* Pods_DigiMeSDKExampleSwiftTests.framework */; };
 /* End PBXBuildFile section */
@@ -42,7 +47,7 @@
 		284FACD609865A7CEDB8C49B /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C16D5DF203ECABA00947940 /* DigiMeSDKExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C16D5E2203ECABA00947940 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5C16D5E4203ECABA00947940 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5C16D5E4203ECABA00947940 /* CAExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAExampleViewController.swift; sourceTree = "<group>"; };
 		5C16D5E7203ECABA00947940 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5C16D5E9203ECABA00947940 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C16D5EC203ECABA00947940 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,6 +59,11 @@
 		5C16D602203ECABB00947940 /* DigiMeSDKExampleSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigiMeSDKExampleSwiftUITests.swift; sourceTree = "<group>"; };
 		5C16D604203ECABB00947940 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C16D614203ED12800947940 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
+		5C28158722D608A50052CCD7 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		5C28158922D610390052CCD7 /* PostboxExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostboxExampleViewController.swift; sourceTree = "<group>"; };
+		5C28158B22D833A00052CCD7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5C28158D22D8343D0052CCD7 /* POSTBOXMETADATA.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = POSTBOXMETADATA.json; sourceTree = "<group>"; };
+		5C28158E22D8343D0052CCD7 /* POSTBOXDATA.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = POSTBOXDATA.json; sourceTree = "<group>"; };
 		668D338B86DA53F264E092D9 /* Pods-DigiMeSDKExampleSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleSwift.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExampleSwift/Pods-DigiMeSDKExampleSwift.release.xcconfig"; sourceTree = "<group>"; };
 		8928BE62EE9768E3D28D9792 /* Pods-DigiMeSDKExampleSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExampleSwift/Pods-DigiMeSDKExampleSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		D142458B4A7E0C5DB64DB971 /* Pods-DigiMeSDKExampleSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleSwiftTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExampleSwiftTests/Pods-DigiMeSDKExampleSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -125,9 +135,14 @@
 			isa = PBXGroup;
 			children = (
 				5C16D5E2203ECABA00947940 /* AppDelegate.swift */,
-				5C16D5E4203ECABA00947940 /* ViewController.swift */,
+				5C28158722D608A50052CCD7 /* WelcomeViewController.swift */,
+				5C16D5E4203ECABA00947940 /* CAExampleViewController.swift */,
+				5C28158922D610390052CCD7 /* PostboxExampleViewController.swift */,
 				5C16D614203ED12800947940 /* LogViewController.swift */,
+				5C28158B22D833A00052CCD7 /* Constants.swift */,
 				27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */,
+				5C28158E22D8343D0052CCD7 /* POSTBOXDATA.json */,
+				5C28158D22D8343D0052CCD7 /* POSTBOXMETADATA.json */,
 				5C16D5EE203ECABB00947940 /* Info.plist */,
 				5C16D5E6203ECABA00947940 /* Main.storyboard */,
 				5C16D5E9203ECABA00947940 /* Assets.xcassets */,
@@ -174,7 +189,7 @@
 				5C16D5DB203ECABA00947940 /* Sources */,
 				5C16D5DC203ECABA00947940 /* Frameworks */,
 				5C16D5DD203ECABA00947940 /* Resources */,
-				6C48BD316C09974970060BB1 /* [CP] Embed Pods Frameworks */,
+				4C065984A587FA211B884093 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -278,6 +293,8 @@
 			files = (
 				5C16D5ED203ECABA00947940 /* LaunchScreen.storyboard in Resources */,
 				5C16D5EA203ECABA00947940 /* Assets.xcassets in Resources */,
+				5C28158F22D8343D0052CCD7 /* POSTBOXMETADATA.json in Resources */,
+				5C28159022D8343D0052CCD7 /* POSTBOXDATA.json in Resources */,
 				5C16D5E8203ECABA00947940 /* Main.storyboard in Resources */,
 				27BE504B22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */,
 			);
@@ -336,7 +353,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6C48BD316C09974970060BB1 /* [CP] Embed Pods Frameworks */ = {
+		4C065984A587FA211B884093 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -365,9 +382,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C16D5E5203ECABA00947940 /* ViewController.swift in Sources */,
+				5C16D5E5203ECABA00947940 /* CAExampleViewController.swift in Sources */,
+				5C28158822D608A50052CCD7 /* WelcomeViewController.swift in Sources */,
 				5C16D5E3203ECABA00947940 /* AppDelegate.swift in Sources */,
 				5C16D615203ED12800947940 /* LogViewController.swift in Sources */,
+				5C28158A22D610390052CCD7 /* PostboxExampleViewController.swift in Sources */,
+				5C28158C22D833A00052CCD7 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

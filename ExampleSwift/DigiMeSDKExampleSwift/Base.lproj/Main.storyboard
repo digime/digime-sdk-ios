@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x7A-dh-Za3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x7A-dh-Za3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Example View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="DigiMeSDKExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CAExampleViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="CAExampleViewController" customModule="DigiMeSDKExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -24,7 +24,125 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="476" y="132.68365817091455"/>
+            <point key="canvasLocation" x="852" y="-212"/>
+        </scene>
+        <!--Postbox Example View Controller-->
+        <scene sceneID="iNO-1k-7a8">
+            <objects>
+                <viewController storyboardIdentifier="PostboxExampleViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gyp-zI-1RD" customClass="PostboxExampleViewController" customModule="DigiMeSDKExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uFs-sT-dXW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shoppingLogo" translatesAutoresizingMaskIntoConstraints="NO" id="LcB-DJ-jSc">
+                                <rect key="frame" x="20" y="124" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="M9M-cT-meu"/>
+                                    <constraint firstAttribute="height" constant="50" id="c2T-XY-urj"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get a copy of your latest shopping receipt to your digi.me library" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="INW-vA-rd7">
+                                <rect key="frame" x="90" y="124" width="255" height="61"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please ensure you have the digi.me application installed." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tbl-VI-5sX">
+                                <rect key="frame" x="90" y="195" width="255" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dyh-Fa-NOb">
+                                <rect key="frame" x="20" y="286" width="325" height="60"/>
+                                <color key="backgroundColor" red="0.33284354209899902" green="0.3784099817276001" blue="0.82762491703033447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="x93-wb-W9o"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="SEND ME THE RECEIPT"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="createPostbox" destination="gyp-zI-1RD" eventType="touchUpInside" id="fCA-4w-z8o"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Tbl-VI-5sX" firstAttribute="top" secondItem="INW-vA-rd7" secondAttribute="bottom" constant="10" id="6OF-t2-aJr"/>
+                            <constraint firstItem="Dyh-Fa-NOb" firstAttribute="top" secondItem="Tbl-VI-5sX" secondAttribute="bottom" constant="50" id="7X6-MW-LTz"/>
+                            <constraint firstItem="INW-vA-rd7" firstAttribute="top" secondItem="Dk4-h7-TZc" secondAttribute="top" constant="60" id="7qG-at-uQb"/>
+                            <constraint firstItem="LcB-DJ-jSc" firstAttribute="leading" secondItem="Dk4-h7-TZc" secondAttribute="leading" constant="20" id="8ZO-aN-StT"/>
+                            <constraint firstItem="Dyh-Fa-NOb" firstAttribute="trailing" secondItem="Tbl-VI-5sX" secondAttribute="trailing" id="IU2-UG-0jr"/>
+                            <constraint firstItem="LcB-DJ-jSc" firstAttribute="top" secondItem="Dk4-h7-TZc" secondAttribute="top" constant="60" id="JYU-25-hDi"/>
+                            <constraint firstItem="Dyh-Fa-NOb" firstAttribute="leading" secondItem="LcB-DJ-jSc" secondAttribute="leading" id="S3K-aZ-fb7"/>
+                            <constraint firstItem="Tbl-VI-5sX" firstAttribute="trailing" secondItem="INW-vA-rd7" secondAttribute="trailing" id="VD1-To-DCF"/>
+                            <constraint firstItem="Dk4-h7-TZc" firstAttribute="trailing" secondItem="INW-vA-rd7" secondAttribute="trailing" constant="30" id="VSb-v1-KHC"/>
+                            <constraint firstItem="INW-vA-rd7" firstAttribute="leading" secondItem="LcB-DJ-jSc" secondAttribute="trailing" constant="20" id="n6v-r1-cU9"/>
+                            <constraint firstItem="Tbl-VI-5sX" firstAttribute="leading" secondItem="INW-vA-rd7" secondAttribute="leading" id="ogk-9h-Ful"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Dk4-h7-TZc"/>
+                    </view>
+                    <connections>
+                        <outlet property="actionButton" destination="Dyh-Fa-NOb" id="tyT-rc-Xcp"/>
+                        <outlet property="subtitleLabel" destination="Tbl-VI-5sX" id="sId-4t-GTW"/>
+                        <outlet property="titleLabel" destination="INW-vA-rd7" id="h3F-if-vgA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KbM-xU-0Dt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="831.20000000000005" y="516.79160419790105"/>
+        </scene>
+        <!--Welcome View Controller-->
+        <scene sceneID="QLh-gI-obq">
+            <objects>
+                <viewController storyboardIdentifier="WelcomeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zFp-pt-DfK" customClass="WelcomeViewController" customModule="DigiMeSDKExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CsZ-Lc-XGb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yw7-43-95B">
+                                <rect key="frame" x="134.5" y="282" width="106" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="CA Example"/>
+                                <connections>
+                                    <action selector="showCAExample" destination="zFp-pt-DfK" eventType="touchUpInside" id="PPU-JH-nqy"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZRA-GT-gzE">
+                                <rect key="frame" x="112.5" y="368" width="150" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Postbox Example"/>
+                                <connections>
+                                    <action selector="showPostboxExample" destination="zFp-pt-DfK" eventType="touchUpInside" id="YvT-dK-bKa"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ZRA-GT-gzE" firstAttribute="centerX" secondItem="CsZ-Lc-XGb" secondAttribute="centerX" id="2Kz-o8-MIz"/>
+                            <constraint firstItem="Yw7-43-95B" firstAttribute="centerX" secondItem="CsZ-Lc-XGb" secondAttribute="centerX" id="aAj-TR-9Uu"/>
+                            <constraint firstItem="ZRA-GT-gzE" firstAttribute="top" secondItem="Yw7-43-95B" secondAttribute="bottom" constant="50" id="mJN-eb-rfj"/>
+                            <constraint firstItem="Yw7-43-95B" firstAttribute="centerY" secondItem="CsZ-Lc-XGb" secondAttribute="centerY" multiplier="0.9" id="pUv-9w-O3o"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ixq-Un-62t"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="I6i-2X-ggx"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="ShowCAExample" id="O2X-uL-Ttm"/>
+                        <segue destination="gyp-zI-1RD" kind="show" identifier="ShowPostboxExample" id="sbn-4v-vbl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7hx-ry-D67" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationItem title="Title" id="tOK-l8-BSI">
+                    <barButtonItem key="backBarButtonItem" title=" " id="YQ9-5k-9of"/>
+                </navigationItem>
+            </objects>
+            <point key="canvasLocation" x="-311" y="153"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="B1v-mu-VQF">
@@ -37,12 +155,15 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="R67-Gg-Wes"/>
+                        <segue destination="zFp-pt-DfK" kind="relationship" relationship="rootViewController" id="Qhi-aI-FnD"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FuE-sm-Sn3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-511" y="133"/>
+            <point key="canvasLocation" x="-1178" y="154"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="shoppingLogo" width="78" height="96"/>
+    </resources>
 </document>

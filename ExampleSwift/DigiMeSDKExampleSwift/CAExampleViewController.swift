@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CAExampleViewController.swift
 //  DigiMeSDKExampleSwift
 //
 //  Created on 22/02/2018.
@@ -9,7 +9,7 @@
 import UIKit
 import DigiMeSDK
 
-class ViewController: UIViewController {
+class CAExampleViewController: UIViewController {
   
   var dmeClient: DMEClient = DMEClient.shared()
   var fileCount: Int = 0
@@ -19,34 +19,30 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    title = "CA Example"
+
     dmeClient.authorizationDelegate = self
     dmeClient.downloadDelegate = self
+        
+    dmeClient.appId = Constants.appId
     
-    // - GET STARTED -
+    dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: Constants.p12FileName, password: Constants.p12Password)
     
-    // - INSERT your App ID here -
-    
-    dmeClient.appId = "YOUR_APP_ID"
-    
-    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
-    
-    dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF", password: "YOUR_P12_PASSWORD")
-    
-    dmeClient.contractId = "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF"
+    dmeClient.contractId = Constants.CAContractId
     
     logVC = LogViewController(frame: UIScreen.main.bounds)
     view.addSubview(logVC)
     view.bringSubviewToFront(logVC)
     
     
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start", style: .plain, target: self, action: #selector(ViewController.runTapped))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start", style: .plain, target: self, action: #selector(CAExampleViewController.runTapped))
     
     
     logVC.log(message: "Please press 'Start' to begin requesting data. Also make sure that digi.me app is installed and onboarded.")
     
     
     navigationController?.isToolbarHidden = false
-    let barButtonItems = [UIBarButtonItem(title: "➖", style: .plain, target: self, action: #selector(ViewController.zoomOut)),UIBarButtonItem(title: "➕", style: .plain, target: self, action: #selector(ViewController.zoomIn))]
+    let barButtonItems = [UIBarButtonItem(title: "➖", style: .plain, target: self, action: #selector(CAExampleViewController.zoomOut)),UIBarButtonItem(title: "➕", style: .plain, target: self, action: #selector(CAExampleViewController.zoomIn))]
     toolbarItems = barButtonItems
   }
   
@@ -64,7 +60,7 @@ class ViewController: UIViewController {
   }
 }
 
-extension ViewController: DMEClientAuthorizationDelegate {
+extension CAExampleViewController: DMEClientAuthorizationDelegate {
   
   func sessionCreated(_ session: CASession) {
     logVC.log(message: "Session created: " + session.sessionKey)
@@ -90,7 +86,7 @@ extension ViewController: DMEClientAuthorizationDelegate {
   }
 }
 
-extension ViewController: DMEClientDownloadDelegate {
+extension CAExampleViewController: DMEClientDownloadDelegate {
   func clientFailed(toRetrieveFileList error: Error) {
     logVC.log(message: "Client retrieve fileList failed: " + error.localizedDescription)
   }
