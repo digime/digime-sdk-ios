@@ -101,11 +101,6 @@ PreConsentViewController *_preconsentViewController;
                 {
                     completion(nil, error);
                 }
-                
-                if ([strongSelf.authorizationDelegate respondsToSelector:@selector(sessionCreateFailed:)])
-                {
-                    [strongSelf.authorizationDelegate sessionCreateFailed:error];
-                }
             });
             
             return;
@@ -117,18 +112,6 @@ PreConsentViewController *_preconsentViewController;
                 if (completion)
                 {
                     completion(session, error);
-                }
-                
-                if (error)
-                {
-                    if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeFailed:)])
-                    {
-                        [strongSelf.authorizationDelegate authorizeFailed:error];
-                    }
-                }
-                else if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeSucceeded:)])
-                {
-                    [strongSelf.authorizationDelegate authorizeSucceeded:session];
                 }
             });
         }];
