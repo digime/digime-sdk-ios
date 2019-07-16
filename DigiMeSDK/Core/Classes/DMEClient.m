@@ -530,4 +530,13 @@
     [[UIApplication sharedApplication] openURL:deeplinkingURL options:@{} completionHandler:nil];
 }
 
+#pragma mark - Debug
+
+- (NSDictionary <NSString *, id> *)metadata
+{
+    return [[self.sessionManager currentSession] metadata];
+}
+
+
+
 @end

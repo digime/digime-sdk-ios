@@ -76,6 +76,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL decryptsData;
 
 /**
+ Session metadata. Contains additional debug information collected during the session lifetime.
+ */
+@property (strong, nonatomic, readonly, nonnull) NSDictionary<NSString *, id> *metadata;
+
+/**
  Singleton initializer;
 
  @return DMEClient instance.
