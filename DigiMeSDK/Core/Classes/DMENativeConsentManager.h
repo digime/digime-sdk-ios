@@ -1,5 +1,5 @@
 //
-//  DMEAuthorizationManager.h
+//  DMENativeConsentManager.h
 //  DigiMeSDK
 //
 //  Created on 29/01/2018.
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DMEAuthorizationManager : NSObject <DMEAppCallbackHandler>
+@interface DMENativeConsentManager : NSObject <DMEAppCallbackHandler>
 
 /**
  Initiates contract authorization launching Digi.me App if there is a valid active session.

@@ -1,12 +1,12 @@
 //
-//  DMEAuthorizationManager.m
+//  DMENativeConsentManager.m
 //  DigiMeSDK
 //
 //  Created on 29/01/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEAuthorizationManager.h"
+#import "DMENativeConsentManager.h"
 #import "DMESessionManager.h"
 #import "CASession+Private.h"
 #import "DMEClient.h"
@@ -17,7 +17,7 @@
 #import <UIKit/UIKit.h>
 #import <StoreKit/StoreKit.h>
 
-@interface DMEAuthorizationManager()
+@interface DMENativeConsentManager()
 
 @property (nonatomic, strong, readonly) CASession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
@@ -25,7 +25,7 @@
 
 @end
 
-@implementation DMEAuthorizationManager
+@implementation DMENativeConsentManager
 
 #pragma mark - CallbackHandler Conformance
 

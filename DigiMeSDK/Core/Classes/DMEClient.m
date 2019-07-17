@@ -13,7 +13,7 @@
 #import "DMECrypto.h"
 #import "DMEValidator.h"
 #import "DMEAppCommunicator.h"
-#import "DMEAuthorizationManager.h"
+#import "DMENativeConsentManager.h"
 #import "DMEClient+Private.h"
 #import "DMEDataUnpacker.h"
 #import <DigiMeSDK/DigiMeSDK-Swift.h>
@@ -47,7 +47,7 @@
         
         // Configure mercury appCommunicator.
         _appCommunicator = [DMEAppCommunicator new];
-        DMEAuthorizationManager *authMgr = [[DMEAuthorizationManager alloc] initWithAppCommunicator:_appCommunicator];
+        DMENativeConsentManager *authMgr = [[DMENativeConsentManager alloc] initWithAppCommunicator:_appCommunicator];
         [_appCommunicator addCallbackHandler:authMgr];
         _authManager = authMgr;
     }
