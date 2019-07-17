@@ -1,5 +1,5 @@
 //
-//  CADataRequestSerializer.h
+//  DMEDataRequestSerializer.h
 //  DigiMeSDK
 //
 //  Created on 27/11/2018.
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CADataRequestSerializer : NSObject
+@interface DMEDataRequestSerializer : NSObject
 
 + (nullable NSDictionary *)serialize:(id<DMEDataRequest>)dataRequest;
 

@@ -1,12 +1,12 @@
 //
-//  CADataRequestSerializer.m
+//  DMEDataRequestSerializer.m
 //  DigiMeSDK
 //
 //  Created on 27/11/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CADataRequestSerializer.h"
+#import "DMEDataRequestSerializer.h"
 #import <Foundation/Foundation.h>
 
 static NSString * const lastKey = @"last";
@@ -14,7 +14,7 @@ static NSString * const fromKey = @"from";
 static NSString * const toKey = @"to";
 static NSString * const timeRangesKey = @"timeRanges";
 
-@implementation CADataRequestSerializer
+@implementation DMEDataRequestSerializer
 
 + (NSDictionary *)serialize:(id<DMEDataRequest>)dataRequest
 {

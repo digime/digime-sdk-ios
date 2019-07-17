@@ -7,7 +7,7 @@
 //
 
 #import "DMERequestFactory.h"
-#import "CADataRequestSerializer.h"
+#import "DMEDataRequestSerializer.h"
 #import "NSData+DMECrypto.h"
 
 static NSString * const kDigiMeAPIVersion = @"v1.3";
@@ -50,7 +50,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
     
     if (scope != nil)
     {
-        NSDictionary *serializedScope = [CADataRequestSerializer serialize:scope];
+        NSDictionary *serializedScope = [DMEDataRequestSerializer serialize:scope];
         
         if (serializedScope != nil)
         {
