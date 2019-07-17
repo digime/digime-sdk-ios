@@ -237,7 +237,7 @@ Since `authorize` automatically opens Digi.me app, you will need some way of han
 ```
 
 ## Specifying Scope
-Specifying a scope via `CAScope` object will allow you to retrieve only a subset of data that the contract has asked for. This might come in handy if you already have data from the existing user and you might only want to retrieve any new data that might have been added to the user's library in the last x months. 
+Specifying a scope via `DMEScope` object will allow you to retrieve only a subset of data that the contract has asked for. This might come in handy if you already have data from the existing user and you might only want to retrieve any new data that might have been added to the user's library in the last x months. 
 
 SDK currently only supports specifying scope for `CATimeRange`s.
  
@@ -268,7 +268,7 @@ Example usage:
 
 ```objective-c
 
-CAScope *scope = [CAScope new];
+DMEScope *scope = [DMEScope new];
 
 //last 10 days
 CATimeRange *timeRange = [CATimeRange last:10 unit:CATimeRangeUnitDay];

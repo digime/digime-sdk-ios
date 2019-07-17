@@ -1,5 +1,5 @@
 //
-//  CAScope.h
+//  DMEScope.h
 //  DigiMeSDK
 //
 //  Created on 27/11/2018.
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CAScope : NSObject <DMEDataRequest>
+@interface DMEScope : NSObject <DMEDataRequest>
 
 @end
 

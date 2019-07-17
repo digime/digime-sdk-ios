@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CAScope.h"
+#import "DMEScope.h"
 #import "DMEClientCallbacks.h"
 #import "DMEClientConfiguration.h"
 
