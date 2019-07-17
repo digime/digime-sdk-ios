@@ -19,6 +19,7 @@
 
 @property (nonatomic, weak) DMEGuestConsentManager *guestConsentManager;
 @property (nonatomic, strong) PreConsentViewController *preconsentViewController;
+@property (nonatomic, strong, nullable) id<CADataRequest> scope;
 
 @end
 
@@ -28,38 +29,64 @@
 
 DMEGuestConsentManager *_guestConsentManager;
 
--(DMEGuestConsentManager *)guestConsentManager
+- (DMEGuestConsentManager *)guestConsentManager
 {
     return _guestConsentManager;
 }
 
--(void)setGuestConsentManager:(DMEGuestConsentManager *)manager
+- (void)setGuestConsentManager:(DMEGuestConsentManager *)manager
 {
     _guestConsentManager = manager;
 }
 
 PreConsentViewController *_preconsentViewController;
 
--(PreConsentViewController *)preconsentViewController
+- (PreConsentViewController *)preconsentViewController
 {
     return _preconsentViewController;
 }
 
--(void)setPreconsentViewController:(PreConsentViewController *)controller
+- (void)setPreconsentViewController:(PreConsentViewController *)controller
 {
     _preconsentViewController = controller;
 }
 
+AuthorizationCompletionBlock _authorizationCompletion;
+
+- (void)setAuthorizationCompletion:(AuthorizationCompletionBlock)authorizationCompletion
+{
+    _authorizationCompletion = authorizationCompletion;
+}
+
+id<CADataRequest> _scope;
+
+- (id<CADataRequest>)scope
+{
+    return _scope;
+}
+
+- (void)setScope:(id<CADataRequest>)scope
+{
+    _scope = scope;
+}
+
 #pragma mark - authorization
 
-- (void)authorizeGuest
+- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion
+{
+    [self authorizeGuestWithScope:nil completion:completion];
+}
+
+- (void)authorizeGuestWithScope:(id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion
 {
     if ([self canOpenDigiMeApp])
     {
-        [self authorizeWithCompletion:nil];
+        [self authorizeWithCompletion:completion];
     }
     else
     {
+        self.scope = scope;
+        [self setAuthorizationCompletion:completion];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.preconsentViewController = [PreConsentViewController new];
             self.preconsentViewController.delegate = self;
@@ -69,17 +96,7 @@ PreConsentViewController *_preconsentViewController;
     }
 }
 
-- (void)authorizeGuestWithScope:(id<CADataRequest>)scope
-{
-    [self authorizeGuestWithScope:scope completion:nil];
-}
-
-- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion
-{
-    [self authorizeGuestWithScope:nil completion:completion];
-}
-
-- (void)authorizeGuestWithScope:(id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuest
 {
     if (!self.guestConsentManager)
     {
@@ -89,23 +106,23 @@ PreConsentViewController *_preconsentViewController;
         self.guestConsentManager = guestConsentManager;
     }
     
+    // Validation
+    NSError *validationError = [self validateClient];
+    if (validationError != nil)
+    {
+        [self executeCompletionWithSession:nil error:validationError];
+        return;
+    }
+    
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:self.scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         if (!session)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion)
-                {
-                    completion(nil, error);
-                }
-                
-                if ([strongSelf.authorizationDelegate respondsToSelector:@selector(sessionCreateFailed:)])
-                {
-                    [strongSelf.authorizationDelegate sessionCreateFailed:error];
-                }
+                [strongSelf executeCompletionWithSession:nil error:error];
             });
             
             return;
@@ -114,25 +131,19 @@ PreConsentViewController *_preconsentViewController;
         [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion)
-                {
-                    completion(session, error);
-                }
-                
-                if (error)
-                {
-                    if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeFailed:)])
-                    {
-                        [strongSelf.authorizationDelegate authorizeFailed:error];
-                    }
-                }
-                else if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeSucceeded:)])
-                {
-                    [strongSelf.authorizationDelegate authorizeSucceeded:session];
-                }
+                [strongSelf executeCompletionWithSession:session error:error];
             });
         }];
     }];
+}
+
+- (void)executeCompletionWithSession:(CASession * _Nullable )session error:(NSError * _Nullable)error
+{
+    if (_authorizationCompletion != nil)
+    {
+        _authorizationCompletion(session, error);
+        _authorizationCompletion = nil;
+    }
 }
 
 #pragma mark - Preconsent View Controller delegate methods
@@ -141,14 +152,16 @@ PreConsentViewController *_preconsentViewController;
 - (void)downloadDigimeFromAppstore
 {
     [self.preconsentViewController dismissViewControllerAnimated:YES completion:^{
-        [self authorizeWithCompletion:nil];
+        [self authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+            [self executeCompletionWithSession:session error:error];
+        }];
     }];
 }
 
 - (void)authenticateUsingGuestConsent
 {
     [self.preconsentViewController dismissViewControllerAnimated:YES completion:^{
-        [self authorizeGuestWithCompletion:nil];
+        [self authorizeGuest];
     }];
 }
 #pragma clang diagnostic pop
