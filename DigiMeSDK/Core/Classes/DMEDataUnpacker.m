@@ -14,7 +14,7 @@
 
 @implementation DMEDataUnpacker
 
-+ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(CAFileMetadata * _Nullable __autoreleasing * _Nullable)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error
++ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(DMEFileMetadata * _Nullable __autoreleasing * _Nullable)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error
 {
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
     
@@ -27,7 +27,7 @@
     NSDictionary *metadataJSON = json[@"fileMetadata"];
     if (metadataJSON && resolvedMetadata)
     {
-        *resolvedMetadata = [CAFileMetadata metadataFromJSON:metadataJSON];
+        *resolvedMetadata = [DMEFileMetadata metadataFromJSON:metadataJSON];
     }
     
     id fileContent = json[@"fileContent"];

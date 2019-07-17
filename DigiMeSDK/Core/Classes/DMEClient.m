@@ -247,7 +247,7 @@
 {
     DMEFile *file;
     NSError *error;
-    CAFileMetadata *metadata;
+    DMEFileMetadata *metadata;
     NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:&metadata error:&error];
     if (unpackedData != nil)
     {

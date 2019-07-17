@@ -1,5 +1,5 @@
 //
-//  CAFileMetadata.swift
+//  DMEFileMetadata.swift
 //  DigiMeSDK
 //
 //  Created on 23/05/2019.
@@ -8,7 +8,7 @@
 import Foundation
 
 @objcMembers
-public class CAFileMetadata: NSObject, Decodable {
+public class DMEFileMetadata: NSObject, Decodable {
 
     var mimeType: DMEMimeType
     var reference: [String]
@@ -33,10 +33,10 @@ public class CAFileMetadata: NSObject, Decodable {
     }
     
     @objc(metadataFromJSON:)
-    public static func metadata(from jsonDict: [AnyHashable: Any]) -> CAFileMetadata? {
+    public static func metadata(from jsonDict: [AnyHashable: Any]) -> DMEFileMetadata? {
         do {
             let encodedJSON = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
-            return try JSONDecoder().decode(CAFileMetadata.self, from: encodedJSON)
+            return try JSONDecoder().decode(DMEFileMetadata.self, from: encodedJSON)
         }
         catch {
             return nil

@@ -383,12 +383,12 @@ Each file you fetch from Consent Access is represented by `DMEFile` object.
 
 In some use cases, the data returned may be of another type and not serialisable to JSON. You can inspect the `mimeType` property of `DMEFile` to see exactly what type the data is.
 
-The `CAMimeType` enum represents the various mime types that are currently supported, with those that aren't defaulting to raw bytes (octet stream).
+The `DMEMimeType` enum represents the various mime types that are currently supported, with those that aren't defaulting to raw bytes (octet stream).
 
 The supported mime types are detailed below:
 
 ```swift
-public enum CAMimeType: Int, CaseIterable, ExpressibleByStringLiteral {
+public enum DMEMimeType: Int, CaseIterable, ExpressibleByStringLiteral {
     
     case application_json
     case application_octetStream

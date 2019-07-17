@@ -120,7 +120,7 @@ public class DMEFile: NSObject {
     
     private var boxedFile: DMERawData
     public var fileId: String
-    public var fileMetadata: CAFileMetadata?
+    public var fileMetadata: DMEFileMetadata?
     
     public var fileMimeType: DMEMimeType {
         return fileMetadata?.mimeType ?? .application_octetStream
@@ -140,7 +140,7 @@ public class DMEFile: NSObject {
         return "File ID: \(fileId), \(objCount >= 0 ? "\(objCount) objects." : "\(fileContent.count) bytes.")"
     }
     
-    public init(fileId: String, fileContent: Data, fileMetadata: CAFileMetadata?) {
+    public init(fileId: String, fileContent: Data, fileMetadata: DMEFileMetadata?) {
         self.fileId = fileId
         self.boxedFile = try! DMERawData(rawData: fileContent, mimeType: fileMetadata?.mimeType ?? .application_octetStream)
         self.fileMetadata = fileMetadata
