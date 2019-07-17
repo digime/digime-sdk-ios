@@ -52,7 +52,7 @@
 
 - (void)populateWithJSON:(NSArray *)json
 {
-    NSMutableArray<CAAccount *> *accounts = [NSMutableArray new];
+    NSMutableArray<DMEAccount *> *accounts = [NSMutableArray new];
     
     for (NSDictionary *account in json)
     {
@@ -70,7 +70,7 @@
         NSString *name = account[@"name"];
         NSString *number = account[@"number"];
         
-        CAAccount *mappedAccount = [[CAAccount alloc] initWithId:identifier name:name number:number service:service];
+        DMEAccount *mappedAccount = [[DMEAccount alloc] initWithId:identifier name:name number:number service:service];
         [accounts addObject:mappedAccount];
     }
     
@@ -79,7 +79,7 @@
 
 @end
 
-@implementation CAAccount
+@implementation DMEAccount
 
 - (instancetype)initWithId:(NSString *)identifier name:(NSString *)name number:(NSString *)number service:(DMEServiceDescriptor *)service
 {

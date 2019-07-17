@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface CAAccount : NSObject
+@interface DMEAccount : NSObject
 
 /**
  -init unavailable. Use -initWithId:name:number:service::
@@ -128,9 +128,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Array of CAAccount found in the account.
+ Array of DMEAccount found in the account.
  */
-@property (nullable, nonatomic, strong, readonly) NSArray<CAAccount *> *accounts;
+@property (nullable, nonatomic, strong, readonly) NSArray<DMEAccount *> *accounts;
 
 @end
 
