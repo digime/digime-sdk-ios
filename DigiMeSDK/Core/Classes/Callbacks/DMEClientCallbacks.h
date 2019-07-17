@@ -6,7 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CASession.h"
+#import "DMESession.h"
 #import "NSError+SDK.h"
 #import "NSError+Auth.h"
 #import "NSError+API.h"
@@ -22,10 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  AuthorizationCompletionBlock - executed when authorization stage has completed.
 
- @param session CASession
+ @param session DMESession
  @param error NSError
  */
-typedef void (^AuthorizationCompletionBlock) (CASession * _Nullable session, NSError * _Nullable error);
+typedef void (^AuthorizationCompletionBlock) (DMESession * _Nullable session, NSError * _Nullable error);
 
 /**
  PostboxCompletionBlock - executed when a Postbox is retrieved.

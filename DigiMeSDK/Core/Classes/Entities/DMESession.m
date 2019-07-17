@@ -1,12 +1,12 @@
 //
-//  CASession.m
+//  DMESession.m
 //  DigiMeSDK
 //
 //  Created on 24/01/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CASession.h"
+#import "DMESession.h"
 #import "DMESessionManager.h"
 #import "DMEClient.h"
 #import "DMEDataRequest.h"
@@ -38,11 +38,11 @@ NSString * const kUserId = @"debugUserId";
 NSString * const kLibraryId = @"debugLibraryId";
 NSString * const kPCloudType = @"debugPCloudType";
 
-@interface CASession()
+@interface DMESession()
 @property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
 @end
 
-@implementation CASession
+@implementation DMESession
 
 #pragma mark - Initialization
 

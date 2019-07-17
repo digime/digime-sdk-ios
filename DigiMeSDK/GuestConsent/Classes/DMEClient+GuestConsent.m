@@ -90,7 +90,7 @@ PreConsentViewController *_preconsentViewController;
     }
     
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
@@ -106,7 +106,7 @@ PreConsentViewController *_preconsentViewController;
             return;
         }
         
-        [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (completion)

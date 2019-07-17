@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CASession.h"
+#import "DMESession.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,13 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Deserializes JSON response data into CASession
+ Deserializes JSON response data into DMESession
 
  @param jsonData NSData
  @param error NSError
- @return CASession
+ @return DMESession
  */
-+ (nullable CASession *)deserialize:(NSData *)jsonData error:(NSError * __autoreleasing *)error;
++ (nullable DMESession *)deserialize:(NSData *)jsonData error:(NSError * __autoreleasing *)error;
 
 @end
 

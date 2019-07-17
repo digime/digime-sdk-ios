@@ -77,7 +77,7 @@
     
     //get session
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
@@ -135,7 +135,7 @@
 - (void)userAuthorizationWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     __weak __typeof(self)weakSelf = self;
-    [self.authManager beginAuthorizationWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.authManager beginAuthorizationWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         //notify on main thread.
         __strong __typeof(weakSelf)strongSelf = weakSelf;

@@ -202,14 +202,14 @@ For that purpose the SDK provides **DMEClientCallbacks** block based interface.
 To start fetching data into your application, you will need to authorize a session.
 Authorization flow is separated into two phases:
 
-1. Initialize a session with Digi.me API (returns a **CASession** object).
+1. Initialize a session with Digi.me API (returns a **DMESession** object).
 
 2. Authorize session with the Digi.me app and prepare data if user accepts.
 
 SDK starts and handles these steps automatically by calling:
 
 > ```
-> [[DMEClient sharedClient] authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error){...}];
+> [[DMEClient sharedClient] authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error){...}];
 > ```
 
 ## Guest Consent

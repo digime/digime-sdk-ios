@@ -15,7 +15,7 @@
 @interface DMESessionManager()
 
 @property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
-@property (nonatomic, strong, readwrite) CASession *currentSession;
+@property (nonatomic, strong, readwrite) DMESession *currentSession;
 
 @end
 
@@ -42,7 +42,7 @@
     [self.apiClient requestSessionWithScope:scope success:^(NSData * _Nonnull data) {
         
         NSError *error;
-        CASession *session = [CASessionDeserializer deserialize:data error:&error];
+        DMESession *session = [CASessionDeserializer deserialize:data error:&error];
         
         self.currentSession = session;
         

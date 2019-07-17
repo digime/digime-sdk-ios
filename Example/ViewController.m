@@ -74,7 +74,7 @@
     self.progress = 0;
     [self.logVC reset];
 
-    [self.dmeClient authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         if (session == nil){
             [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];

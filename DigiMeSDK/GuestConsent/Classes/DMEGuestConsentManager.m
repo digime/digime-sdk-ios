@@ -16,7 +16,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 @interface DMEGuestConsentManager() <SFSafariViewControllerDelegate>
 
-@property (nonatomic, strong, readonly) CASession *session;
+@property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 @property (nonatomic, copy, nullable) AuthorizationCompletionBlock guestConsentCompletionBlock;
 @property (nonatomic, strong) SFSafariViewController *safariViewController;
@@ -164,7 +164,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 #pragma mark - Convenience
 
-- (CASession *)session
+- (DMESession *)session
 {
     return self.sessionManager.currentSession;
 }

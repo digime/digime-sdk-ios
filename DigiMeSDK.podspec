@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
       ss.source_files  	      = "DigiMeSDK/Core/Classes/**/*.{h,m,swift}", "DigiMeSDK/DigiMeSDK.h"
       ss.resources            = ["DigiMeSDK/Core/Assets/*.{der}"]
       ss.frameworks    	      = "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
-      ss.private_header_files = 'DigiMeSDK/Core/Classes/Entities/CASession+Private.h',
+      ss.private_header_files = 'DigiMeSDK/Core/Classes/Entities/DMESession+Private.h',
 	'DigiMeSDK/Core/Classes/Network/DMEAPIClient.h',
 	'DigiMeSDK/Core/Classes/Network/DMEOperation.h',
 	'DigiMeSDK/Core/Classes/Network/DMERequestFactory.h', 

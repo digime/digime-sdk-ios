@@ -1,5 +1,5 @@
 //
-//  CASession.h
+//  DMESession.h
 //  DigiMeSDK
 //
 //  Created on 24/01/2018.
@@ -40,7 +40,7 @@ extern NSString * const kPCloudType;
 @class DMESessionManager;
 @protocol DMEDataRequest;
 
-@interface CASession : NSObject
+@interface DMESession : NSObject
 
 /**
  -init unavailable. Use -initWithSessionKey:expiryDate:sessionManager:

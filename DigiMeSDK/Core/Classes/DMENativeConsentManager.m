@@ -8,7 +8,7 @@
 
 #import "DMENativeConsentManager.h"
 #import "DMESessionManager.h"
-#import "CASession+Private.h"
+#import "DMESession+Private.h"
 #import "DMEClient.h"
 
 #import "NSError+Auth.h"
@@ -19,7 +19,7 @@
 
 @interface DMENativeConsentManager()
 
-@property (nonatomic, strong, readonly) CASession *session;
+@property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 @property (nonatomic, copy, nullable) AuthorizationCompletionBlock authCompletionBlock;
 
@@ -95,7 +95,7 @@
 
 #pragma mark - Convenience
 
-- (CASession *)session
+- (DMESession *)session
 {
     return self.sessionManager.currentSession;
 }

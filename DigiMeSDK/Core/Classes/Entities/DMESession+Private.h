@@ -1,13 +1,13 @@
 //
-//  CASession+Private.h
+//  DMESession+Private.h
 //  DigiMeSDK
 //
 //  Created on 21/01/2019.
 //
 
-#import "CASession.h"
+#import "DMESession.h"
 
-@interface CASession ()
+@interface DMESession ()
 
 @property (strong, nonatomic, readwrite) NSDictionary<NSString *, id> *metadata;
 

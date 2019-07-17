@@ -50,7 +50,7 @@ DMEPostboxManager* _postboxManager;
     
     //get session
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:nil completion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:nil completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
