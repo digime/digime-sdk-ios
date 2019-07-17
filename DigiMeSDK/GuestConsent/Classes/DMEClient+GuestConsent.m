@@ -69,7 +69,7 @@ PreConsentViewController *_preconsentViewController;
     }
 }
 
-- (void)authorizeGuestWithScope:(id<CADataRequest>)scope
+- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope
 {
     [self authorizeGuestWithScope:scope completion:nil];
 }
@@ -79,7 +79,7 @@ PreConsentViewController *_preconsentViewController;
     [self authorizeGuestWithScope:nil completion:completion];
 }
 
-- (void)authorizeGuestWithScope:(id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion
 {
     if (!self.guestConsentManager)
     {

@@ -1,5 +1,5 @@
 //
-//  CADataRequest.h
+//  DMEDataRequest.h
 //  DigiMeSDK
 //
 //  Created on 27/11/2018.
@@ -8,10 +8,10 @@
 
 #import "CATimeRange.h"
 
-#ifndef CADataRequest_h
-#define CADataRequest_h
+#ifndef DMEDataRequest_h
+#define DMEDataRequest_h
 
-@protocol CADataRequest <NSObject>
+@protocol DMEDataRequest <NSObject>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,4 +22,4 @@ NS_ASSUME_NONNULL_END
 
 @end
 
-#endif /* CADataRequest_h */
+#endif /* DMEDataRequest_h */

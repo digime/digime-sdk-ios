@@ -15,7 +15,7 @@
 #import "DMECertificatePinner.h"
 #import "DMEClient.h"
 #import "DMERequestFactory.h"
-#import "CADataRequest.h"
+#import "DMEDataRequest.h"
 #import "DMEAPIClient+Private.h"
 
 static const NSString *kDigimeConsentAccessPathSessionKeyCreate = @"v1.3/permission-access/session";
@@ -87,7 +87,7 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 
 #pragma mark - Session
 
-- (void)requestSessionWithScope:(nullable id<CADataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+- (void)requestSessionWithScope:(nullable id<DMEDataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
 {
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];

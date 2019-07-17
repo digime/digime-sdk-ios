@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CADataRequest.h"
+#import "DMEDataRequest.h"
 #import "NSError+SDK.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CADataRequestSerializer : NSObject
 
-+ (nullable NSDictionary *)serialize:(id<CADataRequest>)dataRequest;
++ (nullable NSDictionary *)serialize:(id<DMEDataRequest>)dataRequest;
 
 @end
 

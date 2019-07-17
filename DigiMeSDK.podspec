@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
 	'DigiMeSDK/Core/Classes/Security/DMECrypto.h',
 	'DigiMeSDK/Core/Classes/Security/CADataDecryptor.h',
 	'DigiMeSDK/Core/Classes/Utility/*.h',
-	'DigiMeSDK/Core/Classes/CASessionManager.h',
+	'DigiMeSDK/Core/Classes/DMESessionManager.h',
 	'DigiMeSDK/Core/Classes/DMEAPIClient+Private.h',
 	'DigiMeSDK/Core/Classes/DMEAppCommunicator.h',
 	'DigiMeSDK/Core/Classes/DMENativeConsentManager.h',

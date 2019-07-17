@@ -34,7 +34,7 @@
     return self;
 }
 
-- (void)sessionWithScope:(id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion
+- (void)sessionWithScope:(id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion
 {
     //create new session. We always retrieve new session when requesting authorization
     [self invalidateCurrentSession];
@@ -48,7 +48,7 @@
         
         if (error != nil)
         {
-            NSLog(@"[CASessionManager] Failed to create session: %@", error.localizedDescription);
+            NSLog(@"[DMESessionManager] Failed to create session: %@", error.localizedDescription);
         }
         else if (session == nil)
         {

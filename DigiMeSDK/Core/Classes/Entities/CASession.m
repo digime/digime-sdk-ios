@@ -9,7 +9,7 @@
 #import "CASession.h"
 #import "DMESessionManager.h"
 #import "DMEClient.h"
-#import "CADataRequest.h"
+#import "DMEDataRequest.h"
 
 NSString * const kCARequestSessionKey = @"CARequestSessionKey";
 NSString * const kCADigimeResponse = @"CADigimeResponse";

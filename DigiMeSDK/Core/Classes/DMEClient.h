@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope custom scope that will be applied to available data.
  @param authorizationCompletion AuthorizationCompletionBlock
  */
-- (void)authorizeWithScope:(nullable id<CADataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
+- (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
 
 /**
  Fetches file list that's available for the authorized contract.

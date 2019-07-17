@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param identifier NSString
  @param name NSString
  @param number NSString
- @param service CAServiceDecriptor
+ @param service DMEServiceDecriptor
  @return instancetype
  */
 - (instancetype)initWithId:(nullable NSString *)identifier name:(nullable NSString *)name number:(nullable NSString *)number service:(nullable DMEServiceDescriptor *)service NS_DESIGNATED_INITIALIZER;

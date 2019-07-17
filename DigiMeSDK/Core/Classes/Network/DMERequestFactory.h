@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClientConfiguration.h"
-#import "CADataRequest.h"
+#import "DMEDataRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope id<DataRequest>
  @return NSURLRequest
  */
-- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<CADataRequest>)scope;
+- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<DMEDataRequest>)scope;
 
 
 /**

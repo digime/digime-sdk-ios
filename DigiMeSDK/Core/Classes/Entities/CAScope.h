@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "CATimeRange.h"
-#import "CADataRequest.h"
+#import "DMEDataRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CAScope : NSObject <CADataRequest>
+@interface CAScope : NSObject <DMEDataRequest>
 
 @end
 

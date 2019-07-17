@@ -62,7 +62,7 @@
     [self authorizeWithScope:nil completion:authorizationCompletion];
 }
 
-- (void)authorizeWithScope:(id<CADataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     // Validation
     NSError *validationError = [self validateClient];

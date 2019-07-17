@@ -38,7 +38,7 @@ extern NSString * const kLibraryId;
 extern NSString * const kPCloudType;
 
 @class DMESessionManager;
-@protocol CADataRequest;
+@protocol DMEDataRequest;
 
 @interface CASession : NSObject
 
@@ -99,7 +99,7 @@ extern NSString * const kPCloudType;
 /**
  Session Scope - this is the limiting scope object used to create session.
  */
-@property (nonatomic, strong, readonly, nullable) id<CADataRequest> scope;
+@property (nonatomic, strong, readonly, nullable) id<DMEDataRequest> scope;
 
 
 /**

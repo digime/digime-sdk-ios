@@ -16,7 +16,7 @@ static NSString * const timeRangesKey = @"timeRanges";
 
 @implementation CADataRequestSerializer
 
-+ (NSDictionary *)serialize:(id<CADataRequest>)dataRequest
++ (NSDictionary *)serialize:(id<DMEDataRequest>)dataRequest
 {
     
     NSMutableDictionary *dataRequestDict = [NSMutableDictionary new];
