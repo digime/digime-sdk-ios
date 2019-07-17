@@ -9,7 +9,7 @@
 #import "DMESessionManager.h"
 #import "DMECryptoUtilities.h"
 #import "DMEAPIClient.h"
-#import "CASessionDeserializer.h"
+#import "DMESessionDeserializer.h"
 #import "DMEClient+Private.h"
 
 @interface DMESessionManager()
@@ -42,7 +42,7 @@
     [self.apiClient requestSessionWithScope:scope success:^(NSData * _Nonnull data) {
         
         NSError *error;
-        DMESession *session = [CASessionDeserializer deserialize:data error:&error];
+        DMESession *session = [DMESessionDeserializer deserialize:data error:&error];
         
         self.currentSession = session;
         

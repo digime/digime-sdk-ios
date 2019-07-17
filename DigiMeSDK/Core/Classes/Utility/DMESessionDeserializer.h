@@ -1,5 +1,5 @@
 //
-//  CASessionDeserializer.h
+//  DMESessionDeserializer.h
 //  DigiMeSDK
 //
 //  Created on 29/01/2018.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CASessionDeserializer : NSObject
+@interface DMESessionDeserializer : NSObject
 
 
 /**

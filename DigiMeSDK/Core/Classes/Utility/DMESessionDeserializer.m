@@ -1,15 +1,15 @@
 //
-//  CASessionDeserializer.m
+//  DMESessionDeserializer.m
 //  DigiMeSDK
 //
 //  Created on 29/01/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CASessionDeserializer.h"
+#import "DMESessionDeserializer.h"
 #import "DMEClient.h"
 
-@implementation CASessionDeserializer
+@implementation DMESessionDeserializer
 
 + (DMESession *)deserialize:(NSData *)jsonData error:(NSError * __autoreleasing *)error
 {
