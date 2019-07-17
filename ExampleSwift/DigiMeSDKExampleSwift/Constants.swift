@@ -9,18 +9,18 @@ import Foundation
 
 struct Constants {
     
-    // - INSERT your App ID here -
+    #error("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
     static let appId = "YOUR_APP_ID"
     
-    // - INSERT your CA contract ID here -
+    #error("REPLACE 'YOUR_CA_CONTRACT_ID' with your Consent Access contract ID.")
     static let CAContractId = "YOUR_CA_CONTRACT_ID"
     
-    // - INSERT your Postbox contract ID here -
+    #error("REPLACE 'YOUR_POSTBOX_CONTRACT_ID' with your Postbox contract ID.")
     static let postboxContractId = "YOUR_POSTBOX_CONTRACT_ID"
     
-    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
+    #error("REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.")
     static let p12Password = "YOUR_P12_PASSWORD"
     
-    // - REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name provided by Digi.me Ltd
+    #error("REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.")
     static let p12FileName = "YOUR_P12_FILE_NAME"
 }

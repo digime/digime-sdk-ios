@@ -2,6 +2,8 @@ use_frameworks!
 
 target 'DigiMeSDKExampleSwift' do
   pod 'DigiMeSDK', :path => '../'
+  pod 'DigiMeSDK/GuestConsent', :path => '../'
+  pod 'DigiMeSDK/Postbox', :path => '../'
 
   target 'DigiMeSDKExampleSwiftTests' do
     inherit! :search_paths
