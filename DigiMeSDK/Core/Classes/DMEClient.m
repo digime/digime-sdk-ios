@@ -295,12 +295,12 @@
             return;
         }
         
-        CAAccounts *accounts;
+        DMEAccounts *accounts;
         NSError *error;
         NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:NULL error:&error];
         if (unpackedData != nil)
         {
-            accounts = [CAAccounts deserialize:unpackedData error:&error];
+            accounts = [DMEAccounts deserialize:unpackedData error:&error];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{

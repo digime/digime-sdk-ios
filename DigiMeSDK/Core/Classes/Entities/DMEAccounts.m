@@ -1,27 +1,27 @@
 //
-//  CAAccounts.m
+//  DMEAccounts.m
 //  DigiMeSDK
 //
 //  Created on 05/02/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CAAccounts.h"
+#import "DMEAccounts.h"
 #import "NSError+SDK.h"
 #import "DMECompressor.h"
 
-@implementation CAAccounts
+@implementation DMEAccounts
 
 #pragma mark - Deserialization
 
-+ (CAAccounts *)deserialize:(NSData *)data error:(NSError * _Nullable __autoreleasing *)error
++ (DMEAccounts *)deserialize:(NSData *)data error:(NSError * _Nullable __autoreleasing *)error
 {
     id content = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
     
     if ([content isKindOfClass:[NSDictionary class]])
     {
         NSDictionary *json = (NSDictionary *)content;
-        CAAccounts *accounts = [[self alloc] initWithFileId:@"accounts.json" json:json];
+        DMEAccounts *accounts = [[self alloc] initWithFileId:@"accounts.json" json:json];
         return accounts;
     }
     

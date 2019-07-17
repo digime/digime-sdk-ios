@@ -90,7 +90,7 @@
 
 - (void)getAccounts
 {
-    [self.dmeClient getAccountsWithCompletion:^(CAAccounts * _Nullable accounts, NSError * _Nullable error) {
+    [self.dmeClient getAccountsWithCompletion:^(DMEAccounts * _Nullable accounts, NSError * _Nullable error) {
         
         if (accounts == nil){
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];

@@ -1,5 +1,5 @@
 //
-//  CAAccounts.h
+//  DMEAccounts.h
 //  DigiMeSDK
 //
 //  Created on 05/02/2018.
@@ -91,9 +91,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface CAAccounts : NSObject
+@interface DMEAccounts : NSObject
 
-+ (nullable CAAccounts *)deserialize:(NSData *)data error:(NSError **)error;
++ (nullable DMEAccounts *)deserialize:(NSData *)data error:(NSError **)error;
 
 
 /**

@@ -304,7 +304,7 @@ To fetch accounts data:
 
 
 > ```objective-c
-> [[DMEClient sharedClient] getAccountsWithCompletion:(CAAccounts * _Nullable accounts, NSError * _Nullable error){ ... }];
+> [[DMEClient sharedClient] getAccountsWithCompletion:(DMEAccounts * _Nullable accounts, NSError * _Nullable error){ ... }];
 > ```
 
 

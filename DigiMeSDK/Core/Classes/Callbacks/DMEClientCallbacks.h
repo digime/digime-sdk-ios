@@ -11,7 +11,7 @@
 #import "NSError+Auth.h"
 #import "NSError+API.h"
 #import "CAFiles.h"
-#import "CAAccounts.h"
+#import "DMEAccounts.h"
 
 #pragma once
 
@@ -63,9 +63,9 @@ typedef void (^FileContentCompletionBlock) (CAFile * _Nullable file, NSError * _
 /**
  AccountsCompletionBlock - executed when account metadata has been retrieved.
 
- @param accounts CAAccounts
+ @param accounts DMEAccounts
  @param error NSError
  */
-typedef void (^AccountsCompletionBlock) (CAAccounts * _Nullable accounts, NSError * _Nullable error);
+typedef void (^AccountsCompletionBlock) (DMEAccounts * _Nullable accounts, NSError * _Nullable error);
 
 NS_ASSUME_NONNULL_END
