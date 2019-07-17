@@ -1,5 +1,5 @@
 //
-//  PreConsentViewController.h
+//  DMEPreConsentViewController.h
 //  DigiMeSDK
 //
 //  Created by digi.me Ltd. on 01/05/2019.
@@ -10,16 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PreConsentViewControllerDelegate <NSObject>
+@protocol DMEPreConsentViewControllerDelegate <NSObject>
 
 - (void)downloadDigimeFromAppstore;
 - (void)authenticateUsingGuestConsent;
 
 @end
 
-@interface PreConsentViewController : UIViewController
+@interface DMEPreConsentViewController : UIViewController
 
-@property (nonatomic, weak) id<PreConsentViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<DMEPreConsentViewControllerDelegate> delegate;
 
 @end
 

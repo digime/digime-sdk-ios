@@ -1,26 +1,26 @@
 //
-//  PreConsentViewController.m
+//  DMEPreConsentViewController.m
 //  DigiMeSDK
 //
 //  Created by digi.me Ltd. on 01/05/2019.
 //  Copyright © 2019 CocoaPods. All rights reserved.
 //
 
-#import "PreConsentViewController.h"
-#import "PreConsentView.h"
+#import "DMEPreConsentViewController.h"
+#import "DMEPreConsentView.h"
 
 static NSUInteger const kInset = 30;
 static NSUInteger const kModalViewWidth = 290;
 static NSUInteger const kModalViewHeight = 400;
 
-@interface PreConsentViewController () <PreConsentViewDelegate>
+@interface DMEPreConsentViewController () <DMEPreConsentViewDelegate>
 
-@property (nonatomic, retain) PreConsentView *preConsentView;
+@property (nonatomic, retain) DMEPreConsentView *preConsentView;
 @property (nonatomic, retain) UILabel *guestLabel;
 
 @end
 
-@implementation PreConsentViewController
+@implementation DMEPreConsentViewController
 
 - (void)viewDidLoad
 {
@@ -50,7 +50,7 @@ static NSUInteger const kModalViewHeight = 400;
 - (void)buildPromptUI
 {
     CGRect viewFrame = CGRectMake((self.view.frame.size.width / 2) - (kModalViewWidth / 2), (self.view.frame.size.height / 2) - (kModalViewHeight / 2), kModalViewWidth, kModalViewHeight);
-    self.preConsentView = [[PreConsentView alloc]initWithFrame:viewFrame];
+    self.preConsentView = [[DMEPreConsentView alloc]initWithFrame:viewFrame];
     self.preConsentView.delegate = self;
     
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];

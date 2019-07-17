@@ -12,13 +12,13 @@
 #import "DMEGuestConsentManager.h"
 #import "DMEClient+Private.h"
 #import "DMESessionManager.h"
-#import "PreConsentViewController.h"
+#import "DMEPreConsentViewController.h"
 #import "UIViewController+DMEExtension.h"
 
-@interface DMEClient () <PreConsentViewControllerDelegate>
+@interface DMEClient () <DMEPreConsentViewControllerDelegate>
 
 @property (nonatomic, weak) DMEGuestConsentManager *guestConsentManager;
-@property (nonatomic, strong) PreConsentViewController *preconsentViewController;
+@property (nonatomic, strong) DMEPreConsentViewController *preconsentViewController;
 
 @end
 
@@ -38,14 +38,14 @@ DMEGuestConsentManager *_guestConsentManager;
     _guestConsentManager = manager;
 }
 
-PreConsentViewController *_preconsentViewController;
+DMEPreConsentViewController *_preconsentViewController;
 
--(PreConsentViewController *)preconsentViewController
+-(DMEPreConsentViewController *)preconsentViewController
 {
     return _preconsentViewController;
 }
 
--(void)setPreconsentViewController:(PreConsentViewController *)controller
+-(void)setPreconsentViewController:(DMEPreConsentViewController *)controller
 {
     _preconsentViewController = controller;
 }
@@ -61,7 +61,7 @@ PreConsentViewController *_preconsentViewController;
     else
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.preconsentViewController = [PreConsentViewController new];
+            self.preconsentViewController = [DMEPreConsentViewController new];
             self.preconsentViewController.delegate = self;
             self.preconsentViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
             [[UIViewController topmostViewController] presentViewController:self.preconsentViewController animated:YES completion:nil];

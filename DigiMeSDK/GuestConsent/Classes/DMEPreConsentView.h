@@ -1,5 +1,5 @@
 //
-//  PreConsentView.h
+//  DMEPreConsentView.h
 //  DigiMeSDK
 //
 //  Created by digi.me Ltd. on 01/05/2019.
@@ -10,19 +10,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol PreConsentViewDelegate <NSObject>
+@protocol DMEPreConsentViewDelegate <NSObject>
 
 - (void)appstoreButtonTapped;
 
 @end
 
-@interface PreConsentView : UIView
+@interface DMEPreConsentView : UIView
 
 @property (nonatomic, strong) UIImageView *digimeLogoImageView;
 @property (nonatomic, strong) UIImageView *confettiImageView;
 @property (nonatomic, strong) UIButton *appstoreButton;
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, weak) id<PreConsentViewDelegate> delegate;
+@property (nonatomic, weak) id<DMEPreConsentViewDelegate> delegate;
 
 @end
 

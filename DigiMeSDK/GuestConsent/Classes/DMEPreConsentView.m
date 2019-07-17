@@ -1,12 +1,12 @@
 //
-//  PreConsentView.m
+//  DMEPreConsentView.m
 //  DigiMeSDK
 //
 //  Created by digi.me Ltd. on 01/05/2019.
 //  Copyright © 2019 CocoaPods. All rights reserved.
 //
 
-#import "PreConsentView.h"
+#import "DMEPreConsentView.h"
 
 static NSUInteger const kInset = 30;
 static NSUInteger const kDigimeImageWidth = 111;
@@ -16,7 +16,7 @@ static NSUInteger const kConfettiImageHeight = 85;
 static NSUInteger const kAppstoreButtonWidth = 148;
 static NSUInteger const kAppstoreButtonHeight = 50;
 
-@implementation PreConsentView
+@implementation DMEPreConsentView
 
 - (id)initWithFrame:(CGRect)frame
 {
