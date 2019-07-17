@@ -184,7 +184,7 @@
 - (void)getFileWithId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
 {
     //ensures this method cannot be called with completion *AND* no data decryption
-    if (completion != nil && !self.decryptsData)
+    if (!self.decryptsData)
     {
         NSError *sdkError = [NSError sdkError:SDKErrorEncryptedDataCallback];
         completion(nil, sdkError);
@@ -216,12 +216,8 @@
         [strongSelf processFileData:data fileId:fileId completion:completion];
         
     } failure:^(NSError * _Nonnull error) {
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(nil, error);
-            
         });
     }];
 }
@@ -313,26 +309,26 @@
     return [self.appCommunicator canOpenDigiMeApp];
 }
 
-- (void)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error
+- (BOOL)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error
 {
     // Check we have both the appId and clientId, required for this.
     if (!self.contractId.length)
     {
-        *error = [NSError sdkError:SDKErrorNoContract];
-        return;
+        [NSError setSDKError:SDKErrorNoContract toError:error];
+        return NO;
     }
     
     if (!self.appId.length)
     {
-        *error = [NSError sdkError:SDKErrorNoAppId];
-        return;
+        [NSError setSDKError:SDKErrorNoAppId toError:error];
+        return NO;
     }
     
     // Check the digime app can be opened (ie is installed).
     if (![self canOpenDigiMeApp])
     {
-        *error = [NSError sdkError:SDKErrorDigiMeAppNotFound];
-        return;
+        [NSError setSDKError:SDKErrorDigiMeAppNotFound toError:error];
+        return NO;
     }
     
     // Prerequesits cleared, build URL.
@@ -344,6 +340,7 @@
     
     NSURL *deeplinkingURL = components.URL;
     [[UIApplication sharedApplication] openURL:deeplinkingURL options:@{} completionHandler:nil];
+    return YES;
 }
 
 #pragma mark - Debug
