@@ -1,5 +1,5 @@
 //
-//  CADataDecryptor.h
+//  DMEDataDecryptor.h
 //  DigiMeSDK
 //
 //  Created on 05/02/2018.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CADataDecryptor : NSObject
+@interface DMEDataDecryptor : NSObject
 
 /**
 Decrypts encrypted JSON data using private key.

@@ -6,7 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CADataDecryptor.h"
+#import "DMEDataDecryptor.h"
 #import "DMECompressor.h"
 #import "DMEDataUnpacker.h"
 #import "NSError+SDK.h"
@@ -37,7 +37,7 @@
         return nil;
     }
     
-    NSData *unpackedData = [CADataDecryptor decryptFileContent:fileContent error:error];
+    NSData *unpackedData = [DMEDataDecryptor decryptFileContent:fileContent error:error];
     
     if (!unpackedData)
     {

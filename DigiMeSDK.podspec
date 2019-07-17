@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
 	'DigiMeSDK/Core/Classes/Network/DMERequestFactory.h', 
 	'DigiMeSDK/Core/Classes/Security/DMECertificatePinner.h',
 	'DigiMeSDK/Core/Classes/Security/DMECrypto.h',
-	'DigiMeSDK/Core/Classes/Security/CADataDecryptor.h',
+	'DigiMeSDK/Core/Classes/Security/DMEDataDecryptor.h',
 	'DigiMeSDK/Core/Classes/Utility/*.h',
 	'DigiMeSDK/Core/Classes/DMESessionManager.h',
 	'DigiMeSDK/Core/Classes/DMEAPIClient+Private.h',

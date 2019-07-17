@@ -1,17 +1,17 @@
 //
-//  CADataDecryptor.m
+//  DMEDataDecryptor.m
 //  DigiMeSDK
 //
 //  Created on 05/02/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CADataDecryptor.h"
+#import "DMEDataDecryptor.h"
 #import "NSString+DMECrypto.h"
 #import "DMECrypto.h"
 #import "NSError+SDK.h"
 
-@implementation CADataDecryptor
+@implementation DMEDataDecryptor
 
 + (NSData *)decryptFileContent:(id)fileContent error:(NSError * _Nullable __autoreleasing *)error
 {
