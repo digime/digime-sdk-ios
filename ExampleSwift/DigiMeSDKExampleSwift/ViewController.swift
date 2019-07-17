@@ -56,6 +56,9 @@ class ViewController: UIViewController {
     
     @objc func runTapped() {
         
+        progress = 0
+        logVC.reset()
+
         dmeClient.authorize { (session, error) in
             
             guard let session = session else {
@@ -72,8 +75,6 @@ class ViewController: UIViewController {
             self.getFileList()
             self.getAccounts()
         }
-        
-        logVC.reset()
     }
     
     func getAccounts() {
