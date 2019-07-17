@@ -10,7 +10,7 @@ import Foundation
 @objcMembers
 public class CAFileMetadata: NSObject, Decodable {
 
-    var mimeType: CAMimeType
+    var mimeType: DMEMimeType
     var reference: [String]
     var tags: [String]
     var contractId: String
@@ -29,7 +29,7 @@ public class CAFileMetadata: NSObject, Decodable {
         self.tags = try container.decode([String].self, forKey: .tags)
         
         let mimeString = try container.decode(String.self, forKey: .mimeType)
-        self.mimeType = CAMimeType(stringLiteral: mimeString)
+        self.mimeType = DMEMimeType(stringLiteral: mimeString)
     }
     
     @objc(metadataFromJSON:)

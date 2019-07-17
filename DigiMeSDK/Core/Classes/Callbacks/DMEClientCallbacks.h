@@ -15,7 +15,7 @@
 
 #pragma once
 
-@class CAPostbox, CAFile;
+@class CAPostbox, DMEFile;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -54,10 +54,10 @@ typedef void (^FileListCompletionBlock) (CAFiles * _Nullable files, NSError  * _
 /**
  FileContentCompletionBlock - executed when a file has been retrieved.
 
- @param file CAFile
+ @param file DMEFile
  @param error NSError
  */
-typedef void (^FileContentCompletionBlock) (CAFile * _Nullable file, NSError * _Nullable error);
+typedef void (^FileContentCompletionBlock) (DMEFile * _Nullable file, NSError * _Nullable error);
 
 
 /**

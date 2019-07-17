@@ -293,7 +293,7 @@ Upon success `DMEClient` returns a `CAFiles` object which contains a single fiel
 Finally you can use the returned file IDs to fetch their data:
 
 > ```
-> [[DMEClient sharedClient] getFileWithId:fileId completion:^(CAFile * _Nullable file, NSError * _Nullable error){...}];
+> [[DMEClient sharedClient] getFileWithId:fileId completion:^(DMEFile * _Nullable file, NSError * _Nullable error){...}];
 > ```
 
 
@@ -377,11 +377,11 @@ The following properties can be configured:
 
 ## Fetched Files
 
-Each file you fetch from Consent Access is represented by `CAFile` object. 
+Each file you fetch from Consent Access is represented by `DMEFile` object. 
 
-`CAFile` has a `fileContent` property which is the binary data blob of the file. In the vast majority of use cases, the files returned will be serialised JSON which can be deduced from this data blob.
+`DMEFile` has a `fileContent` property which is the binary data blob of the file. In the vast majority of use cases, the files returned will be serialised JSON which can be deduced from this data blob.
 
-In some use cases, the data returned may be of another type and not serialisable to JSON. You can inspect the `mimeType` property of `CAFile` to see exactly what type the data is.
+In some use cases, the data returned may be of another type and not serialisable to JSON. You can inspect the `mimeType` property of `DMEFile` to see exactly what type the data is.
 
 The `CAMimeType` enum represents the various mime types that are currently supported, with those that aren't defaulting to raw bytes (octet stream).
 

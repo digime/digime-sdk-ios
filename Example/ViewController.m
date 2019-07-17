@@ -123,7 +123,7 @@
 
 - (void)getFileWith:(NSString *)Id
 {
-    [self.dmeClient getFileWithId:Id completion:^(CAFile * _Nullable file, NSError * _Nullable error) {
+    [self.dmeClient getFileWithId:Id completion:^(DMEFile * _Nullable file, NSError * _Nullable error) {
         
         if (file == nil){
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", Id, error.localizedDescription]];

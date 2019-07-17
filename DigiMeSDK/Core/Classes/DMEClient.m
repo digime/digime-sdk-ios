@@ -214,7 +214,7 @@
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
         
-        CAFile *file = [[CAFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
+        DMEFile *file = [[DMEFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
         completion(file, error);
         
         return;
@@ -245,13 +245,13 @@
 
 - (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
 {
-    CAFile *file;
+    DMEFile *file;
     NSError *error;
     CAFileMetadata *metadata;
     NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:&metadata error:&error];
     if (unpackedData != nil)
     {
-        file = [[CAFile alloc] initWithFileId:fileId fileContent:unpackedData fileMetadata:metadata];
+        file = [[DMEFile alloc] initWithFileId:fileId fileContent:unpackedData fileMetadata:metadata];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{

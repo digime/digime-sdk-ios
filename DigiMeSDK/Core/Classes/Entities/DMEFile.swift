@@ -1,5 +1,5 @@
 //
-//  CAFile.swift
+//  DMEFile.swift
 //  DigiMeSDK
 //
 //  Created by on 16/05/2019.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-public enum CADataParsingError: Error {
+public enum DMEDataParsingError: Error {
     case couldNotDeserialiseRawData
 }
 
-public protocol CAInitialisableFromRawData {
-    init(rawData: Data, mimeType: CAMimeType) throws
+public protocol DMEInitialisableFromRawData {
+    init(rawData: Data, mimeType: DMEMimeType) throws
 }
 
 @objc
-public enum CAMimeType: Int, CaseIterable, ExpressibleByStringLiteral {
+public enum DMEMimeType: Int, CaseIterable, ExpressibleByStringLiteral {
     public typealias StringLiteralType = String
     
     public init(stringLiteral value: StringLiteralType) {
@@ -48,28 +48,28 @@ public enum CAMimeType: Int, CaseIterable, ExpressibleByStringLiteral {
     case text_json
 }
 
-internal protocol CADataRepresentation: CAInitialisableFromRawData {
+internal protocol DMEDataRepresentation: DMEInitialisableFromRawData {
     
     associatedtype FileDataType
     
-    static var compatibleMimeTypes: [CAMimeType] { get }
+    static var compatibleMimeTypes: [DMEMimeType] { get }
     
-    var fileMimeType: CAMimeType { get }
+    var fileMimeType: DMEMimeType { get }
     var fileContent: FileDataType { get }
 }
 
-internal class CAJSONData: CADataRepresentation {
+internal class DMEJSONData: DMEDataRepresentation {
     
     public typealias FileDataType = [[AnyHashable: Any]]
-    public var fileMimeType: CAMimeType
+    public var fileMimeType: DMEMimeType
     public var fileContent: FileDataType
     
-    public static let compatibleMimeTypes: [CAMimeType] = [CAMimeType.application_json]
+    public static let compatibleMimeTypes: [DMEMimeType] = [DMEMimeType.application_json]
     
-    public required init(rawData: Data, mimeType: CAMimeType) throws {
+    public required init(rawData: Data, mimeType: DMEMimeType) throws {
         
         guard let json = (try? JSONSerialization.jsonObject(with: rawData, options: [])) as? [[AnyHashable: Any]] else {
-            throw CADataParsingError.couldNotDeserialiseRawData
+            throw DMEDataParsingError.couldNotDeserialiseRawData
         }
         
         self.fileContent = json
@@ -77,18 +77,18 @@ internal class CAJSONData: CADataRepresentation {
     }
 }
 
-internal class CAImageData: CADataRepresentation {
+internal class DMEImageData: DMEDataRepresentation {
     
     public typealias FileDataType = UIImage
-    public var fileMimeType: CAMimeType
+    public var fileMimeType: DMEMimeType
     public var fileContent: FileDataType
     
-    public static let compatibleMimeTypes: [CAMimeType] = [.image_bmp, .image_gif, .image_png, .image_jpeg, .image_tiff]
+    public static let compatibleMimeTypes: [DMEMimeType] = [.image_bmp, .image_gif, .image_png, .image_jpeg, .image_tiff]
     
-    public required init(rawData: Data, mimeType: CAMimeType) throws {
+    public required init(rawData: Data, mimeType: DMEMimeType) throws {
         
         guard let image = UIImage(data: rawData) else {
-            throw CADataParsingError.couldNotDeserialiseRawData
+            throw DMEDataParsingError.couldNotDeserialiseRawData
         }
         
         self.fileContent = image
@@ -96,40 +96,40 @@ internal class CAImageData: CADataRepresentation {
     }
 }
 
-// CARawData doubles as the ObjC compatibility layer, and hence exposes
+// DMERawData doubles as the ObjC compatibility layer, and hence exposes
 // a number of 'try and do something' methods.
 
 @objcMembers
-internal class CARawData: NSObject, CADataRepresentation {
+internal class DMERawData: NSObject, DMEDataRepresentation {
     
     public typealias FileDataType = Data
-    public var fileMimeType: CAMimeType
+    public var fileMimeType: DMEMimeType
     public var fileContent: FileDataType
     
-    public static let compatibleMimeTypes: [CAMimeType] = CAMimeType.allCases
+    public static let compatibleMimeTypes: [DMEMimeType] = DMEMimeType.allCases
     
-    public required init(rawData: Data, mimeType: CAMimeType) throws {
+    public required init(rawData: Data, mimeType: DMEMimeType) throws {
         self.fileContent = rawData
         self.fileMimeType = mimeType
     }
 }
 
-// @available(swift, obsoleted: 0.1, message: "Usage of CAFile is limited to Objective-C. For Swift, which supports generics, use CAFileContainer.")
+// @available(swift, obsoleted: 0.1, message: "Usage of DMEFile is limited to Objective-C. For Swift, which supports generics, use DMEFileContainer.")
 @objcMembers
-public class CAFile: NSObject {
+public class DMEFile: NSObject {
     
-    private var boxedFile: CARawData
+    private var boxedFile: DMERawData
     public var fileId: String
     public var fileMetadata: CAFileMetadata?
     
-    public var fileMimeType: CAMimeType {
+    public var fileMimeType: DMEMimeType {
         return fileMetadata?.mimeType ?? .application_octetStream
     }
     public var fileContent: Data {
         return boxedFile.fileContent
     }
     
-    @available(*, deprecated, message: "Please use -[CAFile fileContentAsJSON] instead.")
+    @available(*, deprecated, message: "Please use -[DMEFile fileContentAsJSON] instead.")
     @available(*, renamed: "fileContentAsJSON")
     public var json: [[AnyHashable: Any]]? {
         return fileContentAsJSON()
@@ -142,7 +142,7 @@ public class CAFile: NSObject {
     
     public init(fileId: String, fileContent: Data, fileMetadata: CAFileMetadata?) {
         self.fileId = fileId
-        self.boxedFile = try! CARawData(rawData: fileContent, mimeType: fileMetadata?.mimeType ?? .application_octetStream)
+        self.boxedFile = try! DMERawData(rawData: fileContent, mimeType: fileMetadata?.mimeType ?? .application_octetStream)
         self.fileMetadata = fileMetadata
     }
     
@@ -159,7 +159,7 @@ public class CAFile: NSObject {
     }
 }
 
-internal class CAFileContainer<DataType: CADataRepresentation> {
+internal class DMEFileContainer<DataType: DMEDataRepresentation> {
     
     public var fileId: String
     private var file: DataType
@@ -169,10 +169,10 @@ internal class CAFileContainer<DataType: CADataRepresentation> {
     
     public init(emptyFileWithId id: String, andDataType dataType: DataType.Type) {
         fileId = id
-        file = try! dataType.init(rawData: Data(), mimeType: CAMimeType.application_octetStream)
+        file = try! dataType.init(rawData: Data(), mimeType: DMEMimeType.application_octetStream)
     }
     
-    public init(fileWithId id: String, rawData: Data, mimeType: CAMimeType, as dataType: DataType.Type) throws {
+    public init(fileWithId id: String, rawData: Data, mimeType: DMEMimeType, as dataType: DataType.Type) throws {
         fileId = id
         file = try dataType.init(rawData: rawData, mimeType: mimeType)
     }
