@@ -8,12 +8,12 @@
 
 #import "DMEAPIClient.h"
 #import "DMEClient.h"
-#import "CAFilesDeserializer.h"
-#import "CASessionManager.h"
+#import "DMEFilesDeserializer.h"
+#import "DMESessionManager.h"
 #import "DMECrypto.h"
 #import "DMEValidator.h"
 #import "DMEAppCommunicator.h"
-#import "DMEAuthorizationManager.h"
+#import "DMENativeConsentManager.h"
 #import "DMEClient+Private.h"
 #import "DMEDataUnpacker.h"
 #import <DigiMeSDK/DigiMeSDK-Swift.h>
@@ -41,13 +41,13 @@
     {
         _clientConfiguration = [DMEClientConfiguration new];
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];
-        _sessionManager = [[CASessionManager alloc] initWithApiClient:_apiClient];
+        _sessionManager = [[DMESessionManager alloc] initWithApiClient:_apiClient];
         _crypto = [DMECrypto new];
         _decryptsData = YES;
         
         // Configure mercury appCommunicator.
         _appCommunicator = [DMEAppCommunicator new];
-        DMEAuthorizationManager *authMgr = [[DMEAuthorizationManager alloc] initWithAppCommunicator:_appCommunicator];
+        DMENativeConsentManager *authMgr = [[DMENativeConsentManager alloc] initWithAppCommunicator:_appCommunicator];
         [_appCommunicator addCallbackHandler:authMgr];
         _authManager = authMgr;
     }
@@ -62,7 +62,7 @@
     [self authorizeWithScope:nil completion:authorizationCompletion];
 }
 
-- (void)authorizeWithScope:(id<CADataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -77,7 +77,7 @@
     
     //get session
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
@@ -135,7 +135,7 @@
 - (void)userAuthorizationWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     __weak __typeof(self)weakSelf = self;
-    [self.authManager beginAuthorizationWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.authManager beginAuthorizationWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         //notify on main thread.
         __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -172,7 +172,7 @@
     [self.apiClient requestFileListWithSuccess:^(NSData * _Nonnull data) {
         
         NSError *error;
-        CAFiles *files = [CAFilesDeserializer deserialize:data error:&error];
+        DMEFiles *files = [DMEFilesDeserializer deserialize:data error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -214,7 +214,7 @@
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
         
-        CAFile *file = [[CAFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
+        DMEFile *file = [[DMEFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
         completion(file, error);
         
         return;
@@ -245,13 +245,13 @@
 
 - (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
 {
-    CAFile *file;
+    DMEFile *file;
     NSError *error;
-    CAFileMetadata *metadata;
+    DMEFileMetadata *metadata;
     NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:&metadata error:&error];
     if (unpackedData != nil)
     {
-        file = [[CAFile alloc] initWithFileId:fileId fileContent:unpackedData fileMetadata:metadata];
+        file = [[DMEFile alloc] initWithFileId:fileId fileContent:unpackedData fileMetadata:metadata];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -295,12 +295,12 @@
             return;
         }
         
-        CAAccounts *accounts;
+        DMEAccounts *accounts;
         NSError *error;
         NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:NULL error:&error];
         if (unpackedData != nil)
         {
-            accounts = [CAAccounts deserialize:unpackedData error:&error];
+            accounts = [DMEAccounts deserialize:unpackedData error:&error];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{

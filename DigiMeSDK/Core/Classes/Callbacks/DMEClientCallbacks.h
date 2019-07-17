@@ -6,34 +6,34 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CASession.h"
+#import "DMESession.h"
 #import "NSError+SDK.h"
 #import "NSError+Auth.h"
 #import "NSError+API.h"
-#import "CAFiles.h"
-#import "CAAccounts.h"
+#import "DMEFiles.h"
+#import "DMEAccounts.h"
 
 #pragma once
 
-@class CAPostbox, CAFile;
+@class DMEPostbox, DMEFile;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
  AuthorizationCompletionBlock - executed when authorization stage has completed.
 
- @param session CASession
+ @param session DMESession
  @param error NSError
  */
-typedef void (^AuthorizationCompletionBlock) (CASession * _Nullable session, NSError * _Nullable error);
+typedef void (^AuthorizationCompletionBlock) (DMESession * _Nullable session, NSError * _Nullable error);
 
 /**
  PostboxCompletionBlock - executed when a Postbox is retrieved.
 
- @param postbox CAPostbox
+ @param postbox DMEPostbox
  @param error NSError
  */
-typedef void (^PostboxCreationCompletionBlock) (CAPostbox * _Nullable postbox, NSError * _Nullable error);
+typedef void (^PostboxCreationCompletionBlock) (DMEPostbox * _Nullable postbox, NSError * _Nullable error);
 
 /**
  PostboxDataPushCompletionBlock - executed when data has been pushed to Postbox.
@@ -45,27 +45,27 @@ typedef void (^PostboxDataPushCompletionBlock) (NSError * _Nullable error);
 /**
  FileListCompletionBlock - executed when file list has been retrieved.
 
- @param files CAFiles
+ @param files DMEFiles
  @param error NSError
  */
-typedef void (^FileListCompletionBlock) (CAFiles * _Nullable files, NSError  * _Nullable error);
+typedef void (^FileListCompletionBlock) (DMEFiles * _Nullable files, NSError  * _Nullable error);
 
 
 /**
  FileContentCompletionBlock - executed when a file has been retrieved.
 
- @param file CAFile
+ @param file DMEFile
  @param error NSError
  */
-typedef void (^FileContentCompletionBlock) (CAFile * _Nullable file, NSError * _Nullable error);
+typedef void (^FileContentCompletionBlock) (DMEFile * _Nullable file, NSError * _Nullable error);
 
 
 /**
  AccountsCompletionBlock - executed when account metadata has been retrieved.
 
- @param accounts CAAccounts
+ @param accounts DMEAccounts
  @param error NSError
  */
-typedef void (^AccountsCompletionBlock) (CAAccounts * _Nullable accounts, NSError * _Nullable error);
+typedef void (^AccountsCompletionBlock) (DMEAccounts * _Nullable accounts, NSError * _Nullable error);
 
 NS_ASSUME_NONNULL_END

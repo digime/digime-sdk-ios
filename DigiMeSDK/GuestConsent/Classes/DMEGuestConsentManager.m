@@ -6,7 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "DMEGuestConsentManager.h"
 #import "DMEClient.h"
 #import <SafariServices/SFSafariViewController.h>
@@ -16,8 +16,8 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 @interface DMEGuestConsentManager() <SFSafariViewControllerDelegate>
 
-@property (nonatomic, strong, readonly) CASession *session;
-@property (nonatomic, strong, readonly) CASessionManager *sessionManager;
+@property (nonatomic, strong, readonly) DMESession *session;
+@property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 @property (nonatomic, copy, nullable) AuthorizationCompletionBlock guestConsentCompletionBlock;
 @property (nonatomic, strong) SFSafariViewController *safariViewController;
 @property (nonatomic, strong) NSDictionary *sentParameters;
@@ -164,12 +164,12 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 #pragma mark - Convenience
 
-- (CASession *)session
+- (DMESession *)session
 {
     return self.sessionManager.currentSession;
 }
 
-- (CASessionManager *)sessionManager
+- (DMESessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
 }

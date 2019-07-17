@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  CASDK
+//  DMESDK
 //
 //  Created on 24/01/2018.
 //  Copyright © 2018 DigiMe. All rights reserved.
@@ -74,7 +74,7 @@
     self.progress = 0;
     [self.logVC reset];
 
-    [self.dmeClient authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         if (session == nil){
             [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
@@ -90,7 +90,7 @@
 
 - (void)getAccounts
 {
-    [self.dmeClient getAccountsWithCompletion:^(CAAccounts * _Nullable accounts, NSError * _Nullable error) {
+    [self.dmeClient getAccountsWithCompletion:^(DMEAccounts * _Nullable accounts, NSError * _Nullable error) {
         
         if (accounts == nil){
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
@@ -104,7 +104,7 @@
 
 - (void)getFileList
 {
-    [self.dmeClient getFileListWithCompletion:^(CAFiles * _Nullable files, NSError * _Nullable error) {
+    [self.dmeClient getFileListWithCompletion:^(DMEFiles * _Nullable files, NSError * _Nullable error) {
         
         if (files == nil){
             [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve fileList failed: %@", error.localizedDescription]];
@@ -123,7 +123,7 @@
 
 - (void)getFileWith:(NSString *)Id
 {
-    [self.dmeClient getFileWithId:Id completion:^(CAFile * _Nullable file, NSError * _Nullable error) {
+    [self.dmeClient getFileWithId:Id completion:^(DMEFile * _Nullable file, NSError * _Nullable error) {
         
         if (file == nil){
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", Id, error.localizedDescription]];

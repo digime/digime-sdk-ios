@@ -22,18 +22,18 @@ Pod::Spec.new do |s|
       ss.source_files  	      = "DigiMeSDK/Core/Classes/**/*.{h,m,swift}", "DigiMeSDK/DigiMeSDK.h"
       ss.resources            = ["DigiMeSDK/Core/Assets/*.{der}"]
       ss.frameworks    	      = "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
-      ss.private_header_files = 'DigiMeSDK/Core/Classes/Entities/CASession+Private.h',
+      ss.private_header_files = 'DigiMeSDK/Core/Classes/Entities/DMESession+Private.h',
 	'DigiMeSDK/Core/Classes/Network/DMEAPIClient.h',
 	'DigiMeSDK/Core/Classes/Network/DMEOperation.h',
 	'DigiMeSDK/Core/Classes/Network/DMERequestFactory.h', 
 	'DigiMeSDK/Core/Classes/Security/DMECertificatePinner.h',
 	'DigiMeSDK/Core/Classes/Security/DMECrypto.h',
-	'DigiMeSDK/Core/Classes/Security/CADataDecryptor.h',
+	'DigiMeSDK/Core/Classes/Security/DMEDataDecryptor.h',
 	'DigiMeSDK/Core/Classes/Utility/*.h',
-	'DigiMeSDK/Core/Classes/CASessionManager.h',
+	'DigiMeSDK/Core/Classes/DMESessionManager.h',
 	'DigiMeSDK/Core/Classes/DMEAPIClient+Private.h',
 	'DigiMeSDK/Core/Classes/DMEAppCommunicator.h',
-	'DigiMeSDK/Core/Classes/DMEAuthorizationManager.h',
+	'DigiMeSDK/Core/Classes/DMENativeConsentManager.h',
 	'DigiMeSDK/Core/Classes/DMEClient+Private.h',
 	'DigiMeSDK/Core/Classes/DMEDataUnpacker.h'
     end
@@ -53,8 +53,8 @@ Pod::Spec.new do |s|
       ss.frameworks           = "Foundation", "UIKit"
       ss.xcconfig 	      = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKGuestConsent' }
       ss.private_header_files = 'DigiMeSDK/GuestConsent/Classes/DMEGuestConsentManager.h', 
-	'DigiMeSDK/GuestConsent/Classes/PreConsentView.h',
-	'DigiMeSDK/GuestConsent/Classes/PreConsentViewController.h'
+	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentView.h',
+	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentViewController.h'
       ss.dependency "DigiMeSDK/Core"
     end
 end

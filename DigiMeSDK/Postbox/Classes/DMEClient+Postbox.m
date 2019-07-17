@@ -9,7 +9,7 @@
 #import "DMEClient+Postbox.h"
 #import "DMEPostboxManager.h"
 #import "DMEClient+Private.h"
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "DMEAPIClient.h"
 #import "DMEAPIClient+Postbox.h"
 
@@ -50,7 +50,7 @@ DMEPostboxManager* _postboxManager;
     
     //get session
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:nil completion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:nil completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
@@ -67,7 +67,7 @@ DMEPostboxManager* _postboxManager;
             return;
         }
         
-        [strongSelf.postboxManager requestPostboxWithCompletion:^(CAPostbox * _Nullable postbox, NSError * _Nullable error) {
+        [strongSelf.postboxManager requestPostboxWithCompletion:^(DMEPostbox * _Nullable postbox, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (completion)
@@ -80,7 +80,7 @@ DMEPostboxManager* _postboxManager;
     }];
 }
 
-- (void)pushDataToPostbox:(CAPostbox *)postbox
+- (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
                      data:(NSData *)data
                completion:(PostboxDataPushCompletionBlock)completion

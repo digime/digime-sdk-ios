@@ -1,26 +1,31 @@
 //
-//  DMEPostboxManager.m
+//  DMENativeConsentManager.m
 //  DigiMeSDK
 //
-//  Created on 26/06/2018.
+//  Created on 29/01/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEPostboxManager.h"
+#import "DMENativeConsentManager.h"
 #import "DMESessionManager.h"
-#import "DMEClient.h"
-#import "DMEPostbox.h"
 #import "DMESession+Private.h"
+#import "DMEClient.h"
 
-@interface DMEPostboxManager()
+#import "NSError+Auth.h"
+#import "UIViewController+DMEExtension.h"
+
+#import <UIKit/UIKit.h>
+#import <StoreKit/StoreKit.h>
+
+@interface DMENativeConsentManager()
 
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
-@property (nonatomic, copy, nullable) PostboxCreationCompletionBlock postboxCompletionBlock;
+@property (nonatomic, copy, nullable) AuthorizationCompletionBlock authCompletionBlock;
 
 @end
 
-@implementation DMEPostboxManager
+@implementation DMENativeConsentManager
 
 #pragma mark - CallbackHandler Conformance
 
@@ -38,64 +43,48 @@
 
 - (BOOL)canHandleAction:(DMEOpenAction *)action
 {
-    return [action isEqualToString:@"postbox"];
+    return [action isEqualToString:@"data"];
 }
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    BOOL success = [parameters[kDMEResponse] boolValue];
+    BOOL result = [parameters[kDMEResponse] boolValue];
     NSString *sessionKey = parameters[kCARequestSessionKey];
-    NSString *postboxId = parameters[kCARequestPostboxId];
-    NSString *postboxPublicKey = parameters[kCARequestPostboxPublicKey];
     
     [self filterMetadata: parameters];
     
     NSError *err;
-    DMEPostbox *postbox;
     
     if(![self.sessionManager isSessionKeyValid:sessionKey])
     {
         err = [NSError authError:AuthErrorInvalidSessionKey];
     }
-    else if(!success || !postboxId.length)
+    else if(!result)
     {
-        err = [NSError authError:AuthErrorGeneral];
-    }
-    else
-    {
-        postbox = [[DMEPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
-        postbox.postboxRSAPublicKey = postboxPublicKey;
+        err = [NSError authError:AuthErrorCancelled];
     }
     
-    if (self.postboxCompletionBlock)
+    if (self.authCompletionBlock)
     {
         // Need to know if we succeeded.
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.postboxCompletionBlock(postbox, err);
+            self.authCompletionBlock(self.session, err);
         });
     }
 }
 
-- (void)requestPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
+#pragma mark - Authorization
+
+-(void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
 {
-    
-    if (![NSThread currentThread].isMainThread)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self requestPostboxWithCompletion:completion];
-        });
-        return;
-    }
-    
     if (![self.sessionManager isSessionValid])
     {
-        completion(nil, nil);
+        completion(nil, [NSError authError:AuthErrorInvalidSession]);
         return;
     }
+    self.authCompletionBlock = completion;
     
-    self.postboxCompletionBlock = completion;
-    
-    DMEOpenAction *action = @"postbox";
+    DMEOpenAction *action = @"data";
     NSDictionary *params = @{
                              kCARequestSessionKey: self.session.sessionKey,
                              kCARequestRegisteredAppID: self.sessionManager.client.appId,
@@ -118,7 +107,12 @@
 
 -(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
-    NSMutableArray *allowedKeys = @[kDMEResponse, kCARequestSessionKey, kCARequestPostboxId, kCARequestPostboxPublicKey, kCARequestRegisteredAppID].mutableCopy;
+    // default legacy keys
+    NSMutableArray *allowedKeys = @[kCARequestSessionKey, kDMEResponse, kCARequestRegisteredAppID].mutableCopy;
+    // timing keys
+    [allowedKeys addObjectsFromArray:@[kTimingDataGetAllFiles, kTimingDataGetFile, kTimingFetchContractPermission, kTimingFetchDataGetAccount, kTimingFetchDataGetFileList, kTimingFetchSessionKey, kDataRequest, kFetchContractDetails, kUpdateContractPermission, kTimingTotal]];
+    // timing debug keys
+    [allowedKeys addObjectsFromArray:@[kDebugAppId, kDebugBundleVersion, kDebugPlatform, kContractType, kDeviceId, kDigiMeVersion, kUserId, kLibraryId, kPCloudType, kContractId, kCARequest3dPartyAppName]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
     NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
     self.session.metadata = whiteDictionary;

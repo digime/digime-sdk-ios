@@ -7,7 +7,7 @@
 //
 
 #import "DMERequestFactory.h"
-#import "CADataRequestSerializer.h"
+#import "DMEDataRequestSerializer.h"
 #import "NSData+DMECrypto.h"
 
 static NSString * const kDigiMeAPIVersion = @"v1.3";
@@ -37,7 +37,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
 
 #pragma mark - Public
 
-- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<CADataRequest>)scope
+- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<DMEDataRequest>)scope
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/session", self.baseUrlPath]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
@@ -50,7 +50,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
     
     if (scope != nil)
     {
-        NSDictionary *serializedScope = [CADataRequestSerializer serialize:scope];
+        NSDictionary *serializedScope = [DMEDataRequestSerializer serialize:scope];
         
         if (serializedScope != nil)
         {

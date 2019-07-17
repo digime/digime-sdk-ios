@@ -6,7 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CADataDecryptor.h"
+#import "DMEDataDecryptor.h"
 #import "DMECompressor.h"
 #import "DMEDataUnpacker.h"
 #import "NSError+SDK.h"
@@ -14,7 +14,7 @@
 
 @implementation DMEDataUnpacker
 
-+ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(CAFileMetadata * _Nullable __autoreleasing * _Nullable)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error
++ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(DMEFileMetadata * _Nullable __autoreleasing * _Nullable)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error
 {
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
     
@@ -27,7 +27,7 @@
     NSDictionary *metadataJSON = json[@"fileMetadata"];
     if (metadataJSON && resolvedMetadata)
     {
-        *resolvedMetadata = [CAFileMetadata metadataFromJSON:metadataJSON];
+        *resolvedMetadata = [DMEFileMetadata metadataFromJSON:metadataJSON];
     }
     
     id fileContent = json[@"fileContent"];
@@ -37,7 +37,7 @@
         return nil;
     }
     
-    NSData *unpackedData = [CADataDecryptor decryptFileContent:fileContent error:error];
+    NSData *unpackedData = [DMEDataDecryptor decryptFileContent:fileContent error:error];
     
     if (!unpackedData)
     {

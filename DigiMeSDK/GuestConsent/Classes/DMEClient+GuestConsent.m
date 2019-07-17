@@ -11,14 +11,14 @@
 #import "DMEClient+GuestConsent.h"
 #import "DMEGuestConsentManager.h"
 #import "DMEClient+Private.h"
-#import "CASessionManager.h"
-#import "PreConsentViewController.h"
+#import "DMESessionManager.h"
+#import "DMEPreConsentViewController.h"
 #import "UIViewController+DMEExtension.h"
 
-@interface DMEClient () <PreConsentViewControllerDelegate>
+@interface DMEClient () <DMEPreConsentViewControllerDelegate>
 
 @property (nonatomic, weak) DMEGuestConsentManager *guestConsentManager;
-@property (nonatomic, strong) PreConsentViewController *preconsentViewController;
+@property (nonatomic, strong) DMEPreConsentViewController *preconsentViewController;
 
 @end
 
@@ -38,14 +38,14 @@ DMEGuestConsentManager *_guestConsentManager;
     _guestConsentManager = manager;
 }
 
-PreConsentViewController *_preconsentViewController;
+DMEPreConsentViewController *_preconsentViewController;
 
--(PreConsentViewController *)preconsentViewController
+-(DMEPreConsentViewController *)preconsentViewController
 {
     return _preconsentViewController;
 }
 
--(void)setPreconsentViewController:(PreConsentViewController *)controller
+-(void)setPreconsentViewController:(DMEPreConsentViewController *)controller
 {
     _preconsentViewController = controller;
 }
@@ -61,7 +61,7 @@ PreConsentViewController *_preconsentViewController;
     else
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.preconsentViewController = [PreConsentViewController new];
+            self.preconsentViewController = [DMEPreConsentViewController new];
             self.preconsentViewController.delegate = self;
             self.preconsentViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
             [[UIViewController topmostViewController] presentViewController:self.preconsentViewController animated:YES completion:nil];
@@ -69,7 +69,7 @@ PreConsentViewController *_preconsentViewController;
     }
 }
 
-- (void)authorizeGuestWithScope:(id<CADataRequest>)scope
+- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope
 {
     [self authorizeGuestWithScope:scope completion:nil];
 }
@@ -79,7 +79,7 @@ PreConsentViewController *_preconsentViewController;
     [self authorizeGuestWithScope:nil completion:completion];
 }
 
-- (void)authorizeGuestWithScope:(id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion
 {
     if (!self.guestConsentManager)
     {
@@ -90,7 +90,7 @@ PreConsentViewController *_preconsentViewController;
     }
     
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
@@ -106,7 +106,7 @@ PreConsentViewController *_preconsentViewController;
             return;
         }
         
-        [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (completion)
