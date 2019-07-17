@@ -7,6 +7,9 @@
 //
 
 #import "CASession.h"
+#import "NSError+SDK.h"
+#import "NSError+Auth.h"
+#import "NSError+API.h"
 #import "CAFiles.h"
 #import "CAAccounts.h"
 

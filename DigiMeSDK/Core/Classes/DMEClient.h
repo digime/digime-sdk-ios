@@ -8,11 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "CAScope.h"
-#import "DMEClientAuthorizationDelegate.h"
 #import "DMEClientCallbacks.h"
 #import "DMEClientConfiguration.h"
-#import "DMEClientDownloadDelegate.h"
-#import "DMEClientPostboxDelegate.h"
 
 @class CASessionManager;
 
@@ -43,25 +40,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong) DMEClientConfiguration *clientConfiguration;
 
-
-/**
- DigiMe authorization delegate. This should only be set if you do not with to use DMEClientCallbacks.
- */
-@property (nonatomic, nullable, weak) id<DMEClientAuthorizationDelegate> authorizationDelegate;
-
-
-/**
- DigiMe download delegate. This should only be set if you do not wish to use DMEClientCallbacks.
- */
-@property (nonatomic, nullable, weak) id<DMEClientDownloadDelegate> downloadDelegate;
-
-
-/**
- DigiMe postbox delegate. This should only be set if you do not wish to use DMEClientCallbacks.
- */
-@property (nonatomic, nullable, weak) id<DMEClientPostboxDelegate> postboxDelegate;
-
-
 /**
  DigiMe Consent Access Session Manager.
  */
@@ -87,90 +65,43 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (DMEClient *)sharedClient;
 
-
-/**
- Initializes contract authentication. This will attempt to create a session and redirect
- to the Digi.me application.
- NOTE: If using this method, the delegate must be set.
- */
-- (void)authorize;
-
-
-/**
- Initializes contract authentication with custom scope. This will attempt to create and redirect
- to the Digi.me application.
- NOTE: If using this method, the delegate must be set.
- 
- @param scope custom scope that will be applied to available data.
- */
-- (void)authorizeWithScope:(id<CADataRequest>)scope;
-
-
 /**
  Initilizes contract authentication. This will attempt to create a session and redirect
  to the Digi.me application.
- NOTE: If using this method, the delegate must NOT be set.
 
  @param authorizationCompletion AuthorizationCompletionBlock
  */
-- (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion;
+- (void)authorizeWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
 
 
 /**
  Initilizes contract authentication with custom scope. This will attempt to create a session and redirect
  to the Digi.me application.
- NOTE: If using this method, the delegate must NOT be set.
 
  @param scope custom scope that will be applied to available data.
  @param authorizationCompletion AuthorizationCompletionBlock
  */
-- (void)authorizeWithScope:(nullable id<CADataRequest>)scope completion:(nullable AuthorizationCompletionBlock)authorizationCompletion;
+- (void)authorizeWithScope:(nullable id<CADataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
 
 /**
  Fetches file list that's available for the authorized contract.
- NOTE: If using this method, the delegate must be set.
- */
-- (void)getFileList;
-
-
-/**
- Fetches file list that's available for the authorized contract.
- NOTE: If using this method, the delegate must NOT be set.
  @param completion FileListCompletionBlock.
  */
-- (void)getFileListWithCompletion:(nullable FileListCompletionBlock)completion;
-
-
-/**
- Fetches file content for fileId. FileId is retrieve from fileList.
- NOTE: If using this method, the delegate must be set.
-
- @param fileId NSString - id of the file to fetch.
- */
-- (void)getFileWithId:(NSString *)fileId;
-
+- (void)getFileListWithCompletion:(nonnull FileListCompletionBlock)completion;
 
 /**
  Fetches file content for fileId. FileId is retrieve from fileList.
- NOTE: If using this method, the delegate must NOT be set.
 
  @param fileId NSString id if the file to fetch.
  @param completion FileContentCompletionBlock
  */
-- (void)getFileWithId:(NSString *)fileId completion:(nullable FileContentCompletionBlock)completion;
+- (void)getFileWithId:(NSString *)fileId completion:(nonnull FileContentCompletionBlock)completion;
 
 /**
  Fetches the accounts available for the authorized contract.
- NOTE: If using this method, the delegate must be set.
- */
-- (void)getAccounts;
-
-/**
- Fetches the accounts available for the authorized contract.
- NOTE: If using this method, the delegate must NOT be set.
  @param completion AccountsCompletionBlock
  */
-- (void)getAccountsWithCompletion:(nullable AccountsCompletionBlock)completion;
+- (void)getAccountsWithCompletion:(nonnull AccountsCompletionBlock)completion;
 
 /**
  Handles returning from digi.me application.

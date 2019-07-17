@@ -37,11 +37,6 @@ DMEPostboxManager* _postboxManager;
 
 #pragma mark - End ivar and accessor definitions.
 
-- (void)createPostbox
-{
-    [self createPostboxWithCompletion:nil];
-}
-
 - (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
 {
     // Check if the manager has been instantiated.
@@ -67,11 +62,6 @@ DMEPostboxManager* _postboxManager;
                     completion(nil, error);
                     return;
                 }
-                
-                if ([strongSelf.postboxDelegate respondsToSelector:@selector(postboxCreationFailed:)])
-                {
-                    [strongSelf.postboxDelegate postboxCreationFailed:error];
-                }
             });
             
             return;
@@ -84,18 +74,6 @@ DMEPostboxManager* _postboxManager;
                 {
                     completion(postbox, error);
                     return;
-                }
-                
-                if (error)
-                {
-                    if ([strongSelf.postboxDelegate respondsToSelector:@selector(postboxCreationFailed:)])
-                    {
-                        [strongSelf.postboxDelegate postboxCreationFailed:error];
-                    }
-                }
-                else if ([strongSelf.postboxDelegate respondsToSelector:@selector(postboxCreationSucceeded:)])
-                {
-                    [strongSelf.postboxDelegate postboxCreationSucceeded:postbox];
                 }
             });
         }];
