@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CAFiles.h"
+#import "DMEFiles.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,13 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Deserializes JSON content into CAFiles object.
+ Deserializes JSON content into DMEFiles object.
 
  @param jsonData NSData
  @param error NSError
- @return CAFiles object
+ @return DMEFiles object
  */
-+ (nullable CAFiles *)deserialize:(NSData *)jsonData error:(NSError **)error;
++ (nullable DMEFiles *)deserialize:(NSData *)jsonData error:(NSError **)error;
 
 @end
 

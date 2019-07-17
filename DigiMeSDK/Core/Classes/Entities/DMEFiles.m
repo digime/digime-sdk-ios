@@ -1,14 +1,14 @@
 //
-//  CAFiles.m
+//  DMEFiles.m
 //  DigiMeSDK
 //
 //  Created on 24/01/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CAFiles.h"
+#import "DMEFiles.h"
 
-@implementation CAFiles
+@implementation DMEFiles
 
 #pragma mark - Initialization
 

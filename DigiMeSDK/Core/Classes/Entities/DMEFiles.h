@@ -1,5 +1,5 @@
 //
-//  CAFiles.h
+//  DMEFiles.h
 //  DigiMeSDK
 //
 //  Created on 24/01/2018.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CAFiles : NSObject
+@interface DMEFiles : NSObject
 
 /**
  -init unavailable. Use -initWithFileIds:

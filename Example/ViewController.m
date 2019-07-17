@@ -104,7 +104,7 @@
 
 - (void)getFileList
 {
-    [self.dmeClient getFileListWithCompletion:^(CAFiles * _Nullable files, NSError * _Nullable error) {
+    [self.dmeClient getFileListWithCompletion:^(DMEFiles * _Nullable files, NSError * _Nullable error) {
         
         if (files == nil){
             [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve fileList failed: %@", error.localizedDescription]];

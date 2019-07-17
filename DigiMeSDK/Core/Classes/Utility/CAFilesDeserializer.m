@@ -10,7 +10,7 @@
 
 @implementation CAFilesDeserializer
 
-+ (CAFiles *)deserialize:(NSData *)jsonData error:(NSError * _Nullable __autoreleasing *)error
++ (DMEFiles *)deserialize:(NSData *)jsonData error:(NSError * _Nullable __autoreleasing *)error
 {
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:error];
     
@@ -18,7 +18,7 @@
     
     if (fileList)
     {
-        return [[CAFiles alloc] initWithFileIds:fileList];
+        return [[DMEFiles alloc] initWithFileIds:fileList];
     }
     
     return nil;

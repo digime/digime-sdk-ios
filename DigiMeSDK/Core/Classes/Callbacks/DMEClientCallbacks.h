@@ -10,7 +10,7 @@
 #import "NSError+SDK.h"
 #import "NSError+Auth.h"
 #import "NSError+API.h"
-#import "CAFiles.h"
+#import "DMEFiles.h"
 #import "DMEAccounts.h"
 
 #pragma once
@@ -45,10 +45,10 @@ typedef void (^PostboxDataPushCompletionBlock) (NSError * _Nullable error);
 /**
  FileListCompletionBlock - executed when file list has been retrieved.
 
- @param files CAFiles
+ @param files DMEFiles
  @param error NSError
  */
-typedef void (^FileListCompletionBlock) (CAFiles * _Nullable files, NSError  * _Nullable error);
+typedef void (^FileListCompletionBlock) (DMEFiles * _Nullable files, NSError  * _Nullable error);
 
 
 /**

@@ -172,7 +172,7 @@
     [self.apiClient requestFileListWithSuccess:^(NSData * _Nonnull data) {
         
         NSError *error;
-        CAFiles *files = [CAFilesDeserializer deserialize:data error:&error];
+        DMEFiles *files = [CAFilesDeserializer deserialize:data error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
