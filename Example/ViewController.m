@@ -11,7 +11,7 @@
 
 @import DigiMeSDK;
 
-@interface ViewController () <DMEClientAuthorizationDelegate, DMEClientDownloadDelegate>
+@interface ViewController ()
 
 @property (nonatomic, strong) DMEClient *dmeClient;
 @property (nonatomic) NSInteger fileCount;
@@ -27,8 +27,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.dmeClient = [DMEClient sharedClient];
-    self.dmeClient.authorizationDelegate = self;
-    self.dmeClient.downloadDelegate = self;
     
     // - GET STARTED -
     
@@ -75,86 +73,73 @@
 {
     self.progress = 0;
     [self.logVC reset];
-    [self.dmeClient authorize];
+
+    [self.dmeClient authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        
+        if (session == nil){
+            [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
+            return;
+        };
+        
+        [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
+
+        [self getFileList];
+        [self getAccounts];
+    }];
+}
+
+- (void)getAccounts
+{
+    [self.dmeClient getAccountsWithCompletion:^(CAAccounts * _Nullable accounts, NSError * _Nullable error) {
+        
+        if (accounts == nil){
+            [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
+            return;
+        };
+        
+        [self.logVC logMessage:[NSString stringWithFormat:@"Account Content: %@", accounts.json]];
+        
+    }];
+}
+
+- (void)getFileList
+{
+    [self.dmeClient getFileListWithCompletion:^(CAFiles * _Nullable files, NSError * _Nullable error) {
+        
+        if (files == nil){
+            [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve fileList failed: %@", error.localizedDescription]];
+            return;
+        };
+        
+        self.fileCount = files.fileIds.count;
+        
+        for (NSString *fileId in files.fileIds)
+        {
+            [self getFileWith:fileId];
+        }
+        
+    }];
+}
+
+- (void)getFileWith:(NSString *)Id
+{
+    [self.dmeClient getFileWithId:Id completion:^(CAFile * _Nullable file, NSError * _Nullable error) {
+        
+        if (file == nil){
+            [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", Id, error.localizedDescription]];
+            return;
+        };
+        
+        self.progress++;
+        
+        [self.logVC logMessage:[NSString stringWithFormat:@"File Content: %@", file.fileContentAsJSON]];
+        [self. logVC logMessage:[NSString stringWithFormat:@"--------------------Progress: %i/%i", (int)self.progress, (int)self.fileCount]];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - DMEClientAuthorizationDelegate
--(void)sessionCreated:(CASession *)session
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Session created: %@", session.sessionKey]];
-}
-
--(void)sessionCreateFailed:(NSError *)error
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Session created failed: %@", error.localizedDescription]];
-}
-
--(void)authorizeSucceeded:(CASession *)session
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
-    
-    [self.dmeClient getFileList];
-    [self.dmeClient getAccounts];
-}
-
--(void)authorizeDenied:(NSError *)error
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Authorization denied: %@", error.localizedDescription]];
-}
-
--(void)authorizeFailed:(NSError *)error
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
-}
-
-#pragma mark - DMEClientDownloadDelegate
--(void)clientFailedToRetrieveFileList:(NSError *)error
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve fileList failed: %@", error.localizedDescription]];
-}
-
--(void)clientRetrievedFileList:(CAFiles *)files
-{
-    self.fileCount = files.fileIds.count;
-    
-    for (NSString *fileId in files.fileIds)
-    {
-        [self.dmeClient getFileWithId:fileId];
-    }
-}
-
--(void)fileRetrieved:(CAFile *)file
-{
-    self.progress++;
-    
-    [self.logVC logMessage:[NSString stringWithFormat:@"File Content: %@", file.json]];
-    [self. logVC logMessage:[NSString stringWithFormat:@"--------------------Progress: %i/%i", (int)self.progress, (int)self.fileCount]];
-}
-
--(void)fileRetrieveFailed:(NSString *)fileId error:(NSError *)error
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", fileId, error.localizedDescription]];
-}
-
-- (void)accountsRetreived:(CAAccounts *)accounts
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Account Content: %@", accounts.json]];
-}
-
-- (void)accountsRetrieveFailed:(NSError *)error
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
-}
-
-#pragma mark - DMEClientPostboxDelegate
-- (void)postboxCreationFailed:(NSError *)error
-{
-    [self.logVC logMessage:[NSString stringWithFormat:@"Failed to create postbox: %@", error.localizedDescription]];
 }
 
 @end

@@ -22,11 +22,9 @@ Digi.me SDK depends on digi.me app being installed to enabled user initiate auth
   * [Callbacks and responses](#callbacks-and-responses)
   * [Authorization](#authorization) 
      * [Handling app callback](#handling-app-callback)
-     * [Delegate Calls (authorizationDelegate)](#delegate-calls-authorizationDelegate)
   * [Specifying Scope](#specifying-scope)
   * [Fetching data](#fetching-data)
   * [Fetching Accounts data](#fetching-accounts-data)
-     * [Delegate Calls (downloadDelegate)](#delegate-calls-downloadDelegate)
      * [Automatic exponential backoff](#automatic-exponential-backoff)
   * [Fetched Files](#fetched-files)
   * [Decryption](#decryption)
@@ -195,31 +193,9 @@ Extend your `Info.plist` to support a new Custom URL Scheme. This scheme is used
 
 ## Callbacks and responses
  
-Digi.me SDK is built to be asynchronous and thread-safe and as such it provides a couple of mechanisms of redirecting results back to the application.
-For that purpose the SDK provides **DMEClientCallbacks** block based interface and **DMEClientAuthorizationDelegate** / **DMEClientDownloadDelegate** delegate based interfaces. 
+Digi.me SDK is built to be asynchronous and thread-safe and as such it provides a mechanism of redirecting results back to the application.
+For that purpose the SDK provides **DMEClientCallbacks** block based interface.
 
-> NOTE:
-> Both of them are interchangeable and can be used depending on preference. 
-Although they could be used both at the same time, we recommend that you use only 1 for a particular operation.
-
-
-Each method that returns data has an alternative name which accepts a completion block:
-
-```objective-c
-- (void)authorize;
-- (void)authorizeWithCompletion:(AuthorizationCompletionBlock)authorizationCompletion;
-
-```
-
-If you wish to use the delegate pattern, simply set the `DMEClient`'s `authorizationDelegate` and/or `downloadDelegate` property:
-
-```objective-c
-[DMEClient sharedClient].authorizationDelegate = self;
-[DMEClient sharedClient].downloadDelegate = self;
-```
-
-> NOTE: Make sure you declare that your class implements `DMEClientAuthorizationDelegate` / `DMEClientDownloadDelegate`.
- 
 
 ## Authorization
 
@@ -232,16 +208,9 @@ Authorization flow is separated into two phases:
 
 SDK starts and handles these steps automatically by calling:
 
-```objective-c
-[[DMEClient sharedClient] authorize];
-
-```
-
-> Or 
 > ```
 > [[DMEClient sharedClient] authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error){...}];
 > ```
-> if not using a delegate.
 
 ## Guest Consent
 
@@ -264,56 +233,6 @@ Since `authorize` automatically opens Digi.me app, you will need some way of han
 {
     return [[DMEClient sharedClient] openURL:url options:options];
 }
-
-```
-
-### Delegate Calls (authorizationDelegate)
-
-##### DMEClientAuthorizationDelegate
-
-The following delegate methods can be implemented for the authorize stage:
-
-```objective-c
-
-/**
- Executed when session has been created.
-
- @param session Consent Access Session
- */
-- (void)sessionCreated:(CASession *)session;
-
-
-/**
- Executed when session creation has failed.
-
- @param error NSError
- */
-- (void)sessionCreateFailed:(NSError *)error;
-
-
-/**
- Executed when CA Contract has been successfully authorized.
-
- @param session Consent Access Session
- */
-- (void)authorizeSucceeded:(CASession *)session;
-
-
-/**
- Executed when CA Contract has been declined by the user.
-
- @param error NSError
- */
-- (void)authorizeDenied:(NSError *)error;
-
-
-/**
- Executed when CA Contract has been authorized, but failed for another reason.
-
- @param error NSError
- */
-- (void)authorizeFailed:(NSError *)error;
-
 
 ```
 
@@ -364,32 +283,18 @@ scope.timeRanges = @[timeRange];
 Upon successful authorization you can request user's files. 
 To fetch the list of available files for your contract:
 
-```objective-c
-[[DMEClient sharedClient] getFileList];
-
-```
-
-> Or 
 > ```
 > [[DMEClient sharedClient] getFileListWithCompletion:^(CAFiles * _Nullable files, NSError  * _Nullable error){...}];
 > ```
-> if not using a delegate.
  
 
 Upon success `DMEClient` returns a `CAFiles` object which contains a single field - `fileIds` (NSArray<NSString>), a list of file IDs.
 
 Finally you can use the returned file IDs to fetch their data:
 
-```objective-c
-[[DMEClient sharedClient] getFileWithId:fileId];
-
-```
-
-> Or 
 > ```
 > [[DMEClient sharedClient] getFileWithId:fileId completion:^(CAFile * _Nullable file, NSError * _Nullable error){...}];
 > ```
-> if not using a delegate.
 
 
 ### Fetching Accounts Data
@@ -397,72 +302,11 @@ Additionally, you can also request to get account information for a user. This w
 
 To fetch accounts data:
 
-```objective-c
-[[DMEClient sharedClient] getAccounts];
-```
 
-> Or
-> 
 > ```objective-c
 > [[DMEClient sharedClient] getAccountsWithCompletion:(CAAccounts * _Nullable accounts, NSError * _Nullable error){ ... }];
 > ```
 
-
-### Delegate Calls (downloadDelegate)
-##### DMEClientDownloadDelegate
-
-The following delegate methods can be implemented for the fetching stage:
-
-```objective-c
-
-/**
- Executed when DMEClient has retrieved file list available for the contract.
-
- @param files CAFiles.
- */
-- (void)clientRetrievedFileList:(CAFiles *)files;
-
-
-/**
- Executed DMEClient failed to retrieve contract file list.
-
- @param error NSError.
- */
-- (void)clientFailedToRetrieveFileList:(NSError *)error;
-
-
-/**
- Executed when file content has been retrieved.
-
- @param file CAFile object.
- */
-- (void)fileRetrieved:(CAFile *)file;
-
-
-/**
- Executed when file could not be retrieved
-
- @param fileId Id of the file that failed
- @param error NSError
- */
-- (void)fileRetrieveFailed:(NSString *)fileId error:(NSError *)error;
-
-/**
-Executed when DMEClient has retrieved accounts available for the contract
-
-@param accounts available accounts
-*/
-- (void)accountsRetrieved:(CAAccounts *)accounts;
-
-
-/**
-Executed when accounts could not be retrieved
-
-@param error error NSError
-*/
-- (void)accountsRetrieveFailed:(NSError *)error;
-
-```
 
 ### Automatic exponential backoff
 
@@ -471,7 +315,7 @@ Due to asynchronous nature of Consent Access architecture, it is possible for th
 
 Digi.me SDK handles those errors internally and retries those requests with exponential backoff policy. The defaults are set to 5 retries with base interval of 750ms.
 
-> In the event that content is not ready even after retrying, SDK will return an `NSError` object to appropriate completionBlock/delegate.
+> In the event that content is not ready even after retrying, SDK will return an `NSError` object to appropriate completionBlock.
 
 
 These settings can be customized by creating your own `DMEClientConfiguration` object, and setting it in the `DMEClient`:
@@ -599,18 +443,10 @@ It is not mandatory to pass an error pointer into this method, but is advisable 
 
 The SDK may also be used effectively in reverse, to send data to a user's digi.me library. This feature is known as Postbox. To use Postbox, you must first request consent from the user to send data to their library. This is done via a consent contract, similarly to receiving data. If consent is given, digi.me will callback to your app, similarly to consent access, with a postbox ID and session key. You may then use a RESTful interface to send data, normalised to our standards, to a user's 'Postbox'.
 
-As with our other APIs, there are 2 means to handle callbacks from the creation of a Postbox. The use of a block on the create method, or via a delegate. The method signatures are as follows:
+Create method with completion handler:
 
 ```objective-c
-- (void)createPostbox;
 - (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion;
-```
-
-The respective delegate callbacks look like this:
-
-```objective-c
-- (void)postboxCreationSucceeded:(CAPostbox *)postbox;
-- (void)postboxCreationFailed:(NSError *)error;
 ```
 
 Once a user has authorized your Postbox request, you can use the following endpoint to 'post' data to the 'Postbox':
@@ -958,9 +794,6 @@ To:
 [DMEClient sharedClient].authorizationDelegate = self;
 [DMEClient sharedClient].downloadDelegate = self;
 ```
-
-
-Implement delegates described in [Authorize](#delegate-calls-authorize) and [Fetching Data](#delegate-calls-fetching) sections.
 
 
 ## Digi.me App

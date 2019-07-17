@@ -57,22 +57,12 @@
 
 #pragma mark - Authorization
 
-- (void)authorize
-{
-    [self authorizeWithScope:nil completion:nil];
-}
-
-- (void)authorizeWithScope:(id<CADataRequest>)scope
-{
-    [self authorizeWithScope:scope completion:nil];
-}
-
-- (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     [self authorizeWithScope:nil completion:authorizationCompletion];
 }
 
-- (void)authorizeWithScope:(id<CADataRequest>)scope completion:(nullable AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithScope:(id<CADataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -82,11 +72,6 @@
         {
             authorizationCompletion(nil, validationError);
         }
-        else if ([self.authorizationDelegate respondsToSelector:@selector(sessionCreateFailed:)])
-        {
-            [self.authorizationDelegate sessionCreateFailed:validationError];
-        }
-        
         return;
     }
     
@@ -105,23 +90,8 @@
                     authorizationCompletion(nil, errorToReport);
                     return;
                 }
-                
-                // No completion block, so notify via delegate
-                if ([strongSelf.authorizationDelegate respondsToSelector:@selector(sessionCreateFailed:)])
-                {
-                    NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                    [strongSelf.authorizationDelegate sessionCreateFailed:errorToReport];
-                }
             });
             return;
-        }
-        
-        // Can only notify session creation success via delegate, not completion block
-        if ([strongSelf.authorizationDelegate respondsToSelector:@selector(sessionCreated:)])
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [strongSelf.authorizationDelegate sessionCreated:session];
-            });
         }
         
         //begin authorization
@@ -162,7 +132,7 @@
     return nil;
 }
 
-- (void)userAuthorizationWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
+- (void)userAuthorizationWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     __weak __typeof(self)weakSelf = self;
     [self.authManager beginAuthorizationWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
@@ -181,49 +151,19 @@
                 return;
             }
             
-            // No completion block, so notify via delegate
-            if (error)
-            {
-                if ([error.domain isEqualToString:DME_AUTHORIZATION_ERROR] &&
-                    error.code == AuthErrorCancelled &&
-                    [strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeDenied:)])
-                {
-                    [strongSelf.authorizationDelegate authorizeDenied:error];
-                }
-                else if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeFailed:)])
-                {
-                    [strongSelf.authorizationDelegate authorizeFailed:error];
-                }
-            }
-            else if ([strongSelf.authorizationDelegate respondsToSelector:@selector(authorizeSucceeded:)])
-            {
-                [strongSelf.authorizationDelegate authorizeSucceeded:session];
-            }
         });
     }];
 }
 
 #pragma mark - Get File List
-
-- (void)getFileList
-{
-    [self getFileListWithCompletion:nil];
-}
-
 - (void)getFileListWithCompletion:(FileListCompletionBlock)completion
 {
     //validate session
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
-        if (completion)
-        {
-            completion(nil, error);
-        }
-        else if ([self.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
-        {
-            [self.downloadDelegate clientFailedToRetrieveFileList:error];
-        }
+        
+        completion(nil, error);
         
         return;
     }
@@ -237,34 +177,17 @@
         CAFiles *files = [CAFilesDeserializer deserialize:data error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion)
-            {
-                completion(files, error);
-            }
-            else if (error)
-            {
-                if ([strongSelf.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
-                {
-                    [strongSelf.downloadDelegate clientFailedToRetrieveFileList:error];
-                }
-            }
-            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(clientRetrievedFileList:)])
-            {
-                [strongSelf.downloadDelegate clientRetrievedFileList:files];
-            }
+            
+            completion(files, error);
+            
         });
     } failure:^(NSError * _Nonnull error) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion)
-            {
-                completion(nil, error);
-            }
-            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(clientFailedToRetrieveFileList:)])
-            {
-                [strongSelf.downloadDelegate clientFailedToRetrieveFileList:error];
-            }
+            
+            completion(nil, error);
+            
         });
     }];
 }
@@ -278,11 +201,6 @@
 }
 
 #pragma mark - Get File Content
-
-- (void)getFileWithId:(NSString *)fileId
-{
-    [self getFileWithId:fileId completion:nil];
-}
 
 - (void)getFileWithId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
 {
@@ -299,15 +217,8 @@
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
         
-        if (completion)
-        {
-            CAFile *file = [[CAFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
-            completion(file, error);
-        }
-        else if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
-        {
-            [self.downloadDelegate fileRetrieveFailed:fileId error:error];
-        }
+        CAFile *file = [[CAFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
+        completion(file, error);
         
         return;
     }
@@ -316,16 +227,9 @@
     __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileWithId:fileId success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
-
+        
         if (!strongSelf.decryptsData)
         {
-            if ([strongSelf.downloadDelegate respondsToSelector:@selector(dataRetrieved:fileId:)])
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [strongSelf.downloadDelegate dataRetrieved:data fileId:fileId];
-                });
-            }
-            
             //completion at this point will be nil.
             return;
         }
@@ -337,14 +241,8 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            if (completion)
-            {
-                completion(nil, error);
-            }
-            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
-            {
-                [strongSelf.downloadDelegate fileRetrieveFailed:fileId error:error];
-            }
+            completion(nil, error);
+            
         });
     }];
 }
@@ -362,31 +260,13 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        if (completion)
-        {
-            completion(file, error);
-        }
-        else if (error)
-        {
-            if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieveFailed:error:)])
-            {
-                [self.downloadDelegate fileRetrieveFailed:fileId error:error];
-            }
-        }
-        else if ([self.downloadDelegate respondsToSelector:@selector(fileRetrieved:)])
-        {
-            [self.downloadDelegate fileRetrieved:file];
-        }
+        completion(file, error);
         
     });
 }
 
 
 #pragma mark - Accounts
-- (void)getAccounts
-{
-    [self getAccountsWithCompletion:nil];
-}
 
 - (void)getAccountsWithCompletion:(AccountsCompletionBlock)completion
 {
@@ -403,14 +283,7 @@
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
         
-        if (completion)
-        {
-            completion(nil, error);
-        }
-        else if ([self.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
-        {
-            [self.downloadDelegate accountsRetrieveFailed:error];
-        }
+        completion(nil, error);
         
         return;
     }
@@ -422,13 +295,6 @@
         
         if (!strongSelf.decryptsData)
         {
-            if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsDataRetrieved:)])
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [strongSelf.downloadDelegate accountsDataRetrieved:data];
-                });
-            }
-            
             //completion at this point will be nil.
             return;
         }
@@ -443,21 +309,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            if (completion)
-            {
-                completion(accounts, error);
-            }
-            else if (error)
-            {
-                if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
-                {
-                    [strongSelf.downloadDelegate accountsRetrieveFailed:error];
-                }
-            }
-            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsRetrieved:)])
-            {
-                [strongSelf.downloadDelegate accountsRetrieved:accounts];
-            }
+            completion(accounts, error);
             
         });
         
@@ -465,14 +317,9 @@
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion)
-            {
-                completion(nil, error);
-            }
-            else if ([strongSelf.downloadDelegate respondsToSelector:@selector(accountsRetrieveFailed:)])
-            {
-                [strongSelf.downloadDelegate accountsRetrieveFailed:error];
-            }
+            
+            completion(nil, error);
+            
         });
     }];
     
@@ -529,5 +376,14 @@
     NSURL *deeplinkingURL = components.URL;
     [[UIApplication sharedApplication] openURL:deeplinkingURL options:@{} completionHandler:nil];
 }
+
+#pragma mark - Debug
+
+- (NSDictionary <NSString *, id> *)metadata
+{
+    return [[self.sessionManager currentSession] metadata];
+}
+
+
 
 @end
