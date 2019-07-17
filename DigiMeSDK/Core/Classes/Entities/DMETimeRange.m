@@ -1,14 +1,14 @@
 //
-//  CATimeRange.m
+//  DMETimeRange.m
 //  DigiMeSDK
 //
 //  Created on 27/11/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CATimeRange.h"
+#import "DMETimeRange.h"
 
-@interface CATimeRange()
+@interface DMETimeRange()
 
 @property (nonatomic, strong, nullable, readwrite) NSDate *from;
 @property (nonatomic, strong, nullable, readwrite) NSDate *to;
@@ -16,57 +16,57 @@
 
 @end
 
-@implementation CATimeRange
+@implementation DMETimeRange
 
-+ (CATimeRange *)from:(NSDate *)from
++ (DMETimeRange *)from:(NSDate *)from
 {
-    CATimeRange *range = [CATimeRange new];
+    DMETimeRange *range = [DMETimeRange new];
     range.from = from;
     
     return range;
 }
 
-+ (CATimeRange *)from:(NSDate *)from to:(NSDate *)to
++ (DMETimeRange *)from:(NSDate *)from to:(NSDate *)to
 {
     if ([to timeIntervalSinceDate:from] <= 0)
     {
         [NSException raise:NSInternalInconsistencyException format:@"`from` date must be *before* `to` date."];
     }
     
-    CATimeRange *range = [CATimeRange new];
+    DMETimeRange *range = [DMETimeRange new];
     range.from = from;
     range.to = to;
     
     return range;
 }
 
-+ (CATimeRange *)priorTo:(NSDate *)priorTo
++ (DMETimeRange *)priorTo:(NSDate *)priorTo
 {
-    CATimeRange *range = [CATimeRange new];
+    DMETimeRange *range = [DMETimeRange new];
     range.to = priorTo;
     
     return range;
 }
 
-+ (CATimeRange *)last:(NSUInteger)x unit:(CATimeRangeUnit)unit
++ (DMETimeRange *)last:(NSUInteger)x unit:(DMETimeRangeUnit)unit
 {
-    CATimeRange *range = [CATimeRange new];
+    DMETimeRange *range = [DMETimeRange new];
     NSString *unitString = [[self class] stringFromUnit:unit];
     range.last = [NSString stringWithFormat:@"%@%@", @(x), unitString];
     
     return range;
 }
 
-+ (NSString *)stringFromUnit:(CATimeRangeUnit)unit
++ (NSString *)stringFromUnit:(DMETimeRangeUnit)unit
 {
     switch (unit) {
-        case CATimeRangeUnitDay:
+        case DMETimeRangeUnitDay:
             return @"d";
             
-        case CATimeRangeUnitMonth:
+        case DMETimeRangeUnitMonth:
             return @"m";
             
-        case CATimeRangeUnitYear:
+        case DMETimeRangeUnitYear:
             return @"y";
     }
 }

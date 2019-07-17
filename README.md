@@ -239,20 +239,20 @@ Since `authorize` automatically opens Digi.me app, you will need some way of han
 ## Specifying Scope
 Specifying a scope via `DMEScope` object will allow you to retrieve only a subset of data that the contract has asked for. This might come in handy if you already have data from the existing user and you might only want to retrieve any new data that might have been added to the user's library in the last x months. 
 
-SDK currently only supports specifying scope for `CATimeRange`s.
+SDK currently only supports specifying scope for `DMETimeRange`s.
  
-The format of CATimeRange is as follows:
+The format of DMETimeRange is as follows:
 
 ```objective-c
-@interface CATimeRange : NSObject
+@interface DMETimeRange : NSObject
 @property (nonatomic, strong, readonly, nullable) NSDate *from;
 @property (nonatomic, strong, readonly, nullable) NSDate *to;
 @property (nonatomic, strong, readonly, nullable) NSString *last;
 
-+ (CATimeRange *)from:(NSDate *)from;
-+ (CATimeRange *)priorTo:(NSDate *)priorTo;
-+ (CATimeRange *)from:(NSDate *)from to:(NSDate *)to;
-+ (CATimeRange *)last:(NSUInteger)x unit:(CATimeRangeUnit)unit;
++ (DMETimeRange *)from:(NSDate *)from;
++ (DMETimeRange *)priorTo:(NSDate *)priorTo;
++ (DMETimeRange *)from:(NSDate *)from to:(NSDate *)to;
++ (DMETimeRange *)last:(NSUInteger)x unit:(DMETimeRangeUnit)unit;
 @end
 ```
 
@@ -262,7 +262,7 @@ The format of CATimeRange is as follows:
 
 `last` - You can set a dynamic time range based on the current date. The string is in the format of `x<unit>`, where `x` specifies a number and `<unit>` specifies the range unit. For example, if you wanted to get the last 6 month, you would set the `last` property to `6m`.
 
-`CATimeRange` has handy initializers you can use to cover most use cases.
+`DMETimeRange` has handy initializers you can use to cover most use cases.
 
 Example usage:
 
@@ -271,7 +271,7 @@ Example usage:
 DMEScope *scope = [DMEScope new];
 
 //last 10 days
-CATimeRange *timeRange = [CATimeRange last:10 unit:CATimeRangeUnitDay];
+DMETimeRange *timeRange = [DMETimeRange last:10 unit:DMETimeRangeUnitDay];
 
 scope.timeRanges = @[timeRange];
 [[DMEClient sharedClient] authorizeWithScope:scope];

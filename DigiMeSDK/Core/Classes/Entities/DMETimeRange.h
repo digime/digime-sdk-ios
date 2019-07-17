@@ -1,5 +1,5 @@
 //
-//  CATimeRange.h
+//  DMETimeRange.h
 //  DigiMeSDK
 //
 //  Created on 27/11/2018.
@@ -10,22 +10,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, CATimeRangeUnit) {
-    CATimeRangeUnitDay = 0,
-    CATimeRangeUnitMonth = 1,
-    CATimeRangeUnitYear = 2,
+typedef NS_ENUM(NSInteger, DMETimeRangeUnit) {
+    DMETimeRangeUnitDay = 0,
+    DMETimeRangeUnitMonth = 1,
+    DMETimeRangeUnitYear = 2,
 };
 
-@interface CATimeRange : NSObject
+@interface DMETimeRange : NSObject
 
 @property (nonatomic, strong, readonly, nullable) NSDate *from;
 @property (nonatomic, strong, readonly, nullable) NSDate *to;
 @property (nonatomic, strong, readonly, nullable) NSString *last;
 
-+ (CATimeRange *)from:(NSDate *)from;
-+ (CATimeRange *)priorTo:(NSDate *)priorTo;
-+ (CATimeRange *)from:(NSDate *)from to:(NSDate *)to;
-+ (CATimeRange *)last:(NSUInteger)x unit:(CATimeRangeUnit)unit;
++ (DMETimeRange *)from:(NSDate *)from;
++ (DMETimeRange *)priorTo:(NSDate *)priorTo;
++ (DMETimeRange *)from:(NSDate *)from to:(NSDate *)to;
++ (DMETimeRange *)last:(NSUInteger)x unit:(DMETimeRangeUnit)unit;
 
 @end
 
