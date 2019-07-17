@@ -68,10 +68,7 @@
     NSError *validationError = [self validateClient];
     if (validationError != nil)
     {
-        if (authorizationCompletion)
-        {
-            authorizationCompletion(nil, validationError);
-        }
+        authorizationCompletion(nil, validationError);
         return;
     }
     
@@ -85,11 +82,8 @@
             // Notify on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                if (authorizationCompletion)
-                {
-                    authorizationCompletion(nil, errorToReport);
-                    return;
-                }
+                authorizationCompletion(nil, errorToReport);
+                return;
             });
             return;
         }
@@ -145,12 +139,8 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (authorizationCompletion)
-            {
-                authorizationCompletion(session, error);
-                return;
-            }
-            
+            authorizationCompletion(session, error);
+            return;
         });
     }];
 }
@@ -162,32 +152,21 @@
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
-        
         completion(nil, error);
-        
         return;
     }
     
     //initiate file list request
-    __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileListWithSuccess:^(NSData * _Nonnull data) {
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
         NSError *error;
         CAFiles *files = [CAFilesDeserializer deserialize:data error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(files, error);
-            
         });
     } failure:^(NSError * _Nonnull error) {
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(nil, error);
-            
         });
     }];
 }
@@ -259,9 +238,7 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        
         completion(file, error);
-        
     });
 }
 
@@ -271,7 +248,7 @@
 - (void)getAccountsWithCompletion:(AccountsCompletionBlock)completion
 {
     //ensures this method cannot be called with completion *AND* no data decryption
-    if (completion != nil && !self.decryptsData)
+    if (!self.decryptsData)
     {
         NSError *sdkError = [NSError sdkError:SDKErrorEncryptedDataCallback];
         completion(nil, sdkError);
@@ -282,9 +259,7 @@
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
-        
         completion(nil, error);
-        
         return;
     }
     
@@ -308,18 +283,12 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(accounts, error);
-            
         });
         
-    } failure:^(NSError * _Nonnull error) {
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
+    } failure:^(NSError * _Nonnull error) {        
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(nil, error);
-            
         });
     }];
     
@@ -327,7 +296,7 @@
 
 #pragma mark - Setters
 
--(void)setClientConfiguration:(DMEClientConfiguration *)clientConfiguration
+- (void)setClientConfiguration:(DMEClientConfiguration *)clientConfiguration
 {
     self.apiClient.config = clientConfiguration;
 }

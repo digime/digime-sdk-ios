@@ -75,13 +75,14 @@
 
 #pragma mark - Authorization
 
--(void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
 {
     if (![self.sessionManager isSessionValid])
     {
         completion(nil, [NSError authError:AuthErrorInvalidSession]);
         return;
     }
+    
     self.authCompletionBlock = completion;
     
     DMEOpenAction *action = @"data";
@@ -100,12 +101,12 @@
     return self.sessionManager.currentSession;
 }
 
--(CASessionManager *)sessionManager
+- (CASessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
 }
 
--(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
+- (void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
     // default legacy keys
     NSMutableArray *allowedKeys = @[kCARequestSessionKey, kCADigimeResponse, kCARequestRegisteredAppID].mutableCopy;

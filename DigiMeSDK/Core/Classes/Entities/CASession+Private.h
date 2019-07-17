@@ -8,8 +8,12 @@
 
 #import "CASession.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface CASession ()
 
 @property (strong, nonatomic, readwrite) NSDictionary<NSString *, id> *metadata;
 
 @end
+
+NS_ASSUME_NONNULL_END

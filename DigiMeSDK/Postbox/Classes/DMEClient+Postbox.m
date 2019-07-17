@@ -23,7 +23,7 @@
 
 #pragma mark - Begin ivar and accessor definitions.
 
-DMEPostboxManager* _postboxManager;
+DMEPostboxManager *_postboxManager;
 
 - (DMEPostboxManager *)postboxManager
 {
@@ -57,11 +57,7 @@ DMEPostboxManager* _postboxManager;
         if (!session)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion)
-                {
-                    completion(nil, error);
-                    return;
-                }
+                completion(nil, error);
             });
             
             return;
@@ -70,11 +66,7 @@ DMEPostboxManager* _postboxManager;
         [strongSelf.postboxManager requestPostboxWithCompletion:^(CAPostbox * _Nullable postbox, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion)
-                {
-                    completion(postbox, error);
-                    return;
-                }
+                completion(postbox, error);
             });
         }];
     }];

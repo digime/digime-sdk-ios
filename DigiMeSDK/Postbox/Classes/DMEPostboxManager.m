@@ -33,6 +33,7 @@
     {
         _appCommunicator = appCommunicator;
     }
+    
     return self;
 }
 
@@ -53,11 +54,11 @@
     NSError *err;
     CAPostbox *postbox;
     
-    if(![self.sessionManager isSessionKeyValid:sessionKey])
+    if (![self.sessionManager isSessionKeyValid:sessionKey])
     {
         err = [NSError authError:AuthErrorInvalidSessionKey];
     }
-    else if(!success || !postboxId.length)
+    else if (!success || !postboxId.length)
     {
         err = [NSError authError:AuthErrorGeneral];
     }
@@ -78,7 +79,6 @@
 
 - (void)requestPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
 {
-    
     if (![NSThread currentThread].isMainThread)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -111,12 +111,12 @@
     return self.sessionManager.currentSession;
 }
 
--(CASessionManager *)sessionManager
+- (CASessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
 }
 
--(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
+- (void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
     NSMutableArray *allowedKeys = @[kCADigimeResponse, kCARequestSessionKey, kCARequestPostboxId, kCARequestPostboxPublicKey, kCARequestRegisteredAppID].mutableCopy;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];

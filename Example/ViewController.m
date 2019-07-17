@@ -76,7 +76,8 @@
 
     [self.dmeClient authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
         
-        if (session == nil){
+        if (session == nil)
+        {
             [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
             return;
         };
@@ -92,7 +93,8 @@
 {
     [self.dmeClient getAccountsWithCompletion:^(CAAccounts * _Nullable accounts, NSError * _Nullable error) {
         
-        if (accounts == nil){
+        if (accounts == nil)
+        {
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
             return;
         };
@@ -106,7 +108,8 @@
 {
     [self.dmeClient getFileListWithCompletion:^(CAFiles * _Nullable files, NSError * _Nullable error) {
         
-        if (files == nil){
+        if (files == nil)
+        {
             [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve fileList failed: %@", error.localizedDescription]];
             return;
         };
@@ -125,7 +128,8 @@
 {
     [self.dmeClient getFileWithId:Id completion:^(CAFile * _Nullable file, NSError * _Nullable error) {
         
-        if (file == nil){
+        if (file == nil)
+        {
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", Id, error.localizedDescription]];
             return;
         };

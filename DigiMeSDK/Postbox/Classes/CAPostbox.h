@@ -8,29 +8,31 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface CAPostbox : NSObject
 
 /**
  The key for the CA session. This is required in order to post data to the Postbox.
  */
-@property (nonatomic, strong, readonly) NSString *sessionKey;
+@property (nonatomic, copy, readonly) NSString *sessionKey;
 
 /**
  The ID of the Postbox.
  */
-@property (nonatomic, strong, readonly) NSString *postboxId;
+@property (nonatomic, copy, readonly) NSString *postboxId;
 
 /**
  The RSA public key in .pem format.
  */
-@property (nonatomic, strong, readonly) NSString *publicKey;
+@property (nonatomic, strong, readonly, nullable) NSString *publicKey;
 
 
 /**
  Symetric RSA2048 public key used to encrypt data being sent to the Postbox.
  This is not populated automatically, and will require you fetch the public key yourself.
  */
-@property (nonatomic, strong) NSString *postboxRSAPublicKey;
+@property (nonatomic, copy, nullable) NSString *postboxRSAPublicKey;
 
 - (instancetype)init NS_UNAVAILABLE;
 
@@ -44,3 +46,5 @@
 - (instancetype)initWithSessionKey:(NSString *)sessionKey andPostboxId:(NSString *)postboxId NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END
