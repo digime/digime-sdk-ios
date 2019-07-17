@@ -59,11 +59,11 @@
         NSDictionary *serviceJson = account[@"service"];
         NSString *serviceName = serviceJson[@"name"];
         
-        CAServiceDescriptor *service;
+        DMEServiceDescriptor *service;
         
         if (serviceName)
         {
-            service = [[CAServiceDescriptor alloc] initWithName:serviceName logo:serviceJson[@"logo"]];
+            service = [[DMEServiceDescriptor alloc] initWithName:serviceName logo:serviceJson[@"logo"]];
         }
         
         NSString *identifier = account[@"id"];
@@ -81,7 +81,7 @@
 
 @implementation CAAccount
 
-- (instancetype)initWithId:(NSString *)identifier name:(NSString *)name number:(NSString *)number service:(CAServiceDescriptor *)service
+- (instancetype)initWithId:(NSString *)identifier name:(NSString *)name number:(NSString *)number service:(DMEServiceDescriptor *)service
 {
     self = [super init];
     if (self)
@@ -97,7 +97,7 @@
 
 @end
 
-@implementation CAServiceDescriptor
+@implementation DMEServiceDescriptor
 
 - (instancetype)initWithName:(NSString *)name logo:(NSString *)logo
 {

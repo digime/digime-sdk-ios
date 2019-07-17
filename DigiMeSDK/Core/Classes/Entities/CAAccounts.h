@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CAServiceDescriptor : NSObject
+@interface DMEServiceDescriptor : NSObject
 
 /**
  -init unavailable. Use -initWithName:logo:
@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param service CAServiceDecriptor
  @return instancetype
  */
-- (instancetype)initWithId:(nullable NSString *)identifier name:(nullable NSString *)name number:(nullable NSString *)number service:(nullable CAServiceDescriptor *)service NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithId:(nullable NSString *)identifier name:(nullable NSString *)name number:(nullable NSString *)number service:(nullable DMEServiceDescriptor *)service NS_DESIGNATED_INITIALIZER;
 
 
 /**
@@ -87,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Account service descriptor.
  */
-@property (nullable, nonatomic, strong, readonly) CAServiceDescriptor *service;
+@property (nullable, nonatomic, strong, readonly) DMEServiceDescriptor *service;
 
 @end
 
