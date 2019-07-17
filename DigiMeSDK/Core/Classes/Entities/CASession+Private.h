@@ -3,6 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 21/01/2019.
+//  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 
 #import "CASession.h"

@@ -3,7 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 16/10/2018.
-//  Copyright © 2018 DigiMe. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import "DMEClient+Postbox.h"
