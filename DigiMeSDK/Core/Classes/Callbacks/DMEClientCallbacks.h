@@ -15,7 +15,7 @@
 
 #pragma once
 
-@class CAPostbox, DMEFile;
+@class DMEPostbox, DMEFile;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,10 +30,10 @@ typedef void (^AuthorizationCompletionBlock) (DMESession * _Nullable session, NS
 /**
  PostboxCompletionBlock - executed when a Postbox is retrieved.
 
- @param postbox CAPostbox
+ @param postbox DMEPostbox
  @param error NSError
  */
-typedef void (^PostboxCreationCompletionBlock) (CAPostbox * _Nullable postbox, NSError * _Nullable error);
+typedef void (^PostboxCreationCompletionBlock) (DMEPostbox * _Nullable postbox, NSError * _Nullable error);
 
 /**
  PostboxDataPushCompletionBlock - executed when data has been pushed to Postbox.

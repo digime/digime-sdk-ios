@@ -67,7 +67,7 @@ DMEPostboxManager* _postboxManager;
             return;
         }
         
-        [strongSelf.postboxManager requestPostboxWithCompletion:^(CAPostbox * _Nullable postbox, NSError * _Nullable error) {
+        [strongSelf.postboxManager requestPostboxWithCompletion:^(DMEPostbox * _Nullable postbox, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (completion)
@@ -80,7 +80,7 @@ DMEPostboxManager* _postboxManager;
     }];
 }
 
-- (void)pushDataToPostbox:(CAPostbox *)postbox
+- (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
                      data:(NSData *)data
                completion:(PostboxDataPushCompletionBlock)completion

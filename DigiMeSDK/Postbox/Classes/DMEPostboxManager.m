@@ -9,7 +9,7 @@
 #import "DMEPostboxManager.h"
 #import "DMESessionManager.h"
 #import "DMEClient.h"
-#import "CAPostbox.h"
+#import "DMEPostbox.h"
 #import "DMESession+Private.h"
 
 @interface DMEPostboxManager()
@@ -51,7 +51,7 @@
     [self filterMetadata: parameters];
     
     NSError *err;
-    CAPostbox *postbox;
+    DMEPostbox *postbox;
     
     if(![self.sessionManager isSessionKeyValid:sessionKey])
     {
@@ -63,7 +63,7 @@
     }
     else
     {
-        postbox = [[CAPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
+        postbox = [[DMEPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
         postbox.postboxRSAPublicKey = postboxPublicKey;
     }
     

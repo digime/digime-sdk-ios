@@ -1,5 +1,5 @@
 //
-//  CAPostbox.h
+//  DMEPostbox.h
 //  DigiMeSDK
 //
 //  Created on 25/06/2018.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CAPostbox : NSObject
+@interface DMEPostbox : NSObject
 
 /**
  The key for the CA session. This is required in order to post data to the Postbox.
