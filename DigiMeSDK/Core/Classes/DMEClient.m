@@ -162,10 +162,8 @@
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
-        if (completion)
-        {
-            completion(nil, error);
-        }
+        
+        completion(nil, error);
         
         return;
     }
@@ -179,19 +177,17 @@
         CAFiles *files = [CAFilesDeserializer deserialize:data error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion)
-            {
-                completion(files, error);
-            }
+            
+            completion(files, error);
+            
         });
     } failure:^(NSError * _Nonnull error) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion)
-            {
-                completion(nil, error);
-            }
+            
+            completion(nil, error);
+            
         });
     }];
 }
@@ -221,11 +217,8 @@
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
         
-        if (completion)
-        {
-            CAFile *file = [[CAFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
-            completion(file, error);
-        }
+        CAFile *file = [[CAFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
+        completion(file, error);
         
         return;
     }
@@ -234,7 +227,7 @@
     __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileWithId:fileId success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
-
+        
         if (!strongSelf.decryptsData)
         {
             //completion at this point will be nil.
@@ -248,10 +241,8 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            if (completion)
-            {
-                completion(nil, error);
-            }
+            completion(nil, error);
+            
         });
     }];
 }
@@ -269,10 +260,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        if (completion)
-        {
-            completion(file, error);
-        }
+        completion(file, error);
         
     });
 }
@@ -295,10 +283,7 @@
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
         
-        if (completion)
-        {
-            completion(nil, error);
-        }
+        completion(nil, error);
         
         return;
     }
@@ -324,10 +309,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            if (completion)
-            {
-                completion(accounts, error);
-            }
+            completion(accounts, error);
             
         });
         
@@ -335,10 +317,9 @@
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion)
-            {
-                completion(nil, error);
-            }
+            
+            completion(nil, error);
+            
         });
     }];
     
