@@ -57,12 +57,12 @@
 
 #pragma mark - Authorization
 
-- (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     [self authorizeWithScope:nil completion:authorizationCompletion];
 }
 
-- (void)authorizeWithScope:(id<CADataRequest>)scope completion:(nullable AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithScope:(id<CADataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -132,7 +132,7 @@
     return nil;
 }
 
-- (void)userAuthorizationWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion
+- (void)userAuthorizationWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
 {
     __weak __typeof(self)weakSelf = self;
     [self.authManager beginAuthorizationWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {

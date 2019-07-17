@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param authorizationCompletion AuthorizationCompletionBlock
  */
-- (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion;
+- (void)authorizeWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
 
 
 /**
@@ -76,13 +76,13 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope custom scope that will be applied to available data.
  @param authorizationCompletion AuthorizationCompletionBlock
  */
-- (void)authorizeWithScope:(nullable id<CADataRequest>)scope completion:(nullable AuthorizationCompletionBlock)authorizationCompletion;
+- (void)authorizeWithScope:(nullable id<CADataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
 
 /**
  Fetches file list that's available for the authorized contract.
  @param completion FileListCompletionBlock.
  */
-- (void)getFileListWithCompletion:(nullable FileListCompletionBlock)completion;
+- (void)getFileListWithCompletion:(nonnull FileListCompletionBlock)completion;
 
 /**
  Fetches file content for fileId. FileId is retrieve from fileList.
@@ -90,13 +90,13 @@ NS_ASSUME_NONNULL_BEGIN
  @param fileId NSString id if the file to fetch.
  @param completion FileContentCompletionBlock
  */
-- (void)getFileWithId:(NSString *)fileId completion:(nullable FileContentCompletionBlock)completion;
+- (void)getFileWithId:(NSString *)fileId completion:(nonnull FileContentCompletionBlock)completion;
 
 /**
  Fetches the accounts available for the authorized contract.
  @param completion AccountsCompletionBlock
  */
-- (void)getAccountsWithCompletion:(nullable AccountsCompletionBlock)completion;
+- (void)getAccountsWithCompletion:(nonnull AccountsCompletionBlock)completion;
 
 /**
  Handles returning from digi.me application.
