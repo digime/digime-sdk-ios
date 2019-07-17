@@ -8,7 +8,7 @@
 
 #import "DMEAPIClient.h"
 #import "DMEClient.h"
-#import "CAFilesDeserializer.h"
+#import "DMEFilesDeserializer.h"
 #import "DMESessionManager.h"
 #import "DMECrypto.h"
 #import "DMEValidator.h"
@@ -172,7 +172,7 @@
     [self.apiClient requestFileListWithSuccess:^(NSData * _Nonnull data) {
         
         NSError *error;
-        DMEFiles *files = [CAFilesDeserializer deserialize:data error:&error];
+        DMEFiles *files = [DMEFilesDeserializer deserialize:data error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             

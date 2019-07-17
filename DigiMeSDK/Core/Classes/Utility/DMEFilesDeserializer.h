@@ -1,5 +1,5 @@
 //
-//  CAFilesDeserializer.h
+//  DMEFilesDeserializer.h
 //  DigiMeSDK
 //
 //  Created on 30/01/2018.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CAFilesDeserializer : NSObject
+@interface DMEFilesDeserializer : NSObject
 
 
 /**
