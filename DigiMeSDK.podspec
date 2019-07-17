@@ -53,8 +53,8 @@ Pod::Spec.new do |s|
       ss.frameworks           = "Foundation", "UIKit"
       ss.xcconfig 	      = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKGuestConsent' }
       ss.private_header_files = 'DigiMeSDK/GuestConsent/Classes/DMEGuestConsentManager.h', 
-	'DigiMeSDK/GuestConsent/Classes/PreConsentView.h',
-	'DigiMeSDK/GuestConsent/Classes/PreConsentViewController.h'
+	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentView.h',
+	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentViewController.h'
       ss.dependency "DigiMeSDK/Core"
     end
 end

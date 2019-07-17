@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const kCARequestSessionKey;
-extern NSString * const kCADigimeResponse;
+extern NSString * const kDMEResponse;
 extern NSString * const kCARequestRegisteredAppID;
 extern NSString * const kCARequestPostboxId;
 extern NSString * const kCARequestPostboxPublicKey;

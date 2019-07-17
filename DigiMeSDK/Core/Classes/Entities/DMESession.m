@@ -12,7 +12,7 @@
 #import "DMEDataRequest.h"
 
 NSString * const kCARequestSessionKey = @"CARequestSessionKey";
-NSString * const kCADigimeResponse = @"CADigimeResponse";
+NSString * const kDMEResponse = @"CADigimeResponse";
 NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
 NSString * const kCARequestPostboxId = @"CARequestPostboxId";
 NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey";

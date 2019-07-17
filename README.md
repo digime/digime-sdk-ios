@@ -670,7 +670,7 @@ To see SDK in action in an Objective-C project:
     self.dmeClient.appId = @"YOUR_APP_ID";
     
 // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
-    self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"CA_RSA_PRIVATE_KEY" password:@"YOUR_P12_PASSWORD"];
+    self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"RSA_PRIVATE_KEY" password:@"YOUR_P12_PASSWORD"];
 
 ```
 
@@ -725,7 +725,7 @@ dmeClient.appId = "YOUR_APP_ID"
     
 // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
     
-dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "CA_RSA_PRIVATE_KEY", password: "YOUR_P12_PASSWORD")
+dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "RSA_PRIVATE_KEY", password: "YOUR_P12_PASSWORD")
 
 ```
 

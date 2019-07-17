@@ -43,7 +43,7 @@
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    BOOL success = [parameters[kCADigimeResponse] boolValue];
+    BOOL success = [parameters[kDMEResponse] boolValue];
     NSString *sessionKey = parameters[kCARequestSessionKey];
     NSString *postboxId = parameters[kCARequestPostboxId];
     NSString *postboxPublicKey = parameters[kCARequestPostboxPublicKey];
@@ -118,7 +118,7 @@
 
 -(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
-    NSMutableArray *allowedKeys = @[kCADigimeResponse, kCARequestSessionKey, kCARequestPostboxId, kCARequestPostboxPublicKey, kCARequestRegisteredAppID].mutableCopy;
+    NSMutableArray *allowedKeys = @[kDMEResponse, kCARequestSessionKey, kCARequestPostboxId, kCARequestPostboxPublicKey, kCARequestRegisteredAppID].mutableCopy;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
     NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
     self.session.metadata = whiteDictionary;

@@ -48,7 +48,7 @@
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    BOOL result = [parameters[kCADigimeResponse] boolValue];
+    BOOL result = [parameters[kDMEResponse] boolValue];
     NSString *sessionKey = parameters[kCARequestSessionKey];
     
     [self filterMetadata: parameters];
@@ -108,7 +108,7 @@
 -(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
     // default legacy keys
-    NSMutableArray *allowedKeys = @[kCARequestSessionKey, kCADigimeResponse, kCARequestRegisteredAppID].mutableCopy;
+    NSMutableArray *allowedKeys = @[kCARequestSessionKey, kDMEResponse, kCARequestRegisteredAppID].mutableCopy;
     // timing keys
     [allowedKeys addObjectsFromArray:@[kTimingDataGetAllFiles, kTimingDataGetFile, kTimingFetchContractPermission, kTimingFetchDataGetAccount, kTimingFetchDataGetFileList, kTimingFetchSessionKey, kDataRequest, kFetchContractDetails, kUpdateContractPermission, kTimingTotal]];
     // timing debug keys

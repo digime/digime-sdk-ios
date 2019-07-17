@@ -12,9 +12,9 @@
 #import "UIViewController+DMEExtension.h"
 
 static NSString * const kDMEClientScheme = @"digime-ca-master";
-static NSString * const kCASdkVersion = @"CASdkVersion";
+static NSString * const kDMESdkVersion = @"CASdkVersion";
 static NSInteger  const kDMEClientAppstoreID = 1234541790;
-static NSTimeInterval const kCATimerInterval = 0.5;
+static NSTimeInterval const kDMETimerInterval = 0.5;
 
 @interface DMEAppCommunicator () <SKStoreProductViewControllerDelegate>
 
@@ -67,7 +67,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
         components.host = action;
         
         NSMutableArray *newQueryItems = [NSMutableArray arrayWithArray:components.queryItems] ?: [NSMutableArray array];
-        [newQueryItems addObject:[NSURLQueryItem queryItemWithName:kCASdkVersion value:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]]];
+        [newQueryItems addObject:[NSURLQueryItem queryItemWithName:kDMESdkVersion value:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]]];
         
         [parameters enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
             [newQueryItems addObject:[NSURLQueryItem queryItemWithName:key value:obj]];
@@ -150,7 +150,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
                                                 __strong __typeof(weakSelf) strongSelf = weakSelf;
                                                 [[UIViewController topmostViewController] presentViewController:strongSelf.storeViewController animated:YES completion:^{
                                                     
-                                                    self.pendingInstallationPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:strongSelf selector:@selector(pollForAppInstall) userInfo:nil repeats:YES];
+                                                    self.pendingInstallationPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kDMETimerInterval target:strongSelf selector:@selector(pollForAppInstall) userInfo:nil repeats:YES];
                                                 }];
                                             }
                                         }];
@@ -222,7 +222,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     {
         if ([callbackHandler canHandleAction:@"data"] && ![self digiMeAppIsInstalled])
         {
-            [callbackHandler handleAction:@"data" withParameters:@{kCADigimeResponse: @NO}];
+            [callbackHandler handleAction:@"data" withParameters:@{kDMEResponse: @NO}];
         }
     }
 }
