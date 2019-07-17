@@ -9,7 +9,7 @@
 #import "DMEClient+Postbox.h"
 #import "DMEPostboxManager.h"
 #import "DMEClient+Private.h"
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "DMEAPIClient.h"
 #import "DMEAPIClient+Postbox.h"
 

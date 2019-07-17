@@ -37,7 +37,7 @@ extern NSString * const kUserId;
 extern NSString * const kLibraryId;
 extern NSString * const kPCloudType;
 
-@class CASessionManager;
+@class DMESessionManager;
 @protocol CADataRequest;
 
 @interface CASession : NSObject
@@ -56,10 +56,10 @@ extern NSString * const kPCloudType;
  @param sessionKey NSString
  @param exchangeToken NSString
  @param expiryDate NSDate
- @param sessionManager CASessionManager
+ @param sessionManager DMESessionManager
  @return instancetype
  */
-- (instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate sessionManager:(CASessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate sessionManager:(DMESessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
 
 
 /**
@@ -81,7 +81,7 @@ extern NSString * const kPCloudType;
 /**
  Session manager attached to the session.
  */
-@property (nonatomic, strong, readonly) CASessionManager *sessionManager;
+@property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 
 
 /**

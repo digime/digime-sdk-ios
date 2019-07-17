@@ -1,25 +1,25 @@
 //
-//  CASessionManager.m
+//  DMESessionManager.m
 //  DigiMeSDK
 //
 //  Created on 29/01/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "DMECryptoUtilities.h"
 #import "DMEAPIClient.h"
 #import "CASessionDeserializer.h"
 #import "DMEClient+Private.h"
 
-@interface CASessionManager()
+@interface DMESessionManager()
 
 @property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
 @property (nonatomic, strong, readwrite) CASession *currentSession;
 
 @end
 
-@implementation CASessionManager
+@implementation DMESessionManager
 
 #pragma mark - Public
 

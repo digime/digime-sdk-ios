@@ -6,7 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "DMEAPIClient.h"
 #import "DMEOperation.h"
 #import "NSString+DMECrypto.h"

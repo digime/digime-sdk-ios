@@ -7,7 +7,7 @@
 //
 
 #import "CASession.h"
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "DMEClient.h"
 #import "CADataRequest.h"
 
@@ -46,7 +46,7 @@ NSString * const kPCloudType = @"debugPCloudType";
 
 #pragma mark - Initialization
 
--(instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate sessionManager:(nonnull CASessionManager *)sessionManager
+-(instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate sessionManager:(nonnull DMESessionManager *)sessionManager
 {
     self = [super init];
     if (self)

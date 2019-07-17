@@ -7,7 +7,7 @@
 //
 
 #import "DMEPostboxManager.h"
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "DMEClient.h"
 #import "CAPostbox.h"
 #import "CASession+Private.h"
@@ -15,7 +15,7 @@
 @interface DMEPostboxManager()
 
 @property (nonatomic, strong, readonly) CASession *session;
-@property (nonatomic, strong, readonly) CASessionManager *sessionManager;
+@property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 @property (nonatomic, copy, nullable) PostboxCreationCompletionBlock postboxCompletionBlock;
 
 @end
@@ -111,7 +111,7 @@
     return self.sessionManager.currentSession;
 }
 
--(CASessionManager *)sessionManager
+-(DMESessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
 }

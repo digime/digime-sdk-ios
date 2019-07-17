@@ -7,7 +7,7 @@
 //
 
 #import "DMEAuthorizationManager.h"
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "CASession+Private.h"
 #import "DMEClient.h"
 
@@ -20,7 +20,7 @@
 @interface DMEAuthorizationManager()
 
 @property (nonatomic, strong, readonly) CASession *session;
-@property (nonatomic, strong, readonly) CASessionManager *sessionManager;
+@property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 @property (nonatomic, copy, nullable) AuthorizationCompletionBlock authCompletionBlock;
 
 @end
@@ -100,7 +100,7 @@
     return self.sessionManager.currentSession;
 }
 
--(CASessionManager *)sessionManager
+-(DMESessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
 }

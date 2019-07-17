@@ -1,5 +1,5 @@
 //
-//  CASessionManager.h
+//  DMESessionManager.h
 //  DigiMeSDK
 //
 //  Created on 29/01/2018.
@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class DMEAPIClient;
 @class DMEClient;
 
-@interface CASessionManager : NSObject
+@interface DMESessionManager : NSObject
 
 @property (nonatomic, strong, nullable, readonly) CASession *currentSession;
 

@@ -9,7 +9,7 @@
 #import "DMEAPIClient.h"
 #import "DMEClient.h"
 #import "CAFilesDeserializer.h"
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "DMECrypto.h"
 #import "DMEValidator.h"
 #import "DMEAppCommunicator.h"
@@ -41,7 +41,7 @@
     {
         _clientConfiguration = [DMEClientConfiguration new];
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];
-        _sessionManager = [[CASessionManager alloc] initWithApiClient:_apiClient];
+        _sessionManager = [[DMESessionManager alloc] initWithApiClient:_apiClient];
         _crypto = [DMECrypto new];
         _decryptsData = YES;
         
@@ -169,9 +169,7 @@
     }
     
     //initiate file list request
-    __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileListWithSuccess:^(NSData * _Nonnull data) {
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         NSError *error;
         CAFiles *files = [CAFilesDeserializer deserialize:data error:&error];
@@ -182,7 +180,6 @@
             
         });
     } failure:^(NSError * _Nonnull error) {
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -237,7 +234,6 @@
         [strongSelf processFileData:data fileId:fileId completion:completion];
         
     } failure:^(NSError * _Nonnull error) {
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -314,7 +310,6 @@
         });
         
     } failure:^(NSError * _Nonnull error) {
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             

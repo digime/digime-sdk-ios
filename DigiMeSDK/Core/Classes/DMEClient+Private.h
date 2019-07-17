@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) DMEAppCommunicator *appCommunicator;
 
-@property (nonatomic, strong, readwrite) CASessionManager *sessionManager;
+@property (nonatomic, strong, readwrite) DMESessionManager *sessionManager;
 @property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
 @property (nonatomic, strong) DMECrypto *crypto;
 

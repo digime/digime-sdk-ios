@@ -11,7 +11,7 @@
 #import "DMEClientCallbacks.h"
 #import "DMEClientConfiguration.h"
 
-@class CASessionManager;
+@class DMESessionManager;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  DigiMe Consent Access Session Manager.
  */
-@property (nonatomic, strong, readonly) CASessionManager *sessionManager;
+@property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 
 
 /**

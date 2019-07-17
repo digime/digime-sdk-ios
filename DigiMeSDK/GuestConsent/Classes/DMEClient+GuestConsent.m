@@ -11,7 +11,7 @@
 #import "DMEClient+GuestConsent.h"
 #import "DMEGuestConsentManager.h"
 #import "DMEClient+Private.h"
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "PreConsentViewController.h"
 #import "UIViewController+DMEExtension.h"
 
