@@ -45,14 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 
-
-/**
- Defaults to YES. If set to NO, then when data is downloaded it will be passed as raw to the download delegate. We recommend this setting is left at default.
- 
- N.B. When set to NO, the download delegate must be set as this is not compatible with DMEClientCallbacks.
- */
-@property (nonatomic) BOOL decryptsData;
-
 /**
  Session metadata. Contains additional debug information collected during the session lifetime.
  */
@@ -81,27 +73,34 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope custom scope that will be applied to available data.
  @param authorizationCompletion AuthorizationCompletionBlock
  */
-- (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
+- (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion NS_SWIFT_NAME(authorize(scope:completion:));
 
 /**
- Fetches file list that's available for the authorized contract.
- @param completion FileListCompletionBlock.
+ Fetches content for all the requested files.
+ 
+ An attempt is made to fetch each requested file and the result of each attempt is passed back via the download handler.
+ Therefore multiple the handlers may be called concurrently, so the handler should allow for this.
+ 
+ N.B. A session must already have been authorized
+
+ @param fileContentHandler Handler called after every file retrieval attempt finishes. Either contains the file or an error if retrieval failed
+ @param completion Contains nil once all file retrievals have been attempted, or an error if unable to attempt any retrieval
  */
-- (void)getFileListWithCompletion:(nonnull FileListCompletionBlock)completion;
+- (void)getSessionDataWithDownloadHandler:(FileContentCompletionBlock)fileContentHandler completion:(void (^)(NSError * _Nullable error))completion NS_SWIFT_NAME(getSessionData(downloadHandler:completion:));
 
 /**
- Fetches file content for fileId. FileId is retrieve from fileList.
+ Fetches file content for fileId. The fileId may be retrieved from the download handler in getSessionDataWithDownloadHandler:completion:.
 
  @param fileId NSString id if the file to fetch.
  @param completion FileContentCompletionBlock
  */
-- (void)getFileWithId:(NSString *)fileId completion:(nonnull FileContentCompletionBlock)completion;
+- (void)getSessionDataForFileWithId:(NSString *)fileId completion:(nonnull FileContentCompletionBlock)completion NS_SWIFT_NAME(getSessionData(fileId:completion:));
 
 /**
  Fetches the accounts available for the authorized contract.
  @param completion AccountsCompletionBlock
  */
-- (void)getAccountsWithCompletion:(nonnull AccountsCompletionBlock)completion;
+- (void)getSessionAccountsWithCompletion:(nonnull AccountsCompletionBlock)completion NS_SWIFT_NAME(getSessionAccounts(completion:));
 
 /**
  Handles returning from digi.me application.

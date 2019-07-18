@@ -55,10 +55,14 @@ typedef void (^FileListCompletionBlock) (DMEFiles * _Nullable files, NSError  * 
  FileContentCompletionBlock - executed when a file has been retrieved.
 
  @param file DMEFile
- @param error NSError
+ @param error NSError. The error's user info will contain the id of the file this error relates to. e.g.
+ @code
+     NSString *fileId = error.userInfo[kFileIdKey];
+ @endcode
  */
 typedef void (^FileContentCompletionBlock) (DMEFile * _Nullable file, NSError * _Nullable error);
 
+extern NSString * const kFileIdKey;
 
 /**
  AccountsCompletionBlock - executed when account metadata has been retrieved.

@@ -14,8 +14,6 @@
 @interface ViewController ()
 
 @property (nonatomic, strong) DMEClient *dmeClient;
-@property (nonatomic) NSInteger fileCount;
-@property (nonatomic) NSInteger progress;
 @property (nonatomic, strong) LogViewController *logVC;
 
 @end
@@ -37,9 +35,6 @@
     self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF" password:@"YOUR_P12_PASSWORD"];
     
     self.dmeClient.contractId = @"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF";
-    
-    self.fileCount = 0;
-    self.progress = 0;
     
     self.logVC = [LogViewController new];
     [self addChildViewController:self.logVC];
@@ -71,7 +66,6 @@
 
 - (void)runTapped
 {
-    self.progress = 0;
     [self.logVC reset];
 
     [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
@@ -83,14 +77,14 @@
         
         [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
 
-        [self getFileList];
+        [self getSessionData];
         [self getAccounts];
     }];
 }
 
 - (void)getAccounts
 {
-    [self.dmeClient getAccountsWithCompletion:^(DMEAccounts * _Nullable accounts, NSError * _Nullable error) {
+    [self.dmeClient getSessionAccountsWithCompletion:^(DMEAccounts * _Nullable accounts, NSError * _Nullable error) {
         
         if (accounts == nil){
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
@@ -102,38 +96,26 @@
     }];
 }
 
-- (void)getFileList
+- (void)getSessionData
 {
-    [self.dmeClient getFileListWithCompletion:^(DMEFiles * _Nullable files, NSError * _Nullable error) {
+    [self.dmeClient getSessionDataWithDownloadHandler:^(DMEFile * _Nullable file, NSError * _Nullable error) {
         
-        if (files == nil){
-            [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve fileList failed: %@", error.localizedDescription]];
-            return;
-        };
-        
-        self.fileCount = files.fileIds.count;
-        
-        for (NSString *fileId in files.fileIds)
+        if (file != nil)
         {
-            [self getFileWith:fileId];
+            [self.logVC logMessage:[NSString stringWithFormat:@"File Content: %@", file.fileContentAsJSON]];
         }
         
-    }];
-}
-
-- (void)getFileWith:(NSString *)Id
-{
-    [self.dmeClient getFileWithId:Id completion:^(DMEFile * _Nullable file, NSError * _Nullable error) {
+        if (error != nil)
+        {
+            NSString *fileId = error.userInfo[kFileIdKey] ?: @"unknown";
+            [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", fileId, error.localizedDescription]];
+        }
+    } completion:^(NSError * _Nullable error) {
         
-        if (file == nil){
-            [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", Id, error.localizedDescription]];
-            return;
-        };
-        
-        self.progress++;
-        
-        [self.logVC logMessage:[NSString stringWithFormat:@"File Content: %@", file.fileContentAsJSON]];
-        [self. logVC logMessage:[NSString stringWithFormat:@"--------------------Progress: %i/%i", (int)self.progress, (int)self.fileCount]];
+        if (error != nil)
+        {
+            [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve session data failed: %@", error.localizedDescription]];
+        }
     }];
 }
 

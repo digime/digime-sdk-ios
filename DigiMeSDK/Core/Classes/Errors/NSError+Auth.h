@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, AuthError) {
 @interface NSError (Auth)
 
 + (NSError *)authError:(AuthError)authError;
++ (NSError *)authError:(AuthError)authError additionalInfo:(nullable NSDictionary<NSErrorUserInfoKey, id> *)additionalInfo;
 
 @end
 
