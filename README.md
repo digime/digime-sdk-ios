@@ -202,14 +202,14 @@ For that purpose the SDK provides **DMEClientCallbacks** block based interface.
 To start fetching data into your application, you will need to authorize a session.
 Authorization flow is separated into two phases:
 
-1. Initialize a session with Digi.me API (returns a **CASession** object).
+1. Initialize a session with Digi.me API (returns a **DMESession** object).
 
 2. Authorize session with the Digi.me app and prepare data if user accepts.
 
 SDK starts and handles these steps automatically by calling:
 
 > ```
-> [[DMEClient sharedClient] authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error){...}];
+> [[DMEClient sharedClient] authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error){...}];
 > ```
 
 ## Guest Consent
@@ -237,22 +237,22 @@ Since `authorize` automatically opens Digi.me app, you will need some way of han
 ```
 
 ## Specifying Scope
-Specifying a scope via `CAScope` object will allow you to retrieve only a subset of data that the contract has asked for. This might come in handy if you already have data from the existing user and you might only want to retrieve any new data that might have been added to the user's library in the last x months. 
+Specifying a scope via `DMEScope` object will allow you to retrieve only a subset of data that the contract has asked for. This might come in handy if you already have data from the existing user and you might only want to retrieve any new data that might have been added to the user's library in the last x months. 
 
-SDK currently only supports specifying scope for `CATimeRange`s.
+SDK currently only supports specifying scope for `DMETimeRange`s.
  
-The format of CATimeRange is as follows:
+The format of DMETimeRange is as follows:
 
 ```objective-c
-@interface CATimeRange : NSObject
+@interface DMETimeRange : NSObject
 @property (nonatomic, strong, readonly, nullable) NSDate *from;
 @property (nonatomic, strong, readonly, nullable) NSDate *to;
 @property (nonatomic, strong, readonly, nullable) NSString *last;
 
-+ (CATimeRange *)from:(NSDate *)from;
-+ (CATimeRange *)priorTo:(NSDate *)priorTo;
-+ (CATimeRange *)from:(NSDate *)from to:(NSDate *)to;
-+ (CATimeRange *)last:(NSUInteger)x unit:(CATimeRangeUnit)unit;
++ (DMETimeRange *)from:(NSDate *)from;
++ (DMETimeRange *)priorTo:(NSDate *)priorTo;
++ (DMETimeRange *)from:(NSDate *)from to:(NSDate *)to;
++ (DMETimeRange *)last:(NSUInteger)x unit:(DMETimeRangeUnit)unit;
 @end
 ```
 
@@ -262,16 +262,16 @@ The format of CATimeRange is as follows:
 
 `last` - You can set a dynamic time range based on the current date. The string is in the format of `x<unit>`, where `x` specifies a number and `<unit>` specifies the range unit. For example, if you wanted to get the last 6 month, you would set the `last` property to `6m`.
 
-`CATimeRange` has handy initializers you can use to cover most use cases.
+`DMETimeRange` has handy initializers you can use to cover most use cases.
 
 Example usage:
 
 ```objective-c
 
-CAScope *scope = [CAScope new];
+DMEScope *scope = [DMEScope new];
 
 //last 10 days
-CATimeRange *timeRange = [CATimeRange last:10 unit:CATimeRangeUnitDay];
+DMETimeRange *timeRange = [DMETimeRange last:10 unit:DMETimeRangeUnitDay];
 
 scope.timeRanges = @[timeRange];
 [[DMEClient sharedClient] authorizeWithScope:scope];
@@ -284,16 +284,16 @@ Upon successful authorization you can request user's files.
 To fetch the list of available files for your contract:
 
 > ```
-> [[DMEClient sharedClient] getFileListWithCompletion:^(CAFiles * _Nullable files, NSError  * _Nullable error){...}];
+> [[DMEClient sharedClient] getFileListWithCompletion:^(DMEFiles * _Nullable files, NSError  * _Nullable error){...}];
 > ```
  
 
-Upon success `DMEClient` returns a `CAFiles` object which contains a single field - `fileIds` (NSArray<NSString>), a list of file IDs.
+Upon success `DMEClient` returns a `DMEFiles` object which contains a single field - `fileIds` (NSArray<NSString>), a list of file IDs.
 
 Finally you can use the returned file IDs to fetch their data:
 
 > ```
-> [[DMEClient sharedClient] getFileWithId:fileId completion:^(CAFile * _Nullable file, NSError * _Nullable error){...}];
+> [[DMEClient sharedClient] getFileWithId:fileId completion:^(DMEFile * _Nullable file, NSError * _Nullable error){...}];
 > ```
 
 
@@ -304,7 +304,7 @@ To fetch accounts data:
 
 
 > ```objective-c
-> [[DMEClient sharedClient] getAccountsWithCompletion:(CAAccounts * _Nullable accounts, NSError * _Nullable error){ ... }];
+> [[DMEClient sharedClient] getAccountsWithCompletion:(DMEAccounts * _Nullable accounts, NSError * _Nullable error){ ... }];
 > ```
 
 
@@ -377,18 +377,18 @@ The following properties can be configured:
 
 ## Fetched Files
 
-Each file you fetch from Consent Access is represented by `CAFile` object. 
+Each file you fetch from Consent Access is represented by `DMEFile` object. 
 
-`CAFile` has a `fileContent` property which is the binary data blob of the file. In the vast majority of use cases, the files returned will be serialised JSON which can be deduced from this data blob.
+`DMEFile` has a `fileContent` property which is the binary data blob of the file. In the vast majority of use cases, the files returned will be serialised JSON which can be deduced from this data blob.
 
-In some use cases, the data returned may be of another type and not serialisable to JSON. You can inspect the `mimeType` property of `CAFile` to see exactly what type the data is.
+In some use cases, the data returned may be of another type and not serialisable to JSON. You can inspect the `mimeType` property of `DMEFile` to see exactly what type the data is.
 
-The `CAMimeType` enum represents the various mime types that are currently supported, with those that aren't defaulting to raw bytes (octet stream).
+The `DMEMimeType` enum represents the various mime types that are currently supported, with those that aren't defaulting to raw bytes (octet stream).
 
 The supported mime types are detailed below:
 
 ```swift
-public enum CAMimeType: Int, CaseIterable, ExpressibleByStringLiteral {
+public enum DMEMimeType: Int, CaseIterable, ExpressibleByStringLiteral {
     
     case application_json
     case application_octetStream
@@ -455,7 +455,7 @@ Once a user has authorized your Postbox request, you can use the following endpo
 
 You should provide the session key received from the SDK as a header:
 
-`sessionKey: <CA_SESSION_KEY>`
+`sessionKey: <SESSION_KEY>`
 
 The body of the request should be JSON in the following structure:
 
@@ -481,12 +481,12 @@ We have created a convenience method to make this easy, simply invoke it to send
 /**
  * Pushes data to user's Postbox.
  *
- * @param postbox CAPostbox
+ * @param postbox DMEPostbox
  * @param metadata NSData
  * @param data NSData
  * @param completion PostboxDataPushCompletionBlock
  */
-- (void)pushDataToPostbox:(CAPostbox *)postbox
+- (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
                      data:(NSData *)data
                completion:(PostboxDataPushCompletionBlock)completion;
@@ -670,7 +670,7 @@ To see SDK in action in an Objective-C project:
     self.dmeClient.appId = @"YOUR_APP_ID";
     
 // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
-    self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"CA_RSA_PRIVATE_KEY" password:@"YOUR_P12_PASSWORD"];
+    self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"RSA_PRIVATE_KEY" password:@"YOUR_P12_PASSWORD"];
 
 ```
 
@@ -725,7 +725,7 @@ dmeClient.appId = "YOUR_APP_ID"
     
 // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
     
-dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "CA_RSA_PRIVATE_KEY", password: "YOUR_P12_PASSWORD")
+dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: "RSA_PRIVATE_KEY", password: "YOUR_P12_PASSWORD")
 
 ```
 

@@ -74,7 +74,7 @@
     self.progress = 0;
     [self.logVC reset];
 
-    [self.dmeClient authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         if (session == nil)
         {
@@ -91,7 +91,7 @@
 
 - (void)getAccounts
 {
-    [self.dmeClient getAccountsWithCompletion:^(CAAccounts * _Nullable accounts, NSError * _Nullable error) {
+    [self.dmeClient getAccountsWithCompletion:^(DMEAccounts * _Nullable accounts, NSError * _Nullable error) {
         
         if (accounts == nil)
         {
@@ -106,7 +106,7 @@
 
 - (void)getFileList
 {
-    [self.dmeClient getFileListWithCompletion:^(CAFiles * _Nullable files, NSError * _Nullable error) {
+    [self.dmeClient getFileListWithCompletion:^(DMEFiles * _Nullable files, NSError * _Nullable error) {
         
         if (files == nil)
         {
@@ -126,7 +126,7 @@
 
 - (void)getFileWith:(NSString *)Id
 {
-    [self.dmeClient getFileWithId:Id completion:^(CAFile * _Nullable file, NSError * _Nullable error) {
+    [self.dmeClient getFileWithId:Id completion:^(DMEFile * _Nullable file, NSError * _Nullable error) {
         
         if (file == nil)
         {

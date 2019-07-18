@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CAScope.h"
+#import "DMEScope.h"
 #import "DMEClientCallbacks.h"
 #import "DMEClientConfiguration.h"
 
-@class CASessionManager;
+@class DMESessionManager;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  DigiMe Consent Access Session Manager.
  */
-@property (nonatomic, strong, readonly) CASessionManager *sessionManager;
+@property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 
 
 /**
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope custom scope that will be applied to available data.
  @param authorizationCompletion AuthorizationCompletionBlock
  */
-- (void)authorizeWithScope:(nullable id<CADataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
+- (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
 
 /**
  Fetches file list that's available for the authorized contract.

@@ -8,7 +8,7 @@
 
 #import "DMEClient.h"
 
-@class DMECrypto, DMEAuthorizationManager, DMEAPIClient, DMEAppCommunicator;
+@class DMECrypto, DMENativeConsentManager, DMEAPIClient, DMEAppCommunicator;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,11 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) DMEAppCommunicator *appCommunicator;
 
-@property (nonatomic, strong, readwrite) CASessionManager *sessionManager;
+@property (nonatomic, strong, readwrite) DMESessionManager *sessionManager;
 @property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
 @property (nonatomic, strong) DMECrypto *crypto;
 
-@property (nonatomic, weak) DMEAuthorizationManager *authManager;
+@property (nonatomic, weak) DMENativeConsentManager *authManager;
 
 - (nullable NSError *)validateClient;
 

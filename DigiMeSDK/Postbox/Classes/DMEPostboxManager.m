@@ -7,15 +7,15 @@
 //
 
 #import "DMEPostboxManager.h"
-#import "CASessionManager.h"
+#import "DMESessionManager.h"
 #import "DMEClient.h"
-#import "CAPostbox.h"
-#import "CASession+Private.h"
+#import "DMEPostbox.h"
+#import "DMESession+Private.h"
 
 @interface DMEPostboxManager()
 
-@property (nonatomic, strong, readonly) CASession *session;
-@property (nonatomic, strong, readonly) CASessionManager *sessionManager;
+@property (nonatomic, strong, readonly) DMESession *session;
+@property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 @property (nonatomic, copy, nullable) PostboxCreationCompletionBlock postboxCompletionBlock;
 
 @end
@@ -44,7 +44,7 @@
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    BOOL success = [parameters[kCADigimeResponse] boolValue];
+    BOOL success = [parameters[kDMEResponse] boolValue];
     NSString *sessionKey = parameters[kCARequestSessionKey];
     NSString *postboxId = parameters[kCARequestPostboxId];
     NSString *postboxPublicKey = parameters[kCARequestPostboxPublicKey];
@@ -52,7 +52,7 @@
     [self filterMetadata: parameters];
     
     NSError *err;
-    CAPostbox *postbox;
+    DMEPostbox *postbox;
     
     if (![self.sessionManager isSessionKeyValid:sessionKey])
     {
@@ -64,7 +64,7 @@
     }
     else
     {
-        postbox = [[CAPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
+        postbox = [[DMEPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
         postbox.postboxRSAPublicKey = postboxPublicKey;
     }
     
@@ -106,19 +106,19 @@
 
 #pragma mark - Convenience
 
-- (CASession *)session
+- (DMESession *)session
 {
     return self.sessionManager.currentSession;
 }
 
-- (CASessionManager *)sessionManager
+- (DMESessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
 }
 
 - (void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
-    NSMutableArray *allowedKeys = @[kCADigimeResponse, kCARequestSessionKey, kCARequestPostboxId, kCARequestPostboxPublicKey, kCARequestRegisteredAppID].mutableCopy;
+    NSMutableArray *allowedKeys = @[kDMEResponse, kCARequestSessionKey, kCARequestPostboxId, kCARequestPostboxPublicKey, kCARequestRegisteredAppID].mutableCopy;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
     NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
     self.session.metadata = whiteDictionary;

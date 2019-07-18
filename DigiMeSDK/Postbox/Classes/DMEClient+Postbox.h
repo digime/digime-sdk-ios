@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClient.h"
-#import "CAPostbox.h"
+#import "DMEPostbox.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,12 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Pushes data to user's Postbox.
  
- @param postbox CAPostbox
+ @param postbox DMEPostbox
  @param metadata NSData
  @param data NSData
  @param completion PostboxDataPushCompletionBlock
  */
-- (void)pushDataToPostbox:(CAPostbox *)postbox
+- (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
                      data:(NSData *)data
                completion:(PostboxDataPushCompletionBlock)completion;

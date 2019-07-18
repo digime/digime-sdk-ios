@@ -11,15 +11,15 @@
 #import "DMEClient+GuestConsent.h"
 #import "DMEGuestConsentManager.h"
 #import "DMEClient+Private.h"
-#import "CASessionManager.h"
-#import "PreConsentViewController.h"
+#import "DMESessionManager.h"
+#import "DMEPreConsentViewController.h"
 #import "UIViewController+DMEExtension.h"
 
-@interface DMEClient () <PreConsentViewControllerDelegate>
+@interface DMEClient () <DMEPreConsentViewControllerDelegate>
 
 @property (nonatomic, weak) DMEGuestConsentManager *guestConsentManager;
-@property (nonatomic, strong) PreConsentViewController *preconsentViewController;
-@property (nonatomic, strong, nullable) id<CADataRequest> scope;
+@property (nonatomic, strong) DMEPreConsentViewController *preconsentViewController;
+@property (nonatomic, strong, nullable) id<DMEDataRequest> scope;
 
 @end
 
@@ -39,14 +39,14 @@ DMEGuestConsentManager *_guestConsentManager;
     _guestConsentManager = manager;
 }
 
-PreConsentViewController *_preconsentViewController;
+DMEPreConsentViewController *_preconsentViewController;
 
-- (PreConsentViewController *)preconsentViewController
+- (DMEPreConsentViewController *)preconsentViewController
 {
     return _preconsentViewController;
 }
 
-- (void)setPreconsentViewController:(PreConsentViewController *)controller
+- (void)setPreconsentViewController:(DMEPreConsentViewController *)controller
 {
     _preconsentViewController = controller;
 }
@@ -58,14 +58,14 @@ AuthorizationCompletionBlock _authorizationCompletion;
     _authorizationCompletion = authorizationCompletion;
 }
 
-id<CADataRequest> _scope;
+id<DMEDataRequest> _scope;
 
-- (id<CADataRequest>)scope
+- (id<DMEDataRequest>)scope
 {
     return _scope;
 }
 
-- (void)setScope:(id<CADataRequest>)scope
+- (void)setScope:(id<DMEDataRequest>)scope
 {
     _scope = scope;
 }
@@ -77,7 +77,7 @@ id<CADataRequest> _scope;
     [self authorizeGuestWithScope:nil completion:completion];
 }
 
-- (void)authorizeGuestWithScope:(id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion
 {
     if ([self canOpenDigiMeApp])
     {
@@ -88,7 +88,7 @@ id<CADataRequest> _scope;
         self.scope = scope;
         [self setAuthorizationCompletion:completion];
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.preconsentViewController = [PreConsentViewController new];
+            self.preconsentViewController = [DMEPreConsentViewController new];
             self.preconsentViewController.delegate = self;
             self.preconsentViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
             [[UIViewController topmostViewController] presentViewController:self.preconsentViewController animated:YES completion:nil];
@@ -115,7 +115,7 @@ id<CADataRequest> _scope;
     }
     
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:self.scope completion:^(CASession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:self.scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
@@ -128,7 +128,7 @@ id<CADataRequest> _scope;
             return;
         }
         
-        [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [strongSelf executeCompletionWithSession:session error:error];
@@ -137,7 +137,7 @@ id<CADataRequest> _scope;
     }];
 }
 
-- (void)executeCompletionWithSession:(CASession * _Nullable )session error:(NSError * _Nullable)error
+- (void)executeCompletionWithSession:(DMESession * _Nullable )session error:(NSError * _Nullable)error
 {
     if (_authorizationCompletion != nil)
     {
@@ -152,7 +152,7 @@ id<CADataRequest> _scope;
 - (void)downloadDigimeFromAppstore
 {
     [self.preconsentViewController dismissViewControllerAnimated:YES completion:^{
-        [self authorizeWithCompletion:^(CASession * _Nullable session, NSError * _Nullable error) {
+        [self authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
             [self executeCompletionWithSession:session error:error];
         }];
     }];

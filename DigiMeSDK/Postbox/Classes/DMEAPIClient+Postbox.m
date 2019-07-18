@@ -11,7 +11,7 @@
 #import "DMEClient.h"
 #import "DMECrypto.h"
 #import "DMERequestFactory.h"
-#import "CAPostbox.h"
+#import "DMEPostbox.h"
 
 #import "NSString+DMECrypto.h"
 #import "NSData+DMECrypto.h"
@@ -24,7 +24,7 @@
 
 #pragma mark - Data Push
 
-- (void)pushDataToPostbox:(CAPostbox *)postbox
+- (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
                      data:(NSData *)data
                completion:(PostboxDataPushCompletionBlock)completion

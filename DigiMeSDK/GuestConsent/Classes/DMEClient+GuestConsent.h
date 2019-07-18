@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope Custom scope that will be applied to available data
  @param completion Block called when authorization has completed
  */
-- (void)authorizeGuestWithScope:(nullable id<CADataRequest>)scope completion:(AuthorizationCompletionBlock)completion;
+- (void)authorizeGuestWithScope:(nullable id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion;
 
 @end
 
