@@ -11,17 +11,17 @@
 #import "DMEClient.h"
 #import "DMEDataRequest.h"
 
-NSString * const kCARequestSessionKey = @"CARequestSessionKey";
-NSString * const kDMEResponse = @"CADigimeResponse";
-NSString * const kCARequestRegisteredAppID = @"CARequestRegisteredAppID";
-NSString * const kCARequestPostboxId = @"CARequestPostboxId";
-NSString * const kCARequestPostboxPublicKey = @"CARequestPostboxPublicKey";
-NSString * const kCARequest3dPartyAppName = @"CARequest3dPartyAppName";
-NSString * const kTimingDataGetAllFiles = @"timingDataGetAllFiles";
-NSString * const kTimingDataGetFile = @"timingDataGetFile";
+NSString * const kCARequestSessionKey = @"sessionKey";
+NSString * const kDMEResponse = @"result";
+NSString * const kCARequestRegisteredAppID = @"appId";
+NSString * const kCARequestPostboxId = @"postboxId";
+NSString * const kCARequestPostboxPublicKey = @"publicKey";
+NSString * const kCARequest3dPartyAppName = @"appName";
+NSString * const kTimingDataGetAllFiles = @"timingGetAllFiles";
+NSString * const kTimingDataGetFile = @"timingGetFile";
 NSString * const kTimingFetchContractPermission = @"timingFetchContractPermission";
-NSString * const kTimingFetchDataGetAccount = @"timingFetchDataGetAccount";
-NSString * const kTimingFetchDataGetFileList = @"timingFetchDataGetFileList";
+NSString * const kTimingFetchDataGetAccount = @"timingFetchAccount";
+NSString * const kTimingFetchDataGetFileList = @"timingFetchFileList";
 NSString * const kTimingFetchSessionKey = @"timingFetchSessionKey";
 NSString * const kDataRequest = @"timingDataRequest";
 NSString * const kFetchContractDetails = @"timingFetchContractDetails";
@@ -30,13 +30,13 @@ NSString * const kTimingTotal = @"timingTotal";
 NSString * const kDebugAppId = @"debugAppId";
 NSString * const kDebugBundleVersion = @"debugBundleVersion";
 NSString * const kDebugPlatform = @"debugPlatform";
-NSString * const kContractId = @"CARequestContractId";
+NSString * const kContractId = @"contractId";
 NSString * const kContractType = @"debugContractType";
 NSString * const kDeviceId = @"debugDeviceId";
 NSString * const kDigiMeVersion = @"debugDigiMeVersion";
 NSString * const kUserId = @"debugUserId";
 NSString * const kLibraryId = @"debugLibraryId";
-NSString * const kPCloudType = @"debugPCloudType";
+NSString * const kPCloudType = @"debugPcloudType";
 
 @interface DMESession()
 @property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
