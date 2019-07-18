@@ -18,7 +18,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
-@property (nonatomic, copy, nullable) AuthorizationCompletionBlock guestConsentCompletionBlock;
+@property (nonatomic, copy, nullable) DMEAuthorizationCompletion guestConsentCompletionBlock;
 @property (nonatomic, strong) SFSafariViewController *safariViewController;
 @property (nonatomic, strong) NSDictionary *sentParameters;
 @property (nonatomic, strong) DMEClientConfiguration *config;
@@ -51,7 +51,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     [self executeCompletionWithError:error];
 }
 
-- (void)requestGuestConsentWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)requestGuestConsentWithCompletion:(DMEAuthorizationCompletion)completion
 {
     
     if (![NSThread currentThread].isMainThread)

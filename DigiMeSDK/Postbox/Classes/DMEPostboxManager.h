@@ -12,6 +12,6 @@
 
 @interface DMEPostboxManager : NSObject <DMEAppCallbackHandler>
 
-- (void)requestPostboxWithCompletion:(PostboxCreationCompletionBlock)completion;
+- (void)requestPostboxWithCompletion:(DMEPostboxCreationCompletion)completion;
 
 @end

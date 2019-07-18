@@ -34,7 +34,7 @@
     return self;
 }
 
-- (void)sessionWithScope:(id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion
+- (void)sessionWithScope:(id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion
 {
     //create new session. We always retrieve new session when requesting authorization
     [self invalidateCurrentSession];

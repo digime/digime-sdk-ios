@@ -20,56 +20,48 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- AuthorizationCompletionBlock - executed when authorization stage has completed.
+ DMEAuthorizationCompletion - executed when authorization stage has completed.
 
- @param session DMESession
- @param error NSError
+ @param session The session if authorization is successful, nil if not
+ @param error nil if authorization is successful, otherwise an error specifying what went wrong
  */
-typedef void (^AuthorizationCompletionBlock) (DMESession * _Nullable session, NSError * _Nullable error);
+typedef void (^DMEAuthorizationCompletion) (DMESession * _Nullable session, NSError * _Nullable error);
 
 /**
- PostboxCompletionBlock - executed when a Postbox is retrieved.
+ DMEPostboxCreationCompletion - executed when a Postbox is created.
 
- @param postbox DMEPostbox
- @param error NSError
+ @param postbox The Postbox if creation is successful, nil if not
+ @param error nil if Postbox creation is successful, otherwise an error specifying what went wrong
  */
-typedef void (^PostboxCreationCompletionBlock) (DMEPostbox * _Nullable postbox, NSError * _Nullable error);
+typedef void (^DMEPostboxCreationCompletion) (DMEPostbox * _Nullable postbox, NSError * _Nullable error);
 
 /**
- PostboxDataPushCompletionBlock - executed when data has been pushed to Postbox.
+ DMEPostboxDataPushCompletion - executed when data has been pushed to Postbox.
  
- @param error NSError
+ @param error nil if push is succesful, otherwise an error specifying what went wrong
  */
-typedef void (^PostboxDataPushCompletionBlock) (NSError * _Nullable error);
-
-/**
- FileListCompletionBlock - executed when file list has been retrieved.
-
- @param files DMEFiles
- @param error NSError
- */
-typedef void (^FileListCompletionBlock) (DMEFiles * _Nullable files, NSError  * _Nullable error);
+typedef void (^DMEPostboxDataPushCompletion) (NSError * _Nullable error);
 
 
 /**
- FileContentCompletionBlock - executed when a file has been retrieved.
+ DMEFileContentCompletion - executed when a file has been retrieved.
 
- @param file DMEFile
- @param error NSError. The error's user info will contain the id of the file this error relates to. e.g.
+ @param file The file if retrieval is successful, nil if not
+ @param error nil if retrieval is succesful, otherwise an error specifying what went wrong. The error's user info will contain the id of the file this error relates to. e.g.
  @code
      NSString *fileId = error.userInfo[kFileIdKey];
  @endcode
  */
-typedef void (^FileContentCompletionBlock) (DMEFile * _Nullable file, NSError * _Nullable error);
+typedef void (^DMEFileContentCompletion) (DMEFile * _Nullable file, NSError * _Nullable error);
 
 extern NSString * const kFileIdKey;
 
 /**
- AccountsCompletionBlock - executed when account metadata has been retrieved.
+ DMEAccountsCompletion - executed when account metadata has been retrieved.
 
- @param accounts DMEAccounts
- @param error NSError
+ @param accounts The accounts if retrieval is successful, nil if not
+ @param error nil if retrieval is succesful, otherwise an error specifying what went wrong
  */
-typedef void (^AccountsCompletionBlock) (DMEAccounts * _Nullable accounts, NSError * _Nullable error);
+typedef void (^DMEAccountsCompletion) (DMEAccounts * _Nullable accounts, NSError * _Nullable error);
 
 NS_ASSUME_NONNULL_END

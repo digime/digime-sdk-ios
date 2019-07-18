@@ -14,6 +14,6 @@
 
 @interface DMEGuestConsentManager : NSObject <DMEAppCallbackHandler>
 
-- (void)requestGuestConsentWithCompletion:(AuthorizationCompletionBlock)completion;
+- (void)requestGuestConsentWithCompletion:(DMEAuthorizationCompletion)completion;
 
 @end

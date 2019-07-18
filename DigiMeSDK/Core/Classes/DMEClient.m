@@ -56,12 +56,12 @@
 
 #pragma mark - Authorization
 
-- (void)authorizeWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithCompletion:(nonnull DMEAuthorizationCompletion)authorizationCompletion
 {
     [self authorizeWithScope:nil completion:authorizationCompletion];
 }
 
-- (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)authorizationCompletion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -131,7 +131,7 @@
     return nil;
 }
 
-- (void)userAuthorizationWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
+- (void)userAuthorizationWithCompletion:(nonnull DMEAuthorizationCompletion)authorizationCompletion
 {
     __weak __typeof(self)weakSelf = self;
     [self.authManager beginAuthorizationWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
@@ -155,7 +155,7 @@
 }
 
 #pragma mark - Get File List
-- (void)getFileListWithCompletion:(FileListCompletionBlock)completion
+- (void)getFileListWithCompletion:(void (^)(DMEFiles * _Nullable files, NSError  * _Nullable error))completion
 {
     //validate session
     if (![self.sessionManager isSessionValid])
@@ -198,7 +198,7 @@
 
 #pragma mark - Get File Content
 
-- (void)getSessionDataWithDownloadHandler:(FileContentCompletionBlock)fileContentHandler completion:(void (^)(NSError * _Nullable))completion
+- (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(void (^)(NSError * _Nullable))completion
 {
     [self getFileListWithCompletion:^(DMEFiles * _Nullable files, NSError * _Nullable error) {
         if (files == nil)
@@ -214,7 +214,7 @@
     }];
 }
 
-- (void)getSessionDataForFileWithId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
+- (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
 {
     //validate session
     if (![self.sessionManager isSessionValid])
@@ -245,7 +245,7 @@
     }];
 }
 
-- (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
+- (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
 {
     DMEFile *file;
     NSError *error;
@@ -274,7 +274,7 @@
 
 #pragma mark - Accounts
 
-- (void)getSessionAccountsWithCompletion:(AccountsCompletionBlock)completion
+- (void)getSessionAccountsWithCompletion:(DMEAccountsCompletion)completion
 {
     //validate session
     if (![self.sessionManager isSessionValid])

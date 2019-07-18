@@ -74,12 +74,12 @@ DMEPreConsentViewController *_preconsentViewController;
     [self authorizeGuestWithScope:scope completion:nil];
 }
 
-- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuestWithCompletion:(DMEAuthorizationCompletion)completion
 {
     [self authorizeGuestWithScope:nil completion:completion];
 }
 
-- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion
 {
     if (!self.guestConsentManager)
     {

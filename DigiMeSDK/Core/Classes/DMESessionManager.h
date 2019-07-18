@@ -29,9 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
  Will return session object. Either existing session will be re-used, or new session will be created.
 
  @param scope optional DMEDataRequest that sets scope filter for the session.
- @param completion AuthorizationCompletionBlock
+ @param completion DMEAuthorizationCompletion
  */
-- (void)sessionWithScope:(nullable id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion;
+- (void)sessionWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion;
 
 
 /**

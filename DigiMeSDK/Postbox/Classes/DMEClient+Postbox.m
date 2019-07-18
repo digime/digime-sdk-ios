@@ -37,7 +37,7 @@ DMEPostboxManager* _postboxManager;
 
 #pragma mark - End ivar and accessor definitions.
 
-- (void)createPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
+- (void)createPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
 {
     // Check if the manager has been instantiated.
     if (!self.postboxManager)
@@ -83,7 +83,7 @@ DMEPostboxManager* _postboxManager;
 - (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
                      data:(NSData *)data
-               completion:(PostboxDataPushCompletionBlock)completion
+               completion:(DMEPostboxDataPushCompletion)completion
 {
     [self.apiClient pushDataToPostbox:postbox metadata:metadata data:data completion:^(NSError * _Nullable error) {
         completion(error);

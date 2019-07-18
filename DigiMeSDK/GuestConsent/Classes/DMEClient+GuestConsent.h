@@ -12,6 +12,6 @@
 @interface DMEClient (GuestConsent)
 
 - (void)authorizeGuest;
-- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion;
+- (void)authorizeGuestWithCompletion:(DMEAuthorizationCompletion)completion;
 
 @end

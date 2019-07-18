@@ -61,9 +61,9 @@ NS_ASSUME_NONNULL_BEGIN
  Initilizes contract authentication. This will attempt to create a session and redirect
  to the Digi.me application.
 
- @param authorizationCompletion AuthorizationCompletionBlock
+ @param authorizationCompletion DMEAuthorizationCompletion
  */
-- (void)authorizeWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion;
+- (void)authorizeWithCompletion:(DMEAuthorizationCompletion)authorizationCompletion;
 
 
 /**
@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope custom scope that will be applied to available data.
  @param authorizationCompletion AuthorizationCompletionBlock
  */
-- (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion NS_SWIFT_NAME(authorize(scope:completion:));
+- (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)authorizationCompletion NS_SWIFT_NAME(authorize(scope:completion:));
 
 /**
  Fetches content for all the requested files.
@@ -83,24 +83,25 @@ NS_ASSUME_NONNULL_BEGIN
  
  N.B. A session must already have been authorized
 
- @param fileContentHandler Handler called after every file retrieval attempt finishes. Either contains the file or an error if retrieval failed
- @param completion Contains nil once all file retrievals have been attempted, or an error if unable to attempt any retrieval
+ @param fileContentHandler Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
+ @param completion Contains nil once all file fetches have been attempted, or an error if unable to attempt any fetch
  */
-- (void)getSessionDataWithDownloadHandler:(FileContentCompletionBlock)fileContentHandler completion:(void (^)(NSError * _Nullable error))completion NS_SWIFT_NAME(getSessionData(downloadHandler:completion:));
+- (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(void (^)(NSError * _Nullable error))completion NS_SWIFT_NAME(getSessionData(downloadHandler:completion:));
 
 /**
  Fetches file content for fileId. The fileId may be retrieved from the download handler in getSessionDataWithDownloadHandler:completion:.
 
  @param fileId NSString id if the file to fetch.
- @param completion FileContentCompletionBlock
+ @param completion Reports result of fetch. Either contains the file or an error if fetch failed
  */
-- (void)getSessionDataForFileWithId:(NSString *)fileId completion:(nonnull FileContentCompletionBlock)completion NS_SWIFT_NAME(getSessionData(fileId:completion:));
+- (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion NS_SWIFT_NAME(getSessionData(fileId:completion:));
 
 /**
  Fetches the accounts available for the authorized contract.
- @param completion AccountsCompletionBlock
+ 
+ @param completion Reports result of fetch. Either contains the accounts or an error if fetch failed
  */
-- (void)getSessionAccountsWithCompletion:(nonnull AccountsCompletionBlock)completion NS_SWIFT_NAME(getSessionAccounts(completion:));
+- (void)getSessionAccountsWithCompletion:(DMEAccountsCompletion)completion NS_SWIFT_NAME(getSessionAccounts(completion:));
 
 /**
  Handles returning from digi.me application.
