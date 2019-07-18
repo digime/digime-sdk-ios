@@ -73,7 +73,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     NSDictionary *params = @{
                              kDMEAPIClientBaseUrl: self.config.baseUrl,
                              kCARequestSessionKey: self.session.sessionExchangeToken,
-                             kCARequestRegisteredAppID: self.sessionManager.client.appId,
+                             kCARequestRegisteredAppID: self.sessionManager.client.clientConfiguration.appId,
                              };
     
     [self openBrowserWithParameters:params];
@@ -86,7 +86,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
         NSString *sessionKey = parameters[kCARequestSessionKey];
         NSString *baseUrl = parameters[kDMEAPIClientBaseUrl];
         NSString *callbackSuffix = @"%3A%2F%2FguestConsent-return%2F";
-        NSString *callbackUrl = [NSString stringWithFormat:@"%@%@%@", kDMEClientSchemePrefix, [DMEClient sharedClient].appId, callbackSuffix];
+        NSString *callbackUrl = [NSString stringWithFormat:@"%@%@%@", kDMEClientSchemePrefix, self.sessionManager.client.clientConfiguration.appId, callbackSuffix];
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@apps/quark/direct-onboarding?sessionExchangeToken=%@&callbackUrl=%@", baseUrl, sessionKey, callbackUrl]];
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:url];
         self.safariViewController.delegate = self;

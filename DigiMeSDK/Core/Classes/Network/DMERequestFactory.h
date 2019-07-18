@@ -34,12 +34,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Creates NSURLRequest for creating a new session.
  
- @param appId NSString
- @param contractId NSString
  @param scope id<DataRequest>
  @return NSURLRequest
  */
-- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<DMEDataRequest>)scope;
+- (NSURLRequest *)sessionRequestWithScope:(nullable id<DMEDataRequest>)scope;
 
 
 /**
@@ -78,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  DMEClientConfiguration object.
  */
-@property (nonatomic, strong, readonly) DMEClientConfiguration *config;
+@property (nonatomic, strong) DMEClientConfiguration *config;
 
 @end
 

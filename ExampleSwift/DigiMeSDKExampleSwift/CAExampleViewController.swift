@@ -23,12 +23,12 @@ class CAExampleViewController: UIViewController {
         
         // - GET STARTED -
         
-        dmeClient.appId = Constants.appId
+        guard let privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: Constants.p12FileName, password: Constants.p12Password) else {
+            return
+        }
         
-        dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: Constants.p12FileName, password: Constants.p12Password)
-        
-        dmeClient.contractId = Constants.CAContractId
-        
+        let config = DMEClientConfiguration(appId: Constants.appId, contractId: Constants.CAContractId, privateKeyHex: privateKeyHex)
+        dmeClient.clientConfiguration = config
         logVC = LogViewController(frame: UIScreen.main.bounds)
         view.addSubview(logVC)
         view.bringSubviewToFront(logVC)

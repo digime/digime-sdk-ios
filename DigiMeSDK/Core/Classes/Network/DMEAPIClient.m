@@ -91,7 +91,7 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 {
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
-    NSURLRequest *request = [self.requestFactory sessionRequestWithAppId:self.client.appId contractId:self.client.contractId scope:scope];
+    NSURLRequest *request = [self.requestFactory sessionRequestWithScope:scope];
     HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     
@@ -242,7 +242,7 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 {
     if (!_requestFactory)
     {
-        _requestFactory = [[DMERequestFactory alloc] initWithConfiguration:self.config];
+        _requestFactory = [[DMERequestFactory alloc] initWithConfiguration:_config];
     }
     
     return _requestFactory;
@@ -262,8 +262,8 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 {
     _config = config;
     
-    self.queue.maxConcurrentOperationCount = _config.maxConcurrentRequests;
-    self.requestFactory = [[DMERequestFactory alloc] initWithConfiguration:_config];
+    self.queue.maxConcurrentOperationCount = config.maxConcurrentRequests;
+    self.requestFactory.config = config;
 }
 
 - (NSString *)baseUrl

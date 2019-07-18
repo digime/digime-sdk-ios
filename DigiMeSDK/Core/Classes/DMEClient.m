@@ -19,11 +19,10 @@
 #import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 @implementation DMEClient
-@synthesize privateKeyHex = _privateKeyHex;
 
 #pragma mark - Initialization
 
-+ (DMEClient *)sharedClient
++ (instancetype)sharedClient
 {
     static DMEClient *sharedClient = nil;
     static dispatch_once_t onceToken;
@@ -101,30 +100,30 @@
 
 - (nullable NSError *)validateClient
 {
-    if (!self.appId || [self.appId isEqualToString:@"YOUR_APP_ID"])
+    if (!self.clientConfiguration.appId || [self.clientConfiguration.appId isEqualToString:@"YOUR_APP_ID"])
     {
         return [NSError sdkError:SDKErrorNoAppId];
     }
     
     NSArray *urlTypes = NSBundle.mainBundle.infoDictionary[@"CFBundleURLTypes"];
     NSArray *urlSchemes = [[urlTypes valueForKey:@"CFBundleURLSchemes"] valueForKeyPath: @"@unionOfArrays.self"];
-    NSString *expectedUrlScheme = [NSString stringWithFormat:@"digime-ca-%@", self.appId];
+    NSString *expectedUrlScheme = [NSString stringWithFormat:@"digime-ca-%@", self.clientConfiguration.appId];
     if (![urlSchemes containsObject:expectedUrlScheme])
     {
         return [NSError sdkError:SDKErrorNoURLScheme];
     }
     
-    if (!self.privateKeyHex)
+    if (!self.clientConfiguration.privateKeyHex)
     {
         return [NSError sdkError:SDKErrorNoPrivateKeyHex];
     }
     
-    if (!self.contractId || [self.contractId isEqualToString:@"YOUR_CONTRACT_ID"])
+    if (!self.clientConfiguration.contractId || [self.clientConfiguration.contractId isEqualToString:@"YOUR_CONTRACT_ID"])
     {
         return [NSError sdkError:SDKErrorNoContract];
     }
     
-    if (![DMEValidator validateContractId:self.contractId])
+    if (![DMEValidator validateContractId:self.clientConfiguration.contractId])
     {
         return [NSError sdkError:SDKErrorInvalidContract];
     }
@@ -194,7 +193,7 @@
 - (void)setPrivateKeyHex:(NSString *)privateKeyHex
 {
     [self.crypto addPrivateKeyHex:privateKeyHex];
-    _privateKeyHex = privateKeyHex;
+    self.clientConfiguration.privateKeyHex = privateKeyHex;
 }
 
 #pragma mark - Get File Content
@@ -324,7 +323,9 @@
 
 -(void)setClientConfiguration:(DMEClientConfiguration *)clientConfiguration
 {
-    self.apiClient.config = clientConfiguration;
+    _clientConfiguration = clientConfiguration;
+    _apiClient.config = clientConfiguration;
+    [self.crypto addPrivateKeyHex:clientConfiguration.privateKeyHex];
 }
 
 #pragma mark - Digi.me redirect handling
@@ -342,13 +343,13 @@
 - (void)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error
 {
     // Check we have both the appId and clientId, required for this.
-    if (!self.contractId.length)
+    if (!self.clientConfiguration.contractId.length)
     {
         *error = [NSError sdkError:SDKErrorNoContract];
         return;
     }
     
-    if (!self.appId.length)
+    if (!self.clientConfiguration.appId.length)
     {
         *error = [NSError sdkError:SDKErrorNoAppId];
         return;
@@ -365,8 +366,8 @@
     NSURLComponents *components = [NSURLComponents new];
     components.scheme = @"digime";
     components.host = @"receipt";
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"contractid" value:self.contractId],
-                              [NSURLQueryItem queryItemWithName:@"appid" value:self.appId]];
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"contractid" value:self.clientConfiguration.contractId],
+                              [NSURLQueryItem queryItemWithName:@"appid" value:self.clientConfiguration.appId]];
     
     NSURL *deeplinkingURL = components.URL;
     [[UIApplication sharedApplication] openURL:deeplinkingURL options:@{} completionHandler:nil];

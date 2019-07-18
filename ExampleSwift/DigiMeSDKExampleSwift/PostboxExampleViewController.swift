@@ -35,12 +35,15 @@ class PostboxExampleViewController: UIViewController {
             
         } else {
             
-            let client = DMEClient.shared()
+            let dmeClient = DMEClient.shared()
+            guard let privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: Constants.p12FileName, password: Constants.p12Password) else {
+                return
+            }
             
-            client.appId = Constants.appId
-            client.contractId = Constants.postboxContractId
+            let config = DMEClientConfiguration(appId: Constants.appId, contractId: Constants.CAContractId, privateKeyHex: privateKeyHex)
+            dmeClient.clientConfiguration = config
             
-            client.createPostbox { (postbox, error) in
+            dmeClient.createPostbox { (postbox, error) in
                 
                 guard let postbox = postbox else {
                     
@@ -62,7 +65,7 @@ class PostboxExampleViewController: UIViewController {
         }
     }
     
-    func pushData(to postbox: CAPostbox) {
+    func pushData(to postbox: DMEPostbox) {
         
         let metadataFileName = "POSTBOXMETADATA"
         let dataFileName = "POSTBOXDATA"

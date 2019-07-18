@@ -205,7 +205,7 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
 
 - (NSString *)appId
 {
-    return [DMEClient sharedClient].appId;
+    return [DMEClient sharedClient].clientConfiguration.appId;
 }
 
 #pragma mark - SKStoreProductViewControllerDelegate

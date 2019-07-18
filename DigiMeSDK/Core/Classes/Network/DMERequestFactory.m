@@ -15,7 +15,6 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
 @interface DMERequestFactory()
 
 @property (nonatomic, strong) NSString *baseUrl;
-@property (nonatomic, strong, readwrite) DMEClientConfiguration *config;
 @property (nonatomic, strong) NSDictionary *sdkAgent;
 
 @end
@@ -31,20 +30,20 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
     {
         _config = configuration;
     }
-    
+
     return self;
 }
 
 #pragma mark - Public
 
-- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<DMEDataRequest>)scope
+- (NSURLRequest *)sessionRequestWithScope:(nullable id<DMEDataRequest>)scope
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/session", self.baseUrlPath]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     
     NSMutableDictionary *postKeys = [NSMutableDictionary new];
-    postKeys[@"appId"] = appId;
-    postKeys[@"contractId"] = contractId;
+    postKeys[@"appId"] = self.config.appId;
+    postKeys[@"contractId"] = self.config.contractId;
     postKeys[@"sdkAgent"] = self.sdkAgent;
     postKeys[@"accept"] = @{ @"compression" : @"gzip" };
     
@@ -148,6 +147,11 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
     }
     
     return _sdkAgent;
+}
+
+-(void)setConfig:(DMEClientConfiguration *)config
+{
+    _config = config;
 }
 
 @end

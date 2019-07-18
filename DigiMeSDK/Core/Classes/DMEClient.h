@@ -18,24 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DMEClient : NSObject
 
 /**
- Your application Id. This property MUST be set before you can call authorize.
- */
-@property (nonatomic, nullable, copy) NSString *appId;
-
-
-/**
- Your contract Id. This property MUST be set before you can call authorize.
- */
-@property (nonatomic, nullable, copy) NSString *contractId;
-
-
-/**
- Your rsa private key hex. This property MUST be set before you can call authorize.
- */
-@property (nonatomic, nullable, copy) NSString *privateKeyHex;
-
-
-/**
  Uses default configuration, which can be overwritten with your own.
  */
 @property (nonatomic, strong) DMEClientConfiguration *clientConfiguration;

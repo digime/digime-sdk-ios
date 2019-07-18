@@ -98,7 +98,7 @@
     DMEOpenAction *action = @"postbox";
     NSDictionary *params = @{
                              kCARequestSessionKey: self.session.sessionKey,
-                             kCARequestRegisteredAppID: self.sessionManager.client.appId,
+                             kCARequestRegisteredAppID: self.sessionManager.client.clientConfiguration.appId,
                              };
     
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];

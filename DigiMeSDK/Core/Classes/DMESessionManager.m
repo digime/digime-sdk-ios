@@ -74,7 +74,7 @@
 
 - (BOOL)isSessionValid
 {
-    return (self.currentSession && self.currentSession.expiryDate && [self.currentSession.expiryDate compare:[NSDate date]] == NSOrderedDescending && [self.currentSession.sessionId isEqualToString:self.client.contractId]);
+    return (self.currentSession && self.currentSession.expiryDate && [self.currentSession.expiryDate compare:[NSDate date]] == NSOrderedDescending && [self.currentSession.sessionId isEqualToString:self.client.clientConfiguration.contractId]);
 }
 
 - (BOOL)isSessionKeyValid:(NSString *)sessionKey
