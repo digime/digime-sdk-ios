@@ -44,9 +44,9 @@
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
     BOOL success = [parameters[kDMEResponse] boolValue];
-    NSString *sessionKey = parameters[kCARequestSessionKey];
-    NSString *postboxId = parameters[kCARequestPostboxId];
-    NSString *postboxPublicKey = parameters[kCARequestPostboxPublicKey];
+    NSString *sessionKey = parameters[kDMESessionKey];
+    NSString *postboxId = parameters[kDMEPostboxId];
+    NSString *postboxPublicKey = parameters[kDMEPostboxPublicKey];
     
     [self filterMetadata: parameters];
     
@@ -97,8 +97,8 @@
     
     DMEOpenAction *action = @"postbox";
     NSDictionary *params = @{
-                             kCARequestSessionKey: self.session.sessionKey,
-                             kCARequestRegisteredAppID: self.sessionManager.client.appId,
+                             kDMESessionKey: self.session.sessionKey,
+                             kDMERegisteredAppID: self.sessionManager.client.appId,
                              };
     
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
@@ -118,7 +118,7 @@
 
 -(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
-    NSMutableArray *allowedKeys = @[kDMEResponse, kCARequestSessionKey, kCARequestPostboxId, kCARequestPostboxPublicKey, kCARequestRegisteredAppID].mutableCopy;
+    NSMutableArray *allowedKeys = @[kDMEResponse, kDMESessionKey, kDMEPostboxId, kDMEPostboxPublicKey, kDMERegisteredAppID].mutableCopy;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
     NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
     self.session.metadata = whiteDictionary;

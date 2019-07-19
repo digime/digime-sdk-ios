@@ -127,8 +127,8 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
     NSURLComponents *components = [NSURLComponents new];
     
     // We need to supply our AppID and name in all calls to DigiMe, so let's include these by default.
-    NSURLQueryItem *appNameItem = [NSURLQueryItem queryItemWithName:kCARequest3dPartyAppName value:[self appName]];
-    NSURLQueryItem *appIdItem = [NSURLQueryItem queryItemWithName:kCARequestRegisteredAppID value:[self appId]];
+    NSURLQueryItem *appNameItem = [NSURLQueryItem queryItemWithName:kDME3dPartyAppName value:[self appName]];
+    NSURLQueryItem *appIdItem = [NSURLQueryItem queryItemWithName:kDMERegisteredAppID value:[self appId]];
     
     components.scheme = kDMEClientScheme;
     components.queryItems = @[appNameItem, appIdItem];

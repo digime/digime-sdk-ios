@@ -11,32 +11,32 @@
 #import "DMEClient.h"
 #import "DMEDataRequest.h"
 
-NSString * const kCARequestSessionKey = @"sessionKey";
+NSString * const kDMESessionKey = @"sessionKey";
 NSString * const kDMEResponse = @"result";
-NSString * const kCARequestRegisteredAppID = @"appId";
-NSString * const kCARequestPostboxId = @"postboxId";
-NSString * const kCARequestPostboxPublicKey = @"publicKey";
-NSString * const kCARequest3dPartyAppName = @"appName";
-NSString * const kTimingDataGetAllFiles = @"timingGetAllFiles";
-NSString * const kTimingDataGetFile = @"timingGetFile";
-NSString * const kTimingFetchContractPermission = @"timingFetchContractPermission";
-NSString * const kTimingFetchDataGetAccount = @"timingFetchAccount";
-NSString * const kTimingFetchDataGetFileList = @"timingFetchFileList";
-NSString * const kTimingFetchSessionKey = @"timingFetchSessionKey";
-NSString * const kDataRequest = @"timingDataRequest";
-NSString * const kFetchContractDetails = @"timingFetchContractDetails";
-NSString * const kUpdateContractPermission = @"timingUpdateContractPermission";
-NSString * const kTimingTotal = @"timingTotal";
-NSString * const kDebugAppId = @"debugAppId";
-NSString * const kDebugBundleVersion = @"debugBundleVersion";
-NSString * const kDebugPlatform = @"debugPlatform";
-NSString * const kContractId = @"contractId";
-NSString * const kContractType = @"debugContractType";
-NSString * const kDeviceId = @"debugDeviceId";
-NSString * const kDigiMeVersion = @"debugDigiMeVersion";
-NSString * const kUserId = @"debugUserId";
-NSString * const kLibraryId = @"debugLibraryId";
-NSString * const kPCloudType = @"debugPcloudType";
+NSString * const kDMERegisteredAppID = @"appId";
+NSString * const kDMEPostboxId = @"postboxId";
+NSString * const kDMEPostboxPublicKey = @"publicKey";
+NSString * const kDME3dPartyAppName = @"appName";
+NSString * const kDMETimingDataGetAllFiles = @"timingGetAllFiles";
+NSString * const kDMETimingDataGetFile = @"timingGetFile";
+NSString * const kDMETimingFetchContractPermission = @"timingFetchContractPermission";
+NSString * const kDMETimingFetchDataGetAccount = @"timingFetchAccount";
+NSString * const kDMETimingFetchDataGetFileList = @"timingFetchFileList";
+NSString * const kDMETimingFetchSessionKey = @"timingFetchSessionKey";
+NSString * const kDMEDataRequest = @"timingDataRequest";
+NSString * const kDMEFetchContractDetails = @"timingFetchContractDetails";
+NSString * const kDMEUpdateContractPermission = @"timingUpdateContractPermission";
+NSString * const kDMETimingTotal = @"timingTotal";
+NSString * const kDMEDebugAppId = @"debugAppId";
+NSString * const kDMEDebugBundleVersion = @"debugBundleVersion";
+NSString * const kDMEDebugPlatform = @"debugPlatform";
+NSString * const kDMEContractId = @"contractId";
+NSString * const kDMEContractType = @"debugContractType";
+NSString * const kDMEDeviceId = @"debugDeviceId";
+NSString * const kDMEDigiMeVersion = @"debugDigiMeVersion";
+NSString * const kDMEUserId = @"debugUserId";
+NSString * const kDMELibraryId = @"debugLibraryId";
+NSString * const kDMEPCloudType = @"debugPcloudType";
 
 @interface DMESession()
 @property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
