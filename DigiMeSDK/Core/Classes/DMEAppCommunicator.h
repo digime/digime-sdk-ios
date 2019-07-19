@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NSString DMEOpenAction;
 
 @protocol DMEAppCallbackHandler;
@@ -35,3 +37,5 @@ typedef NSString DMEOpenAction;
 - (instancetype)initWithAppCommunicator:(DMEAppCommunicator __weak *)appCommunicator;
 
 @end
+
+NS_ASSUME_NONNULL_END

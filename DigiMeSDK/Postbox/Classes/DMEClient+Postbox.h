@@ -3,7 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 16/10/2018.
-//  Copyright © 2018 DigiMe. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param completion DMEPostboxCreationCompletion
  */
-- (void)createPostboxWithCompletion:(nullable DMEPostboxCreationCompletion)completion;
+- (void)createPostboxWithCompletion:(DMEPostboxCreationCompletion)completion;
 
 /**
  Pushes data to user's Postbox.

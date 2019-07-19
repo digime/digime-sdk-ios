@@ -3,7 +3,7 @@
 //  DigiMeSDKExample
 //
 //  Created on 31/01/2018.
-//  Copyright © 2018 CocoaPods. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import "LogViewController.h"

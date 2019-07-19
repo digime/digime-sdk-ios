@@ -10,8 +10,12 @@
 #import "DMEAppCommunicator.h"
 #import "DMEClientCallbacks.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface DMEPostboxManager : NSObject <DMEAppCallbackHandler>
 
 - (void)requestPostboxWithCompletion:(DMEPostboxCreationCompletion)completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSData (DMECrypto)
 
 /**
@@ -34,3 +36,5 @@
 - (NSData *)hashSha512;
 
 @end
+
+NS_ASSUME_NONNULL_END

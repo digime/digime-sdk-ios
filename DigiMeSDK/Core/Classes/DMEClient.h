@@ -123,9 +123,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Hands off to the digi.me app if it's installed, and instructs it to show the receipt
  pertaining to the contractId and appId of the current session.
- @param error NSError pointer, this method can throw various errors; catch and handle them here.
+ 
+ @param error NSError pointer, this method can throw various SDK-related errors; catch and handle them here.
+ @return YES if able to open digi.me app, NO if not or some other SDK-related error occurred.
  */
-- (void)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error;
+- (BOOL)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error;
 
 @end
 

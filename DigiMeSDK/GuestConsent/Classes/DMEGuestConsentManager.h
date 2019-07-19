@@ -12,8 +12,12 @@
 
 @class DMEClientConfiguration;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface DMEGuestConsentManager : NSObject <DMEAppCallbackHandler>
 
 - (void)requestGuestConsentWithCompletion:(DMEAuthorizationCompletion)completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

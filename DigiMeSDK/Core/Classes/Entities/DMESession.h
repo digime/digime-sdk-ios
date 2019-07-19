@@ -10,32 +10,32 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString * const kCARequestSessionKey;
+extern NSString * const kDMESessionKey;
 extern NSString * const kDMEResponse;
-extern NSString * const kCARequestRegisteredAppID;
-extern NSString * const kCARequestPostboxId;
-extern NSString * const kCARequestPostboxPublicKey;
-extern NSString * const kCARequest3dPartyAppName;
-extern NSString * const kTimingDataGetAllFiles;
-extern NSString * const kTimingDataGetFile;
-extern NSString * const kTimingFetchContractPermission;
-extern NSString * const kTimingFetchDataGetAccount;
-extern NSString * const kTimingFetchDataGetFileList;
-extern NSString * const kTimingFetchSessionKey;
-extern NSString * const kTimingTotal;
-extern NSString * const kDataRequest;
-extern NSString * const kFetchContractDetails;
-extern NSString * const kUpdateContractPermission;
-extern NSString * const kDebugAppId;
-extern NSString * const kDebugBundleVersion;
-extern NSString * const kDebugPlatform;
-extern NSString * const kContractId;
-extern NSString * const kContractType;
-extern NSString * const kDeviceId;
-extern NSString * const kDigiMeVersion;
-extern NSString * const kUserId;
-extern NSString * const kLibraryId;
-extern NSString * const kPCloudType;
+extern NSString * const kDMERegisteredAppID;
+extern NSString * const kDMEPostboxId;
+extern NSString * const kDMEPostboxPublicKey;
+extern NSString * const kDME3dPartyAppName;
+extern NSString * const kDMETimingDataGetAllFiles;
+extern NSString * const kDMETimingDataGetFile;
+extern NSString * const kDMETimingFetchContractPermission;
+extern NSString * const kDMETimingFetchDataGetAccount;
+extern NSString * const kDMETimingFetchDataGetFileList;
+extern NSString * const kDMETimingFetchSessionKey;
+extern NSString * const kDMETimingTotal;
+extern NSString * const kDMEDataRequest;
+extern NSString * const kDMEFetchContractDetails;
+extern NSString * const kDMEUpdateContractPermission;
+extern NSString * const kDMEDebugAppId;
+extern NSString * const kDMEDebugBundleVersion;
+extern NSString * const kDMEDebugPlatform;
+extern NSString * const kDMEContractId;
+extern NSString * const kDMEContractType;
+extern NSString * const kDMEDeviceId;
+extern NSString * const kDMEDigiMeVersion;
+extern NSString * const kDMEUserId;
+extern NSString * const kDMELibraryId;
+extern NSString * const kDMEPCloudType;
 
 @class DMESessionManager;
 @protocol DMEDataRequest;

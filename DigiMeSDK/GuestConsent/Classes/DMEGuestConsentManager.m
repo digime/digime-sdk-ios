@@ -72,8 +72,8 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     
     NSDictionary *params = @{
                              kDMEAPIClientBaseUrl: self.config.baseUrl,
-                             kCARequestSessionKey: self.session.sessionExchangeToken,
-                             kCARequestRegisteredAppID: self.sessionManager.client.appId,
+                             kDMESessionKey: self.session.sessionExchangeToken,
+                             kDMERegisteredAppID: self.sessionManager.client.appId,
                              };
     
     [self openBrowserWithParameters:params];
@@ -83,7 +83,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        NSString *sessionKey = parameters[kCARequestSessionKey];
+        NSString *sessionKey = parameters[kDMESessionKey];
         NSString *baseUrl = parameters[kDMEAPIClientBaseUrl];
         NSString *callbackSuffix = @"%3A%2F%2FguestConsent-return%2F";
         NSString *callbackUrl = [NSString stringWithFormat:@"%@%@%@", kDMEClientSchemePrefix, [DMEClient sharedClient].appId, callbackSuffix];

@@ -1,9 +1,9 @@
 //
 //  ViewController.m
-//  DMESDK
+//  DigiMeSDKExample
 //
 //  Created on 24/01/2018.
-//  Copyright © 2018 DigiMe. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -31,7 +31,7 @@
     // - INSERT your App ID here -
     self.dmeClient.appId = @"YOUR_APP_ID";
     
-    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by Digi.me Ltd
+    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd
     self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF" password:@"YOUR_P12_PASSWORD"];
     
     self.dmeClient.contractId = @"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF";
@@ -70,7 +70,8 @@
 
     [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
-        if (session == nil){
+        if (session == nil)
+        {
             [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
             return;
         };
@@ -86,7 +87,8 @@
 {
     [self.dmeClient getSessionAccountsWithCompletion:^(DMEAccounts * _Nullable accounts, NSError * _Nullable error) {
         
-        if (accounts == nil){
+        if (accounts == nil)
+        {
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
             return;
         };

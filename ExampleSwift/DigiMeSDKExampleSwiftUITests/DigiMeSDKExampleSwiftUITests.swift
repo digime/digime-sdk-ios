@@ -2,7 +2,8 @@
 //  DigiMeSDKExampleSwiftUITests.swift
 //  DigiMeSDKExampleSwiftUITests
 //
-//  Copyright © 2018 digi.me. All rights reserved.
+//  Created on 22/02/2018.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 import XCTest

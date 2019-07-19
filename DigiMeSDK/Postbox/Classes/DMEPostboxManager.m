@@ -33,6 +33,7 @@
     {
         _appCommunicator = appCommunicator;
     }
+    
     return self;
 }
 
@@ -44,20 +45,20 @@
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
     BOOL success = [parameters[kDMEResponse] boolValue];
-    NSString *sessionKey = parameters[kCARequestSessionKey];
-    NSString *postboxId = parameters[kCARequestPostboxId];
-    NSString *postboxPublicKey = parameters[kCARequestPostboxPublicKey];
+    NSString *sessionKey = parameters[kDMESessionKey];
+    NSString *postboxId = parameters[kDMEPostboxId];
+    NSString *postboxPublicKey = parameters[kDMEPostboxPublicKey];
     
     [self filterMetadata: parameters];
     
     NSError *err;
     DMEPostbox *postbox;
     
-    if(![self.sessionManager isSessionKeyValid:sessionKey])
+    if (![self.sessionManager isSessionKeyValid:sessionKey])
     {
         err = [NSError authError:AuthErrorInvalidSessionKey];
     }
-    else if(!success || !postboxId.length)
+    else if (!success || !postboxId.length)
     {
         err = [NSError authError:AuthErrorGeneral];
     }
@@ -78,7 +79,6 @@
 
 - (void)requestPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
 {
-    
     if (![NSThread currentThread].isMainThread)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -97,8 +97,8 @@
     
     DMEOpenAction *action = @"postbox";
     NSDictionary *params = @{
-                             kCARequestSessionKey: self.session.sessionKey,
-                             kCARequestRegisteredAppID: self.sessionManager.client.appId,
+                             kDMESessionKey: self.session.sessionKey,
+                             kDMERegisteredAppID: self.sessionManager.client.appId,
                              };
     
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
@@ -111,14 +111,14 @@
     return self.sessionManager.currentSession;
 }
 
--(DMESessionManager *)sessionManager
+- (DMESessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
 }
 
--(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
+- (void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
-    NSMutableArray *allowedKeys = @[kDMEResponse, kCARequestSessionKey, kCARequestPostboxId, kCARequestPostboxPublicKey, kCARequestRegisteredAppID].mutableCopy;
+    NSMutableArray *allowedKeys = @[kDMEResponse, kDMESessionKey, kDMEPostboxId, kDMEPostboxPublicKey, kDMERegisteredAppID].mutableCopy;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
     NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
     self.session.metadata = whiteDictionary;

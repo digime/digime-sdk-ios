@@ -49,7 +49,7 @@
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
     BOOL result = [parameters[kDMEResponse] boolValue];
-    NSString *sessionKey = parameters[kCARequestSessionKey];
+    NSString *sessionKey = parameters[kDMESessionKey];
     
     [self filterMetadata: parameters];
     
@@ -75,19 +75,20 @@
 
 #pragma mark - Authorization
 
--(void)beginAuthorizationWithCompletion:(DMEAuthorizationCompletion)completion
+- (void)beginAuthorizationWithCompletion:(DMEAuthorizationCompletion)completion
 {
     if (![self.sessionManager isSessionValid])
     {
         completion(nil, [NSError authError:AuthErrorInvalidSession]);
         return;
     }
+    
     self.authCompletionBlock = completion;
     
     DMEOpenAction *action = @"data";
     NSDictionary *params = @{
-                             kCARequestSessionKey: self.session.sessionKey,
-                             kCARequestRegisteredAppID: self.sessionManager.client.appId,
+                             kDMESessionKey: self.session.sessionKey,
+                             kDMERegisteredAppID: self.sessionManager.client.appId,
                              };
     
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
@@ -100,19 +101,19 @@
     return self.sessionManager.currentSession;
 }
 
--(DMESessionManager *)sessionManager
+- (DMESessionManager *)sessionManager
 {
     return [DMEClient sharedClient].sessionManager;
 }
 
--(void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
+- (void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
     // default legacy keys
-    NSMutableArray *allowedKeys = @[kCARequestSessionKey, kDMEResponse, kCARequestRegisteredAppID].mutableCopy;
+    NSMutableArray *allowedKeys = @[kDMESessionKey, kDMEResponse, kDMERegisteredAppID].mutableCopy;
     // timing keys
-    [allowedKeys addObjectsFromArray:@[kTimingDataGetAllFiles, kTimingDataGetFile, kTimingFetchContractPermission, kTimingFetchDataGetAccount, kTimingFetchDataGetFileList, kTimingFetchSessionKey, kDataRequest, kFetchContractDetails, kUpdateContractPermission, kTimingTotal]];
+    [allowedKeys addObjectsFromArray:@[kDMETimingDataGetAllFiles, kDMETimingDataGetFile, kDMETimingFetchContractPermission, kDMETimingFetchDataGetAccount, kDMETimingFetchDataGetFileList, kDMETimingFetchSessionKey, kDMEDataRequest, kDMEFetchContractDetails, kDMEUpdateContractPermission, kDMETimingTotal]];
     // timing debug keys
-    [allowedKeys addObjectsFromArray:@[kDebugAppId, kDebugBundleVersion, kDebugPlatform, kContractType, kDeviceId, kDigiMeVersion, kUserId, kLibraryId, kPCloudType, kContractId, kCARequest3dPartyAppName]];
+    [allowedKeys addObjectsFromArray:@[kDMEDebugAppId, kDMEDebugBundleVersion, kDMEDebugPlatform, kDMEContractType, kDMEDeviceId, kDMEDigiMeVersion, kDMEUserId, kDMELibraryId, kDMEPCloudType, kDMEContractId, kDME3dPartyAppName]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
     NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
     self.session.metadata = whiteDictionary;
