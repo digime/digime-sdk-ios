@@ -62,7 +62,7 @@ class PostboxExampleViewController: UIViewController {
         }
     }
     
-    func pushData(to postbox: CAPostbox) {
+    func pushData(to postbox: DMEPostbox) {
         
         let metadataFileName = "POSTBOXMETADATA"
         let dataFileName = "POSTBOXDATA"

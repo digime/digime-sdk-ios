@@ -21,7 +21,7 @@
 
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
-@property (nonatomic, copy, nullable) AuthorizationCompletionBlock authCompletionBlock;
+@property (nonatomic, copy, nullable) DMEAuthorizationCompletion authCompletionBlock;
 
 @end
 
@@ -75,7 +75,7 @@
 
 #pragma mark - Authorization
 
-- (void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)beginAuthorizationWithCompletion:(DMEAuthorizationCompletion)completion
 {
     if (![self.sessionManager isSessionValid])
     {

@@ -43,7 +43,6 @@
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];
         _sessionManager = [[DMESessionManager alloc] initWithApiClient:_apiClient];
         _crypto = [DMECrypto new];
-        _decryptsData = YES;
         
         // Configure mercury appCommunicator.
         _appCommunicator = [DMEAppCommunicator new];
@@ -57,12 +56,12 @@
 
 #pragma mark - Authorization
 
-- (void)authorizeWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithCompletion:(nonnull DMEAuthorizationCompletion)authorizationCompletion
 {
     [self authorizeWithScope:nil completion:authorizationCompletion];
 }
 
-- (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
+- (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)authorizationCompletion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -126,7 +125,7 @@
     return nil;
 }
 
-- (void)userAuthorizationWithCompletion:(nonnull AuthorizationCompletionBlock)authorizationCompletion
+- (void)userAuthorizationWithCompletion:(nonnull DMEAuthorizationCompletion)authorizationCompletion
 {
     __weak __typeof(self)weakSelf = self;
     [self.authManager beginAuthorizationWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
@@ -146,7 +145,7 @@
 }
 
 #pragma mark - Get File List
-- (void)getFileListWithCompletion:(FileListCompletionBlock)completion
+- (void)getFileListWithCompletion:(void (^)(DMEFiles * _Nullable files, NSError  * _Nullable error))completion
 {
     //validate session
     if (![self.sessionManager isSessionValid])
@@ -181,23 +180,29 @@
 
 #pragma mark - Get File Content
 
-- (void)getFileWithId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
+- (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(void (^)(NSError * _Nullable))completion
 {
-    //ensures this method cannot be called with completion *AND* no data decryption
-    if (!self.decryptsData)
-    {
-        NSError *sdkError = [NSError sdkError:SDKErrorEncryptedDataCallback];
-        completion(nil, sdkError);
-        return;
-    }
-    
+    [self getFileListWithCompletion:^(DMEFiles * _Nullable files, NSError * _Nullable error) {
+        if (files == nil)
+        {
+            completion(error);
+            return;
+        }
+        
+        for (NSString *fileId in files.fileIds)
+        {
+            [self getSessionDataForFileWithId:fileId completion:fileContentHandler];
+        }
+    }];
+}
+
+- (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
+{
     //validate session
     if (![self.sessionManager isSessionValid])
     {
-        NSError *error = [NSError authError:AuthErrorInvalidSession];
-        
-        DMEFile *file = [[DMEFile alloc] initWithFileId:fileId fileContent:[NSData data] fileMetadata:nil];
-        completion(file, error);
+        NSError *error = [NSError authError:AuthErrorInvalidSession additionalInfo:@{ kFileIdKey: fileId }];
+        completion(nil, error);
         
         return;
     }
@@ -207,22 +212,21 @@
     [self.apiClient requestFileWithId:fileId success:^(NSData * _Nonnull data) {
         __strong __typeof(DMEClient *)strongSelf = weakSelf;
         
-        if (!strongSelf.decryptsData)
-        {
-            //completion at this point will be nil.
-            return;
-        }
-        
         [strongSelf processFileData:data fileId:fileId completion:completion];
         
     } failure:^(NSError * _Nonnull error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            completion(nil, error);
+            // Add fileId to error before passing to completion
+            NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+            userInfo[kFileIdKey] = fileId;
+            NSError *newError = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+            
+            completion(nil, newError);
         });
     }];
 }
 
-- (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
+- (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
 {
     DMEFile *file;
     NSError *error;
@@ -233,6 +237,14 @@
         file = [[DMEFile alloc] initWithFileId:fileId fileContent:unpackedData fileMetadata:metadata];
     }
     
+    if (error != nil)
+    {
+        // Add fileId to error before passing to completion
+        NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+        userInfo[kFileIdKey] = fileId;
+        error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         completion(file, error);
     });
@@ -241,16 +253,8 @@
 
 #pragma mark - Accounts
 
-- (void)getAccountsWithCompletion:(AccountsCompletionBlock)completion
+- (void)getSessionAccountsWithCompletion:(DMEAccountsCompletion)completion
 {
-    //ensures this method cannot be called with completion *AND* no data decryption
-    if (!self.decryptsData)
-    {
-        NSError *sdkError = [NSError sdkError:SDKErrorEncryptedDataCallback];
-        completion(nil, sdkError);
-        return;
-    }
-    
     //validate session
     if (![self.sessionManager isSessionValid])
     {
@@ -260,16 +264,8 @@
     }
     
     //initiate accounts request
-    __weak __typeof(DMEClient *)weakSelf = self;
     [self.apiClient requestFileWithId:@"accounts.json" success:^(NSData * _Nonnull data) {
-        __strong __typeof(DMEClient *)strongSelf = weakSelf;
-        
-        if (!strongSelf.decryptsData)
-        {
-            //completion at this point will be nil.
-            return;
-        }
-        
+
         DMEAccounts *accounts;
         NSError *error;
         NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:NULL error:&error];

@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param completion AuthorizationCompletionBlock
  */
-- (void)beginAuthorizationWithCompletion:(AuthorizationCompletionBlock)completion;
+- (void)beginAuthorizationWithCompletion:(DMEAuthorizationCompletion)completion;
 
 @end
 

@@ -18,7 +18,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
-@property (nonatomic, copy, nullable) AuthorizationCompletionBlock guestConsentCompletionBlock;
+@property (nonatomic, copy, nullable) DMEAuthorizationCompletion guestConsentCompletionBlock;
 @property (nonatomic, strong) SFSafariViewController *safariViewController;
 @property (nonatomic, strong) NSDictionary *sentParameters;
 @property (nonatomic, strong) DMEClientConfiguration *config;
@@ -51,7 +51,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     [self executeCompletionWithError:error];
 }
 
-- (void)requestGuestConsentWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)requestGuestConsentWithCompletion:(DMEAuthorizationCompletion)completion
 {
     
     if (![NSThread currentThread].isMainThread)
@@ -72,8 +72,8 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     
     NSDictionary *params = @{
                              kDMEAPIClientBaseUrl: self.config.baseUrl,
-                             kCARequestSessionKey: self.session.sessionExchangeToken,
-                             kCARequestRegisteredAppID: self.sessionManager.client.appId,
+                             kDMESessionKey: self.session.sessionExchangeToken,
+                             kDMERegisteredAppID: self.sessionManager.client.appId,
                              };
     
     [self openBrowserWithParameters:params];
@@ -83,7 +83,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        NSString *sessionKey = parameters[kCARequestSessionKey];
+        NSString *sessionKey = parameters[kDMESessionKey];
         NSString *baseUrl = parameters[kDMEAPIClientBaseUrl];
         NSString *callbackSuffix = @"%3A%2F%2FguestConsent-return%2F";
         NSString *callbackUrl = [NSString stringWithFormat:@"%@%@%@", kDMEClientSchemePrefix, [DMEClient sharedClient].appId, callbackSuffix];

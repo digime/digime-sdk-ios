@@ -20,12 +20,12 @@ NS_ASSUME_NONNULL_BEGIN
  @param postbox DMEPostbox
  @param metadata NSData
  @param data NSData
- @param completion PostboxDataPushCompletionBlock
+ @param completion DMEPostboxDataPushCompletion
  */
 - (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
                      data:(NSData *)data
-               completion:(PostboxDataPushCompletionBlock)completion;
+               completion:(DMEPostboxDataPushCompletion)completion;
 
 @end
 

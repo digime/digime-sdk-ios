@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
-@property (nonatomic, copy, nullable) PostboxCreationCompletionBlock postboxCompletionBlock;
+@property (nonatomic, copy, nullable) DMEPostboxCreationCompletion postboxCompletionBlock;
 
 @end
 
@@ -77,7 +77,7 @@
     }
 }
 
-- (void)requestPostboxWithCompletion:(PostboxCreationCompletionBlock)completion
+- (void)requestPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
 {
     if (![NSThread currentThread].isMainThread)
     {

@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param completion Block called when authorization has completed
  */
-- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion;
+- (void)authorizeGuestWithCompletion:(DMEAuthorizationCompletion)completion;
 
 /**
  Initializes contract authentication with custom scope. This will attempt to create a session and then either redirect
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope Custom scope that will be applied to available data
  @param completion Block called when authorization has completed
  */
-- (void)authorizeGuestWithScope:(nullable id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion;
+- (void)authorizeGuestWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion;
 
 @end
 

@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DMEPostboxManager : NSObject <DMEAppCallbackHandler>
 
-- (void)requestPostboxWithCompletion:(PostboxCreationCompletionBlock)completion;
+- (void)requestPostboxWithCompletion:(DMEPostboxCreationCompletion)completion;
 
 @end
 

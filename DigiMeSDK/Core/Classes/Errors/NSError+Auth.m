@@ -12,7 +12,14 @@
 
 + (NSError *)authError:(AuthError)authError
 {
-    return [NSError errorWithDomain:DME_AUTHORIZATION_ERROR code:authError userInfo:@{ NSLocalizedDescriptionKey: [[self class] authDescription:authError]}];
+    return [[self class] authError:authError additionalInfo:nil];
+}
+
++ (NSError *)authError:(AuthError)authError additionalInfo:(nullable NSDictionary<NSErrorUserInfoKey, id> *)additionalInfo
+{
+    NSMutableDictionary<NSErrorUserInfoKey, id> *userInfo = [additionalInfo mutableCopy] ?: [NSMutableDictionary dictionary];
+    userInfo[NSLocalizedDescriptionKey] = [[self class] authDescription:authError];
+    return [NSError errorWithDomain:DME_AUTHORIZATION_ERROR code:authError userInfo:[userInfo copy]];
 }
 
 + (NSString *)authDescription:(AuthError)authError

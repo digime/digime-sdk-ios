@@ -27,7 +27,7 @@
 - (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
                      data:(NSData *)data
-               completion:(PostboxDataPushCompletionBlock)completion
+               completion:(DMEPostboxDataPushCompletion)completion
 {
     DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.config];
     

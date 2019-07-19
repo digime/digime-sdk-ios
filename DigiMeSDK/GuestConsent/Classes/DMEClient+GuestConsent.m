@@ -51,9 +51,9 @@ DMEPreConsentViewController *_preconsentViewController;
     _preconsentViewController = controller;
 }
 
-AuthorizationCompletionBlock _authorizationCompletion;
+DMEAuthorizationCompletion _authorizationCompletion;
 
-- (void)setAuthorizationCompletion:(AuthorizationCompletionBlock)authorizationCompletion
+- (void)setAuthorizationCompletion:(DMEAuthorizationCompletion)authorizationCompletion
 {
     _authorizationCompletion = authorizationCompletion;
 }
@@ -72,12 +72,12 @@ id<DMEDataRequest> _scope;
 
 #pragma mark - authorization
 
-- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuestWithCompletion:(DMEAuthorizationCompletion)completion
 {
     [self authorizeGuestWithScope:nil completion:completion];
 }
 
-- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion
 {
     if ([self canOpenDigiMeApp])
     {
