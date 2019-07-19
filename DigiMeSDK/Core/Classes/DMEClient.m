@@ -68,10 +68,7 @@
     NSError *validationError = [self validateClient];
     if (validationError != nil)
     {
-        if (authorizationCompletion)
-        {
-            authorizationCompletion(nil, validationError);
-        }
+        authorizationCompletion(nil, validationError);
         return;
     }
     
@@ -85,11 +82,8 @@
             // Notify on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                if (authorizationCompletion)
-                {
-                    authorizationCompletion(nil, errorToReport);
-                    return;
-                }
+                authorizationCompletion(nil, errorToReport);
+                return;
             });
             return;
         }
@@ -145,12 +139,8 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (authorizationCompletion)
-            {
-                authorizationCompletion(session, error);
-                return;
-            }
-            
+            authorizationCompletion(session, error);
+            return;
         });
     }];
 }
@@ -162,29 +152,21 @@
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
-        
         completion(nil, error);
-        
         return;
     }
     
     //initiate file list request
     [self.apiClient requestFileListWithSuccess:^(NSData * _Nonnull data) {
-        
         NSError *error;
         DMEFiles *files = [DMEFilesDeserializer deserialize:data error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(files, error);
-            
         });
     } failure:^(NSError * _Nonnull error) {
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(nil, error);
-            
         });
     }];
 }
@@ -202,7 +184,7 @@
 - (void)getFileWithId:(NSString *)fileId completion:(FileContentCompletionBlock)completion
 {
     //ensures this method cannot be called with completion *AND* no data decryption
-    if (completion != nil && !self.decryptsData)
+    if (!self.decryptsData)
     {
         NSError *sdkError = [NSError sdkError:SDKErrorEncryptedDataCallback];
         completion(nil, sdkError);
@@ -234,11 +216,8 @@
         [strongSelf processFileData:data fileId:fileId completion:completion];
         
     } failure:^(NSError * _Nonnull error) {
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(nil, error);
-            
         });
     }];
 }
@@ -255,9 +234,7 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        
         completion(file, error);
-        
     });
 }
 
@@ -267,7 +244,7 @@
 - (void)getAccountsWithCompletion:(AccountsCompletionBlock)completion
 {
     //ensures this method cannot be called with completion *AND* no data decryption
-    if (completion != nil && !self.decryptsData)
+    if (!self.decryptsData)
     {
         NSError *sdkError = [NSError sdkError:SDKErrorEncryptedDataCallback];
         completion(nil, sdkError);
@@ -278,9 +255,7 @@
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
-        
         completion(nil, error);
-        
         return;
     }
     
@@ -304,17 +279,12 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(accounts, error);
-            
         });
         
     } failure:^(NSError * _Nonnull error) {
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             completion(nil, error);
-            
         });
     }];
     
@@ -322,7 +292,7 @@
 
 #pragma mark - Setters
 
--(void)setClientConfiguration:(DMEClientConfiguration *)clientConfiguration
+- (void)setClientConfiguration:(DMEClientConfiguration *)clientConfiguration
 {
     self.apiClient.config = clientConfiguration;
 }
@@ -339,26 +309,26 @@
     return [self.appCommunicator canOpenDigiMeApp];
 }
 
-- (void)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error
+- (BOOL)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error
 {
     // Check we have both the appId and clientId, required for this.
     if (!self.contractId.length)
     {
-        *error = [NSError sdkError:SDKErrorNoContract];
-        return;
+        [NSError setSDKError:SDKErrorNoContract toError:error];
+        return NO;
     }
     
     if (!self.appId.length)
     {
-        *error = [NSError sdkError:SDKErrorNoAppId];
-        return;
+        [NSError setSDKError:SDKErrorNoAppId toError:error];
+        return NO;
     }
     
     // Check the digime app can be opened (ie is installed).
     if (![self canOpenDigiMeApp])
     {
-        *error = [NSError sdkError:SDKErrorDigiMeAppNotFound];
-        return;
+        [NSError setSDKError:SDKErrorDigiMeAppNotFound toError:error];
+        return NO;
     }
     
     // Prerequesits cleared, build URL.
@@ -370,6 +340,7 @@
     
     NSURL *deeplinkingURL = components.URL;
     [[UIApplication sharedApplication] openURL:deeplinkingURL options:@{} completionHandler:nil];
+    return YES;
 }
 
 #pragma mark - Debug

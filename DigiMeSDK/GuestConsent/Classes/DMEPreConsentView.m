@@ -2,8 +2,8 @@
 //  DMEPreConsentView.m
 //  DigiMeSDK
 //
-//  Created by digi.me Ltd. on 01/05/2019.
-//  Copyright © 2019 CocoaPods. All rights reserved.
+//  Created on 01/05/2019.
+//  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 
 #import "DMEPreConsentView.h"

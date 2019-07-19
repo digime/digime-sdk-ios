@@ -10,6 +10,8 @@
 
 @class DMECrypto, DMENativeConsentManager, DMEAPIClient, DMEAppCommunicator;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface DMEClient ()
 
 @property (nonatomic, strong) DMEAppCommunicator *appCommunicator;
@@ -20,4 +22,8 @@
 
 @property (nonatomic, weak) DMENativeConsentManager *authManager;
 
+- (nullable NSError *)validateClient;
+
 @end
+
+NS_ASSUME_NONNULL_END

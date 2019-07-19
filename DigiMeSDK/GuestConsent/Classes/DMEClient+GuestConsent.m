@@ -3,7 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 22/11/2018.
-//  Copyright © 2018 DigiMe. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import <objc/runtime.h>
@@ -19,6 +19,7 @@
 
 @property (nonatomic, weak) DMEGuestConsentManager *guestConsentManager;
 @property (nonatomic, strong) DMEPreConsentViewController *preconsentViewController;
+@property (nonatomic, strong, nullable) id<DMEDataRequest> scope;
 
 @end
 
@@ -28,38 +29,64 @@
 
 DMEGuestConsentManager *_guestConsentManager;
 
--(DMEGuestConsentManager *)guestConsentManager
+- (DMEGuestConsentManager *)guestConsentManager
 {
     return _guestConsentManager;
 }
 
--(void)setGuestConsentManager:(DMEGuestConsentManager *)manager
+- (void)setGuestConsentManager:(DMEGuestConsentManager *)manager
 {
     _guestConsentManager = manager;
 }
 
 DMEPreConsentViewController *_preconsentViewController;
 
--(DMEPreConsentViewController *)preconsentViewController
+- (DMEPreConsentViewController *)preconsentViewController
 {
     return _preconsentViewController;
 }
 
--(void)setPreconsentViewController:(DMEPreConsentViewController *)controller
+- (void)setPreconsentViewController:(DMEPreConsentViewController *)controller
 {
     _preconsentViewController = controller;
 }
 
+AuthorizationCompletionBlock _authorizationCompletion;
+
+- (void)setAuthorizationCompletion:(AuthorizationCompletionBlock)authorizationCompletion
+{
+    _authorizationCompletion = authorizationCompletion;
+}
+
+id<DMEDataRequest> _scope;
+
+- (id<DMEDataRequest>)scope
+{
+    return _scope;
+}
+
+- (void)setScope:(id<DMEDataRequest>)scope
+{
+    _scope = scope;
+}
+
 #pragma mark - authorization
 
-- (void)authorizeGuest
+- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion
+{
+    [self authorizeGuestWithScope:nil completion:completion];
+}
+
+- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion
 {
     if ([self canOpenDigiMeApp])
     {
-        [self authorizeWithCompletion:nil];
+        [self authorizeWithCompletion:completion];
     }
     else
     {
+        self.scope = scope;
+        [self setAuthorizationCompletion:completion];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.preconsentViewController = [DMEPreConsentViewController new];
             self.preconsentViewController.delegate = self;
@@ -69,17 +96,7 @@ DMEPreConsentViewController *_preconsentViewController;
     }
 }
 
-- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope
-{
-    [self authorizeGuestWithScope:scope completion:nil];
-}
-
-- (void)authorizeGuestWithCompletion:(AuthorizationCompletionBlock)completion
-{
-    [self authorizeGuestWithScope:nil completion:completion];
-}
-
-- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(AuthorizationCompletionBlock)completion
+- (void)authorizeGuest
 {
     if (!self.guestConsentManager)
     {
@@ -89,18 +106,23 @@ DMEPreConsentViewController *_preconsentViewController;
         self.guestConsentManager = guestConsentManager;
     }
     
+    // Validation
+    NSError *validationError = [self validateClient];
+    if (validationError != nil)
+    {
+        [self executeCompletionWithSession:nil error:validationError];
+        return;
+    }
+    
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithScope:self.scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         if (!session)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion)
-                {
-                    completion(nil, error);
-                }
+                [strongSelf executeCompletionWithSession:nil error:error];
             });
             
             return;
@@ -109,13 +131,19 @@ DMEPreConsentViewController *_preconsentViewController;
         [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion)
-                {
-                    completion(session, error);
-                }
+                [strongSelf executeCompletionWithSession:session error:error];
             });
         }];
     }];
+}
+
+- (void)executeCompletionWithSession:(DMESession * _Nullable )session error:(NSError * _Nullable)error
+{
+    if (_authorizationCompletion != nil)
+    {
+        _authorizationCompletion(session, error);
+        _authorizationCompletion = nil;
+    }
 }
 
 #pragma mark - Preconsent View Controller delegate methods
@@ -124,14 +152,16 @@ DMEPreConsentViewController *_preconsentViewController;
 - (void)downloadDigimeFromAppstore
 {
     [self.preconsentViewController dismissViewControllerAnimated:YES completion:^{
-        [self authorizeWithCompletion:nil];
+        [self authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+            [self executeCompletionWithSession:session error:error];
+        }];
     }];
 }
 
 - (void)authenticateUsingGuestConsent
 {
     [self.preconsentViewController dismissViewControllerAnimated:YES completion:^{
-        [self authorizeGuestWithCompletion:nil];
+        [self authorizeGuest];
     }];
 }
 #pragma clang diagnostic pop
