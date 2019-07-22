@@ -52,6 +52,7 @@ $ sudo gem install cocoapods
 To integrate the DigiMeSDK into your own existing Xcode project using CocoaPods, simply specify it in your `Podfile`:
 
 ```ruby
+use_frameworks!
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '10.0'
 
@@ -59,6 +60,10 @@ target 'TargetName' do
 pod 'DigiMeSDK'
 end
 ```
+
+> NOTE
+> We do not currently support linking DigiMeSDK as a Static Library.
+> use_frameworks! flag must be set in the Podfile
 
 Navigate to the directory of your `Podfile` and run the following command:
 
