@@ -12,7 +12,7 @@
 #import "DMESessionManager.h"
 #import "DMECrypto.h"
 #import "DMEValidator.h"
-#import "DMEAppCommunicator.h"
+#import "DMEAppCommunicator+Private.h"
 #import "DMENativeConsentManager.h"
 #import "DMEClient+Private.h"
 #import "DMEDataUnpacker.h"
@@ -28,24 +28,24 @@
     static DMEClient *sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedClient = [[self alloc] init];
+        sharedClient = [[self alloc] initWithConfiguration:[DMEClientConfiguration new]];
     });
     
     return sharedClient;
 }
 
-- (instancetype)init
+- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
 {
     self = [super init];
     if (self)
     {
-        _clientConfiguration = [DMEClientConfiguration new];
+        _clientConfiguration = configuration;
         _apiClient = [[DMEAPIClient alloc] initWithConfig:_clientConfiguration];
         _sessionManager = [[DMESessionManager alloc] initWithApiClient:_apiClient];
         _crypto = [DMECrypto new];
         
         // Configure mercury appCommunicator.
-        _appCommunicator = [DMEAppCommunicator new];
+        _appCommunicator = [DMEAppCommunicator shared];
         DMENativeConsentManager *authMgr = [[DMENativeConsentManager alloc] initWithAppCommunicator:_appCommunicator];
         [_appCommunicator addCallbackHandler:authMgr];
         _authManager = authMgr;

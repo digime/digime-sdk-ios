@@ -42,6 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    return DMEClient.shared().open(url, options: options)
+    return DMEAppCommunicator.shared().open(url, options: options)
   }
 }

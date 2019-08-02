@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
 	'DigiMeSDK/Core/Classes/Utility/*.h',
 	'DigiMeSDK/Core/Classes/DMESessionManager.h',
 	'DigiMeSDK/Core/Classes/DMEAPIClient+Private.h',
-	'DigiMeSDK/Core/Classes/DMEAppCommunicator.h',
+	'DigiMeSDK/Core/Classes/DMEAppCommunicator+Private.h',
 	'DigiMeSDK/Core/Classes/DMENativeConsentManager.h',
 	'DigiMeSDK/Core/Classes/DMEClient+Private.h',
 	'DigiMeSDK/Core/Classes/DMEDataUnpacker.h'

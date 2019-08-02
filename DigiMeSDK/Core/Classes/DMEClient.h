@@ -57,6 +57,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (DMEClient *)sharedClient;
 
+- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
 /**
  Initilizes contract authentication. This will attempt to create a session and redirect
  to the Digi.me application.

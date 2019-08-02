@@ -6,7 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEAppCommunicator.h"
+#import "DMEAppCommunicator+Private.h"
 #import "DMEClient.h"
 #import <StoreKit/StoreKit.h>
 #import "UIViewController+DMEExtension.h"
@@ -31,6 +31,17 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
 @implementation DMEAppCommunicator
 
 #pragma mark - Initialisation
+
++ (DMEAppCommunicator *)shared
+{
+    static DMEAppCommunicator *sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedClient = [[self alloc] init];
+    });
+    
+    return sharedClient;
+}
 
 - (instancetype)init
 {

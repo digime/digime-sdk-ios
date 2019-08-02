@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMEAppCommunicator.h"
+#import "DMEAppCommunicator+Private.h"
 #import "DMEClientCallbacks.h"
 
 NS_ASSUME_NONNULL_BEGIN

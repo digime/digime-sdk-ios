@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMEAppCommunicator.h"
+#import "DMEAppCommunicator+Private.h"
 #import "DMEClientCallbacks.h"
 
 @class DMEClientConfiguration;
