@@ -8,7 +8,6 @@
 
 #import "DMESession.h"
 #import "DMESessionManager.h"
-#import "DMEClient.h"
 #import "DMEDataRequest.h"
 
 NSString * const kDMESessionKey = @"sessionKey";
@@ -38,15 +37,11 @@ NSString * const kDMEUserId = @"debugUserId";
 NSString * const kDMELibraryId = @"debugLibraryId";
 NSString * const kDMEPCloudType = @"debugPcloudType";
 
-@interface DMESession()
-@property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
-@end
-
 @implementation DMESession
 
 #pragma mark - Initialization
 
--(instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate sessionManager:(nonnull DMESessionManager *)sessionManager
+- (instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate contractId:(NSString *)contractId sessionManager:(nonnull DMESessionManager *)sessionManager
 {
     self = [super init];
     if (self)
@@ -55,7 +50,7 @@ NSString * const kDMEPCloudType = @"debugPcloudType";
         _sessionExchangeToken = exchangeToken;
         _expiryDate = expiryDate;
         _sessionManager = sessionManager;
-        _sessionId = sessionManager.client.contractId;
+        _sessionId = contractId;
         _createdDate = [NSDate date];
         _scope = sessionManager.scope;
         _metadata = [NSDictionary new];

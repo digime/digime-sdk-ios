@@ -1,54 +1,41 @@
 //
-//  DMEClient+Postbox.m
+//  DMEClient.m
 //  DigiMeSDK
 //
-//  Created on 16/10/2018.
+//  Created on 29/01/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEClient+Postbox.h"
-#import "DMEPostboxManager.h"
-#import "DMEClient+Private.h"
-#import "DMESessionManager.h"
-#import "DMEAPIClient.h"
 #import "DMEAPIClient+Postbox.h"
+#import "DMEClient+Private.h"
+#import "DMEClientConfiguration.h"
+#import "DMEPostboxManager.h"
+#import "DMEPushClient.h"
+#import "DMESessionManager.h"
 
-@interface DMEClient ()
+@interface DMEPushClient ()
 
 @property (nonatomic, weak) DMEPostboxManager *postboxManager;
 
 @end
 
-@implementation DMEClient (Postbox)
+@implementation DMEPushClient
 
-#pragma mark - Begin ivar and accessor definitions.
-
-DMEPostboxManager *_postboxManager;
-
-- (DMEPostboxManager *)postboxManager
+- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
 {
-    return _postboxManager;
+    self = [super initWithConfiguration:configuration];
+    if (self)
+    {
+        DMEPostboxManager *manager = [[DMEPostboxManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
+        [self.appCommunicator addCallbackHandler:manager];
+        _postboxManager = manager;
+    }
+    
+    return self;
 }
-
-- (void)setPostboxManager:(DMEPostboxManager *)postboxManager
-{
-    _postboxManager = postboxManager;
-}
-
-#pragma mark - End ivar and accessor definitions.
 
 - (void)createPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
 {
-    // Check if the manager has been instantiated.
-    if (!self.postboxManager)
-    {
-        // Prepare manager.
-        DMEPostboxManager *pbxMgr = [[DMEPostboxManager alloc] initWithAppCommunicator:self.appCommunicator];
-        [self.appCommunicator addCallbackHandler:pbxMgr];
-        self.postboxManager = pbxMgr;
-    }
-    
-    //get session
     __weak __typeof(self)weakSelf = self;
     [self.sessionManager sessionWithScope:nil completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
@@ -83,3 +70,4 @@ DMEPostboxManager *_postboxManager;
 }
 
 @end
+

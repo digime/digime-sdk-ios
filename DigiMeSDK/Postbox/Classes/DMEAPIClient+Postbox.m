@@ -29,7 +29,7 @@
                      data:(NSData *)data
                completion:(DMEPostboxDataPushCompletion)completion
 {
-    DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.config];
+    DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.configuration];
     
     __weak __typeof(DMEOperation *) weakOperation = operation;
     

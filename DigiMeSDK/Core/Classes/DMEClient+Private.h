@@ -20,9 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readwrite) DMEAPIClient *apiClient;
 @property (nonatomic, strong) DMECrypto *crypto;
 
-@property (nonatomic, weak) DMENativeConsentManager *authManager;
-
 - (nullable NSError *)validateClient;
+
+- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 @end
 

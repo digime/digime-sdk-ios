@@ -6,16 +6,16 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMESession.h"
 #import "NSError+SDK.h"
 #import "NSError+Auth.h"
 #import "NSError+API.h"
-#import "DMEFiles.h"
-#import "DMEAccounts.h"
 
 #pragma once
 
-@class DMEPostbox, DMEFile;
+@class DMEAccounts;
+@class DMEFile;
+@class DMEPostbox;
+@class DMESession;
 
 NS_ASSUME_NONNULL_BEGIN
 

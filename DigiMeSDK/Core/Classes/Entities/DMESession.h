@@ -59,7 +59,7 @@ extern NSString * const kDMEPCloudType;
  @param sessionManager DMESessionManager
  @return instancetype
  */
-- (instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate sessionManager:(DMESessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate contractId:(NSString *)contractId sessionManager:(DMESessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
 
 
 /**
@@ -105,7 +105,7 @@ extern NSString * const kDMEPCloudType;
 /**
  Session metadata. Contains additional debug information collected during the session lifetime.
  */
-@property (strong, nonatomic, readonly, nonnull) NSDictionary<NSString *, id> *metadata;
+@property (nonatomic, strong, readonly) NSDictionary<NSString *, id> *metadata;
 
 @end
 

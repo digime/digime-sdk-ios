@@ -1,18 +1,23 @@
 //
-//  DMEClient+Postbox.h
+//  DMEClient.h
 //  DigiMeSDK
 //
-//  Created on 16/10/2018.
+//  Created on 29/01/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import "DMEClient.h"
-#import "DMEPostbox.h"
+#import "DMEClientCallbacks.h"
+
+@class DMEClientConfiguration;
+@class DMEPostbox;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DMEClient (Postbox)
+@interface DMEPushClient: DMEClient
+
+- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 /**
  Hands off to the DigiMe app to request a Postbox that can be used to send data to a user's library.

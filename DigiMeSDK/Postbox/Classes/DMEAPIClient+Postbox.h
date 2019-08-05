@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMEClientConfiguration.h"
+#import "DMEClientCallbacks.h"
 #import "DMEAPIClient.h"
 
 NS_ASSUME_NONNULL_BEGIN

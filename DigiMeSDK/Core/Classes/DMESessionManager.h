@@ -21,9 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable, readonly) id<DMEDataRequest> scope;
 
-@property (nonatomic, strong, readonly) DMEClient *client;
+- (instancetype)initWithApiClient:(DMEAPIClient *)apiClient contractId:(NSString *)contractId NS_DESIGNATED_INITIALIZER;
 
-- (instancetype)initWithApiClient:(DMEAPIClient *)apiClient;
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 /**
  Will return session object. Either existing session will be re-used, or new session will be created.

@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DMEFilesDeserializer : NSObject
 
-
 /**
  Deserializes JSON content into DMEFiles object.
 

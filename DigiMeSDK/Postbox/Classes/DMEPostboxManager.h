@@ -12,7 +12,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class DMESessionManager;
+
 @interface DMEPostboxManager : NSObject <DMEAppCallbackHandler>
+
+- (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager appId:(NSString *)appId NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 - (void)requestPostboxWithCompletion:(DMEPostboxCreationCompletion)completion;
 

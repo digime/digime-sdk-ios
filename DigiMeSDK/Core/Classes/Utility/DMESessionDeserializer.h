@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param error NSError
  @return DMESession
  */
-+ (nullable DMESession *)deserialize:(NSData *)jsonData error:(NSError * __autoreleasing *)error;
++ (nullable DMESession *)deserialize:(NSData *)jsonData sessionManager:(DMESessionManager *)sessionManager contractId:(NSString *)contractId error:(NSError * __autoreleasing *)error;
 
 @end
 
