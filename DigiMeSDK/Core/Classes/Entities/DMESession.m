@@ -6,7 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMESession.h"
+#import "DMESession+Private.h"
 #import "DMESessionManager.h"
 #import "DMEDataRequest.h"
 

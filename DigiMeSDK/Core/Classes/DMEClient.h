@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param error NSError pointer, this method can throw various SDK-related errors; catch and handle them here.
  @return YES if able to open digi.me app, NO if not or some other SDK-related error occurred.
  */
-- (BOOL)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error;
+- (BOOL)viewReceiptInDMEAppWithError:(NSError * __autoreleasing * __nullable)error;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;

@@ -22,8 +22,8 @@
 
 @interface DMEPullClient () <DMEPreConsentViewControllerDelegate>
 
-@property (nonatomic, weak, readonly) DMENativeConsentManager *nativeConsentManager;
-@property (nonatomic, weak, readonly) DMEGuestConsentManager *guestConsentManager;
+@property (nonatomic, strong, readonly) DMENativeConsentManager *nativeConsentManager;
+@property (nonatomic, strong, readonly) DMEGuestConsentManager *guestConsentManager;
 @property (nonatomic, strong, nullable) DMEPreConsentViewController *preconsentViewController;
 @property (nonatomic, strong, nullable) id<DMEDataRequest> scope;
 
@@ -39,11 +39,9 @@
     if (self)
     {
         DMENativeConsentManager *nativeConsentManager = [[DMENativeConsentManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
-        [self.appCommunicator addCallbackHandler:nativeConsentManager];
         _nativeConsentManager = nativeConsentManager;
         
         DMEGuestConsentManager *guestConsentManager = [[DMEGuestConsentManager alloc] initWithSessionManager:self.sessionManager configuration:self.configuration];
-        [self.appCommunicator addCallbackHandler:guestConsentManager];
         _guestConsentManager = guestConsentManager;
     }
     

@@ -50,6 +50,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 {
     NSError *error = [self handleGuestConsentCallbackWithParameters:parameters];
     [self executeCompletionWithError:error];
+    [self.appCommunicator removeCallbackHandler:self];
 }
 
 - (void)requestGuestConsentWithCompletion:(DMEAuthorizationCompletion)completion
@@ -77,6 +78,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
                              kDMERegisteredAppID: self.configuration.appId,
                              };
     
+    [self.appCommunicator addCallbackHandler:self];
     [self openBrowserWithParameters:params];
 }
 

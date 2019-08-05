@@ -77,6 +77,8 @@
             self.postboxCompletionBlock(postbox, err);
         });
     }
+    
+    [self.appCommunicator removeCallbackHandler:self];
 }
 
 - (void)requestPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
@@ -103,6 +105,7 @@
                              kDMERegisteredAppID: self.appId,
                              };
     
+    [self.appCommunicator addCallbackHandler:self];
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
 }
 

@@ -9,7 +9,6 @@
 #import "DMEAPIClient.h"
 #import "DMEAppCommunicator+Private.h"
 #import "DMEClient+Private.h"
-#import "DMECrypto.h"
 #import "DMEDataUnpacker.h"
 #import "DMEFilesDeserializer.h"
 #import "DMEGuestConsentManager.h"
@@ -30,7 +29,6 @@
         _configuration = configuration;
         _apiClient = [[DMEAPIClient alloc] initWithConfiguration:configuration];
         _sessionManager = [[DMESessionManager alloc] initWithApiClient:_apiClient contractId:configuration.contractId];
-        _crypto = [DMECrypto new];
         
         // Configure mercury appCommunicator.
         _appCommunicator = [DMEAppCommunicator shared];
@@ -72,7 +70,7 @@
     return nil;
 }
 
-- (BOOL)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error
+- (BOOL)viewReceiptInDMEAppWithError:(NSError * __autoreleasing * __nullable)error
 {
     // Check we have both the appId and clientId, required for this.
     if (!self.configuration.contractId.length)

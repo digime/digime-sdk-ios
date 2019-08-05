@@ -6,7 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEClientConfiguration.h"
+@class DMEClientConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMECryptoUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DMECrypto : NSObject
-
 
 /**
  Saves private key data securely

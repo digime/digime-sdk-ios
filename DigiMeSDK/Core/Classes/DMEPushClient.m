@@ -15,7 +15,7 @@
 
 @interface DMEPushClient ()
 
-@property (nonatomic, weak) DMEPostboxManager *postboxManager;
+@property (nonatomic, strong) DMEPostboxManager *postboxManager;
 
 @end
 
@@ -27,7 +27,6 @@
     if (self)
     {
         DMEPostboxManager *manager = [[DMEPostboxManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
-        [self.appCommunicator addCallbackHandler:manager];
         _postboxManager = manager;
     }
     

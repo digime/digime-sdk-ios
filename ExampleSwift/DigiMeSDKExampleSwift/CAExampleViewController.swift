@@ -11,7 +11,7 @@ import DigiMeSDK
 
 class CAExampleViewController: UIViewController {
     
-    var dmeClient: DMEClient = DMEClient.shared()
+    var dmeClient: DMEPullClient?
     var logVC: LogViewController!
     
     override func viewDidLoad() {
@@ -20,12 +20,9 @@ class CAExampleViewController: UIViewController {
         title = "CA Example"
         
         // - GET STARTED -
-        
-        dmeClient.appId = Constants.appId
-        
-        dmeClient.privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: Constants.p12FileName, password: Constants.p12Password)
-        
-        dmeClient.contractId = Constants.CAContractId
+        if let configuration = DMEClientConfiguration(appId: Constants.appId, contractId: Constants.CAContractId, p12FileName: Constants.p12FileName, p12Password: Constants.p12Password) {
+            dmeClient = DMEPullClient(configuration: configuration)
+        }
         
         logVC = LogViewController(frame: UIScreen.main.bounds)
         view.addSubview(logVC)
@@ -51,7 +48,7 @@ class CAExampleViewController: UIViewController {
     @objc func runTapped() {
         logVC.reset()
 
-        dmeClient.authorize { (session, error) in
+        dmeClient?.authorize { (session, error) in
             
             guard let session = session else {
                 if let error = error {
@@ -69,7 +66,7 @@ class CAExampleViewController: UIViewController {
     }
     
     func getAccounts() {
-        dmeClient.getSessionAccounts { (accounts, error) in
+        dmeClient?.getSessionAccounts { (accounts, error) in
             
             guard let accounts = accounts else {
                 if let error = error {
@@ -84,7 +81,7 @@ class CAExampleViewController: UIViewController {
     }
     
     func getSessionData() {
-        dmeClient.getSessionData(downloadHandler: { (file, error) in
+        dmeClient?.getSessionData(downloadHandler: { (file, error) in
             guard let file = file else {
                 if let error = error as NSError?, let fileId = error.userInfo[kFileIdKey] as? String {
                     self.logVC.log(message: "Failed to retrieve content for fileId: " + fileId + " Error: " + error.localizedDescription)

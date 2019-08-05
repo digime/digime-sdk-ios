@@ -8,9 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClient.h"
-//#import "DMEDataRequest.h"
 #import "DMEClientCallbacks.h"
-//#import "DMEClientConfiguration.h"
 
 @class DMEClientConfiguration;
 @protocol DMEDataRequest;

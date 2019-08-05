@@ -6,6 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
+#import "DMEClientConfiguration.h"
 #import "DMEOperation.h"
 #import <CoreGraphics/CoreGraphics.h>
 

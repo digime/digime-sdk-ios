@@ -24,11 +24,11 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 
 @interface DMEAPIClient() <NSURLSessionDelegate>
 
+@property (nonatomic, strong, readonly) DMECertificatePinner *certPinner;
+
 @end
 
 @implementation DMEAPIClient
-
-//@synthesize config = _config;
 
 #pragma mark - Initialization
 
@@ -38,7 +38,6 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
     if (self)
     {
         _configuration = configuration;
-        _crypto = [DMECrypto new];
         _certPinner = [DMECertificatePinner new];
         _requestFactory = [[DMERequestFactory alloc] initWithConfiguration:configuration];
         _queue = [[NSOperationQueue alloc] init];

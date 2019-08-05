@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMEClientConfiguration.h"
-#import "DMEDataRequest.h"
+
+@class DMEClientConfiguration;
+@protocol DMEDataRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 

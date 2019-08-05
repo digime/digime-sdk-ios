@@ -11,10 +11,6 @@
 #import "DMESession+Private.h"
 
 #import "NSError+Auth.h"
-#import "UIViewController+DMEExtension.h"
-
-#import <UIKit/UIKit.h>
-#import <StoreKit/StoreKit.h>
 
 @interface DMENativeConsentManager()
 
@@ -73,6 +69,8 @@
             self.authCompletionBlock(self.session, err);
         });
     }
+    
+    [self.appCommunicator removeCallbackHandler:self];
 }
 
 #pragma mark - Authorization
@@ -93,6 +91,7 @@
                              kDMERegisteredAppID: self.appId,
                              };
     
+    [self.appCommunicator addCallbackHandler:self];
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
 }
 

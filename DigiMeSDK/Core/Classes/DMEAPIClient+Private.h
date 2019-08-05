@@ -8,7 +8,7 @@
 
 #import "DMEAPIClient.h"
 
-@class NSOperationQueue, DMECrypto, DMECertificatePinner, DMEClient, DMERequestFactory;
+@class NSOperationQueue, DMECertificatePinner, DMERequestFactory;
 
 typedef void(^HandlerBlock)(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error);
 
@@ -17,8 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DMEAPIClient ()
 
 @property (nonatomic, strong, readonly) NSOperationQueue *queue;
-@property (nonatomic, strong, readonly) DMECrypto *crypto;
-@property (nonatomic, strong, readonly) DMECertificatePinner *certPinner;
 @property (nonatomic, strong, readonly) DMERequestFactory *requestFactory;
 @property (nonatomic, strong, readonly) DMEClientConfiguration *configuration;
 

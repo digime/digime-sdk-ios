@@ -35,11 +35,12 @@
     
     operation.workBlock = ^{
         
-        NSData *symmetricalKey = [self.crypto getRandomUnsignedCharacters:32];
-        NSData *iv = [self.crypto getRandomUnsignedCharacters:16];
-        NSString *metadataEncryptedString = [self.crypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
-        NSData *payload = [self.crypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
-        NSString *keyEncrypted = [self.crypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey];
+        DMECrypto *crypto = [DMECrypto new];
+        NSData *symmetricalKey = [crypto getRandomUnsignedCharacters:32];
+        NSData *iv = [crypto getRandomUnsignedCharacters:16];
+        NSString *metadataEncryptedString = [crypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
+        NSData *payload = [crypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
+        NSString *keyEncrypted = [crypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey];
         NSDictionary *metadataHeaders = [self postboxHeadersWithSessionKey:postbox.sessionKey symmetricalKey:keyEncrypted initializationVector:[iv hexString] metadata:metadataEncryptedString];
         NSDictionary *headers = [self defaultPostboxHeaders];
         NSURLSession *session = [self sessionWithHeaders:headers];
