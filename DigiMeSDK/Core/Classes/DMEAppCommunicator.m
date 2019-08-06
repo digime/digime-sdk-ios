@@ -222,7 +222,7 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
     {
         if ([callbackHandler canHandleAction:@"data"] && ![self digiMeAppIsInstalled])
         {
-            [callbackHandler handleAction:@"data" withParameters:@{kDMEResponse: @NO}];
+            [callbackHandler handleAction:@"data" withParameters:@{kDMEResponse: kDMEResultValueCancel}];
         }
     }
 }

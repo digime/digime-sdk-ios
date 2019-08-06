@@ -44,7 +44,7 @@
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    BOOL success = [parameters[kDMEResponse] boolValue];
+    NSString *result = parameters[kDMEResponse];
     NSString *sessionKey = parameters[kDMESessionKey];
     NSString *postboxId = parameters[kDMEPostboxId];
     NSString *postboxPublicKey = parameters[kDMEPostboxPublicKey];
@@ -58,7 +58,11 @@
     {
         err = [NSError authError:AuthErrorInvalidSessionKey];
     }
-    else if (!success || !postboxId.length)
+    else if ([result isEqualToString:kDMEResultValueCancel])
+    {
+        err = [NSError authError:AuthErrorCancelled];
+    }
+    else if ([result isEqualToString:kDMEResultValueError] || !postboxId.length)
     {
         err = [NSError authError:AuthErrorGeneral];
     }

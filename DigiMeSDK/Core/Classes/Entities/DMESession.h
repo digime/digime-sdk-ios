@@ -36,6 +36,9 @@ extern NSString * const kDMEDigiMeVersion;
 extern NSString * const kDMEUserId;
 extern NSString * const kDMELibraryId;
 extern NSString * const kDMEPCloudType;
+extern NSString * const kDMEResultValueSuccess;
+extern NSString * const kDMEResultValueError;
+extern NSString * const kDMEResultValueCancel;
 
 @class DMESessionManager;
 @protocol DMEDataRequest;

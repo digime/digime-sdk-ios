@@ -37,6 +37,9 @@ NSString * const kDMEDigiMeVersion = @"debugDigiMeVersion";
 NSString * const kDMEUserId = @"debugUserId";
 NSString * const kDMELibraryId = @"debugLibraryId";
 NSString * const kDMEPCloudType = @"debugPcloudType";
+NSString * const kDMEResultValueSuccess = @"SUCCESS";
+NSString * const kDMEResultValueError = @"ERROR";
+NSString * const kDMEResultValueCancel = @"CANCEL";
 
 @interface DMESession()
 @property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
