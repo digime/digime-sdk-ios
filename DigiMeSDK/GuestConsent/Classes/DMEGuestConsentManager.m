@@ -110,13 +110,13 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
         error = [NSError authError:AuthErrorCancelled];
     }
     
-    NSString *result = parameters[@"result"];
+    NSString *result = parameters[kDMEResponse];
     
-    if (!error && [result isEqualToString:@"DATA_READY"])
+    if (!error && [result isEqualToString:kDMEResultValueSuccess])
     {
         // Everything good; No error to set
     }
-    else if ([result isEqualToString:@"CANCELLED"])
+    else if ([result isEqualToString:kDMEResultValueCancel])
     {
         error = [NSError authError:AuthErrorCancelled];
     }
