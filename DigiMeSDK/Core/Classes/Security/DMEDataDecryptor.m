@@ -11,23 +11,33 @@
 #import "DMECrypto.h"
 #import "NSError+SDK.h"
 
+@interface DMEDataDecryptor ()
+
+@property (nonatomic, strong, readonly) DMEClientConfiguration *configuration;
+
+@end
+
 @implementation DMEDataDecryptor
 
-+ (NSData *)decryptFileContent:(id)fileContent error:(NSError * _Nullable __autoreleasing *)error
+- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
+{
+    self = [super init];
+    if (self)
+    {
+        _configuration = configuration;
+    }
+    
+    return self;
+}
+
+- (NSData *)decryptFileContent:(id)fileContent error:(NSError * _Nullable __autoreleasing *)error
 {
     if ([fileContent isKindOfClass:[NSString class]] && [fileContent length] && [fileContent isBase64])
     {
         DMECrypto *crypto = [DMECrypto new];
         NSData *encryptedData = [fileContent base64Data];
-        NSData *privateKeyData = [crypto privateKeyHex];
         
-        if (!privateKeyData)
-        {
-            [NSError setSDKError:SDKErrorNoPrivateKeyHex toError:error];
-            return nil;
-        }
-        
-        NSData *decryptedData = [crypto getDataFromEncryptedBytes:encryptedData privateKeyData:privateKeyData];
+        NSData *decryptedData = [crypto getDataFromEncryptedBytes:encryptedData configuration:self.configuration];
         
         if (!decryptedData)
         {

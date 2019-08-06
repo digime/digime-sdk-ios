@@ -13,31 +13,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DMECrypto : NSObject
 
 /**
- Saves private key data securely
-
- @param privateKeyHex NSString
- @return YES if saved successfully, otherwise NO
- */
-- (BOOL)addPrivateKeyHex:(NSString *)privateKeyHex;
-
-
-/**
- Returns private key hex data, if it was previously saved.
-
- @return NSData - previously saved private hex key data or nil if none
- */
-- (nullable NSData *)privateKeyHex;
-
-
-/**
- Decrypts encrypted data using private key data.
+ Decrypts encrypted data using private key data from specified configuration.
 
  @param encryptedData NSData
- @param privateKeyData NSData
+ @param configuration Configuration containing private hex key and contract id.
  @return NSData - decrypted data or nil if decryption failed.
  */
-- (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData privateKeyData:(NSData *)privateKeyData;
-
+- (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData configuration:(DMEClientConfiguration *)configuration;
 
 /**
  Decrypt data using AES256 algorithm.

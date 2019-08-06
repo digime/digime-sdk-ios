@@ -36,6 +36,7 @@ Pod::Spec.new do |s|
 	'DigiMeSDK/Core/Classes/DMENativeConsentManager.h',
 	'DigiMeSDK/Core/Classes/DMEClient+Private.h',
 	'DigiMeSDK/Core/Classes/DMEDataUnpacker.h'
+  'DigiMeSDK/Core/Classes/DMEDataDecryptor.h'
     end
 
     s.subspec 'Postbox' do |ss|

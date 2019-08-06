@@ -14,7 +14,7 @@
 
 @implementation DMEDataUnpacker
 
-+ (nullable NSData *)unpackData:(NSData *)data resolvedMetadata:(DMEFileMetadata * _Nullable __autoreleasing * _Nullable)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error
++ (nullable NSData *)unpackData:(NSData *)data decryptor:(DMEDataDecryptor *)decryptor resolvedMetadata:(DMEFileMetadata * _Nullable __autoreleasing * _Nullable)resolvedMetadata error:(NSError * _Nullable __autoreleasing *)error
 {
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
     
@@ -37,7 +37,7 @@
         return nil;
     }
     
-    NSData *unpackedData = [DMEDataDecryptor decryptFileContent:fileContent error:error];
+    NSData *unpackedData = [decryptor decryptFileContent:fileContent error:error];
     
     if (!unpackedData)
     {

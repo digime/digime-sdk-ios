@@ -6,14 +6,15 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
+#import "DMEClientConfiguration.h"
 #import "DMECrypto.h"
 #import <CommonCrypto/CommonCryptor.h>
 #import <CommonCrypto/CommonKeyDerivation.h>
 #import "NSString+DMECrypto.h"
 #import "NSData+DMECrypto.h"
 
-static NSString* kPrivateKeyIdentifier = @"me.digi.digime.privatekey";
-static NSString* kPublicKeyIdentifier = @"me.digi.digime.publickey";
+static NSString * const kPrivateKeyIdentifierFormat = @"me.digi.digime.privatekey.%@";
+static NSString * const kPublicKeyIdentifier = @"me.digi.digime.publickey";
 static const NSInteger __attribute__((unused)) kDataSymmetricKeyLength = 32;
 static const NSInteger kDataInitializationVectorLength = 16;
 static const NSInteger kDataSymmetricKeyLengthCA = 256;
@@ -23,17 +24,11 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - Keychain
 
-- (BOOL)addPrivateKeyHex:(NSString *)privateKeyHex
+- (BOOL)addPrivateKeyHex:(NSString *)privateKeyHex forContractWithID:(nonnull NSString *)contractId
 {
-    NSData* privateKeyData = [privateKeyHex hexToBytes];
-    BOOL result = [self saveRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyData:privateKeyData keyTagString:kPrivateKeyIdentifier overwrite:YES];
-    return result;
-}
-
-- (NSData *)privateKeyHex
-{
-    NSData* keyData = [self loadRSAKeyDataWithKeyClass:kSecAttrKeyClassPrivate keyTagString:kPrivateKeyIdentifier];
-    return keyData;
+    NSData *privateKeyData = [privateKeyHex hexToBytes];
+    NSString *tag = [NSString stringWithFormat:kPrivateKeyIdentifierFormat, contractId];
+    return [self saveRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyData:privateKeyData keyTagString:tag overwrite:YES];
 }
 
 #pragma mark - Log
@@ -78,11 +73,15 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - AES Decrypt file content
 
-- (NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData privateKeyData:(NSData *)privateKeyData
+- (NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData configuration:(DMEClientConfiguration *)configuration
 {
-    //convert data back to privateKey.
-    [self saveRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyData:privateKeyData keyTagString:kPrivateKeyIdentifier overwrite:YES];
-    SecKeyRef privateKey = [self loadRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyTagString:kPrivateKeyIdentifier];
+    NSString *tag = [NSString stringWithFormat:kPrivateKeyIdentifierFormat, configuration.contractId];
+    SecKeyRef privateKey = [self loadRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyTagString:tag];
+    if (privateKey == NULL)
+    {
+        BOOL saveSuccess = [self addPrivateKeyHex:configuration.privateKeyHex forContractWithID:configuration.contractId];
+        return saveSuccess ? [self getDataFromEncryptedBytes:encryptedData configuration:configuration] : nil;
+    }
     
     NSData* encryptedDsk = [encryptedData subdataWithRange:NSMakeRange(0,256)];
     
@@ -435,7 +434,7 @@ static const NSInteger kHashLength = 64;
     return keyRef;
 }
 
-- (SecKeyRef)addPrivateKey:(NSString *)key
+- (SecKeyRef)addPrivateKey:(NSString *)key contractId:(NSString *)contractId
 {
     NSRange spos;
     NSRange epos;
@@ -469,7 +468,8 @@ static const NSInteger kHashLength = 64;
     //        return nil;
     //    }
     
-    NSData *d_tag = [NSData dataWithBytes:[kPrivateKeyIdentifier UTF8String] length:[kPrivateKeyIdentifier length]];
+    NSString *keyTagString = [NSString stringWithFormat:kPrivateKeyIdentifierFormat, contractId];
+    NSData *d_tag = [NSData dataWithBytes:[keyTagString UTF8String] length:[keyTagString length]];
     
     // Delete any old lingering key with the same tag
     NSMutableDictionary *privateKey = [[NSMutableDictionary alloc] init];

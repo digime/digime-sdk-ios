@@ -10,6 +10,7 @@
 #import "DMEAPIClient.h"
 #import "DMEClient+Private.h"
 #import "DMEClientConfiguration.h"
+#import "DMEDataDecryptor.h"
 #import "DMEDataUnpacker.h"
 #import "DMEFilesDeserializer.h"
 #import "DMEGuestConsentManager.h"
@@ -22,6 +23,7 @@
 
 @interface DMEPullClient () <DMEPreConsentViewControllerDelegate>
 
+@property (nonatomic, strong, readonly) DMEDataDecryptor *dataDecryptor;
 @property (nonatomic, strong, readonly) DMENativeConsentManager *nativeConsentManager;
 @property (nonatomic, strong, readonly) DMEGuestConsentManager *guestConsentManager;
 @property (nonatomic, strong, nullable) DMEPreConsentViewController *preconsentViewController;
@@ -43,6 +45,8 @@
         
         DMEGuestConsentManager *guestConsentManager = [[DMEGuestConsentManager alloc] initWithSessionManager:self.sessionManager configuration:self.configuration];
         _guestConsentManager = guestConsentManager;
+        
+        _dataDecryptor = [[DMEDataDecryptor alloc] initWithConfiguration:configuration];
     }
     
     return self;
@@ -276,7 +280,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
     DMEFile *file;
     NSError *error;
     DMEFileMetadata *metadata;
-    NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:&metadata error:&error];
+    NSData *unpackedData = [DMEDataUnpacker unpackData:data decryptor:self.dataDecryptor resolvedMetadata:&metadata error:&error];
     if (unpackedData != nil)
     {
         file = [[DMEFile alloc] initWithFileId:fileId fileContent:unpackedData fileMetadata:metadata];
@@ -313,7 +317,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
 
         DMEAccounts *accounts;
         NSError *error;
-        NSData *unpackedData = [DMEDataUnpacker unpackData:data resolvedMetadata:NULL error:&error];
+        NSData *unpackedData = [DMEDataUnpacker unpackData:data decryptor:self.dataDecryptor resolvedMetadata:NULL error:&error];
         if (unpackedData != nil)
         {
             accounts = [DMEAccounts deserialize:unpackedData error:&error];
