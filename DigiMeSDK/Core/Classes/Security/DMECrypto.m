@@ -24,16 +24,16 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - Keychain
 
-- (BOOL)addPrivateKeyHex:(NSString *)privateKeyHex forContractWithID:(nonnull NSString *)contractId
++ (BOOL)addPrivateKeyHex:(NSString *)privateKeyHex forContractWithID:(nonnull NSString *)contractId
 {
     NSData *privateKeyData = [privateKeyHex hexToBytes];
     NSString *tag = [NSString stringWithFormat:kPrivateKeyIdentifierFormat, contractId];
-    return [self saveRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyData:privateKeyData keyTagString:tag overwrite:YES];
+    return [[self class] saveRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyData:privateKeyData keyTagString:tag overwrite:YES];
 }
 
 #pragma mark - Log
 
-- (void)logCCCryptorStatus:(CCCryptorStatus)status
++ (void)logCCCryptorStatus:(CCCryptorStatus)status
 {
     switch ( status )
     {
@@ -73,14 +73,14 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - AES Decrypt file content
 
-- (NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData configuration:(DMEClientConfiguration *)configuration
++ (NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData configuration:(DMEClientConfiguration *)configuration
 {
     NSString *tag = [NSString stringWithFormat:kPrivateKeyIdentifierFormat, configuration.contractId];
-    SecKeyRef privateKey = [self loadRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyTagString:tag];
+    SecKeyRef privateKey = [[self class] loadRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyTagString:tag];
     if (privateKey == NULL)
     {
-        BOOL saveSuccess = [self addPrivateKeyHex:configuration.privateKeyHex forContractWithID:configuration.contractId];
-        return saveSuccess ? [self getDataFromEncryptedBytes:encryptedData configuration:configuration] : nil;
+        BOOL saveSuccess = [[self class] addPrivateKeyHex:configuration.privateKeyHex forContractWithID:configuration.contractId];
+        return saveSuccess ? [[self class] getDataFromEncryptedBytes:encryptedData configuration:configuration] : nil;
     }
     
     NSData* encryptedDsk = [encryptedData subdataWithRange:NSMakeRange(0,256)];
@@ -113,10 +113,10 @@ static const NSInteger kHashLength = 64;
     NSData* fileData = [encryptedData subdataWithRange:NSMakeRange((kDataSymmetricKeyLengthCA+kDataInitializationVectorLength),encryptedData.length-(kDataSymmetricKeyLengthCA+kDataInitializationVectorLength))];
     
     NSError* error;
-    NSData* jfsDataWithHash = [self decryptAes256UsingKey:decryptedDsk
-                                     initializationVector:div
-                                                     data:fileData
-                                                    error:&error];
+    NSData* jfsDataWithHash = [[self class] decryptAes256UsingKey:decryptedDsk
+                                             initializationVector:div
+                                                             data:fileData
+                                                            error:&error];
     NSAssert(error == nil, @"An error occured");
     
     NSData* jfsDataHash __attribute__((unused)) = [jfsDataWithHash subdataWithRange:NSMakeRange(0, kHashLength)];
@@ -129,27 +129,29 @@ static const NSInteger kHashLength = 64;
     return jfsData;
 }
 
-- (NSData *)decryptAes256UsingKey:(NSData*)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error
++ (NSData *)decryptAes256UsingKey:(NSData*)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error
 {
     CCCryptorStatus status = kCCSuccess;
-    NSData * result = [self decryptedDataUsingAlgorithm:kCCAlgorithmAES128
-                                                    key:keyData
-                                   initializationVector:ivData
-                                                options:kCCOptionPKCS7Padding
-                                              keyLength:kCCKeySizeAES256
-                                                   data:data
-                                                  error:&status];
+    NSData * result = [[self class] decryptedDataUsingAlgorithm:kCCAlgorithmAES128
+                                                            key:keyData
+                                           initializationVector:ivData
+                                                        options:kCCOptionPKCS7Padding
+                                                      keyLength:kCCKeySizeAES256
+                                                           data:data
+                                                          error:&status];
     if (result != nil)
+    {
         return result;
+    }
     
-    [self logCCCryptorStatus:status];
+    [[self class] logCCCryptorStatus:status];
     
     return ( nil );
 }
 
 #pragma mark - AES Encrypt data
 
-- (nullable NSData *)dataEncryptedUsingAlgorithm:(CCAlgorithm)algorithm
++ (nullable NSData *)dataEncryptedUsingAlgorithm:(CCAlgorithm)algorithm
                                              key:(NSData *)keyData
                             initializationVector:(NSData *)ivData
                                          options:(CCOptions)options
@@ -173,15 +175,15 @@ static const NSInteger kHashLength = 64;
     
     if ( status != kCCSuccess )
     {
-        [self logCCCryptorStatus:status];
+        [[self class] logCCCryptorStatus:status];
         
         return nil;
     }
     
-    NSData * result = [self runCryptor:cryptor result:&status data:data];
+    NSData * result = [[self class] runCryptor:cryptor result:&status data:data];
     if ( status != kCCSuccess )
     {
-        [self logCCCryptorStatus:status];
+        [[self class] logCCCryptorStatus:status];
         
         return nil;
     }
@@ -191,22 +193,20 @@ static const NSInteger kHashLength = 64;
     return ( result );
 }
 
-- (nullable NSData *)encryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing * _Nullable)error
++ (nullable NSData *)encryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing * _Nullable)error
 {
-    NSData *result = [self dataEncryptedUsingAlgorithm:kCCAlgorithmAES128
-                                                   key:keyData
-                                  initializationVector:ivData
-                                               options:kCCOptionPKCS7Padding
-                                             keyLength:kCCKeySizeAES256
-                                                  data:data
-                                                 error:error];
-    
-    return result;
+    return [[self class] dataEncryptedUsingAlgorithm:kCCAlgorithmAES128
+                                                 key:keyData
+                                initializationVector:ivData
+                                             options:kCCOptionPKCS7Padding
+                                           keyLength:kCCKeySizeAES256
+                                                data:data
+                                               error:error];
 }
 
 #pragma mark - RSA Key operations
 
--(BOOL)saveRSAKeyWithKeyClass:(CFTypeRef) keyClass keyData:(NSData*)keyData keyTagString:(NSString*)keyTagString overwrite:(BOOL) overwrite
++ (BOOL)saveRSAKeyWithKeyClass:(CFTypeRef)keyClass keyData:(NSData *)keyData keyTagString:(NSString *)keyTagString overwrite:(BOOL)overwrite
 {
     CFDataRef ref       = NULL;
     NSData*   peerTag   = [[NSData alloc] initWithBytes:(const void *)[keyTagString UTF8String] length:[keyTagString length]];
@@ -227,14 +227,18 @@ static const NSInteger kHashLength = 64;
     OSStatus status = SecItemAdd((__bridge CFDictionaryRef)attr, (CFTypeRef*)&ref);
     
     if (status == noErr)
+    {
         return YES;
+    }
     else if (status == errSecDuplicateItem && overwrite == YES)
-        return [self updateRSAKeyWithKeyClass:keyClass keyData:keyData keyTagString:keyTagString];
+    {
+        return [[self class] updateRSAKeyWithKeyClass:keyClass keyData:keyData keyTagString:keyTagString];
+    }
     
     return NO;
 }
 
--(BOOL) updateRSAKeyWithKeyClass:(CFTypeRef) keyClass keyData:(NSData*)keyData keyTagString:(NSString*)keyTagString
++ (BOOL)updateRSAKeyWithKeyClass:(CFTypeRef)keyClass keyData:(NSData *)keyData keyTagString:(NSString *)keyTagString
 {
     NSData* peerTag = [[NSData alloc] initWithBytes:(const void *)[keyTagString UTF8String] length:[keyTagString length]];
     
@@ -246,7 +250,8 @@ static const NSInteger kHashLength = 64;
                                    };
     OSStatus matchingStatus = SecItemCopyMatching((__bridge CFDictionaryRef)matchingAttr, NULL);
     
-    if (matchingStatus == noErr) {
+    if (matchingStatus == noErr)
+    {
         NSDictionary* updateAttr = @{
                                      (__bridge id)kSecClass             : (__bridge id)kSecClassKey,
                                      (__bridge id)kSecAttrKeyType       : (__bridge id)kSecAttrKeyTypeRSA,
@@ -262,7 +267,7 @@ static const NSInteger kHashLength = 64;
     return NO;
 }
 
--(SecKeyRef)loadRSAKeyWithKeyClass:(CFTypeRef)keyClass keyTagString:(NSString*)keyTagString
++ (SecKeyRef)loadRSAKeyWithKeyClass:(CFTypeRef)keyClass keyTagString:(NSString *)keyTagString
 {
     NSData* peerTag = [[NSData alloc] initWithBytes:(const void *)[keyTagString UTF8String] length:[keyTagString length]];
     
@@ -278,12 +283,14 @@ static const NSInteger kHashLength = 64;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)attr, (CFTypeRef*)&keyRef);
     
     if (status == noErr)
+    {
         return keyRef;
-    else
-        return NULL;
+    }
+    
+    return NULL;
 }
 
--(NSData*)loadRSAKeyDataWithKeyClass:(CFTypeRef)keyClass  keyTagString:(NSString*)keyTagString
++ (nullable NSData *)loadRSAKeyDataWithKeyClass:(CFTypeRef)keyClass keyTagString:(NSString *)keyTagString
 {
     NSData* peerTag = [[NSData alloc] initWithBytes:(const void *)[keyTagString UTF8String] length:[keyTagString length]];
     
@@ -299,14 +306,18 @@ static const NSInteger kHashLength = 64;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)attr, (CFTypeRef*)&result);
     
     if (status == noErr && result)
+    {
         return (NSData*)CFBridgingRelease(result);
+    }
     else if (result)
+    {
         CFRelease(result);
+    }
     
     return nil;
 }
 
-- (NSData *)stripPublicKeyHeader:(NSData *)d_key
++ (nullable NSData *)stripPublicKeyHeader:(NSData *)d_key
 {
     // Skip ASN.1 public key header
     if (d_key == nil)
@@ -369,7 +380,7 @@ static const NSInteger kHashLength = 64;
     return ([NSData dataWithBytes:&c_key[idx] length:len - idx]);
 }
 
-- (SecKeyRef)addPublicKey:(NSString *)key
++ (SecKeyRef)addPublicKey:(NSString *)key
 {
     NSRange spos = [key rangeOfString:@"-----BEGIN RSA PUBLIC KEY-----"];
     NSRange epos = [key rangeOfString:@"-----END RSA PUBLIC KEY-----"];
@@ -387,7 +398,7 @@ static const NSInteger kHashLength = 64;
     
     NSData *data = [[NSData alloc]initWithBase64EncodedString:key options:NSDataBase64DecodingIgnoreUnknownCharacters];
     // do not remove this commented out code. for sure it could be an issue at some point and we can return it back
-    //    data = [self stripPublicKeyHeader:data];
+    //    data = [[self class] stripPublicKeyHeader:data];
     //    if(!data){
     //        return nil;
     //    }
@@ -434,7 +445,7 @@ static const NSInteger kHashLength = 64;
     return keyRef;
 }
 
-- (SecKeyRef)addPrivateKey:(NSString *)key contractId:(NSString *)contractId
++ (SecKeyRef)addPrivateKey:(NSString *)key contractId:(NSString *)contractId
 {
     NSRange spos;
     NSRange epos;
@@ -463,7 +474,7 @@ static const NSInteger kHashLength = 64;
     
     NSData *data = [[NSData alloc]initWithBase64EncodedString:key options:NSDataBase64DecodingIgnoreUnknownCharacters];
     // do not remove this commented out code. for sure it could be an issue at some point and we can return it back
-    //    data = [self stripPrivateKeyHeader:data];
+    //    data = [[self class] stripPrivateKeyHeader:data];
     //    if(!data){
     //        return nil;
     //    }
@@ -512,7 +523,7 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - RSA encryption/decryption operations
 
-- (NSData *)decryptedDataUsingAlgorithm:(CCAlgorithm)algorithm
++ (NSData *)decryptedDataUsingAlgorithm:(CCAlgorithm)algorithm
                                     key:(NSData *)keyData
                    initializationVector:(NSData *)ivData
                                 options:(CCOptions)options
@@ -536,7 +547,7 @@ static const NSInteger kHashLength = 64;
         return nil;
     }
     
-    NSData * result = [self runCryptor:cryptor result:&status data:data];
+    NSData * result = [[self class] runCryptor:cryptor result:&status data:data];
     if ( (result == nil) && (error != NULL) )
         *error = status;
     
@@ -545,7 +556,7 @@ static const NSInteger kHashLength = 64;
     return result;
 }
 
-- (NSData*)encryptLargeData:(NSData *)dataToEncrypt publicKey:(SecKeyRef)publicKey
++ (NSData *)encryptLargeData:(NSData *)dataToEncrypt publicKey:(SecKeyRef)publicKey
 {
     NSCParameterAssert(dataToEncrypt.length > 0);
     NSCParameterAssert(publicKey != NULL);
@@ -594,7 +605,7 @@ static const NSInteger kHashLength = 64;
     }
 }
 
-- (NSData*)decryptLargeData:(NSData*)dataToDecrypt privateKey:(SecKeyRef)privateKey
++ (NSData *)decryptLargeData:(NSData *)dataToDecrypt privateKey:(SecKeyRef)privateKey
 {
     NSCParameterAssert(dataToDecrypt != NULL);
     NSCParameterAssert(privateKey != NULL);
@@ -643,7 +654,7 @@ static const NSInteger kHashLength = 64;
     }
 }
 
-- (NSData *)runCryptor:(CCCryptorRef)cryptor result:(CCCryptorStatus *)status data:(NSData *)data
++ (NSData *)runCryptor:(CCCryptorRef)cryptor result:(CCCryptorStatus *)status data:(NSData *)data
 {
     size_t bufsize = CCCryptorGetOutputLength( cryptor, (size_t)[data length], true );
     void * buf = malloc( bufsize );
@@ -673,7 +684,7 @@ static const NSInteger kHashLength = 64;
     return [NSData dataWithBytesNoCopy: buf length: bytesTotal];
 }
 
-- (NSData *)decryptData:(NSData *)data withKeyRef:(SecKeyRef) keyRef
++ (NSData *)decryptData:(NSData *)data withKeyRef:(SecKeyRef)keyRef
 {
     const uint8_t *srcbuf = (const uint8_t *)[data bytes];
     size_t srclen = (size_t)data.length;
@@ -737,7 +748,7 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - Random
 
-- (NSData *)getRandomUnsignedCharacters:(int)length
++ (NSData *)getRandomUnsignedCharacters:(int)length
 {
     NSMutableData *data = [NSMutableData dataWithLength:length];
     
@@ -749,28 +760,27 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - Postbox
 
-- (NSString *)encryptMetadata:(NSData *)metadata symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv
++ (NSString *)encryptMetadata:(NSData *)metadata symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv
 {
     NSError *error;
-    NSData *encryptedData = [self encryptAes256UsingKey:symmetricalKey initializationVector:iv data:metadata error:&error];
+    NSData *encryptedData = [[self class] encryptAes256UsingKey:symmetricalKey initializationVector:iv data:metadata error:&error];
     NSAssert(error == nil, @"Postbox metadata. An encryption error occured");
     return [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 
-- (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey
++ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey
 {
-    SecKeyRef publicKeyRef = [self addPublicKey:publicKey];
-    NSData* encryptedData = [self encryptLargeData:symmetricalKey publicKey:publicKeyRef];
+    SecKeyRef publicKeyRef = [[self class] addPublicKey:publicKey];
+    NSData* encryptedData = [[self class] encryptLargeData:symmetricalKey publicKey:publicKeyRef];
     return [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 
-- (NSData *)encryptData:(NSData *)payload symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv
++ (NSData *)encryptData:(NSData *)payload symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv
 {
     NSError *error;
-    NSData *encryptedData = [self encryptAes256UsingKey:symmetricalKey initializationVector:iv data:payload error:&error];
+    NSData *encryptedData = [[self class] encryptAes256UsingKey:symmetricalKey initializationVector:iv data:payload error:&error];
     NSAssert(error == nil, @"Postbox data. An encryption error occured");
     return encryptedData;
 }
-
 
 @end

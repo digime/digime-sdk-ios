@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param configuration Configuration containing private hex key and contract id.
  @return NSData - decrypted data or nil if decryption failed.
  */
-- (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData configuration:(DMEClientConfiguration *)configuration;
++ (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData configuration:(DMEClientConfiguration *)configuration;
 
 /**
  Decrypt data using AES256 algorithm.
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param error NSError
  @return NSData - decrypted data or nil if decryption failed.
  */
-- (nullable NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
++ (nullable NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
 
 /**
  Generates random data using length as a parameter.
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param length int
  @return NSData - random bytes for the specified length.
  */
-- (NSData *)getRandomUnsignedCharacters:(int)length;
++ (NSData *)getRandomUnsignedCharacters:(int)length;
 
 /**
  Encrypts metadata for Postbox with AES encryption
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param iv NSData
  @return NSString - AES encrypted metadata to push to postbox in Base64 encoding.
  */
-- (NSString *)encryptMetadata:(NSData *)metadata symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
++ (NSString *)encryptMetadata:(NSData *)metadata symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
 
 /**
  Encrypts data for Postbox with AES encryption
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param iv NSData
  @return NSString - AES encrypted data to push to postbox in a hexadecimal representation.
  */
-- (NSData *)encryptData:(NSData *)payload symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
++ (NSData *)encryptData:(NSData *)payload symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
 
 /**
  Encrypts Symmetrical Key for Postbox with RSA public key and return it as Base64 encoded.
@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param symmetricalKey NSData
  @param publicKey NSString
  */
-- (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey;
++ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey;
 
 @end
 

@@ -34,10 +34,8 @@
 {
     if ([fileContent isKindOfClass:[NSString class]] && [fileContent length] && [fileContent isBase64])
     {
-        DMECrypto *crypto = [DMECrypto new];
         NSData *encryptedData = [fileContent base64Data];
-        
-        NSData *decryptedData = [crypto getDataFromEncryptedBytes:encryptedData configuration:self.configuration];
+        NSData *decryptedData = [DMECrypto getDataFromEncryptedBytes:encryptedData configuration:self.configuration];
         
         if (!decryptedData)
         {
