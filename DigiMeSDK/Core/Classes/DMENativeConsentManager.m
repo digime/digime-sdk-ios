@@ -46,7 +46,7 @@
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    BOOL result = [parameters[kDMEResponse] boolValue];
+    NSString *result = parameters[kDMEResponse];
     NSString *sessionKey = parameters[kDMESessionKey];
     
     [self filterMetadata: parameters];
@@ -57,9 +57,13 @@
     {
         err = [NSError authError:AuthErrorInvalidSessionKey];
     }
-    else if(!result)
+    else if ([result isEqualToString:kDMEResultValueCancel])
     {
         err = [NSError authError:AuthErrorCancelled];
+    }
+    else if ([result isEqualToString:kDMEResultValueError])
+    {
+        err = [NSError authError:AuthErrorGeneral];
     }
     
     if (self.authCompletionBlock)

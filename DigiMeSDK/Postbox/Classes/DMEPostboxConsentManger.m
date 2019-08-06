@@ -1,18 +1,18 @@
 //
-//  DMEPostboxManager.m
+//  DMEPostboxConsentManger.m
 //  DigiMeSDK
 //
 //  Created on 26/06/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEPostboxManager.h"
+#import "DMEPostboxConsentManger.h"
 #import "DMESessionManager.h"
 #import "DMEClient.h"
 #import "DMEPostbox.h"
 #import "DMESession+Private.h"
 
-@interface DMEPostboxManager()
+@interface DMEPostboxConsentManger()
 
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation DMEPostboxManager
+@implementation DMEPostboxConsentManger
 
 - (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager appId:(NSString *)appId
 {
@@ -46,7 +46,7 @@
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
 {
-    BOOL success = [parameters[kDMEResponse] boolValue];
+    NSString *result = parameters[kDMEResponse];
     NSString *sessionKey = parameters[kDMESessionKey];
     NSString *postboxId = parameters[kDMEPostboxId];
     NSString *postboxPublicKey = parameters[kDMEPostboxPublicKey];
@@ -60,7 +60,11 @@
     {
         err = [NSError authError:AuthErrorInvalidSessionKey];
     }
-    else if (!success || !postboxId.length)
+    else if ([result isEqualToString:kDMEResultValueCancel])
+    {
+        err = [NSError authError:AuthErrorCancelled];
+    }
+    else if ([result isEqualToString:kDMEResultValueError] || !postboxId.length)
     {
         err = [NSError authError:AuthErrorGeneral];
     }

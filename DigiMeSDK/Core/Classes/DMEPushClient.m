@@ -9,13 +9,13 @@
 #import "DMEAPIClient+Postbox.h"
 #import "DMEClient+Private.h"
 #import "DMEClientConfiguration.h"
-#import "DMEPostboxManager.h"
+#import "DMEPostboxConsentManager.h"
 #import "DMEPushClient.h"
 #import "DMESessionManager.h"
 
 @interface DMEPushClient ()
 
-@property (nonatomic, strong) DMEPostboxManager *postboxManager;
+@property (nonatomic, strong) DMEPostboxConsentManger *postboxManager;
 
 @end
 
@@ -26,7 +26,7 @@
     self = [super initWithConfiguration:configuration];
     if (self)
     {
-        _postboxManager = [[DMEPostboxManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
+        _postboxManager = [[DMEPostboxConsentManger alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
     }
     
     return self;

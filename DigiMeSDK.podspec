@@ -37,30 +37,10 @@ Pod::Spec.new do |s|
 	'DigiMeSDK/Core/Classes/DMEClient+Private.h',
 	'DigiMeSDK/Core/Classes/DMEDataUnpacker.h',
 	'DigiMeSDK/Core/Classes/DMEDataDecryptor.h',
-	'DigiMeSDK/Postbox/Classes/DMEPostboxManager.h', 
+	'DigiMeSDK/Postbox/Classes/DMEPostboxConsentManager.h', 
 	'DigiMeSDK/Postbox/Classes/DMEAPIClient+Postbox.h',
 	'DigiMeSDK/GuestConsent/Classes/DMEGuestConsentManager.h', 
 	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentView.h',
 	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentViewController.h'
-    end
-
-    s.subspec 'Postbox' do |ss|
-      ss.source_files  	      = "DigiMeSDK/Postbox/Classes/**/*.{h,m,swift}"
-      ss.frameworks    	      = "Foundation", "UIKit"
-      ss.xcconfig             = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKPostbox' }
-      ss.private_header_files = 'DigiMeSDK/Postbox/Classes/DMEPostboxManager.h', 
-	'DigiMeSDK/Postbox/Classes/DMEAPIClient+Postbox.h'
-      ss.dependency "DigiMeSDK/Core"
-    end
-
-    s.subspec 'GuestConsent' do |ss|
-      ss.source_files         = "DigiMeSDK/GuestConsent/Classes/**/*.{h,m,swift}"
-      ss.resources            = ["DigiMeSDK/Core/Assets/*.xcassets"]
-      ss.frameworks           = "Foundation", "UIKit"
-      ss.xcconfig 	      = { 'OTHER_CFLAGS' => '$(inherited) -DDigiMeSDKGuestConsent' }
-      ss.private_header_files = 'DigiMeSDK/GuestConsent/Classes/DMEGuestConsentManager.h', 
-	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentView.h',
-	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentViewController.h'
-      ss.dependency "DigiMeSDK/Core"
     end
 end
