@@ -1,18 +1,18 @@
 //
-//  DMEPostboxManager.m
+//  DMEPostboxConsentManger.m
 //  DigiMeSDK
 //
 //  Created on 26/06/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEPostboxManager.h"
+#import "DMEPostboxConsentManger.h"
 #import "DMESessionManager.h"
 #import "DMEClient.h"
 #import "DMEPostbox.h"
 #import "DMESession+Private.h"
 
-@interface DMEPostboxManager()
+@interface DMEPostboxConsentManger()
 
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation DMEPostboxManager
+@implementation DMEPostboxConsentManger
 
 #pragma mark - CallbackHandler Conformance
 

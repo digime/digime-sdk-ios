@@ -7,7 +7,7 @@
 //
 
 #import "DMEClient+Postbox.h"
-#import "DMEPostboxManager.h"
+#import "DMEPostboxConsentManger.h"
 #import "DMEClient+Private.h"
 #import "DMESessionManager.h"
 #import "DMEAPIClient.h"
@@ -15,7 +15,7 @@
 
 @interface DMEClient ()
 
-@property (nonatomic, weak) DMEPostboxManager *postboxManager;
+@property (nonatomic, weak) DMEPostboxConsentManger *postboxManager;
 
 @end
 
@@ -23,14 +23,14 @@
 
 #pragma mark - Begin ivar and accessor definitions.
 
-DMEPostboxManager *_postboxManager;
+DMEPostboxConsentManger *_postboxManager;
 
-- (DMEPostboxManager *)postboxManager
+- (DMEPostboxConsentManger *)postboxManager
 {
     return _postboxManager;
 }
 
-- (void)setPostboxManager:(DMEPostboxManager *)postboxManager
+- (void)setPostboxManager:(DMEPostboxConsentManger *)postboxManager
 {
     _postboxManager = postboxManager;
 }
@@ -43,7 +43,7 @@ DMEPostboxManager *_postboxManager;
     if (!self.postboxManager)
     {
         // Prepare manager.
-        DMEPostboxManager *pbxMgr = [[DMEPostboxManager alloc] initWithAppCommunicator:self.appCommunicator];
+        DMEPostboxConsentManger *pbxMgr = [[DMEPostboxConsentManger alloc] initWithAppCommunicator:self.appCommunicator];
         [self.appCommunicator addCallbackHandler:pbxMgr];
         self.postboxManager = pbxMgr;
     }
