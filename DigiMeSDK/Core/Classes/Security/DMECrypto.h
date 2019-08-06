@@ -64,9 +64,10 @@ NS_ASSUME_NONNULL_BEGIN
  Encrypts Symmetrical Key for Postbox with RSA public key and return it as Base64 encoded.
  
  @param symmetricalKey NSData
+ @param configuration Configuration containing contract id.
  @param publicKey NSString
  */
-+ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey;
++ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey configuration:(DMEClientConfiguration *)configuration;
 
 @end
 

@@ -14,7 +14,7 @@
 #import "NSData+DMECrypto.h"
 
 static NSString * const kPrivateKeyIdentifierFormat = @"me.digi.digime.privatekey.%@";
-static NSString * const kPublicKeyIdentifier = @"me.digi.digime.publickey";
+static NSString * const kPublicKeyIdentifierFormat = @"me.digi.digime.publickey.%@";
 static const NSInteger __attribute__((unused)) kDataSymmetricKeyLength = 32;
 static const NSInteger kDataInitializationVectorLength = 16;
 static const NSInteger kDataSymmetricKeyLengthCA = 256;
@@ -380,7 +380,7 @@ static const NSInteger kHashLength = 64;
     return ([NSData dataWithBytes:&c_key[idx] length:len - idx]);
 }
 
-+ (SecKeyRef)addPublicKey:(NSString *)key
++ (SecKeyRef)addPublicKey:(NSString *)key contractId:(NSString *)contractId
 {
     NSRange spos = [key rangeOfString:@"-----BEGIN RSA PUBLIC KEY-----"];
     NSRange epos = [key rangeOfString:@"-----END RSA PUBLIC KEY-----"];
@@ -404,7 +404,8 @@ static const NSInteger kHashLength = 64;
     //    }
     
     //a tag to read/write keychain storage
-    NSData *d_tag = [NSData dataWithBytes:[kPublicKeyIdentifier UTF8String] length:[kPublicKeyIdentifier length]];
+    NSString *keyTagString = [NSString stringWithFormat:kPublicKeyIdentifierFormat, contractId];
+    NSData *d_tag = [NSData dataWithBytes:keyTagString.UTF8String length:keyTagString.length];
     
     // Delete any old lingering key with the same tag
     NSMutableDictionary *publicKey = [[NSMutableDictionary alloc] init];
@@ -480,7 +481,7 @@ static const NSInteger kHashLength = 64;
     //    }
     
     NSString *keyTagString = [NSString stringWithFormat:kPrivateKeyIdentifierFormat, contractId];
-    NSData *d_tag = [NSData dataWithBytes:[keyTagString UTF8String] length:[keyTagString length]];
+    NSData *d_tag = [NSData dataWithBytes:keyTagString.UTF8String length:keyTagString.length];
     
     // Delete any old lingering key with the same tag
     NSMutableDictionary *privateKey = [[NSMutableDictionary alloc] init];
@@ -768,9 +769,9 @@ static const NSInteger kHashLength = 64;
     return [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 
-+ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey
++ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey configuration:(DMEClientConfiguration *)configuration
 {
-    SecKeyRef publicKeyRef = [[self class] addPublicKey:publicKey];
+    SecKeyRef publicKeyRef = [[self class] addPublicKey:publicKey contractId:configuration.contractId];
     NSData* encryptedData = [[self class] encryptLargeData:symmetricalKey publicKey:publicKeyRef];
     return [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }

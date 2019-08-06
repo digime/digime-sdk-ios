@@ -39,7 +39,7 @@
         NSData *iv = [DMECrypto getRandomUnsignedCharacters:16];
         NSString *metadataEncryptedString = [DMECrypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
         NSData *payload = [DMECrypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
-        NSString *keyEncrypted = [DMECrypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey];
+        NSString *keyEncrypted = [DMECrypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey configuration:self.configuration];
         NSDictionary *metadataHeaders = [self postboxHeadersWithSessionKey:postbox.sessionKey symmetricalKey:keyEncrypted initializationVector:[iv hexString] metadata:metadataEncryptedString];
         NSDictionary *headers = [self defaultPostboxHeaders];
         NSURLSession *session = [self sessionWithHeaders:headers];
