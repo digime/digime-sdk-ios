@@ -43,20 +43,22 @@ extern NSString * const kDMEPCloudType;
 @interface DMESession : NSObject
 
 /**
- -init unavailable. Use -initWithSessionKey:expiryDate:sessionManager:
+ -init unavailable. Use -initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:
  
  @return instancetype
  */
 - (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 
 /**
  Designated object initializer.
  
- @param sessionKey NSString
- @param exchangeToken NSString
- @param expiryDate NSDate
- @param sessionManager DMESessionManager
+ @param sessionKey Session key
+ @param exchangeToken Session exchange token
+ @param expiryDate Session expiry date
+ @param contractId The contract identifier this session relates to
+ @param sessionManager The manager managing this session
  @return instancetype
  */
 - (instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate contractId:(NSString *)contractId sessionManager:(DMESessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;

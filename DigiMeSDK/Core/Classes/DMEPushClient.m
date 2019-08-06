@@ -26,8 +26,7 @@
     self = [super initWithConfiguration:configuration];
     if (self)
     {
-        DMEPostboxManager *manager = [[DMEPostboxManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
-        _postboxManager = manager;
+        _postboxManager = [[DMEPostboxManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
     }
     
     return self;

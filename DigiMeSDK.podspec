@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
     s.default_subspec = 'Core'
     
     s.subspec 'Core' do |ss|
-      ss.source_files  	      = "DigiMeSDK/Core/Classes/**/*.{h,m,swift}", "DigiMeSDK/DigiMeSDK.h"
+      ss.source_files  	      = "DigiMeSDK/Core/Classes/**/*.{h,m,swift}", "DigiMeSDK/Postbox/Classes/**/*.{h,m,swift}", "DigiMeSDK/GuestConsent/Classes/**/*.{h,m,swift}", "DigiMeSDK/DigiMeSDK.h"
       ss.resources            = ["DigiMeSDK/Core/Assets/*.{der}"]
       ss.frameworks    	      = "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
       ss.private_header_files = 'DigiMeSDK/Core/Classes/Entities/DMESession+Private.h',
@@ -35,8 +35,13 @@ Pod::Spec.new do |s|
 	'DigiMeSDK/Core/Classes/DMEAppCommunicator+Private.h',
 	'DigiMeSDK/Core/Classes/DMENativeConsentManager.h',
 	'DigiMeSDK/Core/Classes/DMEClient+Private.h',
-	'DigiMeSDK/Core/Classes/DMEDataUnpacker.h'
-  'DigiMeSDK/Core/Classes/DMEDataDecryptor.h'
+	'DigiMeSDK/Core/Classes/DMEDataUnpacker.h',
+	'DigiMeSDK/Core/Classes/DMEDataDecryptor.h',
+	'DigiMeSDK/Postbox/Classes/DMEPostboxManager.h', 
+	'DigiMeSDK/Postbox/Classes/DMEAPIClient+Postbox.h',
+	'DigiMeSDK/GuestConsent/Classes/DMEGuestConsentManager.h', 
+	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentView.h',
+	'DigiMeSDK/GuestConsent/Classes/DMEPreConsentViewController.h'
     end
 
     s.subspec 'Postbox' do |ss|

@@ -50,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Initiates file list request.
 
+ @param sessionKey key for session request relates to
  @param success completion block receiving NSData
  @param failure failure block receiving NSError
  */
@@ -59,7 +60,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Initiates file request for a fileId. Note: this will add the request to an internal queue.
 
- @param fileId NSString
+ @param fileId The identifier of the file to retrieve
+ @param sessionKey key for session request relates to
  @param success completion block receiving NSData
  @param failure failure block receiving NSError
  */

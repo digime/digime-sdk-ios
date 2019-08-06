@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)new NS_UNAVAILABLE;
 
 /**
- Initiates contract authorization launching Digi.me App if there is a valid active session.
+ Initiates contract authorization launching digi.me App if there is a valid active session.
  
  @param completion AuthorizationCompletionBlock
  */

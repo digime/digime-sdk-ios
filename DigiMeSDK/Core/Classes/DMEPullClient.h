@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Initializes contract authentication. This will attempt to create a session and redirect
- to the Digi.me application.
+ to the digi.me application.
  
  @param authorizationCompletion DMEAuthorizationCompletion
  */
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Initilizes contract authentication with custom scope. This will attempt to create a session and redirect
- to the Digi.me application.
+ to the digi.me application.
  
  @param scope custom scope that will be applied to available data.
  @param authorizationCompletion AuthorizationCompletionBlock

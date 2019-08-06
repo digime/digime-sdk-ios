@@ -40,12 +40,8 @@
     self = [super initWithConfiguration:configuration];
     if (self)
     {
-        DMENativeConsentManager *nativeConsentManager = [[DMENativeConsentManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
-        _nativeConsentManager = nativeConsentManager;
-        
-        DMEGuestConsentManager *guestConsentManager = [[DMEGuestConsentManager alloc] initWithSessionManager:self.sessionManager configuration:self.configuration];
-        _guestConsentManager = guestConsentManager;
-        
+        _nativeConsentManager = [[DMENativeConsentManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
+        _guestConsentManager = [[DMEGuestConsentManager alloc] initWithSessionManager:self.sessionManager configuration:self.configuration];        
         _dataDecryptor = [[DMEDataDecryptor alloc] initWithConfiguration:configuration];
     }
     
