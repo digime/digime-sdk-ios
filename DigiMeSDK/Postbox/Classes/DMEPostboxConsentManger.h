@@ -1,5 +1,5 @@
 //
-//  DMEPostboxManager.h
+//  DMEPostboxConsentManger.h
 //  DigiMeSDK
 //
 //  Created on 26/06/2018.
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DMEPostboxManager : NSObject <DMEAppCallbackHandler>
+@interface DMEPostboxConsentManger : NSObject <DMEAppCallbackHandler>
 
 - (void)requestPostboxWithCompletion:(DMEPostboxCreationCompletion)completion;
 

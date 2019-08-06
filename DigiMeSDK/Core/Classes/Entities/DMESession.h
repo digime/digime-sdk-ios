@@ -84,7 +84,7 @@ extern NSString * const kDMEResultValueCancel;
 /**
  Session manager attached to the session.
  */
-@property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
+@property (nonatomic, weak, readonly) DMESessionManager *sessionManager;
 
 
 /**
