@@ -22,7 +22,7 @@ static NSString * const timeRangesKey = @"timeRanges";
     NSMutableDictionary *dataRequestDict = [NSMutableDictionary new];
     NSMutableArray *serializedRanges = [NSMutableArray new];
     
-    for (DMETimeRange *timeRange in dataRequest.timeRanges)
+    for (DMETimeRange *timeRange in dataRequest.timeRange)
     {
         NSMutableDictionary *rangeDict = [NSMutableDictionary new];
         NSDate *from = timeRange.from;

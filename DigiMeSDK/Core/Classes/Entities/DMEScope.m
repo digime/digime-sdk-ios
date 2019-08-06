@@ -11,7 +11,7 @@
 @implementation DMEScope
 
 @synthesize context = _context;
-@synthesize timeRanges = _timeRanges;
+@synthesize timeRange = _timeRange;
 
 - (instancetype)init
 {
