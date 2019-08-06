@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param sessionManager The session manager owning the session
  @param contractId The identifier of the contract the session relates to
  @param error If deserialization fails, contains the error describing the failure. nil if deserialization is successful
- @return A new session object if desiralization is successful, otherwise nil
+ @return A new session object if deserialization is successful, otherwise nil
  */
 + (nullable DMESession *)deserialize:(NSData *)jsonData sessionManager:(DMESessionManager *)sessionManager contractId:(NSString *)contractId error:(NSError * __autoreleasing *)error;
 
