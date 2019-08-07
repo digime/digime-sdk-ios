@@ -113,6 +113,10 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     {
         error = [NSError authError:AuthErrorCancelled];
     }
+    else if (![self.sessionManager isSessionValid])
+    {
+        error = [NSError authError:AuthErrorInvalidSession];
+    }
     
     NSString *result = parameters[kDMEResponse];
     
