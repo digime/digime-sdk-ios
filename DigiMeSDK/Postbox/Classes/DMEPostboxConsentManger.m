@@ -16,26 +16,28 @@
 
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
+@property (nonatomic, weak, readonly) DMEAppCommunicator *appCommunicator;
+@property (nonatomic, copy, readonly) NSString *appId;
 @property (nonatomic, copy, nullable) DMEPostboxCreationCompletion postboxCompletionBlock;
 
 @end
 
 @implementation DMEPostboxConsentManger
 
-#pragma mark - CallbackHandler Conformance
-
-@synthesize appCommunicator = _appCommunicator;
-
-- (instancetype)initWithAppCommunicator:(DMEAppCommunicator *__weak)appCommunicator
+- (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager appId:(NSString *)appId
 {
     self = [super init];
     if (self)
     {
-        _appCommunicator = appCommunicator;
+        _appCommunicator = [DMEAppCommunicator shared];
+        _sessionManager = sessionManager;
+        _appId = appId;
     }
     
     return self;
 }
+
+#pragma mark - DMEAppCallbackHandler Conformance
 
 - (BOOL)canHandleAction:(DMEOpenAction *)action
 {
@@ -79,6 +81,8 @@
             self.postboxCompletionBlock(postbox, err);
         });
     }
+    
+    [self.appCommunicator removeCallbackHandler:self];
 }
 
 - (void)requestPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
@@ -102,9 +106,10 @@
     DMEOpenAction *action = @"postbox";
     NSDictionary *params = @{
                              kDMESessionKey: self.session.sessionKey,
-                             kDMERegisteredAppID: self.sessionManager.client.appId,
+                             kDMERegisteredAppID: self.appId,
                              };
     
+    [self.appCommunicator addCallbackHandler:self];
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
 }
 
@@ -113,11 +118,6 @@
 - (DMESession *)session
 {
     return self.sessionManager.currentSession;
-}
-
-- (DMESessionManager *)sessionManager
-{
-    return [DMEClient sharedClient].sessionManager;
 }
 
 - (void)filterMetadata:(NSDictionary<NSString *,id> *)metadata

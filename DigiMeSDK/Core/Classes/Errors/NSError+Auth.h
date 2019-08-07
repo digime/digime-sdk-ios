@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, AuthError) {
     AuthErrorGeneral    = 1, //general error
     AuthErrorCancelled  = 5, //authorization cancelled
     AuthErrorInvalidSession = 7, //invalid session
-    AuthErrorInvalidSessionKey = 10, //session key returned by Digi.me app is invalid
+    AuthErrorInvalidSessionKey = 10, //session key returned by digi.me app is invalid
 };
 
 @interface NSError (Auth)

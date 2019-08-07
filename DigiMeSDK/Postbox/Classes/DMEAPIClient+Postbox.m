@@ -29,17 +29,17 @@
                      data:(NSData *)data
                completion:(DMEPostboxDataPushCompletion)completion
 {
-    DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.config];
+    DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.configuration];
     
     __weak __typeof(DMEOperation *) weakOperation = operation;
     
     operation.workBlock = ^{
         
-        NSData *symmetricalKey = [self.crypto getRandomUnsignedCharacters:32];
-        NSData *iv = [self.crypto getRandomUnsignedCharacters:16];
-        NSString *metadataEncryptedString = [self.crypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
-        NSData *payload = [self.crypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
-        NSString *keyEncrypted = [self.crypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey];
+        NSData *symmetricalKey = [DMECrypto getRandomUnsignedCharacters:32];
+        NSData *iv = [DMECrypto getRandomUnsignedCharacters:16];
+        NSString *metadataEncryptedString = [DMECrypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
+        NSData *payload = [DMECrypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
+        NSString *keyEncrypted = [DMECrypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey configuration:self.configuration];
         NSDictionary *metadataHeaders = [self postboxHeadersWithSessionKey:postbox.sessionKey symmetricalKey:keyEncrypted initializationVector:[iv hexString] metadata:metadataEncryptedString];
         NSDictionary *headers = [self defaultPostboxHeaders];
         NSURLSession *session = [self sessionWithHeaders:headers];

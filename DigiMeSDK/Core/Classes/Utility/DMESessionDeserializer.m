@@ -7,11 +7,10 @@
 //
 
 #import "DMESessionDeserializer.h"
-#import "DMEClient.h"
 
 @implementation DMESessionDeserializer
 
-+ (DMESession *)deserialize:(NSData *)jsonData error:(NSError * __autoreleasing *)error
++ (DMESession *)deserialize:(NSData *)jsonData sessionManager:(DMESessionManager *)sessionManager contractId:(NSString *)contractId error:(NSError * __autoreleasing *)error
 {
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:error];
     
@@ -21,7 +20,7 @@
     
     if (sessionKey && sessionExchangeToken && expiry)
     {
-        return [[DMESession alloc] initWithSessionKey:sessionKey exchangeToken:sessionExchangeToken expiryDate:expiry sessionManager:[DMEClient sharedClient].sessionManager];
+        return [[DMESession alloc] initWithSessionKey:sessionKey exchangeToken:sessionExchangeToken expiryDate:expiry contractId:contractId sessionManager:sessionManager];
     }
     
     return nil;

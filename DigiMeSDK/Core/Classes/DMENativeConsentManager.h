@@ -8,14 +8,21 @@
 
 #import <Foundation/Foundation.h>
 #import "DMEClientCallbacks.h"
-#import "DMEAppCommunicator.h"
+#import "DMEAppCommunicator+Private.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class DMESessionManager;
+
 @interface DMENativeConsentManager : NSObject <DMEAppCallbackHandler>
 
+- (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager appId:(NSString *)appId NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
 /**
- Initiates contract authorization launching Digi.me App if there is a valid active session.
+ Initiates contract authorization launching digi.me App if there is a valid active session.
  
  @param completion AuthorizationCompletionBlock
  */

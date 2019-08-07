@@ -62,12 +62,12 @@ extern NSString * const kDMEClientSchemePrefix;
 /**
  Your contract Id. This property MUST be set before you can call authorize.
  */
-@property (nonatomic, nullable, copy) NSString *contractId;
+@property (nonatomic, copy) NSString *contractId;
 
 /**
  Your rsa private key hex. This property MUST be set before you can call authorize.
  */
-@property (nonatomic, nullable, copy) NSString *privateKeyHex;
+@property (nonatomic, copy) NSString *privateKeyHex;
 
 /**
  Designated Initializer

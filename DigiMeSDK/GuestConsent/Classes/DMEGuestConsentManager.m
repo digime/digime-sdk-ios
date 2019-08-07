@@ -6,35 +6,36 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMESessionManager.h"
+#import "DMEClientConfiguration.h"
 #import "DMEGuestConsentManager.h"
-#import "DMEClient.h"
-#import <SafariServices/SFSafariViewController.h>
+#import "DMESessionManager.h"
 #import "UIViewController+DMEExtension.h"
+#import <SafariServices/SFSafariViewController.h>
 
 static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 
 @interface DMEGuestConsentManager() <SFSafariViewControllerDelegate>
 
+@property (nonatomic, strong, readonly) DMEAppCommunicator *appCommunicator;
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 @property (nonatomic, copy, nullable) DMEAuthorizationCompletion guestConsentCompletionBlock;
 @property (nonatomic, strong) SFSafariViewController *safariViewController;
 @property (nonatomic, strong) NSDictionary *sentParameters;
-@property (nonatomic, strong) DMEClientConfiguration *config;
+@property (nonatomic, strong) DMEClientConfiguration *configuration;
 
 @end
 
 @implementation DMEGuestConsentManager
 
-@synthesize appCommunicator = _appCommunicator;
-
-- (instancetype)initWithAppCommunicator:(DMEAppCommunicator *)appCommunicator
+- (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager configuration:(DMEClientConfiguration *)configuration
 {
     self = [super init];
     if (self)
     {
-        _appCommunicator = appCommunicator;
+        _appCommunicator = [DMEAppCommunicator shared];
+        _sessionManager = sessionManager;
+        _configuration = configuration;
     }
     
     return self;
@@ -49,6 +50,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 {
     NSError *error = [self handleGuestConsentCallbackWithParameters:parameters];
     [self executeCompletionWithError:error];
+    [self.appCommunicator removeCallbackHandler:self];
 }
 
 - (void)requestGuestConsentWithCompletion:(DMEAuthorizationCompletion)completion
@@ -72,11 +74,12 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     self.guestConsentCompletionBlock = completion;
     
     NSDictionary *params = @{
-                             kDMEAPIClientBaseUrl: self.config.baseUrl,
+                             kDMEAPIClientBaseUrl: self.configuration.baseUrl,
                              kDMESessionKey: self.session.sessionExchangeToken,
-                             kDMERegisteredAppID: self.sessionManager.client.appId,
+                             kDMERegisteredAppID: self.configuration.appId,
                              };
     
+    [self.appCommunicator addCallbackHandler:self];
     [self openBrowserWithParameters:params];
 }
 
@@ -87,7 +90,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
         NSString *sessionKey = parameters[kDMESessionKey];
         NSString *baseUrl = parameters[kDMEAPIClientBaseUrl];
         NSString *callbackSuffix = @"%3A%2F%2FguestConsent-return%2F";
-        NSString *callbackUrl = [NSString stringWithFormat:@"%@%@%@", kDMEClientSchemePrefix, [DMEClient sharedClient].appId, callbackSuffix];
+        NSString *callbackUrl = [NSString stringWithFormat:@"%@%@%@", kDMEClientSchemePrefix, self.configuration.appId, callbackSuffix];
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@apps/quark/direct-onboarding?sessionExchangeToken=%@&callbackUrl=%@", baseUrl, sessionKey, callbackUrl]];
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:url];
         self.safariViewController.delegate = self;
@@ -168,16 +171,6 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 - (DMESession *)session
 {
     return self.sessionManager.currentSession;
-}
-
-- (DMESessionManager *)sessionManager
-{
-    return [DMEClient sharedClient].sessionManager;
-}
-
-- (DMEClientConfiguration *)config
-{
-    return [DMEClient sharedClient].clientConfiguration;
 }
 
 @end

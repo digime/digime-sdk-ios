@@ -6,8 +6,9 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEAppCommunicator.h"
-#import "DMEClient.h"
+#import "DMEAppCommunicator+Private.h"
+#import "DMEClientConfiguration.h"
+#import "DMESession.h"
 #import <StoreKit/StoreKit.h>
 #import "UIViewController+DMEExtension.h"
 
@@ -32,6 +33,17 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
 
 #pragma mark - Initialisation
 
++ (DMEAppCommunicator *)shared
+{
+    static DMEAppCommunicator *sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedClient = [[self alloc] init];
+    });
+    
+    return sharedClient;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -47,7 +59,7 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
 
 #pragma mark - Public
 
-- (BOOL)canOpenDigiMeApp
+- (BOOL)canOpenDMEApp
 {
     return [self digiMeAppIsInstalled];
 }
@@ -128,10 +140,9 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
     
     // We need to supply our AppID and name in all calls to DigiMe, so let's include these by default.
     NSURLQueryItem *appNameItem = [NSURLQueryItem queryItemWithName:kDME3dPartyAppName value:[self appName]];
-    NSURLQueryItem *appIdItem = [NSURLQueryItem queryItemWithName:kDMERegisteredAppID value:[self appId]];
     
     components.scheme = kDMEClientScheme;
-    components.queryItems = @[appNameItem, appIdItem];
+    components.queryItems = @[appNameItem];
     
     return components.URL;
 }
@@ -167,7 +178,6 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
             [self openDigiMeAppWithAction:self.sentAction parameters:self.sentParameters];
         }];
     }
-    
 }
 
 #pragma mark - CallbackHandler Management
@@ -176,7 +186,6 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
 {
     if (![self.callbackHandlers containsObject:callbackHandler])
     {
-        callbackHandler.appCommunicator = self;
         [self.callbackHandlers addObject:callbackHandler];
     }
 }
@@ -201,11 +210,6 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
     }
     
     return appName;
-}
-
-- (NSString *)appId
-{
-    return [DMEClient sharedClient].appId;
 }
 
 #pragma mark - SKStoreProductViewControllerDelegate

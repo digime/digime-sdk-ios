@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
 @property (nonatomic, strong, readwrite) DMESession *currentSession;
+@property (nonatomic, strong, readonly) NSString *contractId;
 
 @end
 
@@ -23,12 +24,13 @@
 
 #pragma mark - Public
 
-- (instancetype)initWithApiClient:(DMEAPIClient *)apiClient
+- (instancetype)initWithApiClient:(DMEAPIClient *)apiClient contractId:(NSString *)contractId
 {
     self = [super init];
     if (self)
     {
         _apiClient = apiClient;
+        _contractId = contractId;
     }
     
     return self;
@@ -42,7 +44,7 @@
     [self.apiClient requestSessionWithScope:scope success:^(NSData * _Nonnull data) {
         
         NSError *error;
-        DMESession *session = [DMESessionDeserializer deserialize:data error:&error];
+        DMESession *session = [DMESessionDeserializer deserialize:data sessionManager:self contractId:self.contractId error:&error];
         
         self.currentSession = session;
         
@@ -74,7 +76,7 @@
 
 - (BOOL)isSessionValid
 {
-    return (self.currentSession && self.currentSession.expiryDate && [self.currentSession.expiryDate compare:[NSDate date]] == NSOrderedDescending && [self.currentSession.sessionId isEqualToString:self.client.contractId]);
+    return (self.currentSession && self.currentSession.expiryDate && [self.currentSession.expiryDate compare:[NSDate date]] == NSOrderedDescending && [self.currentSession.sessionId isEqualToString:self.contractId]);
 }
 
 - (BOOL)isSessionKeyValid:(NSString *)sessionKey
@@ -85,13 +87,6 @@
 - (void)invalidateCurrentSession
 {
     self.currentSession = nil;
-}
-
-#pragma mark - Convenience
-
-- (DMEClient *)client
-{
-    return [DMEClient sharedClient];
 }
 
 @end

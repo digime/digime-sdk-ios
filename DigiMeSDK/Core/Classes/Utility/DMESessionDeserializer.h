@@ -17,11 +17,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Deserializes JSON response data into DMESession
 
- @param jsonData NSData
- @param error NSError
- @return DMESession
+ @param jsonData The JSON data describing the session
+ @param sessionManager The session manager owning the session
+ @param contractId The identifier of the contract the session relates to
+ @param error If deserialization fails, contains the error describing the failure. nil if deserialization is successful
+ @return A new session object if deserialization is successful, otherwise nil
  */
-+ (nullable DMESession *)deserialize:(NSData *)jsonData error:(NSError * __autoreleasing *)error;
++ (nullable DMESession *)deserialize:(NSData *)jsonData sessionManager:(DMESessionManager *)sessionManager contractId:(NSString *)contractId error:(NSError * __autoreleasing *)error;
 
 @end
 

@@ -6,17 +6,16 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMESessionManager.h"
 #import "DMEAPIClient.h"
-#import "DMEOperation.h"
-#import "NSString+DMECrypto.h"
-#import "NSData+DMECrypto.h"
-#import "DMECrypto.h"
-#import "DMECertificatePinner.h"
-#import "DMEClient.h"
-#import "DMERequestFactory.h"
-#import "DMEDataRequest.h"
 #import "DMEAPIClient+Private.h"
+#import "DMECertificatePinner.h"
+#import "DMECrypto.h"
+#import "DMEDataRequest.h"
+#import "DMEOperation.h"
+#import "DMERequestFactory.h"
+#import "DMESessionManager.h"
+#import "NSData+DMECrypto.h"
+#import "NSString+DMECrypto.h"
 
 static const NSString *kDigimeConsentAccessPathSessionKeyCreate = @"v1.3/permission-access/session";
 static const NSString *kDigimeConsentAccessPathDataGet          = @"v1.3/permission-access/query";
@@ -25,38 +24,32 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 
 @interface DMEAPIClient() <NSURLSessionDelegate>
 
+@property (nonatomic, strong, readonly) DMECertificatePinner *certPinner;
+
 @end
 
 @implementation DMEAPIClient
 
-@synthesize config = _config;
-
 #pragma mark - Initialization
 
-- (instancetype)initWithConfig:(DMEClientConfiguration *)config
+- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
 {
     self = [super init];
-    
     if (self)
     {
-        _config = config;
-        [self initialize];
+        _configuration = configuration;
+        _certPinner = [DMECertificatePinner new];
+        _requestFactory = [[DMERequestFactory alloc] initWithConfiguration:configuration];
+        _queue = [[NSOperationQueue alloc] init];
+        _queue.maxConcurrentOperationCount = configuration.maxConcurrentRequests;
+        
+        [_queue addObserver:self
+                 forKeyPath:NSStringFromSelector(@selector(operationCount))
+                    options:NSKeyValueObservingOptionNew
+                    context:&kWorkQueue];
     }
     
     return self;
-}
-
-- (void)initialize
-{
-    _crypto = [DMECrypto new];
-    _certPinner = [DMECertificatePinner new];
-    _queue = [[NSOperationQueue alloc] init];
-    _queue.maxConcurrentOperationCount = _config.maxConcurrentRequests;
-    
-    [_queue addObserver:self
-             forKeyPath:NSStringFromSelector(@selector(operationCount))
-                options:NSKeyValueObservingOptionNew
-                context:&kWorkQueue];
 }
 
 #pragma mark - Lifecycle
@@ -73,25 +66,13 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
     [self.queue cancelAllOperations];
 }
 
-- (void)cancelAllOperations
-{
-    [self.queue cancelAllOperations];
-    
-    for (NSOperation* o in [[NSOperationQueue mainQueue] operations])
-    {
-        [o cancel];
-    }
-    
-    [self initialize];
-}
-
 #pragma mark - Session
 
 - (void)requestSessionWithScope:(nullable id<DMEDataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
 {
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
-    NSURLRequest *request = [self.requestFactory sessionRequestWithAppId:self.client.appId contractId:self.client.contractId scope:scope];
+    NSURLRequest *request = [self.requestFactory sessionRequestWithAppId:self.configuration.appId contractId:self.configuration.contractId scope:scope];
     HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     
@@ -100,11 +81,11 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 
 #pragma mark - File List
 
-- (void)requestFileListWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+- (void)requestFileListForSessionWithKey:(NSString *)sessionKey success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
 {
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
-    NSURLRequest *request = [self.requestFactory fileListRequestWithSessionKey:self.client.sessionManager.currentSession.sessionKey];
+    NSURLRequest *request = [self.requestFactory fileListRequestWithSessionKey:sessionKey];
     HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     
@@ -113,16 +94,16 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 
 #pragma mark - File Content
 
-- (void)requestFileWithId:(NSString *)fileId success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+- (void)requestFileWithId:(NSString *)fileId sessionKey:(NSString *)sessionKey success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
 {
-    DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.config];
+    DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.configuration];
 
     __weak __typeof(DMEOperation *) weakOperation = operation;
     
     operation.workBlock = ^{
         NSDictionary *headers = [self defaultHeaders];
         NSURLSession *session = [self sessionWithHeaders:headers];
-        NSURLRequest *request = [self.requestFactory fileRequestWithId:fileId sessionKey:self.client.sessionManager.currentSession.sessionKey];
+        NSURLRequest *request = [self.requestFactory fileRequestWithId:fileId sessionKey:sessionKey];
         HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
         
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -232,39 +213,6 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 }
 
 #pragma mark - Convenicence
-
-- (DMEClient *)client
-{
-    return [DMEClient sharedClient];
-}
-
-- (DMERequestFactory *)requestFactory
-{
-    if (!_requestFactory)
-    {
-        _requestFactory = [[DMERequestFactory alloc] initWithConfiguration:self.config];
-    }
-    
-    return _requestFactory;
-}
-
-- (DMEClientConfiguration *)config
-{
-    if (!_config)
-    {
-        _config = self.client.clientConfiguration;
-    }
-    
-    return _config;
-}
-
--(void)setConfig:(DMEClientConfiguration *)config
-{
-    _config = config;
-    
-    self.queue.maxConcurrentOperationCount = _config.maxConcurrentRequests;
-    self.requestFactory = [[DMERequestFactory alloc] initWithConfiguration:_config];
-}
 
 - (NSString *)baseUrl
 {

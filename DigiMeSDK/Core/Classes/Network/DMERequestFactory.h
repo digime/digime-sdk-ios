@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMEClientConfiguration.h"
-#import "DMEDataRequest.h"
+
+@class DMEClientConfiguration;
+@protocol DMEDataRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return instancetype
  */
 - (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 
 /**

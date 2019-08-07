@@ -51,7 +51,7 @@
 
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-    return [[DMEClient sharedClient] openURL:url options:options];
+    return [[DMEAppCommunicator shared] openURL:url options:options];
 }
 
 @end

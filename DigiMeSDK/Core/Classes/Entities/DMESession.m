@@ -6,9 +6,8 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMESession.h"
+#import "DMESession+Private.h"
 #import "DMESessionManager.h"
-#import "DMEClient.h"
 #import "DMEDataRequest.h"
 
 NSString * const kDMESessionKey = @"sessionKey";
@@ -41,15 +40,11 @@ NSString * const kDMEResultValueSuccess = @"SUCCESS";
 NSString * const kDMEResultValueError = @"ERROR";
 NSString * const kDMEResultValueCancel = @"CANCEL";
 
-@interface DMESession()
-@property (nonatomic, strong) NSDictionary<NSString *, id> *metadata;
-@end
-
 @implementation DMESession
 
 #pragma mark - Initialization
 
--(instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate sessionManager:(nonnull DMESessionManager *)sessionManager
+- (instancetype)initWithSessionKey:(NSString *)sessionKey exchangeToken:(NSString *)exchangeToken expiryDate:(NSDate *)expiryDate contractId:(NSString *)contractId sessionManager:(nonnull DMESessionManager *)sessionManager
 {
     self = [super init];
     if (self)
@@ -58,7 +53,7 @@ NSString * const kDMEResultValueCancel = @"CANCEL";
         _sessionExchangeToken = exchangeToken;
         _expiryDate = expiryDate;
         _sessionManager = sessionManager;
-        _sessionId = sessionManager.client.contractId;
+        _sessionId = contractId;
         _createdDate = [NSDate date];
         _scope = sessionManager.scope;
         _metadata = [NSDictionary new];

@@ -1,54 +1,39 @@
 //
-//  DMEClient+Postbox.m
+//  DMEPushClient.m
 //  DigiMeSDK
 //
-//  Created on 16/10/2018.
-//  Copyright © 2018 digi.me Limited. All rights reserved.
+//  Created on 01/08/2019.
+//  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 
-#import "DMEClient+Postbox.h"
-#import "DMEPostboxConsentManger.h"
-#import "DMEClient+Private.h"
-#import "DMESessionManager.h"
-#import "DMEAPIClient.h"
 #import "DMEAPIClient+Postbox.h"
+#import "DMEClient+Private.h"
+#import "DMEClientConfiguration.h"
+#import "DMEPostboxConsentManager.h"
+#import "DMEPushClient.h"
+#import "DMESessionManager.h"
 
-@interface DMEClient ()
+@interface DMEPushClient ()
 
-@property (nonatomic, weak) DMEPostboxConsentManger *postboxManager;
+@property (nonatomic, strong) DMEPostboxConsentManger *postboxManager;
 
 @end
 
-@implementation DMEClient (Postbox)
+@implementation DMEPushClient
 
-#pragma mark - Begin ivar and accessor definitions.
-
-DMEPostboxConsentManger *_postboxManager;
-
-- (DMEPostboxConsentManger *)postboxManager
+- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
 {
-    return _postboxManager;
+    self = [super initWithConfiguration:configuration];
+    if (self)
+    {
+        _postboxManager = [[DMEPostboxConsentManger alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
+    }
+    
+    return self;
 }
-
-- (void)setPostboxManager:(DMEPostboxConsentManger *)postboxManager
-{
-    _postboxManager = postboxManager;
-}
-
-#pragma mark - End ivar and accessor definitions.
 
 - (void)createPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
 {
-    // Check if the manager has been instantiated.
-    if (!self.postboxManager)
-    {
-        // Prepare manager.
-        DMEPostboxConsentManger *pbxMgr = [[DMEPostboxConsentManger alloc] initWithAppCommunicator:self.appCommunicator];
-        [self.appCommunicator addCallbackHandler:pbxMgr];
-        self.postboxManager = pbxMgr;
-    }
-    
-    //get session
     __weak __typeof(self)weakSelf = self;
     [self.sessionManager sessionWithScope:nil completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
@@ -83,3 +68,4 @@ DMEPostboxConsentManger *_postboxManager;
 }
 
 @end
+

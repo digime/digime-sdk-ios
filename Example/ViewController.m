@@ -13,7 +13,7 @@
 
 @interface ViewController ()
 
-@property (nonatomic, strong) DMEClient *dmeClient;
+@property (nonatomic, strong) DMEPullClient *dmeClient;
 @property (nonatomic, strong) LogViewController *logVC;
 
 @end
@@ -22,19 +22,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    
-    self.dmeClient = [DMEClient sharedClient];
     
     // - GET STARTED -
     
-    // - INSERT your App ID here -
-    self.dmeClient.appId = @"YOUR_APP_ID";
+    // - REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.
+    NSString *appId = @"YOUR_APP_ID";
     
-    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd
-    self.dmeClient.privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File:@"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF" password:@"YOUR_P12_PASSWORD"];
+    // - REPLACE 'YOUR_CONTRACT_ID' with your contract ID.
+    NSString *contractId = @"YOUR_CONTRACT_ID";
     
-    self.dmeClient.contractId = @"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF";
+    // - REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.
+    NSString *p12Filename = @"YOUR_P12_FILE_NAME";
+    
+    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.
+    NSString *p12Password = @"YOUR_P12_PASSWORD";
+    
+    DMEClientConfiguration *configuration = [[DMEClientConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
+    if (configuration)
+    {
+        self.dmeClient = [[DMEPullClient alloc] initWithConfiguration:configuration];
+    }
     
     self.logVC = [LogViewController new];
     [self addChildViewController:self.logVC];

@@ -38,7 +38,7 @@
             break;
             
         case AuthErrorInvalidSessionKey:
-            return @"Digi.me app returned an invalid session key.";
+            return @"digi.me app returned an invalid session key.";
             break;
     }
     

@@ -15,6 +15,7 @@ class PostboxExampleViewController: UIViewController {
     @IBOutlet weak var actionButton: UIButton!
     
     var successfullyPushedToPostbox = false
+    var dmeClient: DMEPushClient?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,19 +29,17 @@ class PostboxExampleViewController: UIViewController {
         
         if successfullyPushedToPostbox {
             
-            if DMEClient.shared().canOpenDigiMeApp() {
+            if DMEAppCommunicator.shared().canOpenDMEApp() {
                 let url = URL(string: "digime-ca-master://")!
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
             
         } else {
+            if let configuration = DMEClientConfiguration(appId: Constants.appId, contractId: Constants.postboxContractId, p12FileName: Constants.p12FileName, p12Password: Constants.p12Password) {
+                dmeClient = DMEPushClient(configuration: configuration)
+            }
             
-            let client = DMEClient.shared()
-            
-            client.appId = Constants.appId
-            client.contractId = Constants.postboxContractId
-            
-            client.createPostbox { (postbox, error) in
+            dmeClient?.createPostbox { (postbox, error) in
                 
                 guard let postbox = postbox else {
                     
@@ -75,7 +74,7 @@ class PostboxExampleViewController: UIViewController {
                 
                 let dataToPush = try Data(contentsOf: URL(fileURLWithPath: dataPath), options: .mappedIfSafe)
                 
-                DMEClient.shared().pushData(to: postbox, metadata: metadataToPush, data: dataToPush) { error in
+                dmeClient?.pushData(to: postbox, metadata: metadataToPush, data: dataToPush) { error in
                     
                     if let error = error {
                         print("Upload Error: \(error.localizedDescription)")

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DMESession ()
 
-@property (strong, nonatomic, readwrite) NSDictionary<NSString *, id> *metadata;
+@property (nonatomic, strong, readwrite) NSDictionary<NSString *, id> *metadata;
 
 @end
 

@@ -6,10 +6,9 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMETimeRange.h"
+#pragma once
 
-#ifndef DMEDataRequest_h
-#define DMEDataRequest_h
+#import "DMETimeRange.h"
 
 @protocol DMEDataRequest <NSObject>
 
@@ -21,5 +20,3 @@ NS_ASSUME_NONNULL_BEGIN
 NS_ASSUME_NONNULL_END
 
 @end
-
-#endif /* DMEDataRequest_h */
