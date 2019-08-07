@@ -15,7 +15,7 @@
 
 @interface DMEPushClient ()
 
-@property (nonatomic, strong) DMEPostboxConsentManger *postboxManager;
+@property (nonatomic, strong) DMEPostboxConsentManager *postboxManager;
 
 @end
 
@@ -26,7 +26,7 @@
     self = [super initWithConfiguration:configuration];
     if (self)
     {
-        _postboxManager = [[DMEPostboxConsentManger alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
+        _postboxManager = [[DMEPostboxConsentManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
     }
     
     return self;

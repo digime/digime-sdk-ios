@@ -1,18 +1,18 @@
 //
-//  DMEPostboxConsentManger.m
+//  DMEPostboxConsentManager.m
 //  DigiMeSDK
 //
 //  Created on 26/06/2018.
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEPostboxConsentManger.h"
+#import "DMEPostboxConsentManager.h"
 #import "DMESessionManager.h"
 #import "DMEClient.h"
 #import "DMEPostbox.h"
 #import "DMESession+Private.h"
 
-@interface DMEPostboxConsentManger()
+@interface DMEPostboxConsentManager()
 
 @property (nonatomic, strong, readonly) DMESession *session;
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation DMEPostboxConsentManger
+@implementation DMEPostboxConsentManager
 
 - (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager appId:(NSString *)appId
 {

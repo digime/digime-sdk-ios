@@ -1,5 +1,5 @@
 //
-//  DMEPostboxConsentManger.h
+//  DMEPostboxConsentManager.h
 //  DigiMeSDK
 //
 //  Created on 26/06/2018.
@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class DMESessionManager;
 
-@interface DMEPostboxConsentManger : NSObject <DMEAppCallbackHandler>
+@interface DMEPostboxConsentManager : NSObject <DMEAppCallbackHandler>
 
 - (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager appId:(NSString *)appId NS_DESIGNATED_INITIALIZER;
 
