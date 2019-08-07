@@ -64,7 +64,8 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     
     if (![self.sessionManager isSessionValid])
     {
-        completion(nil, nil);
+        NSError *error = [NSError authError:AuthErrorInvalidSession];
+        completion(nil, error);
         return;
     }
     
