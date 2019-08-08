@@ -20,6 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 /**
+ After you have pushed data into a postbox, you can trigger the digi.me app to then import the data into the user library.
+ */
+- (void)openDMEAppForPostboxImport;
+
+/**
  Hands off to the DigiMe app to request a Postbox that can be used to send data to a user's library.
  
  @param completion DMEPostboxCreationCompletion

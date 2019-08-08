@@ -32,6 +32,15 @@
     return self;
 }
 
+- (void)openDMEAppForPostboxImport
+{
+    if ([self.appCommunicator canOpenDMEApp])
+    {
+        DMEOpenAction *action = @"postbox/import";
+        [self.appCommunicator openDigiMeAppWithAction:action parameters: [[NSDictionary alloc] init]];
+    }
+}
+
 - (void)createPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
 {
     __weak __typeof(self)weakSelf = self;
