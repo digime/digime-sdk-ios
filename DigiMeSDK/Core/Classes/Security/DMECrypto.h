@@ -16,10 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
  Decrypts encrypted data using private key data from specified configuration.
 
  @param encryptedData NSData
- @param configuration Configuration containing private hex key and contract id.
+ @param contractId The contract identifier
+ @param keyHex The private hex key with which data can be decrypted
  @return NSData - decrypted data or nil if decryption failed.
  */
-+ (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData configuration:(DMEClientConfiguration *)configuration;
++ (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData contractId:(NSString *)contractId privateKeyHex:(NSString *)keyHex;
 
 /**
  Decrypt data using AES256 algorithm.
@@ -64,10 +65,10 @@ NS_ASSUME_NONNULL_BEGIN
  Encrypts Symmetrical Key for Postbox with RSA public key and return it as Base64 encoded.
  
  @param symmetricalKey NSData
- @param configuration Configuration containing contract id.
+ @param contractId The contract identifier.
  @param publicKey NSString
  */
-+ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey configuration:(DMEClientConfiguration *)configuration;
++ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey contractId:(NSString *)contractId;
 
 @end
 

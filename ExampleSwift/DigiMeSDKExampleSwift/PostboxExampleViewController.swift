@@ -35,9 +35,8 @@ class PostboxExampleViewController: UIViewController {
             }
             
         } else {
-            if let configuration = DMEClientConfiguration(appId: Constants.appId, contractId: Constants.postboxContractId, p12FileName: Constants.p12FileName, p12Password: Constants.p12Password) {
-                dmeClient = DMEPushClient(configuration: configuration)
-            }
+            let configuration = DMEPushConfiguration(appId: Constants.appId, contractId: Constants.postboxContractId)
+            dmeClient = DMEPushClient(configuration: configuration)
             
             dmeClient?.createPostbox { (postbox, error) in
                 

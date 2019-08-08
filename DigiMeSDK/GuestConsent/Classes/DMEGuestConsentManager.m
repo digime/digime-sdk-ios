@@ -22,13 +22,13 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
 @property (nonatomic, copy, nullable) DMEAuthorizationCompletion guestConsentCompletionBlock;
 @property (nonatomic, strong) SFSafariViewController *safariViewController;
 @property (nonatomic, strong) NSDictionary *sentParameters;
-@property (nonatomic, strong) DMEClientConfiguration *configuration;
+@property (nonatomic, strong) id<DMEClientConfiguration> configuration;
 
 @end
 
 @implementation DMEGuestConsentManager
 
-- (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager configuration:(DMEClientConfiguration *)configuration
+- (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager configuration:(id<DMEClientConfiguration>)configuration
 {
     self = [super init];
     if (self)

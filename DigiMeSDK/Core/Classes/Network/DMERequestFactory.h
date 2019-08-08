@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class DMEClientConfiguration;
+@protocol DMEClientConfiguration;
 @protocol DMEDataRequest;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param configuration DMClientConfiguration
  @return instancetype
  */
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration NS_DESIGNATED_INITIALIZER;
 
 
 /**
@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  DMEClientConfiguration object.
  */
-@property (nonatomic, strong, readonly) DMEClientConfiguration *config;
+@property (nonatomic, strong, readonly) id<DMEClientConfiguration> config;
 
 @end
 

@@ -9,7 +9,6 @@
 #import "DMEAccounts.h"
 #import "DMEAPIClient.h"
 #import "DMEClient+Private.h"
-#import "DMEClientConfiguration.h"
 #import "DMEDataDecryptor.h"
 #import "DMEDataUnpacker.h"
 #import "DMEFilesDeserializer.h"
@@ -17,6 +16,7 @@
 #import "DMENativeConsentManager.h"
 #import "DMEPreConsentViewController.h"
 #import "DMEPullClient.h"
+#import "DMEPullConfiguration.h"
 #import "DMESessionManager.h"
 #import "UIViewController+DMEExtension.h"
 #import <DigiMeSDK/DigiMeSDK-Swift.h>
@@ -35,17 +35,29 @@
 
 #pragma mark - Initialization
 
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
+- (instancetype)initWithConfiguration:(DMEPullConfiguration *)configuration
 {
     self = [super initWithConfiguration:configuration];
     if (self)
     {
         _nativeConsentManager = [[DMENativeConsentManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
-        _guestConsentManager = [[DMEGuestConsentManager alloc] initWithSessionManager:self.sessionManager configuration:self.configuration];        
+        _guestConsentManager = [[DMEGuestConsentManager alloc] initWithSessionManager:self.sessionManager configuration:self.configuration];
         _dataDecryptor = [[DMEDataDecryptor alloc] initWithConfiguration:configuration];
     }
     
     return self;
+}
+
+#pragma mark - Validation
+
+- (nullable NSError *)validateClient
+{
+    if (!((DMEPullConfiguration *)self.configuration).privateKeyHex)
+    {
+        return [NSError sdkError:SDKErrorNoPrivateKeyHex];
+    }
+    
+    return [super validateClient];
 }
 
 #pragma mark - Native Authorization

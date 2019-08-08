@@ -6,20 +6,21 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEDataDecryptor.h"
-#import "NSString+DMECrypto.h"
 #import "DMECrypto.h"
+#import "DMEDataDecryptor.h"
+#import "DMEPullConfiguration.h"
 #import "NSError+SDK.h"
+#import "NSString+DMECrypto.h"
 
 @interface DMEDataDecryptor ()
 
-@property (nonatomic, strong, readonly) DMEClientConfiguration *configuration;
+@property (nonatomic, strong, readonly) DMEPullConfiguration *configuration;
 
 @end
 
 @implementation DMEDataDecryptor
 
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
+- (instancetype)initWithConfiguration:(DMEPullConfiguration *)configuration
 {
     self = [super init];
     if (self)
@@ -35,7 +36,9 @@
     if ([fileContent isKindOfClass:[NSString class]] && [fileContent length] && [fileContent isBase64])
     {
         NSData *encryptedData = [fileContent base64Data];
-        NSData *decryptedData = [DMECrypto getDataFromEncryptedBytes:encryptedData configuration:self.configuration];
+        NSData *decryptedData = [DMECrypto getDataFromEncryptedBytes:encryptedData
+                                                          contractId:self.configuration.contractId
+                                                       privateKeyHex:self.configuration.privateKeyHex];
         
         if (!decryptedData)
         {

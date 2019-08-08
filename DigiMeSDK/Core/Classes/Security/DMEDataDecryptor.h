@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class DMEClientConfiguration;
+@class DMEPullConfiguration;
 
 @interface DMEDataDecryptor : NSObject
 
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param configuration The configuration for which the decryptor can decrypt
  @return A new instance of DMEDataDecryptor
  */
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(DMEPullConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 

@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param configuration DMEClientConfiguration
  @return instancetype
  */
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration NS_DESIGNATED_INITIALIZER;
 
 
 /**
