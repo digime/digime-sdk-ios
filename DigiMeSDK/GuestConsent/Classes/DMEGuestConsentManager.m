@@ -156,8 +156,9 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     
     if (self.guestConsentCompletionBlock)
     {
+        DMESession *session = error == nil ? self.session : nil;
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.guestConsentCompletionBlock(self.session, error);
+            self.guestConsentCompletionBlock(session, error);
             self.guestConsentCompletionBlock = nil;
         });
     }

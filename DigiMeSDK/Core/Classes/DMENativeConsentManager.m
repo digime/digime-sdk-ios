@@ -51,26 +51,27 @@
     
     [self filterMetadata: parameters];
     
-    NSError *err;
+    NSError *error;
     
     if(![self.sessionManager isSessionKeyValid:sessionKey])
     {
-        err = [NSError authError:AuthErrorInvalidSessionKey];
+        error = [NSError authError:AuthErrorInvalidSessionKey];
     }
     else if ([result isEqualToString:kDMEResultValueCancel])
     {
-        err = [NSError authError:AuthErrorCancelled];
+        error = [NSError authError:AuthErrorCancelled];
     }
     else if ([result isEqualToString:kDMEResultValueError])
     {
-        err = [NSError authError:AuthErrorGeneral];
+        error = [NSError authError:AuthErrorGeneral];
     }
     
     if (self.authCompletionBlock)
     {
         // Need to know if we succeeded.
+        DMESession *session = error == nil ? self.session : nil;
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.authCompletionBlock(self.session, err);
+            self.authCompletionBlock(session, error);
         });
     }
     

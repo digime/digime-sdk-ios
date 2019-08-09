@@ -60,24 +60,36 @@
     return [super validateClient];
 }
 
-#pragma mark - Native Authorization
+#pragma mark - Authorization
 
-- (void)authorizeWithCompletion:(nonnull DMEAuthorizationCompletion)authorizationCompletion
+- (void)authorizeWithCompletion:(nonnull DMEAuthorizationCompletion)completion
 {
-    [self authorizeWithScope:nil completion:authorizationCompletion];
+    [self authorizeWithScope:nil completion:completion];
 }
 
-- (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)authorizationCompletion
+- (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
     if (validationError != nil)
     {
-        authorizationCompletion(nil, validationError);
+        completion(nil, validationError);
         return;
     }
     
-    //get session
+    if (((DMEPullConfiguration *)self.configuration).guestEnabled)
+    {
+        [self authorizeGuestWithScope:scope completion:completion];
+    }
+    else
+    {
+        [self authorizeNativeWithScope:scope completion:completion];
+    }
+}
+
+- (void)authorizeNativeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)completion
+{
+    // Get session
     __weak __typeof(self)weakSelf = self;
     [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
@@ -87,18 +99,18 @@
             // Notify on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                authorizationCompletion(nil, errorToReport);
+                completion(nil, errorToReport);
                 return;
             });
             return;
         }
         
         //begin authorization
-        [strongSelf userAuthorizationWithCompletion:authorizationCompletion];
+        [strongSelf authorizeNativeWithCompletion:completion];
     }];
 }
 
-- (void)userAuthorizationWithCompletion:(nonnull DMEAuthorizationCompletion)authorizationCompletion
+- (void)authorizeNativeWithCompletion:(nonnull DMEAuthorizationCompletion)completion
 {
     __weak __typeof(self)weakSelf = self;
     [self.nativeConsentManager beginAuthorizationWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
@@ -111,9 +123,15 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            authorizationCompletion(session, error);
-            return;
+            completion(session, error);
         });
+    }];
+}
+
+- (void)authorizeNative
+{
+    [self authorizeNativeWithScope:self.scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+        [self executeCompletionWithSession:session error:error];
     }];
 }
 
@@ -125,40 +143,33 @@ DMEAuthorizationCompletion _authorizationCompletion;
     _authorizationCompletion = authorizationCompletion;
 }
 
-- (void)authorizeGuestWithCompletion:(DMEAuthorizationCompletion)completion
-{
-    [self authorizeGuestWithScope:nil completion:completion];
-}
-
 - (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion
 {
+    if (![NSThread currentThread].isMainThread)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self authorizeGuestWithScope:scope completion:completion];
+        });
+        return;
+    }
+    
     if ([self.appCommunicator canOpenDMEApp])
     {
-        [self authorizeWithCompletion:completion];
+        [self authorizeNativeWithScope:scope completion:completion];
     }
     else
     {
         self.scope = scope;
         [self setAuthorizationCompletion:completion];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.preconsentViewController = [DMEPreConsentViewController new];
-            self.preconsentViewController.delegate = self;
-            self.preconsentViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-            [[UIViewController topmostViewController] presentViewController:self.preconsentViewController animated:YES completion:nil];
-        });
+        self.preconsentViewController = [DMEPreConsentViewController new];
+        self.preconsentViewController.delegate = self;
+        self.preconsentViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        [[UIViewController topmostViewController] presentViewController:self.preconsentViewController animated:YES completion:nil];
     }
 }
 
 - (void)authorizeGuest
 {
-    // Validation
-    NSError *validationError = [self validateClient];
-    if (validationError != nil)
-    {
-        [self executeCompletionWithSession:nil error:validationError];
-        return;
-    }
-    
     __weak __typeof(self)weakSelf = self;
     [self.sessionManager sessionWithScope:self.scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
@@ -166,24 +177,27 @@ DMEAuthorizationCompletion _authorizationCompletion;
         
         if (!session)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [strongSelf executeCompletionWithSession:nil error:error];
-            });
-            
+            [strongSelf executeCompletionWithSession:nil error:error];
             return;
         }
         
         [strongSelf.guestConsentManager requestGuestConsentWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [strongSelf executeCompletionWithSession:session error:error];
-            });
+            [strongSelf executeCompletionWithSession:session error:error];
         }];
     }];
 }
 
 - (void)executeCompletionWithSession:(DMESession * _Nullable )session error:(NSError * _Nullable)error
 {
+    if (![NSThread currentThread].isMainThread)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self executeCompletionWithSession:session error:error];
+        });
+        return;
+    }
+    
     if (_authorizationCompletion != nil)
     {
         _authorizationCompletion(session, error);
@@ -195,17 +209,17 @@ DMEAuthorizationCompletion _authorizationCompletion;
 
 - (void)downloadDigimeFromAppstore
 {
+    __weak __typeof(self)weakSelf = self;
     [self.preconsentViewController dismissViewControllerAnimated:YES completion:^{
-        [self authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
-            [self executeCompletionWithSession:session error:error];
-        }];
+        [weakSelf authorizeNative];
     }];
 }
 
 - (void)authenticateUsingGuestConsent
 {
+    __weak __typeof(self)weakSelf = self;
     [self.preconsentViewController dismissViewControllerAnimated:YES completion:^{
-        [self authorizeGuest];
+        [weakSelf authorizeGuest];
     }];
 }
 
