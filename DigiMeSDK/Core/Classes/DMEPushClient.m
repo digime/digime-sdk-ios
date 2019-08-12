@@ -37,7 +37,7 @@
     if ([self.appCommunicator canOpenDMEApp])
     {
         DMEOpenAction *action = @"postbox/import";
-        [self.appCommunicator openDigiMeAppWithAction:action parameters: [[NSDictionary alloc] init]];
+        [self.appCommunicator openDigiMeAppWithAction:action parameters:@{}];
     }
 }
 
