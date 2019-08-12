@@ -2,30 +2,31 @@
 //  DMEClientConfiguration.m
 //  DigiMeSDK
 //
-//  Created on 24/01/2018.
-//  Copyright © 2018 digi.me Limited. All rights reserved.
+//  Created on 08/08/2019
+//  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 
-#import "DMEClientConfiguration.h"
-#import "DMECryptoUtilities.h"
+#import "DMEBaseConfiguration.h"
 
-NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 NSString * const kDMEConfigFileName = @"DMEConfig";
 
-@interface DMEClientConfiguration()
+@interface DMEBaseConfiguration()
 
 @property (nonatomic, strong, readwrite) NSString *baseUrl;
 
 @end
 
-@implementation DMEClientConfiguration
+@implementation DMEBaseConfiguration
 
 #pragma mark - Initialization
-- (instancetype)init
+
+- (instancetype)initWithAppId:(NSString *)appId contractId:(NSString *)contractId
 {
     self = [super init];
     if (self)
     {
+        _appId = appId;
+        _contractId = contractId;
         _globalTimeout = 25;
         _retryOnFail = YES;
         _retryDelay = 750;
@@ -34,33 +35,8 @@ NSString * const kDMEConfigFileName = @"DMEConfig";
         _maxConcurrentRequests = 5;
         _debugLogEnabled = NO;
     }
-    
-    return self;
-}
-
-- (instancetype)initWithAppId:(NSString *)appId contractId:(NSString *)contractId privateKeyHex:(NSString *)privateKeyHex
-{
-    self = [self init];
-    if (self)
-    {
-        _appId = appId;
-        _contractId = contractId;
-        _privateKeyHex = privateKeyHex;
-    }
 
     return self;
-}
-
-- (nullable instancetype)initWithAppId:(NSString *)appId contractId:(NSString *)contractId p12FileName:(NSString *)p12FileName p12Password:(NSString *)p12Password
-{
-    NSString *privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File: p12FileName password: p12Password];
-    
-    if (!privateKeyHex)
-    {
-        return nil;
-    }
-    
-    return [self initWithAppId:appId contractId:contractId privateKeyHex:privateKeyHex];
 }
 
 - (NSString *)baseUrl

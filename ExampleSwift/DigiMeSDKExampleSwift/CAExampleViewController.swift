@@ -20,7 +20,7 @@ class CAExampleViewController: UIViewController {
         title = "CA Example"
         
         // - GET STARTED -
-        if let configuration = DMEClientConfiguration(appId: Constants.appId, contractId: Constants.CAContractId, p12FileName: Constants.p12FileName, p12Password: Constants.p12Password) {
+        if let configuration = DMEPullConfiguration(appId: Constants.appId, contractId: Constants.CAContractId, p12FileName: Constants.p12FileName, p12Password: Constants.p12Password) {
             dmeClient = DMEPullClient(configuration: configuration)
         }
         

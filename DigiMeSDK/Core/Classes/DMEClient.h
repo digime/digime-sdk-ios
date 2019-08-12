@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class DMEClientConfiguration;
+@protocol DMEClientConfiguration;
 @class DMESessionManager;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Uses default configuration, which can be overwritten with your own.
  */
-@property (nonatomic, strong, readonly) DMEClientConfiguration *configuration;
+@property (nonatomic, strong, readonly) id<DMEClientConfiguration> configuration;
 
 /**
  DigiMe Consent Access Session Manager.

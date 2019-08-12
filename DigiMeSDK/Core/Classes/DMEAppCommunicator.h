@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString * const kDMEClientSchemePrefix;
+
 /**
  Handles communication between SDK and digi.me application
  */

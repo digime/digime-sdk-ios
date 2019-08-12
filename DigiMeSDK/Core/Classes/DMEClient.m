@@ -21,7 +21,7 @@
 
 @implementation DMEClient
 
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
+- (instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration
 {
     self = [super init];
     if (self)
@@ -50,11 +50,6 @@
     if (![urlSchemes containsObject:expectedUrlScheme])
     {
         return [NSError sdkError:SDKErrorNoURLScheme];
-    }
-    
-    if (!self.configuration.privateKeyHex)
-    {
-        return [NSError sdkError:SDKErrorNoPrivateKeyHex];
     }
     
     if (!self.configuration.contractId || [self.configuration.contractId isEqualToString:@"YOUR_CONTRACT_ID"])

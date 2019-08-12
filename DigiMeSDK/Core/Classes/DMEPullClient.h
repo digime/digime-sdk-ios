@@ -10,14 +10,14 @@
 #import "DMEClient.h"
 #import "DMEClientCallbacks.h"
 
-@class DMEClientConfiguration;
+@class DMEPullConfiguration;
 @protocol DMEDataRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DMEPullClient: DMEClient
 
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(DMEPullConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 /**
  Initializes contract authentication. This will attempt to create a session and redirect

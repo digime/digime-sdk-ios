@@ -10,14 +10,14 @@
 #import "DMEClient.h"
 #import "DMEClientCallbacks.h"
 
-@class DMEClientConfiguration;
+@class DMEPushConfiguration;
 @class DMEPostbox;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DMEPushClient: DMEClient
 
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(DMEPushConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 /**
  Hands off to the DigiMe app to request a Postbox that can be used to send data to a user's library.

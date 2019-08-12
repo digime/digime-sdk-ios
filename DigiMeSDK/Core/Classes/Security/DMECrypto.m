@@ -73,14 +73,14 @@ static const NSInteger kHashLength = 64;
 
 #pragma mark - AES Decrypt file content
 
-+ (NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData configuration:(DMEClientConfiguration *)configuration
++ (NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData contractId:(NSString *)contractId privateKeyHex:(NSString *)keyHex
 {
-    NSString *tag = [NSString stringWithFormat:kPrivateKeyIdentifierFormat, configuration.contractId];
+    NSString *tag = [NSString stringWithFormat:kPrivateKeyIdentifierFormat, contractId];
     SecKeyRef privateKey = [[self class] loadRSAKeyWithKeyClass:kSecAttrKeyClassPrivate keyTagString:tag];
     if (privateKey == NULL)
     {
-        BOOL saveSuccess = [[self class] addPrivateKeyHex:configuration.privateKeyHex forContractWithID:configuration.contractId];
-        return saveSuccess ? [[self class] getDataFromEncryptedBytes:encryptedData configuration:configuration] : nil;
+        BOOL saveSuccess = [[self class] addPrivateKeyHex:keyHex forContractWithID:contractId];
+        return saveSuccess ? [[self class] getDataFromEncryptedBytes:encryptedData contractId:contractId privateKeyHex:keyHex] : nil;
     }
     
     NSData* encryptedDsk = [encryptedData subdataWithRange:NSMakeRange(0,256)];
@@ -769,9 +769,9 @@ static const NSInteger kHashLength = 64;
     return [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }
 
-+ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey configuration:(DMEClientConfiguration *)configuration
++ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey contractId:(NSString *)contractId
 {
-    SecKeyRef publicKeyRef = [[self class] addPublicKey:publicKey contractId:configuration.contractId];
+    SecKeyRef publicKeyRef = [[self class] addPublicKey:publicKey contractId:contractId];
     NSData* encryptedData = [[self class] encryptLargeData:symmetricalKey publicKey:publicKeyRef];
     return [encryptedData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 }

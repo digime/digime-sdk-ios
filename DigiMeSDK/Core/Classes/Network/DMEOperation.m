@@ -41,7 +41,7 @@
     return self;
 }
 
--(instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
+-(instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration
 {
     self = [super init];
     if (self)

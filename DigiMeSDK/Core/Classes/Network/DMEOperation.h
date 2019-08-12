@@ -6,7 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-@class DMEClientConfiguration;
+@protocol DMEClientConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Client Configuration object.
  */
-@property (nonatomic, strong, readonly, nullable) DMEClientConfiguration *config;
+@property (nonatomic, strong, readonly, nullable) id<DMEClientConfiguration> config;
 
 /**
  * Notifies the operation that all work has been completed and can clean itself up.
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param configuration Client Configuration
  @return DMEOperation
  */
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration;
+- (instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration;
 
 
 /**

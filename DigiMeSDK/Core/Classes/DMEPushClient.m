@@ -8,9 +8,9 @@
 
 #import "DMEAPIClient+Postbox.h"
 #import "DMEClient+Private.h"
-#import "DMEClientConfiguration.h"
 #import "DMEPostboxConsentManager.h"
 #import "DMEPushClient.h"
+#import "DMEPushConfiguration.h"
 #import "DMESessionManager.h"
 
 @interface DMEPushClient ()
@@ -21,7 +21,7 @@
 
 @implementation DMEPushClient
 
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
+- (instancetype)initWithConfiguration:(DMEPushConfiguration *)configuration
 {
     self = [super initWithConfiguration:configuration];
     if (self)
@@ -34,6 +34,14 @@
 
 - (void)createPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
 {
+    // Validation
+    NSError *validationError = [self validateClient];
+    if (validationError != nil)
+    {
+        completion(nil, validationError);
+        return;
+    }
+    
     __weak __typeof(self)weakSelf = self;
     [self.sessionManager sessionWithScope:nil completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         

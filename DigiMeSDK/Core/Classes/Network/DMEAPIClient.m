@@ -32,7 +32,7 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
 
 #pragma mark - Initialization
 
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
+- (instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration
 {
     self = [super init];
     if (self)

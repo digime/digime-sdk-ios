@@ -16,7 +16,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
 @interface DMERequestFactory()
 
 @property (nonatomic, strong) NSString *baseUrl;
-@property (nonatomic, strong, readwrite) DMEClientConfiguration *config;
+@property (nonatomic, strong, readwrite) id<DMEClientConfiguration> config;
 @property (nonatomic, strong) NSDictionary *sdkAgent;
 
 @end
@@ -25,7 +25,7 @@ static NSString * const kDigiMeAPIVersion = @"v1.3";
 
 #pragma mark - Initialization
 
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
+- (instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration
 {
     self = [super init];
     if (self)

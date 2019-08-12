@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) NSOperationQueue *queue;
 @property (nonatomic, strong, readonly) DMERequestFactory *requestFactory;
-@property (nonatomic, strong, readonly) DMEClientConfiguration *configuration;
+@property (nonatomic, strong, readonly) id<DMEClientConfiguration> configuration;
 
 
 - (NSURLSession *)sessionWithHeaders:(NSDictionary *)headers;

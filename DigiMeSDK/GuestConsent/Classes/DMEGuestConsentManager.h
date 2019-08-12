@@ -9,14 +9,14 @@
 #import "DMEAppCommunicator+Private.h"
 #import "DMEClientCallbacks.h"
 
-@class DMEClientConfiguration;
+@protocol DMEClientConfiguration;
 @class DMESessionManager;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DMEGuestConsentManager : NSObject <DMEAppCallbackHandler>
 
-- (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager configuration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager configuration:(id<DMEClientConfiguration>)configuration NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;

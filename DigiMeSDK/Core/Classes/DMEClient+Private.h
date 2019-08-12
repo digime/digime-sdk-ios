@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSError *)validateClient;
 
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration NS_DESIGNATED_INITIALIZER;
 
 @end
 
