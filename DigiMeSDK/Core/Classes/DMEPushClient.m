@@ -32,6 +32,15 @@
     return self;
 }
 
+- (void)openDMEAppForPostboxImport
+{
+    if ([self.appCommunicator canOpenDMEApp])
+    {
+        DMEOpenAction *action = @"postbox/import";
+        [self.appCommunicator openDigiMeAppWithAction:action parameters:@{}];
+    }
+}
+
 - (void)createPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
 {
     // Validation

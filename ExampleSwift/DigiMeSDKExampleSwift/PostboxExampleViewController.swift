@@ -29,11 +29,7 @@ class PostboxExampleViewController: UIViewController {
         
         if successfullyPushedToPostbox {
             
-            if DMEAppCommunicator.shared().canOpenDMEApp() {
-                let url = URL(string: "digime-ca-master://")!
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
-            
+            dmeClient?.openDMEAppForPostboxImport()
         } else {
             let configuration = DMEPushConfiguration(appId: Constants.appId, contractId: Constants.postboxContractId)
             dmeClient = DMEPushClient(configuration: configuration)
