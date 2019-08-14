@@ -17,9 +17,6 @@
 #import "NSData+DMECrypto.h"
 #import "NSString+DMECrypto.h"
 
-static const NSString *kDigimeConsentAccessPathSessionKeyCreate = @"v1.3/permission-access/session";
-static const NSString *kDigimeConsentAccessPathDataGet          = @"v1.3/permission-access/query";
-static const NSString *kDigimeConsentAccessPathDataPush         = @"v1.3/permission-access/postbox";
 static const NSString *kWorkQueue                               = @"kWorkQueue";
 
 @interface DMEAPIClient() <NSURLSessionDelegate>
@@ -175,7 +172,7 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
         
         NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
         
-        if (httpResp.statusCode == 202 || httpResp.statusCode == 200)
+        if (httpResp.statusCode >= 200 && httpResp.statusCode <= 299)
         {
             if (data)
             {
@@ -230,6 +227,11 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
         if ([change[NSKeyValueChangeNewKey] integerValue] == 0)
         {
             NSLog(@"[DMEAPIClient] Queued downloads completed.");
+            
+            if ([self.delegate respondsToSelector:@selector(didFinishAllDownloads)])
+            {
+                [self.delegate didFinishAllDownloads];
+            }
         }
     }
     else

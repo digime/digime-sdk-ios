@@ -289,11 +289,11 @@ Upon successful authorization you can request user's files.
 To fetch the list of available files for your contract:
 
 > ```
-> [[DMEClient sharedClient] getFileListWithCompletion:^(DMEFiles * _Nullable files, NSError  * _Nullable error){...}];
+> [[DMEClient sharedClient] getFileListWithCompletion:^(DMEFileList * _Nullable fileList, NSError  * _Nullable error){...}];
 > ```
  
 
-Upon success `DMEClient` returns a `DMEFiles` object which contains a single field - `fileIds` (NSArray<NSString>), a list of file IDs.
+Upon success `DMEClient` returns a `DMEFileList` object.
 
 Finally you can use the returned file IDs to fetch their data:
 
