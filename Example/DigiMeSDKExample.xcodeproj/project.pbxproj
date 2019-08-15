@@ -11,13 +11,14 @@
 		0643264A20222B2500B10CD9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264820222B2500B10CD9 /* ViewController.m */; };
 		0643264D20222D6000B10CD9 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264C20222D6000B10CD9 /* LogViewController.m */; };
 		0643264F202234CD00B10CD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264E202234CD00B10CD9 /* main.m */; };
+		270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270A82F82301B77E000C2F56 /* DataRequestTests.swift */; };
 		27BE504922047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
-		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		607FACEC1AFB9204008FA782 /* ConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */; };
 		9DD63BA1AD34ADA4CCDFF465 /* Pods_DigiMeSDKExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F418448822E9492BB639C16 /* Pods_DigiMeSDKExample.framework */; };
-		D285050D953EB9BF8404AEA4 /* Pods_DigiMeSDKExample_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11F31C7781F77A960C818F33 /* Pods_DigiMeSDKExample_Tests.framework */; };
+		D7B6EFF66A647C8C03739EF9 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB9C4066C5C24B9D2697007E /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,11 +41,12 @@
 		0643264C20222D6000B10CD9 /* LogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogViewController.m; sourceTree = "<group>"; };
 		0643264E202234CD00B10CD9 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0F8DC0A9C8329629993FF78A /* DigiMeSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DigiMeSDK.podspec; path = ../DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		11F31C7781F77A960C818F33 /* Pods_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		1E8749911F77A39600D4E028 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		270A82F82301B77E000C2F56 /* DataRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestTests.swift; sourceTree = "<group>"; };
 		27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
 		369F4AD06777F8F602971B23 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
+		474DF4025C1E92936A30F974 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* DigiMeSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -52,9 +54,11 @@
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* DigiMeSDKExample_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DigiMeSDKExample_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationTests.swift; sourceTree = "<group>"; };
 		6F418448822E9492BB639C16 /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B66E73B2275265A305667C89 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E4C1A2AFEF34DF96E1BCF86F /* Pods-DigiMeSDKExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.release.xcconfig"; sourceTree = "<group>"; };
+		FB9C4066C5C24B9D2697007E /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D285050D953EB9BF8404AEA4 /* Pods_DigiMeSDKExample_Tests.framework in Frameworks */,
+				D7B6EFF66A647C8C03739EF9 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,7 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				6F418448822E9492BB639C16 /* Pods_DigiMeSDKExample.framework */,
-				11F31C7781F77A960C818F33 /* Pods_DigiMeSDKExample_Tests.framework */,
+				FB9C4066C5C24B9D2697007E /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -121,7 +125,8 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				607FACEB1AFB9204008FA782 /* Tests.swift */,
+				607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */,
+				270A82F82301B77E000C2F56 /* DataRequestTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -151,6 +156,8 @@
 				E4C1A2AFEF34DF96E1BCF86F /* Pods-DigiMeSDKExample.release.xcconfig */,
 				043B58F3E6F77DA3D34636EB /* Pods-DigiMeSDKExample_Tests.debug.xcconfig */,
 				1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */,
+				474DF4025C1E92936A30F974 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */,
+				B66E73B2275265A305667C89 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -185,6 +192,7 @@
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
+				474317E5E441A0CC9947DA65 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -215,7 +223,6 @@
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 5LDPS9F284;
 						LastSwiftMigration = 0900;
-						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
 			};
@@ -261,6 +268,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		474317E5E441A0CC9947DA65 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5D18F02FEDF75BAF41AC4CC9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -272,7 +296,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExample_Tests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -332,7 +356,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */,
+				607FACEC1AFB9204008FA782 /* ConfigurationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,7 +539,7 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 043B58F3E6F77DA3D34636EB /* Pods-DigiMeSDKExample_Tests.debug.xcconfig */;
+			baseConfigurationReference = 474DF4025C1E92936A30F974 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -536,7 +561,7 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */;
+			baseConfigurationReference = B66E73B2275265A305667C89 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
