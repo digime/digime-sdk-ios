@@ -7,7 +7,6 @@ Pod::Spec.new do |s|
   s.license      	= { :type => "MIT", :file => "LICENSE" }
   s.author       	= { "digi.me Ltd." => "ios@digi.me" }
   s.platform     	= :ios, "10.0"
-  s.dependency "Brotli"
   s.dependency "GZIP"
   s.swift_version = "4.2"
   s.source       	= { 
