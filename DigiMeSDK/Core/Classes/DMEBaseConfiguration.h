@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Base URL for all outgoing Network operations.
  */
-@property (nonatomic, strong, readonly) NSString *baseUrl;
+@property (nonatomic, strong) NSString *baseUrl;
 
 /**
  Your application Id. This property MUST be set before you can call authorize.
