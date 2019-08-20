@@ -260,9 +260,19 @@ DMEAuthorizationCompletion _authorizationCompletion;
             return;
         }
         
+        __block NSInteger fileCountToDownload = files.fileIds.count;
+        
         for (NSString *fileId in files.fileIds)
         {
-            [self getSessionDataForFileWithId:fileId completion:fileContentHandler];
+            [self getSessionDataForFileWithId:fileId completion:^(DMEFile * _Nullable file, NSError * _Nullable error) {
+                fileContentHandler(file, error);
+                
+                fileCountToDownload -= 1;
+                if (fileCountToDownload == 0)
+                {
+                    completion(nil);
+                }
+            }];
         }
     }];
 }
