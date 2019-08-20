@@ -46,17 +46,7 @@
     }
     
     NSString *compression = json[@"compression"];
-    if ([compression isEqualToString:@"brotli"])
-    {
-        unpackedData = [DMECompressor decompressData:unpackedData usingAlgorithm:DMECompressionAlgorithmBrotli];
-        if (!unpackedData)
-        {
-            // Decompression failed
-            [NSError setSDKError:SDKErrorInvalidData toError:error];
-            return nil;
-        }
-    }
-    else if ([compression isEqualToString:@"gzip"])
+    if ([compression isEqualToString:@"gzip"])
     {
         unpackedData = [DMECompressor decompressData:unpackedData usingAlgorithm:DMECompressionAlgorithmGZIP];
         if (!unpackedData)
