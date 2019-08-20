@@ -23,6 +23,18 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData contractId:(NSString *)contractId privateKeyHex:(NSString *)keyHex;
 
 /**
+ Encrypt data using AES256 algorithm.
+ 
+ @param keyData NSData
+ @param ivData NSData
+ @param data NSData
+ @param error NSError
+ @return NSData - encrypted data or nil if encryption failed.
+ */
+
++ (nullable NSData *)encryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing * _Nullable)error;
+
+/**
  Decrypt data using AES256 algorithm.
 
  @param keyData NSData
@@ -69,6 +81,24 @@ NS_ASSUME_NONNULL_BEGIN
  @param publicKey NSString
  */
 + (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey contractId:(NSString *)contractId;
+
+/**
+ Encrypt data using RSA public key.
+ 
+ @param dataToEncrypt NSData
+ @param publicKey NSData
+ @return NSData - encrypted data or nil if encryption failed.
+ */
++ (NSData *)encryptLargeData:(NSData *)dataToEncrypt publicKey:(SecKeyRef)publicKey;
+
+/**
+ Decrypt data using RSA private key.
+ 
+ @param dataToDecrypt NSData
+ @param privateKey NSData
+ @return NSData - decrypted data or nil if decryption failed.
+ */
++ (NSData *)decryptLargeData:(NSData *)dataToDecrypt privateKey:(SecKeyRef)privateKey;
 
 @end
 

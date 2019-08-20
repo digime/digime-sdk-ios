@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E371AE6230ACA1700EC46E9 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E371AE5230ACA1700EC46E9 /* CryptographyTests.swift */; };
+		1E371AF3230AE5F200EC46E9 /* CryptographyTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1E371AF2230AE5F100EC46E9 /* CryptographyTestingAssets.plist */; };
+		1E371AF5230AEEB500EC46E9 /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1E371AF4230AEEB500EC46E9 /* digimetest.p12 */; };
 		27BE504B22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		5C16D5E3203ECABA00947940 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E2203ECABA00947940 /* AppDelegate.swift */; };
 		5C16D5E5203ECABA00947940 /* CAExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E4203ECABA00947940 /* CAExampleViewController.swift */; };
@@ -43,6 +46,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E371AE5230ACA1700EC46E9 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
+		1E371AEB230AE1F500EC46E9 /* DigiMeSDKExampleSwiftTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigiMeSDKExampleSwiftTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		1E371AF2230AE5F100EC46E9 /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
+		1E371AF4230AEEB500EC46E9 /* digimetest.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = digimetest.p12; sourceTree = "<group>"; };
 		27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
 		284FACD609865A7CEDB8C49B /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C16D5DF203ECABA00947940 /* DigiMeSDKExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,8 +161,12 @@
 		5C16D5F6203ECABB00947940 /* DigiMeSDKExampleSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
+				1E371AF4230AEEB500EC46E9 /* digimetest.p12 */,
+				1E371AF2230AE5F100EC46E9 /* CryptographyTestingAssets.plist */,
 				5C16D5F7203ECABB00947940 /* DigiMeSDKExampleSwiftTests.swift */,
 				5C16D5F9203ECABB00947940 /* Info.plist */,
+				1E371AE5230ACA1700EC46E9 /* CryptographyTests.swift */,
+				1E371AEB230AE1F500EC46E9 /* DigiMeSDKExampleSwiftTests-Bridging-Header.h */,
 			);
 			path = DigiMeSDKExampleSwiftTests;
 			sourceTree = "<group>";
@@ -304,6 +315,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E371AF5230AEEB500EC46E9 /* digimetest.p12 in Resources */,
+				1E371AF3230AE5F200EC46E9 /* CryptographyTestingAssets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +409,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C16D5F8203ECABB00947940 /* DigiMeSDKExampleSwiftTests.swift in Sources */,
+				1E371AE6230ACA1700EC46E9 /* CryptographyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -597,6 +611,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocapods.demo.DigiMeSDKExampleSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DigiMeSDKExampleSwiftTests/DigiMeSDKExampleSwiftTests-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DigiMeSDKExampleSwift.app/DigiMeSDKExampleSwift";
@@ -615,6 +630,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocapods.demo.DigiMeSDKExampleSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "DigiMeSDKExampleSwiftTests/DigiMeSDKExampleSwiftTests-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DigiMeSDKExampleSwift.app/DigiMeSDKExampleSwift";
