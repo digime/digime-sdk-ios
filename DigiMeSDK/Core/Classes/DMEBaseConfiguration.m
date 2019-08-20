@@ -12,8 +12,6 @@ NSString * const kDMEConfigFileName = @"DMEConfig";
 
 @interface DMEBaseConfiguration()
 
-@property (nonatomic, strong, readwrite) NSString *baseUrl;
-
 @end
 
 @implementation DMEBaseConfiguration
@@ -34,39 +32,10 @@ NSString * const kDMEConfigFileName = @"DMEConfig";
         _maxRetryCount = 5;
         _maxConcurrentRequests = 5;
         _debugLogEnabled = NO;
+        _baseUrl = @"https://api.digi.me/";
     }
 
     return self;
-}
-
-- (NSString *)baseUrl
-{
-    if (!_baseUrl)
-    {
-        NSDictionary *dict;
-        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSString *filePath = [[documentsPath stringByAppendingPathComponent:kDMEConfigFileName] stringByAppendingPathExtension:@"plist"];
-        
-        if (filePath)
-        {
-            dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
-        }
-        
-        if (!dict)
-        {
-            filePath = [[NSBundle mainBundle] pathForResource:kDMEConfigFileName ofType:@"plist"];
-            
-            if (filePath)
-            {
-                dict = [[NSDictionary alloc] initWithContentsOfFile:filePath];
-            }
-        }
-
-        NSString *domain = dict[@"DME_DOMAIN"] ?: @"digi.me";
-        _baseUrl = [NSString stringWithFormat:@"https://api.%@/", domain];
-    }
-    
-    return _baseUrl;
 }
 
 @end
