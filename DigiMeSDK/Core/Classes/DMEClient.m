@@ -10,7 +10,6 @@
 #import "DMEAppCommunicator+Private.h"
 #import "DMEClient+Private.h"
 #import "DMEDataUnpacker.h"
-#import "DMEFilesDeserializer.h"
 #import "DMEGuestConsentManager.h"
 #import "DMENativeConsentManager.h"
 #import "DMEPreConsentViewController.h"
