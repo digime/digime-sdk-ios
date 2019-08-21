@@ -21,7 +21,7 @@ class CryptographyTests: XCTestCase {
             let assetsPath = Bundle(for: type(of: self)).path(forResource: "CryptographyTestingAssets", ofType: "plist"),
             let assets = NSDictionary(contentsOfFile: assetsPath) as? [AnyHashable: Any],
             let privateKeyHex = assets["privateKeyHex"] as? String,
-            let config = DMEPullConfiguration(appId: "testAppId", contractId: "testContractId", p12FileName: "CA_SAND_RSA_PRIVATE_KEY", p12Password: "digime")
+            let config = DMEPullConfiguration(appId: "testAppId", contractId: "testContractId", p12FileName: "digimetest", p12Password: "digimetest")
         
             else {
                 return XCTFail("Failed to load required testing assets.")
@@ -36,11 +36,11 @@ class CryptographyTests: XCTestCase {
 
     }
     
-    func xtestDataDecryptorEncrypted() {
+    func testDataDecryptorEncrypted() {
         
         guard
             let assets = testingAssets[#function] as? [AnyHashable: Any],
-            let input = assets["input"] as? NSData,
+            let input = assets["input"] as? String,
             let expectedResult = assets["expectedResult"] as? NSData
             else {
                 return XCTFail("Failed to load required testing assets.")
