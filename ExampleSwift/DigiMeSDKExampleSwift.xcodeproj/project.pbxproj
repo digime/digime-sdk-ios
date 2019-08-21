@@ -106,6 +106,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E9669F8230D72A600D392BA /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				1E371AF4230AEEB500EC46E9 /* digimetest.p12 */,
+				1E371AF2230AE5F100EC46E9 /* CryptographyTestingAssets.plist */,
+				1E371AE5230ACA1700EC46E9 /* CryptographyTests.swift */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
 		34F9DBFD98EC59890A9A1D4B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,11 +172,9 @@
 		5C16D5F6203ECABB00947940 /* DigiMeSDKExampleSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				1E371AF4230AEEB500EC46E9 /* digimetest.p12 */,
-				1E371AF2230AE5F100EC46E9 /* CryptographyTestingAssets.plist */,
+				1E9669F8230D72A600D392BA /* Security */,
 				5C16D5F7203ECABB00947940 /* DigiMeSDKExampleSwiftTests.swift */,
 				5C16D5F9203ECABB00947940 /* Info.plist */,
-				1E371AE5230ACA1700EC46E9 /* CryptographyTests.swift */,
 				1E371AEB230AE1F500EC46E9 /* DigiMeSDKExampleSwiftTests-Bridging-Header.h */,
 			);
 			path = DigiMeSDKExampleSwiftTests;
