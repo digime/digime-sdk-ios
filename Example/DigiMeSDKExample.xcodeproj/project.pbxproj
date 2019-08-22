@@ -15,6 +15,7 @@
 		1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */; };
 		1EC22EF4230EE13C000D17AA /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EF1230EE13C000D17AA /* digimetest.p12 */; };
 		270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270A82F82301B77E000C2F56 /* DataRequestTests.swift */; };
+		275851E0230EE85800D71EAA /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EF1230EE13C000D17AA /* digimetest.p12 */; };
 		27BE504922047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
@@ -272,6 +273,7 @@
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				275851E0230EE85800D71EAA /* digimetest.p12 in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 				27BE504922047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */,
 			);
@@ -577,7 +579,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Example/Tests/DigiMeSDKExampleTests-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/DigiMeSDKExampleTests-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -596,7 +598,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Example/Tests/DigiMeSDKExampleTests-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/DigiMeSDKExampleTests-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Release;

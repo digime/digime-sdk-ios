@@ -20,13 +20,11 @@ class CryptographyTests: XCTestCase {
         guard
             let assetsPath = Bundle(for: type(of: self)).path(forResource: "CryptographyTestingAssets", ofType: "plist"),
             let assets = NSDictionary(contentsOfFile: assetsPath) as? [AnyHashable: Any],
-            let privateKeyHex = assets["privateKeyHex"] as? String,
-            let config = DMEPullConfiguration(appId: "testAppId", contractId: "testContractId", p12FileName: "digimetest", p12Password: "digimetest")
-        
-            else {
+            let privateKeyHex = assets["privateKeyHex"] as? String else {
                 return XCTFail("Failed to load required testing assets.")
         }
         
+        let config = DMEPullConfiguration(appId: "testAppId", contractId: "testContractId", privateKeyHex: privateKeyHex)
         config.privateKeyHex = privateKeyHex
         dataDecryptor = DMEDataDecryptor(configuration: config)
         testingAssets = assets
