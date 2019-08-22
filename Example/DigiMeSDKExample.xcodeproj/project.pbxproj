@@ -11,6 +11,9 @@
 		0643264A20222B2500B10CD9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264820222B2500B10CD9 /* ViewController.m */; };
 		0643264D20222D6000B10CD9 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264C20222D6000B10CD9 /* LogViewController.m */; };
 		0643264F202234CD00B10CD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264E202234CD00B10CD9 /* main.m */; };
+		1EC22EF2230EE13C000D17AA /* CryptographyTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */; };
+		1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */; };
+		1EC22EF4230EE13C000D17AA /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EF1230EE13C000D17AA /* digimetest.p12 */; };
 		270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270A82F82301B77E000C2F56 /* DataRequestTests.swift */; };
 		27BE504922047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -43,6 +46,10 @@
 		0F8DC0A9C8329629993FF78A /* DigiMeSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DigiMeSDK.podspec; path = ../DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		1E8749911F77A39600D4E028 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		1EC22EED230EE13B000D17AA /* DigiMeSDKExampleTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DigiMeSDKExampleTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
+		1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
+		1EC22EF1230EE13C000D17AA /* digimetest.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = digimetest.p12; sourceTree = "<group>"; };
 		270A82F82301B77E000C2F56 /* DataRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestTests.swift; sourceTree = "<group>"; };
 		27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
 		369F4AD06777F8F602971B23 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
@@ -81,6 +88,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1EC22EEE230EE13C000D17AA /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */,
+				1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */,
+				1EC22EF1230EE13C000D17AA /* digimetest.p12 */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
 		5199FEE8702F01580C43E9C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +142,8 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				1EC22EED230EE13B000D17AA /* DigiMeSDKExampleTests-Bridging-Header.h */,
+				1EC22EEE230EE13C000D17AA /* Security */,
 				607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */,
 				270A82F82301B77E000C2F56 /* DataRequestTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
@@ -262,6 +281,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EC22EF4230EE13C000D17AA /* digimetest.p12 in Resources */,
+				1EC22EF2230EE13C000D17AA /* CryptographyTestingAssets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +377,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */,
 				270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* ConfigurationTests.swift in Sources */,
 			);
@@ -555,6 +577,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Example/Tests/DigiMeSDKExampleTests-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
@@ -573,6 +596,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Example/Tests/DigiMeSDKExampleTests-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 			};
 			name = Release;

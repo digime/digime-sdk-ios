@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1E371AE6230ACA1700EC46E9 /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E371AE5230ACA1700EC46E9 /* CryptographyTests.swift */; };
-		1E371AF3230AE5F200EC46E9 /* CryptographyTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1E371AF2230AE5F100EC46E9 /* CryptographyTestingAssets.plist */; };
-		1E371AF5230AEEB500EC46E9 /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1E371AF4230AEEB500EC46E9 /* digimetest.p12 */; };
-		1E9669C5230D457100D392BA /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1E371AF4230AEEB500EC46E9 /* digimetest.p12 */; };
 		27BE504B22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		5C16D5E3203ECABA00947940 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E2203ECABA00947940 /* AppDelegate.swift */; };
 		5C16D5E5203ECABA00947940 /* CAExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E4203ECABA00947940 /* CAExampleViewController.swift */; };
@@ -47,10 +43,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1E371AE5230ACA1700EC46E9 /* CryptographyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
-		1E371AEB230AE1F500EC46E9 /* DigiMeSDKExampleSwiftTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigiMeSDKExampleSwiftTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		1E371AF2230AE5F100EC46E9 /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
-		1E371AF4230AEEB500EC46E9 /* digimetest.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = digimetest.p12; sourceTree = "<group>"; };
 		27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
 		284FACD609865A7CEDB8C49B /* Pods_DigiMeSDKExampleSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C16D5DF203ECABA00947940 /* DigiMeSDKExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,16 +98,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1E9669F8230D72A600D392BA /* Security */ = {
-			isa = PBXGroup;
-			children = (
-				1E371AF4230AEEB500EC46E9 /* digimetest.p12 */,
-				1E371AF2230AE5F100EC46E9 /* CryptographyTestingAssets.plist */,
-				1E371AE5230ACA1700EC46E9 /* CryptographyTests.swift */,
-			);
-			path = Security;
-			sourceTree = "<group>";
-		};
 		34F9DBFD98EC59890A9A1D4B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,10 +154,8 @@
 		5C16D5F6203ECABB00947940 /* DigiMeSDKExampleSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				1E9669F8230D72A600D392BA /* Security */,
 				5C16D5F7203ECABB00947940 /* DigiMeSDKExampleSwiftTests.swift */,
 				5C16D5F9203ECABB00947940 /* Info.plist */,
-				1E371AEB230AE1F500EC46E9 /* DigiMeSDKExampleSwiftTests-Bridging-Header.h */,
 			);
 			path = DigiMeSDKExampleSwiftTests;
 			sourceTree = "<group>";
@@ -313,7 +293,6 @@
 			files = (
 				5C2816CA22DF2D570052CCD7 /* POSTBOXMETADATA.json in Resources */,
 				5C16D5ED203ECABA00947940 /* LaunchScreen.storyboard in Resources */,
-				1E9669C5230D457100D392BA /* digimetest.p12 in Resources */,
 				5C16D5EA203ECABA00947940 /* Assets.xcassets in Resources */,
 				5C2816C922DF2D570052CCD7 /* POSTBOXDATA.json in Resources */,
 				5C16D5E8203ECABA00947940 /* Main.storyboard in Resources */,
@@ -325,8 +304,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E371AF5230AEEB500EC46E9 /* digimetest.p12 in Resources */,
-				1E371AF3230AE5F200EC46E9 /* CryptographyTestingAssets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,7 +359,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExampleSwift/Pods-DigiMeSDKExampleSwift-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-DigiMeSDKExampleSwift/Pods-DigiMeSDKExampleSwift-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Brotli/Brotli.framework",
 				"${BUILT_PRODUCTS_DIR}/DigiMeSDK/DigiMeSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/GZIP/GZIP.framework",
@@ -395,7 +372,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExampleSwift/Pods-DigiMeSDKExampleSwift-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DigiMeSDKExampleSwift/Pods-DigiMeSDKExampleSwift-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -419,7 +396,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C16D5F8203ECABB00947940 /* DigiMeSDKExampleSwiftTests.swift in Sources */,
-				1E371AE6230ACA1700EC46E9 /* CryptographyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
