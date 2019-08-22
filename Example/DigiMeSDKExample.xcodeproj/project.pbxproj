@@ -47,6 +47,7 @@
 		0F8DC0A9C8329629993FF78A /* DigiMeSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DigiMeSDK.podspec; path = ../DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		1E8749911F77A39600D4E028 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		1E9D8131230EEE4D0098913F /* DigiMeSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigiMeSDKExample.entitlements; sourceTree = "<group>"; };
 		1EC22EED230EE13B000D17AA /* DigiMeSDKExampleTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DigiMeSDKExampleTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
 		1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 				0643264620222B2500B10CD9 /* ViewController.h */,
 				0643264820222B2500B10CD9 /* ViewController.m */,
 				27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */,
+				1E9D8131230EEE4D0098913F /* DigiMeSDKExample.entitlements */,
 				0643264E202234CD00B10CD9 /* main.m */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -238,6 +240,11 @@
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 5LDPS9F284;
 						LastSwiftMigration = 0920;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -528,6 +535,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample.entitlements;
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -548,6 +556,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample.entitlements;
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -565,6 +574,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 474DF4025C1E92936A30F974 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample.entitlements;
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -588,6 +598,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B66E73B2275265A305667C89 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample.entitlements;
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
