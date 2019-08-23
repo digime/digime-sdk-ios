@@ -13,9 +13,9 @@
 
 @implementation DMECryptoUtilities
 
-+ (NSString *)privateKeyHexFromP12File:(NSString *)p12FileName password:(NSString *)password
++ (nullable NSString *)privateKeyHexFromP12File:(NSString *)p12FileName password:(NSString *)password bundle:(NSBundle *)bundle
 {
-    NSURL *fileUrl = [[NSBundle mainBundle] URLForResource:p12FileName withExtension:@"p12"];
+    NSURL *fileUrl = [bundle URLForResource:p12FileName withExtension:@"p12"];
     
     if (!fileUrl)
     {
@@ -24,17 +24,27 @@
     }
     
     NSData *pkcs12_data = [[NSData alloc] initWithContentsOfURL:fileUrl];
-    CFDataRef pkcs12_data_ref = (__bridge_retained CFDataRef)(pkcs12_data);
+    return [self privateKeyHexFromP12Data: pkcs12_data password:password];
+}
+
++ (nullable NSString *)privateKeyHexFromP12File:(NSString *)p12FileName password:(NSString *)password
+{
+    return [self privateKeyHexFromP12File:p12FileName password:password bundle:[NSBundle mainBundle]];
+}
+
++ (nullable NSString *)privateKeyHexFromP12Data:(NSData *)p12FileData password:(NSString *)password
+{
+    CFDataRef pkcs12_data_ref = (__bridge_retained CFDataRef)(p12FileData);
     
     NSDictionary *options = @{ (NSString *)kSecImportExportPassphrase : password };
     CFDictionaryRef options_ref = (__bridge_retained CFDictionaryRef)(options);
     
     CFArrayRef results_ref = NULL;
-
+    
     OSStatus err = SecPKCS12Import(pkcs12_data_ref, options_ref, &results_ref);
     CFRelease(pkcs12_data_ref);
     CFRelease(options_ref);
-
+    
     if (err != errSecSuccess)
     {
         //TODO log error
@@ -55,7 +65,7 @@
         NSLog(@"[DMECrypto] Error extracting privateKeyRef: %@", @((NSInteger) copy_err));
         return nil;
     }
-
+    
     CFErrorRef error_ref;
     CFDataRef data_ref = SecKeyCopyExternalRepresentation(private_key_ref, &error_ref);
     
