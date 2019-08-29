@@ -11,6 +11,7 @@
 		0643264A20222B2500B10CD9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264820222B2500B10CD9 /* ViewController.m */; };
 		0643264D20222D6000B10CD9 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264C20222D6000B10CD9 /* LogViewController.m */; };
 		0643264F202234CD00B10CD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264E202234CD00B10CD9 /* main.m */; };
+		1E7802CE2318138C0070D14E /* DMEApiClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7802CD2318138C0070D14E /* DMEApiClientTests.swift */; };
 		1EC22EF2230EE13C000D17AA /* CryptographyTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */; };
 		1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */; };
 		1EC22EF4230EE13C000D17AA /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EF1230EE13C000D17AA /* digimetest.p12 */; };
@@ -46,6 +47,7 @@
 		0643264E202234CD00B10CD9 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0F8DC0A9C8329629993FF78A /* DigiMeSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DigiMeSDK.podspec; path = ../DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		1E7802CD2318138C0070D14E /* DMEApiClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEApiClientTests.swift; sourceTree = "<group>"; };
 		1E8749911F77A39600D4E028 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		1EC22EED230EE13B000D17AA /* DigiMeSDKExampleTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DigiMeSDKExampleTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
@@ -89,6 +91,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E78024B2317D1CE0070D14E /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				1E7802CD2318138C0070D14E /* DMEApiClientTests.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		1EC22EEE230EE13C000D17AA /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				1EC22EED230EE13B000D17AA /* DigiMeSDKExampleTests-Bridging-Header.h */,
+				1E78024B2317D1CE0070D14E /* Network */,
 				1EC22EEE230EE13C000D17AA /* Security */,
 				607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */,
 				270A82F82301B77E000C2F56 /* DataRequestTests.swift */,
@@ -385,6 +396,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E7802CE2318138C0070D14E /* DMEApiClientTests.swift in Sources */,
 				1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */,
 				270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* ConfigurationTests.swift in Sources */,
