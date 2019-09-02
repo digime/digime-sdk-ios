@@ -17,6 +17,7 @@ static NSString * const kMALoggingViewDefaultFont = @"Courier-Bold";
 
 @property (nonatomic, strong) UITextView* textView;
 @property (nonatomic) CGFloat currentFontSize;
+@property (nonatomic) BOOL didSetupConstraints;
 
 @end
 
@@ -26,9 +27,20 @@ static NSString * const kMALoggingViewDefaultFont = @"Courier-Bold";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.didSetupConstraints = NO;
     self.currentFontSize = kMALoggingViewDefaultFontSize;
     [self generateTextView];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
     
+    if (!self.didSetupConstraints)
+    {
+        [self setupConstraints];
+        self.didSetupConstraints = YES;
+    }
 }
 
 - (void)increaseFontSize
@@ -64,6 +76,10 @@ static NSString * const kMALoggingViewDefaultFont = @"Courier-Bold";
     self.textView.font = [UIFont fontWithName:kMALoggingViewDefaultFont size:self.currentFontSize];
     self.textView.textColor = [UIColor whiteColor];
     [self.view addSubview:self.textView];
+}
+
+- (void)setupConstraints
+{
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     
     //Trailing
@@ -123,10 +139,10 @@ static NSString * const kMALoggingViewDefaultFont = @"Courier-Bold";
     }
     NSDate *now = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss.SSS";
+    formatter.dateFormat = @"HH:mm:ss.SSS";
     NSString *dateString = [formatter stringFromDate:now];
     NSString *prevText = self.textView.text;
-    self.textView.text = [NSString stringWithFormat:@"%@\n%@%@", prevText, dateString, text];
+    self.textView.text = [NSString stringWithFormat:@"%@\n%@:\n%@", prevText, dateString, text];
     [self scrollToBottom];
 }
 
