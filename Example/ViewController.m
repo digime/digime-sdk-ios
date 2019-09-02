@@ -37,7 +37,8 @@
     // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.
     NSString *p12Password = @"YOUR_P12_PASSWORD";
     
-    DMEClientConfiguration *configuration = [[DMEClientConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
+    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
+    configuration.debugLogEnabled = YES;
     if (configuration)
     {
         self.dmeClient = [[DMEPullClient alloc] initWithConfiguration:configuration];
