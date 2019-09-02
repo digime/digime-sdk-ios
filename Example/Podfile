@@ -6,7 +6,8 @@ target 'DigiMeSDKExample' do
   
   target 'DigiMeSDKExample_Tests' do
     inherit! :complete
-
+    
+    pod 'OHHTTPStubs/Swift'
     
   end
 end
