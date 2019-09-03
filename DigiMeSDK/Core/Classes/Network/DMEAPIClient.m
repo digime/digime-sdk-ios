@@ -216,6 +216,11 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
     return self.requestFactory.baseUrl;
 }
 
+- (BOOL)isDownloadingFiles
+{
+    return self.queue.operationCount > 0 && !self.queue.isSuspended;
+}
+
 #pragma mark - Key Value Observing
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
