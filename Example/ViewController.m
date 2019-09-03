@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) DMEPullClient *dmeClient;
 @property (nonatomic, strong) LogViewController *logVC;
+@property (nonatomic, strong) DMEPullConfiguration *configuration;
 
 @end
 
@@ -37,12 +38,9 @@
     // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.
     NSString *p12Password = @"YOUR_P12_PASSWORD";
     
-    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
-    configuration.debugLogEnabled = YES;
-    if (configuration)
-    {
-        self.dmeClient = [[DMEPullClient alloc] initWithConfiguration:configuration];
-    }
+    self.configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
+    self.configuration.debugLogEnabled = YES;
+    self.configuration.baseUrl = @"https://api.test06.devdigi.me/";
     
     self.logVC = [LogViewController new];
     [self addChildViewController:self.logVC];
@@ -74,6 +72,12 @@
 
 - (void)runTapped
 {
+    if (self.configuration)
+    {
+        self.dmeClient = nil;
+        self.dmeClient = [[DMEPullClient alloc] initWithConfiguration:self.configuration];
+    }
+    
     [self.logVC reset];
 
     [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
