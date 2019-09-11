@@ -40,7 +40,6 @@
     
     self.configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
     self.configuration.debugLogEnabled = YES;
-    self.configuration.baseUrl = @"https://api.test06.devdigi.me/";
     
     self.logVC = [LogViewController new];
     [self addChildViewController:self.logVC];
