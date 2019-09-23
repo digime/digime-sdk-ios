@@ -91,8 +91,8 @@
     NSURLComponents *components = [NSURLComponents new];
     components.scheme = @"digime";
     components.host = @"receipt";
-    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"contractid" value:self.configuration.contractId],
-                              [NSURLQueryItem queryItemWithName:@"appid" value:self.configuration.appId]];
+    components.queryItems = @[[NSURLQueryItem queryItemWithName:@"contractId" value:self.configuration.contractId],
+                              [NSURLQueryItem queryItemWithName:@"appId" value:self.configuration.appId]];
     
     NSURL *deeplinkingURL = components.URL;
     [[UIApplication sharedApplication] openURL:deeplinkingURL options:@{} completionHandler:nil];
