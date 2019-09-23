@@ -39,6 +39,7 @@ extern NSString * const kDMEPCloudType;
 extern NSString * const kDMEResultValueSuccess;
 extern NSString * const kDMEResultValueError;
 extern NSString * const kDMEResultValueCancel;
+extern NSString * const kDMEErrorReason;
 
 @class DMESessionManager;
 @protocol DMEDataRequest;

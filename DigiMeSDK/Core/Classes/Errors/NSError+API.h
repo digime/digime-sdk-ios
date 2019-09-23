@@ -12,4 +12,6 @@ static NSString * const DME_API_ERROR = @"me.digi.api";
 
 @interface NSError (API)
 
++ (NSError *)apiError:(NSString *)errorMessage;
+
 @end

@@ -48,6 +48,7 @@
 {
     NSString *result = parameters[kDMEResponse];
     NSString *sessionKey = parameters[kDMESessionKey];
+    NSString *reason = parameters[kDMEErrorReason];
     
     [self filterMetadata: parameters];
     
@@ -64,6 +65,10 @@
     else if ([result isEqualToString:kDMEResultValueError])
     {
         error = [NSError authError:AuthErrorGeneral];
+    }
+    else if (reason != nil && reason.length > 0)
+    {
+        error = [NSError apiError:parameters[kDMEErrorReason]];
     }
     
     if (self.authCompletionBlock)
