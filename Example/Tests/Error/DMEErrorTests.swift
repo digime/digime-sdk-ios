@@ -11,14 +11,16 @@ import XCTest
 class DMEErrorTests: XCTestCase {
 
     func testSDKError() {
-        XCTAssertEqual("me.digi.sdk", SDK_ERROR)
+        let error = NSError.sdkError(.noAppId) as NSError
+        XCTAssertEqual("me.digi.sdk", error.domain)
+    }
+    
+    func testSDKAuthorizationError() {
+        let error = NSError.authError(.general) as NSError
+        XCTAssertEqual("me.digi.sdk.authorization", error.domain)
     }
     
     func testSDKApiError() {
         XCTAssertEqual("me.digi.sdk.api", DME_API_ERROR)
-    }
-    
-    func testSDKAuthorizationError() {
-        XCTAssertEqual("me.digi.sdk.authorization", DME_AUTHORIZATION_ERROR)
     }
 }
