@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString * const DME_API_ERROR = @"me.digi.api";
+static NSString * const DME_API_ERROR = @"me.digi.sdk.api";
 
 @interface NSError (API)
 
