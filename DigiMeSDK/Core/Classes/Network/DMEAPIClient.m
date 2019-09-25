@@ -16,6 +16,7 @@
 #import "DMESessionManager.h"
 #import "NSData+DMECrypto.h"
 #import "NSString+DMECrypto.h"
+#import "DMEStatusLogger.h"
 
 static const NSString *kWorkQueue                               = @"kWorkQueue";
 
@@ -171,6 +172,13 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
     HandlerBlock handlerBlock = ^void(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
+        
+        
+        NSString *sdkStatusMessage = [DMEStatusLogger getSDKStatus:httpResp.allHeaderFields];
+        
+        if (sdkStatusMessage != nil) {
+            NSLog(@"%@", sdkStatusMessage);
+        }
         
         if (httpResp.statusCode >= 200 && httpResp.statusCode <= 299)
         {

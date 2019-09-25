@@ -16,5 +16,6 @@
 #import <DigiMeSDK/NSString+DMECrypto.h>
 #import <DigiMeSDK/DMEAPIClient.h>
 #import <DigiMeSDK/DMEClientConfiguration.h>
+#import <DigiMeSDK/DMEStatusLogger.h>
 
 #endif /* DigiMeSDKExampleTests_Bridging_Header_h */
