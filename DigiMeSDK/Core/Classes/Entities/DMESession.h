@@ -40,6 +40,7 @@ extern NSString * const kDMEResultValueSuccess;
 extern NSString * const kDMEResultValueError;
 extern NSString * const kDMEResultValueCancel;
 extern NSString * const kDMEErrorReason;
+extern NSString * const kDMEErrorReference;
 
 @class DMESessionManager;
 @protocol DMEDataRequest;

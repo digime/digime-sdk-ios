@@ -40,6 +40,7 @@ NSString * const kDMEResultValueSuccess = @"SUCCESS";
 NSString * const kDMEResultValueError = @"ERROR";
 NSString * const kDMEResultValueCancel = @"CANCEL";
 NSString * const kDMEErrorReason = @"reason";
+NSString * const kDMEErrorReference = @"reference";
 
 @implementation DMESession
 
