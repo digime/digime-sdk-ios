@@ -119,6 +119,8 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     }
     
     NSString *result = parameters[kDMEResponse];
+    NSString *reason = parameters[kDMEErrorReason];
+    NSString *reference = parameters[kDMEErrorReference];
     
     if (!error && [result isEqualToString:kDMEResultValueSuccess])
     {
@@ -127,6 +129,10 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     else if ([result isEqualToString:kDMEResultValueCancel])
     {
         error = [NSError authError:AuthErrorCancelled];
+    }
+    else if (reason != nil || reference != nil)
+    {
+        error = [NSError apiErrorWithReason:reason reference:reference];
     }
     else
     {
