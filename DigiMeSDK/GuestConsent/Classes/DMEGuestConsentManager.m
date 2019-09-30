@@ -119,7 +119,6 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     }
     
     NSString *result = parameters[kDMEResponse];
-    NSString *reason = parameters[kDMEErrorReason];
     NSString *reference = parameters[kDMEErrorReference];
     
     if (!error && [result isEqualToString:kDMEResultValueSuccess])
@@ -130,9 +129,9 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     {
         error = [NSError authError:AuthErrorCancelled];
     }
-    else if (reason != nil || reference != nil)
+    else if (reference != nil)
     {
-        error = [NSError apiErrorWithReason:reason reference:reference];
+        error = [NSError authError:AuthErrorFailedToRetriveContract reference:reference];
     }
     else
     {

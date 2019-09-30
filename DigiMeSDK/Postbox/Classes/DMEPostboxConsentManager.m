@@ -50,7 +50,6 @@
     NSString *sessionKey = parameters[kDMESessionKey];
     NSString *postboxId = parameters[kDMEPostboxId];
     NSString *postboxPublicKey = parameters[kDMEPostboxPublicKey];
-    NSString *reason = parameters[kDMEErrorReason];
     NSString *reference = parameters[kDMEErrorReference];
     
     [self filterMetadata: parameters];
@@ -70,9 +69,9 @@
     {
         err = [NSError authError:AuthErrorGeneral];
     }
-    else if (reason != nil || reference != nil)
+    else if (reference != nil)
     {
-        err = [NSError apiErrorWithReason:reason reference:reference];
+        err = [NSError authError:AuthErrorFailedToRetriveContract reference:reference];
     }
     else
     {

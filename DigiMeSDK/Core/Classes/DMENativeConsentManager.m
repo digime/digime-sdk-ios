@@ -48,7 +48,6 @@
 {
     NSString *result = parameters[kDMEResponse];
     NSString *sessionKey = parameters[kDMESessionKey];
-    NSString *reason = parameters[kDMEErrorReason];
     NSString *reference = parameters[kDMEErrorReference];
     
     [self filterMetadata: parameters];
@@ -67,9 +66,9 @@
     {
         error = [NSError authError:AuthErrorGeneral];
     }
-    else if (reason != nil || reference != nil)
+    else if (reference != nil)
     {
-        error = [NSError apiErrorWithReason:reason reference:reference];
+        error = [NSError authError:AuthErrorFailedToRetriveContract reference:reference];
     }
     
     if (self.authCompletionBlock)
