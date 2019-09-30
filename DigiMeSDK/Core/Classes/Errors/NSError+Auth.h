@@ -17,14 +17,13 @@ typedef NS_ENUM(NSInteger, AuthError) {
     AuthErrorCancelled  = 5, //authorization cancelled
     AuthErrorInvalidSession = 7, //invalid session
     AuthErrorInvalidSessionKey = 10, //session key returned by digi.me app is invalid
-    AuthErrorFailedToRetriveContract = 11,
 };
 
 @interface NSError (Auth)
 
 + (NSError *)authError:(AuthError)authError;
 + (NSError *)authError:(AuthError)authError additionalInfo:(nullable NSDictionary<NSErrorUserInfoKey, id> *)additionalInfo;
-+ (NSError *)authError:(AuthError)authError reference:(NSString *)errorReference;
++ (NSError *)authError:(AuthError)authError reference:(nullable NSString *)errorReference;
 
 @end
 

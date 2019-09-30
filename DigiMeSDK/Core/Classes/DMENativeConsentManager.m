@@ -64,11 +64,7 @@
     }
     else if ([result isEqualToString:kDMEResultValueError])
     {
-        error = [NSError authError:AuthErrorGeneral];
-    }
-    else if (reference != nil)
-    {
-        error = [NSError authError:AuthErrorFailedToRetriveContract reference:reference];
+        error = [NSError authError:AuthErrorGeneral reference:reference];
     }
     
     if (self.authCompletionBlock)

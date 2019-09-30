@@ -129,13 +129,9 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     {
         error = [NSError authError:AuthErrorCancelled];
     }
-    else if (reference != nil)
-    {
-        error = [NSError authError:AuthErrorFailedToRetriveContract reference:reference];
-    }
     else
     {
-        error = [NSError authError:AuthErrorGeneral];
+        error = [NSError authError:AuthErrorGeneral reference:reference];
     }
     
     [vc.presentingViewController dismissViewControllerAnimated:YES completion:^{

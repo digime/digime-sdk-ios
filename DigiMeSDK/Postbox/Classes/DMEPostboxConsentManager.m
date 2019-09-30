@@ -67,11 +67,7 @@
     }
     else if ([result isEqualToString:kDMEResultValueError] || !postboxId.length)
     {
-        err = [NSError authError:AuthErrorGeneral];
-    }
-    else if (reference != nil)
-    {
-        err = [NSError authError:AuthErrorFailedToRetriveContract reference:reference];
+        err = [NSError authError:AuthErrorGeneral reference:reference];
     }
     else
     {
