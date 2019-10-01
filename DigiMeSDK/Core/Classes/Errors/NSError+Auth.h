@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const DME_AUTHORIZATION_ERROR = @"me.digi.authorization";
+static NSString * const DME_AUTHORIZATION_ERROR = @"me.digi.sdk.authorization";
 
 typedef NS_ENUM(NSInteger, AuthError) {
     AuthErrorGeneral    = 1, //general error
@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, AuthError) {
 
 + (NSError *)authError:(AuthError)authError;
 + (NSError *)authError:(AuthError)authError additionalInfo:(nullable NSDictionary<NSErrorUserInfoKey, id> *)additionalInfo;
++ (NSError *)authError:(AuthError)authError reference:(nullable NSString *)errorReference;
 
 @end
 

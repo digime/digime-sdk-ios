@@ -91,7 +91,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
         NSString *baseUrl = parameters[kDMEAPIClientBaseUrl];
         NSString *callbackSuffix = @"%3A%2F%2FguestConsent-return%2F";
         NSString *callbackUrl = [NSString stringWithFormat:@"%@%@%@", kDMEClientSchemePrefix, self.configuration.appId, callbackSuffix];
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@apps/quark/direct-onboarding?sessionExchangeToken=%@&callbackUrl=%@", baseUrl, sessionKey, callbackUrl]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@apps/quark/v1/direct-onboarding?sessionExchangeToken=%@&callbackUrl=%@", baseUrl, sessionKey, callbackUrl]];
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:url];
         self.safariViewController.delegate = self;
         if (@available(iOS 11.0, *)) {
@@ -119,6 +119,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     }
     
     NSString *result = parameters[kDMEResponse];
+    NSString *reference = parameters[kDMEErrorReference];
     
     if (!error && [result isEqualToString:kDMEResultValueSuccess])
     {
@@ -130,7 +131,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     }
     else
     {
-        error = [NSError authError:AuthErrorGeneral];
+        error = [NSError authError:AuthErrorGeneral reference:reference];
     }
     
     [vc.presentingViewController dismissViewControllerAnimated:YES completion:^{
