@@ -119,6 +119,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     }
     
     NSString *result = parameters[kDMEResponse];
+    NSString *reference = parameters[kDMEErrorReference];
     
     if (!error && [result isEqualToString:kDMEResultValueSuccess])
     {
@@ -130,7 +131,7 @@ static NSString * const kDMEAPIClientBaseUrl = @"DMEAPIClientBaseUrl";
     }
     else
     {
-        error = [NSError authError:AuthErrorGeneral];
+        error = [NSError authError:AuthErrorGeneral reference:reference];
     }
     
     [vc.presentingViewController dismissViewControllerAnimated:YES completion:^{

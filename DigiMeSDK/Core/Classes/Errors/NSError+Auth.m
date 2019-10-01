@@ -45,4 +45,18 @@
     return NSLocalizedString(@"", @"");
 }
 
++ (NSError *)authError:(AuthError)authError reference:(nullable NSString *)errorReference
+{
+    if (errorReference != nil)
+    {
+        NSMutableDictionary<NSErrorUserInfoKey, id> *userInfo = [NSMutableDictionary dictionary];
+        userInfo[NSLocalizedDescriptionKey] = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Error reference:", nil), errorReference];
+        return [NSError errorWithDomain:DME_AUTHORIZATION_ERROR code:authError userInfo:[userInfo copy]];
+    }
+    else
+    {
+        return [[self class] authError:authError];
+    }
+}
+
 @end

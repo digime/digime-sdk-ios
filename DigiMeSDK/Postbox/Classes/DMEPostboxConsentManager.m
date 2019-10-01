@@ -50,6 +50,7 @@
     NSString *sessionKey = parameters[kDMESessionKey];
     NSString *postboxId = parameters[kDMEPostboxId];
     NSString *postboxPublicKey = parameters[kDMEPostboxPublicKey];
+    NSString *reference = parameters[kDMEErrorReference];
     
     [self filterMetadata: parameters];
     
@@ -66,7 +67,7 @@
     }
     else if ([result isEqualToString:kDMEResultValueError] || !postboxId.length)
     {
-        err = [NSError authError:AuthErrorGeneral];
+        err = [NSError authError:AuthErrorGeneral reference:reference];
     }
     else
     {

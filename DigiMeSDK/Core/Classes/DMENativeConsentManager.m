@@ -48,6 +48,7 @@
 {
     NSString *result = parameters[kDMEResponse];
     NSString *sessionKey = parameters[kDMESessionKey];
+    NSString *reference = parameters[kDMEErrorReference];
     
     [self filterMetadata: parameters];
     
@@ -63,7 +64,7 @@
     }
     else if ([result isEqualToString:kDMEResultValueError])
     {
-        error = [NSError authError:AuthErrorGeneral];
+        error = [NSError authError:AuthErrorGeneral reference:reference];
     }
     
     if (self.authCompletionBlock)

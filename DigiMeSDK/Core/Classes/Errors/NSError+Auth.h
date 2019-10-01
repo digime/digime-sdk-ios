@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, AuthError) {
 
 + (NSError *)authError:(AuthError)authError;
 + (NSError *)authError:(AuthError)authError additionalInfo:(nullable NSDictionary<NSErrorUserInfoKey, id> *)additionalInfo;
++ (NSError *)authError:(AuthError)authError reference:(nullable NSString *)errorReference;
 
 @end
 
