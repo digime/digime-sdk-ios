@@ -11,6 +11,7 @@
 #import "DMEClientCallbacks.h"
 
 @class DMEPullConfiguration;
+@class DMEFileList;
 @protocol DMEDataRequest;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -66,6 +67,13 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion Reports result of fetch. Either contains the file or an error if fetch failed
  */
 - (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion NS_SWIFT_NAME(getSessionData(fileId:completion:));
+
+/**
+ Fetches file list which contains current snapshot of the sync progress, and a list of files that are available for download.
+ 
+ @param completion Completion block executed once request has completed successfully.
+ */
+- (void)getFileListWithCompletion:(void (^)(DMEFileList * _Nullable fileList, NSError  * _Nullable error))completion;
 
 /**
  Fetches the accounts available for the authorized contract.
