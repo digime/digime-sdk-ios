@@ -12,12 +12,23 @@
 NS_ASSUME_NONNULL_BEGIN
 @protocol DMEDataRequest;
 
+@protocol DMEAPIClientDelegate <NSObject>
+
+@optional
+- (void)didFinishAllDownloads;
+
+@end
+
 @interface DMEAPIClient : NSObject
 
 /**
  Base url used for all API calls.
  */
 @property (nonatomic, strong, readonly) NSString *baseUrl;
+
+@property (nonatomic, weak, nullable) id<DMEAPIClientDelegate> delegate;
+
+@property (nonatomic, readonly) BOOL isDownloadingFiles;
 
 /**
  -init unavailable. Use -initWithConfig:
@@ -26,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
-
 
 /**
  Designated object initializer.

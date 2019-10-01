@@ -16,6 +16,7 @@
 #import <DigiMeSDK/NSString+DMECrypto.h>
 #import <DigiMeSDK/DMEAPIClient.h>
 #import <DigiMeSDK/DMEClientConfiguration.h>
+#import <DigiMeSDK/DMEStatusLogger.h>
 #import <DigiMeSDK/NSError+API.h>
 #import <DigiMeSDK/NSError+Auth.h>
 #import <DigiMeSDK/NSError+SDK.h>

@@ -11,7 +11,7 @@
 #import "DMEDataRequestSerializer.h"
 #import "NSData+DMECrypto.h"
 
-static NSString * const kDigiMeAPIVersion = @"v1.3";
+static NSString * const kDigiMeAPIVersion = @"v1.4";
 
 @interface DMERequestFactory()
 

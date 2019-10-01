@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) DMEPullClient *dmeClient;
 @property (nonatomic, strong) LogViewController *logVC;
+@property (nonatomic, strong) DMEPullConfiguration *configuration;
 
 @end
 
@@ -37,11 +38,8 @@
     // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.
     NSString *p12Password = @"YOUR_P12_PASSWORD";
     
-    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
-    if (configuration)
-    {
-        self.dmeClient = [[DMEPullClient alloc] initWithConfiguration:configuration];
-    }
+    self.configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
+    self.configuration.debugLogEnabled = YES;
     
     self.logVC = [LogViewController new];
     [self addChildViewController:self.logVC];
@@ -73,6 +71,12 @@
 
 - (void)runTapped
 {
+    if (self.configuration)
+    {
+        self.dmeClient = nil;
+        self.dmeClient = [[DMEPullClient alloc] initWithConfiguration:self.configuration];
+    }
+    
     [self.logVC reset];
 
     [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
@@ -107,11 +111,15 @@
 
 - (void)getSessionData
 {
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
+    [activityIndicator startAnimating];
+    
     [self.dmeClient getSessionDataWithDownloadHandler:^(DMEFile * _Nullable file, NSError * _Nullable error) {
         
         if (file != nil)
         {
-            [self.logVC logMessage:[NSString stringWithFormat:@"File Content: %@", file.fileContentAsJSON]];
+            [self.logVC logMessage:[NSString stringWithFormat:@"Downloaded file: %@, record count: %@", file.fileId, @(file.fileContentAsJSON.count)]];
         }
         
         if (error != nil)
@@ -120,11 +128,18 @@
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", fileId, error.localizedDescription]];
         }
     } completion:^(NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error != nil)
+            {
+                [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve session data failed: %@", error.localizedDescription]];
+            }
+            else
+            {
+                [self.logVC logMessage:@"-------------Finished fetching session data!-------------"];
+            }
         
-        if (error != nil)
-        {
-            [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve session data failed: %@", error.localizedDescription]];
-        }
+            self.navigationItem.leftBarButtonItem = nil;
+        });
     }];
 }
 

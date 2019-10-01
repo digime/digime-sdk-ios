@@ -11,7 +11,7 @@
 #import "DMEClient+Private.h"
 #import "DMEDataDecryptor.h"
 #import "DMEDataUnpacker.h"
-#import "DMEFilesDeserializer.h"
+#import "DMEFileListDeserializer.h"
 #import "DMEGuestConsentManager.h"
 #import "DMENativeConsentManager.h"
 #import "DMEPreConsentViewController.h"
@@ -19,15 +19,22 @@
 #import "DMEPullConfiguration.h"
 #import "DMESessionManager.h"
 #import "UIViewController+DMEExtension.h"
+#import "DMEOperation.h"
 #import <DigiMeSDK/DigiMeSDK-Swift.h>
 
-@interface DMEPullClient () <DMEPreConsentViewControllerDelegate>
+@interface DMEPullClient () <DMEPreConsentViewControllerDelegate, DMEAPIClientDelegate>
 
 @property (nonatomic, strong, readonly) DMEDataDecryptor *dataDecryptor;
 @property (nonatomic, strong, readonly) DMENativeConsentManager *nativeConsentManager;
 @property (nonatomic, strong, readonly) DMEGuestConsentManager *guestConsentManager;
 @property (nonatomic, strong, nullable) DMEPreConsentViewController *preconsentViewController;
 @property (nonatomic, strong, nullable) id<DMEDataRequest> scope;
+@property (nonatomic, strong, nullable) DMEFileListCache *fileCache;
+@property (nonatomic, readonly) DMEFileSyncStatus syncStatus;
+@property (nonatomic, strong, nullable) void (^sessionDataCompletion)(NSError * _Nullable);
+@property (nonatomic, strong, nullable) void (^sessionContentHandler)(DMEFile * _Nullable file, NSError * _Nullable error);
+@property (nonatomic) BOOL fetchingSessionData;
+@property (nonatomic) DMEFileList *sessionFileList;
 
 @end
 
@@ -43,6 +50,8 @@
         _nativeConsentManager = [[DMENativeConsentManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
         _guestConsentManager = [[DMEGuestConsentManager alloc] initWithSessionManager:self.sessionManager configuration:self.configuration];
         _dataDecryptor = [[DMEDataDecryptor alloc] initWithConfiguration:configuration];
+        _fileCache = [DMEFileListCache new];
+        _fetchingSessionData = NO;
     }
     
     return self;
@@ -224,7 +233,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
 }
 
 #pragma mark - Get File List
-- (void)getFileListWithCompletion:(void (^)(DMEFiles * _Nullable files, NSError  * _Nullable error))completion
+- (void)getFileListWithCompletion:(void (^)(DMEFileList * _Nullable fileList, NSError  * _Nullable error))completion
 {
     //validate session
     if (![self.sessionManager isSessionValid])
@@ -237,10 +246,10 @@ DMEAuthorizationCompletion _authorizationCompletion;
     //initiate file list request
     [self.apiClient requestFileListForSessionWithKey:self.sessionManager.currentSession.sessionKey success:^(NSData * _Nonnull data) {
         NSError *error;
-        DMEFiles *files = [DMEFilesDeserializer deserialize:data error:&error];
+        DMEFileList *fileList = [DMEFileListDeserializer deserialize:data error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            completion(files, error);
+            completion(fileList, error);
         });
     } failure:^(NSError * _Nonnull error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -249,32 +258,151 @@ DMEAuthorizationCompletion _authorizationCompletion;
     }];
 }
 
+#pragma mark - Sync Management
+- (void)evaluateSessionDataFetchProgress:(BOOL)schedulePoll
+{
+    @synchronized (self) {
+        if (!self.fetchingSessionData)
+        {
+            return;
+        }
+    }
+    
+    if (self.configuration.debugLogEnabled)
+    {
+        NSLog(@"DigiMeSDK: Sync status - %@", self.sessionFileList.syncStatusString);
+    }
+    
+    if (![self syncRunning] && !self.apiClient.isDownloadingFiles)
+    {
+        if (self.configuration.debugLogEnabled)
+        {
+            NSLog(@"DigiMeSDK: Finished fetching session data.");
+        }
+        
+        [self completeSessionDataFetchWithError:nil];
+        return;
+    }
+    else if (schedulePoll)
+    {
+        [self scheduleNextPoll];
+    }
+    
+    if ([self syncRunning])
+    {
+        [self refreshFileList];
+    }
+}
+
+- (void)refreshFileList
+{
+    if (self.configuration.debugLogEnabled)
+    {
+        NSLog(@"DigiMeSDK: Refreshing file list");
+    }
+    
+    [self getFileListWithCompletion:^(DMEFileList * _Nullable fileList, NSError * _Nullable error) {
+        
+        if (fileList == nil)
+        {
+            [self completeSessionDataFetchWithError:error];
+            return;
+        }
+        
+        self.sessionFileList = fileList;
+        NSArray <DMEFileListItem *> *newItems = [self.fileCache newItemsFromList:fileList.files];
+        
+        if (newItems.count > 0)
+        {
+            if (self.configuration.debugLogEnabled)
+            {
+                NSLog(@"DigiMeSDK: Found new files to sync: %@", @(newItems.count));
+            }
+            
+            [self.fileCache cacheItems:newItems];
+            NSArray *allFiles = [newItems valueForKey:@"name"];
+            
+            for (NSString *fileId in allFiles)
+            {
+                if (self.configuration.debugLogEnabled)
+                {
+                    NSLog(@"DigiMeSDK: Adding file to download queue: %@", fileId);
+                }
+                
+                [self getSessionDataForFileWithId:fileId completion:self.sessionContentHandler];
+            }
+        }
+    }];
+}
+
+- (void)scheduleNextPoll
+{
+    dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC));
+    
+    __weak __typeof(self)weakSelf = self;
+    dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        [strongSelf evaluateSessionDataFetchProgress:YES];
+    });
+}
+
+- (BOOL)syncRunning
+{
+    @synchronized (self) {
+        return self.syncStatus == DMEFileSyncStatusRunning || self.syncStatus == DMEFileSyncStatusPending || self.syncStatus == DMEFileSyncStatusUnknown;
+    }
+}
+
+- (DMEFileSyncStatus)syncStatus
+{
+    if (self.sessionFileList)
+    {
+        return self.sessionFileList.syncStatus;
+    }
+    
+    return DMEFileSyncStatusUnknown;
+}
+
+- (void)completeSessionDataFetchWithError:(NSError * _Nullable)error
+{
+    if (self.sessionDataCompletion)
+    {
+        self.sessionDataCompletion(error);
+        [self clearSessionData];
+    }
+}
+
+- (void)clearSessionData
+{
+    @synchronized (self) {
+        self.fetchingSessionData = NO;
+    }
+    
+    [self.fileCache reset];
+    self.sessionFileList = nil;
+    self.sessionDataCompletion = nil;
+    self.sessionContentHandler = nil;
+    self.apiClient.delegate = nil;
+}
+
 #pragma mark - Get File Content
 
 - (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(void (^)(NSError * _Nullable))completion
 {
-    [self getFileListWithCompletion:^(DMEFiles * _Nullable files, NSError * _Nullable error) {
-        if (files == nil)
-        {
-            completion(error);
-            return;
-        }
-        
-        __block NSInteger fileCountToDownload = files.fileIds.count;
-        
-        for (NSString *fileId in files.fileIds)
-        {
-            [self getSessionDataForFileWithId:fileId completion:^(DMEFile * _Nullable file, NSError * _Nullable error) {
-                fileContentHandler(file, error);
-                
-                fileCountToDownload -= 1;
-                if (fileCountToDownload == 0)
-                {
-                    completion(nil);
-                }
-            }];
-        }
-    }];
+    
+    if (self.fetchingSessionData)
+    {
+        NSLog(@"DigiMeSDK: Already fetching session data.");
+        return;
+    }
+    
+    [self.fileCache reset];
+    self.sessionDataCompletion = completion;
+    self.sessionContentHandler = fileContentHandler;
+    self.fetchingSessionData = YES;
+    self.apiClient.delegate = self;
+    [self refreshFileList];
+    [self scheduleNextPoll];
 }
 
 - (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
@@ -372,6 +500,18 @@ DMEAuthorizationCompletion _authorizationCompletion;
 - (NSDictionary <NSString *, id> *)metadata
 {
     return self.sessionManager.currentSession.metadata;
+}
+
+#pragma mark - DMEAPIClientDelegate
+- (void)didFinishAllDownloads
+{
+
+    if (self.configuration.debugLogEnabled)
+    {
+        NSLog(@"DigiMeSDK: Finished Downloading all files");
+    }
+    
+    [self evaluateSessionDataFetchProgress:NO];
 }
 
 @end
