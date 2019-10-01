@@ -50,7 +50,8 @@
     if (errorReference != nil)
     {
         NSMutableDictionary<NSErrorUserInfoKey, id> *userInfo = [NSMutableDictionary dictionary];
-        userInfo[NSLocalizedDescriptionKey] = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Error reference:", nil), errorReference];
+        NSString *errorDescription = [[self class] authDescription:authError];
+        userInfo[NSLocalizedDescriptionKey] = [NSString stringWithFormat:@"%@ %@ %@", errorDescription, NSLocalizedString(@"Reference:", nil), errorReference];
         return [NSError errorWithDomain:DME_AUTHORIZATION_ERROR code:authError userInfo:[userInfo copy]];
     }
     else
