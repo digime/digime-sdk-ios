@@ -50,9 +50,6 @@
         case SDKErrorNoURLScheme:
             return @"Missing CFBundleURLScheme in Info.plist. Please refer to the README file to see how to set the callback URL Scheme";
             
-        case SDKErrorSerializationError:
-            return @"Could not serialize custom DataRequest.";
-            
         case SDKErrorDigiMeAppNotFound:
             return @"DigiMe app is not installed";
     }
