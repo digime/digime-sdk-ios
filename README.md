@@ -1,4 +1,5 @@
-![](https://i.imgur.com/o1CNZZr.png)
+![](https://i.imgur.com/bIzD9uR.png)
+<p style="text-align:center;font-size:2em; position:relative;top:-40px">The private sharing platform</p>
 
 <p align="center">
     <a href="https://digime-api.slack.com/">
