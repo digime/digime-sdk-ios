@@ -95,13 +95,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1E3EB3082342609B00EBE824 /* Errors */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Errors;
-			sourceTree = "<group>";
-		};
 		1E78024B2317D1CE0070D14E /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +128,8 @@
 				5C2A09D42338F92D0098D20F /* DMELoggerTests.swift */,
 			);
 			path = Logger;
+			sourceTree = "<group>";
+		};
 		5C2A09D923390C670098D20F /* Error */ = {
 			isa = PBXGroup;
 			children = (
@@ -178,7 +173,6 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				1E3EB3082342609B00EBE824 /* Errors */,
 				1EC22EED230EE13B000D17AA /* DigiMeSDKExampleTests-Bridging-Header.h */,
 				5C2A09D32338F8D00098D20F /* Logger */,
 				5C2A09D923390C670098D20F /* Error */,
