@@ -11,7 +11,7 @@
     	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg" 
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Kotlin/Java">
+        <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
     </a>
     <a href="https://twitter.com/codevapor">
         <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
@@ -94,6 +94,35 @@ Because the digi.me Private Sharing SDK opens the digi.me app for authorization,
 
 ```
 
+<br>
+Additionally, you need to whitelist Digi.me app scheme in your `Info.plist`:
+
+```xml
+<key>LSApplicationQueriesSchemes</key>
+<array>
+<string>digime-ca-master</string>
+</array>
+```
+<br>
+And register custom URL scheme so that your app can receive the callback from Digi.me app. Still in `Info.plist` add:
+
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+<dict>
+<key>CFBundleTypeRole</key>
+<string>Editor</string>
+<key>CFBundleURLName</key>
+<string>Consent Access</string>
+<key>CFBundleURLSchemes</key>
+<array>
+<string>digime-ca-YOUR_APP_ID</string>
+</array>
+</dict>
+</array>
+```
+where `YOUR_APP_ID` should be replaced with your `AppID`.
+
 ### 3. Configuring the `DMEPullClient` object:
 `DMEPullClient` is the object you will primarily interface with to use the SDK. It is instantiated with a context, and a `DMEPullConfiguration` object. **The provided context should always be the main application context.**
 
@@ -115,7 +144,7 @@ Before you can access a user's data, you must obtain their consent. This is achi
 }];
 ```
 
-If a user grants consent, a session will be created and returned; this is used by subsequent calls to get data. If the user denies consent, an error stating this is returned. See [Handling Errors](#).
+If a user grants consent, a session will be created and returned; this is used by subsequent calls to get data. If the user denies consent, an error stating this is returned. See [Handling Errors](docs/ErrorHandling.md).
 
 ### 5. Fetching Data:
 
@@ -135,7 +164,7 @@ Once you have a session, you can request data. We strive to make this as simple 
 
 For each file, the first 'file handler' block will be called. If the download was successful, you will receive a `DMEFile` object. If the download fails, an error. 
 
-Once all files are downloaded, the second block will be invoked to inform you of this. In the case that the data stream is interrupted, or if the session obtained above isn't valid (it may have expired, for example), you will receive an error in the second block. See [Handling Errors](#).
+Once all files are downloaded, the second block will be invoked to inform you of this. In the case that the data stream is interrupted, or if the session obtained above isn't valid (it may have expired, for example), you will receive an error in the second block. See [Handling Errors](docs/ErrorHandling.md).
 
 `DMEFile` exposes the method `fileContentAsJSON` which attempts to decode the binary file into a JSON map, so that you can easily extract the values you need to power your app. Not all files can be represented as JSON, see [Raw Data]() for details.
 
@@ -147,6 +176,6 @@ We ask that when contributing, you ensure your changes meet our [Contribution Gu
 
 ## Further Reading
 
-The topics discussed under [Quick Start]() are just a small part of the power digi.me Private Sharing gives to data consumers such as yourself. We highly encourage you to explore the [Documentation]() for more in-depth examples and guides, as well as troubleshooting advice and showcases of the plethora of capabilities on offer.
+The topics discussed under [Quick Start]() are just a small part of the power digi.me Private Sharing gives to data consumers such as yourself. We highly encourage you to explore the [Documentation](docs) for more in-depth examples and guides, as well as troubleshooting advice and showcases of the plethora of capabilities on offer.
 
 Additionally, there are a number of example apps built on digi.me in the examples folder. Feel free to have a look at those to get an insight into the power of Private Sharing.
