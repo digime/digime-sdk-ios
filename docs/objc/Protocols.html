@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Protocols  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Section/Protocols" class="dashAnchor"></a>
+    <a title="Protocols  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">DigiMeSDK Docs</a> (41% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">DigiMeSDK Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Protocols  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Categories.html">Categories</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Categories/NSError%28Auth%29.html">NSError(Auth)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Categories/NSError%28SDK%29.html">NSError(SDK)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/DMEAccount.html">DMEAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEAccounts.html">DMEAccounts</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEAppCommunicator.html">DMEAppCommunicator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEBaseConfiguration.html">DMEBaseConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEClient.html">DMEClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEFileList.html">DMEFileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEPostbox.html">DMEPostbox</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEPullClient.html">DMEPullClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEPullConfiguration.html">DMEPullConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEPushClient.html">DMEPushClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DMETimeRange.html">DMETimeRange</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:NSError+API.h@DME_API_ERROR">DME_API_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:NSError+SDK.h@SDK_ERROR">SDK_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEClientSchemePrefix">kDMEClientSchemePrefix</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEContractId">kDMEContractId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEContractType">kDMEContractType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEDataRequest">kDMEDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEDebugAppId">kDMEDebugAppId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEDebugBundleVersion">kDMEDebugBundleVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEDebugPlatform">kDMEDebugPlatform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEDeviceId">kDMEDeviceId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEDigiMeVersion">kDMEDigiMeVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEErrorReference">kDMEErrorReference</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEFetchContractDetails">kDMEFetchContractDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMELibraryId">kDMELibraryId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEPCloudType">kDMEPCloudType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEPostboxId">kDMEPostboxId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEPostboxPublicKey">kDMEPostboxPublicKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMERegisteredAppID">kDMERegisteredAppID</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEResponse">kDMEResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEResultValueCancel">kDMEResultValueCancel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEResultValueError">kDMEResultValueError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEResultValueSuccess">kDMEResultValueSuccess</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMESessionKey">kDMESessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMETimingDataGetAllFiles">kDMETimingDataGetAllFiles</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMETimingDataGetFile">kDMETimingDataGetFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMETimingFetchContractPermission">kDMETimingFetchContractPermission</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMETimingFetchDataGetAccount">kDMETimingFetchDataGetAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMETimingFetchDataGetFileList">kDMETimingFetchDataGetFileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMETimingFetchSessionKey">kDMETimingFetchSessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMETimingTotal">kDMETimingTotal</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEUpdateContractPermission">kDMEUpdateContractPermission</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kDMEUserId">kDMEUserId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Constants.html#/c:@kFileIdKey">kFileIdKey</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/AuthError.html">AuthError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/DMEFileSyncStatus.html">DMEFileSyncStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SDKError.html">SDKError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/DMEClientConfiguration.html">DMEClientConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/DMEDataRequest.html">DMEDataRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Type%20Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxDataPushCompletion">DMEPostboxDataPushCompletion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Protocols</h1>
+            <p>The following protocols are available globally.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)DMEClientConfiguration"></a>
+                    <a name="//apple_ref/objc/Protocol/DMEClientConfiguration" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)DMEClientConfiguration">DMEClientConfiguration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Protocols/DMEClientConfiguration.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@protocol</span> <span class="nc">DMEClientConfiguration</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span>
+
+<span class="cm">/**
+ Connection time out in seconds. Defaults to 25.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSTimeInterval</span> <span class="n">globalTimeout</span><span class="p">;</span>
+
+<span class="cm">/**
+ Controls API retries. Default to YES.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">retryOnFail</span><span class="p">;</span>
+
+<span class="cm">/**
+ Delay in milliseconds before retrying failed request. Defaults to 750.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSInteger</span> <span class="n">retryDelay</span><span class="p">;</span>
+
+<span class="cm">/**
+ Controls whether retries occur with delay. Defaults to YES.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">retryWithExponentialBackOff</span><span class="p">;</span>
+
+<span class="cm">/**
+ Maximum number of retries before failing. Defaults to 5.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSInteger</span> <span class="n">maxRetryCount</span><span class="p">;</span>
+
+<span class="cm">/**
+ Maximum concurrent network operations. Defaults to 5.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSInteger</span> <span class="n">maxConcurrentRequests</span><span class="p">;</span>
+
+<span class="cm">/**
+ Determines whether additional SDK DEBUG logging is enabled. Defaults to NO.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">debugLogEnabled</span><span class="p">;</span>
+
+<span class="cm">/**
+ Base URL for all outgoing Network operations.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">baseUrl</span><span class="p">;</span>
+
+<span class="cm">/**
+ Your application Id. This property MUST be set before you can call authorize.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">appId</span><span class="p">;</span>
+
+<span class="cm">/**
+ Your contract Id. This property MUST be set before you can call authorize.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">contractId</span><span class="p">;</span>
+
+<span class="k">@end</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">DMEClientConfiguration</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)DMEDataRequest"></a>
+                    <a name="//apple_ref/objc/Protocol/DMEDataRequest" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)DMEDataRequest">DMEDataRequest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Protocols/DMEDataRequest.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@protocol</span> <span class="nc">DMEDataRequest</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span>
+
+<span class="n">NS_ASSUME_NONNULL_BEGIN</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n"><a href="Classes/DMETimeRange.html">DMETimeRange</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">timeRanges</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">context</span><span class="p">;</span>
+
+<span class="n">NS_ASSUME_NONNULL_END</span>
+
+<span class="k">@end</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">DMEDataRequest</span> <span class="p">:</span> <span class="kt">NSObjectProtocol</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="https://github.com/digime/digime-sdk-ios" target="_blank" rel="external">digi.me Ltd.</a>. All rights reserved. (Last updated: 2019-10-07)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

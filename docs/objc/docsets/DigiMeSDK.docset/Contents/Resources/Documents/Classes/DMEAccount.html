@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DMEAccount Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Class/DMEAccount" class="dashAnchor"></a>
+    <a title="DMEAccount Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">DigiMeSDK Docs</a> (41% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">DigiMeSDK Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        DMEAccount Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Categories.html">Categories</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Categories/NSError%28Auth%29.html">NSError(Auth)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Categories/NSError%28SDK%29.html">NSError(SDK)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DMEAccount.html">DMEAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEAccounts.html">DMEAccounts</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEAppCommunicator.html">DMEAppCommunicator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEBaseConfiguration.html">DMEBaseConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEClient.html">DMEClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEFileList.html">DMEFileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPostbox.html">DMEPostbox</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPullClient.html">DMEPullClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPullConfiguration.html">DMEPullConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPushClient.html">DMEPushClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:objc(cs)DMEScope">DMEScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMETimeRange.html">DMETimeRange</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:NSError+API.h@DME_API_ERROR">DME_API_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:NSError+SDK.h@SDK_ERROR">SDK_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEClientSchemePrefix">kDMEClientSchemePrefix</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEContractId">kDMEContractId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEContractType">kDMEContractType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDataRequest">kDMEDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDebugAppId">kDMEDebugAppId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDebugBundleVersion">kDMEDebugBundleVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDebugPlatform">kDMEDebugPlatform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDeviceId">kDMEDeviceId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDigiMeVersion">kDMEDigiMeVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEErrorReference">kDMEErrorReference</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEFetchContractDetails">kDMEFetchContractDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMELibraryId">kDMELibraryId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEPCloudType">kDMEPCloudType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEPostboxId">kDMEPostboxId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEPostboxPublicKey">kDMEPostboxPublicKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMERegisteredAppID">kDMERegisteredAppID</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResponse">kDMEResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResultValueCancel">kDMEResultValueCancel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResultValueError">kDMEResultValueError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResultValueSuccess">kDMEResultValueSuccess</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMESessionKey">kDMESessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingDataGetAllFiles">kDMETimingDataGetAllFiles</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingDataGetFile">kDMETimingDataGetFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchContractPermission">kDMETimingFetchContractPermission</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchDataGetAccount">kDMETimingFetchDataGetAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchDataGetFileList">kDMETimingFetchDataGetFileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchSessionKey">kDMETimingFetchSessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingTotal">kDMETimingTotal</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEUpdateContractPermission">kDMEUpdateContractPermission</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEUserId">kDMEUserId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kFileIdKey">kFileIdKey</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/AuthError.html">AuthError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DMEFileSyncStatus.html">DMEFileSyncStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SDKError.html">SDKError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/DMEClientConfiguration.html">DMEClientConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DMEDataRequest.html">DMEDataRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Type%20Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxDataPushCompletion">DMEPostboxDataPushCompletion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>DMEAccount</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEAccount</span> <span class="p">:</span> <span class="nc">NSObject</span>
+
+<span class="cm">/**
+ -init unavailable. Use -initWithId:name:number:service::
+ 
+ @return instancetype.
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">init</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+<span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+
+<span class="cm">/**
+ Designated object initializer
+
+ @param identifier NSString
+ @param name NSString
+ @param number NSString
+ @param service DMEServiceDecriptor
+ @return instancetype
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithId</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span> <span class="nf">name</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">name</span> <span class="nf">number</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">number</span> <span class="nf">service</span><span class="p">:(</span><span class="n">nullable</span> <span class="n"><a href="../Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">service</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Account identifier.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nullable</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">identifier</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Account name.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nullable</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Account number.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nullable</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">number</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Account service descriptor.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nullable</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n"><a href="../Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a></span> <span class="o">*</span><span class="n">service</span><span class="p">;</span>
+
+<span class="k">@end</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEAccount(im)init"></a>
+                    <a name="//apple_ref/objc/Method/-init" class="dashAnchor"></a>
+                    <a class="token discouraged" href="#/c:objc(cs)DMEAccount(im)init">-init</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="aside aside-unavailable">
+                        <p class="aside-title">Unavailable</p>
+                        
+                      </div>
+                      <div class="abstract">
+                        <p>-init unavailable. Use -initWithId:name:number:service::</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span><span class="n">init</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>instancetype.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEAccount(cm)new"></a>
+                    <a name="//apple_ref/objc/Method/+new" class="dashAnchor"></a>
+                    <a class="token discouraged" href="#/c:objc(cs)DMEAccount(cm)new">+new</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="aside aside-unavailable">
+                        <p class="aside-title">Unavailable</p>
+                        
+                      </div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEAccount(im)initWithId:name:number:service:"></a>
+                    <a name="//apple_ref/objc/Method/-initWithId:name:number:service:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEAccount(im)initWithId:name:number:service:">-initWithId:name:number:service:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Designated object initializer</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithId</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span>
+                              <span class="nf">name</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">name</span>
+                            <span class="nf">number</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">number</span>
+                           <span class="nf">service</span><span class="p">:(</span><span class="n">nullable</span> <span class="n"><a href="../Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">service</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="n">id</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">number</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">service</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a></span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>NSString</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>NSString</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>number</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>NSString</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>service</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>DMEServiceDecriptor</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>instancetype</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEAccount(py)identifier"></a>
+                    <a name="//apple_ref/objc/Property/identifier" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEAccount(py)identifier">identifier</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Account identifier.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">identifier</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEAccount(py)name"></a>
+                    <a name="//apple_ref/objc/Property/name" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEAccount(py)name">name</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Account name.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEAccount(py)number"></a>
+                    <a name="//apple_ref/objc/Property/number" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEAccount(py)number">number</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Account number.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">number</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">number</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEAccount(py)service"></a>
+                    <a name="//apple_ref/objc/Property/service" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEAccount(py)service">service</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Account service descriptor.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n"><a href="../Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a></span> <span class="o">*</span><span class="n">service</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">service</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="https://github.com/digime/digime-sdk-ios" target="_blank" rel="external">digi.me Ltd.</a>. All rights reserved. (Last updated: 2019-10-07)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

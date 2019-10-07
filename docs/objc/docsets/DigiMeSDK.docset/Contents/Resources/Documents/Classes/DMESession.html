@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DMESession Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Class/DMESession" class="dashAnchor"></a>
+    <a title="DMESession Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">DigiMeSDK Docs</a> (41% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">DigiMeSDK Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        DMESession Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Categories.html">Categories</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Categories/NSError%28Auth%29.html">NSError(Auth)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Categories/NSError%28SDK%29.html">NSError(SDK)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DMEAccount.html">DMEAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEAccounts.html">DMEAccounts</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEAppCommunicator.html">DMEAppCommunicator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEBaseConfiguration.html">DMEBaseConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEClient.html">DMEClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEFileList.html">DMEFileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPostbox.html">DMEPostbox</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPullClient.html">DMEPullClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPullConfiguration.html">DMEPullConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPushClient.html">DMEPushClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:objc(cs)DMEScope">DMEScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMETimeRange.html">DMETimeRange</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:NSError+API.h@DME_API_ERROR">DME_API_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:NSError+SDK.h@SDK_ERROR">SDK_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEClientSchemePrefix">kDMEClientSchemePrefix</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEContractId">kDMEContractId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEContractType">kDMEContractType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDataRequest">kDMEDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDebugAppId">kDMEDebugAppId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDebugBundleVersion">kDMEDebugBundleVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDebugPlatform">kDMEDebugPlatform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDeviceId">kDMEDeviceId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDigiMeVersion">kDMEDigiMeVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEErrorReference">kDMEErrorReference</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEFetchContractDetails">kDMEFetchContractDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMELibraryId">kDMELibraryId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEPCloudType">kDMEPCloudType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEPostboxId">kDMEPostboxId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEPostboxPublicKey">kDMEPostboxPublicKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMERegisteredAppID">kDMERegisteredAppID</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResponse">kDMEResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResultValueCancel">kDMEResultValueCancel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResultValueError">kDMEResultValueError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResultValueSuccess">kDMEResultValueSuccess</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMESessionKey">kDMESessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingDataGetAllFiles">kDMETimingDataGetAllFiles</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingDataGetFile">kDMETimingDataGetFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchContractPermission">kDMETimingFetchContractPermission</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchDataGetAccount">kDMETimingFetchDataGetAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchDataGetFileList">kDMETimingFetchDataGetFileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchSessionKey">kDMETimingFetchSessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingTotal">kDMETimingTotal</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEUpdateContractPermission">kDMEUpdateContractPermission</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEUserId">kDMEUserId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kFileIdKey">kFileIdKey</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/AuthError.html">AuthError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DMEFileSyncStatus.html">DMEFileSyncStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SDKError.html">SDKError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/DMEClientConfiguration.html">DMEClientConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DMEDataRequest.html">DMEDataRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Type%20Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxDataPushCompletion">DMEPostboxDataPushCompletion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>DMESession</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMESession</span> <span class="p">:</span> <span class="nc">NSObject</span>
+
+<span class="cm">/**
+ -init unavailable. Use -initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:
+ 
+ @return instancetype
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">init</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+<span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Designated object initializer.
+ 
+ @param sessionKey Session key
+ @param exchangeToken Session exchange token
+ @param expiryDate Session expiry date
+ @param contractId The contract identifier this session relates to
+ @param sessionManager The manager managing this session
+ @return instancetype
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithSessionKey</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">sessionKey</span> <span class="nf">exchangeToken</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">exchangeToken</span> <span class="nf">expiryDate</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">expiryDate</span> <span class="nf">contractId</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">contractId</span> <span class="nf">sessionManager</span><span class="p">:(</span><span class="n">DMESessionManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">sessionManager</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Session Key.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">sessionKey</span><span class="p">;</span>
+
+<span class="cm">/**
+ Session key exchange token.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">sessionExchangeToken</span><span class="p">;</span>
+
+<span class="cm">/**
+ Date when session will expire.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">expiryDate</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Session manager attached to the session.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">weak</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">DMESessionManager</span> <span class="o">*</span><span class="n">sessionManager</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Date session was created.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">createdDate</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Session Identifier - this is currently set to a contract identifier.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">sessionId</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Session Scope - this is the limiting scope object used to create session.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/DMEDataRequest.html">DMEDataRequest</a></span><span class="o">&gt;</span> <span class="n">scope</span><span class="p">;</span>
+
+
+<span class="cm">/**
+ Session metadata. Contains additional debug information collected during the session lifetime.
+ */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">metadata</span><span class="p">;</span>
+
+<span class="k">@end</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(im)init"></a>
+                    <a name="//apple_ref/objc/Method/-init" class="dashAnchor"></a>
+                    <a class="token discouraged" href="#/c:objc(cs)DMESession(im)init">-init</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="aside aside-unavailable">
+                        <p class="aside-title">Unavailable</p>
+                        
+                      </div>
+                      <div class="abstract">
+                        <p>-init unavailable. Use -initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span><span class="n">init</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>instancetype</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(cm)new"></a>
+                    <a name="//apple_ref/objc/Method/+new" class="dashAnchor"></a>
+                    <a class="token discouraged" href="#/c:objc(cs)DMESession(cm)new">+new</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="aside aside-unavailable">
+                        <p class="aside-title">Unavailable</p>
+                        
+                      </div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(im)initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:"></a>
+                    <a name="//apple_ref/objc/Method/-initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMESession(im)initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:">-initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Designated object initializer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithSessionKey</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">sessionKey</span>
+                             <span class="nf">exchangeToken</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">exchangeToken</span>
+                                <span class="nf">expiryDate</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">expiryDate</span>
+                                <span class="nf">contractId</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">contractId</span>
+                            <span class="nf">sessionManager</span><span class="p">:</span>
+                                <span class="p">(</span><span class="n">nonnull</span> <span class="n">DMESessionManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">sessionManager</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">sessionKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">exchangeToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">expiryDate</span><span class="p">:</span> <span class="kt">Date</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">sessionManager</span><span class="p">:</span> <span class="kt">DMESessionManager</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>sessionKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Session key</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>exchangeToken</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Session exchange token</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>expiryDate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Session expiry date</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>contractId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The contract identifier this session relates to</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>sessionManager</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The manager managing this session</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>instancetype</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(py)sessionKey"></a>
+                    <a name="//apple_ref/objc/Property/sessionKey" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMESession(py)sessionKey">sessionKey</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Session Key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">sessionKey</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">sessionKey</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(py)sessionExchangeToken"></a>
+                    <a name="//apple_ref/objc/Property/sessionExchangeToken" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMESession(py)sessionExchangeToken">sessionExchangeToken</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Session key exchange token.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">sessionExchangeToken</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">sessionExchangeToken</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(py)expiryDate"></a>
+                    <a name="//apple_ref/objc/Property/expiryDate" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMESession(py)expiryDate">expiryDate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Date when session will expire.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">expiryDate</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">expiryDate</span><span class="p">:</span> <span class="kt">Date</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(py)sessionManager"></a>
+                    <a name="//apple_ref/objc/Property/sessionManager" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMESession(py)sessionManager">sessionManager</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Session manager attached to the session.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">DMESessionManager</span> <span class="o">*</span><span class="n">_Nullable</span> <span class="n">sessionManager</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">weak</span> <span class="k">var</span> <span class="nv">sessionManager</span><span class="p">:</span> <span class="kt">DMESessionManager</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(py)createdDate"></a>
+                    <a name="//apple_ref/objc/Property/createdDate" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMESession(py)createdDate">createdDate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Date session was created.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">createdDate</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">createdDate</span><span class="p">:</span> <span class="kt">Date</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(py)sessionId"></a>
+                    <a name="//apple_ref/objc/Property/sessionId" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMESession(py)sessionId">sessionId</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Session Identifier - this is currently set to a contract identifier.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">sessionId</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">sessionId</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(py)scope"></a>
+                    <a name="//apple_ref/objc/Property/scope" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMESession(py)scope">scope</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Session Scope - this is the limiting scope object used to create session.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/DMEDataRequest.html">DMEDataRequest</a></span><span class="o">&gt;</span> <span class="n">scope</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMESession(py)metadata"></a>
+                    <a name="//apple_ref/objc/Property/metadata" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMESession(py)metadata">metadata</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Session metadata. Contains additional debug information collected during the session lifetime.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readonly</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span>
+    <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">metadata</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">metadata</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="https://github.com/digime/digime-sdk-ios" target="_blank" rel="external">digi.me Ltd.</a>. All rights reserved. (Last updated: 2019-10-07)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

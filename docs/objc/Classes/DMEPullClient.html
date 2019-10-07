@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DMEPullClient Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/objc/Class/DMEPullClient" class="dashAnchor"></a>
+    <a title="DMEPullClient Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">DigiMeSDK Docs</a> (41% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">DigiMeSDK Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        DMEPullClient Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Categories.html">Categories</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Categories/NSError%28Auth%29.html">NSError(Auth)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Categories/NSError%28SDK%29.html">NSError(SDK)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DMEAccount.html">DMEAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEAccounts.html">DMEAccounts</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEAppCommunicator.html">DMEAppCommunicator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEBaseConfiguration.html">DMEBaseConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEClient.html">DMEClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEFileList.html">DMEFileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPostbox.html">DMEPostbox</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPullClient.html">DMEPullClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPullConfiguration.html">DMEPullConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEPushClient.html">DMEPushClient</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:objc(cs)DMEScope">DMEScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DMETimeRange.html">DMETimeRange</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Constants.html">Constants</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:NSError+API.h@DME_API_ERROR">DME_API_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:NSError+SDK.h@SDK_ERROR">SDK_ERROR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEClientSchemePrefix">kDMEClientSchemePrefix</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEContractId">kDMEContractId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEContractType">kDMEContractType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDataRequest">kDMEDataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDebugAppId">kDMEDebugAppId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDebugBundleVersion">kDMEDebugBundleVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDebugPlatform">kDMEDebugPlatform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDeviceId">kDMEDeviceId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEDigiMeVersion">kDMEDigiMeVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEErrorReference">kDMEErrorReference</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEFetchContractDetails">kDMEFetchContractDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMELibraryId">kDMELibraryId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEPCloudType">kDMEPCloudType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEPostboxId">kDMEPostboxId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEPostboxPublicKey">kDMEPostboxPublicKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMERegisteredAppID">kDMERegisteredAppID</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResponse">kDMEResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResultValueCancel">kDMEResultValueCancel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResultValueError">kDMEResultValueError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEResultValueSuccess">kDMEResultValueSuccess</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMESessionKey">kDMESessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingDataGetAllFiles">kDMETimingDataGetAllFiles</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingDataGetFile">kDMETimingDataGetFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchContractPermission">kDMETimingFetchContractPermission</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchDataGetAccount">kDMETimingFetchDataGetAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchDataGetFileList">kDMETimingFetchDataGetFileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingFetchSessionKey">kDMETimingFetchSessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMETimingTotal">kDMETimingTotal</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEUpdateContractPermission">kDMEUpdateContractPermission</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kDMEUserId">kDMEUserId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Constants.html#/c:@kFileIdKey">kFileIdKey</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/AuthError.html">AuthError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DMEFileSyncStatus.html">DMEFileSyncStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SDKError.html">SDKError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/DMEClientConfiguration.html">DMEClientConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DMEDataRequest.html">DMEDataRequest</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Type%20Definitions.html">Type Definitions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxDataPushCompletion">DMEPostboxDataPushCompletion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>DMEPullClient</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEPullClient</span><span class="p">:</span> <span class="nc"><a href="../Classes/DMEClient.html">DMEClient</a></span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithConfiguration</span><span class="p">:(</span><span class="n"><a href="../Classes/DMEPullConfiguration.html">DMEPullConfiguration</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">configuration</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
+
+<span class="cm">/**
+ Initializes contract authentication.
+ This will first attempt to create a session.
+ If session creation is successful will then follow different authentication flows
+ depending on the value of `guestEnabled` flag in the configuration:
+ - Guest is enabled:
+         Either redirect to the digi.me application (if installed) or present options for user to choose a one-time share or download the digi.me app.
+ - Guest is not enabled:
+         Redirect to the digi.me application (if installed).
+ @param completion Block called when authorization has completed
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeWithCompletion</span><span class="p">:(</span><span class="n">DMEAuthorizationCompletion</span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span>
+
+<span class="cm">/**
+ Initializes contract authentication with custom scope.
+ This will first attempt to create a session.
+ If session creation is successful will then follow different authentication flows
+ depending on the value of `guestEnabled` flag in the configuration:
+ - Guest is enabled:
+ Either redirect to the digi.me application (if installed) or present options for user to choose a one-time share or download the digi.me app.
+ - Guest is not enabled:
+ Redirect to the digi.me application (if installed).
+ @param scope Custom scope that will be applied to available data.
+ @param completion Block called when authorization has completed
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeWithScope</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/DMEDataRequest.html">DMEDataRequest</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">scope</span> <span class="nf">completion</span><span class="p">:(</span><span class="n">DMEAuthorizationCompletion</span><span class="p">)</span><span class="nv">completion</span> <span class="n">NS_SWIFT_NAME</span><span class="p">(</span><span class="n">authorize</span><span class="p">(</span><span class="n">scope</span><span class="o">:</span><span class="n">completion</span><span class="o">:</span><span class="p">));</span>
+
+<span class="cm">/**
+ Fetches content for all the requested files.
+ 
+ An attempt is made to fetch each requested file and the result of each attempt is passed back via the download handler.
+ Therefore multiple the handlers may be called concurrently, so the handler should allow for this.
+ 
+ N.B. A session must already have been authorized
+ 
+ @param fileContentHandler Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
+ @param completion Contains nil once all file fetches have been attempted, or an error if unable to attempt any fetch
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">getSessionDataWithDownloadHandler</span><span class="p">:(</span><span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a></span><span class="p">)</span><span class="nv">fileContentHandler</span> <span class="nf">completion</span><span class="p">:(</span><span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">))</span><span class="nv">completion</span> <span class="n">NS_SWIFT_NAME</span><span class="p">(</span><span class="n">getSessionData</span><span class="p">(</span><span class="n">downloadHandler</span><span class="o">:</span><span class="n">completion</span><span class="o">:</span><span class="p">));</span>
+
+<span class="cm">/**
+ Fetches file content for fileId. The fileId may be retrieved from the download handler in getSessionDataWithDownloadHandler:completion:.
+ 
+ @param fileId NSString id if the file to fetch.
+ @param completion Reports result of fetch. Either contains the file or an error if fetch failed
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">getSessionDataForFileWithId</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">fileId</span> <span class="nf">completion</span><span class="p">:(</span><span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a></span><span class="p">)</span><span class="nv">completion</span> <span class="n">NS_SWIFT_NAME</span><span class="p">(</span><span class="n">getSessionData</span><span class="p">(</span><span class="n">fileId</span><span class="o">:</span><span class="n">completion</span><span class="o">:</span><span class="p">));</span>
+
+<span class="cm">/**
+ Fetches file list which contains current snapshot of the sync progress, and a list of files that are available for download.
+ 
+ @param completion Completion block executed once request has completed successfully.
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">getFileListWithCompletion</span><span class="p">:(</span><span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n"><a href="../Classes/DMEFileList.html">DMEFileList</a></span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">fileList</span><span class="p">,</span> <span class="n">NSError</span>  <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">))</span><span class="nv">completion</span><span class="p">;</span>
+
+<span class="cm">/**
+ Fetches the accounts available for the authorized contract.
+ 
+ @param completion Reports result of fetch. Either contains the accounts or an error if fetch failed
+ */</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">getSessionAccountsWithCompletion</span><span class="p">:(</span><span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a></span><span class="p">)</span><span class="nv">completion</span> <span class="n">NS_SWIFT_NAME</span><span class="p">(</span><span class="n">getSessionAccounts</span><span class="p">(</span><span class="n">completion</span><span class="o">:</span><span class="p">));</span>
+
+<span class="k">@end</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPullClient(im)initWithConfiguration:"></a>
+                    <a name="//apple_ref/objc/Method/-initWithConfiguration:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPullClient(im)initWithConfiguration:">-initWithConfiguration:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithConfiguration</span><span class="p">:(</span><span class="n"><a href="../Classes/DMEPullConfiguration.html">DMEPullConfiguration</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">configuration</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMEPullConfiguration.html">DMEPullConfiguration</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPullClient(im)authorizeWithCompletion:"></a>
+                    <a name="//apple_ref/objc/Method/-authorizeWithCompletion:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPullClient(im)authorizeWithCompletion:">-authorizeWithCompletion:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes contract authentication.
+This will first attempt to create a session.
+If session creation is successful will then follow different authentication flows
+depending on the value of <code>guestEnabled</code> flag in the configuration:</p>
+
+<ul>
+<li>Guest is enabled:
+    Either redirect to the digi.me application (if installed) or present options for user to choose a one-time share or download the digi.me app.</li>
+<li>Guest is not enabled:
+    Redirect to the digi.me application (if installed).</li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeWithCompletion</span><span class="p">:(</span><span class="n">id</span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">authorize</span><span class="p">(</span><span class="n">withCompletion</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called when authorization has completed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPullClient(im)authorizeWithScope:completion:"></a>
+                    <a name="//apple_ref/objc/Method/-authorizeWithScope:completion:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPullClient(im)authorizeWithScope:completion:">-authorizeWithScope:completion:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes contract authentication with custom scope.
+This will first attempt to create a session.
+If session creation is successful will then follow different authentication flows
+depending on the value of <code>guestEnabled</code> flag in the configuration:</p>
+
+<ul>
+<li>Guest is enabled:
+Either redirect to the digi.me application (if installed) or present options for user to choose a one-time share or download the digi.me app.</li>
+<li>Guest is not enabled:
+Redirect to the digi.me application (if installed).</li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeWithScope</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/DMEDataRequest.html">DMEDataRequest</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">scope</span>
+                <span class="nf">completion</span><span class="p">:(</span><span class="n">id</span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>scope</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Custom scope that will be applied to available data.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called when authorization has completed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPullClient(im)getSessionDataWithDownloadHandler:completion:"></a>
+                    <a name="//apple_ref/objc/Method/-getSessionDataWithDownloadHandler:completion:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPullClient(im)getSessionDataWithDownloadHandler:completion:">-getSessionDataWithDownloadHandler:completion:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetches content for all the requested files.</p>
+
+<p>An attempt is made to fetch each requested file and the result of each attempt is passed back via the download handler.
+Therefore multiple the handlers may be called concurrently, so the handler should allow for this.</p>
+
+<p>N.B. A session must already have been authorized</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">getSessionDataWithDownloadHandler</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a></span><span class="p">)</span><span class="nv">fileContentHandler</span>
+                               <span class="nf">completion</span><span class="p">:(</span><span class="n">nonnull</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">))</span>
+                                              <span class="n">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getSessionData</span><span class="p">(</span><span class="n">downloadHandler</span> <span class="nv">fileContentHandler</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fileContentHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Contains nil once all file fetches have been attempted, or an error if unable to attempt any fetch</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPullClient(im)getSessionDataForFileWithId:completion:"></a>
+                    <a name="//apple_ref/objc/Method/-getSessionDataForFileWithId:completion:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPullClient(im)getSessionDataForFileWithId:completion:">-getSessionDataForFileWithId:completion:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetches file content for fileId. The fileId may be retrieved from the download handler in getSessionDataWithDownloadHandler:completion:.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">getSessionDataForFileWithId</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">fileId</span>
+                         <span class="nf">completion</span><span class="p">:</span>
+                             <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getSessionData</span><span class="p">(</span><span class="nv">fileId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fileId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>NSString id if the file to fetch.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Reports result of fetch. Either contains the file or an error if fetch failed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPullClient(im)getFileListWithCompletion:"></a>
+                    <a name="//apple_ref/objc/Method/-getFileListWithCompletion:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPullClient(im)getFileListWithCompletion:">-getFileListWithCompletion:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetches file list which contains current snapshot of the sync progress, and a list of files that are available for download.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">getFileListWithCompletion</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n"><a href="../Classes/DMEFileList.html">DMEFileList</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">))</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getFileList</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Classes/DMEFileList.html">DMEFileList</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Completion block executed once request has completed successfully.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPullClient(im)getSessionAccountsWithCompletion:"></a>
+                    <a name="//apple_ref/objc/Method/-getSessionAccountsWithCompletion:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPullClient(im)getSessionAccountsWithCompletion:">-getSessionAccountsWithCompletion:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetches the accounts available for the authorized contract.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">getSessionAccountsWithCompletion</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getSessionAccounts</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Reports result of fetch. Either contains the accounts or an error if fetch failed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="https://github.com/digime/digime-sdk-ios" target="_blank" rel="external">digi.me Ltd.</a>. All rights reserved. (Last updated: 2019-10-07)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
