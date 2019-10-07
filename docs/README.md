@@ -37,6 +37,6 @@ Before diving into our full documentation stack, we recommend you read our [Gett
 - [Retrieving a subset of data]()
 - [Pushing data into a user's library]()
 
-## JavaDocs
+## Objective-C docs
 
-The digi.me Private Sharing SDK is fully annotated to produce complete JavaDocs. These can be found [here]().
+The digi.me Private Sharing SDK documentation can be found [here](objc/index.html).
