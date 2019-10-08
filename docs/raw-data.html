@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>  Reference</title>
+    <title>Raw Data  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -15,7 +15,7 @@
   <body>
 
 
-    <a title="  Reference"></a>
+    <a title="Raw Data  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -37,7 +37,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html"> Reference</a>
       <img class="carat" src="img/carat.png" />
-        Reference
+      Raw Data  Reference
     </p>
 
     <div class="content-wrapper">
@@ -319,21 +319,27 @@
 </p>
 
 <p><br></p>
-<h2 id='getting-started' class='heading'>Getting Started</h2>
+<h1 id='raw-data' class='heading'>Raw Data</h1>
+<h2 id='introduction' class='heading'>Introduction</h2>
 
-<p>Before diving into our full documentation stack, we recommend you read our <a href="getting-started.html">Getting Started</a> guide, as this details the most common use cases in 5 easy to follow steps.</p>
-<h2 id='full-documentation' class='heading'>Full Documentation</h2>
-<h4 id='an-index-of-the-various-documentation-pages-can-be-found-below' class='heading'>An index of the various documentation pages can be found below:</h4>
+<p>digi.me prides itself in normalising data from a huge array of sources into common ontologies, however, sometimes you may encounter data within a user&rsquo;s digi.me that is <strong>unmapped</strong>, in other words, <strong>raw data</strong>. In the digi.me client, this will be rendered as a raw &lsquo;data drop&rsquo;. If we can deserialise this to JSON, we will show the raw JSON tree, otherwise there will be no facility to preview the data, it will only be available over the Private Sharing service - this is for security reasons.</p>
+<h2 id='pulling-raw-data' class='heading'>Pulling Raw Data</h2>
 
-<ul>
-<li><a href="getting-started.html">Getting Started</a></li>
-<li><a href="migration-tips.html">Migration Guide</a></li>
-<li><a href="error-handling.html">Handling errors</a></li>
-<li><a href="guest-consent.html">Retrieving data without the digi.me app</a></li>
-<li><a href="raw-data.html">Dealing with non-JSON data types</a></li>
-<li><a href="scope.html">Retrieving a subset of data</a></li>
-<li><a href="postbox.html">Pushing data into a user&rsquo;s library</a></li>
-</ul>
+<p>The facility to pull raw data is, much like any data type, bound by one&rsquo;s contract. Please <a href="https://developers.digi.me/contact-us">contact support</a> to discuss having the raw data entitlement added to your contract.</p>
+<h3 id='mime-types' class='heading'>Mime Types:</h3>
+
+<p>When pulling raw data from the Private Sharing platform, any <code>DMEFile</code> containing raw data should be handled appropriately for that data.</p>
+
+<p>For example, <code>DMEFile</code> has a <code>mimeType</code> property. This will be one case of the <code>DMEMimeType</code> enum.</p>
+
+<p>Most instances of raw data will have the <code>DMEMimeTypeApplication_json</code> mime type, symbolising JSON data which didn&rsquo;t fit within existing digi.me ontology. In this case, you can invoke <code>fileContentAsJSON</code> just as you would for mapped data.</p>
+
+<p>For any other mime type, <code>fileContentAsJSON</code> will return <code>nil</code>. In such cases, it should not be used and you should instead access the <code>NSData</code> file content directly with the <code>fileContent</code> property and handle it how you see fit for your use case.</p>
+<h2 id='pushing-raw-data' class='heading'>Pushing Raw Data</h2>
+
+<p>If you push data to a Postbox that isn&rsquo;t pre-mapped to our <a href="https://developers.digi.me/reference-api">Ontology</a>, it will be treated as raw data and pushed into a user&rsquo;s digi.me as such. The metadata supplied with the push will be used to deduce the data&rsquo;s mime type going forward (IE the mime type the file has when pulled back down).</p>
+
+<p>Please see the <a href="postbox.html">Postbox Documentation</a> for more information on pushing data into digi.me.</p>
 
           </div>
         </section>

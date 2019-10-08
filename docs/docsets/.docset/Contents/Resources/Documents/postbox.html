@@ -64,6 +64,12 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="readme.html">README</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="raw-data.html">Raw Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="scope.html">Scope</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -325,9 +331,86 @@
 <h4 id='data-pre-mapped-into-digi-me-39-s-ontology' class='heading'>Data pre-mapped into digi.me&rsquo;s ontology:</h4>
 
 <p>digi.me publishes it&rsquo;s data ontology <a href="https://developers.digi.me/reference-api">here</a> for the various data types. When making a submission, if you push data normalised to this format, it will be displayed in the digi.me more appropriately, with UI specifically engineered to maximise the value of that data. It also means that when you or another third party requests this data via pull, it can be included within a collection of data points of the same type.</p>
-<h4 id='unmapped-data-a-href-raw-data-a' class='heading'>Unmapped data (<a href="">Raw Data</a>):</h4>
+<h4 id='unmapped-data-a-href-raw-data-html-raw-data-a' class='heading'>Unmapped data (<a href="raw-data.html">Raw Data</a>):</h4>
 
-<p>digi.me can also act as a vault for data that does not fit within our current ontology, whether to collate user data together in one place or to act as a conduit between a data provider and data consumer.</p>
+<p>digi.me can also act as a vault for data that does not fit within our current ontology, whether to collate user data together in one place or to act as a conduit between a data provider and data consumer. When data that doesn&rsquo;t correspond to one of digi.me&rsquo;s object types is pushed, this will be rendered within digi.me as a raw &lsquo;data drop&rsquo;. If we can deserialise this to JSON, we will show the raw JSON tree, otherwise there will be no facility to preview the data - this is for security reasons.</p>
+<h2 id='pushing-data-5-simple-steps' class='heading'>Pushing Data - 5 Simple Steps</h2>
+
+<p>The digi.me Private Sharing SDK makes it easy to create a postbox to push data to. Similarly to requesting data, you can achieve this by utilising a client object as follows:</p>
+<h3 id='1-obtaining-your-contract-id-amp-application-id' class='heading'>1. Obtaining your Contract ID &amp; Application ID:</h3>
+
+<p>Postbox uses the same means of authentication as pulling user data.</p>
+
+<p>To access the digi.me platform, you need to obtain an <code>AppID</code> for your application. You can get yours by filling out the registration form <a href="https://go.digi.me/developers/register">here</a>.</p>
+
+<p>In a production environment, you will also be required to obtain your own <code>Contract ID</code> from digi.me support. However, for sandbox purposes, we provide the following example value:</p>
+
+<p><strong>Example Contract ID:</strong> <code>Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn</code></p>
+<h3 id='2-configuring-callback-forwarding' class='heading'>2. Configuring Callback Forwarding:</h3>
+
+<p>Because the digi.me Private Sharing SDK opens the digi.me app for authorization, you are required to forward the <code>openURL</code> event through to the SDK so that it may process responses. In your application&rsquo;s delegate (typically <code>AppDelegate</code>) override <code>application:openURL:options:</code> method as below:</p>
+<pre class="highlight objective_c"><code><span class="k">-</span><span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">application</span><span class="p">:(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">app</span> <span class="nf">openURL</span><span class="p">:(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">options</span><span class="p">:(</span><span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">UIApplicationOpenURLOptionsKey</span><span class="p">,</span><span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">options</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">DMEAppCommunicator</span> <span class="nf">shared</span><span class="p">]</span> <span class="nf">openURL</span><span class="p">:</span><span class="n">url</span> <span class="nf">options</span><span class="p">:</span><span class="n">options</span><span class="p">];</span>
+<span class="p">}</span>
+
+</code></pre>
+
+<p><br>
+Additionally, you need to whitelist Digi.me app scheme in your <code>Info.plist</code>:</p>
+<pre class="highlight xml"><code><span class="nt">&lt;key&gt;</span>LSApplicationQueriesSchemes<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;array&gt;</span>
+<span class="nt">&lt;string&gt;</span>digime-ca-master<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;/array&gt;</span>
+</code></pre>
+
+<p><br>
+And register custom URL scheme so that your app can receive the callback from Digi.me app. Still in <code>Info.plist</code> add:</p>
+<pre class="highlight xml"><code><span class="nt">&lt;key&gt;</span>CFBundleURLTypes<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;array&gt;</span>
+<span class="nt">&lt;dict&gt;</span>
+<span class="nt">&lt;key&gt;</span>CFBundleTypeRole<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;string&gt;</span>Editor<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;key&gt;</span>CFBundleURLName<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;string&gt;</span>Consent Access<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;key&gt;</span>CFBundleURLSchemes<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;array&gt;</span>
+<span class="nt">&lt;string&gt;</span>digime-ca-YOUR_APP_ID<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;/array&gt;</span>
+<span class="nt">&lt;/dict&gt;</span>
+<span class="nt">&lt;/array&gt;</span>
+</code></pre>
+
+<p>where <code>YOUR_APP_ID</code> should be replaced with your <code>AppID</code>.</p>
+<h3 id='3-configuring-the-code-dmepushclient-code-object' class='heading'>3. Configuring the <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code> object:</h3>
+
+<p><code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code> is the object you will primarily interface with to use the SDK. It is instantiated with a <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object.</p>
+
+<p>The <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object is instantiated with your <code>AppID</code> and <code>Private Key</code> in hex format. The below code snippet shows you how to combine all this to get a configured <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code>:</p>
+<pre class="highlight objective_c"><code><span class="n">DMEPushConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushConfiguration</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithAppId</span><span class="p">:</span><span class="s">@"your-app-id"</span> <span class="nf">contractId</span><span class="p">:</span><span class="s">@"your-contract-id"</span><span class="p">];</span>
+<span class="n">DMEPushClient</span> <span class="o">*</span><span class="n">pushClient</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushClient</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithConfiguration</span><span class="p">:</span><span class="n">configuration</span><span class="p">];</span>
+</code></pre>
+<h3 id='4-requesting-consent' class='heading'>4. Requesting Consent:</h3>
+
+<p>Before you can push data into a user&rsquo;s digi.me, you must obtain their consent. This is achieved by calling <code>createPostbox</code> on your client object:</p>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">pushClient</span> <span class="nf">createPostboxWithCompletion</span><span class="p">:</span><span class="o">:^</span><span class="p">(</span><span class="n">DMEPostbox</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">postbox</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">}</span>
+</code></pre>
+
+<p>If a user grants consent, a Postbox will be created and returned; this is used by subsequent calls to push data. If the user denies consent, an error stating this is returned. See <a href="error-handling.html">Handling Errors</a>.</p>
+<h3 id='5-pushing-data' class='heading'>5. Pushing Data:</h3>
+
+<p>To push data, you need to build a JSON <code>metadata</code> object that describes what data your pushing along with the NSData representation of your data itself. An example showing Postbox creation and push can be seen below.:</p>
+<pre class="highlight objective_c"><code><span class="n">NSData</span> <span class="n">data</span> <span class="o">=</span> <span class="p">...</span> <span class="c1">// Obtain the data you wish to post.</span>
+<span class="n">NSData</span> <span class="n">metadata</span> <span class="o">=</span> <span class="p">...</span> <span class="c1">// All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.</span>
+
+<span class="p">[</span><span class="n">pushClient</span> <span class="nf">pushDataToPostbox</span><span class="p">:</span><span class="n">postbox</span> <span class="nf">metadata</span><span class="p">:</span><span class="n">metadata</span> <span class="n">data</span><span class="o">:</span><span class="n">data</span> <span class="n">completion</span><span class="o">:^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Handle error, if any.</span>
+<span class="p">}];</span>
+</code></pre>
+
+<p><em>NB: Please refer to our Postbox example in the <a href="https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift">Swift Example App</a> for more details on data and metadata.</em></p>
 
           </div>
         </section>

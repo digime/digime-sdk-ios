@@ -110,7 +110,7 @@ DMEPushClient *pushClient = [[DMEPushClient alloc] initWithConfiguration:configu
 Before you can push data into a user's digi.me, you must obtain their consent. This is achieved by calling `createPostbox` on your client object:
 
 ```objc
-[pushCleint createPostboxWithCompletion::^(DMEPostbox * _Nullable postbox, NSError * _Nullable error) {
+[pushClient createPostboxWithCompletion::^(DMEPostbox * _Nullable postbox, NSError * _Nullable error) {
 	
 }
 ```

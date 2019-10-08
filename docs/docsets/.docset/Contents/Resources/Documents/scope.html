@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>  Reference</title>
+    <title>Scope  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -15,7 +15,7 @@
   <body>
 
 
-    <a title="  Reference"></a>
+    <a title="Scope  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -37,7 +37,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html"> Reference</a>
       <img class="carat" src="img/carat.png" />
-        Reference
+      Scope  Reference
     </p>
 
     <div class="content-wrapper">
@@ -319,21 +319,42 @@
 </p>
 
 <p><br></p>
-<h2 id='getting-started' class='heading'>Getting Started</h2>
+<h1 id='limiting-scope' class='heading'>Limiting Scope</h1>
 
-<p>Before diving into our full documentation stack, we recommend you read our <a href="getting-started.html">Getting Started</a> guide, as this details the most common use cases in 5 easy to follow steps.</p>
-<h2 id='full-documentation' class='heading'>Full Documentation</h2>
-<h4 id='an-index-of-the-various-documentation-pages-can-be-found-below' class='heading'>An index of the various documentation pages can be found below:</h4>
+<p>Sometimes you may only want to retrieve a subset of data. This is governed at two levels. At the top are any scope limitations dictated by your contract; these can only be changed by digi.me support so please <a href="https://developers.digi.me/contact-us">contact support</a> if you want to discuss this further.</p>
 
-<ul>
-<li><a href="getting-started.html">Getting Started</a></li>
-<li><a href="migration-tips.html">Migration Guide</a></li>
-<li><a href="error-handling.html">Handling errors</a></li>
-<li><a href="guest-consent.html">Retrieving data without the digi.me app</a></li>
-<li><a href="raw-data.html">Dealing with non-JSON data types</a></li>
-<li><a href="scope.html">Retrieving a subset of data</a></li>
-<li><a href="postbox.html">Pushing data into a user&rsquo;s library</a></li>
-</ul>
+<p>At a code level, you can restrict the scope of a Private Sharing session by passing in a custom <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code>.</p>
+<h2 id='defining-code-dmescope-code' class='heading'>Defining <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code></h2>
+
+<p><code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code> is comprised of two properties. <code>timeRanges</code> is a list of <code><a href="Classes/DMETimeRange.html">DMETimeRange</a></code> objects (more on this below) to limit the breadth of time for which applicable data will be returned. <code>context</code> is set automatically and cannot be overridden.</p>
+<h3 id='code-dmetimerange-code' class='heading'><code><a href="Classes/DMETimeRange.html">DMETimeRange</a></code>:</h3>
+
+<p><code><a href="Classes/DMETimeRange.html">DMETimeRange</a></code> has 3 properties. <code>fromDate</code>, <code>toDate</code> and <code>last</code>. These are all optional but <strong>at least one is required.</strong></p>
+
+<p>We recommend you use one of the convenience methods provided:</p>
+<pre class="highlight objective_c"><code><span class="c1">//  A valid NSDate object representation of the earliest date you want data for. </span>
+<span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">from</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">from</span><span class="p">;</span>
+
+<span class="c1">// A valid NSDate object representation of the date before which you would like data.</span>
+<span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">priorTo</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">priorTo</span><span class="p">;</span>
+
+<span class="c1">// A valid NSDate object representation of the start / end periods for which you want data for.</span>
+<span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">from</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">from</span> <span class="nf">to</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">to</span><span class="p">;</span>
+
+<span class="c1">// An integer an a unit to describe date period you want the data for. Unit may be days, month or years</span>
+<span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">last</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">x</span> <span class="nf">unit</span><span class="p">:(</span><span class="n">DMETimeRangeUnit</span><span class="p">)</span><span class="nv">unit</span><span class="p">;</span>
+</code></pre>
+<h2 id='providing-code-dmescope-code' class='heading'>Providing <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code></h2>
+
+<p>When calling <code>authorize</code> on your <code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code>, simply pass in your <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code> object:</p>
+<pre class="highlight objective_c"><code><span class="n">DMEScope</span> <span class="o">*</span><span class="n">scope</span> <span class="o">=</span> <span class="p">[</span><span class="n">DMEScope</span> <span class="nf">new</span><span class="p">];</span>
+<span class="n">scope</span><span class="p">.</span><span class="n">timeRanges</span> <span class="o">=</span> <span class="p">@[[</span><span class="n">DMETimeRange</span> <span class="nf">last</span><span class="p">:</span><span class="mi">6</span> <span class="nf">unit</span><span class="p">:</span><span class="n">DMETimeRangeUnitMonth</span><span class="p">]];</span>
+<span class="p">[</span><span class="n">pullClient</span> <span class="nf">authorizeWithScope</span><span class="p">:</span><span class="n">scope</span> <span class="nf">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMESession</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">session</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">}];</span>
+</code></pre>
+
+<p>The data received from any subsequent calls to <code>getSessionData</code> will be limited by the scope of the session defined above.</p>
 
           </div>
         </section>

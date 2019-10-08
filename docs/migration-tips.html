@@ -64,6 +64,12 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="readme.html">README</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="raw-data.html">Raw Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="scope.html">Scope</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -319,8 +325,8 @@
 
 <ol>
 <li><p><code><a href="Classes/DMEClient.html">DMEClient</a></code> singleton no longer exists. It has been replaced by <code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code> and <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code>.</p></li>
-<li><p>In <code>AppDelegate</code>, you still need to forward app open events to the SDK. This is now done by forwarding the event to <code><a href="Classes/DMEAppCommunicator.html">DMEAppCommunicator</a></code>:</p></li>
-<li><pre class="highlight objective_c"><code><span class="k">-</span><span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">application</span><span class="p">:(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">app</span> <span class="nf">openURL</span><span class="p">:(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">options</span><span class="p">:(</span><span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">UIApplicationOpenURLOptionsKey</span><span class="p">,</span><span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">options</span>
+<li><p>In <code>AppDelegate</code>, you still need to forward app open events to the SDK. This is now done by forwarding the event to <code><a href="Classes/DMEAppCommunicator.html">DMEAppCommunicator</a></code>:</p>
+<pre class="highlight objective_c"><code><span class="k">-</span><span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">application</span><span class="p">:(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">app</span> <span class="nf">openURL</span><span class="p">:(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">options</span><span class="p">:(</span><span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">UIApplicationOpenURLOptionsKey</span><span class="p">,</span><span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">options</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="p">[[</span><span class="n">DMEAppCommunicator</span> <span class="nf">shared</span><span class="p">]</span> <span class="nf">openURL</span><span class="p">:</span><span class="n">url</span> <span class="nf">options</span><span class="p">:</span><span class="n">options</span><span class="p">];</span>
 <span class="p">}</span>
