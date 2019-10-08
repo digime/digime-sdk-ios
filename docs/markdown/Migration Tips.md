@@ -26,7 +26,7 @@ Here are some key SDK changes that may help you get to grips with it if you are 
 1. `DMEClient` singleton no longer exists. It has been replaced by `DMEPullClient` and `DMEPushClient`.
 
 2. In `AppDelegate`, you still need to forward app open events to the SDK. This is now done by forwarding the event to `DMEAppCommunicator`:
-3. 
+ 
 	```objc
 	-(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
