@@ -34,5 +34,5 @@ Before diving into our full documentation stack, we recommend you read our [Gett
 - [Handling errors](error-handling.html)
 - [Retrieving data without the digi.me app](guest-consent.html)
 - [Dealing with non-JSON data types](raw-data.html)
-- [Retrieving a subset of data]()
+- [Retrieving a subset of data](scope.html)
 - [Pushing data into a user's library](postbox.html)
