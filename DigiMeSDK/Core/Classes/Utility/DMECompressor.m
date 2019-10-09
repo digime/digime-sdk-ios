@@ -7,7 +7,6 @@
 //
 
 #import "DMECompressor.h"
-@import Brotli;
 @import GZIP;
 
 @implementation DMECompressor
@@ -18,8 +17,6 @@
     {
         case DMECompressionAlgorithmGZIP:
             return [self gzipCompressData:data];
-        case DMECompressionAlgorithmBrotli:
-            return [self brotliCompressData:data];
         default:
             [NSException raise:NSInternalInconsistencyException format:@"Algorithm type %@ doesn't exist.", @(algorithm)];
     }
@@ -31,8 +28,6 @@
     {
         case DMECompressionAlgorithmGZIP:
             return [self gzipDecompressData:data];
-        case DMECompressionAlgorithmBrotli:
-            return [self brotliDecompressData:data];
         default:
             [NSException raise:NSInternalInconsistencyException format:@"Algorithm type %@ doesn't exist.", @(algorithm)];
     }
@@ -46,16 +41,6 @@
 + (nullable NSData *)gzipDecompressData:(NSData *)data
 {
     return [data gunzippedData];
-}
-
-+ (nullable NSData *)brotliCompressData:(NSData *)data
-{
-    return [data brotliCompressed];
-}
-
-+ (nullable NSData *)brotliDecompressData:(NSData *)data
-{
-    return [data brotliDecompressed];
 }
 
 @end

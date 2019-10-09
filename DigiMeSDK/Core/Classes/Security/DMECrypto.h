@@ -7,39 +7,32 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMECryptoUtilities.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DMECrypto : NSObject
 
-
 /**
- Saves private key data securely
-
- @param privateKeyHex NSString
- @return YES if saved successfully, otherwise NO
- */
-- (BOOL)addPrivateKeyHex:(NSString *)privateKeyHex;
-
-
-/**
- Returns private key hex data, if it was previously saved.
-
- @return NSData - previously saved private hex key data or nil if none
- */
-- (nullable NSData *)privateKeyHex;
-
-
-/**
- Decrypts encrypted data using private key data.
+ Decrypts encrypted data using private key data from specified configuration.
 
  @param encryptedData NSData
- @param privateKeyData NSData
+ @param contractId The contract identifier
+ @param keyHex The private hex key with which data can be decrypted
  @return NSData - decrypted data or nil if decryption failed.
  */
-- (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData privateKeyData:(NSData *)privateKeyData;
++ (nullable NSData *)getDataFromEncryptedBytes:(NSData *)encryptedData contractId:(NSString *)contractId privateKeyHex:(NSString *)keyHex;
 
+/**
+ Encrypt data using AES256 algorithm.
+ 
+ @param keyData NSData
+ @param ivData NSData
+ @param data NSData
+ @param error NSError
+ @return NSData - encrypted data or nil if encryption failed.
+ */
+
++ (nullable NSData *)encryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing * _Nullable)error;
 
 /**
  Decrypt data using AES256 algorithm.
@@ -50,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param error NSError
  @return NSData - decrypted data or nil if decryption failed.
  */
-- (nullable NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
++ (nullable NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
 
 /**
  Generates random data using length as a parameter.
@@ -58,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param length int
  @return NSData - random bytes for the specified length.
  */
-- (NSData *)getRandomUnsignedCharacters:(int)length;
++ (NSData *)getRandomUnsignedCharacters:(int)length;
 
 /**
  Encrypts metadata for Postbox with AES encryption
@@ -68,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param iv NSData
  @return NSString - AES encrypted metadata to push to postbox in Base64 encoding.
  */
-- (NSString *)encryptMetadata:(NSData *)metadata symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
++ (NSString *)encryptMetadata:(NSData *)metadata symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
 
 /**
  Encrypts data for Postbox with AES encryption
@@ -78,15 +71,34 @@ NS_ASSUME_NONNULL_BEGIN
  @param iv NSData
  @return NSString - AES encrypted data to push to postbox in a hexadecimal representation.
  */
-- (NSData *)encryptData:(NSData *)payload symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
++ (NSData *)encryptData:(NSData *)payload symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv;
 
 /**
  Encrypts Symmetrical Key for Postbox with RSA public key and return it as Base64 encoded.
  
  @param symmetricalKey NSData
+ @param contractId The contract identifier.
  @param publicKey NSString
  */
-- (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey;
++ (NSString *)encryptSymmetricalKey:(NSData *)symmetricalKey rsaPublicKey:(NSString *)publicKey contractId:(NSString *)contractId;
+
+/**
+ Encrypt data using RSA public key.
+ 
+ @param dataToEncrypt NSData
+ @param publicKey NSData
+ @return NSData - encrypted data or nil if encryption failed.
+ */
++ (NSData *)encryptLargeData:(NSData *)dataToEncrypt publicKey:(SecKeyRef)publicKey;
+
+/**
+ Decrypt data using RSA private key.
+ 
+ @param dataToDecrypt NSData
+ @param privateKey NSData
+ @return NSData - decrypted data or nil if decryption failed.
+ */
++ (NSData *)decryptLargeData:(NSData *)dataToDecrypt privateKey:(SecKeyRef)privateKey;
 
 @end
 

@@ -6,6 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
+#import "DMEClientConfiguration.h"
 #import "DMEOperation.h"
 #import <CoreGraphics/CoreGraphics.h>
 
@@ -40,7 +41,7 @@
     return self;
 }
 
--(instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration
+-(instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration
 {
     self = [super init];
     if (self)

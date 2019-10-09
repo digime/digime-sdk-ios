@@ -3,7 +3,7 @@
 //  DigiMeSDKExampleSwift
 //
 //  Created on 22/02/2018.
-//  Copyright © 2018 digi.me. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 import UIKit
@@ -42,6 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
   
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    return DMEClient.shared().open(url, options: options)
+    return DMEAppCommunicator.shared().open(url, options: options)
   }
 }

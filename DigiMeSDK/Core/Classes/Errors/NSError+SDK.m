@@ -12,7 +12,7 @@
 
 + (NSError *)sdkError:(SDKError)sdkError
 {
-    return [NSError errorWithDomain:SDK_ERROR code:sdkError userInfo:@{ NSLocalizedDescriptionKey: [[self class] sdkDescription:sdkError]}];
+    return [NSError errorWithDomain:DME_SDK_ERROR code:sdkError userInfo:@{ NSLocalizedDescriptionKey: [[self class] sdkDescription:sdkError]}];
 }
 
 + (void)setSDKError:(SDKError)sdkError toError:(NSError * _Nullable __autoreleasing *)error
@@ -30,7 +30,7 @@
             return @"Provided contractId has invalid format.";
             
         case SDKErrorNoContract:
-            return @"No contracts registered! You must have forgotten to set contractId property on DMEClient.";
+            return @"No contracts registered! You must have forgotten to set contractId property on the configuration object.";
             
         case SDKErrorDecryptionFailed:
             return @"Could not decrypt file content.";
@@ -42,19 +42,13 @@
             return @"This SDK version is no longer supported.  Please update to a newer version.";
             
         case SDKErrorNoAppId:
-            return @"No application registered! Please set appId property on DMEClient.";
+            return @"No application registered! Please set appId property on the configuration object.";
             
         case SDKErrorNoPrivateKeyHex:
-            return @"RSA private key hex not set. Please set the privateKeyHex property on DMEClient.";
+            return @"RSA private key hex not set. Please set the privateKeyHex property on the DMEPullConfiguration object.";
             
         case SDKErrorNoURLScheme:
             return @"Missing CFBundleURLScheme in Info.plist. Please refer to the README file to see how to set the callback URL Scheme";
-            
-        case SDKErrorSerializationError:
-            return @"Could not serialize custom DataRequest.";
-
-        case SDKErrorEncryptedDataCallback:
-            return @"Non-nil completion block is not supported when 'decryptsData' is set to NO.";
             
         case SDKErrorDigiMeAppNotFound:
             return @"DigiMe app is not installed";

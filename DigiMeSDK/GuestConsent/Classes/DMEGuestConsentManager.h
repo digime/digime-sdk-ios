@@ -6,14 +6,23 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "DMEAppCommunicator.h"
+#import "DMEAppCommunicator+Private.h"
 #import "DMEClientCallbacks.h"
 
-@class DMEClientConfiguration;
+@protocol DMEClientConfiguration;
+@class DMESessionManager;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface DMEGuestConsentManager : NSObject <DMEAppCallbackHandler>
 
-- (void)requestGuestConsentWithCompletion:(AuthorizationCompletionBlock)completion;
+- (instancetype)initWithSessionManager:(DMESessionManager *)sessionManager configuration:(id<DMEClientConfiguration>)configuration NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
+- (void)requestGuestConsentWithCompletion:(DMEAuthorizationCompletion)completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

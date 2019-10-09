@@ -10,6 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Set of convenient cryptographical utility functions.
+ */
 @interface DMECryptoUtilities : NSObject
 
 /**
@@ -20,6 +23,27 @@ NS_ASSUME_NONNULL_BEGIN
  @return hex string representation of the private key
  */
 + (nullable NSString *)privateKeyHexFromP12File:(NSString *)p12FileName password:(NSString *)password;
+
+/**
+ Convenience method.
+ Extracts private key as hex string from p12 file in NSData format. This will return nil if an error occurs during extraction.
+ 
+ @param p12FileData bytes of the p12 file
+ @param password password for the p12 file
+ @return hex string representation of the private key
+ */
++ (nullable NSString *)privateKeyHexFromP12Data:(NSData *)p12FileData password:(NSString *)password;
+
+/**
+ Convenience method.
+ Extracts private key as hex string from p12File from a specific bundle. This will return nil if an error occurs during extraction.
+ 
+ @param p12FileName name of the p12 file in the bundle
+ @param password password for the p12 file
+ @param bundle instance of NSBundle to extract p12 from
+ @return hex string representation of the private key
+ */
++ (nullable NSString *)privateKeyHexFromP12File:(NSString *)p12FileName password:(NSString *)password bundle:(NSBundle *)bundle;
 
 @end
 

@@ -1,9 +1,9 @@
 //
 //  AppDelegate.m
-//  CASDK
+//  DigiMeSDKExample
 //
 //  Created on 24/01/2018.
-//  Copyright © 2018 DigiMe. All rights reserved.
+//  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -51,7 +51,7 @@
 
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-    return [[DMEClient sharedClient] openURL:url options:options];
+    return [[DMEAppCommunicator shared] openURL:url options:options];
 }
 
 @end

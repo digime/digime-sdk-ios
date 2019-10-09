@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSString (DMECrypto)
+NS_ASSUME_NONNULL_BEGIN
 
+@interface NSString (DMECrypto)
 
 /**
  Hex to Bytes conversion
@@ -33,4 +34,7 @@
  @return NSData
  */
 - (NSData *)base64Data;
+
 @end
+
+NS_ASSUME_NONNULL_END

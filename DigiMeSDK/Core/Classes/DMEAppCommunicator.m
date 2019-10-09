@@ -6,15 +6,17 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
-#import "DMEAppCommunicator.h"
-#import "DMEClient.h"
+#import "DMEAppCommunicator+Private.h"
+#import "DMEClientConfiguration.h"
+#import "DMESession.h"
 #import <StoreKit/StoreKit.h>
 #import "UIViewController+DMEExtension.h"
 
+NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
-static NSString * const kCASdkVersion = @"CASdkVersion";
+static NSString * const kDMESdkVersion = @"CASdkVersion";
 static NSInteger  const kDMEClientAppstoreID = 1234541790;
-static NSTimeInterval const kCATimerInterval = 0.5;
+static NSTimeInterval const kDMETimerInterval = 0.5;
 
 @interface DMEAppCommunicator () <SKStoreProductViewControllerDelegate>
 
@@ -32,6 +34,17 @@ static NSTimeInterval const kCATimerInterval = 0.5;
 
 #pragma mark - Initialisation
 
++ (DMEAppCommunicator *)shared
+{
+    static DMEAppCommunicator *sharedClient = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedClient = [[self alloc] init];
+    });
+    
+    return sharedClient;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -47,7 +60,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
 
 #pragma mark - Public
 
-- (BOOL)canOpenDigiMeApp
+- (BOOL)canOpenDMEApp
 {
     return [self digiMeAppIsInstalled];
 }
@@ -67,7 +80,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
         components.host = action;
         
         NSMutableArray *newQueryItems = [NSMutableArray arrayWithArray:components.queryItems] ?: [NSMutableArray array];
-        [newQueryItems addObject:[NSURLQueryItem queryItemWithName:kCASdkVersion value:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]]];
+        [newQueryItems addObject:[NSURLQueryItem queryItemWithName:kDMESdkVersion value:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]]];
         
         [parameters enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
             [newQueryItems addObject:[NSURLQueryItem queryItemWithName:key value:obj]];
@@ -127,11 +140,10 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     NSURLComponents *components = [NSURLComponents new];
     
     // We need to supply our AppID and name in all calls to DigiMe, so let's include these by default.
-    NSURLQueryItem *appNameItem = [NSURLQueryItem queryItemWithName:kCARequest3dPartyAppName value:[self appName]];
-    NSURLQueryItem *appIdItem = [NSURLQueryItem queryItemWithName:kCARequestRegisteredAppID value:[self appId]];
+    NSURLQueryItem *appNameItem = [NSURLQueryItem queryItemWithName:kDME3dPartyAppName value:[self appName]];
     
     components.scheme = kDMEClientScheme;
-    components.queryItems = @[appNameItem, appIdItem];
+    components.queryItems = @[appNameItem];
     
     return components.URL;
 }
@@ -150,7 +162,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
                                                 __strong __typeof(weakSelf) strongSelf = weakSelf;
                                                 [[UIViewController topmostViewController] presentViewController:strongSelf.storeViewController animated:YES completion:^{
                                                     
-                                                    self.pendingInstallationPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kCATimerInterval target:strongSelf selector:@selector(pollForAppInstall) userInfo:nil repeats:YES];
+                                                    self.pendingInstallationPollingTimer = [NSTimer scheduledTimerWithTimeInterval:kDMETimerInterval target:strongSelf selector:@selector(pollForAppInstall) userInfo:nil repeats:YES];
                                                 }];
                                             }
                                         }];
@@ -167,7 +179,6 @@ static NSTimeInterval const kCATimerInterval = 0.5;
             [self openDigiMeAppWithAction:self.sentAction parameters:self.sentParameters];
         }];
     }
-    
 }
 
 #pragma mark - CallbackHandler Management
@@ -176,7 +187,6 @@ static NSTimeInterval const kCATimerInterval = 0.5;
 {
     if (![self.callbackHandlers containsObject:callbackHandler])
     {
-        callbackHandler.appCommunicator = self;
         [self.callbackHandlers addObject:callbackHandler];
     }
 }
@@ -203,11 +213,6 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     return appName;
 }
 
-- (NSString *)appId
-{
-    return [DMEClient sharedClient].appId;
-}
-
 #pragma mark - SKStoreProductViewControllerDelegate
 
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController
@@ -222,7 +227,7 @@ static NSTimeInterval const kCATimerInterval = 0.5;
     {
         if ([callbackHandler canHandleAction:@"data"] && ![self digiMeAppIsInstalled])
         {
-            [callbackHandler handleAction:@"data" withParameters:@{kCADigimeResponse: @NO}];
+            [callbackHandler handleAction:@"data" withParameters:@{kDMEResponse: kDMEResultValueCancel}];
         }
     }
 }

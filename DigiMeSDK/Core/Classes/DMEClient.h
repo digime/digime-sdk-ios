@@ -7,189 +7,43 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CAScope.h"
-#import "DMEClientAuthorizationDelegate.h"
-#import "DMEClientCallbacks.h"
-#import "DMEClientConfiguration.h"
-#import "DMEClientDownloadDelegate.h"
-#import "DMEClientPostboxDelegate.h"
 
-@class CASessionManager;
+@protocol DMEClientConfiguration;
+@class DMESessionManager;
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Base client object used for any authorization flow.
+ */
 @interface DMEClient : NSObject
-
-/**
- Your application Id. This property MUST be set before you can call authorize.
- */
-@property (nonatomic, nullable, copy) NSString *appId;
-
-
-/**
- Your contract Id. This property MUST be set before you can call authorize.
- */
-@property (nonatomic, nullable, copy) NSString *contractId;
-
-
-/**
- Your rsa private key hex. This property MUST be set before you can call authorize.
- */
-@property (nonatomic, nullable, copy) NSString *privateKeyHex;
-
 
 /**
  Uses default configuration, which can be overwritten with your own.
  */
-@property (nonatomic, strong) DMEClientConfiguration *clientConfiguration;
-
-
-/**
- DigiMe authorization delegate. This should only be set if you do not with to use DMEClientCallbacks.
- */
-@property (nonatomic, nullable, weak) id<DMEClientAuthorizationDelegate> authorizationDelegate;
-
-
-/**
- DigiMe download delegate. This should only be set if you do not wish to use DMEClientCallbacks.
- */
-@property (nonatomic, nullable, weak) id<DMEClientDownloadDelegate> downloadDelegate;
-
-
-/**
- DigiMe postbox delegate. This should only be set if you do not wish to use DMEClientCallbacks.
- */
-@property (nonatomic, nullable, weak) id<DMEClientPostboxDelegate> postboxDelegate;
-
+@property (nonatomic, strong, readonly) id<DMEClientConfiguration> configuration;
 
 /**
  DigiMe Consent Access Session Manager.
  */
-@property (nonatomic, strong, readonly) CASessionManager *sessionManager;
-
-
-/**
- Defaults to YES. If set to NO, then when data is downloaded it will be passed as raw to the download delegate. We recommend this setting is left at default.
- 
- N.B. When set to NO, the download delegate must be set as this is not compatible with DMEClientCallbacks.
- */
-@property (nonatomic) BOOL decryptsData;
+@property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 
 /**
- Singleton initializer;
-
- @return DMEClient instance.
+ Session metadata. Contains additional debug information collected during the session lifetime.
  */
-+ (DMEClient *)sharedClient;
-
-
-/**
- Initializes contract authentication. This will attempt to create a session and redirect
- to the Digi.me application.
- NOTE: If using this method, the delegate must be set.
- */
-- (void)authorize;
-
-
-/**
- Initializes contract authentication with custom scope. This will attempt to create and redirect
- to the Digi.me application.
- NOTE: If using this method, the delegate must be set.
- 
- @param scope custom scope that will be applied to available data.
- */
-- (void)authorizeWithScope:(id<CADataRequest>)scope;
-
-
-/**
- Initilizes contract authentication. This will attempt to create a session and redirect
- to the Digi.me application.
- NOTE: If using this method, the delegate must NOT be set.
-
- @param authorizationCompletion AuthorizationCompletionBlock
- */
-- (void)authorizeWithCompletion:(nullable AuthorizationCompletionBlock)authorizationCompletion;
-
-
-/**
- Initilizes contract authentication with custom scope. This will attempt to create a session and redirect
- to the Digi.me application.
- NOTE: If using this method, the delegate must NOT be set.
-
- @param scope custom scope that will be applied to available data.
- @param authorizationCompletion AuthorizationCompletionBlock
- */
-- (void)authorizeWithScope:(nullable id<CADataRequest>)scope completion:(nullable AuthorizationCompletionBlock)authorizationCompletion;
-
-/**
- Fetches file list that's available for the authorized contract.
- NOTE: If using this method, the delegate must be set.
- */
-- (void)getFileList;
-
-
-/**
- Fetches file list that's available for the authorized contract.
- NOTE: If using this method, the delegate must NOT be set.
- @param completion FileListCompletionBlock.
- */
-- (void)getFileListWithCompletion:(nullable FileListCompletionBlock)completion;
-
-
-/**
- Fetches file content for fileId. FileId is retrieve from fileList.
- NOTE: If using this method, the delegate must be set.
-
- @param fileId NSString - id of the file to fetch.
- */
-- (void)getFileWithId:(NSString *)fileId;
-
-
-/**
- Fetches file content for fileId. FileId is retrieve from fileList.
- NOTE: If using this method, the delegate must NOT be set.
-
- @param fileId NSString id if the file to fetch.
- @param completion FileContentCompletionBlock
- */
-- (void)getFileWithId:(NSString *)fileId completion:(nullable FileContentCompletionBlock)completion;
-
-/**
- Fetches the accounts available for the authorized contract.
- NOTE: If using this method, the delegate must be set.
- */
-- (void)getAccounts;
-
-/**
- Fetches the accounts available for the authorized contract.
- NOTE: If using this method, the delegate must NOT be set.
- @param completion AccountsCompletionBlock
- */
-- (void)getAccountsWithCompletion:(nullable AccountsCompletionBlock)completion;
-
-/**
- Handles returning from digi.me application.
-
- @param url NSURL
- @param options NSDictionary
- @return BOOL - NO if there is schema mismatch, YES if it was handled.
- */
-- (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options;
-
-/**
- Determines whether the digi.me application is installed and can therefore be opened.
-
- @return YES if digi.me app is installed, NO if not.
- */
-- (BOOL)canOpenDigiMeApp;
-
+@property (strong, nonatomic, readonly) NSDictionary<NSString *, id> *metadata;
 
 /**
  Hands off to the digi.me app if it's installed, and instructs it to show the receipt
  pertaining to the contractId and appId of the current session.
- @param error NSError pointer, this method can throw various errors; catch and handle them here.
+ 
+ @param error NSError pointer, this method can throw various SDK-related errors; catch and handle them here.
+ @return YES if able to open digi.me app, NO if not or some other SDK-related error occurred.
  */
-- (void)viewReceiptInDigiMeAppWithError:(NSError * __autoreleasing * __nullable)error;
+- (BOOL)viewReceiptInDMEAppWithError:(NSError * __autoreleasing * __nullable)error;
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 @end
 

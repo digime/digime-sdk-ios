@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DMEClientConfiguration.h"
-#import "CADataRequest.h"
+
+@protocol DMEClientConfiguration;
+@protocol DMEDataRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  @return instancetype
  */
 - (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 
 /**
@@ -28,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param configuration DMClientConfiguration
  @return instancetype
  */
-- (instancetype)initWithConfiguration:(DMEClientConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration NS_DESIGNATED_INITIALIZER;
 
 
 /**
@@ -39,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope id<DataRequest>
  @return NSURLRequest
  */
-- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<CADataRequest>)scope;
+- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<DMEDataRequest>)scope;
 
 
 /**
@@ -78,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  DMEClientConfiguration object.
  */
-@property (nonatomic, strong, readonly) DMEClientConfiguration *config;
+@property (nonatomic, strong, readonly) id<DMEClientConfiguration> config;
 
 @end
 

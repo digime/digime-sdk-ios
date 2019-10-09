@@ -5,8 +5,9 @@ target 'DigiMeSDKExample' do
   pod 'DigiMeSDK', :path => '../'
   
   target 'DigiMeSDKExample_Tests' do
-    inherit! :search_paths
-
+    inherit! :complete
+    
+    pod 'OHHTTPStubs/Swift'
     
   end
 end

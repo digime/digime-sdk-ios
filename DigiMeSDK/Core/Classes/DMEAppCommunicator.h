@@ -8,30 +8,41 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NSString DMEOpenAction;
+NS_ASSUME_NONNULL_BEGIN
 
-@protocol DMEAppCallbackHandler;
+extern NSString * const kDMEClientSchemePrefix;
 
+/**
+ Handles communication between SDK and digi.me application
+ */
 @interface DMEAppCommunicator : NSObject
 
-- (BOOL)canOpenDigiMeApp;
-- (void)openDigiMeAppWithAction:(DMEOpenAction *)action parameters:(NSDictionary *)parameters;
+/**
+ Singleton initializer;
+ 
+ @return A shared instance.
+ */
++ (DMEAppCommunicator *)shared;
 
-- (void)addCallbackHandler:(id<DMEAppCallbackHandler>)callbackHandler;
-- (void)removeCallbackHandler:(id<DMEAppCallbackHandler>)callbackHandler;
-
+/**
+ Handles returning from digi.me application.
+ 
+ @param url NSURL
+ @param options NSDictionary
+ @return BOOL - NO if there is schema mismatch, YES if it was handled.
+ */
 - (BOOL)openURL:(NSURL *)url options:(NSDictionary *)options;
 
-@end
-
-@protocol DMEAppCallbackHandler <NSObject>
-
-@property (weak, nonatomic) DMEAppCommunicator *appCommunicator;
-
-- (BOOL)canHandleAction:(DMEOpenAction *)action;
-- (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *, id> *)parameters;
+/**
+ Determines whether the digi.me application is installed and can therefore be opened.
+ 
+ @return YES if digi.me app is installed, NO if not.
+ */
+- (BOOL)canOpenDMEApp;
 
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithAppCommunicator:(DMEAppCommunicator __weak *)appCommunicator;
++ (instancetype)new NS_UNAVAILABLE;
 
 @end
+
+NS_ASSUME_NONNULL_END

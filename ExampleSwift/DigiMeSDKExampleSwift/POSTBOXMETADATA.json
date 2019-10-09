@@ -1,0 +1,27 @@
+{
+    "accounts": [
+        {
+            "accountId": "accountId"
+        }
+    ],
+    "mimeType": "application/json",
+    "objecttypes": [
+        {
+            "name": "receipt"
+        },
+        {
+            "name": "receipt",
+            "typedef": {
+                "receiptNumber": "string",
+                "read": "string",
+                "amount": "int"
+            }
+        }
+    ],
+    "reference": [
+        "Receipt 02-2019"
+    ],
+    "tags": [
+        "groceries"
+    ]
+}

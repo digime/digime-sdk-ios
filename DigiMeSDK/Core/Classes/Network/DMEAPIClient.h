@@ -10,10 +10,25 @@
 #import "DMEClientConfiguration.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@protocol CADataRequest;
+@protocol DMEDataRequest;
+
+@protocol DMEAPIClientDelegate <NSObject>
+
+@optional
+- (void)didFinishAllDownloads;
+
+@end
 
 @interface DMEAPIClient : NSObject
 
+/**
+ Base url used for all API calls.
+ */
+@property (nonatomic, strong, readonly) NSString *baseUrl;
+
+@property (nonatomic, weak, nullable) id<DMEAPIClientDelegate> delegate;
+
+@property (nonatomic, readonly) BOOL isDownloadingFiles;
 
 /**
  -init unavailable. Use -initWithConfig:
@@ -21,54 +36,46 @@ NS_ASSUME_NONNULL_BEGIN
  @return instancetype
  */
 - (instancetype)init NS_UNAVAILABLE;
-
++ (instancetype)new NS_UNAVAILABLE;
 
 /**
  Designated object initializer.
 
- @param config DMEClientConfiguration
+ @param configuration DMEClientConfiguration
  @return instancetype
  */
-- (instancetype)initWithConfig:(DMEClientConfiguration *)config NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(id<DMEClientConfiguration>)configuration NS_DESIGNATED_INITIALIZER;
 
 
 /**
  Initiates session key request.
 
- @param scope optional CADataRequest scope filter
+ @param scope optional DMEDataRequest scope filter
  @param success completion block receiving NSData
  @param failure failure block receiving NSError
  */
-- (void)requestSessionWithScope:(nullable id<CADataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+- (void)requestSessionWithScope:(nullable id<DMEDataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 
 /**
  Initiates file list request.
 
+ @param sessionKey key for session request relates to
  @param success completion block receiving NSData
  @param failure failure block receiving NSError
  */
-- (void)requestFileListWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+- (void)requestFileListForSessionWithKey:(NSString *)sessionKey success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 
 /**
  Initiates file request for a fileId. Note: this will add the request to an internal queue.
 
- @param fileId NSString
+ @param fileId The identifier of the file to retrieve
+ @param sessionKey key for session request relates to
  @param success completion block receiving NSData
  @param failure failure block receiving NSError
  */
-- (void)requestFileWithId:(NSString *)fileId success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
-
-/**
- DMEClientConfiguration object set on the DMEClient. This should not be modified directly.
- */
-@property (nonatomic, strong) DMEClientConfiguration *config;
-
-/**
- Base url used for all API calls.
- */
-@property (nonatomic, strong, readonly) NSString *baseUrl;
+- (void)requestFileWithId:(NSString *)fileId sessionKey:(NSString *)sessionKey success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 @end
 
