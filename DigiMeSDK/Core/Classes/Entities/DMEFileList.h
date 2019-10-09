@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, DMEFileSyncStatus)
 };
 
 /**
- Serialized representation of the JSON object returned by getFileList endpoint.
+ Serialized representation of the JSON object returned by `getFileList` endpoint.
  */
 @interface DMEFileList : NSObject
 

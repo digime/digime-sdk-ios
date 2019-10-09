@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Configuration object used by DMEPullClient.
+ Configuration object used by `DMEPullClient`.
  */
 @interface DMEPullConfiguration : DMEBaseConfiguration
 

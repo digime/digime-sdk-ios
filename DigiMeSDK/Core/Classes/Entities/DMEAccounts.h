@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Serialised response object for json returned by the `getSessionAccountsWithCompletion:` function
- on DMEPullClient.
+ on `DMEPullClient`.
 */
 @interface DMEAccounts : NSObject
 

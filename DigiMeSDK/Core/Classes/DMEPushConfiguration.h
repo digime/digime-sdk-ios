@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
-Configuration object used by DMEPushClient.
+Configuration object used by `DMEPushClient`.
 */
 @interface DMEPushConfiguration : DMEBaseConfiguration
 
