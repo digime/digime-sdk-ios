@@ -96,11 +96,6 @@
 
 - (void)getAccounts
 {
-    DMEScope *scope = [DMEScope new];
-    scope.timeRanges = @[[DMETimeRange last:6 unit:DMETimeRangeUnitMonth]];
-    [self.dmeClient authorizeWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
-        
-    }];
     [self.dmeClient getSessionAccountsWithCompletion:^(DMEAccounts * _Nullable accounts, NSError * _Nullable error) {
         
         if (accounts == nil)
