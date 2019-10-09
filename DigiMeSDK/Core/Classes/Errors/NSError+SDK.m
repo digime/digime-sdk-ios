@@ -12,7 +12,7 @@
 
 + (NSError *)sdkError:(SDKError)sdkError
 {
-    return [NSError errorWithDomain:SDK_ERROR code:sdkError userInfo:@{ NSLocalizedDescriptionKey: [[self class] sdkDescription:sdkError]}];
+    return [NSError errorWithDomain:DME_SDK_ERROR code:sdkError userInfo:@{ NSLocalizedDescriptionKey: [[self class] sdkDescription:sdkError]}];
 }
 
 + (void)setSDKError:(SDKError)sdkError toError:(NSError * _Nullable __autoreleasing *)error

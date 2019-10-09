@@ -10,6 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Enum representing possible unit for a literal time range.
+ */
 typedef NS_ENUM(NSInteger, DMETimeRangeUnit) {
     DMETimeRangeUnitDay = 0,
     DMETimeRangeUnitMonth = 1,

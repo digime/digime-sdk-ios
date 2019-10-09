@@ -10,8 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const SDK_ERROR = @"me.digi.sdk";
+static NSString * const DME_SDK_ERROR = @"me.digi.sdk";
 
+/**
+Enum representing possible SDK errors.
+*/
 typedef NS_ENUM(NSInteger, SDKError) {
     SDKErrorNoContract = 1,         // No contract id set
     SDKErrorInvalidContract = 2,    // Contract id has invalid format
@@ -24,6 +27,9 @@ typedef NS_ENUM(NSInteger, SDKError) {
     SDKErrorDigiMeAppNotFound = 11, // Querying the 'digime' schema failed.
 };
 
+/**
+Convenience category used to generate an error in `DME_SDK_ERROR` domain
+*/
 @interface NSError (SDK)
 
 + (NSError *)sdkError:(SDKError)sdkError;

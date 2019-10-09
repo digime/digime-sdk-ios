@@ -10,6 +10,9 @@
 
 #import "DMETimeRange.h"
 
+/**
+ Protocol representing data scoping.
+ */
 @protocol DMEDataRequest <NSObject>
 
 NS_ASSUME_NONNULL_BEGIN
