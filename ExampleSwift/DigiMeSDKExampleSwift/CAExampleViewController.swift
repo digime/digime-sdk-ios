@@ -13,6 +13,7 @@ class CAExampleViewController: UIViewController {
     
     var dmeClient: DMEPullClient?
     var logVC: LogViewController!
+    var configuration: DMEPullConfiguration?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,9 +21,7 @@ class CAExampleViewController: UIViewController {
         title = "CA Example"
         
         // - GET STARTED -
-        if let configuration = DMEPullConfiguration(appId: Constants.appId, contractId: Constants.CAContractId, p12FileName: Constants.p12FileName, p12Password: Constants.p12Password) {
-            dmeClient = DMEPullClient(configuration: configuration)
-        }
+        configuration = DMEPullConfiguration(appId: Constants.appId, contractId: Constants.CAContractId, p12FileName: Constants.p12FileName, p12Password: Constants.p12Password)
         
         logVC = LogViewController(frame: UIScreen.main.bounds)
         view.addSubview(logVC)
@@ -46,8 +45,16 @@ class CAExampleViewController: UIViewController {
     }
     
     @objc func runTapped() {
+        guard let config = configuration else {
+            print("ERROR: Configuration object not set")
+            return
+        }
+        
+        dmeClient = nil
+        dmeClient = DMEPullClient(configuration: config)
+        
         logVC.reset()
-
+        
         dmeClient?.authorize { (session, error) in
             
             guard let session = session else {
