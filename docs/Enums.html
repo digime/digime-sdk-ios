@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (41% documented)
+         (54% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -147,7 +147,7 @@
                 <a class="nav-group-task-link" href="Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Constants.html#/c:NSError+SDK.h@SDK_ERROR">SDK_ERROR</a>
+                <a class="nav-group-task-link" href="Constants.html#/c:NSError+SDK.h@DME_SDK_ERROR">DME_SDK_ERROR</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
@@ -321,7 +321,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Sync status enum.</p>
 
                         <a href="Enums/DMEFileSyncStatus.html" class="slightly-smaller">See more</a>
                       </div>
@@ -329,14 +329,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="n">NS_ENUM</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">,</span> <span class="n">DMEFileSyncStatus</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">DMEFileSyncStatusUnknown</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">DMEFileSyncStatusRunning</span><span class="p">,</span>
-    <span class="n">DMEFileSyncStatusPending</span><span class="p">,</span>
-    <span class="n">DMEFileSyncStatusPartial</span><span class="p">,</span>
-    <span class="n">DMEFileSyncStatusCompleted</span>
-<span class="p">}</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">enum</span> <span class="n">DMEFileSyncStatus</span> <span class="p">{}</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -365,7 +358,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Enum representing possible unit for a literal time range.</p>
 
                         <a href="Enums/DMETimeRangeUnit.html" class="slightly-smaller">See more</a>
                       </div>
@@ -373,11 +366,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="n">NS_ENUM</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">,</span> <span class="n">DMETimeRangeUnit</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">DMETimeRangeUnitDay</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="n">DMETimeRangeUnitMonth</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">DMETimeRangeUnitYear</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-<span class="p">}</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">enum</span> <span class="n">DMETimeRangeUnit</span> <span class="p">{}</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -406,7 +395,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Enum representing possible Authorization errors.</p>
 
                         <a href="Enums/AuthError.html" class="slightly-smaller">See more</a>
                       </div>
@@ -414,12 +403,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="n">NS_ENUM</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">,</span> <span class="n">AuthError</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">AuthErrorGeneral</span>    <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="c1">//general error</span>
-    <span class="n">AuthErrorCancelled</span>  <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="c1">//authorization cancelled</span>
-    <span class="n">AuthErrorInvalidSession</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span> <span class="c1">//invalid session</span>
-    <span class="n">AuthErrorInvalidSessionKey</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="c1">//session key returned by digi.me app is invalid</span>
-<span class="p">}</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">enum</span> <span class="n">AuthError</span> <span class="p">{}</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -448,7 +432,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Enum representing possible SDK errors.</p>
 
                         <a href="Enums/SDKError.html" class="slightly-smaller">See more</a>
                       </div>
@@ -456,17 +440,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="n">NS_ENUM</span><span class="p">(</span><span class="n">NSInteger</span><span class="p">,</span> <span class="n">SDKError</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">SDKErrorNoContract</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>         <span class="c1">// No contract id set</span>
-    <span class="n">SDKErrorInvalidContract</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>    <span class="c1">// Contract id has invalid format</span>
-    <span class="n">SDKErrorDecryptionFailed</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>   <span class="c1">// Could not decrypt file content</span>
-    <span class="n">SDKErrorInvalidData</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>        <span class="c1">// Could not serialize data</span>
-    <span class="n">SDKErrorInvalidVersion</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>     <span class="c1">// This SDK version is no longer supported</span>
-    <span class="n">SDKErrorNoAppId</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>            <span class="c1">// No app id set</span>
-    <span class="n">SDKErrorNoPrivateKeyHex</span> <span class="o">=</span> <span class="mi">7</span><span class="p">,</span>    <span class="c1">// No private key hex set</span>
-    <span class="n">SDKErrorNoURLScheme</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>        <span class="c1">// URL Scheme not set in Info.plist</span>
-    <span class="n">SDKErrorDigiMeAppNotFound</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span> <span class="c1">// Querying the 'digime' schema failed.</span>
-<span class="p">}</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">enum</span> <span class="n">SDKError</span> <span class="p">{}</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -486,7 +460,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-08)</p>
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-09)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

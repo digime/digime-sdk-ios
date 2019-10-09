@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
            Docs
         </a>
-         (41% documented)
+         (54% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -147,7 +147,7 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Constants.html#/c:NSError+SDK.h@SDK_ERROR">SDK_ERROR</a>
+                <a class="nav-group-task-link" href="../Constants.html#/c:NSError+SDK.h@DME_SDK_ERROR">DME_SDK_ERROR</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
@@ -301,80 +301,11 @@
             <h1>DMESession</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMESession</span> <span class="p">:</span> <span class="nc">NSObject</span>
-
-<span class="cm">/**
- -init unavailable. Use -initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:
- 
- @return instancetype
- */</span>
-<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">init</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
-<span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Designated object initializer.
- 
- @param sessionKey Session key
- @param exchangeToken Session exchange token
- @param expiryDate Session expiry date
- @param contractId The contract identifier this session relates to
- @param sessionManager The manager managing this session
- @return instancetype
- */</span>
-<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithSessionKey</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">sessionKey</span> <span class="nf">exchangeToken</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">exchangeToken</span> <span class="nf">expiryDate</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">expiryDate</span> <span class="nf">contractId</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">contractId</span> <span class="nf">sessionManager</span><span class="p">:(</span><span class="n">DMESessionManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">sessionManager</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Session Key.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">sessionKey</span><span class="p">;</span>
-
-<span class="cm">/**
- Session key exchange token.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">sessionExchangeToken</span><span class="p">;</span>
-
-<span class="cm">/**
- Date when session will expire.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">expiryDate</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Session manager attached to the session.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">weak</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">DMESessionManager</span> <span class="o">*</span><span class="n">sessionManager</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Date session was created.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">createdDate</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Session Identifier - this is currently set to a contract identifier.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">sessionId</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Session Scope - this is the limiting scope object used to create session.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/DMEDataRequest.html">DMEDataRequest</a></span><span class="o">&gt;</span> <span class="n">scope</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Session metadata. Contains additional debug information collected during the session lifetime.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">metadata</span><span class="p">;</span>
-
-<span class="k">@end</span></code></pre>
+                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMESession</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>Session object managed by the SDK. Used for authorization and data interaction.</p>
 
           </div>
         </section>
@@ -817,7 +748,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-08)</p>
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-09)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

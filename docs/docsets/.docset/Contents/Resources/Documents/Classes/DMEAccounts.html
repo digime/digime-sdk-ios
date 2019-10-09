@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
            Docs
         </a>
-         (41% documented)
+         (54% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -147,7 +147,7 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Constants.html#/c:NSError+SDK.h@SDK_ERROR">SDK_ERROR</a>
+                <a class="nav-group-task-link" href="../Constants.html#/c:NSError+SDK.h@DME_SDK_ERROR">DME_SDK_ERROR</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
@@ -301,53 +301,12 @@
             <h1>DMEAccounts</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEAccounts</span> <span class="p">:</span> <span class="nc">NSObject</span>
-
-<span class="k">+</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">DMEAccounts</span> <span class="o">*</span><span class="p">)</span><span class="nf">deserialize</span><span class="p">:(</span><span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">data</span> <span class="nf">error</span><span class="p">:(</span><span class="n">NSError</span> <span class="o">**</span><span class="p">)</span><span class="nv">error</span><span class="p">;</span>
-
-
-<span class="cm">/**
- -init unavailable. Use -initWithFileId:
- 
- @return instancetype
- */</span>
-<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">init</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
-<span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Designated object initializer.
- 
- @param fileId NSString
- @param json NSDicitonary
- @return instancetype
- */</span>
-<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithFileId</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">fileId</span> <span class="nf">json</span><span class="p">:(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nv">json</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
-
-
-
-<span class="cm">/**
- File Identifier. This value is returned from the file list.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">fileId</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Serialized representation of the file's json.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nullable</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">json</span><span class="p">;</span>
-
-
-<span class="cm">/**
- Array of DMEAccount found in the account.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nullable</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n"><a href="../Classes/DMEAccount.html">DMEAccount</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">accounts</span><span class="p">;</span>
-
-<span class="k">@end</span></code></pre>
+                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEAccounts</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>Serialised response object for json returned by the <code>getSessionAccountsWithCompletion:</code> function
+on <code><a href="../Classes/DMEPullClient.html">DMEPullClient</a></code>.</p>
 
           </div>
         </section>
@@ -627,7 +586,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-08)</p>
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-09)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

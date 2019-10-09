@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (41% documented)
+         (54% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -147,7 +147,7 @@
                 <a class="nav-group-task-link" href="Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Constants.html#/c:NSError+SDK.h@SDK_ERROR">SDK_ERROR</a>
+                <a class="nav-group-task-link" href="Constants.html#/c:NSError+SDK.h@DME_SDK_ERROR">DME_SDK_ERROR</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
@@ -321,7 +321,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Convenience category used to generate an error in <code><a href="Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a></code> domain</p>
 
                         <a href="Categories/NSError%28Auth%29.html" class="slightly-smaller">See more</a>
                       </div>
@@ -329,13 +329,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">NSError</span> <span class="p">(</span><span class="nl">Auth</span><span class="p">)</span>
-
-<span class="k">+</span> <span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nf">authError</span><span class="p">:(</span><span class="n"><a href="Enums/AuthError.html">AuthError</a></span><span class="p">)</span><span class="nv">authError</span><span class="p">;</span>
-<span class="k">+</span> <span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nf">authError</span><span class="p">:(</span><span class="n"><a href="Enums/AuthError.html">AuthError</a></span><span class="p">)</span><span class="nv">authError</span> <span class="nf">additionalInfo</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSErrorUserInfoKey</span><span class="p">,</span> <span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">additionalInfo</span><span class="p">;</span>
-<span class="k">+</span> <span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nf">authError</span><span class="p">:(</span><span class="n"><a href="Enums/AuthError.html">AuthError</a></span><span class="p">)</span><span class="nv">authError</span> <span class="nf">reference</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">errorReference</span><span class="p">;</span>
-
-<span class="k">@end</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">NSError</span> <span class="p">(</span><span class="nl">Auth</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -359,7 +353,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Convenience category used to generate an error in <code><a href="Constants.html#/c:NSError+SDK.h@DME_SDK_ERROR">DME_SDK_ERROR</a></code> domain</p>
 
                         <a href="Categories/NSError%28SDK%29.html" class="slightly-smaller">See more</a>
                       </div>
@@ -367,12 +361,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">NSError</span> <span class="p">(</span><span class="nl">SDK</span><span class="p">)</span>
-
-<span class="k">+</span> <span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nf">sdkError</span><span class="p">:(</span><span class="n"><a href="Enums/SDKError.html">SDKError</a></span><span class="p">)</span><span class="nv">sdkError</span><span class="p">;</span>
-<span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setSDKError</span><span class="p">:(</span><span class="n"><a href="Enums/SDKError.html">SDKError</a></span><span class="p">)</span><span class="nv">sdkError</span> <span class="nf">toError</span><span class="p">:(</span><span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">__autoreleasing</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span><span class="p">;</span>
-
-<span class="k">@end</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">NSError</span> <span class="p">(</span><span class="nl">SDK</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -387,7 +376,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-08)</p>
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-09)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
            Docs
         </a>
-         (41% documented)
+         (54% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -147,7 +147,7 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:NSError+Auth.h@DME_AUTHORIZATION_ERROR">DME_AUTHORIZATION_ERROR</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Constants.html#/c:NSError+SDK.h@SDK_ERROR">SDK_ERROR</a>
+                <a class="nav-group-task-link" href="../Constants.html#/c:NSError+SDK.h@DME_SDK_ERROR">DME_SDK_ERROR</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
@@ -301,63 +301,11 @@
             <h1>DMEClientConfiguration</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight objective_c"><code><span class="k">@protocol</span> <span class="nc">DMEClientConfiguration</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span>
-
-<span class="cm">/**
- Connection time out in seconds. Defaults to 25.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSTimeInterval</span> <span class="n">globalTimeout</span><span class="p">;</span>
-
-<span class="cm">/**
- Controls API retries. Default to YES.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">retryOnFail</span><span class="p">;</span>
-
-<span class="cm">/**
- Delay in milliseconds before retrying failed request. Defaults to 750.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSInteger</span> <span class="n">retryDelay</span><span class="p">;</span>
-
-<span class="cm">/**
- Controls whether retries occur with delay. Defaults to YES.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">retryWithExponentialBackOff</span><span class="p">;</span>
-
-<span class="cm">/**
- Maximum number of retries before failing. Defaults to 5.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSInteger</span> <span class="n">maxRetryCount</span><span class="p">;</span>
-
-<span class="cm">/**
- Maximum concurrent network operations. Defaults to 5.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSInteger</span> <span class="n">maxConcurrentRequests</span><span class="p">;</span>
-
-<span class="cm">/**
- Determines whether additional SDK DEBUG logging is enabled. Defaults to NO.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">debugLogEnabled</span><span class="p">;</span>
-
-<span class="cm">/**
- Base URL for all outgoing Network operations.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">baseUrl</span><span class="p">;</span>
-
-<span class="cm">/**
- Your application Id. This property MUST be set before you can call authorize.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">appId</span><span class="p">;</span>
-
-<span class="cm">/**
- Your contract Id. This property MUST be set before you can call authorize.
- */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">contractId</span><span class="p">;</span>
-
-<span class="k">@end</span></code></pre>
+                  <pre class="highlight objective_c"><code><span class="k">@protocol</span> <span class="nc">DMEClientConfiguration</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>Protocol for base client configuration properties.</p>
 
           </div>
         </section>
@@ -694,7 +642,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-08)</p>
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-09)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
