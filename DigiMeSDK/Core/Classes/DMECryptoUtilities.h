@@ -10,6 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Set of convenient cryptographical utility functions.
+ */
 @interface DMECryptoUtilities : NSObject
 
 /**

@@ -16,6 +16,9 @@ typedef NS_ENUM(NSInteger, DMETimeRangeUnit) {
     DMETimeRangeUnitYear = 2,
 };
 
+/**
+ Time Range convenience object that describes a date period.
+ */
 @interface DMETimeRange : NSObject
 
 @property (nonatomic, strong, readonly, nullable) NSDate *from;

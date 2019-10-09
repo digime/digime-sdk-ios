@@ -11,6 +11,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Scope object that can be used to limit the time period
+ for which data can be requested from the user.
+ */
 @interface DMEScope : NSObject <DMEDataRequest>
 
 @end

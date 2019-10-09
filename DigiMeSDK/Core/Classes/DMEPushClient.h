@@ -15,6 +15,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+Client object used for returning data to the user, following their consent.
+*/
 @interface DMEPushClient: DMEClient
 
 - (instancetype)initWithConfiguration:(DMEPushConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
