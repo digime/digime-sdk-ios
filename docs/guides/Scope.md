@@ -1,4 +1,4 @@
-![](https://i.imgur.com/zAHoOwe.png)
+![](https://securedownloads.digi.me/partners/digime/SDKReadmeBanner.png)
 
 <p align="center">
     <a href="https://developers.digi.me/slack/join">
@@ -13,8 +13,11 @@
     <a href="https://swift.org">
         <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
     </a>
-    <a href="https://developer.digi.me">
+    <a href="https://developers.digi.me">
         <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
+    </a>
+    <a href="https://digime.freshdesk.com/support/solutions/9000115894">
+        <img src="https://img.shields.io/badge/support-freshdesk-721744.svg" alt="Support">
     </a>
 </p>
 
