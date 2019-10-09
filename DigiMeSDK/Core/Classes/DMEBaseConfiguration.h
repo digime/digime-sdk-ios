@@ -11,6 +11,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Base configuration object used to initialize a client.
+ */
 @interface DMEBaseConfiguration : NSObject <DMEClientConfiguration>
 
 /**

@@ -10,6 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Protocol for base client configuration properties.
+ */
 @protocol DMEClientConfiguration <NSObject>
 
 /**

@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 static NSString * const DME_AUTHORIZATION_ERROR = @"me.digi.sdk.authorization";
 
+/**
+ Enum representing possible Authorization errors.
+ */
 typedef NS_ENUM(NSInteger, AuthError) {
     AuthErrorGeneral    = 1, //general error
     AuthErrorCancelled  = 5, //authorization cancelled
@@ -19,6 +22,9 @@ typedef NS_ENUM(NSInteger, AuthError) {
     AuthErrorInvalidSessionKey = 10, //session key returned by digi.me app is invalid
 };
 
+/**
+ Convenience category used to generate an error in `DME_AUTHORIZATION_ERROR` domain
+ */
 @interface NSError (Auth)
 
 + (NSError *)authError:(AuthError)authError;

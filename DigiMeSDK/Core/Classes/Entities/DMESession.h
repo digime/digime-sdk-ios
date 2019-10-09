@@ -44,6 +44,9 @@ extern NSString * const kDMEErrorReference;
 @class DMESessionManager;
 @protocol DMEDataRequest;
 
+/**
+ Session object managed by the SDK. Used for authorization and data interaction.
+ */
 @interface DMESession : NSObject
 
 /**

@@ -11,6 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 @class DMEFileListItem;
 
+/**
+ Sync status enum.
+ */
 typedef NS_ENUM(NSInteger, DMEFileSyncStatus)
 {
     DMEFileSyncStatusUnknown = 0,
@@ -20,6 +23,9 @@ typedef NS_ENUM(NSInteger, DMEFileSyncStatus)
     DMEFileSyncStatusCompleted
 };
 
+/**
+ Serialized representation of the JSON object returned by `getFileList` endpoint.
+ */
 @interface DMEFileList : NSObject
 
 /**

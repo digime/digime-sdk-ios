@@ -10,12 +10,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Enum representing possible unit for a literal time range.
+ */
 typedef NS_ENUM(NSInteger, DMETimeRangeUnit) {
     DMETimeRangeUnitDay = 0,
     DMETimeRangeUnitMonth = 1,
     DMETimeRangeUnitYear = 2,
 };
 
+/**
+ Time Range convenience object that describes a date period.
+ */
 @interface DMETimeRange : NSObject
 
 @property (nonatomic, strong, readonly, nullable) NSDate *from;

@@ -13,6 +13,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Base client object used for any authorization flow.
+ */
 @interface DMEClient : NSObject
 
 /**

@@ -10,6 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Serialized representation of a service provider from which the account data originated.
+ */
 @interface DMEServiceDescriptor : NSObject
 
 /**
@@ -44,7 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @end
-
+/**
+ Serialised representation of the account object.
+ */
 @interface DMEAccount : NSObject
 
 /**
@@ -92,6 +97,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/**
+ Serialised response object for json returned by the `getSessionAccountsWithCompletion:` function
+ on `DMEPullClient`.
+*/
 @interface DMEAccounts : NSObject
 
 + (nullable DMEAccounts *)deserialize:(NSData *)data error:(NSError **)error;

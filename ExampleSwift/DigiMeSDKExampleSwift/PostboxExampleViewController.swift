@@ -47,9 +47,11 @@ class PostboxExampleViewController: UIViewController {
                 
                 print("Postbox creation succeeded")
                 
-                self.titleLabel.text = "Sending..."
-                self.subtitleLabel.text = nil
-                self.actionButton.isHidden = true
+                DispatchQueue.main.async {
+                    self.titleLabel.text = "Sending..."
+                    self.subtitleLabel.text = nil
+                    self.actionButton.isHidden = true
+                }
                 
                 self.pushData(to: postbox)
             }
@@ -70,26 +72,27 @@ class PostboxExampleViewController: UIViewController {
                 let dataToPush = try Data(contentsOf: URL(fileURLWithPath: dataPath), options: .mappedIfSafe)
                 
                 dmeClient?.pushData(to: postbox, metadata: metadataToPush, data: dataToPush) { error in
-                    
-                    if let error = error {
-                        print("Upload Error: \(error.localizedDescription)")
-                        
-                        self.successfullyPushedToPostbox = false
-                        
-                        self.titleLabel.text = "Get a copy of your latest shopping receipt to your digi.me library"
-                        self.subtitleLabel.text = "Please ensure you have the digi.me application installed."
-                        self.actionButton.isHidden = false
-                        self.actionButton.setTitle("SEND ME THE RECEIPT", for: .normal)
-                    }
-                    else {
-                        print("Pushing data to Postbox succeeded")
-                        
-                        self.successfullyPushedToPostbox = true
-                        
-                        self.titleLabel.text = "All done!"
-                        self.subtitleLabel.text = "Your purchase receipt has been sent, please check your digi.me library."
-                        self.actionButton.isHidden = false
-                        self.actionButton.setTitle("OPEN DIGI.ME", for: .normal)
+                    DispatchQueue.main.async {
+                        if let error = error {
+                            print("Upload Error: \(error.localizedDescription)")
+                            
+                            self.successfullyPushedToPostbox = false
+                            
+                            self.titleLabel.text = "Get a copy of your latest shopping receipt to your digi.me library"
+                            self.subtitleLabel.text = "Please ensure you have the digi.me application installed."
+                            self.actionButton.isHidden = false
+                            self.actionButton.setTitle("SEND ME THE RECEIPT", for: .normal)
+                        }
+                        else {
+                            print("Pushing data to Postbox succeeded")
+                            
+                            self.successfullyPushedToPostbox = true
+                            
+                            self.titleLabel.text = "All done!"
+                            self.subtitleLabel.text = "Your purchase receipt has been sent, please check your digi.me library."
+                            self.actionButton.isHidden = false
+                            self.actionButton.setTitle("OPEN DIGI.ME", for: .normal)
+                        }
                     }
                 }
             } catch {
