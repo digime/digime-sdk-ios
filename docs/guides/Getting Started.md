@@ -127,7 +127,7 @@ And register custom URL scheme so that your app can receive the callback from Di
 where `YOUR_APP_ID` should be replaced with your `AppID`.
 
 ### 3. Configuring the `DMEPullClient` object:
-`DMEPullClient` is the object you will primarily interface with to use the SDK. It is instantiated with a context, and a `DMEPullConfiguration` object. **The provided context should always be the main application context.**
+`DMEPullClient` is the object you will primarily interface with to use the SDK. It is instantiated with a `DMEPullConfiguration` object.
 
 The `DMEPullConfiguration` object is instantiated with your `App ID`, `Contract ID` and `Private Key` in hex format. We provide a convenience method to extract the private key. The below code snippet shows you how to combine all this to get a configured `DMEPullClient`:
 
