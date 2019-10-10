@@ -125,8 +125,8 @@ If a user grants consent, a Postbox will be created and returned; this is used b
 To push data, you need to build a JSON `metadata` object that describes what data your pushing along with the NSData representation of your data itself. An example showing Postbox creation and push can be seen below.:
 
 ```objc
-NSData data = ... // Obtain the data you wish to post.
-NSData metadata = ... // All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.
+NSData *data = ... // Obtain the data you wish to post.
+NSData *metadata = ... // All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.
 
 [pushClient pushDataToPostbox:postbox metadata:metadata data:data completion:^(NSError * _Nullable error) {
     // Handle error, if any.

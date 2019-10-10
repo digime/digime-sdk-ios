@@ -402,8 +402,8 @@ And register custom URL scheme so that your app can receive the callback from Di
 <h3 id='5-pushing-data' class='heading'>5. Pushing Data:</h3>
 
 <p>To push data, you need to build a JSON <code>metadata</code> object that describes what data your pushing along with the NSData representation of your data itself. An example showing Postbox creation and push can be seen below.:</p>
-<pre class="highlight objective_c"><code><span class="n">NSData</span> <span class="n">data</span> <span class="o">=</span> <span class="p">...</span> <span class="c1">// Obtain the data you wish to post.</span>
-<span class="n">NSData</span> <span class="n">metadata</span> <span class="o">=</span> <span class="p">...</span> <span class="c1">// All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.</span>
+<pre class="highlight objective_c"><code><span class="n">NSData</span> <span class="n">*data</span> <span class="o">=</span> <span class="p">...</span> <span class="c1">// Obtain the data you wish to post.</span>
+<span class="n">NSData</span> <span class="n">*metadata</span> <span class="o">=</span> <span class="p">...</span> <span class="c1">// All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.</span>
 
 <span class="p">[</span><span class="n">pushClient</span> <span class="nf">pushDataToPostbox</span><span class="p">:</span><span class="n">postbox</span> <span class="nf">metadata</span><span class="p">:</span><span class="n">metadata</span> <span class="n">data</span><span class="o">:</span><span class="n">data</span> <span class="n">completion</span><span class="o">:^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Handle error, if any.</span>
