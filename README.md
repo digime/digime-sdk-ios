@@ -166,7 +166,7 @@ For each file, the first 'file handler' block will be called. If the download wa
 
 Once all files are downloaded, the second block will be invoked to inform you of this. In the case that the data stream is interrupted, or if the session obtained above isn't valid (it may have expired, for example), you will receive an error in the second block. See [Handling Errors](https://digime.github.io/digime-sdk-ios/error-handling.html).
 
-`DMEFile` exposes the method `fileContentAsJSON` which attempts to decode the binary file into a JSON map, so that you can easily extract the values you need to power your app. Not all files can be represented as JSON, see [Raw Data]() for details.
+`DMEFile` exposes the method `fileContentAsJSON` which attempts to decode the binary file into a JSON map, so that you can easily extract the values you need to power your app. Not all files can be represented as JSON, see [Raw Data](https://digime.github.io/digime-sdk-ios/raw-data.html) for details.
 
 ## Contributions
 
