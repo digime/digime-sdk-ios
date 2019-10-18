@@ -23,6 +23,8 @@
         return [[DMESession alloc] initWithSessionKey:sessionKey exchangeToken:sessionExchangeToken expiryDate:expiry contractId:contractId sessionManager:sessionManager];
     }
     
+    NSLog(@"DigiMeSDK: Session deserialization error for data %@", jsonData);
+
     return nil;
 }
 
