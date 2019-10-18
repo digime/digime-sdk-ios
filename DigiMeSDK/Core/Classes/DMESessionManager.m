@@ -62,6 +62,7 @@
         
     } failure:^(NSError * _Nonnull error) {
         
+        NSLog(@"DigiMeSDK: Request session error. Session key %@", self.currentSession.sessionKey);
         if (error.code == 403 && [error.userInfo[@"code"] isEqualToString:@"SDKVersionInvalid"])
         {
             completion(nil, [NSError sdkError:SDKErrorInvalidVersion]);
