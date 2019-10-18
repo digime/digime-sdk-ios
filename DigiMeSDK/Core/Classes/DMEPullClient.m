@@ -249,10 +249,15 @@ DMEAuthorizationCompletion _authorizationCompletion;
         DMEFileList *fileList = [DMEFileListDeserializer deserialize:data error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (error)
+            {
+                NSLog(@"Error deserializing file list. Session key: %@. Error: %@", self.sessionManager.currentSession.sessionKey, error.localizedDescription)
+            }
             completion(fileList, error);
         });
     } failure:^(NSError * _Nonnull error) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Error requesting file list. Session key: %@. Error: %@", self.sessionManager.currentSession.sessionKey, error.localizedDescription)
             completion(nil, error);
         });
     }];
@@ -365,6 +370,11 @@ DMEAuthorizationCompletion _authorizationCompletion;
 
 - (void)completeSessionDataFetchWithError:(NSError * _Nullable)error
 {
+    if (error)
+    {
+        NSLog(@"Error complete session. Session key: %@. Error: %@", self.sessionManager.currentSession.sessionKey, error.localizedDescription)
+    }
+    
     if (self.sessionDataCompletion)
     {
         self.sessionDataCompletion(error);
@@ -429,7 +439,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
             NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
             userInfo[kFileIdKey] = fileId;
             NSError *newError = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
-            
+            NSLog(@"Error retrieving file with id: %@. Session key: %@. Error: %@", fileId, self.sessionManager.currentSession.sessionKey, error.localizedDescription)
             completion(nil, newError);
         });
     }];
@@ -451,6 +461,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
         // Add fileId to error before passing to completion
         NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
         userInfo[kFileIdKey] = fileId;
+        NSLog(@"Error processing file with id: %@. Session key: %@. Error: %@", fileId, self.sessionManager.currentSession.sessionKey, error.localizedDescription)
         error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
     }
     
@@ -489,6 +500,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
         
     } failure:^(NSError * _Nonnull error) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Error retrieving accounts. Session key: %@. Error: %@", self.sessionManager.currentSession.sessionKey, error.localizedDescription)
             completion(nil, error);
         });
     }];
