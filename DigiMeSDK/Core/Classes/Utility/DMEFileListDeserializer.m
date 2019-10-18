@@ -19,6 +19,8 @@
         return [[DMEFileList alloc] initWithJSON:json];
     }
     
+    NSLog(@"DigiMeSDK: File list serialization error for data %@", jsonData);
+    
     return nil;
 }
 
