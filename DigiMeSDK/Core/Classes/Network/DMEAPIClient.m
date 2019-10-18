@@ -196,7 +196,7 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&parsingError];
             if (!responseDictionary)
             {
-                NSLog(@"DigiMeSDK: response desereliazation error with data %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+                NSLog(@"DigiMeSDK: Response deserialization error with data %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                 failure(parsingError);
                 return;
             }
