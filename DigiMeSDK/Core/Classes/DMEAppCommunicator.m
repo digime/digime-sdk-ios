@@ -185,6 +185,9 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
 
 - (void)addCallbackHandler:(id<DMEAppCallbackHandler>)callbackHandler
 {
+    //currently only 1 handler at a time is supported
+    //if registering a new one, assume that previous ones have been cancelled
+    [self.callbackHandlers removeAllObjects];
     if (![self.callbackHandlers containsObject:callbackHandler])
     {
         [self.callbackHandlers addObject:callbackHandler];
