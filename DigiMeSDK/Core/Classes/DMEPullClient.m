@@ -35,6 +35,7 @@
 @property (nonatomic, strong, nullable) void (^sessionContentHandler)(DMEFile * _Nullable file, NSError * _Nullable error);
 @property (nonatomic) BOOL fetchingSessionData;
 @property (nonatomic) DMEFileList *sessionFileList;
+@property (nonatomic) NSError *sessionError;
 
 @end
 
@@ -273,14 +274,15 @@ DMEAuthorizationCompletion _authorizationCompletion;
         NSLog(@"DigiMeSDK: Sync status - %@", self.sessionFileList.syncStatusString);
     }
     
-    if (![self syncRunning] && !self.apiClient.isDownloadingFiles)
+    // If sessionError is not nil, then syncStatus is irrelevant, as it will be the previous successful fileList call.
+    if ((self.sessionError != nil || ![self syncRunning]) && !self.apiClient.isDownloadingFiles)
     {
         if (self.configuration.debugLogEnabled)
         {
             NSLog(@"DigiMeSDK: Finished fetching session data.");
         }
         
-        [self completeSessionDataFetchWithError:nil];
+        [self completeSessionDataFetchWithError:self.sessionError];
         return;
     }
     else if (schedulePoll)
@@ -288,6 +290,8 @@ DMEAuthorizationCompletion _authorizationCompletion;
         [self scheduleNextPoll];
     }
     
+    // not checking sessionError here on purpose. If we are here, then there are files still being downloaded
+    // so we may as well poll the file list again, just in case the error clears.
     if ([self syncRunning])
     {
         [self refreshFileList];
@@ -305,10 +309,16 @@ DMEAuthorizationCompletion _authorizationCompletion;
         
         if (fileList == nil)
         {
-            [self completeSessionDataFetchWithError:error];
+            // If the error occurred we don't want to terminate right away
+            // There could still be files downloading. Instead, we will store the sessionError
+            // which will be forwarded in completion once all file have been downloaded
+            NSLog(@"DigiMeSDK: Error fetching file list: %@", error.localizedDescription);
+            self.sessionError = error;
             return;
         }
         
+        // If subsequent fetch clears the error - great, no need to report it back up the chain
+        self.sessionError = nil;
         self.sessionFileList = fileList;
         NSArray <DMEFileListItem *> *newItems = [self.fileCache newItemsFromList:fileList.files];
         
