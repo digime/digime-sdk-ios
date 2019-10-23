@@ -312,7 +312,18 @@ DMEAuthorizationCompletion _authorizationCompletion;
             // If the error occurred we don't want to terminate right away
             // There could still be files downloading. Instead, we will store the sessionError
             // which will be forwarded in completion once all file have been downloaded
-            NSLog(@"DigiMeSDK: Error fetching file list: %@", error.localizedDescription);
+            
+            if (self.configuration.debugLogEnabled)
+            {
+                NSLog(@"DigiMeSDK: Error fetching file list: %@", error.localizedDescription);
+            }
+            
+            // If no files are being downloaded, we can terminate session fetch right away.
+            if (!self.apiClient.isDownloadingFiles)
+            {
+                [self completeSessionDataFetchWithError:error];
+            }
+            
             self.sessionError = error;
             return;
         }
@@ -393,6 +404,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
     self.sessionDataCompletion = nil;
     self.sessionContentHandler = nil;
     self.apiClient.delegate = nil;
+    self.sessionError = nil;
 }
 
 #pragma mark - Get File Content
