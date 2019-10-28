@@ -234,6 +234,11 @@ DMEAuthorizationCompletion _authorizationCompletion;
 }
 
 #pragma mark - Get File List
+-(void)getSessionFileListWithUpdateHandler:(DMESessionFileListCompletion)updateHandler completion:(void (^)(NSError * _Nullable))completion
+{
+    // TO-DO
+}
+
 - (void)getFileListWithCompletion:(void (^)(DMEFileList * _Nullable fileList, NSError  * _Nullable error))completion
 {
     //validate session

@@ -71,6 +71,20 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion NS_SWIFT_NAME(getSessionData(fileId:completion:));
 
+
+/**
+ Polls for file list changes and notifies of any new updates.
+ Not intended to be used in conjunction with `getSessionData(downloadHandler:completion:)`.
+ 
+ @param updateHandler returns serialized representation of the latest file list snapshot,
+ together with an array of fileIds that have been added or updated since last snapshot.
+ Only notified when a change has occurred. See `DMESessionFileListCompletion` for details.
+ 
+ @param completion executed when file list has finished updating, and no more changes will come.
+ Error object will be set if an error occurred, nil otherwise.
+ */
+- (void)getSessionFileListWithUpdateHandler:(DMESessionFileListCompletion)updateHandler completion:(void (^)(NSError * _Nullable error))completion;
+
 /**
  Fetches file list which contains current snapshot of the sync progress, and a list of files that are available for download.
  

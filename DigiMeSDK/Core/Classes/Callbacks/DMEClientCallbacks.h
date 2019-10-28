@@ -16,6 +16,7 @@
 @class DMEFile;
 @class DMEPostbox;
 @class DMESession;
+@class DMEFileList;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -53,6 +54,14 @@ typedef void (^DMEPostboxDataPushCompletion) (NSError * _Nullable error);
  @endcode
  */
 typedef void (^DMEFileContentCompletion) (DMEFile * _Nullable file, NSError * _Nullable error);
+
+/**
+ DMESessionFileListCompletion - executed when getFileList response has changed.
+ 
+ @param fileList FileList object, representing latest file list snapshot.
+ @param fileIds Array of string, fileIds. Only fileIds added, or updated since the last snapshot are included.
+ */
+typedef void (^DMESessionFileListCompletion) (DMEFileList * fileList, NSArray *fileIds);
 
 extern NSString * const kFileIdKey;
 
