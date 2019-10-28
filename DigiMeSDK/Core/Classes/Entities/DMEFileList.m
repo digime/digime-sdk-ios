@@ -12,7 +12,7 @@
 @interface DMEFileList ()
 
 @property (nonatomic, strong, readwrite) NSArray<DMEFileListItem *> *files;
-@property (nonatomic, readwrite) DMEFileSyncStatus syncStatus;
+@property (nonatomic, readwrite) DMEFileSyncState syncState;
 
 @end
 
@@ -47,8 +47,8 @@
         }
         
         _files = files;
-        _syncStatusString = json[@"status"][@"state"];
-        _syncStatus = [self syncStatusForState:_syncStatusString];
+        _syncStateString = json[@"status"][@"state"];
+        _syncState = [self fileSyncStateForState:_syncStateString];
     }
     
     return self;
@@ -59,27 +59,27 @@
     return [self.files valueForKey:@"name"];
 }
 
-- (DMEFileSyncStatus)syncStatusForState:(NSString * _Nullable )state
+- (DMEFileSyncState)fileSyncStateForState:(NSString * _Nullable )state
 {
     if ([state isEqualToString:@"running"])
     {
-        return DMEFileSyncStatusRunning;
+        return DMEFileSyncStateRunning;
     }
     else if ([state isEqualToString:@"pending"])
     {
-        return DMEFileSyncStatusPending;
+        return DMEFileSyncStatePending;
     }
     else if ([state isEqualToString:@"partial"])
     {
-        return DMEFileSyncStatusPartial;
+        return DMEFileSyncStatePartial;
     }
     else if ([state isEqualToString:@"completed"])
     {
-        return DMEFileSyncStatusCompleted;
+        return DMEFileSyncStateCompleted;
     }
     else
     {
-        return DMEFileSyncStatusUnknown;
+        return DMEFileSyncStateUnknown;
     }
 }
 

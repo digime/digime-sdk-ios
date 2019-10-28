@@ -30,7 +30,7 @@
 @property (nonatomic, strong, nullable) DMEPreConsentViewController *preconsentViewController;
 @property (nonatomic, strong, nullable) id<DMEDataRequest> scope;
 @property (nonatomic, strong, nullable) DMEFileListCache *fileCache;
-@property (nonatomic, readonly) DMEFileSyncStatus syncStatus;
+@property (nonatomic, readonly) DMEFileSyncState syncState;
 @property (nonatomic, strong, nullable) void (^sessionDataCompletion)(NSError * _Nullable);
 @property (nonatomic, strong, nullable) void (^sessionContentHandler)(DMEFile * _Nullable file, NSError * _Nullable error);
 @property (nonatomic) BOOL fetchingSessionData;
@@ -271,10 +271,10 @@ DMEAuthorizationCompletion _authorizationCompletion;
     
     if (self.configuration.debugLogEnabled)
     {
-        NSLog(@"DigiMeSDK: Sync status - %@", self.sessionFileList.syncStatusString);
+        NSLog(@"DigiMeSDK: Sync state - %@", self.sessionFileList.syncStateString);
     }
     
-    // If sessionError is not nil, then syncStatus is irrelevant, as it will be the previous successful fileList call.
+    // If sessionError is not nil, then syncState is irrelevant, as it will be the previous successful fileList call.
     if ((self.sessionError != nil || ![self syncRunning]) && !self.apiClient.isDownloadingFiles)
     {
         if (self.configuration.debugLogEnabled)
@@ -370,18 +370,18 @@ DMEAuthorizationCompletion _authorizationCompletion;
 - (BOOL)syncRunning
 {
     @synchronized (self) {
-        return self.syncStatus == DMEFileSyncStatusRunning || self.syncStatus == DMEFileSyncStatusPending || self.syncStatus == DMEFileSyncStatusUnknown;
+        return self.syncState == DMEFileSyncStateRunning || self.syncState == DMEFileSyncStatePending || self.syncState == DMEFileSyncStateUnknown;
     }
 }
 
-- (DMEFileSyncStatus)syncStatus
+- (DMEFileSyncState)syncState
 {
     if (self.sessionFileList)
     {
-        return self.sessionFileList.syncStatus;
+        return self.sessionFileList.syncState;
     }
     
-    return DMEFileSyncStatusUnknown;
+    return DMEFileSyncStateUnknown;
 }
 
 - (void)completeSessionDataFetchWithError:(NSError * _Nullable)error

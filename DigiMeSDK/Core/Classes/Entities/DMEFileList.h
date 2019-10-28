@@ -12,15 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 @class DMEFileListItem;
 
 /**
- Sync status enum.
+ Sync state enum.
  */
-typedef NS_ENUM(NSInteger, DMEFileSyncStatus)
+typedef NS_ENUM(NSInteger, DMEFileSyncState)
 {
-    DMEFileSyncStatusUnknown = 0,
-    DMEFileSyncStatusRunning,
-    DMEFileSyncStatusPending,
-    DMEFileSyncStatusPartial,
-    DMEFileSyncStatusCompleted
+    DMEFileSyncStateUnknown = 0,
+    DMEFileSyncStateRunning,
+    DMEFileSyncStatePending,
+    DMEFileSyncStatePartial,
+    DMEFileSyncStateCompleted
 };
 
 /**
@@ -53,9 +53,9 @@ typedef NS_ENUM(NSInteger, DMEFileSyncStatus)
 
 @property (nonatomic, strong, readonly) NSArray<DMEFileListItem *> *files;
 
-@property (nonatomic, readonly) DMEFileSyncStatus syncStatus;
+@property (nonatomic, readonly) DMEFileSyncState syncState;
 
-@property (nonatomic, strong, readonly) NSString *syncStatusString;
+@property (nonatomic, strong, readonly) NSString *syncStateString;
 
 @end
 
