@@ -52,6 +52,9 @@
             
         case SDKErrorDigiMeAppNotFound:
             return @"DigiMe app is not installed";
+            
+        case SDKErrorFileListPollingTimeout:
+            return @"File List time out reached as there have been no changes during the number of retries specified in `DMEPullConfiguration`.";
     }
 }
 
