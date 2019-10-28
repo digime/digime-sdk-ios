@@ -18,6 +18,8 @@
     {
         _privateKeyHex = privateKeyHex;
         _guestEnabled = YES;
+        _pollingDelay = 3;
+        _pollingRetryCount = 100;
     }
     
     return self;
