@@ -65,6 +65,26 @@
     return self;
 }
 
+- (BOOL)isEqual:(id)object
+{
+    if (self == object) {
+      return YES;
+    }
+    
+    if (![object isKindOfClass:[DMEFileList class]])
+    {
+        return NO;
+    }
+    
+    DMEFileList *other = (DMEFileList *)object;
+    return [self.files isEqualToArray:other.files] && self.syncState == other.syncState && [self.accounts isEqualToArray:other.accounts];
+}
+
+- (NSUInteger)hash
+{
+    return self.files.hash ^ self.syncState ^ self.accounts.hash;
+}
+
 - (NSArray<DMEFileListAccount *> *)accountsFromJson:(NSDictionary *)json
 {
     NSMutableArray <DMEFileListAccount *> *accounts = [NSMutableArray new];
@@ -165,6 +185,26 @@
     }
     
     return self;
+}
+
+- (BOOL)isEqual:(id)object
+{
+    if (self == object) {
+      return YES;
+    }
+    
+    if (![object isKindOfClass:[DMEFileListAccount class]])
+    {
+        return NO;
+    }
+    
+    DMEFileListAccount *other = (DMEFileListAccount *)object;
+    return [self.identifier isEqualToString:other.identifier] && self.syncState == other.syncState && ((self.error == nil && other.error == nil) || ([self.error isEqualToDictionary:other.error]));
+}
+
+- (NSUInteger)hash
+{
+    return self.identifier.hash ^ self.syncState ^ self.error.hash;
 }
 
 - (NSString *)description
