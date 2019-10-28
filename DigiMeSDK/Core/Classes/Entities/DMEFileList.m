@@ -48,10 +48,57 @@
         
         _files = files;
         _syncStateString = json[@"status"][@"state"];
-        _syncState = [self fileSyncStateForState:_syncStateString];
+        _syncState = [[self class] syncStateFromString:_syncStateString];
+        
+        id accountsJson = json[@"status"][@"details"];
+        
+        if ([accountsJson isKindOfClass:[NSDictionary class]])
+        {
+            _accounts = [self accountsFromJson:(NSDictionary *)accountsJson];
+        }
+        else
+        {
+            _accounts = @[];
+        }
     }
     
     return self;
+}
+
+- (NSArray<DMEFileListAccount *> *)accountsFromJson:(NSDictionary *)json
+{
+    NSMutableArray <DMEFileListAccount *> *accounts = [NSMutableArray new];
+    
+    // dictionary where each key represents an account identifier, and value is a dictionary with details
+    /**
+     "<accountid>": {...},
+     "<accountid>": {...},
+     */
+    
+    NSArray *accountKeys = [json allKeys];
+    
+    [accountKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (![obj isKindOfClass:[NSString class]])
+        {
+            return;
+        }
+        
+        NSString *accountId = (NSString *)obj;
+        NSDictionary *accountJson = json[accountId];
+        NSDictionary *error = accountJson[@"error"];
+        id syncString = accountJson[@"state"];
+        DMEFileSyncState syncState = DMEFileSyncStateUnknown;
+        
+        if ([syncString isKindOfClass:[NSString class]])
+        {
+            syncState = [[self class] syncStateFromString:(NSString *)syncString];
+        }
+        
+        DMEFileListAccount *fileListAccount = [[DMEFileListAccount alloc] initWithIdentifier:accountId syncState:syncState error:error];
+        [accounts addObject:fileListAccount];
+    }];
+    
+    return accounts;
 }
 
 - (NSArray<NSString *> *)fileIds
@@ -59,21 +106,41 @@
     return [self.files valueForKey:@"name"];
 }
 
-- (DMEFileSyncState)fileSyncStateForState:(NSString * _Nullable )state
++ (NSString *)syncStateStringFromState:(DMEFileSyncState)state
 {
-    if ([state isEqualToString:@"running"])
+    switch (state) {
+        case DMEFileSyncStateUnknown:
+            return @"unknown";
+            
+        case DMEFileSyncStatePartial:
+            return @"partial";
+            
+        case DMEFileSyncStatePending:
+            return @"pending";
+            
+        case DMEFileSyncStateRunning:
+            return @"running";
+            
+        case DMEFileSyncStateCompleted:
+            return @"completed";
+    }
+}
+
++ (DMEFileSyncState)syncStateFromString:(NSString * _Nullable)string
+{
+    if ([string isEqualToString:@"running"])
     {
         return DMEFileSyncStateRunning;
     }
-    else if ([state isEqualToString:@"pending"])
+    else if ([string isEqualToString:@"pending"])
     {
         return DMEFileSyncStatePending;
     }
-    else if ([state isEqualToString:@"partial"])
+    else if ([string isEqualToString:@"partial"])
     {
         return DMEFileSyncStatePartial;
     }
-    else if ([state isEqualToString:@"completed"])
+    else if ([string isEqualToString:@"completed"])
     {
         return DMEFileSyncStateCompleted;
     }
@@ -84,3 +151,30 @@
 }
 
 @end
+
+@implementation DMEFileListAccount
+
+- (instancetype)initWithIdentifier:(NSString *)identifier syncState:(DMEFileSyncState)syncState error:(NSDictionary *)error
+{
+    self = [super init];
+    if (self)
+    {
+        _identifier = identifier;
+        _syncState = syncState;
+        _error = error;
+    }
+    
+    return self;
+}
+
+- (NSString *)description
+{
+    NSString *syncStateString = [DMEFileList syncStateStringFromState:_syncState];
+    
+    return [NSString stringWithFormat:@"<%@: %p, identifier: %@, syncState: %@, error: %@>",
+            NSStringFromClass([self class]), self, _identifier, syncStateString, _error ?: @"none"];
+}
+
+@end
+
+
