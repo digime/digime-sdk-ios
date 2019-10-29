@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion executed when file list has finished updating, and no more changes will come.
  Error object will be set if an error occurred, nil otherwise.
  */
-- (void)getSessionFileListWithUpdateHandler:(DMESessionFileListCompletion)updateHandler completion:(void (^)(NSError * _Nullable error))completion;
+- (void)getSessionFileListWithUpdateHandler:(DMESessionFileListCompletion)updateHandler completion:(void (^)(NSError * _Nullable error))completion NS_SWIFT_NAME(getSessionFileList(updateHandler:completion:));
 
 /**
  Fetches file list which contains current snapshot of the sync progress, and a list of files that are available for download.

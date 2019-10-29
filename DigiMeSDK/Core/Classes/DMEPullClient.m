@@ -33,9 +33,12 @@
 @property (nonatomic, readonly) DMEFileSyncState syncState;
 @property (nonatomic, strong, nullable) void (^sessionDataCompletion)(NSError * _Nullable);
 @property (nonatomic, strong, nullable) void (^sessionContentHandler)(DMEFile * _Nullable file, NSError * _Nullable error);
+@property (nonatomic, strong, nullable) void (^sessionFileListCompletion)(NSError * _Nullable);
+@property (nonatomic, strong, nullable) void (^sessionFileListUpdateHandler)(DMEFileList * fileList, NSArray *fileIds);
 @property (nonatomic) BOOL fetchingSessionData;
 @property (nonatomic) DMEFileList *sessionFileList;
 @property (nonatomic) NSError *sessionError;
+@property (nonatomic) NSInteger stalePollCount;
 
 @end
 
@@ -53,6 +56,7 @@
         _dataDecryptor = [[DMEDataDecryptor alloc] initWithConfiguration:configuration];
         _fileCache = [DMEFileListCache new];
         _fetchingSessionData = NO;
+        _stalePollCount = 0;
     }
     
     return self;
@@ -236,7 +240,9 @@ DMEAuthorizationCompletion _authorizationCompletion;
 #pragma mark - Get File List
 -(void)getSessionFileListWithUpdateHandler:(DMESessionFileListCompletion)updateHandler completion:(void (^)(NSError * _Nullable))completion
 {
-    // TO-DO
+    self.sessionFileListUpdateHandler = updateHandler;
+    self.sessionFileListCompletion = completion;
+    [self beginFileListPollingIfRequired];
 }
 
 - (void)getFileListWithCompletion:(void (^)(DMEFileList * _Nullable fileList, NSError  * _Nullable error))completion
@@ -265,6 +271,21 @@ DMEAuthorizationCompletion _authorizationCompletion;
 }
 
 #pragma mark - Sync Management
+- (void)beginFileListPollingIfRequired
+{
+    if (self.fetchingSessionData)
+    {
+        NSLog(@"DigiMeSDK: Already fetching session data.");
+        return;
+    }
+    
+    [self.fileCache reset];
+    self.fetchingSessionData = YES;
+    self.apiClient.delegate = self;
+    [self refreshFileList];
+    [self scheduleNextPoll];
+}
+
 - (void)evaluateSessionDataFetchProgress:(BOOL)schedulePoll
 {
     @synchronized (self) {
@@ -333,21 +354,48 @@ DMEAuthorizationCompletion _authorizationCompletion;
             return;
         }
         
-        // If subsequent fetch clears the error - great, no need to report it back up the chain
+        BOOL fileListDidChange = ![fileList isEqual:self.sessionFileList];
+        self.stalePollCount = (fileListDidChange) ? 0 : self.stalePollCount + 1;
+        DMEPullConfiguration *configuration = (DMEPullConfiguration *)self.configuration;
+        
+        if (self.stalePollCount >= configuration.maxStalePolls)
+        {
+            NSError *error = [NSError sdkError:SDKErrorFileListPollingTimeout];
+            self.sessionError = error;
+            return;
+        }
+        
+        // If subsequent fetch clears the error (stale one or otherwise) - great, no need to report it back up the chain
         self.sessionError = nil;
         self.sessionFileList = fileList;
         NSArray <DMEFileListItem *> *newItems = [self.fileCache newItemsFromList:fileList.files];
+        NSArray *allFiles = [newItems valueForKey:@"name"];
         
-        if (newItems.count > 0)
+        [self handleNewFileListItems:newItems];
+        
+        // if file list changed and session file list update handler is provided - notify.
+        if (fileListDidChange && self.sessionFileListUpdateHandler)
         {
-            if (self.configuration.debugLogEnabled)
-            {
-                NSLog(@"DigiMeSDK: Found new files to sync: %@", @(newItems.count));
-            }
-            
-            [self.fileCache cacheItems:newItems];
-            NSArray *allFiles = [newItems valueForKey:@"name"];
-            
+            self.sessionFileListUpdateHandler(fileList, allFiles);
+        }
+    }];
+}
+
+- (void)handleNewFileListItems:(NSArray *)items
+{
+    NSArray *allFiles = [items valueForKey:@"name"];
+    if (items.count > 0)
+    {
+        if (self.configuration.debugLogEnabled)
+        {
+            NSLog(@"DigiMeSDK: Found new files to sync: %@", @(items.count));
+        }
+        
+        [self.fileCache cacheItems:items];
+        
+        //if contentHandler is not provided, no need to download.
+        if (self.sessionContentHandler)
+        {
             for (NSString *fileId in allFiles)
             {
                 if (self.configuration.debugLogEnabled)
@@ -358,12 +406,13 @@ DMEAuthorizationCompletion _authorizationCompletion;
                 [self getSessionDataForFileWithId:fileId completion:self.sessionContentHandler];
             }
         }
-    }];
+    }
 }
 
 - (void)scheduleNextPoll
 {
-    dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC));
+    DMEPullConfiguration *pullConfiguration = (DMEPullConfiguration *)self.configuration;
+    dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(pullConfiguration.pollInterval * NSEC_PER_SEC));
     
     __weak __typeof(self)weakSelf = self;
     dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -394,8 +443,14 @@ DMEAuthorizationCompletion _authorizationCompletion;
     if (self.sessionDataCompletion)
     {
         self.sessionDataCompletion(error);
-        [self clearSessionData];
     }
+    
+    if (self.sessionFileListCompletion)
+    {
+        self.sessionFileListCompletion(error);
+    }
+    
+    [self clearSessionData];
 }
 
 - (void)clearSessionData
@@ -408,28 +463,20 @@ DMEAuthorizationCompletion _authorizationCompletion;
     self.sessionFileList = nil;
     self.sessionDataCompletion = nil;
     self.sessionContentHandler = nil;
+    self.sessionFileListUpdateHandler = nil;
+    self.sessionFileListCompletion = nil;
     self.apiClient.delegate = nil;
     self.sessionError = nil;
+    self.stalePollCount = 0;
 }
 
 #pragma mark - Get File Content
 
 - (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(void (^)(NSError * _Nullable))completion
 {
-    
-    if (self.fetchingSessionData)
-    {
-        NSLog(@"DigiMeSDK: Already fetching session data.");
-        return;
-    }
-    
-    [self.fileCache reset];
     self.sessionDataCompletion = completion;
     self.sessionContentHandler = fileContentHandler;
-    self.fetchingSessionData = YES;
-    self.apiClient.delegate = self;
-    [self refreshFileList];
-    [self scheduleNextPoll];
+    [self beginFileListPollingIfRequired];
 }
 
 - (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
