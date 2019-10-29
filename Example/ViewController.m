@@ -121,7 +121,7 @@
         
         if (fileIds.count > 0)
         {
-            [self.logVC logMessage:[NSString stringWithFormat:@"\n\nNew files added to the file List: %@, accounts: %@\n\n", fileIds, fileList.accounts]];
+            [self.logVC logMessage:[NSString stringWithFormat:@"\n\nNew files added or updated in the file List: %@, accounts: %@\n\n", fileIds, fileList.accounts]];
         }
         else
         {
