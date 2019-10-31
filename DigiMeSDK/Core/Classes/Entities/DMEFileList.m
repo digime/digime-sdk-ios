@@ -207,6 +207,11 @@
     return self.identifier.hash ^ self.syncState ^ self.error.hash;
 }
 
+- (NSString *)syncStateString
+{
+    return [DMEFileList syncStateStringFromState:self.syncState];
+}
+
 - (NSString *)description
 {
     NSString *syncStateString = [DMEFileList syncStateStringFromState:_syncState];

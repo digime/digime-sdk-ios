@@ -88,6 +88,7 @@ typedef NS_ENUM(NSInteger, DMEFileSyncState)
 
 @property (nonatomic, strong, readonly) NSString *identifier;
 @property (nonatomic, readonly) DMEFileSyncState syncState;
+@property (nonatomic, strong, readonly) NSString *syncStateString;
 @property (nonatomic, strong, readonly, nullable) NSDictionary <NSString *, id> *error;
 
 @end
