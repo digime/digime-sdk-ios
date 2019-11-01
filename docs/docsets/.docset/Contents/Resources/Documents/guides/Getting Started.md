@@ -8,7 +8,7 @@
         <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="MIT License">
     </a>
     <a href="#">
-    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg" 
+    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
     </a>
     <a href="https://swift.org">
         <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
@@ -56,15 +56,15 @@ The digi.me private sharing platform empowers developers to make use of user dat
 	```
 > NOTE
 > We do not currently support linking DigiMeSDK as a Static Library.
-> 
+>
 > **use_frameworks!** flag must be set in the Podfile
-	
+
 2. Navigate to the directory of your `Podfile` and run the following command:
 
 	```bash
 	$ pod install --repo-update
 	```
-	
+
 ## Getting Started - 5 Simple Steps!
 
 We have taken the most common use case for the digi.me Private Sharing SDK and compiled a quick start guide, which you can find below. Nonetheless, we implore you to [explore the documentation further](https://digime.github.io/digime-sdk-ios/index.html).
@@ -82,7 +82,7 @@ In a production environment, you will also be required to obtain your own `Contr
 **Example Private Key:**
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;Download: [P12 Key Store](https://github.com/digime/digime-sdk-ios/blob/master/Example/fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12?raw=true)
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;Password: `monkey periscope`
-	
+
 You should include the P12 file in your project assets folder.
 
 ### 2. Configuring Callback Forwarding:
@@ -94,7 +94,12 @@ Because the digi.me Private Sharing SDK opens the digi.me app for authorization,
 {
 	return [[DMEAppCommunicator shared] openURL:url options:options];
 }
+```
 
+```swift
+func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+  return DMEAppCommunicator.shared().open(url, options: options)
+}
 ```
 
 <br>
@@ -127,7 +132,7 @@ And register custom URL scheme so that your app can receive the callback from Di
 where `YOUR_APP_ID` should be replaced with your `AppID`.
 
 ### 3. Configuring the `DMEPullClient` object:
-`DMEPullClient` is the object you will primarily interface with to use the SDK. It is instantiated with a context, and a `DMEPullConfiguration` object. **The provided context should always be the main application context.**
+`DMEPullClient` is the object you will primarily interface with to use the SDK. It is instantiated with a `DMEPullConfiguration` object.
 
 The `DMEPullConfiguration` object is instantiated with your `App ID`, `Contract ID` and `Private Key` in hex format. We provide a convenience method to extract the private key. The below code snippet shows you how to combine all this to get a configured `DMEPullClient`:
 
@@ -135,6 +140,12 @@ The `DMEPullConfiguration` object is instantiated with your `App ID`, `Contract 
 NSString *privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File: p12FileName password: p12Password];
 DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:@"YOUR_APP_ID" contractId:@"YOUR_CONTRACT_ID" privateKeyHex: privateKeyHex];
 DMEPullClient *pullClient = [[DMEPullClient alloc] initWithConfiguration:configuration];
+```
+
+```swift
+let privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: p12Filename, password: p12Password)
+let configuration = DMEPullConfiguration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID", privateKeyHex: privateKeyHex!)
+let pullClient = DMEPullClient(configuration: configuration)
 ```
 
 ### 4. Requesting Consent:
@@ -147,17 +158,23 @@ Before you can access a user's data, you must obtain their consent. This is achi
 }];
 ```
 
+```swift
+pullClient.authorize(completion: { session, error in
+
+})
+```
+
 If a user grants consent, a session will be created and returned; this is used by subsequent calls to get data. If the user denies consent, an error stating this is returned. See [Handling Errors](https://digime.github.io/digime-sdk-ios/error-handling.html).
 
 ### 5. Fetching Data:
 
-Once you have a session, you can request data. We strive to make this as simple as possible, so expose a single method to do so: 
+Once you have a session, you can request data. We strive to make this as simple as possible, so expose a single method to do so:
 
 ```objc
-[self.dmeClient getSessionDataWithDownloadHandler:^(DMEFile * _Nullable file, NSError * _Nullable error) {
-        
-    // Handle each downloaded file here.
-        
+[pullClient getSessionDataWithDownloadHandler:^(DMEFile * _Nullable file, NSError * _Nullable error) {
+
+  // Handle each downloaded file here.
+
 } completion:^(NSError * _Nullable error) {
 
 	// Any errors interupting the flow of data will be directed here, or nil once all files are retrieved.
@@ -165,11 +182,23 @@ Once you have a session, you can request data. We strive to make this as simple 
 }];
 ```
 
-For each file, the first 'file handler' block will be called. If the download was successful, you will receive a `DMEFile` object. If the download fails, an error. 
+```swift
+pullClient.getSessionData(downloadHandler: { file, error in
+
+  // Handle each downloaded file here.
+
+}, completion: { error in
+
+  // Any errors interupting the flow of data will be directed here, or nil once all files are retrieved.
+
+})
+```
+
+For each file, the first 'file handler' block will be called. If the download was successful, you will receive a `DMEFile` object. If the download fails, an error.
 
 Once all files are downloaded, the second block will be invoked to inform you of this. In the case that the data stream is interrupted, or if the session obtained above isn't valid (it may have expired, for example), you will receive an error in the second block. See [Handling Errors](https://digime.github.io/digime-sdk-ios/error-handling.html).
 
-`DMEFile` exposes the method `fileContentAsJSON` which attempts to decode the binary file into a JSON map, so that you can easily extract the values you need to power your app. Not all files can be represented as JSON, see [Raw Data]() for details.
+`DMEFile` exposes the method `fileContentAsJSON` which attempts to decode the binary file into a JSON map, so that you can easily extract the values you need to power your app. Not all files can be represented as JSON, see [Raw Data](https://digime.github.io/digime-sdk-ios/raw-data.html) for details.
 
 ## Contributions
 
