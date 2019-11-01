@@ -57,6 +57,7 @@ We recommend you use one of the convenience methods provided:
 
 When calling `authorize` on your `DMEPullClient`, simply pass in your `DMEScope` object:
 
+#####Objective-C
 ```objc
 DMEScope *scope = [DMEScope new];
 scope.timeRanges = @[[DMETimeRange last:6 unit:DMETimeRangeUnitMonth]];
@@ -65,6 +66,7 @@ scope.timeRanges = @[[DMETimeRange last:6 unit:DMETimeRangeUnitMonth]];
 }];
 ```
 
+#####Swift
 ```swift
 let scope = DMEScope()
 scope.timeRanges = [DMETimeRange.last(6, unit: .month)]

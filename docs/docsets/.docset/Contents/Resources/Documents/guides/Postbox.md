@@ -61,6 +61,7 @@ In a production environment, you will also be required to obtain your own `Contr
 
 Because the digi.me Private Sharing SDK opens the digi.me app for authorization, you are required to forward the `openURL` event through to the SDK so that it may process responses. In your application's delegate (typically `AppDelegate`) override `application:openURL:options:` method as below:
 
+#####Objective-C
 ```objc
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
@@ -68,6 +69,7 @@ Because the digi.me Private Sharing SDK opens the digi.me app for authorization,
 }
 ```
 
+#####Swift
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
   return DMEAppCommunicator.shared().open(url, options: options)
@@ -108,11 +110,13 @@ where `YOUR_APP_ID` should be replaced with your `AppID`.
 
 The `DMEPushConfiguration` object is instantiated with your `AppID` and `Private Key` in hex format. The below code snippet shows you how to combine all this to get a configured `DMEPushClient`:
 
+#####Objective-C
 ```objc
 DMEPushConfiguration *configuration = [[DMEPushConfiguration alloc] initWithAppId:@"YOUR_APP_ID" contractId:@"YOUR_CONTRACT_ID"];
 DMEPushClient *pushClient = [[DMEPushClient alloc] initWithConfiguration:configuration];
 ```
 
+#####Swift
 ```swift
 let configuration = DMEPushConfiguration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID")
 let pushClient = DMEPushClient(configuration: configuration)
@@ -122,12 +126,14 @@ let pushClient = DMEPushClient(configuration: configuration)
 
 Before you can push data into a user's digi.me, you must obtain their consent. This is achieved by calling `createPostbox` on your client object:
 
+#####Objective-C
 ```objc
 [pushClient createPostboxWithCompletion:^(DMEPostbox * _Nullable postbox, NSError * _Nullable error) {
 
 }];
 ```
 
+#####Swift
 ```swift
 pushClient.createPostbox { postbox, error in
 
@@ -140,6 +146,7 @@ If a user grants consent, a Postbox will be created and returned; this is used b
 
 To push data, you need to build a JSON `metadata` object that describes what data your pushing along with the NSData representation of your data itself. An example showing Postbox creation and push can be seen below.:
 
+#####Objective-C
 ```objc
 NSData *data = ... // Obtain the data you wish to post.
 NSData *metadata = ... // All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.
@@ -149,6 +156,7 @@ NSData *metadata = ... // All Postbox submissions must be pushed with appropriat
 }];
 ```
 
+#####Swift
 ```swift
 let data: Data = ... // Obtain the data you wish to post.
 let metadata: Data = ... // All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.

@@ -381,11 +381,13 @@ We do not currently support linking DigiMeSDK as a Static Library.</p>
 <h3 id='2-configuring-callback-forwarding' class='heading'>2. Configuring Callback Forwarding:</h3>
 
 <p>Because the digi.me Private Sharing SDK opens the digi.me app for authorization, you are required to forward the <code>openURL</code> event through to the SDK so that it may process responses. In your application&rsquo;s delegate (typically <code>AppDelegate</code>) override <code>application:openURL:options:</code> method as below:</p>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="k">-</span><span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">application</span><span class="p">:(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">app</span> <span class="nf">openURL</span><span class="p">:(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">options</span><span class="p">:(</span><span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">UIApplicationOpenURLOptionsKey</span><span class="p">,</span><span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">options</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="p">[[</span><span class="n">DMEAppCommunicator</span> <span class="nf">shared</span><span class="p">]</span> <span class="nf">openURL</span><span class="p">:</span><span class="n">url</span> <span class="nf">options</span><span class="p">:</span><span class="n">options</span><span class="p">];</span>
 <span class="p">}</span>
 </code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
 <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplication</span><span class="o">.</span><span class="kt">OpenURLOptionsKey</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
   <span class="k">return</span> <span class="kt">DMEAppCommunicator</span><span class="o">.</span><span class="nf">shared</span><span class="p">()</span><span class="o">.</span><span class="nf">open</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="n">options</span><span class="p">)</span>
 <span class="p">}</span>
@@ -422,10 +424,12 @@ And register custom URL scheme so that your app can receive the callback from Di
 <p><code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code> is the object you will primarily interface with to use the SDK. It is instantiated with a <code><a href="Classes/DMEPullConfiguration.html">DMEPullConfiguration</a></code> object.</p>
 
 <p>The <code><a href="Classes/DMEPullConfiguration.html">DMEPullConfiguration</a></code> object is instantiated with your <code>App ID</code>, <code>Contract ID</code> and <code>Private Key</code> in hex format. We provide a convenience method to extract the private key. The below code snippet shows you how to combine all this to get a configured <code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code>:</p>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="n">NSString</span> <span class="o">*</span><span class="n">privateKeyHex</span> <span class="o">=</span> <span class="p">[</span><span class="n">DMECryptoUtilities</span> <span class="nf">privateKeyHexFromP12File</span><span class="p">:</span> <span class="n">p12FileName</span> <span class="nf">password</span><span class="p">:</span> <span class="n">p12Password</span><span class="p">];</span>
 <span class="n">DMEPullConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPullConfiguration</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithAppId</span><span class="p">:</span><span class="s">@"YOUR_APP_ID"</span> <span class="nf">contractId</span><span class="p">:</span><span class="s">@"YOUR_CONTRACT_ID"</span> <span class="n">privateKeyHex</span><span class="o">:</span> <span class="n">privateKeyHex</span><span class="p">];</span>
 <span class="n">DMEPullClient</span> <span class="o">*</span><span class="n">pullClient</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPullClient</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithConfiguration</span><span class="p">:</span><span class="n">configuration</span><span class="p">];</span>
 </code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">privateKeyHex</span> <span class="o">=</span> <span class="kt">DMECryptoUtilities</span><span class="o">.</span><span class="nf">privateKeyHex</span><span class="p">(</span><span class="nv">fromP12File</span><span class="p">:</span> <span class="n">p12Filename</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="n">p12Password</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DMEPullConfiguration</span><span class="p">(</span><span class="nv">appId</span><span class="p">:</span> <span class="s">"YOUR_APP_ID"</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="s">"YOUR_CONTRACT_ID"</span><span class="p">,</span> <span class="nv">privateKeyHex</span><span class="p">:</span> <span class="n">privateKeyHex</span><span class="o">!</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">pullClient</span> <span class="o">=</span> <span class="kt">DMEPullClient</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="n">configuration</span><span class="p">)</span>
@@ -433,10 +437,12 @@ And register custom URL scheme so that your app can receive the callback from Di
 <h3 id='4-requesting-consent' class='heading'>4. Requesting Consent:</h3>
 
 <p>Before you can access a user&rsquo;s data, you must obtain their consent. This is achieved by calling <code>authorize</code> on your client object:</p>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="p">[</span><span class="n">pullClient</span> <span class="nf">authorizeWithCompletion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMESession</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">session</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
 
 <span class="p">}];</span>
 </code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
 <pre class="highlight swift"><code><span class="n">pullClient</span><span class="o">.</span><span class="nf">authorize</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">session</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
 
 <span class="p">})</span>
@@ -446,6 +452,7 @@ And register custom URL scheme so that your app can receive the callback from Di
 <h3 id='5-fetching-data' class='heading'>5. Fetching Data:</h3>
 
 <p>Once you have a session, you can request data. We strive to make this as simple as possible, so expose a single method to do so:</p>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="p">[</span><span class="n">pullClient</span> <span class="nf">getSessionDataWithDownloadHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMEFile</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">file</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
 
   <span class="c1">// Handle each downloaded file here.</span>
@@ -456,6 +463,7 @@ And register custom URL scheme so that your app can receive the callback from Di
 
 <span class="p">}];</span>
 </code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
 <pre class="highlight swift"><code><span class="n">pullClient</span><span class="o">.</span><span class="nf">getSessionData</span><span class="p">(</span><span class="nv">downloadHandler</span><span class="p">:</span> <span class="p">{</span> <span class="n">file</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
 
   <span class="c1">// Handle each downloaded file here.</span>
