@@ -89,6 +89,7 @@ You should include the P12 file in your project assets folder.
 
 Because the digi.me Private Sharing SDK opens the digi.me app for authorization, you are required to forward the `openURL` event through to the SDK so that it may process responses. In your application's delegate (typically `AppDelegate`) override `application:openURL:options:` method as below:
 
+#####Objective-C
 ```objc
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
@@ -96,6 +97,7 @@ Because the digi.me Private Sharing SDK opens the digi.me app for authorization,
 }
 ```
 
+#####Swift
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
   return DMEAppCommunicator.shared().open(url, options: options)
@@ -136,12 +138,14 @@ where `YOUR_APP_ID` should be replaced with your `AppID`.
 
 The `DMEPullConfiguration` object is instantiated with your `App ID`, `Contract ID` and `Private Key` in hex format. We provide a convenience method to extract the private key. The below code snippet shows you how to combine all this to get a configured `DMEPullClient`:
 
+#####Objective-C
 ```objc
 NSString *privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File: p12FileName password: p12Password];
 DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:@"YOUR_APP_ID" contractId:@"YOUR_CONTRACT_ID" privateKeyHex: privateKeyHex];
 DMEPullClient *pullClient = [[DMEPullClient alloc] initWithConfiguration:configuration];
 ```
 
+#####Swift
 ```swift
 let privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: p12Filename, password: p12Password)
 let configuration = DMEPullConfiguration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID", privateKeyHex: privateKeyHex!)
@@ -152,12 +156,14 @@ let pullClient = DMEPullClient(configuration: configuration)
 
 Before you can access a user's data, you must obtain their consent. This is achieved by calling `authorize` on your client object:
 
+#####Objective-C
 ```objc
 [pullClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
 
 }];
 ```
 
+#####Swift
 ```swift
 pullClient.authorize(completion: { session, error in
 
@@ -170,6 +176,7 @@ If a user grants consent, a session will be created and returned; this is used b
 
 Once you have a session, you can request data. We strive to make this as simple as possible, so expose a single method to do so:
 
+#####Objective-C
 ```objc
 [pullClient getSessionDataWithDownloadHandler:^(DMEFile * _Nullable file, NSError * _Nullable error) {
 
@@ -182,6 +189,7 @@ Once you have a session, you can request data. We strive to make this as simple 
 }];
 ```
 
+#####Swift
 ```swift
 pullClient.getSessionData(downloadHandler: { file, error in
 
