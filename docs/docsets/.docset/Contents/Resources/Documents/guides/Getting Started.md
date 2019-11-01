@@ -8,7 +8,7 @@
         <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="MIT License">
     </a>
     <a href="#">
-    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg" 
+    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg"> 
     </a>
     <a href="https://swift.org">
         <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
@@ -127,7 +127,7 @@ And register custom URL scheme so that your app can receive the callback from Di
 where `YOUR_APP_ID` should be replaced with your `AppID`.
 
 ### 3. Configuring the `DMEPullClient` object:
-`DMEPullClient` is the object you will primarily interface with to use the SDK. It is instantiated with a context, and a `DMEPullConfiguration` object. **The provided context should always be the main application context.**
+`DMEPullClient` is the object you will primarily interface with to use the SDK. It is instantiated with a `DMEPullConfiguration` object.
 
 The `DMEPullConfiguration` object is instantiated with your `App ID`, `Contract ID` and `Private Key` in hex format. We provide a convenience method to extract the private key. The below code snippet shows you how to combine all this to get a configured `DMEPullClient`:
 
@@ -169,7 +169,7 @@ For each file, the first 'file handler' block will be called. If the download wa
 
 Once all files are downloaded, the second block will be invoked to inform you of this. In the case that the data stream is interrupted, or if the session obtained above isn't valid (it may have expired, for example), you will receive an error in the second block. See [Handling Errors](https://digime.github.io/digime-sdk-ios/error-handling.html).
 
-`DMEFile` exposes the method `fileContentAsJSON` which attempts to decode the binary file into a JSON map, so that you can easily extract the values you need to power your app. Not all files can be represented as JSON, see [Raw Data]() for details.
+`DMEFile` exposes the method `fileContentAsJSON` which attempts to decode the binary file into a JSON map, so that you can easily extract the values you need to power your app. Not all files can be represented as JSON, see [Raw Data](https://digime.github.io/digime-sdk-ios/raw-data.html) for details.
 
 ## Contributions
 
