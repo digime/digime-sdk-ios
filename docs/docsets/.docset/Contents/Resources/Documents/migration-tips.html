@@ -305,7 +305,7 @@
         <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="MIT License">
     </a>
     <a href="#">
-        <img src="https://img.shields.io/badge/build-passing-brightgreen.svg"> 
+        <img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
     </a>
     <a href="https://swift.org">
         <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
@@ -325,45 +325,99 @@
 
 <ol>
 <li><p><code><a href="Classes/DMEClient.html">DMEClient</a></code> singleton no longer exists. It has been replaced by <code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code> and <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code>.</p></li>
-<li><p>In <code>AppDelegate</code>, you still need to forward app open events to the SDK. This is now done by forwarding the event to <code><a href="Classes/DMEAppCommunicator.html">DMEAppCommunicator</a></code>:</p>
+<li><p>In <code>AppDelegate</code>, you still need to forward app open events to the SDK. This is now done by forwarding the event to <code><a href="Classes/DMEAppCommunicator.html">DMEAppCommunicator</a></code>:</p></li>
+</ol>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="k">-</span><span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">application</span><span class="p">:(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">app</span> <span class="nf">openURL</span><span class="p">:(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">options</span><span class="p">:(</span><span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">UIApplicationOpenURLOptionsKey</span><span class="p">,</span><span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">options</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="p">[[</span><span class="n">DMEAppCommunicator</span> <span class="nf">shared</span><span class="p">]</span> <span class="nf">openURL</span><span class="p">:</span><span class="n">url</span> <span class="nf">options</span><span class="p">:</span><span class="n">options</span><span class="p">];</span>
 <span class="p">}</span>
-</code></pre></li>
-<li><p>Each type of client has to be instantiated with a corresponding configuration object:</p>
-<pre class="highlight objective_c"><code><span class="n">DMEPullConfiguration</span> <span class="o">*</span><span class="n">pullConfig</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPullConfiguration</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithAppId</span><span class="p">:</span><span class="s">@"your_app_id"</span> <span class="nf">contractId</span><span class="p">:</span><span class="s">@"your_contract_id"</span> <span class="n">p12FileName</span><span class="o">:</span><span class="s">@"p12_filename"</span> <span class="n">p12Password</span><span class="o">:</span><span class="s">@"p12_password"</span><span class="p">];</span>
-<span class="n">DMEPullClient</span> <span class="o">*</span><span class="n">pullClient</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPullClient</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithConfiguration</span><span class="p">:</span><span class="n">pullConfig</span><span class="p">];</span>
-</code></pre></li>
-<li><p>We recommend you turn on debug logging while evaluating the SDK, which can be done via:</p>
+</code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplication</span><span class="o">.</span><span class="kt">OpenURLOptionsKey</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kt">DMEAppCommunicator</span><span class="o">.</span><span class="nf">shared</span><span class="p">()</span><span class="o">.</span><span class="nf">open</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="n">options</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+<ol>
+<li>Each type of client has to be instantiated with a corresponding configuration object:</li>
+</ol>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
+<pre class="highlight objective_c"><code><span class="n">DMEPullConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPullConfiguration</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithAppId</span><span class="p">:</span><span class="s">@"YOUR_APP_ID"</span> <span class="nf">contractId</span><span class="p">:</span><span class="s">@"YOUR_CONTRACT_ID"</span> <span class="n">privateKeyHex</span><span class="o">:</span> <span class="n">privateKeyHex</span><span class="p">];</span>
+<span class="n">DMEPullClient</span> <span class="o">*</span><span class="n">pullClient</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPullClient</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithConfiguration</span><span class="p">:</span><span class="n">configuration</span><span class="p">];</span>
+</code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DMEPullConfiguration</span><span class="p">(</span><span class="nv">appId</span><span class="p">:</span> <span class="s">"YOUR_APP_ID"</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="s">"YOUR_CONTRACT_ID"</span><span class="p">,</span> <span class="nv">privateKeyHex</span><span class="p">:</span> <span class="n">privateKeyHex</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">pullClient</span> <span class="o">=</span> <span class="kt">DMEPullClient</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="n">configuration</span><span class="p">)</span>
+</code></pre>
+
+<ol>
+<li>We recommend you turn on debug logging while evaluating the SDK, which can be done via:</li>
+</ol>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="c1">// this will add extra logging to the console.</span>
-<span class="n">pullConfig</span><span class="p">.</span><span class="n">debugLogEnabled</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
-</code></pre></li>
-<li><p>We no longer support delegate based approach for SDK callbacks. Alternatives are:</p>
+<span class="n">configuration</span><span class="p">.</span><span class="n">debugLogEnabled</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+</code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="c1">// this will add extra logging to the console.</span>
+<span class="n">configuration</span><span class="o">.</span><span class="n">debugLogEnabled</span> <span class="o">=</span> <span class="kc">true</span>
+</code></pre>
+
+<ol>
+<li>We no longer support delegate based approach for SDK callbacks. Alternatives are:</li>
+</ol>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="c1">//Begin auth flow</span>
 <span class="p">[</span><span class="n">pullClient</span> <span class="nf">authorizeWithCompletion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMESession</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">session</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="c1">// if there's no error - you can now get accounts</span>
-    <span class="c1">// and/or start downloading session data</span>
+  <span class="c1">// if there's no error - you can now get accounts</span>
+  <span class="c1">// and/or start downloading session data</span>
 <span class="p">}];</span>
 </code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="c1">//Begin auth flow</span>
+<span class="n">pullClient</span><span class="o">.</span><span class="nf">authorize</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">session</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+
+  <span class="c1">// if there's no error - you can now get accounts</span>
+  <span class="c1">// and/or start downloading session data</span>
+<span class="p">})</span>
+</code></pre>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="c1">//get accounts</span>
 <span class="p">[</span><span class="n">pullClient</span> <span class="nf">getSessionAccountsWithCompletion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMEAccounts</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">accounts</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// do stuff</span>
 <span class="p">}];</span>
 </code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="c1">//get accounts</span>
+<span class="n">pullClient</span><span class="o">.</span><span class="n">getSessionAccounts</span> <span class="p">{</span> <span class="n">accounts</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+    <span class="c1">// do stuff</span>
+<span class="p">}</span>
+</code></pre>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="c1">//get session data</span>
 <span class="c1">//NOTE: downloadHandler and completion are NOT executed on MAIN thread.</span>
-<span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">dmeClient</span> <span class="nf">getSessionDataWithDownloadHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMEFile</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">file</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// this is called every time either:</span>
-    <span class="c1">// A: new file has been downloaded</span>
-    <span class="c1">// B: prevously downloaded file has been updated</span>
-    <span class="c1">// In case B, full file is delivered NOT the change.</span>
+<span class="p">[</span><span class="n">pullClient</span> <span class="nf">getSessionDataWithDownloadHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMEFile</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">file</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// this is called every time either:</span>
+  <span class="c1">// A: new file has been downloaded</span>
+  <span class="c1">// B: prevously downloaded file has been updated</span>
+  <span class="c1">// In case B, full file is delivered NOT the change.</span>
 <span class="p">}</span> <span class="nf">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// this is called when all available session data has been retrieved.</span>
+  <span class="c1">// this is called when all available session data has been retrieved.</span>
 <span class="p">}];</span>
-</code></pre></li>
-</ol>
+</code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="c1">//get session data</span>
+<span class="c1">//NOTE: downloadHandler and completion are NOT executed on MAIN thread.</span>
+<span class="n">pullClient</span><span class="o">.</span><span class="nf">getSessionData</span><span class="p">(</span><span class="nv">downloadHandler</span><span class="p">:</span> <span class="p">{</span> <span class="n">file</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+  <span class="c1">// this is called every time either:</span>
+  <span class="c1">// A: new file has been downloaded</span>
+  <span class="c1">// B: prevously downloaded file has been updated</span>
+  <span class="c1">// In case B, full file is delivered NOT the change.</span>
+<span class="p">},</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">error</span> <span class="k">in</span>
+  <span class="c1">// this is called when all available session data has been retrieved.</span>
+<span class="p">})</span>
+</code></pre>
 
           </div>
         </section>

@@ -8,7 +8,7 @@
         <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="MIT License">
     </a>
     <a href="#">
-    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg"> 
+    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
     </a>
     <a href="https://swift.org">
         <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
@@ -40,7 +40,7 @@ At a code level, you can restrict the scope of a Private Sharing session by pass
 We recommend you use one of the convenience methods provided:
 
 ```objc
-//  A valid NSDate object representation of the earliest date you want data for. 
+//  A valid NSDate object representation of the earliest date you want data for.
 + (DMETimeRange *)from:(NSDate *)from;
 
 // A valid NSDate object representation of the date before which you would like data.
@@ -57,12 +57,22 @@ We recommend you use one of the convenience methods provided:
 
 When calling `authorize` on your `DMEPullClient`, simply pass in your `DMEScope` object:
 
+#####Objective-C
 ```objc
 DMEScope *scope = [DMEScope new];
 scope.timeRanges = @[[DMETimeRange last:6 unit:DMETimeRangeUnitMonth]];
 [pullClient authorizeWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
-        
+
 }];
+```
+
+#####Swift
+```swift
+let scope = DMEScope()
+scope.timeRanges = [DMETimeRange.last(6, unit: .month)]
+pullClient.authorize(scope: scope, completion: { session, error in
+
+})
 ```
 
 The data received from any subsequent calls to `getSessionData` will be limited by the scope of the session defined above.
