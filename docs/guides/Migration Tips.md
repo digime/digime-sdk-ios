@@ -4,8 +4,8 @@
     <a href="https://developers.digi.me/slack/join">
         <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
     </a>
-    <a href="LICENSE">
-        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="MIT License">
+    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
+        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
     </a>
     <a href="#">
     	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
