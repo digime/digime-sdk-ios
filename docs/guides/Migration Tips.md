@@ -23,8 +23,8 @@
 
 <br>
 
-# Migration Tips
-Here are some key SDK changes that may help you get to grips with it if you are migrating from previous versions:
+# DigiMeSDK 3.x.x Migration Tips
+Here are some key SDK changes that may help you get to grips with it if you are migrating from 2.x.x to 3.x.x versions:
 
 1. `DMEClient` singleton no longer exists. It has been replaced by `DMEPullClient` and `DMEPushClient`.
 
