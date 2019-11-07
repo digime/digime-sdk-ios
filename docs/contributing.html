@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Postbox  Reference</title>
+    <title>Contributing  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -15,7 +15,7 @@
   <body>
 
 
-    <a title="Postbox  Reference"></a>
+    <a title="Contributing  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -37,7 +37,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html"> Reference</a>
       <img class="carat" src="img/carat.png" />
-      Postbox  Reference
+      Contributing  Reference
     </p>
 
     <div class="content-wrapper">
@@ -322,123 +322,124 @@
 </p>
 
 <p><br></p>
-<h1 id='postbox' class='heading'>Postbox</h1>
-<h2 id='introduction' class='heading'>Introduction</h2>
+<h2 id='contributing' class='heading'>Contributing</h2>
 
-<p>digi.me is a data portability facilitator. As such, we support the flow of data in both directions - from the user to you, and from you back to the user. This process of &lsquo;giving data back&rsquo; is known as Postbox and will henceforth be referred to as such.</p>
+<p>We are open to, and grateful for, any contributions made by the community. When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.</p>
+<h2 id='code-of-conduct' class='heading'>Code of Conduct</h2>
 
-<p>Instances may arise where you wish to utilise data not currently supported by digi.me natively, Postbox allows you to do this. It does what it says on the tin, acts as a postbox for data into a user&rsquo;s digi.me.</p>
-<h2 id='types-of-push' class='heading'>Types of Push</h2>
+<p>We have adopted the <a href="https://www.contributor-covenant.org/">Contributor Covenant</a> as our Code of Conduct, and we expect project participants to adhere to it.
+Please read the full text so that you can understand what actions will and will not be tolerated.</p>
+<h3 id='our-pledge' class='heading'>Our Pledge</h3>
 
-<p>When pushing data to Postbox you have two main options:</p>
-<h4 id='data-pre-mapped-into-digi-me-39-s-ontology' class='heading'>Data pre-mapped into digi.me&rsquo;s ontology:</h4>
+<p>In the interest of fostering an open and welcoming environment, we as
+contributors and maintainers pledge to making participation in our project and
+our community a harassment-free experience for everyone, regardless of age, body
+size, disability, ethnicity, gender identity and expression, level of experience,
+nationality, personal appearance, race, religion, or sexual identity and
+orientation.</p>
+<h3 id='our-standards' class='heading'>Our Standards</h3>
 
-<p>digi.me publishes it&rsquo;s data ontology <a href="https://developers.digi.me/reference-api">here</a> for the various data types. When making a submission, if you push data normalised to this format, it will be displayed in the digi.me more appropriately, with UI specifically engineered to maximise the value of that data. It also means that when you or another third party requests this data via pull, it can be included within a collection of data points of the same type.</p>
-<h4 id='unmapped-data-a-href-raw-data-html-raw-data-a' class='heading'>Unmapped data (<a href="raw-data.html">Raw Data</a>):</h4>
+<p>Examples of behavior that contributes to creating a positive environment include:</p>
 
-<p>digi.me can also act as a vault for data that does not fit within our current ontology, whether to collate user data together in one place or to act as a conduit between a data provider and data consumer. When data that doesn&rsquo;t correspond to one of digi.me&rsquo;s object types is pushed, this will be rendered within digi.me as a raw &lsquo;data drop&rsquo;. If we can deserialise this to JSON, we will show the raw JSON tree, otherwise there will be no facility to preview the data - this is for security reasons.</p>
-<h2 id='pushing-data-5-simple-steps' class='heading'>Pushing Data - 5 Simple Steps</h2>
+<ul>
+<li>Using welcoming and inclusive language</li>
+<li>Being respectful of differing viewpoints and experiences</li>
+<li>Gracefully accepting constructive criticism</li>
+<li>Focusing on what is best for the community</li>
+<li>Showing empathy towards other community members</li>
+</ul>
 
-<p>The digi.me Private Sharing SDK makes it easy to create a postbox to push data to. Similarly to requesting data, you can achieve this by utilising a client object as follows:</p>
-<h3 id='1-obtaining-your-contract-id-amp-application-id' class='heading'>1. Obtaining your Contract ID &amp; Application ID:</h3>
+<p>Examples of unacceptable behavior by participants include:</p>
 
-<p>Postbox uses the same means of authentication as pulling user data.</p>
+<ul>
+<li>The use of sexualized language or imagery and unwelcome sexual attention or
+advances</li>
+<li>Trolling, insulting/derogatory comments, and personal or political attacks</li>
+<li>Public or private harassment</li>
+<li>Publishing others&rsquo; private information, such as a physical or electronic
+address, without explicit permission</li>
+<li>Other conduct which could reasonably be considered inappropriate in a
+professional setting</li>
+</ul>
+<h3 id='our-responsibilities' class='heading'>Our Responsibilities</h3>
 
-<p>To access the digi.me platform, you need to obtain an <code>AppID</code> for your application. You can get yours by filling out the registration form <a href="https://go.digi.me/developers/register">here</a>.</p>
+<p>Project maintainers are responsible for clarifying the standards of acceptable
+behavior and are expected to take appropriate and fair corrective action in
+response to any instances of unacceptable behavior.</p>
 
-<p>In a production environment, you will also be required to obtain your own <code>Contract ID</code> from digi.me support. However, for sandbox purposes, we provide the following example value:</p>
+<p>Project maintainers have the right and responsibility to remove, edit, or
+reject comments, commits, code, wiki edits, issues, and other contributions
+that are not aligned to this Code of Conduct, or to ban temporarily or
+permanently any contributor for other behaviors that they deem inappropriate,
+threatening, offensive, or harmful.</p>
+<h3 id='scope' class='heading'>Scope</h3>
 
-<p><strong>Example Contract ID:</strong> <code>Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn</code></p>
-<h3 id='2-configuring-callback-forwarding' class='heading'>2. Configuring Callback Forwarding:</h3>
+<p>This Code of Conduct applies both within project spaces and in public spaces
+when an individual is representing the project or its community. Examples of
+representing a project or community include using an official project e-mail
+address, posting via an official social media account, or acting as an appointed
+representative at an online or offline event. Representation of a project may be
+further defined and clarified by project maintainers.</p>
+<h3 id='enforcement' class='heading'>Enforcement</h3>
 
-<p>Because the digi.me Private Sharing SDK opens the digi.me app for authorization, you are required to forward the <code>openURL</code> event through to the SDK so that it may process responses. In your application&rsquo;s delegate (typically <code>AppDelegate</code>) override <code>application:openURL:options:</code> method as below:</p>
-<h5 id='objective-c' class='heading'>Objective-C</h5>
-<pre class="highlight objective_c"><code><span class="k">-</span><span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="nf">application</span><span class="p">:(</span><span class="n">UIApplication</span> <span class="o">*</span><span class="p">)</span><span class="nv">app</span> <span class="nf">openURL</span><span class="p">:(</span><span class="n">NSURL</span> <span class="o">*</span><span class="p">)</span><span class="nv">url</span> <span class="nf">options</span><span class="p">:(</span><span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">UIApplicationOpenURLOptionsKey</span><span class="p">,</span><span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">options</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="p">[[</span><span class="n">DMEAppCommunicator</span> <span class="nf">shared</span><span class="p">]</span> <span class="nf">openURL</span><span class="p">:</span><span class="n">url</span> <span class="nf">options</span><span class="p">:</span><span class="n">options</span><span class="p">];</span>
-<span class="p">}</span>
-</code></pre>
-<h5 id='swift' class='heading'>Swift</h5>
-<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplication</span><span class="o">.</span><span class="kt">OpenURLOptionsKey</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="kt">DMEAppCommunicator</span><span class="o">.</span><span class="nf">shared</span><span class="p">()</span><span class="o">.</span><span class="nf">open</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="n">options</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre>
+<p>Instances of abusive, harassing, or otherwise unacceptable behavior may be
+reported by contacting the project team at <a href="mailto:support@digi.me">support@digi.me</a>. All
+complaints will be reviewed and investigated and will result in a response that
+is deemed necessary and appropriate to the circumstances. The project team is
+obligated to maintain confidentiality with regard to the reporter of an incident.
+Further details of specific enforcement policies may be posted separately.</p>
 
-<p><br>
-Additionally, you need to whitelist Digi.me app scheme in your <code>Info.plist</code>:</p>
-<pre class="highlight xml"><code><span class="nt">&lt;key&gt;</span>LSApplicationQueriesSchemes<span class="nt">&lt;/key&gt;</span>
-<span class="nt">&lt;array&gt;</span>
-<span class="nt">&lt;string&gt;</span>digime-ca-master<span class="nt">&lt;/string&gt;</span>
-<span class="nt">&lt;/array&gt;</span>
-</code></pre>
+<p>Project maintainers who do not follow or enforce the Code of Conduct in good
+faith may face temporary or permanent repercussions as determined by other
+members of the project&rsquo;s leadership.</p>
+<h2 id='open-development' class='heading'>Open Development</h2>
 
-<p><br>
-And register custom URL scheme so that your app can receive the callback from Digi.me app. Still in <code>Info.plist</code> add:</p>
-<pre class="highlight xml"><code><span class="nt">&lt;key&gt;</span>CFBundleURLTypes<span class="nt">&lt;/key&gt;</span>
-<span class="nt">&lt;array&gt;</span>
-<span class="nt">&lt;dict&gt;</span>
-<span class="nt">&lt;key&gt;</span>CFBundleTypeRole<span class="nt">&lt;/key&gt;</span>
-<span class="nt">&lt;string&gt;</span>Editor<span class="nt">&lt;/string&gt;</span>
-<span class="nt">&lt;key&gt;</span>CFBundleURLName<span class="nt">&lt;/key&gt;</span>
-<span class="nt">&lt;string&gt;</span>Consent Access<span class="nt">&lt;/string&gt;</span>
-<span class="nt">&lt;key&gt;</span>CFBundleURLSchemes<span class="nt">&lt;/key&gt;</span>
-<span class="nt">&lt;array&gt;</span>
-<span class="nt">&lt;string&gt;</span>digime-ca-YOUR_APP_ID<span class="nt">&lt;/string&gt;</span>
-<span class="nt">&lt;/array&gt;</span>
-<span class="nt">&lt;/dict&gt;</span>
-<span class="nt">&lt;/array&gt;</span>
-</code></pre>
+<p>All work on our SDK happens directly on Github. Core team members and external contributors send pull requests which go through the same review process.</p>
+<h2 id='semantic-versioning' class='heading'>Semantic Versioning</h2>
 
-<p>where <code>YOUR_APP_ID</code> should be replaced with your <code>AppID</code>.</p>
-<h3 id='3-configuring-the-code-dmepushclient-code-object' class='heading'>3. Configuring the <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code> object:</h3>
+<p>Our SDK follows semantic versioning. Patch versions are reserved for bug fixes, minor versions for new features and major version for any breaking changes.</p>
+<h2 id='branch-organisation' class='heading'>Branch Organisation</h2>
 
-<p><code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code> is the object you will primarily interface with to use the SDK. It is instantiated with a <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object.</p>
+<p>Please submit all changes directly to the master branch. We do our best to keep master in good shape, with all tests passing. Master could potentially have breaking changes to your application if we&rsquo;re working on the next major release.</p>
+<h2 id='workflow-and-pull-requests' class='heading'>Workflow and Pull Requests</h2>
 
-<p>The <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object is instantiated with your <code>AppID</code> and <code>Private Key</code> in hex format. The below code snippet shows you how to combine all this to get a configured <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code>:</p>
-<h5 id='objective-c' class='heading'>Objective-C</h5>
-<pre class="highlight objective_c"><code><span class="n">DMEPushConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushConfiguration</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithAppId</span><span class="p">:</span><span class="s">@"YOUR_APP_ID"</span> <span class="nf">contractId</span><span class="p">:</span><span class="s">@"YOUR_CONTRACT_ID"</span><span class="p">];</span>
-<span class="n">DMEPushClient</span> <span class="o">*</span><span class="n">pushClient</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushClient</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithConfiguration</span><span class="p">:</span><span class="n">configuration</span><span class="p">];</span>
-</code></pre>
-<h5 id='swift' class='heading'>Swift</h5>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DMEPushConfiguration</span><span class="p">(</span><span class="nv">appId</span><span class="p">:</span> <span class="s">"YOUR_APP_ID"</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="s">"YOUR_CONTRACT_ID"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">pushClient</span> <span class="o">=</span> <span class="kt">DMEPushClient</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="n">configuration</span><span class="p">)</span>
-</code></pre>
-<h3 id='4-requesting-consent' class='heading'>4. Requesting Consent:</h3>
+<p>For non-trivial changes, please open an issue with a proposal for a new feature or refactoring before starting on the work. We don&rsquo;t want you to waste your efforts on a pull request that we won&rsquo;t want to accept. The core team will be monitoring for all pull requests. We require that tests to be included with your pull requests if you&rsquo;ve added code that should be tested. Two approvers are needed before code can be merged.</p>
+<h2 id='development' class='heading'>Development</h2>
 
-<p>Before you can push data into a user&rsquo;s digi.me, you must obtain their consent. This is achieved by calling <code>createPostbox</code> on your client object:</p>
-<h5 id='objective-c' class='heading'>Objective-C</h5>
-<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">pushClient</span> <span class="nf">createPostboxWithCompletion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMEPostbox</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">postbox</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+<p>To start working on the SDK, fork, then clone the repo:</p>
 
-<span class="p">}];</span>
-</code></pre>
-<h5 id='swift' class='heading'>Swift</h5>
-<pre class="highlight swift"><code><span class="n">pushClient</span><span class="o">.</span><span class="n">createPostbox</span> <span class="p">{</span> <span class="n">postbox</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+<p><code>git clone https://www.github.com/&lt;your_username&gt;/digime-sdk-ios.git</code></p>
+<h4 id='installation' class='heading'>Installation</h4>
+<h3 id='cocoapods' class='heading'>Cocoapods</h3>
 
-<span class="p">}</span>
-</code></pre>
+<ol>
+<li><p>Add <code>DigiMeSDK</code> folder to root of your project folder.</p></li>
+<li><p>Add <code>DigiMeSDK</code> to your <code>Podfile</code>:</p></li>
+</ol>
+<pre class="highlight ruby"><code><span class="n">use_frameworks!</span>
+<span class="n">source</span> <span class="s1">'https://github.com/CocoaPods/Specs.git'</span>
+<span class="n">platform</span> <span class="ss">:ios</span><span class="p">,</span> <span class="s1">'12.0'</span>
 
-<p>If a user grants consent, a Postbox will be created and returned; this is used by subsequent calls to push data. If the user denies consent, an error stating this is returned. See <a href="error-handling.html">Handling Errors</a>.</p>
-<h3 id='5-pushing-data' class='heading'>5. Pushing Data:</h3>
-
-<p>To push data, you need to build a JSON <code>metadata</code> object that describes what data your pushing along with the NSData representation of your data itself. An example showing Postbox creation and push can be seen below.:</p>
-<h5 id='objective-c' class='heading'>Objective-C</h5>
-<pre class="highlight objective_c"><code><span class="n">NSData</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">...</span> <span class="c1">// Obtain the data you wish to post.</span>
-<span class="n">NSData</span> <span class="o">*</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">...</span> <span class="c1">// All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.</span>
-
-<span class="p">[</span><span class="n">pushClient</span> <span class="nf">pushDataToPostbox</span><span class="p">:</span><span class="n">postbox</span> <span class="nf">metadata</span><span class="p">:</span><span class="n">metadata</span> <span class="n">data</span><span class="o">:</span><span class="n">data</span> <span class="n">completion</span><span class="o">:^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1">// Handle error, if any.</span>
-<span class="p">}];</span>
-</code></pre>
-<h5 id='swift' class='heading'>Swift</h5>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span> <span class="o">=</span> <span class="o">...</span> <span class="c1">// Obtain the data you wish to post.</span>
-<span class="k">let</span> <span class="nv">metadata</span><span class="p">:</span> <span class="kt">Data</span> <span class="o">=</span> <span class="o">...</span> <span class="c1">// All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.</span>
-
-<span class="n">pushClient</span><span class="o">.</span><span class="nf">pushData</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">postbox</span><span class="p">,</span> <span class="nv">metadata</span><span class="p">:</span> <span class="n">metadata</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span> <span class="n">error</span> <span class="k">in</span>
-  <span class="c1">// Handle error, if any.</span>
-<span class="p">}</span>
+<span class="n">target</span> <span class="s1">'TargetName'</span> <span class="k">do</span>
+  <span class="n">pod</span> <span class="s1">'DigiMeSDK'</span><span class="p">,</span> <span class="ss">:path</span> <span class="o">=&gt;</span> <span class="s1">'../'</span>
+<span class="k">end</span>
 </code></pre>
 
-<p><em>NB: Please refer to our Postbox example in the <a href="https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift">Swift Example App</a> for more details on data and metadata.</em></p>
+<blockquote>
+<p>NOTE
+We do not currently support linking DigiMeSDK as a Static Library.</p>
+
+<p><strong>use_frameworks!</strong> flag must be set in the Podfile</p>
+</blockquote>
+
+<ol>
+<li>Navigate to the directory of your <code>Podfile</code> and run the following command:</li>
+</ol>
+<pre class="highlight shell"><code>    <span class="nv">$ </span>pod <span class="nb">install</span> <span class="nt">--repo-update</span>
+</code></pre>
+<h2 id='license' class='heading'>License</h2>
+
+<p>By contributing to our SDK, you agree that your contributions will be licensed under its Apache 2.0 license.</p>
 
           </div>
         </section>
