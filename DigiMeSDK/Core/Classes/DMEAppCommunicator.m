@@ -14,7 +14,7 @@
 
 NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
-static NSString * const kDMESdkVersion = @"CASdkVersion";
+static NSString * const kDMESdkVersion = @"sdkVersion";
 static NSInteger  const kDMEClientAppstoreID = 1234541790;
 static NSTimeInterval const kDMETimerInterval = 0.5;
 
