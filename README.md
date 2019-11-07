@@ -207,7 +207,7 @@ Once all files are downloaded, the second block will be invoked to inform you of
 
 ## Contributions
 
-digi.me prides itself in offering our SDKs completely open source, under the [Apache 2.0 Licence](LICENSE); we welcome contributions from all developers.
+digi.me prides itself in offering our SDKs completely open source, under the [Apache 2.0 License](LICENSE); we welcome contributions from all developers.
 
 We ask that when contributing, you ensure your changes meet our [contribution guidelines](https://digime.github.io/digime-sdk-ios/contributing.html) before submitting a pull request.
 
