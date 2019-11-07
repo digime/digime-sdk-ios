@@ -85,6 +85,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)getSessionAccountsWithCompletion:(DMEAccountsCompletion)completion NS_SWIFT_NAME(getSessionAccounts(completion:));
 
+/**
+ Cancels any active session fetching activity. No completion handlers will be called. Use this if you wish to stop receiving notification on the handlers.
+ */
+- (void)cancel;
+
 @end
 
 NS_ASSUME_NONNULL_END

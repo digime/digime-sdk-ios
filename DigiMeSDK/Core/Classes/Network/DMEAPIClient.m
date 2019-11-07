@@ -108,6 +108,12 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
             
             NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
             
+            if (weakOperation.isCancelled)
+            {
+                [weakOperation finishDoingWork];
+                return;
+            }
+            
             if (httpResp.statusCode == 404)
             {
                 if (![weakOperation retry])
@@ -129,6 +135,12 @@ static const NSString *kWorkQueue                               = @"kWorkQueue";
     };
     
     [self.queue addOperation:operation];
+}
+
+#pragma mark - Cancellation
+- (void)cancelQueuedDownloads
+{
+    [self.queue cancelAllOperations];
 }
 
 #pragma mark - Private

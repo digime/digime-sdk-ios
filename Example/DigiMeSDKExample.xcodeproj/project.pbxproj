@@ -16,6 +16,9 @@
 		1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */; };
 		1EC22EF4230EE13C000D17AA /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EF1230EE13C000D17AA /* digimetest.p12 */; };
 		270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270A82F82301B77E000C2F56 /* DataRequestTests.swift */; };
+		2716BB3323707CF100F0A8F6 /* DMEOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2716BB3223707CF100F0A8F6 /* DMEOperationTests.swift */; };
+		2716BB35237088FC00F0A8F6 /* DMEPullClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2716BB34237088FC00F0A8F6 /* DMEPullClientTests.swift */; };
+		2716BB9F2371920B00F0A8F6 /* FileListResponseStaticRunning.json in Resources */ = {isa = PBXBuildFile; fileRef = 2716BB9B23718A6B00F0A8F6 /* FileListResponseStaticRunning.json */; };
 		275851E0230EE85800D71EAA /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EF1230EE13C000D17AA /* digimetest.p12 */; };
 		27BE504922047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		5C2A09D52338F92D0098D20F /* DMELoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2A09D42338F92D0098D20F /* DMELoggerTests.swift */; };
@@ -56,6 +59,10 @@
 		1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		1EC22EF1230EE13C000D17AA /* digimetest.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = digimetest.p12; sourceTree = "<group>"; };
 		270A82F82301B77E000C2F56 /* DataRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestTests.swift; sourceTree = "<group>"; };
+		2716BB3223707CF100F0A8F6 /* DMEOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEOperationTests.swift; sourceTree = "<group>"; };
+		2716BB34237088FC00F0A8F6 /* DMEPullClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEPullClientTests.swift; sourceTree = "<group>"; };
+		2716BB682371822600F0A8F6 /* DMEPullClient+Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DMEPullClient+Tests.h"; sourceTree = "<group>"; };
+		2716BB9B23718A6B00F0A8F6 /* FileListResponseStaticRunning.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FileListResponseStaticRunning.json; sourceTree = "<group>"; };
 		27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
 		369F4AD06777F8F602971B23 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
 		474DF4025C1E92936A30F974 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -99,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				1E7802CD2318138C0070D14E /* DMEApiClientTests.swift */,
+				2716BB3223707CF100F0A8F6 /* DMEOperationTests.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -111,6 +119,14 @@
 				1EC22EF1230EE13C000D17AA /* digimetest.p12 */,
 			);
 			path = Security;
+			sourceTree = "<group>";
+		};
+		2716BB9D23718F6E00F0A8F6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2716BB682371822600F0A8F6 /* DMEPullClient+Tests.h */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		5199FEE8702F01580C43E9C1 /* Frameworks */ = {
@@ -173,6 +189,7 @@
 		607FACE81AFB9204008FA782 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				2716BB9D23718F6E00F0A8F6 /* Extensions */,
 				1EC22EED230EE13B000D17AA /* DigiMeSDKExampleTests-Bridging-Header.h */,
 				5C2A09D32338F8D00098D20F /* Logger */,
 				5C2A09D923390C670098D20F /* Error */,
@@ -180,6 +197,7 @@
 				1EC22EEE230EE13C000D17AA /* Security */,
 				607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */,
 				270A82F82301B77E000C2F56 /* DataRequestTests.swift */,
+				2716BB34237088FC00F0A8F6 /* DMEPullClientTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -189,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACEA1AFB9204008FA782 /* Info.plist */,
+				2716BB9B23718A6B00F0A8F6 /* FileListResponseStaticRunning.json */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -322,6 +341,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2716BB9F2371920B00F0A8F6 /* FileListResponseStaticRunning.json in Resources */,
 				1EC22EF4230EE13C000D17AA /* digimetest.p12 in Resources */,
 				1EC22EF2230EE13C000D17AA /* CryptographyTestingAssets.plist in Resources */,
 			);
@@ -418,7 +438,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2716BB35237088FC00F0A8F6 /* DMEPullClientTests.swift in Sources */,
 				5C2A09DB23390C7F0098D20F /* DMEErrorTests.swift in Sources */,
+				2716BB3323707CF100F0A8F6 /* DMEOperationTests.swift in Sources */,
 				1E7802CE2318138C0070D14E /* DMEApiClientTests.swift in Sources */,
 				5C2A09D52338F92D0098D20F /* DMELoggerTests.swift in Sources */,
 				1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */,
