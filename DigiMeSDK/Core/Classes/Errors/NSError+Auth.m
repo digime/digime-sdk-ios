@@ -40,6 +40,10 @@
         case AuthErrorInvalidSessionKey:
             return @"digi.me app returned an invalid session key.";
             break;
+            
+        case AuthErrorScopeOutOfBounds:
+            return @"Requested scope is out of bounds of the Contract scope.";
+            break;
     }
     
     return NSLocalizedString(@"", @"");

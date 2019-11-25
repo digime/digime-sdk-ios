@@ -18,7 +18,7 @@
 #import "NSString+DMECrypto.h"
 #import "DMEStatusLogger.h"
 
-static const NSString *kWorkQueue                               = @"kWorkQueue";
+static const NSString *kWorkQueue = @"kWorkQueue";
 
 @interface DMEAPIClient() <NSURLSessionDelegate>
 
