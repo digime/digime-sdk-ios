@@ -94,13 +94,15 @@ static NSString * const dataRequestServiceObjectTypesKey = @"serviceObjectTypes"
             
             for (DMEServiceObjectType *serviceObjectType in serviceType.serviceObjectTypes)
             {
-                NSDictionary *dict = @{ dataRequestIdKey : serviceObjectType.serviceObjectTypeId };
+                NSDictionary *dict = @{ dataRequestIdKey: serviceObjectType.serviceObjectTypeId };
                 [serviceObjectTypes addObject:dict];
             }
             
+            typesDict[dataRequestServiceObjectTypesKey] = serviceObjectTypes;
             [serviceTypes addObject:typesDict];
         }
-
+        
+        groupsDict[dataRequestServiceTypesKey] = serviceTypes;
         [serializedRanges addObject:groupsDict];
     }
     
