@@ -8,17 +8,15 @@
 
 #import "DMEServiceObjectType.h"
 
-static NSString * const kServiceObjectTypeId = @"id";
-
 @interface DMEServiceObjectType()
 
-@property (nonatomic, strong, readwrite) NSNumber *serviceObjectTypeId;
+@property (nonatomic) NSUInteger serviceObjectTypeId;
 
 @end
 
 @implementation DMEServiceObjectType
 
-- (instancetype)initWithServiceObjectType:(NSNumber *)serviceObjectTypeId
+- (instancetype)initWithServiceObjectType:(NSUInteger)serviceObjectTypeId
 {
     self = [super init];
     
@@ -28,28 +26,6 @@ static NSString * const kServiceObjectTypeId = @"id";
     }
     
     return self;
-}
-
-- (void)encodeWithCoder:(nonnull NSCoder *)coder
-{
-    [coder encodeObject:self.serviceObjectTypeId forKey:kServiceObjectTypeId];
-}
-
-- (nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
-{
-    NSNumber *serviceObjectTypeId = [coder decodeObjectForKey:kServiceObjectTypeId];
-    
-    if (self = [self initWithServiceObjectType:serviceObjectTypeId])
-    {
-        self.serviceObjectTypeId = [coder decodeObjectForKey:kServiceObjectTypeId];
-    }
-    
-    return self;
-}
-
-- (nonnull id)copyWithZone:(nullable NSZone *)zone
-{
-    return [[[self class] allocWithZone:zone] initWithServiceObjectType:self.serviceObjectTypeId];
 }
 
 @end

@@ -83,18 +83,18 @@ static NSString * const dataRequestServiceObjectTypesKey = @"serviceObjectTypes"
     for (DMEServiceGroup *serviceGroup in requestedScope.serviceGroups)
     {
         NSMutableDictionary *groupsDict = [NSMutableDictionary new];
-        groupsDict[dataRequestIdKey] = serviceGroup.serviceGroupId;
+        groupsDict[dataRequestIdKey] = @(serviceGroup.serviceGroupId);
         NSMutableArray *serviceTypes = [NSMutableArray new];
         
         for (DMEServiceType *serviceType in serviceGroup.serviceTypes)
         {
             NSMutableDictionary *typesDict = [NSMutableDictionary new];
-            typesDict[dataRequestIdKey] = serviceType.serviceTypeId;
+            typesDict[dataRequestIdKey] = @(serviceType.serviceTypeId);
             NSMutableArray *serviceObjectTypes = [NSMutableArray new];
             
             for (DMEServiceObjectType *serviceObjectType in serviceType.serviceObjectTypes)
             {
-                NSDictionary *dict = @{ dataRequestIdKey: serviceObjectType.serviceObjectTypeId };
+                NSDictionary *dict = @{ dataRequestIdKey: @(serviceObjectType.serviceObjectTypeId) };
                 [serviceObjectTypes addObject:dict];
             }
             

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DMEServiceObjectType: NSObject <NSCoding, NSCopying>
+@interface DMEServiceObjectType: NSObject
 
 /**
  ObjectType is a JFS object definition, such us social Comment, Media, Post etc.
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  ### Useful links
  * [digi.me Developer Portal]
 */
-@property (nonatomic, strong, readonly) NSNumber *serviceObjectTypeId;
+@property (nonatomic, readonly) NSUInteger serviceObjectTypeId;
 
 /**
 -init unavailable. Use -initWithServiceObjectType:serviceObjectTypeId:
@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 @param serviceObjectTypeId NSNumber Object identifier that is a representation of the JFS Service Object Type entity, such us social Comment, Media or a Post.
 @return instancetype.
 */
-- (instancetype)initWithServiceObjectType:(NSNumber *)serviceObjectTypeId NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithServiceObjectType:(NSUInteger)serviceObjectTypeId NS_DESIGNATED_INITIALIZER;
 
 @end
 

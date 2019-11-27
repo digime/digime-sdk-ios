@@ -8,19 +8,16 @@
 
 #import "DMEServiceType.h"
 
-static NSString * const kServiceTypeId = @"id";
-static NSString * const kServiceObjectTypes = @"serviceObjectTypes";
-
 @interface DMEServiceType()
 
-@property (nonatomic, strong, readwrite) NSNumber *serviceTypeId;
-@property (nonatomic, strong, readwrite, nullable) NSArray <DMEServiceObjectType *> *serviceObjectTypes;
+@property (nonatomic) NSUInteger serviceTypeId;
+@property (nonatomic, strong) NSArray <DMEServiceObjectType *> *serviceObjectTypes;
 
 @end
 
 @implementation DMEServiceType
 
-- (instancetype)initWithServiceType:(NSNumber *)serviceTypeId objectTypes:(NSArray<DMEServiceObjectType *> *)serviceObjectTypes
+- (instancetype)initWithServiceType:(NSUInteger)serviceTypeId objectTypes:(NSArray<DMEServiceObjectType *> *)serviceObjectTypes
 {
     self = [super init];
     
@@ -31,29 +28,6 @@ static NSString * const kServiceObjectTypes = @"serviceObjectTypes";
     }
     
     return self;
-}
-
-- (void)encodeWithCoder:(nonnull NSCoder *)coder
-{
-    [coder encodeObject:self.serviceTypeId forKey:kServiceTypeId];
-    [coder encodeObject:self.serviceObjectTypes forKey:kServiceObjectTypes];
-}
-
-- (nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
-{
-    NSNumber *serviceTypeId = [coder decodeObjectForKey:kServiceTypeId];
-    NSArray <DMEServiceObjectType *> *serviceObjectTypes = [coder decodeObjectForKey:kServiceObjectTypes];
-    if (self = [self initWithServiceType:serviceTypeId objectTypes:serviceObjectTypes])
-    {
-        self.serviceTypeId = serviceTypeId;
-        self.serviceObjectTypes = serviceObjectTypes;
-    }
-    return self;
-}
-
-- (nonnull id)copyWithZone:(nullable NSZone *)zone
-{
-    return [[[self class] allocWithZone:zone] initWithServiceType:self.serviceTypeId objectTypes:self.serviceObjectTypes];
 }
 
 @end

@@ -8,19 +8,16 @@
 
 #import "DMEServiceGroup.h"
 
-static NSString * const kServiceGroupId = @"id";
-static NSString * const kServiceTypes = @"serviceTypes";
-
 @interface DMEServiceGroup()
 
-@property (nonatomic, strong, readwrite) NSNumber *serviceGroupId;
-@property (nonatomic, strong, readwrite, nullable) NSArray<DMEServiceType *> *serviceTypes;
+@property (nonatomic) NSUInteger serviceGroupId;
+@property (nonatomic, strong) NSArray<DMEServiceType *> *serviceTypes;
 
 @end
 
 @implementation DMEServiceGroup
 
-- (instancetype)initWithServiceGroup:(NSNumber *)serviceGroupId serviceTypes:(NSArray<DMEServiceType *> * _Nullable)serviceTypes
+- (instancetype)initWithServiceGroup:(NSUInteger)serviceGroupId serviceTypes:(NSArray<DMEServiceType *> *)serviceTypes
 {
     self = [super init];
     
@@ -31,29 +28,6 @@ static NSString * const kServiceTypes = @"serviceTypes";
     }
     
     return self;
-}
-
-- (void)encodeWithCoder:(nonnull NSCoder *)coder
-{
-    [coder encodeObject:self.serviceGroupId forKey:kServiceGroupId];
-    [coder encodeObject:self.serviceTypes forKey:kServiceTypes];
-}
-
-- (nullable instancetype)initWithCoder:(nonnull NSCoder *)coder
-{
-    NSNumber *serviceGroupId = [coder decodeObjectForKey:kServiceGroupId];
-    NSArray<DMEServiceType *> *serviceTypes = [coder decodeObjectForKey:kServiceTypes];
-    if (self = [self initWithServiceGroup:serviceGroupId serviceTypes:serviceTypes])
-    {
-        self.serviceGroupId = serviceGroupId;
-        self.serviceTypes = serviceTypes;
-    }
-    return self;
-}
-
-- (nonnull id)copyWithZone:(nullable NSZone *)zone
-{
-    return [[[self class] allocWithZone:zone] initWithServiceGroup:self.serviceGroupId serviceTypes:self.serviceTypes];
 }
 
 @end

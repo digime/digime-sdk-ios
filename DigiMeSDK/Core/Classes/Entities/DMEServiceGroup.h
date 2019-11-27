@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DMEServiceGroup: NSObject <NSCoding, NSCopying>
+@interface DMEServiceGroup: NSObject
 
 /**
  ServiceGroup is a high level JFS object definition.  e.g.`1` for Social, `2` for Medical etc.
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  ### Useful links
  * [digi.me Developer Portal]
 */
-@property (nonatomic, strong, readonly) NSNumber *serviceGroupId;
+@property (nonatomic, readonly) NSUInteger serviceGroupId;
 
 /**
  ServiceType is a JFS ServiceGroup subcategory object definition.  e.g. `1` for Facebook, `3` for Twitter etc.
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  ### Useful links
  * [digi.me Developer Portal]
 */
-@property (nonatomic, strong, readonly, nullable) NSArray<DMEServiceType *> *serviceTypes;
+@property (nonatomic, strong, readonly) NSArray<DMEServiceType *> *serviceTypes;
 
 /**
 -init unavailable. Use -initWithServiceGroup:serviceTypes:
@@ -48,11 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Designated object initializer.
 
-@param serviceGroupId NSNumber Object identifier that is a representation of the JFS ServiceGroup entity. ServiceGroup is a top level category, such us Social, Finance etc.
+@param serviceGroupId NSUInteger Object identifier that is a representation of the JFS ServiceGroup entity. ServiceGroup is a top level category, such us Social, Finance etc.
 @param serviceTypes NSArray optional parameter. ServiceType is a representation of the ServiceGroup subcategory in the JFS supported objects hierarchy. Such us Facebook, Twitter etc.
 @return instancetype.
 */
-- (instancetype)initWithServiceGroup:(NSNumber *)serviceGroupId serviceTypes:(NSArray<DMEServiceType *> * _Nullable)serviceTypes NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithServiceGroup:(NSUInteger)serviceGroupId serviceTypes:(NSArray<DMEServiceType *> *)serviceTypes NS_DESIGNATED_INITIALIZER;
 
 @end
 

@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DMEServiceType: NSObject <NSCoding, NSCopying> 
+@interface DMEServiceType: NSObject
 
 /**
  ServiceType is a subcategory of the JFS ServiceGroup object, such us Facebook, Twitter etc.
@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  ### Useful links
  * [digi.me Developer Portal]
 */
-@property (nonatomic, strong, readonly) NSNumber *serviceTypeId;
+@property (nonatomic, readonly) NSUInteger serviceTypeId;
 
 /**
  ObjectType is a JFS ServiceType subcategory object definition, such us social Comment, Media or a Post.
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  ### Useful links
  * [digi.me Developer Portal]
 */
-@property (nonatomic, strong, readonly, nullable) NSArray<DMEServiceObjectType *> *serviceObjectTypes;
+@property (nonatomic, strong, readonly) NSArray<DMEServiceObjectType *> *serviceObjectTypes;
 
 /**
 -init unavailable. Use -initWithServiceType:objectTypes:
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @param serviceObjectTypes NSArray optional parameter. ServiceObjectType is a representation of the ServiceType subcategory in the JFS objects hierarchy. Such us social Comment, Media or a Post.
 @return instancetype.
 */
-- (instancetype)initWithServiceType:(NSNumber *)serviceTypeId objectTypes:(NSArray <DMEServiceObjectType *> * _Nullable)serviceObjectTypes NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithServiceType:(NSUInteger)serviceTypeId objectTypes:(NSArray <DMEServiceObjectType *> *)serviceObjectTypes NS_DESIGNATED_INITIALIZER;
 
 @end
 
