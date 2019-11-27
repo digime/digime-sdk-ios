@@ -17,27 +17,33 @@ class AppCommunicatorTests: XCTestCase {
             return URL(string: "digime-ca-appID://\(testAction)")!
     }
     
+    var sut: DMEAppCommunicator!
+
+    override func setUp() {
+        sut = DMEAppCommunicator.shared()
+    }
+    
     func testAddingDMEAppCallback() {
         let callback = TestDMEAppCallbackHandler(testAction: testAction)
         
-        DMEAppCommunicator.shared().add(callback)
-        let expectation = DMEAppCommunicator.shared().callbackHandlers.count
+       sut.add(callback)
+        let expectation = sut.callbackHandlers.count
         XCTAssertEqual(expectation, 1, "Expected `callbackHandlers.count` to equal 1, got \(expectation)")
     }
     
     func testRemovingDMEAppCallback() {
         let callback = TestDMEAppCallbackHandler(testAction: testAction)
         
-        DMEAppCommunicator.shared().callbackHandlers = [callback]
+        sut.callbackHandlers = [callback]
         
-        DMEAppCommunicator.shared().remove(callback)
-        let expectation = DMEAppCommunicator.shared().callbackHandlers.count
+        sut.remove(callback)
+        let expectation = sut.callbackHandlers.count
         XCTAssertEqual(expectation, 0, "Expected `callbackHandlers.count` to equal 0, got \(expectation)")
     }
     
     func testDigiMeBaseURL() {
         
-        let digiMeBaseURL = DMEAppCommunicator.shared().digiMeBaseURL()
+        let digiMeBaseURL = sut.digiMeBaseURL()
         
         if let digiMeBaseURL = digiMeBaseURL {
             XCTAssert(testURL == digiMeBaseURL, "Expected `digiMeBaseURL` to equal \(testURL.absoluteString), got \(digiMeBaseURL.absoluteString)")
@@ -48,7 +54,7 @@ class AppCommunicatorTests: XCTestCase {
     
     func testCanOpenDigime() {
         
-        let result = DMEAppCommunicator.shared().canOpenDMEApp()
+        let result = sut.canOpenDMEApp()
         let expectation = UIApplication.shared.canOpenURL(testURL)
         
         XCTAssert(result == expectation, "Expected `canOpenDMEApp` to equal \(expectation), got \(result)")
@@ -57,16 +63,30 @@ class AppCommunicatorTests: XCTestCase {
     func testOpenActionURL() {
         let callback = TestDMEAppCallbackHandler(testAction: testAction)
         
-        DMEAppCommunicator.shared().add(callback)
+        sut.add(callback)
         
-        let result = DMEAppCommunicator.shared().open(testActionURL, options: [:])
+        let result = sut.open(testActionURL, options: [:])
         XCTAssertTrue(result, "Expected `openURL` to return true, got false")
+        
+        XCTAssertTrue(callback.didHandleAction, "Expected `didHandleAction` to return true, got false")
+    }
+    
+    func testOpenMismatchedActionURL() {
+        let callback = TestDMEAppCallbackHandler(testAction: "mismatchedTestAction")
+        
+        sut.add(callback)
+        
+        let result = sut.open(testActionURL, options: [:])
+        XCTAssertFalse(result, "Expected `openURL` to return false, got true")
+        
+        XCTAssertFalse(callback.didHandleAction, "Expected `didHandleAction` to return false, got true")
     }
 }
 
 class TestDMEAppCallbackHandler: NSObject, DMEAppCallbackHandler {
     
     let testAction: String
+    var didHandleAction = false
     
     init(testAction: String) {
         self.testAction = testAction
@@ -77,5 +97,7 @@ class TestDMEAppCallbackHandler: NSObject, DMEAppCallbackHandler {
         return testAction == action
     }
     
-    func handleAction(_ action: String, withParameters parameters: [String : Any]) { }
+    func handleAction(_ action: String, withParameters parameters: [String : Any]) {
+        didHandleAction = testAction == action
+    }
 }
