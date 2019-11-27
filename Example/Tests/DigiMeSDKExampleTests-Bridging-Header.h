@@ -26,6 +26,7 @@
 #import <DigiMeSDK/DMEAPIClient+Private.h>
 #import <DigiMeSDK/DMESessionManager.h>
 #import "DMEPullClient+Tests.h"
+#import "DMEAppCommunicator+Test.h"
 #import <DigiMeSDK/DMERequestFactory.h>
 #import <DigiMeSDK/DMEDataRequestSerializer.h>
 
