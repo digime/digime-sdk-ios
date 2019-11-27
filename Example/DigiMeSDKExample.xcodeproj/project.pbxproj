@@ -24,6 +24,7 @@
 		27BE504922047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		5C2A09D52338F92D0098D20F /* DMELoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2A09D42338F92D0098D20F /* DMELoggerTests.swift */; };
 		5C2A09DB23390C7F0098D20F /* DMEErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2A09DA23390C7F0098D20F /* DMEErrorTests.swift */; };
+		5C6216E2238DB84F00CEC0F1 /* AppCommunicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6216E1238DB84F00CEC0F1 /* AppCommunicatorTests.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
@@ -70,6 +71,7 @@
 		474DF4025C1E92936A30F974 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		5C2A09D42338F92D0098D20F /* DMELoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMELoggerTests.swift; sourceTree = "<group>"; };
 		5C2A09DA23390C7F0098D20F /* DMEErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEErrorTests.swift; sourceTree = "<group>"; };
+		5C6216E1238DB84F00CEC0F1 /* AppCommunicatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCommunicatorTests.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* DigiMeSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */,
 				270A82F82301B77E000C2F56 /* DataRequestTests.swift */,
 				2716BB34237088FC00F0A8F6 /* DMEPullClientTests.swift */,
+				5C6216E1238DB84F00CEC0F1 /* AppCommunicatorTests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
 			);
 			path = Tests;
@@ -292,7 +295,7 @@
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 5LDPS9F284;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1110;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 0;
@@ -447,6 +450,7 @@
 				2716BB3323707CF100F0A8F6 /* DMEOperationTests.swift in Sources */,
 				1E7802CE2318138C0070D14E /* DMEApiClientTests.swift in Sources */,
 				5C2A09D52338F92D0098D20F /* DMELoggerTests.swift in Sources */,
+				5C6216E2238DB84F00CEC0F1 /* AppCommunicatorTests.swift in Sources */,
 				1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */,
 				270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* ConfigurationTests.swift in Sources */,
@@ -606,6 +610,8 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -626,6 +632,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
