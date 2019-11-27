@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
  Designated object initializer.
 
 @param serviceTypeId NSNumber Object identifier that is a representation of the JFS ServiceType entity. ServiceType is a subcategory, such us Facebook, Twitter etc.
-@param serviceObjectTypes NSArray optional parameter. ServiceObjectType is a representation of the ServiceType subcategory in the JFS objects hierarchy. Such us social Comment, Media or a Post.
+@param serviceObjectTypes NSArray ServiceObjectType is a representation of the ServiceType subcategory in the JFS objects hierarchy. Such us social Comment, Media or a Post.
 @return instancetype.
 */
 - (instancetype)initWithServiceType:(NSUInteger)serviceTypeId objectTypes:(NSArray <DMEServiceObjectType *> *)serviceObjectTypes NS_DESIGNATED_INITIALIZER;
