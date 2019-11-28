@@ -350,7 +350,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
                     NSLog(@"DigiMeSDK: Adding file to download queue: %@", fileId);
                 }
                 
-                [self getSessionDataForFileWithId:fileId completion:self.sessionContentHandler];
+                [self getSessionDataWithFileId:fileId completion:self.sessionContentHandler];
             }
         }
     }];
@@ -448,6 +448,11 @@ DMEAuthorizationCompletion _authorizationCompletion;
 }
 
 - (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
+{
+    [self getSessionDataWithFileId:fileId completion:completion];
+}
+
+- (void)getSessionDataWithFileId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
 {
     //validate session
     if (![self.sessionManager isSessionValid])
