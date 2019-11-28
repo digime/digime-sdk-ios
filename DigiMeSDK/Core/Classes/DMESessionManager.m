@@ -67,7 +67,11 @@
             completion(nil, [NSError sdkError:SDKErrorInvalidVersion]);
             return;
         }
-
+        else if (error.code == 400 && [error.userInfo[@"code"] isEqualToString:@"ScopeOutOfBounds"])
+        {
+            completion(nil, [NSError authError:AuthErrorScopeOutOfBounds]);
+            return;
+        }
         completion(nil, error);
     }];
 }

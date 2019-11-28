@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, AuthError) {
     AuthErrorCancelled  = 5, //authorization cancelled
     AuthErrorInvalidSession = 7, //invalid session
     AuthErrorInvalidSessionKey = 10, //session key returned by digi.me app is invalid
+    AuthErrorScopeOutOfBounds = 11, // requested scope is out of bounds of Contract scope.
 };
 
 /**

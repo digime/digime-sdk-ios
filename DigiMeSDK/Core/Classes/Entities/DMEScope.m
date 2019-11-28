@@ -12,6 +12,7 @@
 
 @synthesize context = _context;
 @synthesize timeRanges = _timeRanges;
+@synthesize serviceGroups = _serviceGroups;
 
 - (instancetype)init
 {
