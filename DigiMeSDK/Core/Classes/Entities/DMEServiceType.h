@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  ### Useful links
  * [digi.me Developer Portal]
 */
-@property (nonatomic, readonly) NSUInteger serviceTypeId;
+@property (nonatomic, readonly) NSUInteger identifier;
 
 /**
  ObjectType is a JFS ServiceType subcategory object definition, such us social Comment, Media or a Post.
@@ -48,11 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Designated object initializer.
 
-@param serviceTypeId NSNumber Object identifier that is a representation of the JFS ServiceType entity. ServiceType is a subcategory, such us Facebook, Twitter etc.
+@param identifier NSNumber Object identifier that is a representation of the JFS ServiceType entity. ServiceType is a subcategory, such us Facebook, Twitter etc.
 @param serviceObjectTypes NSArray ServiceObjectType is a representation of the ServiceType subcategory in the JFS objects hierarchy. Such us social Comment, Media or a Post.
 @return instancetype.
 */
-- (instancetype)initWithServiceType:(NSUInteger)serviceTypeId objectTypes:(NSArray <DMEServiceObjectType *> *)serviceObjectTypes NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(NSUInteger)identifier objectTypes:(NSArray <DMEServiceObjectType *> *)serviceObjectTypes NS_DESIGNATED_INITIALIZER;
 
 @end
 

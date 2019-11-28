@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  ### Useful links
  * [digi.me Developer Portal]
 */
-@property (nonatomic, readonly) NSUInteger serviceObjectTypeId;
+@property (nonatomic, readonly) NSUInteger identifier;
 
 /**
 -init unavailable. Use -initWithServiceObjectType:serviceObjectTypeId:
@@ -35,10 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Designated object initializer.
 
-@param serviceObjectTypeId NSNumber Object identifier that is a representation of the JFS Service Object Type entity, such us social Comment, Media or a Post.
+@param identifier NSNumber Object identifier that is a representation of the JFS Service Object Type entity, such us social Comment, Media or a Post.
 @return instancetype.
 */
-- (instancetype)initWithServiceObjectType:(NSUInteger)serviceObjectTypeId NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(NSUInteger)identifier NS_DESIGNATED_INITIALIZER;
 
 @end
 

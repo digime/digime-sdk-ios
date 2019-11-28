@@ -8,21 +8,15 @@
 
 #import "DMEServiceObjectType.h"
 
-@interface DMEServiceObjectType()
-
-@property (nonatomic) NSUInteger serviceObjectTypeId;
-
-@end
-
 @implementation DMEServiceObjectType
 
-- (instancetype)initWithServiceObjectType:(NSUInteger)serviceObjectTypeId
+- (instancetype)initWithIdentifier:(NSUInteger)identifier
 {
     self = [super init];
     
     if (self)
     {
-        _serviceObjectTypeId = serviceObjectTypeId;
+        _identifier = identifier;
     }
     
     return self;

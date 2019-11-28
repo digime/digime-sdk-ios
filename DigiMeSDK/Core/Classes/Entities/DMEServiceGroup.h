@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
  ### Useful links
  * [digi.me Developer Portal]
 */
-@property (nonatomic, readonly) NSUInteger serviceGroupId;
+@property (nonatomic, readonly) NSUInteger identifier;
 
 /**
  ServiceType is a JFS ServiceGroup subcategory object definition.  e.g. `1` for Facebook, `3` for Twitter etc.
@@ -48,11 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Designated object initializer.
 
-@param serviceGroupId NSUInteger Object identifier that is a representation of the JFS ServiceGroup entity. ServiceGroup is a top level category, such us Social, Finance etc.
+@param identifier NSUInteger Object identifier that is a representation of the JFS ServiceGroup entity. ServiceGroup is a top level category, such us Social, Finance etc.
 @param serviceTypes NSArray ServiceType is a representation of the ServiceGroup subcategory in the JFS supported objects hierarchy. Such us Facebook, Twitter etc.
 @return instancetype.
 */
-- (instancetype)initWithServiceGroup:(NSUInteger)serviceGroupId serviceTypes:(NSArray<DMEServiceType *> *)serviceTypes NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithIdentifier:(NSUInteger)identifier serviceTypes:(NSArray<DMEServiceType *> *)serviceTypes NS_DESIGNATED_INITIALIZER;
 
 @end
 

@@ -8,22 +8,15 @@
 
 #import "DMEServiceGroup.h"
 
-@interface DMEServiceGroup()
-
-@property (nonatomic) NSUInteger serviceGroupId;
-@property (nonatomic, strong) NSArray<DMEServiceType *> *serviceTypes;
-
-@end
-
 @implementation DMEServiceGroup
 
-- (instancetype)initWithServiceGroup:(NSUInteger)serviceGroupId serviceTypes:(NSArray<DMEServiceType *> *)serviceTypes
+- (instancetype)initWithIdentifier:(NSUInteger)identifier serviceTypes:(NSArray<DMEServiceType *> *)serviceTypes
 {
     self = [super init];
     
     if (self)
     {
-        _serviceGroupId = serviceGroupId;
+        _identifier = identifier;
         _serviceTypes = serviceTypes;
     }
     
