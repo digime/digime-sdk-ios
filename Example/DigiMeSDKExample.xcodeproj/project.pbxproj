@@ -11,10 +11,12 @@
 		0643264A20222B2500B10CD9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264820222B2500B10CD9 /* ViewController.m */; };
 		0643264D20222D6000B10CD9 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264C20222D6000B10CD9 /* LogViewController.m */; };
 		0643264F202234CD00B10CD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264E202234CD00B10CD9 /* main.m */; };
+		1E38D3D52396C5EC003F6B60 /* CyclicCATestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1E38D3D42396C5EC003F6B60 /* CyclicCATestingAssets.plist */; };
 		1E7802CE2318138C0070D14E /* DMEApiClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7802CD2318138C0070D14E /* DMEApiClientTests.swift */; };
 		1EC22EF2230EE13C000D17AA /* CryptographyTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */; };
 		1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */; };
 		1EC22EF4230EE13C000D17AA /* digimetest.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EF1230EE13C000D17AA /* digimetest.p12 */; };
+		1ED59898239551DA003B6C2B /* CyclicCATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED59897239551DA003B6C2B /* CyclicCATests.swift */; };
 		1EF991FF238581FE0002DDAD /* DMERequestFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA9FCE323857AEB0036D9FF /* DMERequestFactoryTests.swift */; };
 		270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270A82F82301B77E000C2F56 /* DataRequestTests.swift */; };
 		2716BB3323707CF100F0A8F6 /* DMEOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2716BB3223707CF100F0A8F6 /* DMEOperationTests.swift */; };
@@ -29,8 +31,8 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* ConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */; };
-		9DD63BA1AD34ADA4CCDFF465 /* Pods_DigiMeSDKExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F418448822E9492BB639C16 /* Pods_DigiMeSDKExample.framework */; };
-		D7B6EFF66A647C8C03739EF9 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB9C4066C5C24B9D2697007E /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */; };
+		8F6FA96E46086BFC6392709F /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B90943BD38CC5E627C388992 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */; };
+		C1FEF0C192A84A7BA05245DB /* Pods_DigiMeSDKExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687FEF94099805D07EE53B1F /* Pods_DigiMeSDKExample.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		043B58F3E6F77DA3D34636EB /* Pods-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		025CD5ED8DFB3ACF18DD2F3F /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		0643264520222B2400B10CD9 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0643264620222B2500B10CD9 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		0643264720222B2500B10CD9 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -53,7 +55,8 @@
 		0643264C20222D6000B10CD9 /* LogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogViewController.m; sourceTree = "<group>"; };
 		0643264E202234CD00B10CD9 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0F8DC0A9C8329629993FF78A /* DigiMeSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DigiMeSDK.podspec; path = ../DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		0FC6CFFA20F502E1F2E14D47 /* Pods-DigiMeSDKExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.release.xcconfig"; sourceTree = "<group>"; };
+		1E38D3D42396C5EC003F6B60 /* CyclicCATestingAssets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = CyclicCATestingAssets.plist; sourceTree = "<group>"; };
 		1E7802CD2318138C0070D14E /* DMEApiClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEApiClientTests.swift; sourceTree = "<group>"; };
 		1E8749911F77A39600D4E028 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		1EA9FCE323857AEB0036D9FF /* DMERequestFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMERequestFactoryTests.swift; sourceTree = "<group>"; };
@@ -61,14 +64,14 @@
 		1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
 		1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		1EC22EF1230EE13C000D17AA /* digimetest.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = digimetest.p12; sourceTree = "<group>"; };
+		1ED59897239551DA003B6C2B /* CyclicCATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclicCATests.swift; sourceTree = "<group>"; };
 		270A82F82301B77E000C2F56 /* DataRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestTests.swift; sourceTree = "<group>"; };
 		2716BB3223707CF100F0A8F6 /* DMEOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEOperationTests.swift; sourceTree = "<group>"; };
 		2716BB34237088FC00F0A8F6 /* DMEPullClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEPullClientTests.swift; sourceTree = "<group>"; };
 		2716BB682371822600F0A8F6 /* DMEPullClient+Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DMEPullClient+Tests.h"; sourceTree = "<group>"; };
 		2716BB9B23718A6B00F0A8F6 /* FileListResponseStaticRunning.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FileListResponseStaticRunning.json; sourceTree = "<group>"; };
 		27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
-		369F4AD06777F8F602971B23 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
-		474DF4025C1E92936A30F974 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		509AEE47FEE40B7F722F2976 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
 		5C2A09D42338F92D0098D20F /* DMELoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMELoggerTests.swift; sourceTree = "<group>"; };
 		5C2A09DA23390C7F0098D20F /* DMEErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEErrorTests.swift; sourceTree = "<group>"; };
 		5C6216E1238DB84F00CEC0F1 /* AppCommunicatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCommunicatorTests.swift; sourceTree = "<group>"; };
@@ -81,10 +84,9 @@
 		607FACE51AFB9204008FA782 /* DigiMeSDKExample_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DigiMeSDKExample_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationTests.swift; sourceTree = "<group>"; };
-		6F418448822E9492BB639C16 /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B66E73B2275265A305667C89 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		E4C1A2AFEF34DF96E1BCF86F /* Pods-DigiMeSDKExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.release.xcconfig"; sourceTree = "<group>"; };
-		FB9C4066C5C24B9D2697007E /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		687FEF94099805D07EE53B1F /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B90943BD38CC5E627C388992 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCE8D468536662FE21430F2C /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DD63BA1AD34ADA4CCDFF465 /* Pods_DigiMeSDKExample.framework in Frameworks */,
+				C1FEF0C192A84A7BA05245DB /* Pods_DigiMeSDKExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7B6EFF66A647C8C03739EF9 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework in Frameworks */,
+				8F6FA96E46086BFC6392709F /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +125,8 @@
 				1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */,
 				1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */,
 				1EC22EF1230EE13C000D17AA /* digimetest.p12 */,
+				1ED59897239551DA003B6C2B /* CyclicCATests.swift */,
+				1E38D3D42396C5EC003F6B60 /* CyclicCATestingAssets.plist */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -136,13 +140,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		5199FEE8702F01580C43E9C1 /* Frameworks */ = {
+		2A99A5CFDEACFEAD5F7AB942 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6F418448822E9492BB639C16 /* Pods_DigiMeSDKExample.framework */,
-				FB9C4066C5C24B9D2697007E /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */,
+				509AEE47FEE40B7F722F2976 /* Pods-DigiMeSDKExample.debug.xcconfig */,
+				0FC6CFFA20F502E1F2E14D47 /* Pods-DigiMeSDKExample.release.xcconfig */,
+				025CD5ED8DFB3ACF18DD2F3F /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */,
+				FCE8D468536662FE21430F2C /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */,
 			);
-			name = Frameworks;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		5C2A09D32338F8D00098D20F /* Logger */ = {
@@ -167,8 +173,6 @@
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
-				79E10D085B305B13E8D7F29C /* Pods */,
-				5199FEE8702F01580C43E9C1 /* Frameworks */,
 				0643264520222B2400B10CD9 /* AppDelegate.h */,
 				0643264720222B2500B10CD9 /* AppDelegate.m */,
 				0643264B20222D6000B10CD9 /* LogViewController.h */,
@@ -181,6 +185,8 @@
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD41AFB9204008FA782 /* Info.plist */,
+				2A99A5CFDEACFEAD5F7AB942 /* Pods */,
+				6AFF735FACD3AA8B87C95EA4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -229,17 +235,13 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
-		79E10D085B305B13E8D7F29C /* Pods */ = {
+		6AFF735FACD3AA8B87C95EA4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				369F4AD06777F8F602971B23 /* Pods-DigiMeSDKExample.debug.xcconfig */,
-				E4C1A2AFEF34DF96E1BCF86F /* Pods-DigiMeSDKExample.release.xcconfig */,
-				043B58F3E6F77DA3D34636EB /* Pods-DigiMeSDKExample_Tests.debug.xcconfig */,
-				1431F55FE89703570770DBD2 /* Pods-DigiMeSDKExample_Tests.release.xcconfig */,
-				474DF4025C1E92936A30F974 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */,
-				B66E73B2275265A305667C89 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */,
+				687FEF94099805D07EE53B1F /* Pods_DigiMeSDKExample.framework */,
+				B90943BD38CC5E627C388992 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */,
 			);
-			name = Pods;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,11 +251,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "DigiMeSDKExample" */;
 			buildPhases = (
-				5F9BA86C5E45E30FCC3809CE /* [CP] Check Pods Manifest.lock */,
+				B7EB6894CD2D75F2964DCFEA /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				29B85F23A5852818E1AD6DCC /* [CP] Embed Pods Frameworks */,
+				5964DB82DDFC1B840ED0454B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -268,11 +270,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "DigiMeSDKExample_Tests" */;
 			buildPhases = (
-				5D18F02FEDF75BAF41AC4CC9 /* [CP] Check Pods Manifest.lock */,
+				454EE7250F68B45FBB572067 /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
-				474317E5E441A0CC9947DA65 /* [CP] Embed Pods Frameworks */,
+				1C75BEA649EEBCE594483FC3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -350,6 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2716BB9F2371920B00F0A8F6 /* FileListResponseStaticRunning.json in Resources */,
+				1E38D3D52396C5EC003F6B60 /* CyclicCATestingAssets.plist in Resources */,
 				1EC22EF4230EE13C000D17AA /* digimetest.p12 in Resources */,
 				1EC22EF2230EE13C000D17AA /* CryptographyTestingAssets.plist in Resources */,
 			);
@@ -358,24 +361,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		29B85F23A5852818E1AD6DCC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		474317E5E441A0CC9947DA65 /* [CP] Embed Pods Frameworks */ = {
+		1C75BEA649EEBCE594483FC3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -392,16 +378,20 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5D18F02FEDF75BAF41AC4CC9 /* [CP] Check Pods Manifest.lock */ = {
+		454EE7250F68B45FBB572067 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-checkManifestLockResult.txt",
 			);
@@ -410,16 +400,37 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5F9BA86C5E45E30FCC3809CE /* [CP] Check Pods Manifest.lock */ = {
+		5964DB82DDFC1B840ED0454B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B7EB6894CD2D75F2964DCFEA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExample-checkManifestLockResult.txt",
 			);
@@ -448,6 +459,7 @@
 			files = (
 				1EF991FF238581FE0002DDAD /* DMERequestFactoryTests.swift in Sources */,
 				2716BB35237088FC00F0A8F6 /* DMEPullClientTests.swift in Sources */,
+				1ED59898239551DA003B6C2B /* CyclicCATests.swift in Sources */,
 				5C2A09DB23390C7F0098D20F /* DMEErrorTests.swift in Sources */,
 				2716BB3323707CF100F0A8F6 /* DMEOperationTests.swift in Sources */,
 				1E7802CE2318138C0070D14E /* DMEApiClientTests.swift in Sources */,
@@ -537,11 +549,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -586,20 +599,21 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 369F4AD06777F8F602971B23 /* Pods-DigiMeSDKExample.debug.xcconfig */;
+			baseConfigurationReference = 509AEE47FEE40B7F722F2976 /* Pods-DigiMeSDKExample.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 5LDPS9F284;
@@ -613,15 +627,15 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E4C1A2AFEF34DF96E1BCF86F /* Pods-DigiMeSDKExample.release.xcconfig */;
+			baseConfigurationReference = 0FC6CFFA20F502E1F2E14D47 /* Pods-DigiMeSDKExample.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 5LDPS9F284;
@@ -634,14 +648,15 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 474DF4025C1E92936A30F974 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */;
+			baseConfigurationReference = 025CD5ED8DFB3ACF18DD2F3F /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -665,8 +680,9 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B66E73B2275265A305667C89 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */;
+			baseConfigurationReference = FCE8D468536662FE21430F2C /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

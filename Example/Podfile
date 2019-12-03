@@ -1,9 +1,10 @@
 use_frameworks!
-platform :ios, '10.0'
+platform :ios, '11.0'
 
 target 'DigiMeSDKExample' do
   pod 'DigiMeSDK', :path => '../'
-  
+  pod 'SwiftJWT'
+
   target 'DigiMeSDKExample_Tests' do
     inherit! :complete
     

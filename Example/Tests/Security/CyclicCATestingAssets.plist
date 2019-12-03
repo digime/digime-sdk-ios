@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>testVerifyJWT()</key>
+	<dict>
+		<key>testsAssets</key>
+		<array>
+			<dict>
+				<key>jwtToken</key>
+                <string>eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vYXBpLmRldmVsb3BtZW50LmRldmRpZ2kubWUvdjEvandrcy9vYXV0aCIsImtpZCI6Imh0dHBzOi8vZGlnaW1lLWFscGhhLWtleS12YXVsdC52YXVsdC5henVyZS5uZXQva2V5cy9qZnMtc2lnbmluZy9hNDZiNDllMWZkNjY0NzBkOWVmN2Q0NDRiNTQyOTI0MyJ9.eyJ0ZXN0IjoidmFsdWUxIn0.WGL4qsCG5Nsa8mdqFvuCBF2mKpqt20dwnSCd_Cl3AF_64v8mlDmO4emZik2Id_EZRLjb_V9iXJ4RC_jW4L-qkkXxvYFVlJ4WHKIOZQnxAIq63-kU3PW4dGNrpxm4VfqxaFQrbprkTSZALEmoGfbUzZWad9SEiUTtVNJpgu26x1sE8DLyPBmh5sralox9BAkX-Utqg74X6YhXiKWdPS4yCZUnzeo7sldckyqz61oAqC7DxOBIh4kRTzABxKxMsFNr8OI4akiDwxvpirFQ5fMm-2N2opOT6IMGoM9kDlnWWpkl-rcl2ZKoKOa5UH2GVjI3MkfB9xkmZqw2SSIeDlMe1lhApYhW5-4T5FkmUQjiyJnkESTwgBH2ao_cZoxaDeQln6qh5phZg06wjQzmcpHXLR44_6h_QU4fa6zXm1V3SRVMGWuScnLhnhGxZqqs6h5bHm6JCA593omz5A7R7CzhfSUHG3ks3Qdw9Prei_ETZOoX6PMdeoYr-RFYMtdQN7CjmmfI8vj5pDPy-ncFmsyKz7w-XQpAr0g3vCjk7gZgYIIESAHdb8-aQr3STa7-zN6BSTbmI28vQ3uBD2ene3h7eIxE52wuEvcRNP7yHgPWgFG9EG7iRtLaV6kmP3j9MqGc8JEazJr2axHbm7Kdcl3v5hJOvly2xUgy2o2kiQB-Q3I</string>
+				<key>title</key>
+				<string>verifyJWT should return true for JWT with valid signature - example 1</string>
+				<key>valid</key>
+				<true/>
+			</dict>
+            <dict>
+                <key>jwtToken</key>
+                <string>eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vYXBpLmRldmVsb3BtZW50LmRldmRpZ2kubWUvdjEvandrcy9vYXV0aCIsImtpZCI6Imh0dHBzOi8vZGlnaW1lLWFscGhhLWtleS12YXVsdC52YXVsdC5henVyZS5uZXQva2V5cy9qZnMtc2lnbmluZy9hNDZiNDllMWZkNjY0NzBkOWVmN2Q0NDRiNTQyOTI0MyJ9.eyJ0ZXN0IjoidmFsdWUyIn0.oA-KFIX6cw21kidYI6a1hC3Hu-fkRv-5QmMxoEUCnTkNuYZXYHQrJ5W0Xg1hJ42lfdqDy4SbUWWgZwLloBoST6VnSsNtKknxgspwRj8NE41enynWg4vzA9rBwReRhhDHIilFudiy2bwl6kZn9Kw5s5HhQlaACzU3-WzUh4NZf5uJQf_ZkLDfTJ9gc02u5DZ4tPjH3j6OfN01w6dTioLZkyJwShiSkVGrOGPqln5VNCxyUOoPBflVxiudp3MbVHVLJz43dKumf9v2dxn5vZJjd-JUmM-Cb0ugwdglr1PLbORaCjJ0QGqVcLHmz7HxdHqb84sorOfzUUtQn-FbH8aj5GWP-5LWVeYQ7TxoZBLvuSSU34EBebun1C7q5tiBQAuXHAMOTjvP22t1Yj1bW2NUBDE0hiGDXDS_1EMECe4e6Giv7oC2d-zEAL5umJEG915oTPCQsGG4LttGfnvXxSS3NYMD3zteaXJ1L82EfKl3I_ksi5N8t3Y_XXkbOMu6MV8lFSpFHDJz_Omu5b0dW8dc91BK23o47PvbmlnCD7I6IzLR5aXiPEPPYy9pc8_5mYL5BkScDh3kt9emoC7qRJgKhnI1RNkPq7_qaW5Gd-Z6Cftv3m9PAn0pplVYv58HNr-SRBNM016C5khaA-17inbIJIuxQKwzaYLxjt0ee5ddKOg</string>
+                <key>title</key>
+                <string>verifyJWT should return true for JWT with valid signature - example 2</string>
+                <key>valid</key>
+                <true/>
+            </dict>
+            <dict>
+                <key>jwtToken</key>
+                <string>eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vYXBpLmRldmVsb3BtZW50LmRldmRpZ2kubWUvdjEvandrcy9vYXV0aCIsImtpZCI6Imh0dHBzOi8vZGlnaW1lLWFscGhhLWtleS12YXVsdC52YXVsdC5henVyZS5uZXQva2V5cy9qZnMtc2lnbmluZy9hNDZiNDllMWZkNjY0NzBkOWVmN2Q0NDRiNTQyOTI0MyJ9.eyJ0ZXN0IjoidmFsdWUzIn0.Pkv2XfUkeoEzidq2XRvDm1m5esV6mcyNCskSbvPNBm3iELbPMnNUamu86kfGQAbaO4R9zvhBEUU7Tguga2ZmNiEX-UjfibhNV10pTjjWiO8PSjDRh4-onDQR2LoElh4pjYgPP6kqAVHaUyj2kr50tKvZL8aLai1OESmMwmy1AIB4lYA0xZfA0xBoVCYl0ezlxG1hu3eLprLMDVctljCGyzIJw3kmdgiu-v8isEVqk0d3w4qsGSpfJE-hm0R6mouDa-Jk-XFu4CehNHT5h6C6x2BG-4wcHTrKa-1BzWj0b0pSTV3zTbVUbyhNc-CfArwaS7RXyOwCb2Coj91BOx58KT5nAz_KILFL2j2wQIF3pXe5d_aQnATJ7Z-54CRdpUUz8CsRPwWlYgngmQpCnS0A8jhXtGcNtgpQtR3kc9RQ3HKQA14DZKtaL1MlDzmLVvBOtC9Ad5Xwu4QSTtgIfqCIG6EVMcF3EghI60HxeC3Dvtor6xQm1h3rxaEj_I6x7AX15p0q12OFlNNYpubZsE-qvFznYDARZCKj8C9-1VGgXR0zM1XhBtPmkglTAQpVtMzt1KF_XcDUMTP8lrhECS0DLsZCP97P0qiwbwOiCIw8DfEACyyZiwEut3aHwtRiMFR1DdRGrmsUgyOObqAek_XlZGv700ZZFXZCXYwG3fs6-nk</string>
+                <key>title</key>
+                <string>verifyJWT should return true for JWT with valid signature - example 3</string>
+                <key>valid</key>
+                <true/>
+            </dict>
+            <dict>
+                <key>jwtToken</key>
+                <string>eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vYXBpLmRldmVsb3BtZW50LmRldmRpZ2kubWUvdjEvandrcy9vYXV0aCIsImtpZCI6Imh0dHBzOi8vZGlnaW1lLWFscGhhLWtleS12YXVsdC52YXVsdC5henVyZS5uZXQva2V5cy9qZnMtc2lnbmluZy9hNDZiNDllMWZkNjY0NzBkOWVmN2Q0NDRiNTQyOTI0MyJ9.eyJ0ZXN0IjoidmFsdWU0In0.F7v1VJ6r8X0LE91n5ygE-6dXKAAgdK0svuVQgm82H2buGd8u8wqxGdZhfkvPwhw9hUqk3zwuGvxh5z-CZ6dU1LzI2qpwPYTZKsv7HWxpoik0vDSGhH0G7Wzp-Xz1nUH7JTzzAVQ4BkGS55blhScAvlyHGlA_cHEMqmyKqnqLoPTB8yPZ-lbaKc37EXSkenTg_FEOXrjaFvBxHOnhS2y7yC_-25DvHK74qTNWGt6BGJZfuROgoaAFxSXM1XXbNjG5GeFbhlZ1UbrZoRzE7c3_f3fIljjTtuG9FUWJCJ2m865PAmlzZ9Cisb8isLGDlHMlpIDHylIPG2RSSsznRk_ZIDIoMN00AGzbt0wAeNqqsB_PncbN4Ythp17PDt7Uti1r7JBJ3IMmAcdnPNQ4K1RsvzCsS_6WWkyey4VCr1w7jDUmUJHcZQsMwyz5Y7_NdVxv0c0gnc76thZLj2SXEvelfB-9iANpbmr5bOifymTL5zY0CQMfpG_sW4Ec-Vl2mLA2pBktcZT016lN2y3LFSG8hvg6Qn2FONYzb6XFEivExJI_E8yvkau94AmUC5vdJ7Q6b3R9C6RzBc6GWDorc6ZUyzQpkEWpUgqdDq58bwEhE316DjYCiO0D5mpQ8i2JsJl5Ne86AkDfY04KxuXx8wtfYmxvd1S2X82LGeS9GNP_MOs</string>
+                <key>title</key>
+                <string>verifyJWT should return true for JWT with valid signature - example 4</string>
+                <key>valid</key>
+                <true/>
+            </dict>
+            <dict>
+                <key>jwtToken</key>
+                <string>eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCJ9.eyJ0ZXN0IjoidmFsdWUiLCJpYXQiOjE1NjkyMTY2NDh9.NovxZUqMgKosgME_mEyaYx3rO75ZK91TPDOrDAHBWxH5Mwqs9RVRCSZrfussayAhAKTV7ARBnvKCftzTmNRr5W-gqYbLyqAY6n7FcuKTqGXJUlnyhrJYewLnEuL78Rys_TGaQri073YjPg6QvcqMJ1nTl_jxwWwIDWh9Tr4GV29H17wIZfpJJx3n9ocuKzq2gXa66VaZmGKOFtjs_VZBFAqiamXN77NfzJIWj6JS-WcHoQCEmOzsBGSA6YScYvHokoOE3DzeQTXrNUg2SZ9viSE7RuJlRGqapHTcqLlYRD18-8rJEngWYz266sFHfkLEQGgeaJ884HzLVY9qj_U2YA</string>
+                <key>title</key>
+                <string>verifyJWT should return false for JWT signed with different private key</string>
+                <key>valid</key>
+                <false/>
+            </dict>
+            <dict>
+                <key>jwtToken</key>
+                <string>eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCJ9.eyJ0ZXN0IjoidmFsdWU2IiwiaWF0IjoxNTY5MjE3NjE0fQ.nNmxYiAGw8VB3ydsVu-sCD12uu2ef8-MChe0lu7YR089F5kOMq4qszuhxwRLb8IhLpfkNc7rDDgMP_EDleGDZlt-RalCiVEFsLUKLgUnb7TSsQg5GITVK5gKCdnWKKfjU7itzBKgwDEFsZkZVlg1C7RbT9jB34d7G3g2ViEeG636_Jsb6kSvPkL9ziNiMK-LwpgAvNVzTSicSRwvfHcVpEIJI-Se4I3JbrnGCpVUZ0sXElp-4j38ueIWVasMk54Uhb3kyfiDao7d2Fp3h_klv-JIB0klqT7xHjrkzQKjcEZEg0yf7XtXneLMLAkvItn1p5BjsMMPGH2wDsN_cJn9Z2eCHsiScy91VdjslqjRufsRv2v03NeMsxOz2sfiXvxT5VPawKWizj7a9eEN0FAAvbLGX_d6MS9EbCchDwQRuZbODTKj9cqy3-WzWgNOJcDKSJn10sVO0FYxHbyDzD8Nm1AkUbaQGQHyDXhOPWLhU5OWHk_OdJo--f9ArJMEqg-dUj5Ikel7YNeL5Q_Zp1n5pAEHNVtYsPjcR2DqQldMKVGa022d04DSBILzX9jM_VobDlBkTQ2hBvTdgiLwLWlPMDndVBXBkZGLFC3QS4qNpSeaf9nDKQ_N2LY0Yvj1pyVwwK2Y-lNY2GmRLuIgpxTyVSKRYQjnvZgpzqWv9rWpkjY</string>
+                <key>title</key>
+                <string>verifyJWT should return false for JWT payload doesn't match signature</string>
+                <key>valid</key>
+                <false/>
+            </dict>
+            <dict>
+                <key>jwtToken</key>
+                <string>eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vYXBpLmRldmVsb3BtZW50LmRldmRpZ2kubWUvdjEvandrcy9vYXV0aCIsImtpZCI6Imh0dHBzOi8vZGlnaW1lLWFscGhhLWtleS12YXVsdC52YXVsdC5henVyZS5uZXQva2V5cy9qZnMtc2lnbmluZy9hNDZiNDllMWZkNjY0NzBkOWVmN2Q0NDRiNTQyOTI0MyJ9.eyJ0ZXN0IjoidmFsdWU0In0.F7v1VJ6r8X0LE91n5ygE-6dXKAAgdK0svuVQgm82H2buGd8u8wqxGdZhfkvPwhw9hUqk3zwuGvxh5z-CZ6dU1LzI2qpwPYTZKsv7HWxpoik0vDSGhH0G7Wzp-Xz1nUH7JTzzAVQ4BkGS55blhScAvlyHGlA_cHEMqmyKqnqLoPTB8yPZ-lbaKc37EXSkenTg_FEOXrjaFvBxHOnhS2y7yC_-25DvHK74qTNWGt6BG</string>
+                <key>title</key>
+                <string>verifyJWT should return false for malformed JWT (malformed signature)</string>
+                <key>valid</key>
+                <false/>
+            </dict>
+            <dict>
+                <key>jwtToken</key>
+                <string>eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCIsImprdSI6Imh0dHBzOi8vYXBpLmRldmVsb3BtZW50LmRldmRpZ2kubWUvdjEvandrcy9vYXV0aCIsImtpZCI6Imh0dHBzOi8vZGlnaW1lLWFscGhhLWtleS12YXVsdC52YXVsdC5henVyZS5uZXQva2V5cy9qZnMtc2lnbmluZy9hNDZiNDllMWZkNjY0NzBkOWVmN2Q0NDRiNTQyOTI0MyJ9</string>
+                <key>title</key>
+                <string>verifyJWT should return false for malformed JWT (missing signature)</string>
+                <key>valid</key>
+                <false/>
+            </dict>
+		</array>
+	</dict>
+	<key>publicKey</key>
+	<string>MIICCgKCAgEAu4s5uNbVYccxSNRG/LaVZNQRZbKXLk952Noi8ArCs0TuMVorZ0tigHWHRMCluPz3ZZQ4ru7FdI8cBQS9bi+8L3jNe2y/wxu+gS3UsOkxzwYiO872PGzWOZMzsE6nsslmeGgDKNQZvJANN2GcybHVaAkP3FrEuUK+8HsJJoSphw8dhzAoBZYotz0vrBC4ncZ1HB5pkOul137S1JmjgvSmhChGUqYVEeDu/yQstsRqGiuWxEmeR0RbAC3LfBmH0yXTqlNAeRJjscuwHwoWKud9VZRrkoev/JwlLGnErTQ9D+VEIbDfthDGdHuzwAltePc9NH8N7QF1s+vvTL76x0StKUzA5uJ2M4lqtUhaPrrwTGu5qwEn4Jbt1LGXxFEAfhbkJ40f/G9B2/fP5kLy3F921/Eo03Cg9OUuokvbkbuo/T0Gk+scVt2L2ynxYtqwYmukMCQDqm25BjeHs/MpidCgUEHuLHer1w2kRBQ52giQYFZ0c5JX3F2l7Ev8dTD6Uy85W7ddCVbx/27PbGxap0YDSWZv9hO74lZxvYcJfmufmeKBcz5boZJ1Mohcmq/do1xPJ0WGlYJVYDV5DP4Wkv2aQXmu52sYWZK1K7XvvbIn8vZombVepNrifczqBwr4zKhNkhR6Sx66TLLpTc6DWKa2pxKwzeO3yv+oquLyBOy86xUCAwEAAQ==</string>
+	<key>privateKey</key>
+	<string>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</string>
+	<key>testDecodeJWTPayload()</key>
+	<dict>
+		<key>sampleJWT</key>
+		<string>eyJhbGciOiJQUzUxMiIsImtpZCI6Imh0dHBzOi8vZGlnaW1lLWFscGhhLWtleS12YXVsdC52YXVsdC5henVyZS5uZXQva2V5cy9vYXV0aC81ZTVmOGQwNGE4ZTU0Y2RlODUwNjIzMGZjZTBhOGJlOSIsInR5cCI6IkpXVCJ9.eyJwcmVhdXRob3JpemF0aW9uX2NvZGUiOiJzc3QifQ.Pzf9o8b9GxElN5jWHDsF2d0w6XQZnntwCh9WtkeryfeOWxkF32k3tQ-TqeaES2Y9iVLGua36MPALfIiTMdabKD2Z4rHro-qjTE3m8rScK67ly6znTltAXO4qDu9De1M1niYd4fvn1NHohrRVW42cxFaHsaH5v9hTJQsNnuJOdF5xEhdN_CoDQJ34HL0Grmvaq8yXfbbx70VEs3QjzZo4e1EXwzm777l2DOt0TsJy5WzqX08z4Srkb--ivPw2QszhO7JuCkhiR1xHAewz6wTJgoS4TlPoXIN2cBJguLkt2nLSWsOtCkuG49C0TwOTC48SmuqF-7LKydhtQNDE8cHAQw</string>
+	</dict>
+</dict>
+</plist>
