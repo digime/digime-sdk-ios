@@ -64,16 +64,16 @@ extension DMEApiClientTests {
     
     func testGetPullSessionWithDataScope() {
         
-        let serviceObjectType1 = DMEServiceObjectType.init(serviceObjectType: NSNumber(value: 1))
-        let serviceObjectType2 = DMEServiceObjectType.init(serviceObjectType: NSNumber(value: 2))
-        let serviceObjectType3 = DMEServiceObjectType.init(serviceObjectType: NSNumber(value: 3))
+        let serviceObjectType1 = DMEServiceObjectType.init(identifier: 1)
+        let serviceObjectType2 = DMEServiceObjectType.init(identifier: 2)
+        let serviceObjectType3 = DMEServiceObjectType.init(identifier: 3)
         let serviceObjectTypes = [serviceObjectType1, serviceObjectType2, serviceObjectType3]
-        let serviceType1 = DMEServiceType.init(serviceType: NSNumber(value: 1), objectTypes: serviceObjectTypes)
-        let serviceType2 = DMEServiceType.init(serviceType: NSNumber(value: 3), objectTypes: serviceObjectTypes)
-        let serviceType3 = DMEServiceType.init(serviceType: NSNumber(value: 4), objectTypes: serviceObjectTypes)
-        let serviceType4 = DMEServiceType.init(serviceType: NSNumber(value: 12), objectTypes: serviceObjectTypes)
+        let serviceType1 = DMEServiceType.init(identifier: 1, objectTypes: serviceObjectTypes)
+        let serviceType2 = DMEServiceType.init(identifier: 3, objectTypes: serviceObjectTypes)
+        let serviceType3 = DMEServiceType.init(identifier: 4, objectTypes: serviceObjectTypes)
+        let serviceType4 = DMEServiceType.init(identifier: 12, objectTypes: serviceObjectTypes)
         let serviceTypes = [serviceType1, serviceType2, serviceType3, serviceType4]
-        let serviceGroup1 = DMEServiceGroup.init(serviceGroup: NSNumber(value: 1), serviceTypes:serviceTypes)
+        let serviceGroup1 = DMEServiceGroup.init(identifier: 1, serviceTypes:serviceTypes)
         scope.serviceGroups = [serviceGroup1]
         
         let expectation = XCTestExpectation(description: "success called")
