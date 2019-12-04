@@ -34,8 +34,8 @@
 @property (nonatomic, strong, nullable) void (^sessionDataCompletion)(NSError * _Nullable);
 @property (nonatomic, strong, nullable) void (^sessionContentHandler)(DMEFile * _Nullable file, NSError * _Nullable error);
 @property (nonatomic) BOOL fetchingSessionData;
-@property (nonatomic) DMEFileList *sessionFileList;
-@property (nonatomic) NSError *sessionError;
+@property (nonatomic, strong, nullable) DMEFileList *sessionFileList;
+@property (nonatomic, strong, nullable) NSError *sessionError;
 
 @end
 
