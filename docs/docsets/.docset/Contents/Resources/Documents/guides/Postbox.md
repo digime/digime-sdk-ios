@@ -4,11 +4,11 @@
     <a href="https://developers.digi.me/slack/join">
         <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
     </a>
-    <a href="LICENSE">
-        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="MIT License">
+    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
+        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
     </a>
     <a href="#">
-    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg" 
+    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
     </a>
     <a href="https://swift.org">
         <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
@@ -61,12 +61,19 @@ In a production environment, you will also be required to obtain your own `Contr
 
 Because the digi.me Private Sharing SDK opens the digi.me app for authorization, you are required to forward the `openURL` event through to the SDK so that it may process responses. In your application's delegate (typically `AppDelegate`) override `application:openURL:options:` method as below:
 
+#####Objective-C
 ```objc
 -(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
 	return [[DMEAppCommunicator shared] openURL:url options:options];
 }
+```
 
+#####Swift
+```swift
+func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+  return DMEAppCommunicator.shared().open(url, options: options)
+}
 ```
 
 <br>
@@ -103,18 +110,33 @@ where `YOUR_APP_ID` should be replaced with your `AppID`.
 
 The `DMEPushConfiguration` object is instantiated with your `AppID` and `Private Key` in hex format. The below code snippet shows you how to combine all this to get a configured `DMEPushClient`:
 
+#####Objective-C
 ```objc
-DMEPushConfiguration *configuration = [[DMEPushConfiguration alloc] initWithAppId:@"your-app-id" contractId:@"your-contract-id"];
+DMEPushConfiguration *configuration = [[DMEPushConfiguration alloc] initWithAppId:@"YOUR_APP_ID" contractId:@"YOUR_CONTRACT_ID"];
 DMEPushClient *pushClient = [[DMEPushClient alloc] initWithConfiguration:configuration];
+```
+
+#####Swift
+```swift
+let configuration = DMEPushConfiguration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID")
+let pushClient = DMEPushClient(configuration: configuration)
 ```
 
 ### 4. Requesting Consent:
 
 Before you can push data into a user's digi.me, you must obtain their consent. This is achieved by calling `createPostbox` on your client object:
 
+#####Objective-C
 ```objc
-[pushClient createPostboxWithCompletion::^(DMEPostbox * _Nullable postbox, NSError * _Nullable error) {
-	
+[pushClient createPostboxWithCompletion:^(DMEPostbox * _Nullable postbox, NSError * _Nullable error) {
+
+}];
+```
+
+#####Swift
+```swift
+pushClient.createPostbox { postbox, error in
+
 }
 ```
 
@@ -124,13 +146,24 @@ If a user grants consent, a Postbox will be created and returned; this is used b
 
 To push data, you need to build a JSON `metadata` object that describes what data your pushing along with the NSData representation of your data itself. An example showing Postbox creation and push can be seen below.:
 
+#####Objective-C
 ```objc
-NSData data = ... // Obtain the data you wish to post.
-NSData metadata = ... // All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.
+NSData *data = ... // Obtain the data you wish to post.
+NSData *metadata = ... // All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.
 
 [pushClient pushDataToPostbox:postbox metadata:metadata data:data completion:^(NSError * _Nullable error) {
-    // Handle error, if any.
+  // Handle error, if any.
 }];
+```
+
+#####Swift
+```swift
+let data: Data = ... // Obtain the data you wish to post.
+let metadata: Data = ... // All Postbox submissions must be pushed with appropriate metadata. See the example apps for more details.
+
+pushClient.pushData(to: postbox, metadata: metadata, data: data) { error in
+  // Handle error, if any.
+}
 ```
 
 *NB: Please refer to our Postbox example in the [Swift Example App](https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift) for more details on data and metadata.*

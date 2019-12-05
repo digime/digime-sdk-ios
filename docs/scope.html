@@ -47,6 +47,9 @@
             <a class="nav-group-name-link" href="Guides.html">Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="contributing.html">Contributing</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="error-handling.html">Error Handling</a>
               </li>
               <li class="nav-group-task">
@@ -301,11 +304,11 @@
     <a href="https://developers.digi.me/slack/join">
         <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
     </a>
-    <a href="LICENSE">
-        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="MIT License">
+    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
+        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
     </a>
     <a href="#">
-        <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" 
+        <img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
     </a>
     <a href="https://swift.org">
         <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
@@ -332,7 +335,7 @@
 <p><code><a href="Classes/DMETimeRange.html">DMETimeRange</a></code> has 3 properties. <code>fromDate</code>, <code>toDate</code> and <code>last</code>. These are all optional but <strong>at least one is required.</strong></p>
 
 <p>We recommend you use one of the convenience methods provided:</p>
-<pre class="highlight objective_c"><code><span class="c1">//  A valid NSDate object representation of the earliest date you want data for. </span>
+<pre class="highlight objective_c"><code><span class="c1">//  A valid NSDate object representation of the earliest date you want data for.</span>
 <span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">from</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">from</span><span class="p">;</span>
 
 <span class="c1">// A valid NSDate object representation of the date before which you would like data.</span>
@@ -347,11 +350,19 @@
 <h2 id='providing-code-dmescope-code' class='heading'>Providing <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code></h2>
 
 <p>When calling <code>authorize</code> on your <code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code>, simply pass in your <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code> object:</p>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="n">DMEScope</span> <span class="o">*</span><span class="n">scope</span> <span class="o">=</span> <span class="p">[</span><span class="n">DMEScope</span> <span class="nf">new</span><span class="p">];</span>
 <span class="n">scope</span><span class="p">.</span><span class="n">timeRanges</span> <span class="o">=</span> <span class="p">@[[</span><span class="n">DMETimeRange</span> <span class="nf">last</span><span class="p">:</span><span class="mi">6</span> <span class="nf">unit</span><span class="p">:</span><span class="n">DMETimeRangeUnitMonth</span><span class="p">]];</span>
 <span class="p">[</span><span class="n">pullClient</span> <span class="nf">authorizeWithScope</span><span class="p">:</span><span class="n">scope</span> <span class="nf">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMESession</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">session</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
 
 <span class="p">}];</span>
+</code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">scope</span> <span class="o">=</span> <span class="kt">DMEScope</span><span class="p">()</span>
+<span class="n">scope</span><span class="o">.</span><span class="n">timeRanges</span> <span class="o">=</span> <span class="p">[</span><span class="kt">DMETimeRange</span><span class="o">.</span><span class="nf">last</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="nv">unit</span><span class="p">:</span> <span class="o">.</span><span class="n">month</span><span class="p">)]</span>
+<span class="n">pullClient</span><span class="o">.</span><span class="nf">authorize</span><span class="p">(</span><span class="nv">scope</span><span class="p">:</span> <span class="n">scope</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">session</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+
+<span class="p">})</span>
 </code></pre>
 
 <p>The data received from any subsequent calls to <code>getSessionData</code> will be limited by the scope of the session defined above.</p>
@@ -363,7 +374,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-09)</p>
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-11-07)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

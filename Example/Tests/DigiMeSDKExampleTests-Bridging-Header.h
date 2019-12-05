@@ -20,5 +20,14 @@
 #import <DigiMeSDK/NSError+API.h>
 #import <DigiMeSDK/NSError+Auth.h>
 #import <DigiMeSDK/NSError+SDK.h>
+#import <DigiMeSDK/DMEOperation.h>
+#import <DigiMeSDK/DMEClient.h>
+#import <DigiMeSDK/DMEClient+Private.h>
+#import <DigiMeSDK/DMEAPIClient+Private.h>
+#import <DigiMeSDK/DMESessionManager.h>
+#import "DMEPullClient+Tests.h"
+#import "DMEAppCommunicator+Test.h"
+#import <DigiMeSDK/DMERequestFactory.h>
+#import <DigiMeSDK/DMEDataRequestSerializer.h>
 
 #endif /* DigiMeSDKExampleTests_Bridging_Header_h */

@@ -9,6 +9,7 @@
 #pragma once
 
 #import "DMETimeRange.h"
+#import "DMEServiceGroup.h"
 
 /**
  Protocol representing data scoping.
@@ -17,6 +18,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@property (nonatomic, strong, nullable) NSArray<DMEServiceGroup *> *serviceGroups;
 @property (nonatomic, strong, nullable) NSArray<DMETimeRange *> *timeRanges;
 @property (nonatomic, strong, readonly) NSString *context;
 

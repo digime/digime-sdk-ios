@@ -69,7 +69,15 @@ NS_ASSUME_NONNULL_BEGIN
  @param fileId NSString id if the file to fetch.
  @param completion Reports result of fetch. Either contains the file or an error if fetch failed
  */
-- (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion NS_SWIFT_NAME(getSessionData(fileId:completion:));
+- (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion __attribute((deprecated("Use getSessionDataWithFileId:completion: instead."))) NS_SWIFT_UNAVAILABLE("Swift name now associated with getSessionDataWithFileId:completion:");
+
+/**
+ Fetches file content for fileId. The fileId may be retrieved from the download handler in getSessionDataWithDownloadHandler:completion:.
+ 
+ @param fileId NSString id if the file to fetch.
+ @param completion Reports result of fetch. Either contains the file or an error if fetch failed
+ */
+- (void)getSessionDataWithFileId:(NSString *)fileId completion:(DMEFileContentCompletion)completion NS_SWIFT_NAME(getSessionData(fileId:completion:));
 
 
 /**
@@ -98,6 +106,11 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion Reports result of fetch. Either contains the accounts or an error if fetch failed
  */
 - (void)getSessionAccountsWithCompletion:(DMEAccountsCompletion)completion NS_SWIFT_NAME(getSessionAccounts(completion:));
+
+/**
+ Cancels any active session fetching activity. No completion handlers will be called. Use this if you wish to stop receiving notification on the handlers.
+ */
+- (void)cancel;
 
 @end
 

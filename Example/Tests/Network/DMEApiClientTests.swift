@@ -61,6 +61,42 @@ extension DMEApiClientTests {
         
         wait(for: [expectation], timeout: 10)
     }
+    
+    func testGetPullSessionWithDataScope() {
+        
+        let serviceObjectType1 = DMEServiceObjectType.init(identifier: 1)
+        let serviceObjectType2 = DMEServiceObjectType.init(identifier: 2)
+        let serviceObjectType3 = DMEServiceObjectType.init(identifier: 3)
+        let serviceObjectTypes = [serviceObjectType1, serviceObjectType2, serviceObjectType3]
+        let serviceType1 = DMEServiceType.init(identifier: 1, objectTypes: serviceObjectTypes)
+        let serviceType2 = DMEServiceType.init(identifier: 3, objectTypes: serviceObjectTypes)
+        let serviceType3 = DMEServiceType.init(identifier: 4, objectTypes: serviceObjectTypes)
+        let serviceType4 = DMEServiceType.init(identifier: 12, objectTypes: serviceObjectTypes)
+        let serviceTypes = [serviceType1, serviceType2, serviceType3, serviceType4]
+        let serviceGroup1 = DMEServiceGroup.init(identifier: 1, serviceTypes:serviceTypes)
+        scope.serviceGroups = [serviceGroup1]
+        
+        let expectation = XCTestExpectation(description: "success called")
+        let sessionId = "sessionId"
+        stubGetPullSession(sessionIdentifier: sessionId)
+        sut.requestSession(withScope: scope, success: { data in
+            
+            XCTAssertNotNil(data)
+            if let actualContents = String(data: data, encoding: .utf8) {
+                XCTAssertEqual(actualContents, sessionId, "Expected file contents to be \(sessionId), got \(actualContents)")
+            }
+            else {
+                XCTFail("Could not convert contents to string")
+            }
+            expectation.fulfill()
+            
+        }) { error in
+            
+            XCTAssertNil(error)
+        }
+        
+        wait(for: [expectation], timeout: 10)
+    }
 }
 
 // MARK: - Stubbers

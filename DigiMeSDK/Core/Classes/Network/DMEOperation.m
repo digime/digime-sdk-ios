@@ -114,22 +114,26 @@
 
 - (void)doWork
 {
-    if (self.config.debugLogEnabled)
-    {
-        NSLog(@"Executing operation: %@", self.operationId);
-    }
-    
     // do whatever stuff you need to do on a background thread.
     // Make network calls, asynchronous stuff, call other methods, etc.
     
     // and whenever the work is done, success or fail, whatever
     // be sure to call finishDoingWork.
-    if (self.workBlock)
+    if (self.workBlock && !self.isCancelled)
     {
         self.workBlock();
+        
+        if (self.config.debugLogEnabled)
+        {
+            NSLog(@"Executing operation: %@", self.operationId);
+        }
     }
     else
     {
+        if (self.config.debugLogEnabled)
+        {
+            NSLog(@"Cancelling operation: %@", self.operationId);
+        }
         [self finishDoingWork];
     }
 }

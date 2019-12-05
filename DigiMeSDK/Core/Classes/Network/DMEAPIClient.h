@@ -77,6 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)requestFileWithId:(NSString *)fileId sessionKey:(NSString *)sessionKey success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
+/**
+ Cancels and clears download queue.
+ */
+- (void)cancelQueuedDownloads;
+
 @end
 
 NS_ASSUME_NONNULL_END

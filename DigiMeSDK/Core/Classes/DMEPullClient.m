@@ -36,9 +36,9 @@
 @property (nonatomic, strong, nullable) void (^sessionFileListCompletion)(NSError * _Nullable);
 @property (nonatomic, strong, nullable) void (^sessionFileListUpdateHandler)(DMEFileList * fileList, NSArray *fileIds);
 @property (nonatomic) BOOL fetchingSessionData;
-@property (nonatomic) DMEFileList *sessionFileList;
-@property (nonatomic) NSError *sessionError;
 @property (nonatomic) NSInteger stalePollCount;
+@property (nonatomic, strong, nullable) DMEFileList *sessionFileList;
+@property (nonatomic, strong, nullable) NSError *sessionError;
 
 @end
 
@@ -403,7 +403,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
                     NSLog(@"DigiMeSDK: Adding file to download queue: %@", fileId);
                 }
                 
-                [self getSessionDataForFileWithId:fileId completion:self.sessionContentHandler];
+                [self getSessionDataWithFileId:fileId completion:self.sessionContentHandler];
             }
         }
     }
@@ -470,6 +470,26 @@ DMEAuthorizationCompletion _authorizationCompletion;
     self.stalePollCount = 0;
 }
 
+- (void)cancel
+{
+    if (!self.fetchingSessionData)
+    {
+        if (self.configuration.debugLogEnabled)
+        {
+            NSLog(@"DigiMeSDK: Session fetching not in progress.");
+        }
+        return;
+    }
+    
+    [self.apiClient cancelQueuedDownloads];
+    [self clearSessionData];
+    
+    if (self.configuration.debugLogEnabled)
+    {
+        NSLog(@"DigiMeSDK: Session fetch cancelled.");
+    }
+}
+
 #pragma mark - Get File Content
 
 - (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(void (^)(NSError * _Nullable))completion
@@ -480,6 +500,11 @@ DMEAuthorizationCompletion _authorizationCompletion;
 }
 
 - (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
+{
+    [self getSessionDataWithFileId:fileId completion:completion];
+}
+
+- (void)getSessionDataWithFileId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
 {
     //validate session
     if (![self.sessionManager isSessionValid])
@@ -503,8 +528,10 @@ DMEAuthorizationCompletion _authorizationCompletion;
             NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
             userInfo[kFileIdKey] = fileId;
             NSError *newError = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
-            
-            completion(nil, newError);
+            if (completion)
+            {
+                completion(nil, newError);
+            }
         });
     }];
 }
@@ -529,7 +556,10 @@ DMEAuthorizationCompletion _authorizationCompletion;
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        completion(file, error);
+        if (completion)
+        {
+            completion(file, error);
+        }
     });
 }
 
