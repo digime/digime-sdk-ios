@@ -59,9 +59,9 @@ NS_ASSUME_NONNULL_BEGIN
  N.B. A session must already have been authorized
  
  @param fileContentHandler Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
- @param completion Contains nil once all file fetches have been attempted, or an error if unable to attempt any fetch
+ @param completion Contains final snapshot of DMEFileList. Error object will be set if an error occurred, nil otherwise
  */
-- (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(void (^)(NSError * _Nullable error))completion NS_SWIFT_NAME(getSessionData(downloadHandler:completion:));
+- (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(DMESessionDataCompletion)completion NS_SWIFT_NAME(getSessionData(downloadHandler:completion:));
 
 /**
  Fetches file content for fileId. The fileId may be retrieved from the download handler in getSessionDataWithDownloadHandler:completion:.

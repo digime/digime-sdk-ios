@@ -31,7 +31,7 @@
 @property (nonatomic, strong, nullable) id<DMEDataRequest> scope;
 @property (nonatomic, strong, nullable) DMEFileListCache *fileCache;
 @property (nonatomic, readonly) DMEFileSyncState syncState;
-@property (nonatomic, strong, nullable) void (^sessionDataCompletion)(NSError * _Nullable);
+@property (nonatomic, strong, nullable) void (^sessionDataCompletion)(DMEFileList * _Nullable fileList, NSError * _Nullable error);
 @property (nonatomic, strong, nullable) void (^sessionContentHandler)(DMEFile * _Nullable file, NSError * _Nullable error);
 @property (nonatomic, strong, nullable) void (^sessionFileListCompletion)(NSError * _Nullable);
 @property (nonatomic, strong, nullable) void (^sessionFileListUpdateHandler)(DMEFileList * fileList, NSArray *fileIds);
@@ -442,7 +442,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
 {
     if (self.sessionDataCompletion)
     {
-        self.sessionDataCompletion(error);
+        self.sessionDataCompletion(self.sessionFileList, error);
     }
     
     if (self.sessionFileListCompletion)
@@ -491,8 +491,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
 }
 
 #pragma mark - Get File Content
-
-- (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(void (^)(NSError * _Nullable))completion
+- (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(DMESessionDataCompletion)completion
 {
     self.sessionDataCompletion = completion;
     self.sessionContentHandler = fileContentHandler;

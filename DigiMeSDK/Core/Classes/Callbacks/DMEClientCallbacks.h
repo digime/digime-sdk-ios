@@ -43,7 +43,6 @@ typedef void (^DMEPostboxCreationCompletion) (DMEPostbox * _Nullable postbox, NS
  */
 typedef void (^DMEPostboxDataPushCompletion) (NSError * _Nullable error);
 
-
 /**
  DMEFileContentCompletion - executed when a file has been retrieved.
 
@@ -61,7 +60,15 @@ typedef void (^DMEFileContentCompletion) (DMEFile * _Nullable file, NSError * _N
  @param fileList FileList object, representing latest file list snapshot.
  @param fileIds Array of string, fileIds. Only fileIds added, or updated since the last snapshot are included.
  */
-typedef void (^DMESessionFileListCompletion) (DMEFileList * fileList, NSArray *fileIds);
+typedef void (^DMESessionFileListCompletion) (DMEFileList *fileList, NSArray *fileIds);
+
+/**
+DMESessionDataCompletion - executed when session data fetching has completed.
+
+@param fileList FileList object, representing latest file list snapshot. This can be used to verify sync status state.
+@param error nil if session data fetching completed succesfully, otherwise an error specifying what went wrong.
+*/
+typedef void (^DMESessionDataCompletion) (DMEFileList * _Nullable fileList, NSError * _Nullable error);
 
 extern NSString * const kFileIdKey;
 
