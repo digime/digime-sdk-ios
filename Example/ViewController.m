@@ -89,9 +89,9 @@
         
         [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
 
-        //Uncomment this and comment the call below if you wish to receive data instead.
-        //[self getSessionData];
-        [self getSessionFileList];
+        //Uncomment relevant method depending on which you wish to recieve.
+        [self getSessionData];
+//        [self getSessionFileList];
         [self getAccounts];
     }];
 }
@@ -163,7 +163,8 @@
             NSString *fileId = error.userInfo[kFileIdKey] ?: @"unknown";
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", fileId, error.localizedDescription]];
         }
-    } completion:^(NSError * _Nullable error) {
+    } completion:^(DMEFileList * _Nullable fileList, NSError * _Nullable error) {
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)
             {
