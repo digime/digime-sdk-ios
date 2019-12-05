@@ -22,6 +22,7 @@ class CAExampleViewController: UIViewController {
         
         // - GET STARTED -
         configuration = DMEPullConfiguration(appId: Constants.appId, contractId: Constants.CAContractId, p12FileName: Constants.p12FileName, p12Password: Constants.p12Password)
+        configuration?.debugLogEnabled = true
         
         logVC = LogViewController(frame: UIScreen.main.bounds)
         view.addSubview(logVC)
@@ -67,7 +68,9 @@ class CAExampleViewController: UIViewController {
             
             self.logVC.log(message: "Authorization Succeeded for session: " + session.sessionKey)
             
-            self.getSessionData()
+            //Uncomment relevant method depending on which you wish to recieve.
+            //self.getSessionData()
+            self.getSessionFileList()
             self.getAccounts()
         }
     }
@@ -88,6 +91,8 @@ class CAExampleViewController: UIViewController {
     }
     
     func getSessionData() {
+        title = "Session Data"
+        
         dmeClient?.getSessionData(downloadHandler: { (file, error) in
             guard let file = file else {
                 if let error = error as NSError?, let fileId = error.userInfo[kFileIdKey] as? String {
@@ -97,10 +102,39 @@ class CAExampleViewController: UIViewController {
                 return
             }
             
-            self.logVC.log(message: "File Content: " + "\(String(describing: file.fileContentAsJSON()))")
+            self.logVC.log(message: "Downloaded file: \(file.fileId), record count: \(file.fileContentAsJSON()?.count ?? 0)")
+        }) { (fileList, error) in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.logVC.log(message: "Client retrieve session data failed: " + error.localizedDescription)
+                }
+                else {
+                    self.logVC.log(message: "-------------Finished fetching session data!-------------")
+                }
+            }
+        }
+    }
+    
+    func getSessionFileList() {
+        title = "Session FileList"
+        
+        dmeClient?.getSessionFileList(updateHandler: { (fileList, fileIds) in
+            if !fileIds.isEmpty {
+                self.logVC.log(message: "\n\nNew files added or updated in the file List: \(fileIds), accounts: \(fileList.accounts)\n\n")
+            }
+            else {
+                self.logVC.log(message: "\n\nFileList Status: \(fileList.syncStateString), Accounts: \(fileList.accounts)")
+            }
         }) { (error) in
-            if let error = error {
-                self.logVC.log(message: "Client retrieve session data failed: " + error.localizedDescription)
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.logVC.log(message: "Client retrieve session file list failed: \(error.localizedDescription)")
+                }
+                else {
+                    self.logVC.log(message: "-------------Finished fetching session FileList!-------------")
+                }
+                
+                self.title = nil
             }
         }
     }

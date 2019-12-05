@@ -60,7 +60,7 @@ typedef void (^DMEFileContentCompletion) (DMEFile * _Nullable file, NSError * _N
  @param fileList FileList object, representing latest file list snapshot.
  @param fileIds Array of string, fileIds. Only fileIds added, or updated since the last snapshot are included.
  */
-typedef void (^DMESessionFileListCompletion) (DMEFileList *fileList, NSArray *fileIds);
+typedef void (^DMESessionFileListCompletion) (DMEFileList *fileList, NSArray<NSString *> *fileIds);
 
 /**
 DMESessionDataCompletion - executed when session data fetching has completed.
