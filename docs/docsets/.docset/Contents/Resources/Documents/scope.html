@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (54% documented)
+         (55% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -108,6 +108,9 @@
                 <a class="nav-group-task-link" href="Classes/DMEFileList.html">DMEFileList</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileListAccount.html">DMEFileListAccount</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEPostbox.html">DMEPostbox</a>
               </li>
               <li class="nav-group-task">
@@ -127,6 +130,15 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEServiceGroup.html">DMEServiceGroup</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEServiceObjectType.html">DMEServiceObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEServiceType.html">DMEServiceType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMESession.html">DMESession</a>
@@ -253,7 +265,7 @@
                 <a class="nav-group-task-link" href="Enums/AuthError.html">AuthError</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/DMEFileSyncStatus.html">DMEFileSyncStatus</a>
+                <a class="nav-group-task-link" href="Enums/DMEFileSyncState.html">DMEFileSyncState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
@@ -288,6 +300,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxDataPushCompletion">DMEPostboxDataPushCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMESessionDataCompletion">DMESessionDataCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMESessionFileListCompletion">DMESessionFileListCompletion</a>
               </li>
             </ul>
           </li>
@@ -329,8 +347,8 @@
 <p>At a code level, you can restrict the scope of a Private Sharing session by passing in a custom <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code>.</p>
 <h2 id='defining-code-dmescope-code' class='heading'>Defining <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code></h2>
 
-<p><code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code> is comprised of two properties. <code>timeRanges</code> is a list of <code><a href="Classes/DMETimeRange.html">DMETimeRange</a></code> objects (more on this below) to limit the breadth of time for which applicable data will be returned. <code>context</code> is set automatically and cannot be overridden.</p>
-<h3 id='code-dmetimerange-code' class='heading'><code><a href="Classes/DMETimeRange.html">DMETimeRange</a></code>:</h3>
+<p><code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code> is comprised of three properties. <code>timeRanges</code> is a list of <code><a href="Classes/DMETimeRange.html">DMETimeRange</a></code> objects (more on this below) to limit the breadth of time for which applicable data will be returned. <code>serviceGroups</code> is a list of <code><a href="Classes/DMEServiceGroup.html">DMEServiceGroup</a></code> objects, which nests it&rsquo;s own list of <code><a href="Classes/DMEServiceType.html">DMEServiceType</a></code> objects, nesting <code>DMEObjectType</code> objects; this is also detailed below. <code>context</code> is set automatically and cannot be overridden.</p>
+<h3 id='em-scoping-by-time-range-em' class='heading'><em>Scoping by time range</em>:</h3>
 
 <p><code><a href="Classes/DMETimeRange.html">DMETimeRange</a></code> has 3 properties. <code>fromDate</code>, <code>toDate</code> and <code>last</code>. These are all optional but <strong>at least one is required.</strong></p>
 
@@ -346,6 +364,36 @@
 
 <span class="c1">// An integer an a unit to describe date period you want the data for. Unit may be days, month or years</span>
 <span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">last</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">x</span> <span class="nf">unit</span><span class="p">:(</span><span class="n">DMETimeRangeUnit</span><span class="p">)</span><span class="nv">unit</span><span class="p">;</span>
+</code></pre>
+<h3 id='em-scoping-by-service-group-service-type-or-object-type-em' class='heading'><em>Scoping by service group, service type or object type:</em></h3>
+
+<p>To restrict scope at an object level, your scope must be &lsquo;fully described&rsquo;; that is to say that a service group must comprise at least one service type, which must comprise at least one object type. Furthermore, a service group may only contain service types belonging to it and said service types may only contain object types belonging to them.</p>
+
+<p>Service Groups, Service Types and Objects are all listed <a href="https://developers.digi.me/reference-objects">here</a> in the developer documentation. Their relationships are also shown (what belongs to what).</p>
+
+<p>Below is an example of a valid scope to retrive only <code>Playlists</code> and <code>Followed Artists</code> from <code>Spotify</code>:</p>
+<h5 id='objective-c' class='heading'>Objective-C</h5>
+<pre class="highlight objective_c"><code><span class="n">DMEServiceObjectType</span> <span class="o">*</span> <span class="n">playlistObjectType</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEServiceObjectType</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithIdentifier</span><span class="p">:</span><span class="mi">403</span><span class="p">];</span> <span class="c1">// 403 is the ID for a Playlist object.</span>
+<span class="n">DMEServiceObjectType</span> <span class="o">*</span> <span class="n">followedArtistObjectType</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEServiceObjectType</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithIdentifier</span><span class="p">:</span><span class="mi">407</span><span class="p">];</span> <span class="c1">// 407 is the ID for a Followed Artist object.</span>
+
+<span class="n">DMEServiceType</span> <span class="o">*</span><span class="n">spotifyServiceType</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEServiceType</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithIdentifier</span><span class="p">:</span><span class="mi">19</span> <span class="nf">objectTypes</span><span class="p">:@[</span><span class="n">playlistObjectType</span><span class="p">,</span> <span class="n">followedArtistObjectType</span><span class="p">]];</span> <span class="c1">// 19 is the ID for Spotify.</span>
+
+<span class="n">DMEServiceGroup</span> <span class="o">*</span> <span class="n">entertainmentServiceGroup</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEServiceGroup</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithIdentifier</span><span class="p">:</span><span class="mi">5</span> <span class="nf">serviceTypes</span><span class="p">:@[</span><span class="n">spotifyServiceType</span><span class="p">]];</span> <span class="c1">// 5 is the ID for Entertainment.</span>
+
+<span class="c1">//create scope object</span>
+<span class="n">DMEScope</span> <span class="o">*</span><span class="n">scope</span> <span class="o">=</span> <span class="p">[</span><span class="n">DMEScope</span> <span class="nf">new</span><span class="p">];</span> <span class="c1">// This scope is valid, as no restrictions have been imposed.</span>
+<span class="n">scope</span><span class="p">.</span><span class="n">serviceGroups</span> <span class="o">=</span> <span class="p">@[</span><span class="n">entertainmentServiceGroup</span><span class="p">];</span> <span class="c1">// The scope is still valid, as it conforms to the rules listed above.</span>
+</code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">playlistObjectType</span> <span class="o">=</span> <span class="kt">DMEServiceObjectType</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="mi">403</span><span class="p">)</span> <span class="c1">// 403 is the ID for a Playlist object.</span>
+<span class="k">let</span> <span class="nv">followedArtistObjectType</span> <span class="o">=</span> <span class="kt">DMEServiceObjectType</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="mi">407</span><span class="p">)</span> <span class="c1">// 407 is the ID for a Followed Artist object.</span>
+
+<span class="k">let</span> <span class="nv">spotifyServiceType</span> <span class="o">=</span> <span class="kt">DMEServiceType</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="nv">objectTypes</span><span class="p">:</span> <span class="p">[</span><span class="n">playlistObjectType</span><span class="p">,</span> <span class="n">followedArtistObjectType</span><span class="p">])</span> <span class="c1">// 19 is the ID for Spotify.</span>
+
+<span class="k">let</span> <span class="nv">entertainmentServiceGroup</span> <span class="o">=</span> <span class="kt">DMEServiceGroup</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">serviceTypes</span><span class="p">:</span> <span class="p">[</span><span class="n">spotifyServiceType</span><span class="p">])</span> <span class="c1">// 5 is the ID for Entertainment.</span>
+
+<span class="k">let</span> <span class="nv">scope</span> <span class="o">=</span> <span class="kt">DMEScope</span><span class="p">()</span> <span class="c1">// This scope is valid, as no restrictions have been imposed.</span>
+<span class="n">scope</span><span class="o">.</span><span class="n">serviceGroups</span> <span class="o">=</span> <span class="p">[</span><span class="n">entertainmentServiceGroup</span><span class="p">]</span> <span class="c1">// The scope is still valid, as it conforms to the rules listed above.</span>
 </code></pre>
 <h2 id='providing-code-dmescope-code' class='heading'>Providing <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code></h2>
 
@@ -374,7 +422,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-11-07)</p>
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-12-12)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

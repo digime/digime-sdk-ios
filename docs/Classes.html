@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (54% documented)
+         (55% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -109,6 +109,9 @@
                 <a class="nav-group-task-link" href="Classes/DMEFileList.html">DMEFileList</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileListAccount.html">DMEFileListAccount</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEPostbox.html">DMEPostbox</a>
               </li>
               <li class="nav-group-task">
@@ -128,6 +131,15 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEServiceGroup.html">DMEServiceGroup</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEServiceObjectType.html">DMEServiceObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEServiceType.html">DMEServiceType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMESession.html">DMESession</a>
@@ -254,7 +266,7 @@
                 <a class="nav-group-task-link" href="Enums/AuthError.html">AuthError</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/DMEFileSyncStatus.html">DMEFileSyncStatus</a>
+                <a class="nav-group-task-link" href="Enums/DMEFileSyncState.html">DMEFileSyncState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
@@ -289,6 +301,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxDataPushCompletion">DMEPostboxDataPushCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMESessionDataCompletion">DMESessionDataCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMESessionFileListCompletion">DMESessionFileListCompletion</a>
               </li>
             </ul>
           </li>
@@ -740,6 +758,39 @@ on <code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code>.</p>
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEFileListAccount"></a>
+                    <a name="//apple_ref/objc/Class/DMEFileListAccount" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEFileListAccount">DMEFileListAccount</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Serialized representation of the account object embedded in the <code>getFileList</code> response.</p>
+
+                        <a href="Classes/DMEFileListAccount.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEFileListAccount</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">DMEFileListAccount</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
             <div class="task-group">
@@ -771,6 +822,233 @@ for which data can be requested from the user.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">DMEScope</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/DMEDataRequest.html">DMEDataRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEServiceGroup"></a>
+                    <a name="//apple_ref/objc/Class/DMEServiceGroup" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEServiceGroup">DMEServiceGroup</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/DMEServiceGroup.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEServiceGroup</span><span class="p">:</span> <span class="nc">NSObject</span>
+
+<span class="cm">/**
+ ServiceGroup is a high level JFS object definition.  e.g.`1` for Social, `2` for Medical etc.
+ 
+  - seealso:
+ For more information, see [digi.me Developer Portal]
+ (https://developers.digi.me/reference-objects#service-group)
+ 
+ ### Useful links
+ * [digi.me Developer Portal]
+*/</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSUInteger</span> <span class="n">identifier</span><span class="p">;</span>
+
+<span class="cm">/**
+ ServiceType is a JFS ServiceGroup subcategory object definition.  e.g. `1` for Facebook, `3` for Twitter etc.
+
+   - seealso:
+  For more information, see [digi.me Developer Portal]
+ (https://developers.digi.me/reference-objects#services)
+ 
+ ### Useful links
+ * [digi.me Developer Portal]
+*/</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n"><a href="Classes/DMEServiceType.html">DMEServiceType</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">serviceTypes</span><span class="p">;</span>
+
+<span class="cm">/**
+-init unavailable. Use -initWithServiceGroup:serviceTypes:
+
+@return instancetype
+*/</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">init</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+<span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+
+<span class="cm">/**
+ Designated object initializer.
+
+@param identifier NSUInteger Object identifier that is a representation of the JFS ServiceGroup entity. ServiceGroup is a top level category, such us Social, Finance etc.
+@param serviceTypes NSArray ServiceType is a representation of the ServiceGroup subcategory in the JFS supported objects hierarchy. Such us Facebook, Twitter etc.
+@return instancetype.
+*/</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithIdentifier</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">identifier</span> <span class="nf">serviceTypes</span><span class="p">:(</span><span class="n">NSArray</span><span class="o">&lt;</span><span class="n"><a href="Classes/DMEServiceType.html">DMEServiceType</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">serviceTypes</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
+
+<span class="k">@end</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">DMEServiceGroup</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEServiceObjectType"></a>
+                    <a name="//apple_ref/objc/Class/DMEServiceObjectType" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEServiceObjectType">DMEServiceObjectType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/DMEServiceObjectType.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEServiceObjectType</span><span class="p">:</span> <span class="nc">NSObject</span>
+
+<span class="cm">/**
+ ObjectType is a JFS object definition, such us social Comment, Media, Post etc.
+ 
+  - seealso:
+ For more information, see [digi.me Developer Portal]
+ (https://developers.digi.me/reference-objects#objects)
+ 
+ ### Useful links
+ * [digi.me Developer Portal]
+*/</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSUInteger</span> <span class="n">identifier</span><span class="p">;</span>
+
+<span class="cm">/**
+-init unavailable. Use -initWithServiceObjectType:serviceObjectTypeId:
+
+@return instancetype
+*/</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">init</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+<span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+
+<span class="cm">/**
+ Designated object initializer.
+
+@param identifier NSNumber Object identifier that is a representation of the JFS Service Object Type entity, such us social Comment, Media or a Post.
+@return instancetype.
+*/</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithIdentifier</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">identifier</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
+
+<span class="k">@end</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">DMEServiceObjectType</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEServiceType"></a>
+                    <a name="//apple_ref/objc/Class/DMEServiceType" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEServiceType">DMEServiceType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/DMEServiceType.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEServiceType</span><span class="p">:</span> <span class="nc">NSObject</span>
+
+<span class="cm">/**
+ ServiceType is a subcategory of the JFS ServiceGroup object, such us Facebook, Twitter etc.
+ 
+  - seealso:
+ For more information, see [digi.me Developer Portal]
+ (https://developers.digi.me/reference-objects#services)
+ 
+ ### Useful links
+ * [digi.me Developer Portal]
+*/</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSUInteger</span> <span class="n">identifier</span><span class="p">;</span>
+
+<span class="cm">/**
+ ObjectType is a JFS ServiceType subcategory object definition, such us social Comment, Media or a Post.
+
+   - seealso:
+  For more information, see [digi.me Developer Portal]
+ (https://developers.digi.me/reference-objects#objects)
+ 
+ ### Useful links
+ * [digi.me Developer Portal]
+*/</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n"><a href="Classes/DMEServiceObjectType.html">DMEServiceObjectType</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">serviceObjectTypes</span><span class="p">;</span>
+
+<span class="cm">/**
+-init unavailable. Use -initWithServiceType:objectTypes:
+
+@return instancetype
+*/</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">init</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+<span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span>
+
+<span class="cm">/**
+ Designated object initializer.
+
+@param identifier NSNumber Object identifier that is a representation of the JFS ServiceType entity. ServiceType is a subcategory, such us Facebook, Twitter etc.
+@param serviceObjectTypes NSArray ServiceObjectType is a representation of the ServiceType subcategory in the JFS objects hierarchy. Such us social Comment, Media or a Post.
+@return instancetype.
+*/</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithIdentifier</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">identifier</span> <span class="nf">objectTypes</span><span class="p">:(</span><span class="n">NSArray</span> <span class="o">&lt;</span><span class="n"><a href="Classes/DMEServiceObjectType.html">DMEServiceObjectType</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nv">serviceObjectTypes</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
+
+<span class="k">@end</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">DMEServiceType</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                         </div>
                       </div>
@@ -897,7 +1175,7 @@ user&rsquo;s authorization.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-11-07)</p>
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-12-12)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

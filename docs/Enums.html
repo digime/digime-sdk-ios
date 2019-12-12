@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (54% documented)
+         (55% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -109,6 +109,9 @@
                 <a class="nav-group-task-link" href="Classes/DMEFileList.html">DMEFileList</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileListAccount.html">DMEFileListAccount</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEPostbox.html">DMEPostbox</a>
               </li>
               <li class="nav-group-task">
@@ -128,6 +131,15 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEServiceDescriptor.html">DMEServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEServiceGroup.html">DMEServiceGroup</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEServiceObjectType.html">DMEServiceObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEServiceType.html">DMEServiceType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMESession.html">DMESession</a>
@@ -254,7 +266,7 @@
                 <a class="nav-group-task-link" href="Enums/AuthError.html">AuthError</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/DMEFileSyncStatus.html">DMEFileSyncStatus</a>
+                <a class="nav-group-task-link" href="Enums/DMEFileSyncState.html">DMEFileSyncState</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
@@ -290,6 +302,12 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxDataPushCompletion">DMEPostboxDataPushCompletion</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMESessionDataCompletion">DMESessionDataCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMESessionFileListCompletion">DMESessionFileListCompletion</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -311,9 +329,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@E@DMEFileSyncStatus"></a>
-                    <a name="//apple_ref/objc/Enum/DMEFileSyncStatus" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@E@DMEFileSyncStatus">DMEFileSyncStatus</a>
+                    <a name="/c:@E@DMEFileSyncState"></a>
+                    <a name="//apple_ref/objc/Enum/DMEFileSyncState" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@DMEFileSyncState">DMEFileSyncState</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -321,20 +339,20 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Sync status enum.</p>
+                        <p>Sync state enum.</p>
 
-                        <a href="Enums/DMEFileSyncStatus.html" class="slightly-smaller">See more</a>
+                        <a href="Enums/DMEFileSyncState.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">enum</span> <span class="n">DMEFileSyncStatus</span> <span class="p">{}</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">enum</span> <span class="n">DMEFileSyncState</span> <span class="p">{}</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">DMEFileSyncStatus</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">DMEFileSyncState</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -460,7 +478,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-11-07)</p>
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-12-12)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
