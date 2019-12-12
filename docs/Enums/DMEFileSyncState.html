@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DMEDataRequest Protocol Reference</title>
+    <title>DMEFileSyncState Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/DMEDataRequest" class="dashAnchor"></a>
+    <a name="//apple_ref/objc/Enum/DMEFileSyncState" class="dashAnchor"></a>
 
-    <a title="DMEDataRequest Protocol Reference"></a>
+    <a title="DMEFileSyncState Enumeration Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -38,7 +38,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html"> Reference</a>
       <img class="carat" src="../img/carat.png" />
-      DMEDataRequest Protocol Reference
+      DMEFileSyncState Enumeration Reference
     </p>
 
     <div class="content-wrapper">
@@ -316,14 +316,14 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>DMEDataRequest</h1>
+            <h1>DMEFileSyncState</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight objective_c"><code><span class="k">@protocol</span> <span class="nc">DMEDataRequest</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+                  <pre class="highlight objective_c"><code><span class="k">enum</span> <span class="n">DMEFileSyncState</span> <span class="p">{}</span></code></pre>
 
                 </div>
               </div>
-            <p>Protocol representing data scoping.</p>
+            <p>Sync state enum.</p>
 
           </div>
         </section>
@@ -335,9 +335,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)DMEDataRequest(py)serviceGroups"></a>
-                    <a name="//apple_ref/objc/Property/serviceGroups" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)DMEDataRequest(py)serviceGroups">serviceGroups</a>
+                    <a name="/c:@E@DMEFileSyncState@DMEFileSyncStateUnknown"></a>
+                    <a name="//apple_ref/objc/Case/DMEFileSyncStateUnknown" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@DMEFileSyncState@DMEFileSyncStateUnknown">DMEFileSyncStateUnknown</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -352,12 +352,12 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n"><a href="../Classes/DMEServiceGroup.html">DMEServiceGroup</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">serviceGroups</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="n">DMEFileSyncStateUnknown</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">serviceGroups</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/DMEServiceGroup.html">DMEServiceGroup</a></span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">unknown</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
 
                         </div>
                       </div>
@@ -367,9 +367,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)DMEDataRequest(py)timeRanges"></a>
-                    <a name="//apple_ref/objc/Property/timeRanges" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)DMEDataRequest(py)timeRanges">timeRanges</a>
+                    <a name="/c:@E@DMEFileSyncState@DMEFileSyncStateRunning"></a>
+                    <a name="//apple_ref/objc/Case/DMEFileSyncStateRunning" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@DMEFileSyncState@DMEFileSyncStateRunning">DMEFileSyncStateRunning</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -384,12 +384,12 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSArray</span><span class="o">&lt;</span><span class="n"><a href="../Classes/DMETimeRange.html">DMETimeRange</a></span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">timeRanges</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="n">DMEFileSyncStateRunning</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">timeRanges</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/DMETimeRange.html">DMETimeRange</a></span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">running</span> <span class="o">=</span> <span class="mi">1</span></code></pre>
 
                         </div>
                       </div>
@@ -399,9 +399,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(pl)DMEDataRequest(py)context"></a>
-                    <a name="//apple_ref/objc/Property/context" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(pl)DMEDataRequest(py)context">context</a>
+                    <a name="/c:@E@DMEFileSyncState@DMEFileSyncStatePending"></a>
+                    <a name="//apple_ref/objc/Case/DMEFileSyncStatePending" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@DMEFileSyncState@DMEFileSyncStatePending">DMEFileSyncStatePending</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -416,12 +416,76 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">context</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="n">DMEFileSyncStatePending</span></code></pre>
 
                         </div>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">context</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">pending</span> <span class="o">=</span> <span class="mi">2</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@E@DMEFileSyncState@DMEFileSyncStatePartial"></a>
+                    <a name="//apple_ref/objc/Case/DMEFileSyncStatePartial" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@DMEFileSyncState@DMEFileSyncStatePartial">DMEFileSyncStatePartial</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="n">DMEFileSyncStatePartial</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">partial</span> <span class="o">=</span> <span class="mi">3</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@E@DMEFileSyncState@DMEFileSyncStateCompleted"></a>
+                    <a name="//apple_ref/objc/Case/DMEFileSyncStateCompleted" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@DMEFileSyncState@DMEFileSyncStateCompleted">DMEFileSyncStateCompleted</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="n">DMEFileSyncStateCompleted</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">completed</span> <span class="o">=</span> <span class="mi">4</span></code></pre>
 
                         </div>
                       </div>

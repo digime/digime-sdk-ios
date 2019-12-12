@@ -31,9 +31,9 @@ At a code level, you can restrict the scope of a Private Sharing session by pass
 
 ## Defining `DMEScope`
 
-`DMEScope` is comprised of two properties. `timeRanges` is a list of `DMETimeRange` objects (more on this below) to limit the breadth of time for which applicable data will be returned. `context` is set automatically and cannot be overridden.
+`DMEScope` is comprised of three properties. `timeRanges` is a list of `DMETimeRange` objects (more on this below) to limit the breadth of time for which applicable data will be returned. `serviceGroups` is a list of `DMEServiceGroup` objects, which nests it's own list of `DMEServiceType` objects, nesting `DMEObjectType` objects; this is also detailed below. `context` is set automatically and cannot be overridden.
 
-### `DMETimeRange`:
+### _Scoping by time range_:
 
 `DMETimeRange` has 3 properties. `fromDate`, `toDate` and `last`. These are all optional but **at least one is required.**
 
@@ -52,6 +52,42 @@ We recommend you use one of the convenience methods provided:
 // An integer an a unit to describe date period you want the data for. Unit may be days, month or years
 + (DMETimeRange *)last:(NSUInteger)x unit:(DMETimeRangeUnit)unit;
 ```
+
+### _Scoping by service group, service type or object type:_
+
+To restrict scope at an object level, your scope must be 'fully described'; that is to say that a service group must comprise at least one service type, which must comprise at least one object type. Furthermore, a service group may only contain service types belonging to it and said service types may only contain object types belonging to them.
+
+Service Groups, Service Types and Objects are all listed [here](https://developers.digi.me/reference-objects) in the developer documentation. Their relationships are also shown (what belongs to what).
+
+Below is an example of a valid scope to retrive only `Playlists` and `Followed Artists` from `Spotify`:
+
+#####Objective-C
+```objc
+DMEServiceObjectType * playlistObjectType = [[DMEServiceObjectType alloc] initWithIdentifier:403]; // 403 is the ID for a Playlist object.
+DMEServiceObjectType * followedArtistObjectType = [[DMEServiceObjectType alloc] initWithIdentifier:407]; // 407 is the ID for a Followed Artist object.
+    
+DMEServiceType *spotifyServiceType = [[DMEServiceType alloc] initWithIdentifier:19 objectTypes:@[playlistObjectType, followedArtistObjectType]]; // 19 is the ID for Spotify.
+    
+DMEServiceGroup * entertainmentServiceGroup = [[DMEServiceGroup alloc] initWithIdentifier:5 serviceTypes:@[spotifyServiceType]]; // 5 is the ID for Entertainment.
+    
+//create scope object
+DMEScope *scope = [DMEScope new]; // This scope is valid, as no restrictions have been imposed.
+scope.serviceGroups = @[entertainmentServiceGroup]; // The scope is still valid, as it conforms to the rules listed above.
+```
+
+#####Swift
+```swift
+let playlistObjectType = DMEServiceObjectType(identifier: 403) // 403 is the ID for a Playlist object.
+let followedArtistObjectType = DMEServiceObjectType(identifier: 407) // 407 is the ID for a Followed Artist object.
+
+let spotifyServiceType = DMEServiceType(identifier: 19, objectTypes: [playlistObjectType, followedArtistObjectType]) // 19 is the ID for Spotify.
+
+let entertainmentServiceGroup = DMEServiceGroup(identifier: 5, serviceTypes: [spotifyServiceType]) // 5 is the ID for Entertainment.
+
+let scope = DMEScope() // This scope is valid, as no restrictions have been imposed.
+scope.serviceGroups = [entertainmentServiceGroup] // The scope is still valid, as it conforms to the rules listed above.
+```
+
 
 ## Providing `DMEScope`
 
