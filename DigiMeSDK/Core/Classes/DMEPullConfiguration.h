@@ -26,6 +26,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL guestEnabled;
 
 /**
+ Determines interval between fileList fetches when using `getSessionData` or `getSessionFileList`.
+ Defaults to 3 seconds.
+ */
+@property (nonatomic) NSTimeInterval pollInterval;
+
+/**
+ Determines max number of retries before `getSessionData` or `getSessionFileList` times out.
+ Time out condition is reached when there have been no updates to the `DMEFileList` during specified number of polls.
+ Defaults to 100. This is affected by `pollInterval`. Using default values these would result in 100 * 3 = 300 seconds (5 minutes).
+ */
+@property (nonatomic) NSInteger maxStalePolls;
+
+/**
  Designated Initializer
  
  @param appId application identifier

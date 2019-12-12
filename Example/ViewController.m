@@ -89,7 +89,9 @@
         
         [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
 
+        //Uncomment relevant method depending on which you wish to recieve.
         [self getSessionData];
+//        [self getSessionFileList];
         [self getAccounts];
     }];
 }
@@ -105,7 +107,40 @@
         };
         
         [self.logVC logMessage:[NSString stringWithFormat:@"Account Content: %@", accounts.json]];
+    }];
+}
+
+- (void)getSessionFileList
+{
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
+    [activityIndicator startAnimating];
+    self.title = @"Session FileList";
+    
+    [self.dmeClient getSessionFileListWithUpdateHandler:^(DMEFileList * fileList, NSArray *fileIds) {
         
+        if (fileIds.count > 0)
+        {
+            [self.logVC logMessage:[NSString stringWithFormat:@"\n\nNew files added or updated in the file List: %@, accounts: %@\n\n", fileIds, fileList.accounts]];
+        }
+        else
+        {
+            [self.logVC logMessage:[NSString stringWithFormat:@"\n\nFileList Status: %@, Accounts: %@", fileList.syncStateString, fileList.accounts]];
+        }
+    } completion:^(NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error != nil)
+            {
+                [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve session file list failed: %@", error.localizedDescription]];
+            }
+            else
+            {
+                [self.logVC logMessage:@"-------------Finished fetching session FileList!-------------"];
+            }
+        
+            self.navigationItem.leftBarButtonItem = nil;
+            self.title = nil;
+        });
     }];
 }
 
@@ -114,6 +149,7 @@
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
     [activityIndicator startAnimating];
+    self.title = @"Session Data";
     
     [self.dmeClient getSessionDataWithDownloadHandler:^(DMEFile * _Nullable file, NSError * _Nullable error) {
         
@@ -127,7 +163,8 @@
             NSString *fileId = error.userInfo[kFileIdKey] ?: @"unknown";
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", fileId, error.localizedDescription]];
         }
-    } completion:^(NSError * _Nullable error) {
+    } completion:^(DMEFileList * _Nullable fileList, NSError * _Nullable error) {
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)
             {
@@ -139,6 +176,7 @@
             }
         
             self.navigationItem.leftBarButtonItem = nil;
+            self.title = nil;
         });
     }];
 }

@@ -19,4 +19,20 @@ public class DMEFileListItem: NSObject {
         self.updateDate = updateDate
         
     }
+    
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? DMEFileListItem else {
+            return false
+        }
+        
+        guard self !== object else {
+            return true
+        }
+        
+        return name == object.name && updateDate.timeIntervalSince1970 == object.updateDate.timeIntervalSince1970
+    }
+    
+    public override var hash: Int {
+        return name.hashValue ^ updateDate.hashValue
+    }
 }
