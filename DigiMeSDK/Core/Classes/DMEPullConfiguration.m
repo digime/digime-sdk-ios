@@ -37,4 +37,17 @@
     return [self initWithAppId:appId contractId:contractId privateKeyHex:privateKeyHex];
 }
 
+- (instancetype)initForOngoingAccessWithAppId:(NSString *)appId contractId:(NSString *)contractId publicKeyHex:(nullable NSString *)publicKeyHex privateKeyHex:(NSString *)privateKeyHex
+{
+    self = [self initWithAppId:appId contractId:contractId privateKeyHex:privateKeyHex];
+    if (self)
+    {
+        _publicKeyHex = publicKeyHex;
+        _privateKeyHex = privateKeyHex;
+        _guestEnabled = NO;
+    }
+    
+    return self;
+}
+
 @end

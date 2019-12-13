@@ -16,6 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DMEPullConfiguration : DMEBaseConfiguration
 
 /**
+ Your rsa public key hex. 
+ */
+@property (nonatomic, copy) NSString *publicKeyHex;
+
+/**
  Your rsa private key hex. This property MUST be set before you can call authorize.
  */
 @property (nonatomic, copy) NSString *privateKeyHex;
@@ -47,6 +52,17 @@ NS_ASSUME_NONNULL_BEGIN
  @return instancetype
  */
 - (instancetype)initWithAppId:(NSString *)appId contractId:(NSString *)contractId privateKeyHex:(NSString *)privateKeyHex NS_DESIGNATED_INITIALIZER;
+
+/**
+ Convinience Initializer for ongoing access (Cyclic CA)
+ 
+ @param appId application identifier
+ @param contractId contract identifier
+ @param publicKeyHex RSA public key string in HEX format
+ @param privateKeyHex RSA private key string in HEX format
+ @return instancetype
+ */
+- (instancetype)initForOngoingAccessWithAppId:(NSString *)appId contractId:(NSString *)contractId publicKeyHex:(nullable NSString *)publicKeyHex privateKeyHex:(NSString *)privateKeyHex;
 
 /**
  Convinience Initializer

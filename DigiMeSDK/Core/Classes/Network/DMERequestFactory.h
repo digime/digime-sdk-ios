@@ -73,6 +73,29 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLRequest *)pushRequestWithPostboxId:(NSString *)postboxId payload:(NSData *)payload headerParameters:(NSDictionary *)headers;
 
 /**
+Creates NSURLRequest for Cyclic CA preauthentication code acquire.
+
+@param jwtBearer NSString - JWT’s signed token
+@return NSURLRequest
+*/
+- (NSURLRequest *)preAuthRequestWithBearer:(NSString *)jwtBearer;
+
+/**
+Creates NSURLRequest for Cyclic CA preauthentication code validation.
+
+@return NSURLRequest
+*/
+- (NSURLRequest *)preauthValidationRequest;
+
+/**
+Creates NSURLRequest for Cyclic CA authentication code acquire.
+
+@param jwtBearer NSString - JWT’s signed token
+@return NSURLRequest
+*/
+- (NSURLRequest *)authRequestWithBearer:(NSString *)jwtBearer;
+
+/**
  Base url used for all API calls. You can override this with DMEConfig.plist
  */
 @property (nonatomic, strong, readonly) NSString *baseUrl;

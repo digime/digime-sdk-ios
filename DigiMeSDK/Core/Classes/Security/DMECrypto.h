@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DMEOAuthObject.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -44,14 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
  @return NSData - decrypted data or nil if decryption failed.
  */
 + (nullable NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
-
-/**
- Generates random data using length as a parameter.
- 
- @param length int
- @return NSData - random bytes for the specified length.
- */
-+ (NSData *)getRandomUnsignedCharacters:(int)length;
 
 /**
  Encrypts metadata for Postbox with AES encryption
@@ -99,6 +92,28 @@ NS_ASSUME_NONNULL_BEGIN
  @return NSData - decrypted data or nil if decryption failed.
  */
 + (NSData *)decryptLargeData:(NSData *)dataToDecrypt privateKey:(SecKeyRef)privateKey;
+
+/**
+ Create and sign the new preauthorisation JWT with a private key
+ 
+ @param appId NSString - 3rd party application identifier
+ @param contractId NSString - CA Contract identifier
+ @param publicKeyHexString NSString - 3rd party RSA public key in hex format
+ @param privateKeyHexString NSString - 3rd party RSA private key in hex format
+ @return NSString - JSON Web Token signed with PS512 algorithm.
+ */
++ (NSString *)createCyclicCAPreauthorizationCodeWithAppId:(NSString *)appId contractId:(NSString *)contractId publicKey:(NSString *)publicKeyHexString privateKey:(NSString *)privateKeyHexString;
+
+/**
+ Validate and extract preauthorisation JWT with a public key
+ 
+ @param authorityPublicKeyPem NSString - digi.me RSA public key in pem format
+ @param preauthToken NSString - JWT token to validate and decode
+ @return NSString - decoded and validated JSON Web Token
+ */
++ (NSString *)validateAndDecodeCyclicCAPreauthorizationCodeWithAuthorityPublicKeyPem:(NSString *)authorityPublicKeyPem preauthToken:(NSString *)preauthToken;
+
++ (NSString *)createCyclicCAAuthorizationCodeWithAuthCode:(NSString *)authCode appId:(NSString *)appId contractId:(NSString *)contractId publicKey:(NSString *)publicKeyHexString privateKey:(NSString *)privateKeyHexString;
 
 @end
 

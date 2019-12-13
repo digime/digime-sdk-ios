@@ -16,11 +16,18 @@ static NSString * const DME_AUTHORIZATION_ERROR = @"me.digi.sdk.authorization";
  Enum representing possible Authorization errors.
  */
 typedef NS_ENUM(NSInteger, AuthError) {
-    AuthErrorGeneral    = 1, //general error
-    AuthErrorCancelled  = 5, //authorization cancelled
+    AuthErrorGeneral = 1, // general error
+    AuthErrorCancelled = 5, // authorization cancelled
     AuthErrorInvalidSession = 7, //invalid session
     AuthErrorInvalidSessionKey = 10, //session key returned by digi.me app is invalid
     AuthErrorScopeOutOfBounds = 11, // requested scope is out of bounds of Contract scope.
+    AuthErrorInvalidJWT = 12, // The provided JSON Web Token (JWT) is invalid
+    AuthErrorInvalidRequest = 13, // JWT header|payload failed JSON schema validation
+    AuthErrorInvalidRedirectUri = 14, // The redirect_uri (${redirectUri}) is invalid
+    AuthErrorInvalidToken = 15, // The token (${tokenType}) is invalid
+    AuthErrorInvalidGrant = 16, // The grant_type (${options.input}) is invalid, expected grant_type (${options.expected})
+    AuthErrorInvalidClient = 17, // The client_id (${clientId}) is invalid
+    AuthErrorInvalidTokenType = 18, // The token_type (${inputTokenType}) is invalid, expected token_type (${expectedTokenType})
 };
 
 /**

@@ -56,6 +56,31 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)requestSessionWithScope:(nullable id<DMEDataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
+/**
+Initiates pre-authentication code request.
+
+@param jwtBearer Signed PS512 JSON Web Token to request preauthentication code
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestPreauthenticationCodeWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+Request to get digi.me public key to verify pre-auth JWT token
+
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestValidationDataForPreauthenticationCodeWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+Initiates authentication code request.
+
+@param jwtBearer Signed PS512 JSON Web Token to request preauthentication code
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestAuthenticationAndRefreshTokensWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 /**
  Initiates file list request.

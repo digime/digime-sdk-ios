@@ -137,6 +137,40 @@ static const NSString *kWorkQueue = @"kWorkQueue";
     [self.queue addOperation:operation];
 }
 
+#pragma mark - Cyclic CA
+- (void)requestPreauthenticationCodeWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+{
+    NSDictionary *headers = [self defaultHeaders];
+    NSURLSession *session = [self sessionWithHeaders:headers];
+    NSURLRequest *request = [self.requestFactory preAuthRequestWithBearer:jwtBearer];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
+    
+    [dataTask resume];
+}
+
+- (void)requestValidationDataForPreauthenticationCodeWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+{
+    NSDictionary *headers = [self defaultHeaders];
+    NSURLSession *session = [self sessionWithHeaders:headers];
+    NSURLRequest *request = [self.requestFactory preauthValidationRequest];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
+    
+    [dataTask resume];
+}
+
+- (void)requestAuthenticationAndRefreshTokensWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+{
+    NSDictionary *headers = [self defaultHeaders];
+    NSURLSession *session = [self sessionWithHeaders:headers];
+    NSURLRequest *request = [self.requestFactory authRequestWithBearer:jwtBearer];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
+    
+    [dataTask resume];
+}
+
 #pragma mark - Cancellation
 - (void)cancelQueuedDownloads
 {

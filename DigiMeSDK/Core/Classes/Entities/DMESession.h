@@ -23,6 +23,7 @@ extern NSString * const kDMETimingFetchDataGetAccount;
 extern NSString * const kDMETimingFetchDataGetFileList;
 extern NSString * const kDMETimingFetchSessionKey;
 extern NSString * const kDMETimingTotal;
+extern NSString * const kDMETimingRequestAuthorizationCode;
 extern NSString * const kDMEDataRequest;
 extern NSString * const kDMEFetchContractDetails;
 extern NSString * const kDMEUpdateContractPermission;
@@ -40,6 +41,8 @@ extern NSString * const kDMEResultValueSuccess;
 extern NSString * const kDMEResultValueError;
 extern NSString * const kDMEResultValueCancel;
 extern NSString * const kDMEErrorReference;
+extern NSString * const kDMEPreAuthorizationCode;
+extern NSString * const kDMEAuthorizationCode;
 
 @class DMESessionManager;
 @protocol DMEDataRequest;
