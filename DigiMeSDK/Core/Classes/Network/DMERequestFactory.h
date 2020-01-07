@@ -73,6 +73,37 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLRequest *)pushRequestWithPostboxId:(NSString *)postboxId payload:(NSData *)payload headerParameters:(NSDictionary *)headers;
 
 /**
+Creates NSURLRequest for Ongoing Access preauthentication code acquire.
+
+@param jwtBearer NSString - JWT’s signed token
+@return NSURLRequest
+*/
+- (NSURLRequest *)preAuthRequestWithBearer:(NSString *)jwtBearer;
+
+/**
+Creates NSURLRequest for Ongoing Access preauthentication code validation.
+
+@return NSURLRequest
+*/
+- (NSURLRequest *)preauthValidationRequest;
+
+/**
+Creates NSURLRequest for Ongoing Access authentication code acquire.
+
+@param jwtBearer NSString - JWT’s signed token
+@return NSURLRequest
+*/
+- (NSURLRequest *)authRequestWithBearer:(NSString *)jwtBearer;
+
+/**
+Creates NSURLRequest for Ongoing Access data trigger.
+
+@param jwtBearer NSString - JWT’s signed token
+@return NSURLRequest
+*/
+- (NSURLRequest *)dataTriggerRequestWithBearer:(NSString *)jwtBearer;
+
+/**
  Base url used for all API calls. You can override this with DMEConfig.plist
  */
 @property (nonatomic, strong, readonly) NSString *baseUrl;

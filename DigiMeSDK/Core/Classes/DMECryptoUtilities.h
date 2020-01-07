@@ -45,6 +45,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (nullable NSString *)privateKeyHexFromP12File:(NSString *)p12FileName password:(NSString *)password bundle:(NSBundle *)bundle;
 
+/**
+ Generates random data using length as a parameter.
+ 
+ @param length int
+ @return NSData - random bytes for the specified length.
+ */
++ (NSData *)getRandomBytesWithLength:(int)length;
+
 @end
 
 NS_ASSUME_NONNULL_END

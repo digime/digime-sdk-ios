@@ -28,6 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)beginAuthorizationWithCompletion:(DMEAuthorizationCompletion)completion;
 
+/**
+ Initiates ongoing contract authorization using Ongoing Access flow and launching digi.me App if there is a valid active session.
+ 
+ @param preAuthorizationCode NSString -  pre- authorization code that we will pass to digi.me to exchange for authorization code
+ @param completion Ongoing Access  AuthorizationCompletionBlock
+ */
+- (void)beginOngoingAccessAuthorizationWithPreAuthCode:(NSString *)preAuthorizationCode completion:(DMEOngoingAccessAuthCodeExchangeCompletion)completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

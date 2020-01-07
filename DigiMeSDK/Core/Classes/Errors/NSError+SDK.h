@@ -25,7 +25,9 @@ typedef NS_ENUM(NSInteger, SDKError) {
     SDKErrorNoPrivateKeyHex = 7,    // No private key hex set
     SDKErrorNoURLScheme = 8,        // URL Scheme not set in Info.plist
     SDKErrorDigiMeAppNotFound = 11, // Querying the 'digime' schema failed.
-    SDKErrorFileListPollingTimeout = 12 // File List time out reached as there have been no changes.
+    SDKErrorFileListPollingTimeout = 12, // File List time out reached as there have been no changes.
+    SDKErrorOngoingAccessTooManyRequests = 13, // Rate limit enforced. OAuth access token rate limit is valid for 1 use per hour by default.
+    SDKErrorOngoingAccessInvalidToken = 14, // The token (${tokenType}) is invalid
 };
 
 /**

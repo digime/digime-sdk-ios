@@ -81,4 +81,13 @@
     return hexKey;
 }
 
+#pragma mark - Random
+
++ (NSData *)getRandomBytesWithLength:(int)length
+{
+    NSMutableData *data = [NSMutableData dataWithLength:length];
+    __attribute__((unused)) int result = SecRandomCopyBytes(kSecRandomDefault, (size_t)length, data.mutableBytes);
+    return data;
+}
+
 @end

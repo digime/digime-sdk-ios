@@ -56,6 +56,49 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)requestSessionWithScope:(nullable id<DMEDataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
+/**
+Initiates pre-authentication code request.
+
+@param jwtBearer Signed PS512 JSON Web Token to request preauthentication code
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestPreauthenticationCodeWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+Request to get digi.me public key to verify pre-auth JWT token
+
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestValidationDataForPreauthenticationCodeWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+Initiates authentication code request.
+
+@param jwtBearer Signed PS512 JSON Web Token to request access and refresh tokens
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestAuthenticationAndRefreshTokensWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+To access to the protected resources that are available using the issued access token.
+
+@param jwtBearer Signed PS512 JSON Web Token to request renewal for access and refresh tokens
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestDataTriggerWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+ When the access token is detected as expired or invalid, the third party client app uses the refresh token to generate a new access token (accompanied with a new refresh token).
+ 
+ @param jwtBearer Signed PS512 JSON Web Token to request renewal for access and refresh tokens
+ @param success completion block receiving NSData
+ @param failure failure block receiving NSError
+ */
+- (void)renewAccessTokenWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 /**
  Initiates file list request.

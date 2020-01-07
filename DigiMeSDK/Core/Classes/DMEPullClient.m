@@ -9,6 +9,8 @@
 #import "DMEAccounts.h"
 #import "DMEAPIClient.h"
 #import "DMEClient+Private.h"
+#import "DMECrypto.h"
+#import "NSString+DMECrypto.h"
 #import "DMEDataDecryptor.h"
 #import "DMEDataUnpacker.h"
 #import "DMEFileListDeserializer.h"
@@ -39,6 +41,8 @@
 @property (nonatomic) NSInteger stalePollCount;
 @property (nonatomic, strong, nullable) DMEFileList *sessionFileList;
 @property (nonatomic, strong, nullable) NSError *sessionError;
+@property (nonatomic, strong, nullable) NSString *publicKeyHex;
+@property (nonatomic, strong, nullable) NSString *privateKeyHex;
 
 @end
 
@@ -57,6 +61,8 @@
         _fileCache = [DMEFileListCache new];
         _fetchingSessionData = NO;
         _stalePollCount = 0;
+        _publicKeyHex = configuration.publicKeyHex;
+        _privateKeyHex = configuration.privateKeyHex;
     }
     
     return self;
@@ -90,6 +96,8 @@
         completion(nil, validationError);
         return;
     }
+    
+    self.scope = scope;
     
     if (((DMEPullConfiguration *)self.configuration).guestEnabled)
     {
@@ -147,6 +155,236 @@
     [self authorizeNativeWithScope:self.scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         [self executeCompletionWithSession:session error:error];
     }];
+}
+
+#pragma mark - Ongoing Access Authorisation
+- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope completion:(nonnull DMEOngoingAccessAuthorizationCycleCompletion)completion
+{
+    // Validation
+    NSError *validationError = [self validateClient];
+    if (validationError != nil)
+    {
+        completion(nil, nil, validationError);
+        return;
+    }
+    
+    self.scope = scope;
+    
+    __weak __typeof(self)weakSelf = self;
+    [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+        if (session == nil)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+                completion(nil, nil, errorToReport);
+                return;
+            });
+            return;
+        }
+        
+        NSString *jwtRequestBearer = [DMECrypto createOngoingAccessPreauthorizationCodeWithAppId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
+        [self.apiClient requestPreauthenticationCodeWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+
+            NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            NSString *jwtTokenResponse = jsonResponse[@"token"];
+            
+            [strongSelf.apiClient requestValidationDataForPreauthenticationCodeWithSuccess:^(NSData * _Nonnull data) {
+                
+                NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                NSArray *keysArray = jsonResponse[@"keys"];
+                NSDictionary *firstKeysSet = keysArray.firstObject;
+                NSString *publicKeyForVerification = firstKeysSet[@"pem"];
+                NSString *preauthorizationCode = [DMECrypto validateAndDecodeOngoingAccessPreauthorizationCodeWithAuthorityPublicKeyPem:publicKeyForVerification preauthToken:jwtTokenResponse];
+                [strongSelf authorizeNativeOngoingAccessWithPreauthCode:preauthorizationCode completion:completion];
+                
+            } failure:^(NSError * _Nonnull error) {
+                [self handleAuthenticationError:completion error:error];
+            }];
+            
+        } failure:^(NSError * _Nonnull error) {
+            [self handleAuthenticationError:completion error:error];
+        }];
+    }];
+}
+
+- (void)authorizeNativeOngoingAccessWithPreauthCode:(NSString *)preauthorizationCode completion:(nonnull DMEOngoingAccessAuthorizationCycleCompletion)completion
+{
+    __weak __typeof(self)weakSelf = self;
+    [self.nativeConsentManager beginOngoingAccessAuthorizationWithPreAuthCode:preauthorizationCode completion:^(DMESession * _Nullable session, NSString * _Nullable authCode, NSError * _Nullable error) {
+        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        if (session == nil || authCode == nil)
+        {
+            // Notify on main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+                completion(nil, nil, errorToReport);
+                return;
+            });
+            return;
+        }
+        
+        NSString *jwtRequestBearer = [DMECrypto createOngoingAccessAuthorizationCodeWithAuthCode:authCode appId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
+        [strongSelf.apiClient requestAuthenticationAndRefreshTokensWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                NSString *jwtTokenResponse = jsonResponse[@"token"];
+                DMEOAuthObject *oauthObj = [[DMEJWTManager new] validateAndDecodeOngoingAccessAuthAndRefreshTokensFromJWT:jwtTokenResponse];
+                
+                if (oauthObj == nil)
+                {
+                    NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+                    completion(nil, nil, errorToReport);
+                }
+                else if (completion != nil)
+                {
+                    completion(session, oauthObj, nil);
+                }
+            });
+        } failure:^(NSError * _Nonnull error) {
+            [self handleAuthenticationError:completion error:error];
+        }];
+    }];
+}
+
+#pragma mark - Ongoing Access Data retrieval
+- (void)triggerOngoingAccessDataRetrieveWithOAuthObject:(DMEOAuthObject * _Nullable)accessToken completion:(nonnull DMEOngoingAccessTriggerDataCycleCompletion)completion
+{
+    __weak typeof(self) weakSelf = self;
+    [self.sessionManager sessionWithScope:self.scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        if (session == nil)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+                completion(nil, errorToReport);
+                return;
+            });
+            return;
+        }
+        
+        if (error)
+        {
+            [strongSelf handleGetDataError:completion error:error];
+            return;
+        }
+        
+        NSString *jwtTriggerDataBearer = [DMECrypto createDataTriggerToken:accessToken.accessToken appId:strongSelf.configuration.appId contractId:strongSelf.configuration.contractId sessionKey:session.sessionKey privateKey:strongSelf.privateKeyHex publicKey:strongSelf.publicKeyHex];
+        
+        [strongSelf.apiClient requestDataTriggerWithBearer:jwtTriggerDataBearer success:^(NSData * _Nonnull data) {
+            completion(accessToken, nil);
+            
+        } failure:^(NSError * _Nonnull error) {
+            
+            // This is the place where we should update Access token using Refresh token.
+            // Access token valid for one day, refresh token is valid for 30 days.
+            // When you renew Access token you will get new Access token and new Refresh token, but refresh token's expiration date will be the same as for the previous.
+            // It means in any scenarion 3rd party should ask for user's consent every month.
+            if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
+            {
+                [strongSelf renewAccessTokenForOngoingAccessWithOAuthObject:accessToken completion:completion];
+                return;
+            }
+            
+            [strongSelf handleGetDataError:completion error:error];
+        }];
+    }];
+}
+
+#pragma mark - Refresh OAuth access token
+- (void)renewAccessTokenForOngoingAccessWithOAuthObject:(DMEOAuthObject * _Nullable)oAuthObject completion:(nonnull DMEOngoingAccessTriggerDataCycleCompletion)completion
+{
+    NSString *jwtRefreshTokenBearer = [DMECrypto createRefreshToken:oAuthObject.refreshToken appId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
+    
+    __weak typeof(self) weakSelf = self;
+    [self.apiClient renewAccessTokenWithBearer:jwtRefreshTokenBearer success:^(NSData * _Nonnull data) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSString *jwtTokenResponse = jsonResponse[@"token"];
+        DMEOAuthObject *oauthObj = [[DMEJWTManager new] validateAndDecodeOngoingAccessAuthAndRefreshTokensFromJWT:jwtTokenResponse];
+        [strongSelf triggerOngoingAccessDataRetrieveWithOAuthObject:oauthObj completion:completion];
+    } failure:^(NSError * _Nonnull error) {
+        [self handleGetDataError:completion error:error];
+    }];
+}
+
+#pragma mark - Ongoing Access Error handling
+- (void)handleAuthenticationError:(DMEOngoingAccessAuthorizationCycleCompletion _Nonnull)completion error:(NSError * _Nonnull)error {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (completion)
+        {
+            // Expected error codes and defined by CCS
+            if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidJWT"])
+            {
+                completion(nil, nil, [NSError authError:AuthErrorInvalidJWT]);
+                return;
+            }
+            else if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidPCloud"])
+            {
+                completion(nil, nil, [NSError authError:AuthErrorInvalidPCloud]);
+                return;
+            }
+            else if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
+            {
+                completion(nil, nil, [NSError authError:AuthErrorInvalidToken]);
+                return;
+            }
+            else if (error.code == 400 && [error.userInfo[@"code"] isEqualToString:@"InvalidRequest"])
+            {
+                completion(nil, nil, [NSError authError:AuthErrorInvalidRequest]);
+                return;
+            }
+            else if (error.code == 400 && [error.userInfo[@"code"] isEqualToString:@"InvalidRedirectUri"])
+            {
+                completion(nil, nil, [NSError authError:AuthErrorInvalidRedirectUri]);
+                return;
+            }
+            else if (error.code == 400 && [error.userInfo[@"code"] isEqualToString:@"InvalidGrant"])
+            {
+                completion(nil, nil, [NSError authError:AuthErrorInvalidGrant]);
+                return;
+            }
+            else if (error.code == 400 && [error.userInfo[@"code"] isEqualToString:@"InvalidClient"])
+            {
+                completion(nil, nil, [NSError authError:AuthErrorInvalidClient]);
+                return;
+            }
+            else if (error.code == 400 && [error.userInfo[@"code"] isEqualToString:@"InvalidTokenType"])
+            {
+                completion(nil, nil, [NSError authError:AuthErrorInvalidTokenType]);
+                return;
+            }
+            else
+            {
+                completion(nil, nil, error);
+            }
+        }
+    });
+}
+
+- (void)handleGetDataError:(DMEOngoingAccessTriggerDataCycleCompletion _Nonnull)completion error:(NSError * _Nonnull)error {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (completion)
+        {
+            // Expected error codes and defined by CCS
+            if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
+            {
+                completion(nil, [NSError sdkError:SDKErrorOngoingAccessInvalidToken]);
+                return;
+            }
+            else if (error.code == 429)
+            {
+                completion(nil, [NSError sdkError:SDKErrorOngoingAccessTooManyRequests]);
+                return;
+            }
+            else
+            {
+                completion(nil, error);
+            }
+        }
+    });
 }
 
 #pragma mark - Guest Authorization
