@@ -51,6 +51,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion NS_SWIFT_NAME(authorize(scope:completion:));
 
 /**
+ Initializes ongoing contract authentication. After user gives consent in digi.me app then all subsequent data retrieval calls will be done without digi.me client app involvement
+ This authorization flow enables 3d parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers
+ @param completion Block called when authorization has completed
+ */
+- (void)authorizeOngoingAccessWithСompletion:(DMEOngoingAccessAuthorizationCycleCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(completion:));
+
+/**
  Initializes ongoing contract authentication with custom scope. After user gives consent in digi.me app then all subsequent data retrieval calls will be done without digi.me client app involvement
  This authorization flow enables 3d parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers
  @param scope Custom scope that will be applied to available data.

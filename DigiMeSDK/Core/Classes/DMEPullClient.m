@@ -158,6 +158,11 @@
 }
 
 #pragma mark - Ongoing Access Authorisation
+- (void)authorizeOngoingAccessWithCompletion:(nonnull DMEOngoingAccessAuthorizationCycleCompletion)completion
+{
+    [self authorizeOngoingAccessWithScope:nil completion:completion];
+}
+
 - (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope completion:(nonnull DMEOngoingAccessAuthorizationCycleCompletion)completion
 {
     // Validation
