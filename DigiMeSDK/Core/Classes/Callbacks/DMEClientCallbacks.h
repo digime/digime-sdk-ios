@@ -53,14 +53,6 @@ DMEOngoingAccessAuthCodeExchangeCompletion - executed when CA request returned t
 typedef void (^DMEOngoingAccessAuthCodeExchangeCompletion) (DMESession * _Nullable session, NSString * _Nullable accessCode, NSError * _Nullable error);
 
 /**
-DMEOngoingAccessTriggerDataCycleCompletion - executed when CA Ongoing Access for data sync trigger request is finished.
- 
-@param accessToken OAuth access token object
-@param error nil if data sync trigger is successful, otherwise an error specifying what went wrong
-*/
-typedef void (^DMEOngoingAccessTriggerDataCycleCompletion) (DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error);
-
-/**
  DMEPostboxCreationCompletion - executed when a Postbox is created.
 
  @param postbox The Postbox if creation is successful, nil if not

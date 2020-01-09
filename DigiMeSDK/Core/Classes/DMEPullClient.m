@@ -193,7 +193,7 @@
         if (oAuthToken)
         {
             strongSelf.oAuthToken = oAuthToken;
-            completion(session, oAuthToken, nil);
+            [strongSelf triggerOngoingAccessDataRetrieveWithCompletion:completion];
             return;
         }
         
@@ -266,20 +266,20 @@
 }
 
 #pragma mark - Ongoing Access Data retrieval
-- (void)triggerOngoingAccessDataRetrieveWithCompletion:(nonnull DMEOngoingAccessTriggerDataCycleCompletion)completion
+- (void)triggerOngoingAccessDataRetrieveWithCompletion:(nonnull DMEOngoingAccessAuthorizationCycleCompletion)completion
 {
     //validate session
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
-        completion(nil, error);
+        completion(nil, self.oAuthToken, error);
         return;
     }
     
     if (!self.oAuthToken)
     {
         NSError *error = [NSError sdkError:SDKErrorOAuthTokenNotSet];
-        completion(nil, error);
+        completion(nil, nil, error);
         return;
     }
     
@@ -289,7 +289,7 @@
     
     [self.apiClient requestDataTriggerWithBearer:jwtTriggerDataBearer success:^(NSData * _Nonnull data) {
          __strong __typeof(weakSelf)strongSelf = weakSelf;
-        completion(strongSelf.oAuthToken, nil);
+        completion(strongSelf.sessionManager.currentSession, strongSelf.oAuthToken, nil);
         
     } failure:^(NSError * _Nonnull error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -309,7 +309,7 @@
 }
 
 #pragma mark - Refresh OAuth access token
-- (void)renewAccessTokenForOngoingAccessWithOAuthObject:(DMEOAuthObject * _Nullable)oAuthObject completion:(nonnull DMEOngoingAccessTriggerDataCycleCompletion)completion
+- (void)renewAccessTokenForOngoingAccessWithOAuthObject:(DMEOAuthObject * _Nullable)oAuthObject completion:(nonnull DMEOngoingAccessAuthorizationCycleCompletion)completion
 {
     NSString *jwtRefreshTokenBearer = [DMECrypto createRefreshToken:oAuthObject.refreshToken appId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
     
@@ -380,24 +380,24 @@
     });
 }
 
-- (void)handleGetDataError:(DMEOngoingAccessTriggerDataCycleCompletion _Nonnull)completion error:(NSError * _Nonnull)error {
+- (void)handleGetDataError:(DMEOngoingAccessAuthorizationCycleCompletion _Nonnull)completion error:(NSError * _Nonnull)error {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (completion)
         {
             // Expected error codes and defined by CCS
             if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
             {
-                completion(nil, [NSError sdkError:SDKErrorOngoingAccessInvalidToken]);
+                completion(nil, nil, [NSError sdkError:SDKErrorOngoingAccessInvalidToken]);
                 return;
             }
             else if (error.code == 429)
             {
-                completion(nil, [NSError sdkError:SDKErrorOngoingAccessTooManyRequests]);
+                completion(nil, nil, [NSError sdkError:SDKErrorOngoingAccessTooManyRequests]);
                 return;
             }
             else
             {
-                completion(nil, error);
+                completion(nil, nil, error);
             }
         }
     });

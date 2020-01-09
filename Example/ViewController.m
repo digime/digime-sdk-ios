@@ -223,27 +223,25 @@
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Retrieving Ongoing Access File List"];
     [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:self.accessToken completion:^(DMESession * _Nullable session, DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error) {
-        [self.dmeClient triggerOngoingAccessDataRetrieveWithCompletion:^(DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (error != nil)
-                {
-                    [self.logVC logMessage:[NSString stringWithFormat:@"Retrieving Ongoing Access File List failed: %@", error.localizedDescription]];
-                    self.accessToken = nil;
-                }
-                else
-                {
-                    [self.logVC logMessage:@"-------------Ongoing Access data triggered sucessfully-------------"];
-                    
-                    // If old Access token has expired we get a new one. Here we store it locally for the next request.
-                    self.accessToken = accessToken;
-                    
-                    //Uncomment relevant method depending on which you wish to recieve.
-                    [self getAccounts];
-                    [self getSessionData];
-                    // [self getSessionFileList];
-                }
-            });
-        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error != nil)
+            {
+                [self.logVC logMessage:[NSString stringWithFormat:@"Retrieving Ongoing Access File List failed: %@", error.localizedDescription]];
+                self.accessToken = nil;
+            }
+            else
+            {
+                [self.logVC logMessage:@"-------------Ongoing Access data triggered sucessfully-------------"];
+                
+                // If old Access token has expired we get a new one. Here we store it locally for the next request.
+                self.accessToken = accessToken;
+                
+                //Uncomment relevant method depending on which you wish to recieve.
+                [self getAccounts];
+                [self getSessionData];
+                // [self getSessionFileList];
+            }
+        });
     }];
 }
 

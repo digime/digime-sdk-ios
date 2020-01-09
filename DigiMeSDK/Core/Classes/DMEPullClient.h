@@ -67,12 +67,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthObject * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCycleCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(scope:oAuthToken:completion:));
 
 /**
- Ongoing Access method to trigger CA data sync.
- @param completion Block called when data retrieval has completed.
-*/
-- (void)triggerOngoingAccessDataRetrieveWithCompletion:(nonnull DMEOngoingAccessTriggerDataCycleCompletion)completion;
-
-/**
  Fetches content for all the requested files.
  
  An attempt is made to fetch each requested file and the result of each attempt is passed back via the download handler.
