@@ -43,6 +43,7 @@
 @property (nonatomic, strong, nullable) NSError *sessionError;
 @property (nonatomic, strong, nullable) NSString *publicKeyHex;
 @property (nonatomic, strong, nullable) NSString *privateKeyHex;
+@property (nonatomic, strong, nullable) DMEOAuthObject *oAuthToken;
 
 @end
 
@@ -158,12 +159,12 @@
 }
 
 #pragma mark - Ongoing Access Authorisation
-- (void)authorizeOngoingAccessWithCompletion:(nonnull DMEOngoingAccessAuthorizationCycleCompletion)completion
+- (void)authorizeOngoingAccessWithСompletion:(nonnull DMEOngoingAccessAuthorizationCycleCompletion)completion
 {
-    [self authorizeOngoingAccessWithScope:nil completion:completion];
+    [self authorizeOngoingAccessWithScope:nil oAuthToken:nil completion:completion];
 }
 
-- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope completion:(nonnull DMEOngoingAccessAuthorizationCycleCompletion)completion
+- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthObject * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCycleCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -177,6 +178,8 @@
     
     __weak __typeof(self)weakSelf = self;
     [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        
         if (session == nil)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -184,6 +187,13 @@
                 completion(nil, nil, errorToReport);
                 return;
             });
+            return;
+        }
+        
+        if (oAuthToken)
+        {
+            strongSelf.oAuthToken = oAuthToken;
+            completion(session, oAuthToken, nil);
             return;
         }
         
@@ -245,6 +255,7 @@
                 }
                 else if (completion != nil)
                 {
+                    strongSelf.oAuthToken = oauthObj;
                     completion(session, oauthObj, nil);
                 }
             });
@@ -255,46 +266,45 @@
 }
 
 #pragma mark - Ongoing Access Data retrieval
-- (void)triggerOngoingAccessDataRetrieveWithOAuthObject:(DMEOAuthObject * _Nullable)accessToken completion:(nonnull DMEOngoingAccessTriggerDataCycleCompletion)completion
+- (void)triggerOngoingAccessDataRetrieveWithCompletion:(nonnull DMEOngoingAccessTriggerDataCycleCompletion)completion
 {
+    //validate session
+    if (![self.sessionManager isSessionValid])
+    {
+        NSError *error = [NSError authError:AuthErrorInvalidSession];
+        completion(nil, error);
+        return;
+    }
+    
+    if (!self.oAuthToken)
+    {
+        NSError *error = [NSError sdkError:SDKErrorOAuthTokenNotSet];
+        completion(nil, error);
+        return;
+    }
+    
     __weak typeof(self) weakSelf = self;
-    [self.sessionManager sessionWithScope:self.scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+    
+    NSString *jwtTriggerDataBearer = [DMECrypto createDataTriggerToken:self.oAuthToken.accessToken appId:self.configuration.appId contractId:self.configuration.contractId sessionKey:self.sessionManager.currentSession.sessionKey privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
+    
+    [self.apiClient requestDataTriggerWithBearer:jwtTriggerDataBearer success:^(NSData * _Nonnull data) {
+         __strong __typeof(weakSelf)strongSelf = weakSelf;
+        completion(strongSelf.oAuthToken, nil);
+        
+    } failure:^(NSError * _Nonnull error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
-        if (session == nil)
+
+        // This is the place where we should update Access token using Refresh token.
+        // Access token valid for one day, refresh token is valid for 30 days.
+        // When you renew Access token you will get new Access token and new Refresh token, but refresh token's expiration date will be the same as for the previous.
+        // It means in any scenarion 3rd party should ask for user's consent every month.
+        if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                completion(nil, errorToReport);
-                return;
-            });
+            [strongSelf renewAccessTokenForOngoingAccessWithOAuthObject:strongSelf.oAuthToken completion:completion];
             return;
         }
         
-        if (error)
-        {
-            [strongSelf handleGetDataError:completion error:error];
-            return;
-        }
-        
-        NSString *jwtTriggerDataBearer = [DMECrypto createDataTriggerToken:accessToken.accessToken appId:strongSelf.configuration.appId contractId:strongSelf.configuration.contractId sessionKey:session.sessionKey privateKey:strongSelf.privateKeyHex publicKey:strongSelf.publicKeyHex];
-        
-        [strongSelf.apiClient requestDataTriggerWithBearer:jwtTriggerDataBearer success:^(NSData * _Nonnull data) {
-            completion(accessToken, nil);
-            
-        } failure:^(NSError * _Nonnull error) {
-            
-            // This is the place where we should update Access token using Refresh token.
-            // Access token valid for one day, refresh token is valid for 30 days.
-            // When you renew Access token you will get new Access token and new Refresh token, but refresh token's expiration date will be the same as for the previous.
-            // It means in any scenarion 3rd party should ask for user's consent every month.
-            if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
-            {
-                [strongSelf renewAccessTokenForOngoingAccessWithOAuthObject:accessToken completion:completion];
-                return;
-            }
-            
-            [strongSelf handleGetDataError:completion error:error];
-        }];
+        [strongSelf handleGetDataError:completion error:error];
     }];
 }
 
@@ -308,8 +318,9 @@
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         NSString *jwtTokenResponse = jsonResponse[@"token"];
-        DMEOAuthObject *oauthObj = [[DMEJWTManager new] validateAndDecodeOngoingAccessAuthAndRefreshTokensFromJWT:jwtTokenResponse];
-        [strongSelf triggerOngoingAccessDataRetrieveWithOAuthObject:oauthObj completion:completion];
+        DMEOAuthObject *oAuthObj = [[DMEJWTManager new] validateAndDecodeOngoingAccessAuthAndRefreshTokensFromJWT:jwtTokenResponse];
+        strongSelf.oAuthToken = oAuthObj;
+        [strongSelf triggerOngoingAccessDataRetrieveWithCompletion:completion];
     } failure:^(NSError * _Nonnull error) {
         [self handleGetDataError:completion error:error];
     }];

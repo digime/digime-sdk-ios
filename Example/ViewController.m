@@ -102,7 +102,7 @@
     
     DMEScope *scope = [self createSampleScopeForOneYearOfSocialData];
     __weak __typeof(self)weakSelf = self;
-    [self.dmeClient authorizeOngoingAccessWithScope:scope completion:^(DMESession * _Nullable session, DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error) {
+    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
         {
@@ -116,19 +116,28 @@
         [self.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", accessToken.expiresOn]];
         
         strongSelf.accessToken = accessToken;
-        [strongSelf ongoingAccessRetrieveData];
+        
+        //Uncomment relevant method depending on which you wish to recieve.
+        [strongSelf getAccounts];
+        [strongSelf getSessionData];
+        // [strongSelf getSessionFileList];
     }];
 }
 
-- (void)runLegacyFlow
+- (void)resetClient
 {
     self.configuration = [self createSampleConfiguration];
-
+    
     if (self.configuration)
     {
         self.dmeClient = nil;
         self.dmeClient = [[DMEPullClient alloc] initWithConfiguration:self.configuration];
     }
+}
+
+- (void)runLegacyFlow
+{
+    [self resetClient];
     
     [self.logVC reset];
 
@@ -211,27 +220,30 @@
 
 - (void)ongoingAccessRetrieveData
 {
+    [self resetClient];
     [self updateNavigationBarWithMessage:@"Retrieving Ongoing Access File List"];
-    [self.dmeClient triggerOngoingAccessDataRetrieveWithOAuthObject:self.accessToken completion:^(DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error != nil)
-            {
-                [self.logVC logMessage:[NSString stringWithFormat:@"Retrieving Ongoing Access File List failed: %@", error.localizedDescription]];
-                self.accessToken = nil;
-            }
-            else
-            {
-                [self.logVC logMessage:@"-------------Ongoing Access data triggered sucessfully-------------"];
-                
-                // If old Access token has expired we get a new one. Here we store it locally for the next request.
-                self.accessToken = accessToken;
-
-                //Uncomment relevant method depending on which you wish to recieve.
-                [self getAccounts];
-                [self getSessionData];
-                // [self getSessionFileList];
-            }
-        });
+    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:self.accessToken completion:^(DMESession * _Nullable session, DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error) {
+        [self.dmeClient triggerOngoingAccessDataRetrieveWithCompletion:^(DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (error != nil)
+                {
+                    [self.logVC logMessage:[NSString stringWithFormat:@"Retrieving Ongoing Access File List failed: %@", error.localizedDescription]];
+                    self.accessToken = nil;
+                }
+                else
+                {
+                    [self.logVC logMessage:@"-------------Ongoing Access data triggered sucessfully-------------"];
+                    
+                    // If old Access token has expired we get a new one. Here we store it locally for the next request.
+                    self.accessToken = accessToken;
+                    
+                    //Uncomment relevant method depending on which you wish to recieve.
+                    [self getAccounts];
+                    [self getSessionData];
+                    // [self getSessionFileList];
+                }
+            });
+        }];
     }];
 }
 

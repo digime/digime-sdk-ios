@@ -61,16 +61,16 @@ NS_ASSUME_NONNULL_BEGIN
  Initializes ongoing contract authentication with custom scope. After user gives consent in digi.me app then all subsequent data retrieval calls will be done without digi.me client app involvement
  This authorization flow enables 3d parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers
  @param scope Custom scope that will be applied to available data.
+ @param oAuthToken valid OAuth token
  @param completion Block called when authorization has completed
  */
-- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEOngoingAccessAuthorizationCycleCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(scope:completion:));
+- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthObject * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCycleCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(scope:oAuthToken:completion:));
 
 /**
  Ongoing Access method to trigger CA data sync.
- @param accessToken OAuth object to store access and refresh tokens and the expiration date.
  @param completion Block called when data retrieval has completed.
 */
-- (void)triggerOngoingAccessDataRetrieveWithOAuthObject:(DMEOAuthObject * _Nullable)accessToken completion:(nonnull DMEOngoingAccessTriggerDataCycleCompletion)completion;
+- (void)triggerOngoingAccessDataRetrieveWithCompletion:(nonnull DMEOngoingAccessTriggerDataCycleCompletion)completion;
 
 /**
  Fetches content for all the requested files.

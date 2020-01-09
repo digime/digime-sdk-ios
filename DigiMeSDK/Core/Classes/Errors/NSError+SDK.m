@@ -63,6 +63,10 @@
         case SDKErrorOngoingAccessTooManyRequests:
             return @"Rate limit enforced. OAuth access token rate limit is valid for 1 use per hour by default.";
             break;
+            
+        case SDKErrorOAuthTokenNotSet:
+            return @"OAuth token not set on client instance. Please ensure that client instance is correctly initialized.";
+            break;
     }
 }
 

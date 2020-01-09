@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, SDKError) {
     SDKErrorFileListPollingTimeout = 12, // File List time out reached as there have been no changes.
     SDKErrorOngoingAccessTooManyRequests = 13, // Rate limit enforced. OAuth access token rate limit is valid for 1 use per hour by default.
     SDKErrorOngoingAccessInvalidToken = 14, // The token (${tokenType}) is invalid
+    SDKErrorOAuthTokenNotSet = 15 // OAuth token not set on client instance
 };
 
 /**
