@@ -51,18 +51,11 @@
 
 + (NSError *)authError:(AuthError)authError reference:(nullable NSString *)errorReference
 {
-    if (errorReference != nil)
+    if ([errorReference length] > 0)
     {
         NSMutableDictionary<NSErrorUserInfoKey, id> *userInfo = [NSMutableDictionary dictionary];
         NSString *errorDescription = [[self class] authDescription:authError];
-        if (errorReference)
-        {
-            userInfo[NSLocalizedDescriptionKey] = [NSString stringWithFormat:@"%@ %@ %@", errorDescription, NSLocalizedString(@"Reference:", nil), errorReference];
-        }
-        else
-        {
-            userInfo[NSLocalizedDescriptionKey] = errorDescription;
-        }
+        userInfo[NSLocalizedDescriptionKey] = [NSString stringWithFormat:@"%@ %@ %@", errorDescription, NSLocalizedString(@"Reference:", nil), errorReference];
         return [NSError errorWithDomain:DME_AUTHORIZATION_ERROR code:authError userInfo:[userInfo copy]];
     }
     else
