@@ -15,16 +15,7 @@ public class DMEJWTUtility: NSObject {
    
     // Default JWT header
     class var header: Header {
-        Header(typ: "JWT",
-        jku: nil,
-        jwk: nil,
-        kid: nil,
-        x5u: nil,
-        x5c: nil,
-        x5t: nil,
-        x5tS256: nil,
-        cty: nil,
-        crit: nil)
+        Header(typ: "JWT")
     }
 
     // claims to request a pre-authorization code

@@ -208,20 +208,20 @@
         }
         
         NSString *jwtRequestBearer = [DMECrypto createPreAuthorizationJwtWithAppId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
-        [self.apiClient requestPreauthorizationCodeWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
+        [strongSelf.apiClient requestPreauthorizationCodeWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
 
             NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             NSString *jwtResponse = jsonResponse[@"token"];
             
             [strongSelf.apiClient requestValidationDataForPreAuthenticationCodeWithSuccess:^(NSData * _Nonnull data) {
-                
+                 __strong __typeof(weakSelf)strongSelf = weakSelf;
                 NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
                 NSArray *keys = jsonResponse[@"keys"];
                 NSDictionary *firstKey = keys.firstObject;
                 NSString *publicKey = firstKey[@"pem"];
                 // save authority public key for later usage
-                self.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
+                strongSelf.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
                 NSString *preAuthCode = [DMECrypto preAuthCodeFromJwt:jwtResponse publicKey:publicKey];
                 [strongSelf authorizeNativeOngoingAccessWithPreAuthCode:preAuthCode completion:completion];
                 

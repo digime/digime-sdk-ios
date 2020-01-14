@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Initializes ongoing contract authentication. Once user has given consent in digi.me app all subsequent data retrieval calls will be done without digi.me client app involvement.
- This authorization flow enables 3d parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers.
+ This authorization flow enables 3rd parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers.
  
  @param completion Block called when authorization has completed
  */
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Initializes ongoing contract authentication with custom scope. Once user has given consent in digi.me app all subsequent data retrieval calls will be done without digi.me client app involvement.
- This authorization flow enables 3d parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers
+ This authorization flow enables 3rd parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers
  
  @param scope Custom scope that will be applied to available data.
  @param oAuthToken valid OAuth token
