@@ -402,37 +402,7 @@ public class DMEJWTUtility: NSObject {
 // MARK: - Utility extensions
 
 extension DMEJWTUtility {
-    static let authorityPublicKey: String = "authorityPublicKey"
     static let codeVerifier: String = "codeVerifier"
-    
-    struct AuthorityPublicKey: Codable {
-        var publicKeyBase64: String
-        var creationDate: Date
-    }
-    
-    // we need to save Authority public key in the case if app will be restarted
-    public class func saveAuthorityPublicKey(_ publicKeyBase64: String, retrievalDate: Date) {
-        let data = AuthorityPublicKey(publicKeyBase64: publicKeyBase64, creationDate: retrievalDate)
-        let encoder = JSONEncoder()
-        if let encoded = try? encoder.encode(data) {
-            let defaults = UserDefaults.standard
-            defaults.set(encoded, forKey: DMEJWTUtility.authorityPublicKey)
-        }
-    }
-    
-    // we only reuse stored authority public key if it was stored less than 15 mins ago
-    public class func retrieveAuthorityPublicKeyIfValid() -> String? {
-        if let data = UserDefaults.standard.object(forKey: DMEJWTUtility.authorityPublicKey) as? Data {
-            if
-                let decoded = try? JSONDecoder().decode(AuthorityPublicKey.self, from: data),
-                let diff = Calendar.current.dateComponents([.minute], from: decoded.creationDate, to: Date()).minute,
-                diff < 15 {
-                    return decoded.publicKeyBase64
-            }
-        }
-        
-        return nil
-    }
     
     // save code verifier for OAuth session
     class func saveCodeVerifier(_ codeVerifier: String) {

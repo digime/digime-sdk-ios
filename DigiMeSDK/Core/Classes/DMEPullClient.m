@@ -8,6 +8,7 @@
 
 #import "DMEAccounts.h"
 #import "DMEAPIClient.h"
+#import "DMEAuthorityPublicKey.h"
 #import "DMEClient+Private.h"
 #import "DMECrypto.h"
 #import "NSString+DMECrypto.h"
@@ -44,6 +45,7 @@
 @property (nonatomic, strong, nullable) NSString *publicKeyHex;
 @property (nonatomic, strong, nullable) NSString *privateKeyHex;
 @property (nonatomic, strong, nullable) DMEOAuthToken *oAuthToken;
+@property (nonatomic, strong, nullable) DMEAuthorityPublicKey *verificationKey;
 
 @end
 
@@ -219,7 +221,7 @@
                 NSDictionary *firstKey = keys.firstObject;
                 NSString *publicKey = firstKey[@"pem"];
                 // save authority public key for later usage
-                [DMEJWTUtility saveAuthorityPublicKey:publicKey retrievalDate:[NSDate date]];
+                self.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
                 NSString *preAuthCode = [DMECrypto preAuthCodeFromJwt:jwtResponse publicKey:publicKey];
                 [strongSelf authorizeNativeOngoingAccessWithPreAuthCode:preAuthCode completion:completion];
                 
@@ -281,10 +283,9 @@
 
 - (void)retrieveAuthorityPublicKeyWithSuccess:(void(^)(NSString *publicKey))success failure:(void(^)(NSError *error))failure
 {
-    NSString *publicKey = [DMEJWTUtility retrieveAuthorityPublicKeyIfValid];
-    if (publicKey)
+    if (self.verificationKey && [self.verificationKey isValid])
     {
-        success(publicKey);
+        success(self.verificationKey.publicKey);
         return;
     }
     
@@ -299,7 +300,7 @@
         NSArray *keys = jsonResponse[@"keys"];
         NSDictionary *firstKey = keys.firstObject;
         NSString *publicKey = firstKey[@"pem"];
-        [DMEJWTUtility saveAuthorityPublicKey:publicKey retrievalDate:[NSDate date]];
+        self.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
         success(publicKey);
     } failure:^(NSError * _Nonnull error) {
         failure(error);
