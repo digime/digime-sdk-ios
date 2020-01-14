@@ -258,8 +258,8 @@
             NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             NSString *jwtResponse = jsonResponse[@"token"];
             
-            [strongSelf retrieveAuthorityPublicKeyWithSuccess:^(NSString *publicKey) {
-                DMEOAuthToken *oAuthObj = [DMEJWTUtility validateAndDecodeOngoingAccessAuthAndRefreshTokensFromJWT:jwtResponse authorityPublicKey:publicKey];
+            [strongSelf latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
+                DMEOAuthToken *oAuthObj = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (oAuthObj == nil)
                     {
@@ -281,7 +281,7 @@
     }];
 }
 
-- (void)retrieveAuthorityPublicKeyWithSuccess:(void(^)(NSString *publicKey))success failure:(void(^)(NSError *error))failure
+- (void)latestVerificationPublicKeyWithSuccess:(void(^)(NSString *publicKey))success failure:(void(^)(NSError *error))failure
 {
     if (self.verificationKey && [self.verificationKey isValid])
     {
@@ -360,8 +360,8 @@
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         NSString *jwtResponse = jsonResponse[@"token"];
-        [strongSelf retrieveAuthorityPublicKeyWithSuccess:^(NSString *publicKey) {
-            DMEOAuthToken *oAuthObj = [DMEJWTUtility validateAndDecodeOngoingAccessAuthAndRefreshTokensFromJWT:jwtResponse authorityPublicKey:publicKey];
+        [strongSelf latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
+            DMEOAuthToken *oAuthObj = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
             strongSelf.oAuthToken = oAuthObj;
             [strongSelf triggerDataRetrievalWithCompletion:completion];
         } failure:^(NSError *error) {

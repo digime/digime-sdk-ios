@@ -262,22 +262,26 @@ public class DMEJWTUtility: NSObject {
         return preauthCode
     }
     
-    @objc public class func validateAndDecodeOngoingAccessAuthAndRefreshTokensFromJWT(_ authToken: String, authorityPublicKey: String) -> DMEOAuthToken? {
-        guard let publicKey = convertKeyString(authorityPublicKey) else {
+    /// Extracts access and refresh tokens from JWT, and wraps in `DMEOAuthToken`.
+    /// - Parameters
+    ///  - jwt: JSON Web Token containing access/refresh token pair.
+    ///  - publicKey: public key in base 64 format
+    @objc public class func oAuthToken(from jwt: String, publicKey: String) -> DMEOAuthToken?{
+        guard let publicKeyData = convertKeyString(publicKey) else {
                 print("DigiMeSDK: Error creating RSA public key")
                 return nil
         }
         
         // validation
-        let verifier = JWTVerifier.ps512(publicKey: publicKey)
-        let isVerified = JWT<PayloadValidateAuthJWT>.verify(authToken, using: verifier)
+        let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
+        let isVerified = JWT<PayloadValidateAuthJWT>.verify(jwt, using: verifier)
         
         guard isVerified else {
             return nil
         }
         
         let decoder = JWTDecoder(jwtVerifier: verifier)
-        let jwt = try? decoder.decode(JWT<PayloadValidateAuthJWT>.self, fromString: authToken)
+        let jwt = try? decoder.decode(JWT<PayloadValidateAuthJWT>.self, fromString: jwt)
         guard
             let accessToken = jwt?.claims.accessToken,
             let refreshToken = jwt?.claims.refreshToken,
