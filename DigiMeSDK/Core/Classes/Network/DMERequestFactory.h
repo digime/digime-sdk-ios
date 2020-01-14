@@ -73,32 +73,32 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLRequest *)pushRequestWithPostboxId:(NSString *)postboxId payload:(NSData *)payload headerParameters:(NSDictionary *)headers;
 
 /**
-Creates NSURLRequest for Ongoing Access preauthentication code acquire.
+Creates NSURLRequest for acquiring a pre-authentication code.
 
-@param jwtBearer NSString - JWT’s signed token
+@param jwtBearer NSString - signed JSON Web Token
 @return NSURLRequest
 */
 - (NSURLRequest *)preAuthRequestWithBearer:(NSString *)jwtBearer;
 
 /**
-Creates NSURLRequest for Ongoing Access preauthentication code validation.
+Creates NSURLRequest for validating pre-authentication code.
 
 @return NSURLRequest
 */
-- (NSURLRequest *)preauthValidationRequest;
+- (NSURLRequest *)preAuthValidationRequest;
 
 /**
-Creates NSURLRequest for Ongoing Access authentication code acquire.
+Creates NSURLRequest for acquiring an authentication code.
 
-@param jwtBearer NSString - JWT’s signed token
+@param jwtBearer NSString - signed JSON Web Token
 @return NSURLRequest
 */
 - (NSURLRequest *)authRequestWithBearer:(NSString *)jwtBearer;
 
 /**
-Creates NSURLRequest for Ongoing Access data trigger.
+Creates NSURLRequest for triggering data (this makes protected resources associates with the JWT available for retrieval).
 
-@param jwtBearer NSString - JWT’s signed token
+@param jwtBearer NSString - signed JSON Web Token
 @return NSURLRequest
 */
 - (NSURLRequest *)dataTriggerRequestWithBearer:(NSString *)jwtBearer;

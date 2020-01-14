@@ -101,7 +101,7 @@ class CryptographyTests: XCTestCase {
         var map = [AnyHashable: Any]()
 
         for _ in 0..<10000 where map.count < 256 {
-            let rand = DMECryptoUtilities.getRandomBytes(withLength: 1)
+            let rand = DMECryptoUtilities.randomBytes(withLength: 1)
             map[rand] = true
         }
 
@@ -112,7 +112,7 @@ class CryptographyTests: XCTestCase {
         var map = [AnyHashable: Any]()
 
         for _ in 0..<10000 {
-            let rand = DMECryptoUtilities.getRandomBytes(withLength: 32)
+            let rand = DMECryptoUtilities.randomBytes(withLength: 32)
             XCTAssertNil(map[rand], "Failed because duplicate key was generated.")
             map[rand] = true
         }
@@ -191,7 +191,7 @@ class CryptographyTests: XCTestCase {
 
         // Let's run the test a good few times.
         for _ in 0..<64 {
-            let input = DMECryptoUtilities.getRandomBytes(withLength: 120)
+            let input = DMECryptoUtilities.randomBytes(withLength: 120)
 
             do {
                 let encrypted = DMECrypto.encryptLargeData(input, publicKey: publicKey)

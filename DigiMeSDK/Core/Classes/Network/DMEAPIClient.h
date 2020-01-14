@@ -57,44 +57,44 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)requestSessionWithScope:(nullable id<DMEDataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 /**
-Initiates pre-authentication code request.
+Initiates a request for a pre-authentication code.
 
-@param jwtBearer Signed PS512 JSON Web Token to request preauthentication code
+@param jwtBearer Signed PS512 JSON Web Token
 @param success completion block receiving NSData
 @param failure failure block receiving NSError
 */
-- (void)requestPreauthenticationCodeWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+- (void)requestPreauthorizationCodeWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 /**
-Request to get digi.me public key to verify pre-auth JWT token
+Initiates a request get a public key, which is later used to verify preAuthentication JWT token.
 
 @param success completion block receiving NSData
 @param failure failure block receiving NSError
 */
-- (void)requestValidationDataForPreauthenticationCodeWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+- (void)requestValidationDataForPreAuthenticationCodeWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 /**
-Initiates authentication code request.
+Initiates a request for access and refresh token pair.
 
-@param jwtBearer Signed PS512 JSON Web Token to request access and refresh tokens
+@param jwtBearer Signed PS512 JSON Web Token
 @param success completion block receiving NSData
 @param failure failure block receiving NSError
 */
-- (void)requestAuthenticationAndRefreshTokensWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+- (void)requestAccessAndRefreshTokensWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 /**
-To access to the protected resources that are available using the issued access token.
+Initiates a request to regenerate available protected resources for a valid access token.
 
-@param jwtBearer Signed PS512 JSON Web Token to request renewal for access and refresh tokens
+@param jwtBearer Signed PS512 JSON Web Token
 @param success completion block receiving NSData
 @param failure failure block receiving NSError
 */
 - (void)requestDataTriggerWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 /**
- When the access token is detected as expired or invalid, the third party client app uses the refresh token to generate a new access token (accompanied with a new refresh token).
+ Initiates request to renew the access token contained in passed JSON Web Token
  
- @param jwtBearer Signed PS512 JSON Web Token to request renewal for access and refresh tokens
+ @param jwtBearer Signed PS512 JSON Web Token
  @param success completion block receiving NSData
  @param failure failure block receiving NSError
  */

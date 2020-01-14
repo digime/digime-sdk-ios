@@ -11,8 +11,8 @@
 		0643264A20222B2500B10CD9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264820222B2500B10CD9 /* ViewController.m */; };
 		0643264D20222D6000B10CD9 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264C20222D6000B10CD9 /* LogViewController.m */; };
 		0643264F202234CD00B10CD9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0643264E202234CD00B10CD9 /* main.m */; };
-		1E4A39EE239867F0009C74E0 /* CyclicCATests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4A39ED239867F0009C74E0 /* CyclicCATests.swift */; };
-		1E4A39F023986823009C74E0 /* CyclicCATestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1E4A39EF23986823009C74E0 /* CyclicCATestingAssets.plist */; };
+		1E4A39EE239867F0009C74E0 /* OngoingAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4A39ED239867F0009C74E0 /* OngoingAccessTests.swift */; };
+		1E4A39F023986823009C74E0 /* OngoingAccessTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1E4A39EF23986823009C74E0 /* OngoingAccessTestingAssets.plist */; };
 		1E7802CE2318138C0070D14E /* DMEApiClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7802CD2318138C0070D14E /* DMEApiClientTests.swift */; };
 		1EC22EF2230EE13C000D17AA /* CryptographyTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */; };
 		1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */; };
@@ -54,8 +54,8 @@
 		0643264C20222D6000B10CD9 /* LogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogViewController.m; sourceTree = "<group>"; };
 		0643264E202234CD00B10CD9 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0F8DC0A9C8329629993FF78A /* DigiMeSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DigiMeSDK.podspec; path = ../DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		1E4A39ED239867F0009C74E0 /* CyclicCATests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CyclicCATests.swift; sourceTree = "<group>"; };
-		1E4A39EF23986823009C74E0 /* CyclicCATestingAssets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = CyclicCATestingAssets.plist; sourceTree = "<group>"; };
+		1E4A39ED239867F0009C74E0 /* OngoingAccessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingAccessTests.swift; sourceTree = "<group>"; };
+		1E4A39EF23986823009C74E0 /* OngoingAccessTestingAssets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = OngoingAccessTestingAssets.plist; sourceTree = "<group>"; };
 		1E7802CD2318138C0070D14E /* DMEApiClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEApiClientTests.swift; sourceTree = "<group>"; };
 		1E8749911F77A39600D4E028 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		1EA9FCE323857AEB0036D9FF /* DMERequestFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMERequestFactoryTests.swift; sourceTree = "<group>"; };
@@ -136,8 +136,8 @@
 				1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */,
 				1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */,
 				1EC22EF1230EE13C000D17AA /* digimetest.p12 */,
-				1E4A39ED239867F0009C74E0 /* CyclicCATests.swift */,
-				1E4A39EF23986823009C74E0 /* CyclicCATestingAssets.plist */,
+				1E4A39ED239867F0009C74E0 /* OngoingAccessTests.swift */,
+				1E4A39EF23986823009C74E0 /* OngoingAccessTestingAssets.plist */,
 			);
 			path = Security;
 			sourceTree = "<group>";
@@ -353,7 +353,7 @@
 			files = (
 				2716BB9F2371920B00F0A8F6 /* FileListResponseStaticRunning.json in Resources */,
 				1EC22EF4230EE13C000D17AA /* digimetest.p12 in Resources */,
-				1E4A39F023986823009C74E0 /* CyclicCATestingAssets.plist in Resources */,
+				1E4A39F023986823009C74E0 /* OngoingAccessTestingAssets.plist in Resources */,
 				1EC22EF2230EE13C000D17AA /* CryptographyTestingAssets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -466,7 +466,7 @@
 				5C6216E2238DB84F00CEC0F1 /* AppCommunicatorTests.swift in Sources */,
 				1EC22EF3230EE13C000D17AA /* CryptographyTests.swift in Sources */,
 				270A82F92301B77E000C2F56 /* DataRequestTests.swift in Sources */,
-				1E4A39EE239867F0009C74E0 /* CyclicCATests.swift in Sources */,
+				1E4A39EE239867F0009C74E0 /* OngoingAccessTests.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* ConfigurationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

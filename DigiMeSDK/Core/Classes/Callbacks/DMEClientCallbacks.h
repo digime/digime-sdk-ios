@@ -17,7 +17,7 @@
 @class DMEPostbox;
 @class DMESession;
 @class DMEFileList;
-@class DMEOAuthObject;
+@class DMEOAuthToken;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,27 +30,16 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^DMEAuthorizationCompletion) (DMESession * _Nullable session, NSError * _Nullable error);
 
 /**
-DMEOngoingAccessAuthorizationCycleCompletion - executed when authorization stage for Ongoing Access has completed. Return to 3d party app.
-DMEOAuthObject - incapsulate the following properties:
-accessToken 1 day - medium-lived, token gives access to protected resources via the digi.me Public API, without requiring users to disclose their digi.me credentials to the consumers.
-refreshToken 30 days - long-lived, token must be used as part of the process of obtaining an access token.
+DMEOngoingAccessAuthorizationCompletion - executed when authorization stage for Ongoing Access has completed. Return to 3d party app.
+
 expiresOn - expiration date
 tokenType - string describing type: like Bearer
  
-@param session The session if authorization is successful, nil if not
-@param oAuthObject OAuth data such us: access and refresh tokens, expiration date and type.
-@param error nil if authorization is successful, otherwise an error specifying what went wrong
+@param session The session if authorization is successful, nil if not.
+@param oAuthToken OAuth data such as: access and refresh tokens, expiration date and type.
+@param error nil if authorization is successful, otherwise an error specifying what went wrong.
 */
-typedef void (^DMEOngoingAccessAuthorizationCycleCompletion) (DMESession * _Nullable session, DMEOAuthObject * _Nullable oAuthObject, NSError * _Nullable error);
-
-/**
-DMEOngoingAccessAuthCodeExchangeCompletion - executed when CA request returned to SDK after user gives consent.
- 
-@param session The session if authorization is successful, nil if not
-@param accessCode this code is part of OAuth authorization flow. SDK initiate request to get pre-authorization code and digi.me client exchange it to access auth code
-@param error nil if authorization is successful, otherwise an error specifying what went wrong
-*/
-typedef void (^DMEOngoingAccessAuthCodeExchangeCompletion) (DMESession * _Nullable session, NSString * _Nullable accessCode, NSError * _Nullable error);
+typedef void (^DMEOngoingAccessAuthorizationCompletion) (DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error);
 
 /**
  DMEPostboxCreationCompletion - executed when a Postbox is created.

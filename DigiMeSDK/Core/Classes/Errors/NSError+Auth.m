@@ -44,38 +44,6 @@
         case AuthErrorScopeOutOfBounds:
             return @"Requested scope is out of bounds of the Contract scope.";
             break;
-            
-        case AuthErrorInvalidPCloud:
-            return @"Connection failed due to cloud provider access token expiring";
-            break;
-            
-        case AuthErrorInvalidJWT:
-            return @"The provided JSON Web Token (JWT) is invalid. Check your private key.";
-            break;
-            
-        case AuthErrorInvalidRequest:
-            return @"JWT header|payload failed JSON schema validation. Check your private key.";
-            break;
-            
-        case AuthErrorInvalidRedirectUri:
-            return @"The redirect url mismatch check your app id.";
-            break;
-            
-        case AuthErrorInvalidToken:
-            return @"The token is invalid";
-            break;
-            
-        case AuthErrorInvalidGrant:
-            return @"The grant type is invalid";
-            break;
-            
-        case AuthErrorInvalidClient:
-            return @"The client id is invalid";
-            break;
-            
-        case AuthErrorInvalidTokenType:
-            return @"The token type is invalid";
-            break;
     }
 
     return NSLocalizedString(@"", @"");

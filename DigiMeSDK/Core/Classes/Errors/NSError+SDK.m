@@ -56,14 +56,6 @@
         case SDKErrorFileListPollingTimeout:
             return @"File List time out reached as there have been no changes during the number of retries specified in `DMEPullConfiguration`.";
             
-        case SDKErrorOngoingAccessInvalidToken:
-            return @"The OAuth token is invalid";
-            break;
-            
-        case SDKErrorOngoingAccessTooManyRequests:
-            return @"Rate limit enforced. OAuth access token rate limit is valid for 1 use per hour by default.";
-            break;
-            
         case SDKErrorOAuthTokenNotSet:
             return @"OAuth token not set on client instance. Please ensure that client instance is correctly initialized.";
             break;

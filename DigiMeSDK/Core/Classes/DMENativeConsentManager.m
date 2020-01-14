@@ -19,7 +19,7 @@
 @property (nonatomic, weak, readonly) DMEAppCommunicator *appCommunicator;
 @property (nonatomic, copy, readonly) NSString *appId;
 @property (nonatomic, copy, nullable) DMEAuthorizationCompletion authCompletionBlock;
-@property (nonatomic, copy, nullable) DMEOngoingAccessAuthCodeExchangeCompletion ongoingAccessAuthCompletionBlock;
+@property (nonatomic, copy, nullable) DMEOngoingAccessAuthCodeExchangeCompletion ongoingAccessExchangeCompletionBlock;
 
 @end
 
@@ -77,12 +77,12 @@
             self.authCompletionBlock(session, error);
         });
     }
-    else if (self.ongoingAccessAuthCompletionBlock)
+    else if (self.ongoingAccessExchangeCompletionBlock)
     {
         // Need to know if we succeeded.
         DMESession *session = error == nil ? self.session : nil;
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.ongoingAccessAuthCompletionBlock(session, authorizationCode, error);
+            self.ongoingAccessExchangeCompletionBlock(session, authorizationCode, error);
         });
     }
     
@@ -119,7 +119,7 @@
         return;
     }
     
-    self.ongoingAccessAuthCompletionBlock = completion;
+    self.ongoingAccessExchangeCompletionBlock = completion;
     
     DMEOpenAction *action = @"authorize";
     NSDictionary *params = @{

@@ -35,8 +35,8 @@
     
     operation.workBlock = ^{
         
-        NSData *symmetricalKey = [DMECryptoUtilities getRandomBytesWithLength:32];
-        NSData *iv = [DMECryptoUtilities getRandomBytesWithLength:16];
+        NSData *symmetricalKey = [DMECryptoUtilities randomBytesWithLength:32];
+        NSData *iv = [DMECryptoUtilities randomBytesWithLength:16];
         NSString *metadataEncryptedString = [DMECrypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
         NSData *payload = [DMECrypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
         NSString *keyEncrypted = [DMECrypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey contractId:self.configuration.contractId];

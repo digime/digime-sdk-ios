@@ -45,26 +45,29 @@ NS_ASSUME_NONNULL_BEGIN
  Either redirect to the digi.me application (if installed) or present options for user to choose a one-time share or download the digi.me app.
  - Guest is not enabled:
  Redirect to the digi.me application (if installed).
+ 
  @param scope Custom scope that will be applied to available data.
  @param completion Block called when authorization has completed
  */
 - (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion NS_SWIFT_NAME(authorize(scope:completion:));
 
 /**
- Initializes ongoing contract authentication. After user gives consent in digi.me app then all subsequent data retrieval calls will be done without digi.me client app involvement
- This authorization flow enables 3d parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers
+ Initializes ongoing contract authentication. Once user has given consent in digi.me app all subsequent data retrieval calls will be done without digi.me client app involvement.
+ This authorization flow enables 3d parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers.
+ 
  @param completion Block called when authorization has completed
  */
-- (void)authorizeOngoingAccessWithСompletion:(DMEOngoingAccessAuthorizationCycleCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(completion:));
+- (void)authorizeOngoingAccessWithСompletion:(DMEOngoingAccessAuthorizationCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(completion:));
 
 /**
- Initializes ongoing contract authentication with custom scope. After user gives consent in digi.me app then all subsequent data retrieval calls will be done without digi.me client app involvement
+ Initializes ongoing contract authentication with custom scope. Once user has given consent in digi.me app all subsequent data retrieval calls will be done without digi.me client app involvement.
  This authorization flow enables 3d parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers
+ 
  @param scope Custom scope that will be applied to available data.
  @param oAuthToken valid OAuth token
  @param completion Block called when authorization has completed
  */
-- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthObject * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCycleCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(scope:oAuthToken:completion:));
+- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(scope:oAuthToken:completion:));
 
 /**
  Fetches content for all the requested files.

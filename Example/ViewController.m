@@ -18,7 +18,7 @@
 @property (nonatomic, strong) DMEPullClient *dmeClient;
 @property (nonatomic, strong) LogViewController *logVC;
 @property (nonatomic, strong) DMEPullConfiguration *configuration;
-@property (nonatomic, strong) DMEOAuthObject *accessToken;
+@property (nonatomic, strong) DMEOAuthToken *oAuthToken;
 
 @end
 
@@ -34,7 +34,7 @@
     [self.view addSubview:self.logVC.view];
     [self.logVC didMoveToParentViewController:self];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Start" style:UIBarButtonItemStylePlain target:self action:@selector(buttonClicked:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Start" style:UIBarButtonItemStylePlain target:self action:@selector(startTapped:)];
     
     [self.logVC logMessage:@"Please press 'Start' to begin requesting data. Also make sure that digi.me app is installed and onboarded."];
     
@@ -56,7 +56,7 @@
     [self.logVC decreaseFontSize];
 }
 
-- (IBAction)buttonClicked:(id)sender
+- (IBAction)startTapped:(id)sender
 {
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"digi.me" message:@"Choose Consent Access flow" preferredStyle:UIAlertControllerStyleActionSheet];
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
@@ -78,9 +78,9 @@
 
 -  (void)runOngoingAccessFlow
 {
-    if (self.accessToken && [[NSDate date] compare: self.accessToken.expiresOn] == NSOrderedAscending)
+    if (self.oAuthToken && [[NSDate date] compare: self.oAuthToken.expiresOn] == NSOrderedAscending)
     {
-        [self ongoingAccessRetrieveData];
+        [self resumeOngoingAccess];
     }
     else
     {
@@ -102,7 +102,7 @@
     
     DMEScope *scope = [self createSampleScopeForOneYearOfSocialData];
     __weak __typeof(self)weakSelf = self;
-    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error) {
+    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable accessToken, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
         {
@@ -115,9 +115,9 @@
         [self.logVC logMessage:[NSString stringWithFormat:@"OAuth refresh token: %@", accessToken.refreshToken]];
         [self.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", accessToken.expiresOn]];
         
-        strongSelf.accessToken = accessToken;
+        strongSelf.oAuthToken = accessToken;
         
-        //Uncomment relevant method depending on which you wish to recieve.
+        //Uncomment relevant method depending on which you wish to receive.
         [strongSelf getAccounts];
         [strongSelf getSessionData];
         // [strongSelf getSessionFileList];
@@ -151,7 +151,7 @@
         
         [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
 
-        //Uncomment relevant method depending on which you wish to recieve.
+        //Uncomment relevant method depending on which you wish to receive.
         [self getSessionData];
         // [self getSessionFileList];
         [self getAccounts];
@@ -166,7 +166,7 @@
         if (accounts == nil)
         {
             [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
-            self.accessToken = nil;
+            self.oAuthToken = nil;
             return;
         };
         
@@ -206,7 +206,7 @@
             if (error != nil)
             {
                 [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve session file list failed: %@", error.localizedDescription]];
-                self.accessToken = nil;
+                self.oAuthToken = nil;
             }
             else
             {
@@ -218,25 +218,26 @@
     }];
 }
 
-- (void)ongoingAccessRetrieveData
+- (void)resumeOngoingAccess
 {
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Retrieving Ongoing Access File List"];
-    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:self.accessToken completion:^(DMESession * _Nullable session, DMEOAuthObject * _Nullable accessToken, NSError * _Nullable error) {
+    DMEScope *scope = [self createSampleScopeForOneYearOfSocialData];
+    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable accessToken, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)
             {
                 [self.logVC logMessage:[NSString stringWithFormat:@"Retrieving Ongoing Access File List failed: %@", error.localizedDescription]];
-                self.accessToken = nil;
+                self.oAuthToken = nil;
             }
             else
             {
                 [self.logVC logMessage:@"-------------Ongoing Access data triggered sucessfully-------------"];
                 
-                // If old Access token has expired we get a new one. Here we store it locally for the next request.
-                self.accessToken = accessToken;
+                // if oAuthToken has expired, a new one will be returned
+                self.oAuthToken = accessToken;
                 
-                //Uncomment relevant method depending on which you wish to recieve.
+                //Uncomment relevant method depending on which you wish to receive.
                 [self getAccounts];
                 [self getSessionData];
                 // [self getSessionFileList];
@@ -320,7 +321,8 @@
     NSData *privateKeyData = [privateKey base64Data];
     NSString *privateKeyHex = [privateKeyData hexString];
     
-    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initForOngoingAccessWithAppId:appId contractId:contractId publicKeyHex:publicKeyHex privateKeyHex:privateKeyHex];
+    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId privateKeyHex:privateKeyHex];
+    configuration.publicKeyHex = publicKeyHex;
     configuration.debugLogEnabled = YES;
     configuration.baseUrl = @"https://api.integration.devdigi.me/";
     return configuration;

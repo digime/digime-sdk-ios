@@ -138,34 +138,34 @@ static const NSString *kWorkQueue = @"kWorkQueue";
 }
 
 #pragma mark - Ongoing Access
-- (void)requestPreauthenticationCodeWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+- (void)requestPreauthorizationCodeWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
 {
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
     NSURLRequest *request = [self.requestFactory preAuthRequestWithBearer:jwtBearer];
-    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     
     [dataTask resume];
 }
 
-- (void)requestValidationDataForPreauthenticationCodeWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+- (void)requestValidationDataForPreAuthenticationCodeWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
 {
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
-    NSURLRequest *request = [self.requestFactory preauthValidationRequest];
-    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
+    NSURLRequest *request = [self.requestFactory preAuthValidationRequest];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     
     [dataTask resume];
 }
 
-- (void)requestAuthenticationAndRefreshTokensWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+- (void)requestAccessAndRefreshTokensWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
 {
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
     NSURLRequest *request = [self.requestFactory authRequestWithBearer:jwtBearer];
-    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     
     [dataTask resume];
@@ -176,7 +176,7 @@ static const NSString *kWorkQueue = @"kWorkQueue";
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
     NSURLRequest *request = [self.requestFactory dataTriggerRequestWithBearer:jwtBearer];
-    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_SDK_ERROR success:success failure:failure];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     
     [dataTask resume];
@@ -187,7 +187,7 @@ static const NSString *kWorkQueue = @"kWorkQueue";
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
     NSURLRequest *request = [self.requestFactory authRequestWithBearer:jwtBearer];
-    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_SDK_ERROR success:success failure:failure];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     
     [dataTask resume];

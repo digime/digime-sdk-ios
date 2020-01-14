@@ -83,10 +83,14 @@
 
 #pragma mark - Random
 
-+ (NSData *)getRandomBytesWithLength:(int)length
++ (NSData *)randomBytesWithLength:(int)length
 {
     NSMutableData *data = [NSMutableData dataWithLength:length];
-    __attribute__((unused)) int result = SecRandomCopyBytes(kSecRandomDefault, (size_t)length, data.mutableBytes);
+    int status = SecRandomCopyBytes(kSecRandomDefault, (size_t)length, data.mutableBytes);
+    if (status != errSecSuccess)
+    {
+        NSLog(@"[DMECrypto] Error creating rundom bytes. Error status code: %@", @((NSInteger) status));
+    }
     return data;
 }
 

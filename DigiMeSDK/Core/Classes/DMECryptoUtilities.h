@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param length int
  @return NSData - random bytes for the specified length.
  */
-+ (NSData *)getRandomBytesWithLength:(int)length;
++ (NSData *)randomBytesWithLength:(int)length;
 
 @end
 

@@ -43,15 +43,15 @@ static NSString * const kDigiMeJWKSAPIVersion = @"v1";
 - (NSURLRequest *)preAuthRequestWithBearer:(NSString *)jwtBearer
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/authorize", self.baseOAuthUrlPath]];
-    NSString *authorisation = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
+    NSString *authorization = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:authorisation forHTTPHeaderField:@"Authorization"];
+    [request setValue:authorization forHTTPHeaderField:@"Authorization"];
     return request;
 }
 
-- (NSURLRequest *)preauthValidationRequest
+- (NSURLRequest *)preAuthValidationRequest
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/oauth", self.baseJWKSUrlPath]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
@@ -63,22 +63,22 @@ static NSString * const kDigiMeJWKSAPIVersion = @"v1";
 - (NSURLRequest *)authRequestWithBearer:(NSString *)jwtBearer
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/token", self.baseOAuthUrlPath]];
-    NSString *authorisation = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
+    NSString *authorization = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:authorisation forHTTPHeaderField:@"Authorization"];
+    [request setValue:authorization forHTTPHeaderField:@"Authorization"];
     return request;
 }
 
 - (NSURLRequest *)dataTriggerRequestWithBearer:(NSString *)jwtBearer
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/trigger?schemaVersion=5.0.0&prefetch=false", self.baseUrlPath]];
-    NSString *authorisation = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
+    NSString *authorization = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:authorisation forHTTPHeaderField:@"Authorization"];
+    [request setValue:authorization forHTTPHeaderField:@"Authorization"];
     return request;
 }
 
