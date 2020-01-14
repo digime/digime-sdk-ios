@@ -132,7 +132,7 @@
         };
         
         [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
-        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth access token: %@", oAuthToken.oAuthToken]];
+        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth access token: %@", oAuthToken.accessToken]];
         [self.logVC logMessage:[NSString stringWithFormat:@"OAuth refresh token: %@", oAuthToken.refreshToken]];
         [self.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", oAuthToken.expiresOn]];
         
