@@ -10,18 +10,10 @@ import Foundation
 
 extension String {
     
-    func isHex() -> Bool {
-       let chars = CharacterSet(charactersIn: "0123456789ABCDEF")
-
-       guard uppercased().rangeOfCharacter(from: chars) != nil else {
-          return false
-       }
-       return true
-    }
-    
     func isBase64() -> Bool {
-        guard let _ = Data(base64Encoded: self) else {
-            return false
+        let chars = CharacterSet(charactersIn: "0123456789ABCDEF")
+        guard uppercased().rangeOfCharacter(from: chars) != nil else {
+           return false
         }
         return true
     }

@@ -144,7 +144,7 @@ public class DMEJWTUtility: NSObject {
     ///   - publicKey: public key in base 64 format
     @objc public class func signedPreAuthJwt(_ appId: String, contractId: String, privateKey: String, publicKey: String?) -> String? {
         guard
-            privateKey.isHex(),
+            privateKey.isBase64(),
             let privateKeyData = convertKeyString(privateKey) else {
                 print("DigiMeSDK: Error creating RSA key")
                 return nil
@@ -198,7 +198,7 @@ public class DMEJWTUtility: NSObject {
     ///   - publicKey: public key in base 64 format
     @objc public class func signedAuthJwt(_ authCode: String, appId: String, contractId: String, privateKey: String, publicKey: String?) -> String? {
         guard
-            privateKey.isHex(),
+            privateKey.isBase64(),
             let privateKeyData = convertKeyString(privateKey) else {
                 print("DigiMeSDK: Error creating RSA key")
                 return nil
@@ -242,7 +242,7 @@ public class DMEJWTUtility: NSObject {
     ///   - jwt: pre-authorization code wrapped in JWT
     @objc public class func preAuthCode(from jwt: String, publicKey: String) -> String? {
         guard
-            publicKey.isHex(),
+            publicKey.isBase64(),
             let publicKeyData = convertKeyString(publicKey) else {
                 print("DigiMeSDK: Error creating RSA public key")
                 return nil
@@ -309,7 +309,7 @@ public class DMEJWTUtility: NSObject {
     ///   - publicKey: public key in base 64 format
     @objc public class func dataTriggerJwt(_ accessToken: String, appId: String, contractId: String, sessionKey: String, privateKey: String, publicKey: String?) -> String? {
         guard
-            privateKey.isHex(),
+            privateKey.isBase64(),
             let privateKeyData = convertKeyString(privateKey) else {
                 print("DigiMeSDK: Error creating RSA key")
                 return nil
@@ -358,7 +358,7 @@ public class DMEJWTUtility: NSObject {
         claims.timestamp = NSDate().timeIntervalSince1970 * 1000.0
         
         guard
-            privateKey.isHex(),
+            privateKey.isBase64(),
             let privateKeyData = convertKeyString(privateKey) else {
                 print("DigiMeSDK: Error creating RSA key")
                 return nil
