@@ -24,6 +24,27 @@
 
 @implementation ViewController
 
+- (DMEPullConfiguration *)createSampleConfiguration
+{
+    // - GET STARTED -
+    
+    // - REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.
+    NSString *appId = @"YOUR_APP_ID";
+    
+    // - REPLACE 'YOUR_CONTRACT_ID' with your contract ID.
+    NSString *contractId = @"YOUR_CONTRACT_ID";
+    
+    // - REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.
+    NSString *p12Filename = @"YOUR_P12_FILE_NAME";
+    
+    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.
+    NSString *p12Password = @"YOUR_P12_PASSWORD";
+    
+    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
+    configuration.debugLogEnabled = YES;
+    return configuration;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -274,27 +295,6 @@
             [self clearNavigationBar];
         });
     }];
-}
-
-- (DMEPullConfiguration *)createSampleConfiguration
-{
-    // - GET STARTED -
-    
-    // - REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.
-    NSString *appId = @"YOUR_APP_ID";
-    
-    // - REPLACE 'YOUR_CONTRACT_ID' with your contract ID.
-    NSString *contractId = @"YOUR_CONTRACT_ID";
-    
-    // - REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.
-    NSString *p12Filename = @"YOUR_P12_FILE_NAME";
-    
-    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.
-    NSString *p12Password = @"YOUR_P12_PASSWORD";
-    
-    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
-    configuration.debugLogEnabled = YES;
-    return configuration;
 }
 
 - (void)didReceiveMemoryWarning {
