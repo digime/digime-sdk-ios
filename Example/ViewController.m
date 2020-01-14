@@ -121,9 +121,8 @@
     
     [self.logVC reset];
     
-    DMEScope *scope = [self createSampleScopeForOneYearOfSocialData];
     __weak __typeof(self)weakSelf = self;
-    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
+    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
         {
@@ -243,8 +242,7 @@
 {
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Retrieving Ongoing Access File List"];
-    DMEScope *scope = [self createSampleScopeForOneYearOfSocialData];
-    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
+    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)
             {
