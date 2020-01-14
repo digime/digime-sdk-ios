@@ -75,6 +75,7 @@
         DMESession *session = error == nil ? self.session : nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             self.authCompletionBlock(session, error);
+            self.authCompletionBlock = nil;
         });
     }
     else if (self.ongoingAccessExchangeCompletionBlock)
@@ -83,6 +84,7 @@
         DMESession *session = error == nil ? self.session : nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             self.ongoingAccessExchangeCompletionBlock(session, authorizationCode, error);
+            self.ongoingAccessExchangeCompletionBlock = nil;
         });
     }
     
