@@ -241,12 +241,12 @@
     [self.nativeConsentManager beginOngoingAccessAuthorizationWithPreAuthCode:preAuthCode completion:^(DMESession * _Nullable session, NSString * _Nullable authCode, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
-        if (session == nil || authCode == nil)
+        if (error || session == nil || authCode == nil)
         {
             // Notify on main thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                completion(session, nil, errorToReport);
+                completion(nil, nil, errorToReport);
             });
             return;
         }
