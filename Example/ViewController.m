@@ -121,8 +121,9 @@
     
     [self.logVC reset];
     
+    DMEScope *scope = [self createSampleScopeForOneYearOfSocialData];
     __weak __typeof(self)weakSelf = self;
-    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable accessToken, NSError * _Nullable error) {
+    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
         {
@@ -131,11 +132,11 @@
         };
         
         [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
-        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth access token: %@", accessToken.accessToken]];
-        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth refresh token: %@", accessToken.refreshToken]];
-        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", accessToken.expiresOn]];
+        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth access token: %@", oAuthToken.oAuthToken]];
+        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth refresh token: %@", oAuthToken.refreshToken]];
+        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", oAuthToken.expiresOn]];
         
-        strongSelf.oAuthToken = accessToken;
+        strongSelf.oAuthToken = oAuthToken;
         
         //Uncomment relevant method depending on which you wish to receive.
         [strongSelf getAccounts];
@@ -242,7 +243,8 @@
 {
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Retrieving Ongoing Access File List"];
-    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable accessToken, NSError * _Nullable error) {
+    DMEScope *scope = [self createSampleScopeForOneYearOfSocialData];
+    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)
             {
@@ -254,7 +256,7 @@
                 [self.logVC logMessage:@"-------------Ongoing Access data triggered sucessfully-------------"];
                 
                 // if oAuthToken has expired, a new one will be returned
-                self.oAuthToken = accessToken;
+                self.oAuthToken = oAuthToken;
                 
                 //Uncomment relevant method depending on which you wish to receive.
                 [self getAccounts];
