@@ -100,9 +100,8 @@
     
     [self.logVC reset];
     
-    DMEScope *scope = [self createSampleScopeForOneYearOfSocialData];
     __weak __typeof(self)weakSelf = self;
-    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable accessToken, NSError * _Nullable error) {
+    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable accessToken, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
         {
@@ -222,8 +221,7 @@
 {
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Retrieving Ongoing Access File List"];
-    DMEScope *scope = [self createSampleScopeForOneYearOfSocialData];
-    [self.dmeClient authorizeOngoingAccessWithScope:scope oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable accessToken, NSError * _Nullable error) {
+    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable accessToken, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)
             {
@@ -278,53 +276,24 @@
     }];
 }
 
-- (DMEScope *)createSampleScopeForOneYearOfSocialData
-{
-    // An example to create a scope for one last year of social data.
-    NSMutableArray *serviceObjectTypes = [NSMutableArray new];
-    for (int i = 1; i <= 60; i++)
-    {
-        DMEServiceObjectType *serviceObjectType = [[DMEServiceObjectType alloc]initWithIdentifier:i];
-        [serviceObjectTypes addObject:serviceObjectType];
-    }
-    
-    DMEServiceType *serviceTypeFacebook = [[DMEServiceType alloc] initWithIdentifier:1 objectTypes: serviceObjectTypes];
-    DMEServiceType *serviceTypeTwitter = [[DMEServiceType alloc] initWithIdentifier:3 objectTypes: serviceObjectTypes];
-    DMEServiceType *serviceTypeInstagram = [[DMEServiceType alloc] initWithIdentifier:4 objectTypes: serviceObjectTypes];
-    NSArray *serviceTypes = [NSArray arrayWithObjects: serviceTypeFacebook, serviceTypeTwitter, serviceTypeInstagram, nil];
-    DMEServiceGroup *serviceGroupSocial = [[DMEServiceGroup alloc] initWithIdentifier:1 serviceTypes:serviceTypes];
-
-    DMEScope *scope = [[DMEScope alloc] init];
-    scope.serviceGroups = [NSArray arrayWithObjects: serviceGroupSocial, nil];
-    
-    NSDate *to = [NSDate date];
-    NSUInteger componentFlags = NSCalendarUnitYear;
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:componentFlags fromDate:to];
-    [components setYear:-1];
-    NSDate *from = [[NSCalendar currentCalendar] dateByAddingComponents:components toDate:to options:0];
-    
-    DMETimeRange *range = [DMETimeRange from:from to:to];
-    scope.timeRanges = [NSArray arrayWithObjects:range, nil];
-    return scope;
-}
-
 - (DMEPullConfiguration *)createSampleConfiguration
 {
-    NSString *appId = @"v8ddFfvvtLe0NSYI04BiysSvoeMGEyvD";
-    NSString *contractId = @"2osfkdOLbFvJX3ylWHA6c0ZexxPfeCBh";
-    NSString *publicKey = @"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgJG4g7MRRpFvA7FkVxDqLLd931WVR2yd5WDEgbOgQG0cyhyzRoOqvf27ombEG+R5jpAfJboQqO7+1/R+OAEsGcyoZUs89WbCnxy3q4Wb9kUMyr8Dgj0DjYcyeaSR75hQHD+QZo2YOMZxmp78quXERf8tP3FhCmpjDEPUendT7wk3LAuLpyz8nnVVp2X8V/HNBiHE0SJK3A6tZyDRO0GdxmqdEuBv/PNSs24OGQlfCsBAFksCXeEi83Pkz4CBhA3ihCouDHZUAFhhCngynVxKcBnET+HHqbEgsvw3gQEYjSpOH+wz0IAi0vVXqTFSdsp1+Tq+eQIl5bOwRovqyhXj4wIDAQAB";
-    NSString *privateKey = @"MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCAkbiDsxFGkW8DsWRXEOost33fVZVHbJ3lYMSBs6BAbRzKHLNGg6q9/buiZsQb5HmOkB8luhCo7v7X9H44ASwZzKhlSzz1ZsKfHLerhZv2RQzKvwOCPQONhzJ5pJHvmFAcP5BmjZg4xnGanvyq5cRF/y0/cWEKamMMQ9R6d1PvCTcsC4unLPyedVWnZfxX8c0GIcTRIkrcDq1nINE7QZ3Gap0S4G/881Kzbg4ZCV8KwEAWSwJd4SLzc+TPgIGEDeKEKi4MdlQAWGEKeDKdXEpwGcRP4cepsSCy/DeBARiNKk4f7DPQgCLS9VepMVJ2ynX5Or55AiXls7BGi+rKFePjAgMBAAECggEAIH0yZE1u0ydTJ1q/YWUL2ArySuqEk4z2BY3Deocaus0X1lcUUoBZODOTI8HWUroUoZr30//Fz/q8+XN2Jc7eBxL5hsdRey3hhnWqUDSuKbhfOCi2yUWDzVLZxXV5z1LtA4ZohhHH4qj68ji03ra7N3j5RSvwesJRjzrgyaW31xJfW9a+TzYQZWONyxo8a7rY+9i/4k2BdNCvvWns7Fp47AZ1MzhUuVtXOQNsisEK5+jXXqJKA3iopcFFIGtD7Xzngwd8RIvQy7jZzRjkX28pkrrVAxvw6pqTXX889VhP7qS4g1TQ/baJ1aAZL5gFnu/WSuonBwE9CD0d/9aQr7YyIQKBgQDS70XlGGwE6apwfEURD7fDoq2BppB6K3tnOdeEhFGFtczrzG8bgfuPGoGfli6Uqle4h4lm7N/EQmvE92I7JRRZxV+vKDOwDxci1gK6hu8Ir9cWui65tc2WW3EToGS2kyZWq/EaUjUXTy1GgXnBC1cn31TmQ8mcQsrMjxjF/vSfMwKBgQCcCZrAmuXjK8YJ3v9aBhfdC1EViJBN1TFujTlPleHuIpZ4WStqEIXkNVFRRv4CVdbFjWa4NmTHShkhSV98oeUhLXxdx7VFjCo7v3ZEASnr8f+AZuSwk/Ln+FAZV2q6MjXwnqu3voNRsQsoXMQGHOLA9T1yKsxM1SlQloftN7lokQKBgCKjXCz0x7g+zthN7+GPXTPpIOjre0o0nb0jyHpgaCq24gHOvmgb/j1Psv2L4fZTyrfoue2G9G/8IEpl/WGNAzyCpuXSijpdIAV+c1BCHDqm9YEr7cRdUHdiaL06V4+Ltn4BGkSiP0mmnN65IE9NF3DawcxWUWMxrK/Ox9irt2v1AoGAfERF43g49vdoi3n2ANrzbE3T8ING8UWFTZbY+qHSQZV4IjZZlem8x+cScNlJ99Am8EPRd4mSLwi7BMBrdFV2pjqUXhdrLQ0YoWa0qCoJGegrZDYNkPbyr30ZRWVSESFlxdCHzxjBenC2AxoF3xxoFeX5Xo/pDpOAiLapX+lOFpECgYEAyWx9OzBF5QFH+ZRsiUJpYdtNIiNMHRNiix0R2/hgITGuSYKDJiPmCmKJX+Jz5c2BY4RC/Fhv4CZIMbGV2sTJysuhk1RSZMqJoQiTQT9ezlHhc8E2D1hprryEkgkWnqpK7zYsvrpvgJUiMVA7mtcans2MbKXQkmBku4nd3lRrars=";
+    // - GET STARTED -
     
-    NSData *publicKeyData = [publicKey base64Data];
-    NSString *publicKeyHex = [publicKeyData hexString];
+    // - REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.
+    NSString *appId = @"YOUR_APP_ID";
     
-    NSData *privateKeyData = [privateKey base64Data];
-    NSString *privateKeyHex = [privateKeyData hexString];
+    // - REPLACE 'YOUR_CONTRACT_ID' with your contract ID.
+    NSString *contractId = @"YOUR_CONTRACT_ID";
     
-    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId privateKeyHex:privateKeyHex];
-    configuration.publicKeyHex = publicKeyHex;
+    // - REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.
+    NSString *p12Filename = @"YOUR_P12_FILE_NAME";
+    
+    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.
+    NSString *p12Password = @"YOUR_P12_PASSWORD";
+    
+    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
     configuration.debugLogEnabled = YES;
-    configuration.baseUrl = @"https://api.integration.devdigi.me/";
     return configuration;
 }
 
