@@ -96,7 +96,7 @@ Creates NSURLRequest for acquiring an authentication code.
 - (NSURLRequest *)authRequestWithBearer:(NSString *)jwtBearer;
 
 /**
-Creates NSURLRequest for triggering data (this makes protected resources associates with the JWT available for retrieval).
+Creates NSURLRequest for triggering data (this makes protected resources associated with the JWT available for retrieval).
 
 @param jwtBearer NSString - signed JSON Web Token
 @return NSURLRequest

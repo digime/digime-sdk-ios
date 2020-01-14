@@ -259,18 +259,16 @@
             NSString *jwtResponse = jsonResponse[@"token"];
             
             [strongSelf latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
-                DMEOAuthToken *oAuthObj = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
+                DMEOAuthToken *oAuthToken = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (oAuthObj == nil)
+                    if (oAuthToken == nil)
                     {
                         NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
                         completion(nil, nil, errorToReport);
                     }
-                    else if (completion != nil)
-                    {
-                        strongSelf.oAuthToken = oAuthObj ;
-                        completion(session, oAuthObj , nil);
-                    }
+
+                    strongSelf.oAuthToken = oAuthToken ;
+                    completion(session, oAuthToken , nil);
                 });
             } failure:^(NSError *error) {
                 completion(nil, nil, error);
@@ -292,11 +290,13 @@
     [self.apiClient requestValidationDataForPreAuthenticationCodeWithSuccess:^(NSData * _Nonnull data) {
         NSError *error;
         NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        
         if (error)
         {
             failure(error);
             return;
         }
+        
         NSArray *keys = jsonResponse[@"keys"];
         NSDictionary *firstKey = keys.firstObject;
         NSString *publicKey = firstKey[@"pem"];
@@ -361,8 +361,8 @@
         NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         NSString *jwtResponse = jsonResponse[@"token"];
         [strongSelf latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
-            DMEOAuthToken *oAuthObj = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
-            strongSelf.oAuthToken = oAuthObj;
+            DMEOAuthToken *oAuthToken = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
+            strongSelf.oAuthToken = oAuthToken;
             [strongSelf triggerDataRetrievalWithCompletion:completion];
         } failure:^(NSError *error) {
             completion(nil, nil, error);
