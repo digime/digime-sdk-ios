@@ -251,7 +251,7 @@
             return;
         }
         
-        NSString *jwtRequestBearer = [DMECrypto createAuthJwtWithAuthCode:authCode appId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
+        NSString *jwtRequestBearer = [DMECrypto createAuthJwtWithAuthCode:authCode appId:strongSelf.configuration.appId contractId:strongSelf.configuration.contractId privateKey:strongSelf.privateKeyHex publicKey:strongSelf.publicKeyHex];
         [strongSelf.apiClient requestAccessAndRefreshTokensWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             
