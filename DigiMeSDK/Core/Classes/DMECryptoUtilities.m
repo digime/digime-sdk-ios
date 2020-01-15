@@ -89,7 +89,7 @@
     int status = SecRandomCopyBytes(kSecRandomDefault, (size_t)length, data.mutableBytes);
     if (status != errSecSuccess)
     {
-        NSLog(@"[DMECrypto] Error creating rundom bytes. Error status code: %@", @((NSInteger) status));
+        NSLog(@"[DMECrypto] Error creating random bytes. Error status code: %@", @((NSInteger) status));
     }
     return data;
 }
