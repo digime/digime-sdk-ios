@@ -12,7 +12,7 @@
 #import "DMECrypto.h"
 #import "DMERequestFactory.h"
 #import "DMEPostbox.h"
-
+#import "DMECryptoUtilities.h"
 #import "NSString+DMECrypto.h"
 #import "NSData+DMECrypto.h"
 #import "DMEAPIClient+Postbox.h"
@@ -35,8 +35,8 @@
     
     operation.workBlock = ^{
         
-        NSData *symmetricalKey = [DMECrypto getRandomUnsignedCharacters:32];
-        NSData *iv = [DMECrypto getRandomUnsignedCharacters:16];
+        NSData *symmetricalKey = [DMECryptoUtilities randomBytesWithLength:32];
+        NSData *iv = [DMECryptoUtilities randomBytesWithLength:16];
         NSString *metadataEncryptedString = [DMECrypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
         NSData *payload = [DMECrypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
         NSString *keyEncrypted = [DMECrypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey contractId:self.configuration.contractId];

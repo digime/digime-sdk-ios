@@ -56,6 +56,49 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)requestSessionWithScope:(nullable id<DMEDataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
+/**
+Initiates a request for a pre-authentication code.
+
+@param jwtBearer Signed PS512 JSON Web Token
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestPreauthorizationCodeWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+Initiates a request get a public key, which is later used to verify preAuthentication JWT token.
+
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestValidationDataForPreAuthenticationCodeWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+Initiates a request for access and refresh token pair.
+
+@param jwtBearer Signed PS512 JSON Web Token
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestAccessAndRefreshTokensWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+Initiates a request to regenerate available protected resources for a valid access token.
+
+@param jwtBearer Signed PS512 JSON Web Token
+@param success completion block receiving NSData
+@param failure failure block receiving NSError
+*/
+- (void)requestDataTriggerWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+
+/**
+ Initiates request to renew the access token contained in passed JSON Web Token
+ 
+ @param jwtBearer Signed PS512 JSON Web Token
+ @param success completion block receiving NSData
+ @param failure failure block receiving NSError
+ */
+- (void)renewAccessTokenWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
 
 /**
  Initiates file list request.

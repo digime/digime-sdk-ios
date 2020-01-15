@@ -49,7 +49,7 @@ class DMEPullClientTests: XCTestCase {
         sut.sessionManager.session(withScope: nil) { session, error in
             sut.getSessionData(downloadHandler: { file, error in
                 XCTFail("File download was not expected to complete. Session fetching should have been cancelled.")
-            }) { error in
+            }) { error, _  in
                 XCTFail("session fetching should have been cancelled, and was not expected to call completion.")
             }
         

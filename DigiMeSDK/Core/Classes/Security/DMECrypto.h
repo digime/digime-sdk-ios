@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DMEOAuthToken.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Decrypts encrypted data using private key data from specified configuration.
-
+ 
  @param encryptedData NSData
  @param contractId The contract identifier
  @param keyHex The private hex key with which data can be decrypted
@@ -36,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Decrypt data using AES256 algorithm.
-
+ 
  @param keyData NSData
  @param ivData NSData
  @param data NSData
@@ -44,14 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
  @return NSData - decrypted data or nil if decryption failed.
  */
 + (nullable NSData *)decryptAes256UsingKey:(NSData *)keyData initializationVector:(NSData *)ivData data:(NSData *)data error:(NSError * __autoreleasing *)error;
-
-/**
- Generates random data using length as a parameter.
- 
- @param length int
- @return NSData - random bytes for the specified length.
- */
-+ (NSData *)getRandomUnsignedCharacters:(int)length;
 
 /**
  Encrypts metadata for Postbox with AES encryption
@@ -99,6 +92,105 @@ NS_ASSUME_NONNULL_BEGIN
  @return NSData - decrypted data or nil if decryption failed.
  */
 + (NSData *)decryptLargeData:(NSData *)dataToDecrypt privateKey:(SecKeyRef)privateKey;
+
+/**
+ Create and sign the new preAuthorization JWT with a private key
+ 
+ @param appId NSString - 3rd party application identifier.
+ @param contractId NSString - CA Contract identifier.
+ @param privateKeyHex NSString - 3rd party RSA private key in hex format.
+ @return NSString - JSON Web Token signed with PS512 algorithm.
+ */
++ (NSString *)createPreAuthorizationJwtWithAppId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex;
+
+/**
+ Create and sign the new preAuthorization JWT with a private key
+ 
+ @param appId NSString - 3rd party application identifier.
+ @param contractId NSString - CA Contract identifier.
+ @param privateKeyHex NSString - 3rd party RSA private key in hex format.
+ @param publicKeyHex NSString - 3rd party RSA public key in hex format. Optional parameter.
+ @return NSString - JSON Web Token signed with PS512 algorithm.
+ */
++ (NSString *)createPreAuthorizationJwtWithAppId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex;
+
+/**
+ Validates and extracts preAuthorization JWT with a public key.
+ 
+ @param jwt NSString - JWT token to validate and decode.
+ @param publicKey NSString - digi.me RSA public key in pem format.
+ @return NSString - decoded and validated JSON Web Token.
+ */
++ (NSString *)preAuthCodeFromJwt:(NSString *)jwt publicKey:(NSString *)publicKey;
+
+/**
+ Creates and signs the new authorization JWT with a private key.
+ 
+ @param authCode - authentication code.
+ @param appId NSString - 3rd party application identifier.
+ @param contractId NSString - CA Contract identifier.
+ @param privateKeyHex NSString - 3rd party RSA private key in hex format.
+ @return NSString - JSON Web Token signed with PS512 algorithm.
+ */
++ (NSString *)createAuthJwtWithAuthCode:(NSString *)authCode appId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex;
+
+/**
+ Creates and signs the new authorization JWT with a private key.
+ 
+ @param authCode - authentication code.
+ @param appId NSString - 3rd party application identifier.
+ @param contractId NSString - CA Contract identifier.
+ @param privateKeyHex NSString - 3rd party RSA private key in hex format.
+ @param publicKeyHex NSString -  3rd party RSA public key in hex format. Optional parameter.
+ @return NSString - JSON Web Token signed with PS512 algorithm.
+ */
++ (NSString *)createAuthJwtWithAuthCode:(NSString *)authCode appId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex;
+
+/**
+ Creates and signs the new authorization JWT with a private key.
+ 
+ @param accessToken - OAuth access token..
+ @param appId NSString - 3rd party application identifier.
+ @param contractId NSString - CA Contract identifier.
+ @param privateKeyHex NSString - 3rd party RSA private key in hex format.
+ @return NSString - JSON Web Token signed with PS512 algorithm.
+ */
++ (NSString *)createDataTriggerJwtWithAccessToken:(NSString *)accessToken appId:(NSString *)appId contractId:(NSString *)contractId sessionKey:(NSString *)sessionKey privateKey:(NSString *)privateKeyHex;
+
+/**
+ Create and sign the new access token JWT with a private key
+ 
+ @param accessToken - OAuth access token..
+ @param appId NSString - 3rd party application identifier.
+ @param contractId NSString - CA Contract identifier.
+ @param privateKeyHex NSString - 3rd party RSA private key in hex format.
+ @param publicKeyHex NSString -  3rd party RSA public key in hex format. Optional parameter.
+ @return NSString - JSON Web Token signed with PS512 algorithm.
+ */
++ (NSString *)createDataTriggerJwtWithAccessToken:(NSString *)accessToken appId:(NSString *)appId contractId:(NSString *)contractId sessionKey:(NSString *)sessionKey privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex;
+
+/**
+ Create and sign the new refresh token JWT with a private key
+ 
+ @param refreshToken - OAuth refresh token..
+ @param appId NSString - 3rd party application identifier.
+ @param contractId NSString - CA Contract identifier.
+ @param privateKeyHex NSString - 3rd party RSA private key in hex format.
+ @return NSString - JSON Web Token signed with PS512 algorithm.
+ */
++ (NSString *)createRefreshJwtWithRefreshToken:(NSString *)refreshToken appId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex;
+
+/**
+ Create and sign the new refresh token JWT with a private key
+ 
+ @param refreshToken - OAuth refresh token..
+ @param appId NSString - 3rd party application identifier.
+ @param contractId NSString - CA Contract identifier.
+ @param privateKeyHex NSString - 3rd party RSA private key in hex format.
+ @param publicKeyHex NSString -  3rd party RSA public key in hex format. Optional parameter.
+ @return NSString - JSON Web Token signed with PS512 algorithm.
+ */
++ (NSString *)createRefreshJwtWithRefreshToken:(NSString *)refreshToken appId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex;
 
 @end
 

@@ -137,6 +137,62 @@ static const NSString *kWorkQueue = @"kWorkQueue";
     [self.queue addOperation:operation];
 }
 
+#pragma mark - Ongoing Access
+- (void)requestPreauthorizationCodeWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+{
+    NSDictionary *headers = [self defaultHeaders];
+    NSURLSession *session = [self sessionWithHeaders:headers];
+    NSURLRequest *request = [self.requestFactory preAuthRequestWithBearer:jwtBearer];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
+    
+    [dataTask resume];
+}
+
+- (void)requestValidationDataForPreAuthenticationCodeWithSuccess:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+{
+    NSDictionary *headers = [self defaultHeaders];
+    NSURLSession *session = [self sessionWithHeaders:headers];
+    NSURLRequest *request = [self.requestFactory preAuthValidationRequest];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
+    
+    [dataTask resume];
+}
+
+- (void)requestAccessAndRefreshTokensWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+{
+    NSDictionary *headers = [self defaultHeaders];
+    NSURLSession *session = [self sessionWithHeaders:headers];
+    NSURLRequest *request = [self.requestFactory authRequestWithBearer:jwtBearer];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
+    
+    [dataTask resume];
+}
+
+- (void)requestDataTriggerWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+{
+    NSDictionary *headers = [self defaultHeaders];
+    NSURLSession *session = [self sessionWithHeaders:headers];
+    NSURLRequest *request = [self.requestFactory dataTriggerRequestWithBearer:jwtBearer];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
+    
+    [dataTask resume];
+}
+
+- (void)renewAccessTokenWithBearer:(NSString *)jwtBearer success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+{
+    NSDictionary *headers = [self defaultHeaders];
+    NSURLSession *session = [self sessionWithHeaders:headers];
+    NSURLRequest *request = [self.requestFactory authRequestWithBearer:jwtBearer];
+    HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_API_ERROR success:success failure:failure];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
+    
+    [dataTask resume];
+}
+
 #pragma mark - Cancellation
 - (void)cancelQueuedDownloads
 {

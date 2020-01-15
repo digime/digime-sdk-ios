@@ -45,7 +45,7 @@
             return @"Requested scope is out of bounds of the Contract scope.";
             break;
     }
-    
+
     return NSLocalizedString(@"", @"");
 }
 

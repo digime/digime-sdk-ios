@@ -19,6 +19,7 @@
 @property (nonatomic, weak, readonly) DMEAppCommunicator *appCommunicator;
 @property (nonatomic, copy, readonly) NSString *appId;
 @property (nonatomic, copy, nullable) DMEAuthorizationCompletion authCompletionBlock;
+@property (nonatomic, copy, nullable) DMEOngoingAccessAuthCodeExchangeCompletion ongoingAccessExchangeCompletionBlock;
 
 @end
 
@@ -49,6 +50,7 @@
     NSString *result = parameters[kDMEResponse];
     NSString *sessionKey = parameters[kDMESessionKey];
     NSString *reference = parameters[kDMEErrorReference];
+    NSString *authorizationCode = parameters[kDMEAuthorizationCode];
     
     [self filterMetadata: parameters];
     
@@ -73,6 +75,16 @@
         DMESession *session = error == nil ? self.session : nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             self.authCompletionBlock(session, error);
+            self.authCompletionBlock = nil;
+        });
+    }
+    else if (self.ongoingAccessExchangeCompletionBlock)
+    {
+        // Need to know if we succeeded.
+        DMESession *session = error == nil ? self.session : nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.ongoingAccessExchangeCompletionBlock(session, authorizationCode, error);
+            self.ongoingAccessExchangeCompletionBlock = nil;
         });
     }
     
@@ -101,6 +113,27 @@
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
 }
 
+- (void)beginOngoingAccessAuthorizationWithPreAuthCode:(NSString *)preAuthorizationCode completion:(DMEOngoingAccessAuthCodeExchangeCompletion)completion
+{
+    if (![self.sessionManager isSessionValid])
+    {
+        completion(nil, nil, [NSError authError:AuthErrorInvalidSession]);
+        return;
+    }
+    
+    self.ongoingAccessExchangeCompletionBlock = completion;
+    
+    DMEOpenAction *action = @"authorize";
+    NSDictionary *params = @{
+                             kDMESessionKey: self.session.sessionKey,
+                             kDMERegisteredAppID: self.appId,
+                             kDMEPreAuthorizationCode: preAuthorizationCode,
+                             };
+    
+    [self.appCommunicator addCallbackHandler:self];
+    [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
+}
+
 #pragma mark - Convenience
 
 - (DMESession *)session
@@ -113,7 +146,7 @@
     // default legacy keys
     NSMutableArray *allowedKeys = @[kDMESessionKey, kDMEResponse, kDMERegisteredAppID].mutableCopy;
     // timing keys
-    [allowedKeys addObjectsFromArray:@[kDMETimingDataGetAllFiles, kDMETimingDataGetFile, kDMETimingFetchContractPermission, kDMETimingFetchDataGetAccount, kDMETimingFetchDataGetFileList, kDMETimingFetchSessionKey, kDMEDataRequest, kDMEFetchContractDetails, kDMEUpdateContractPermission, kDMETimingTotal]];
+    [allowedKeys addObjectsFromArray:@[kDMETimingDataGetAllFiles, kDMETimingDataGetFile, kDMETimingFetchContractPermission, kDMETimingFetchDataGetAccount, kDMETimingFetchDataGetFileList, kDMETimingFetchSessionKey, kDMEDataRequest, kDMEFetchContractDetails, kDMEUpdateContractPermission, kDMETimingTotal, kDMETimingRequestAuthorizationCode]];
     // timing debug keys
     [allowedKeys addObjectsFromArray:@[kDMEDebugAppId, kDMEDebugBundleVersion, kDMEDebugPlatform, kDMEContractType, kDMEDeviceId, kDMEDigiMeVersion, kDMEUserId, kDMELibraryId, kDMEPCloudType, kDMEContractId, kDME3dPartyAppName]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];

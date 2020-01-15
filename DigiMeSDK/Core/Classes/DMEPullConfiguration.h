@@ -16,6 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DMEPullConfiguration : DMEBaseConfiguration
 
 /**
+ Your rsa public key hex. 
+ */
+@property (nonatomic, copy, nullable) NSString *publicKeyHex;
+
+/**
  Your rsa private key hex. This property MUST be set before you can call authorize.
  */
 @property (nonatomic, copy) NSString *privateKeyHex;
