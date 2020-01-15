@@ -49,6 +49,7 @@
 {
     [super viewDidLoad];
     
+    self.title = @"CA Example";
     self.logVC = [LogViewController new];
     [self addChildViewController:self.logVC];
     self.logVC.view.frame = self.view.frame;
@@ -111,16 +112,8 @@
 
 - (void)beginOngoingAccess
 {
-    self.configuration = [self createSampleConfiguration];
-    
-    if (self.configuration)
-    {
-        self.dmeClient = nil;
-        self.dmeClient = [[DMEPullClient alloc] initWithConfiguration:self.configuration];
-    }
-    
-    [self.logVC reset];
-    
+    [self resetClient];
+    [self updateNavigationBarWithMessage:@"Beginning Ongoing Access"];
     __weak __typeof(self)weakSelf = self;
     [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -158,9 +151,7 @@
 - (void)runLegacyFlow
 {
     [self resetClient];
-    
-    [self.logVC reset];
-
+    [self updateNavigationBarWithMessage:@"Beginning Legacy Flow"];
     [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         if (session == nil)
@@ -205,7 +196,7 @@
 - (void)clearNavigationBar
 {
     self.navigationItem.leftBarButtonItem = nil;
-    self.title = nil;
+    self.title = @"CA Example";
 }
 
 - (void)getSessionFileList
