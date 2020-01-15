@@ -72,16 +72,18 @@ class LogViewController: UIView {
     textView.scrollRangeToVisible(NSMakeRange(stringLength-1, 1))
   }
   
-  func log(message: String) {
-    guard !message.isEmpty else {
-        return
+    func log(message: String) {
+        DispatchQueue.main.async {
+            guard !message.isEmpty else {
+                return
+            }
+            
+            let now = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+            let dateString = formatter.string(from: now)
+            self.textView.text = self.textView.text + "\n" + dateString + " " + message
+            self.scrollToBottom()
+        }
     }
-    
-    let now = Date()
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-    let dateString = formatter.string(from: now)
-    textView.text = textView.text + "\n" + dateString + " " + message
-    scrollToBottom()
-  }
 }
