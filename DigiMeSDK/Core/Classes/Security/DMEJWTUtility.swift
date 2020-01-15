@@ -338,6 +338,13 @@ public class DMEJWTUtility: NSObject {
     }
     
     @objc public class func refreshJwt(from refreshToken: String, appId: String, contractId: String, privateKey: String, publicKey: String?) -> String? {
+        guard
+            privateKey.isBase64(),
+            let privateKeyData = convertKeyString(privateKey) else {
+                print("DigiMeSDK: Error creating RSA key")
+                return nil
+        }
+        
         let claims = PayloadRefreshOAuthJWT()
         claims.clientId = "\(appId)_\(contractId)"
         claims.grantType = "refresh_token"
@@ -347,13 +354,6 @@ public class DMEJWTUtility: NSObject {
         claims.redirectUrl = "digime-ca-\(appId)"
         claims.refreshToken = refreshToken
         claims.timestamp = NSDate().timeIntervalSince1970 * 1000.0
-        
-        guard
-            privateKey.isBase64(),
-            let privateKeyData = convertKeyString(privateKey) else {
-                print("DigiMeSDK: Error creating RSA key")
-                return nil
-        }
 
         // signing
         var jwt = JWT(header: header, claims: claims)
