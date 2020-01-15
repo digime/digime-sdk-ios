@@ -119,14 +119,14 @@
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
         {
-            [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
             return;
         };
         
-        [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
-        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth access token: %@", oAuthToken.accessToken]];
-        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth refresh token: %@", oAuthToken.refreshToken]];
-        [self.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", oAuthToken.expiresOn]];
+        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
+        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth access token: %@", oAuthToken.accessToken]];
+        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth refresh token: %@", oAuthToken.refreshToken]];
+        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", oAuthToken.expiresOn]];
         
         strongSelf.oAuthToken = oAuthToken;
         
@@ -152,36 +152,38 @@
 {
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Beginning Legacy Flow"];
+     __weak __typeof(self)weakSelf = self;
     [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
-        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
         {
-            [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
             return;
         };
         
-        [self.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
+        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
 
         //Uncomment relevant method depending on which you wish to receive.
-        [self getSessionData];
-        // [self getSessionFileList];
-        [self getAccounts];
+        [strongSelf getSessionData];
+        // [strongSelf getSessionFileList];
+        [strongSelf getAccounts];
     }];
 }
 
 - (void)getAccounts
 {
     [self updateNavigationBarWithMessage:@"Retrieving Accounts Data"];
+     __weak __typeof(self)weakSelf = self;
     [self.dmeClient getSessionAccountsWithCompletion:^(DMEAccounts * _Nullable accounts, NSError * _Nullable error) {
-        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (accounts == nil)
         {
-            [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
-            self.oAuthToken = nil;
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve accounts: %@", error.localizedDescription]];
+            strongSelf.oAuthToken = nil;
             return;
         };
         
-        [self.logVC logMessage:[NSString stringWithFormat:@"Account Content: %@", accounts.json]];
+        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Account Content: %@", accounts.json]];
     }];
 }
 
@@ -202,29 +204,31 @@
 - (void)getSessionFileList
 {
     [self updateNavigationBarWithMessage:@"Retrieving Session File List"];
+    __weak __typeof(self)weakSelf = self;
     [self.dmeClient getSessionFileListWithUpdateHandler:^(DMEFileList * fileList, NSArray *fileIds) {
-        
+         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (fileIds.count > 0)
         {
-            [self.logVC logMessage:[NSString stringWithFormat:@"\n\nNew files added or updated in the file List: %@, accounts: %@\n\n", fileIds, fileList.accounts]];
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"\n\nNew files added or updated in the file List: %@, accounts: %@\n\n", fileIds, fileList.accounts]];
         }
         else
         {
-            [self.logVC logMessage:[NSString stringWithFormat:@"\n\nFileList Status: %@, Accounts: %@", fileList.syncStateString, fileList.accounts]];
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"\n\nFileList Status: %@, Accounts: %@", fileList.syncStateString, fileList.accounts]];
         }
     } completion:^(NSError * _Nullable error) {
+         __strong __typeof(weakSelf)strongSelf = weakSelf;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)
             {
-                [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve session file list failed: %@", error.localizedDescription]];
-                self.oAuthToken = nil;
+                [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Client retrieve session file list failed: %@", error.localizedDescription]];
+                strongSelf.oAuthToken = nil;
             }
             else
             {
-                [self.logVC logMessage:@"-------------Finished fetching session FileList!-------------"];
+                [strongSelf.logVC logMessage:@"-------------Finished fetching session FileList!-------------"];
             }
         
-            [self clearNavigationBar];
+            [strongSelf clearNavigationBar];
         });
     }];
 }
@@ -233,24 +237,26 @@
 {
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Retrieving Ongoing Access File List"];
+     __weak __typeof(self)weakSelf = self;
     [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)
             {
-                [self.logVC logMessage:[NSString stringWithFormat:@"Retrieving Ongoing Access File List failed: %@", error.localizedDescription]];
-                self.oAuthToken = nil;
+                [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Retrieving Ongoing Access File List failed: %@", error.localizedDescription]];
+                strongSelf.oAuthToken = nil;
             }
             else
             {
-                [self.logVC logMessage:@"-------------Ongoing Access data triggered sucessfully-------------"];
+                [strongSelf.logVC logMessage:@"-------------Ongoing Access data triggered sucessfully-------------"];
                 
                 // if oAuthToken has expired, a new one will be returned
-                self.oAuthToken = oAuthToken;
+                strongSelf.oAuthToken = oAuthToken;
                 
                 //Uncomment relevant method depending on which you wish to receive.
-                [self getAccounts];
-                [self getSessionData];
-                // [self getSessionFileList];
+                [strongSelf getAccounts];
+                [strongSelf getSessionData];
+                // [strongSelf getSessionFileList];
             }
         });
     }];
@@ -259,31 +265,32 @@
 - (void)getSessionData
 {
     [self updateNavigationBarWithMessage:@"Retrieving Session Data"];
+    __weak __typeof(self)weakSelf = self;
     [self.dmeClient getSessionDataWithDownloadHandler:^(DMEFile * _Nullable file, NSError * _Nullable error) {
-        
+         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (file != nil)
         {
-            [self.logVC logMessage:[NSString stringWithFormat:@"Downloaded file: %@, record count: %@", file.fileId, @(file.fileContentAsJSON.count)]];
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Downloaded file: %@, record count: %@", file.fileId, @(file.fileContentAsJSON.count)]];
         }
         
         if (error != nil)
         {
             NSString *fileId = error.userInfo[kFileIdKey] ?: @"unknown";
-            [self.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", fileId, error.localizedDescription]];
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Failed to retrieve content for fileId: < %@ > Error: %@", fileId, error.localizedDescription]];
         }
     } completion:^(DMEFileList * _Nullable fileList, NSError * _Nullable error) {
-        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)
             {
-                [self.logVC logMessage:[NSString stringWithFormat:@"Client retrieve session data failed: %@", error.localizedDescription]];
+                [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Client retrieve session data failed: %@", error.localizedDescription]];
             }
             else
             {
-                [self.logVC logMessage:@"-------------Finished fetching session data!-------------"];
+                [strongSelf.logVC logMessage:@"-------------Finished fetching session data!-------------"];
             }
         
-            [self clearNavigationBar];
+            [strongSelf clearNavigationBar];
         });
     }];
 }
