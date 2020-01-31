@@ -46,8 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Determines whether the user is automatically forwarded
  to digi.me app when the `DMEOAuthToken` could not be refreshed by the SDK.
- // Default to YES.
- // Setting this to NO will in stead return a `AuthErrorOAuthTokenExpired` error.
+ Default to YES.
+ Setting this to NO will in stead return a `AuthErrorOAuthTokenExpired` error.
  */
 @property (nonatomic) BOOL autoRecoverExpiredCredentials;
 
