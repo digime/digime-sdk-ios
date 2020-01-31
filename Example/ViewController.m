@@ -116,24 +116,27 @@
     [self updateNavigationBarWithMessage:@"Beginning Ongoing Access"];
     __weak __typeof(self)weakSelf = self;
     [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        if (session == nil)
-        {
-            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
-            return;
-        };
-        
-        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
-        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth access token: %@", oAuthToken.accessToken]];
-        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth refresh token: %@", oAuthToken.refreshToken]];
-        [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", oAuthToken.expiresOn]];
-        
-        strongSelf.oAuthToken = oAuthToken;
-        
-        //Uncomment relevant method depending on which you wish to receive.
-        [strongSelf getAccounts];
-        [strongSelf getSessionData];
-        // [strongSelf getSessionFileList];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            if (session == nil)
+            {
+                [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
+                [self clearNavigationBar];
+                return;
+            };
+            
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"Authorization Succeeded for session: %@", session.sessionKey]];
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth access token: %@", oAuthToken.accessToken]];
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth refresh token: %@", oAuthToken.refreshToken]];
+            [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", oAuthToken.expiresOn]];
+            
+            strongSelf.oAuthToken = oAuthToken;
+            
+            //Uncomment relevant method depending on which you wish to receive.
+            [strongSelf getAccounts];
+            [strongSelf getSessionData];
+            // [strongSelf getSessionFileList];
+        });
     }];
 }
 
