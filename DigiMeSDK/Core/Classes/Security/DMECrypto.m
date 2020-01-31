@@ -98,7 +98,11 @@ static const NSInteger kHashLength = 64;
                            plainBuffer,
                            &plainBufferSize);
     
-    NSAssert(status == noErr, @"RSA decryption failed");
+    if (status != noErr)
+    {
+        NSLog(@"[DMECrypto] RSA decryption failed");
+    }
+    
     if (status != noErr)
     {
         free(plainBuffer);
@@ -107,7 +111,10 @@ static const NSInteger kHashLength = 64;
     
     NSData* decryptedDsk = [NSData dataWithBytes:plainBuffer length:plainBufferSize];
     free(plainBuffer);
-    NSAssert(decryptedDsk.length == kDataSymmetricKeyLength, @"Decrypted DSK size is wrong");
+    if (decryptedDsk.length != kDataSymmetricKeyLength)
+    {
+        NSLog(@"[DMECrypto] Decrypted DSK size is wrong");
+    }
     
     NSData* div = [encryptedData subdataWithRange:NSMakeRange(kDataSymmetricKeyLengthCA,kDataInitializationVectorLength)];
     NSData* fileData = [encryptedData subdataWithRange:NSMakeRange((kDataSymmetricKeyLengthCA+kDataInitializationVectorLength),encryptedData.length-(kDataSymmetricKeyLengthCA+kDataInitializationVectorLength))];
@@ -117,14 +124,24 @@ static const NSInteger kHashLength = 64;
                                              initializationVector:div
                                                              data:fileData
                                                             error:&error];
-    NSAssert(error == nil, @"An error occured");
+    if (error != nil)
+    {
+        NSLog(@"[DMECrypto] Error decrypting data: %@", error.localizedDescription);
+    }
     
     NSData* jfsDataHash __attribute__((unused)) = [jfsDataWithHash subdataWithRange:NSMakeRange(0, kHashLength)];
     NSData* jfsData = [jfsDataWithHash subdataWithRange:NSMakeRange(kHashLength, jfsDataWithHash.length - kHashLength)];
     NSData* newJfsDataHash __attribute__((unused)) = [jfsData hashSha512];
     
-    NSAssert(jfsData != nil, @"JFS data cannot be nil");
-    NSAssert([newJfsDataHash isEqualToData:jfsDataHash], @"Hash doesn't match");
+    if (jfsData == nil)
+    {
+        NSLog(@"[DMECrypto] JFS data was found to be nil");
+    }
+    
+    if ([newJfsDataHash isEqualToData:jfsDataHash])
+    {
+        NSLog(@"[DMECrypto] Hash doesn't match");
+    }
     
     return jfsData;
 }
@@ -713,7 +730,7 @@ static const NSInteger kHashLength = 64;
                                );
         if (status != 0)
         {
-            NSLog(@"SecKeyEncrypt fail. Error Code: %d", (int)status);
+            NSLog(@"[DMECrypto] SecKeyEncrypt fail. Error Code: %d", (int)status);
             ret = nil;
             break;
         }
