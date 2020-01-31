@@ -42,7 +42,7 @@ Ongoing Access is for you if:
 * You need regular access to user's data
 * You are using an ongoing contract
 
-\* *`refreshTokens` used to refresh `accessTokens` do eventually expire (for example - 30 days). When this happens, user will be directed back to digi.me app for re-authorization.*
+\* *`refreshTokens` used to refresh `accessTokens` do eventually expire (for example - 30 days). When this happens, user will need to be directed back to digi.me app for re-authorization.*
 
 
 
@@ -99,9 +99,20 @@ One important thing to note here - the `DMEAuthToken` returned in `completion` m
 
 Under the hood the SDK will trigger data query using the `DMEOAuthToken` which, if valid, will start preparing user's protected resources for access. This time however, the user will remain in your app.
 
-**NOTE:** There's one exception to the rule - if the `refreshToken` contained in `DMEOAuthToken` has expired, the user will be directed to the digi.me app, so that this can be regenerated.
+#### Configuration Options
+There is a new property available on `DMEPullConfiguration` object - `autoRecoverExpiredCredentials`. This defaults to `true`, which means that if the `refreshToken` contained in `DMEOAuthToken` has expired, the user will be directed to the digi.me app, so that this can be regenerated.
 
+If you wish to direct the user back to digi.me app manually, set this property to:
 
+#####Objective-c
+```objc
+configuration.autoRecoverExpiredCredentials = NO;
+```
+#####Swift
+```swift
+configuration.autoRecoverExpiredCredentials = false;
+```
+When set to `false`, the SDK will return an `AuthErrorOAuthTokenExpired` error in completion.
 
 ### Anything else?
 

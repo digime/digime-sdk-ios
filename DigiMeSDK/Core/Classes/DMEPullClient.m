@@ -368,6 +368,28 @@
             completion(nil, nil, error);
         }];
     } failure:^(NSError * _Nonnull error) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        
+        //clear stored token, since it is now effectively invalid.
+        strongSelf.oAuthToken = nil;
+        
+        if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
+        {
+            DMEPullConfiguration *configuration = (DMEPullConfiguration *)strongSelf.configuration;
+            if (configuration.autoRecoverExpiredCredentials)
+            {
+                // authorize without token, via digi.me app
+                [strongSelf authorizeOngoingAccessWithСompletion:completion];
+            }
+            else
+            {
+                NSError *tokenError = [NSError authError:AuthErrorOAuthTokenExpired additionalInfo:error.userInfo];
+                completion(nil, nil, tokenError);
+            }
+                
+            return;
+        }
+        
         completion(nil, nil, error);
     }];
 }
