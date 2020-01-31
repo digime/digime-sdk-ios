@@ -135,7 +135,7 @@ static const NSInteger kHashLength = 64;
     
     if (jfsData == nil)
     {
-        NSLog(@"[DMECrypto] JFS data was found be nil");
+        NSLog(@"[DMECrypto] JFS data was found to be nil");
     }
     
     if ([newJfsDataHash isEqualToData:jfsDataHash])
