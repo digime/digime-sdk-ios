@@ -368,6 +368,26 @@
             completion(nil, nil, error);
         }];
     } failure:^(NSError * _Nonnull error) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        
+        if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
+        {
+            strongSelf.oAuthToken = nil;
+            
+            DMEPullConfiguration *configuration = (DMEPullConfiguration *)strongSelf.configuration;
+            if (configuration.autoRecoverExpiredCredentials)
+            {
+                [strongSelf authorizeOngoingAccessWithСompletion:completion];
+            }
+            else
+            {
+                NSError *tokenError = [NSError authError:AuthErrorOAuthTokenExpired additionalInfo:error.userInfo];
+                completion(nil, nil, tokenError);
+            }
+                
+            return;
+        }
+        
         completion(nil, nil, error);
     }];
 }

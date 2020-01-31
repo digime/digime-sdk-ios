@@ -20,6 +20,7 @@
         _guestEnabled = YES;
         _pollInterval = 3.0;
         _maxStalePolls = 100;
+        _autoRecoverExpiredCredentials = YES;
     }
     
     return self;

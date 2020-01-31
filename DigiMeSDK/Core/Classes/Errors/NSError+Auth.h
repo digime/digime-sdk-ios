@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, AuthError) {
     AuthErrorInvalidSession = 7, //invalid session
     AuthErrorInvalidSessionKey = 10, //session key returned by digi.me app is invalid
     AuthErrorScopeOutOfBounds = 11, // requested scope is out of bounds of Contract scope
+    AuthErrorOAuthTokenExpired = 12, // OAuthToken expired. Use `authorize` without token to refresh.
 };
 
 /**
