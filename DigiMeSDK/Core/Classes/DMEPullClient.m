@@ -370,13 +370,15 @@
     } failure:^(NSError * _Nonnull error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
+        //clear stored token, since it is now effectively invalid.
+        strongSelf.oAuthToken = nil;
+        
         if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
         {
-            strongSelf.oAuthToken = nil;
-            
             DMEPullConfiguration *configuration = (DMEPullConfiguration *)strongSelf.configuration;
             if (configuration.autoRecoverExpiredCredentials)
             {
+                // authorize without token, via digi.me app
                 [strongSelf authorizeOngoingAccessWithСompletion:completion];
             }
             else
