@@ -1,7 +1,7 @@
 use_frameworks!
 
 target 'Genrefy' do
-    pod 'DigiMeSDK', :path => '../'
+    pod 'DigiMeSDK', :path => '../../'
     pod 'Kingfisher'
     pod 'SVProgressHUD'
     pod 'Koloda', '~> 4.4'

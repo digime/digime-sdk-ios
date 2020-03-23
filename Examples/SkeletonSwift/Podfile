@@ -1,7 +1,7 @@
 use_frameworks!
 
 target 'DigiMeSDKExampleSwift' do
-  pod 'DigiMeSDK', :path => '../'
+  pod 'DigiMeSDK', :path => '../../'
 
   target 'DigiMeSDKExampleSwiftTests' do
     inherit! :search_paths
