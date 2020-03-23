@@ -26,21 +26,10 @@
 
 - (DMEPullConfiguration *)createSampleConfiguration
 {
-    // - GET STARTED -
-    
-    // - REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.
-    NSString *appId = @"YOUR_APP_ID";
-    
-    // - REPLACE 'YOUR_CONTRACT_ID' with your contract ID.
-    NSString *contractId = @"YOUR_CONTRACT_ID";
-    
-    // - REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.
-    NSString *p12Filename = @"YOUR_P12_FILE_NAME";
-    
-    // - REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.
-    NSString *p12Password = @"YOUR_P12_PASSWORD";
-    
-    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:p12Filename p12Password:p12Password];
+    // production
+    NSString *appId = @"IfnN9Y27Jym3P1Fad3ks3sTlo22flUBb";
+    NSString *contractId = @"r9ZPFD0bUqycDw6qPSg7AyGT7xisR8jM";
+    DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:@"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF" p12Password:@"monkey periscope"];
     configuration.debugLogEnabled = YES;
     return configuration;
 }
@@ -67,6 +56,13 @@
                                 ];
 
     self.toolbarItems = barButtonItems;
+    
+//    NSData *tokenData = [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token"];
+//
+//    if (tokenData)
+//    {
+//        self.oAuthToken = [NSKeyedUnarchiver unarchiveObjectWithData:tokenData];
+//    }
 }
 
 - (void)zoomIn
@@ -132,6 +128,9 @@
             
             strongSelf.oAuthToken = oAuthToken;
             
+//            NSData *tokenData = [NSKeyedArchiver archivedDataWithRootObject:oAuthToken];
+//            [[NSUserDefaults standardUserDefaults] setObject:tokenData forKey:@"oauth_token"];
+
             //Uncomment relevant method depending on which you wish to receive.
             [strongSelf getAccounts];
             [strongSelf getSessionData];

@@ -1,0 +1,12 @@
+use_frameworks!
+
+target 'Genrefy' do
+    pod 'DigiMeSDK', :path => '../'
+    pod 'Kingfisher'
+    pod 'SVProgressHUD'
+    pod 'Koloda', '~> 4.4'
+    pod 'SwiftGifOrigin'
+    pod 'PopItUp'
+    pod 'Instabug'
+end
+
