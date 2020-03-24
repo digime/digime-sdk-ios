@@ -27,7 +27,7 @@
     {
 #if !DEBUG
         NSMutableArray* certs = [NSMutableArray new];
-        for (int i = 1; i<=3; i++)
+        for (int i = 1; i<=5; i++)
         {
             NSString* path = [[NSBundle bundleForClass:[self class]] pathForResource:[NSString stringWithFormat:@"apiCert%d",i,nil] ofType:@"der"];
             if(path)
