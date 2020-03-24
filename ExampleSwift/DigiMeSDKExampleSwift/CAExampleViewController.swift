@@ -58,6 +58,10 @@ class CAExampleViewController: UIViewController {
         
         dmeClient?.authorize { (session, error) in
             
+            if let digiMeVersion = self.dmeClient?.metadata[kDMEDigiMeVersion] as? String {
+                self.logVC.log(message: "digi.me App Version: " + digiMeVersion)
+            }
+            
             guard let session = session else {
                 if let error = error {
                     self.logVC.log(message: "Authorization failed: " + error.localizedDescription)

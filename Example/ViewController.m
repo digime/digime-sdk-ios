@@ -81,6 +81,12 @@
 
     [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
+        NSString *digiMeVersion = self.dmeClient.metadata[kDMEDigiMeVersion];
+        if (digiMeVersion != nil)
+        {
+            [self.logVC logMessage:[NSString stringWithFormat:@"digi.me App Version: %@", digiMeVersion]];
+        }
+
         if (session == nil)
         {
             [self.logVC logMessage:[NSString stringWithFormat:@"Authorization failed: %@", error.localizedDescription]];
