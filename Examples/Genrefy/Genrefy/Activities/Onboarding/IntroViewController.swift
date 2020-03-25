@@ -18,15 +18,10 @@ class IntroViewController: UIViewController, Storyboarded, Coordinated {
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var mainTitleLabel: UILabel!
     @IBOutlet var primaryButton: RoundedButton!
-    @IBOutlet var skipButton: UIButton!
     @IBOutlet var secondaryButton: UIButton!
     
     @IBAction func primaryButtonAction(_ sender: Any) {
         coordinatingDelegate?.primaryButtonAction(sender: self)
-    }
-    
-    @IBAction func skipButtonAction(_ sender: Any) {
-        coordinatingDelegate?.skipOnboarding(sender: self)
     }
     
     @IBAction func secondaryButtonAction(_ sender: UIButton) {
@@ -40,14 +35,13 @@ class IntroViewController: UIViewController, Storyboarded, Coordinated {
         
         // Do any additional setup after loading the view.
         primaryButton.backgroundColor = Theme.buttonColor
-        mainTitleLabel.font = UIFont.systemFont(ofSize: Device.IS_IPHONE_5 ? 20 : 24)
+        mainTitleLabel.font = UIFont.systemFont(ofSize: Device.IS_IPHONE_5 ? 20 : 24, weight: .light)
         
         secondaryButtonHeightConstraint.constant = Device.IS_IPHONE_5 ? 0 : 20
         
         useCase.configure(mainImageView: mainImageView)
         useCase.configure(mainTitleLabel: mainTitleLabel)
         useCase.configure(primaryButton: primaryButton)
-        useCase.configure(skipButton: skipButton)
         useCase.configure(secondaryButton: secondaryButton)
     }
 }

@@ -11,6 +11,5 @@ import Foundation
 @objc protocol IntroCoordinatingDelegate: CoordinatingDelegate {
     
     func primaryButtonAction(sender: IntroViewController)
-    func skipOnboarding(sender: IntroViewController)
     func secondaryButtonAction(sender: IntroViewController)
 }

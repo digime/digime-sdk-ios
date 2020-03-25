@@ -25,9 +25,6 @@ class OnboardingCoordinator: NSObject, ActivityCoordinating {
 
     var parentCoordinator: Coordinating
     var childCoordinators: [ActivityCoordinating] = []
-    lazy var onboardingViewControllers: [IntroViewController] = {
-        return [newHomeViewController(),newIntroViewController(),newProcessViewController(),newHowtoViewController(),newCALaunchViewController()]
-    }()
     
     weak var keyViewController: UIViewController?
     var navigationController: UINavigationController
@@ -38,61 +35,21 @@ class OnboardingCoordinator: NSObject, ActivityCoordinating {
     }
     
     func begin() {
-        let vc = newIntroPageViewController()
+        let vc = newHomeViewController()
         navigationController.pushViewController(vc, animated: false)
-
-        // let homeVC = EditListViewController.instantiate()
-        // homeVC.coordinatingDelegate = self
-        // navigationController.pushViewController(homeVC, animated: true)
-        
-        // let homeVC = HomeViewController.instantiate()
-        // homeVC.coordinatingDelegate = self
-        // navigationController.pushViewController(homeVC, animated: true)
-        
-        // let homeVC = SwearDetailsViewController.instantiate()
-        // homeVC.coordinatingDelegate = self
-        // navigationController.pushViewController(homeVC, animated: true)
     }
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {
         removeChild(child)
-        
         navigationController.popViewController(animated: true)
-        (keyViewController as? NoAppConsentRequestViewController)?.isDigiMeInstalled = DMEAppCommunicator.shared().canOpenDMEApp()
-        
-        if
-            let result = result as? ManualSearchCoordinator.Result,
-            result.didTapInstall {
-            startConsentRequest()
-        }
     }
 }
 
 // MARK: - IntroCoordinatingDelegate
 extension OnboardingCoordinator: IntroCoordinatingDelegate {
     
-    func skipOnboarding(sender: IntroViewController) {
-        if let pageViewController = sender.parent as? IntroPageViewController  {
-            pageViewController.skipOnboarding()
-        }
-    }
-    
     func primaryButtonAction(sender: IntroViewController) {
-        if sender.useCase is CALaunchViewControllerUseCase {
-            startConsentRequest()
-        }
-        else {
-            guard let nextVC = viewController(after: sender) else {
-                parentCoordinator.childDidFinish(child: self, result: nil)
-                return
-            }
-            
-            if let pageViewController = sender.parent as? IntroPageViewController  {
-                pageViewController.setViewControllers([nextVC], direction: .forward, animated: true)
-                updatePageControl(for: pageViewController)
-            }
-            
-        }
+        startConsentRequest()
     }
     
     func secondaryButtonAction(sender: IntroViewController) {
@@ -169,99 +126,15 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
             }
         })
     }
-    
-    func startTwitterDemo() {
-        let manualCoordinator = ManualSearchCoordinator(navigationController: navigationController, parentCoordinator: self)
-        childCoordinators.append(manualCoordinator)
-        manualCoordinator.begin()
-    }
 }
 
 extension OnboardingCoordinator {
-    
-    func newIntroPageViewController() -> IntroPageViewController {
-        let vc = IntroPageViewController()
-        vc.coordinatingDelegate = self
-        return vc
-    }
     
     func newHomeViewController() -> IntroViewController {
         let vc = IntroViewController.instantiate()
         vc.useCase = HomeViewControllerUseCase()
         vc.coordinatingDelegate = self
         return vc
-    }
-    
-    func newIntroViewController() -> IntroViewController {
-        let vc = IntroViewController.instantiate()
-        vc.useCase = IntroductionViewControllerUseCase()
-        vc.coordinatingDelegate = self
-        return vc
-    }
-    
-    func newProcessViewController() -> IntroViewController {
-        let vc = IntroViewController.instantiate()
-        vc.useCase = ProcessViewControllerUseCase()
-        vc.coordinatingDelegate = self
-        return vc
-    }
-    
-    func newHowtoViewController() -> IntroViewController {
-        let vc = IntroViewController.instantiate()
-        vc.useCase = HowtoViewControllerUseCase()
-        vc.coordinatingDelegate = self
-        return vc
-    }
-    
-    func newCALaunchViewController() -> IntroViewController {
-        let vc = IntroViewController.instantiate()
-        vc.useCase = CALaunchViewControllerUseCase()
-        vc.coordinatingDelegate = self
-        return vc
-    }
-}
-
-// MARK: - IntroFlowDelegate
-extension OnboardingCoordinator: IntroFlowDelegate {
-    
-    func viewController(after vc: IntroViewController) -> IntroViewController? {
-        
-        guard let viewControllerIndex = onboardingViewControllers.index(of: vc) else {
-            return nil
-        }
-        
-        let nextIndex = viewControllerIndex + 1
-        
-        guard nextIndex < onboardingViewControllers.count else {
-            return nil
-        }
-        
-        return onboardingViewControllers[nextIndex]
-    }
-    
-    func viewController(before vc: IntroViewController) -> IntroViewController? {
-        
-        guard let viewControllerIndex = onboardingViewControllers.index(of: vc) else {
-            return nil
-        }
-        
-        let previousIndex = viewControllerIndex - 1
-        
-        guard
-            previousIndex >= 0,
-            onboardingViewControllers.count > previousIndex else {
-                return nil
-        }
-        
-        return onboardingViewControllers[previousIndex]
-    }
-    
-    func updatePageControl(for pageViewController: IntroPageViewController) {
-        
-        if let pageContentViewController = pageViewController.viewControllers?[0] as? IntroViewController {
-            pageViewController.pageControl.currentPage = onboardingViewControllers.index(of: pageContentViewController)!
-        }
-        
     }
 }
 
