@@ -12,5 +12,4 @@ import Foundation
     
     func goBack()
     func startConsentRequest()
-    func startTwitterDemo()
 }
