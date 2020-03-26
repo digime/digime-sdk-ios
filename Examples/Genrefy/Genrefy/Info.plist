@@ -47,6 +47,8 @@
 	<array>
 		<string>SedgwickAve-Regular.ttf</string>
 		<string>SedgwickAveDisplay-Regular.ttf</string>
+		<string>Sanchez-Italic.ttf</string>
+		<string>Sanchez-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
