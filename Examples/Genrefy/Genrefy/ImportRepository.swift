@@ -120,6 +120,14 @@ extension ServiceType {
 
 class ImportRepository: NSObject {
     
+    var recentSongs = [Song]()
+    var genresCounts = NSCountedSet()
+    var orderedGenresSummaries: [GenreSummary] {
+        return genresCounts.allObjects
+            .compactMap { $0 as? String }
+            .sorted { return genresCounts.count(for: $0) > genresCounts.count(for: $1) }
+            .map { GenreSummary(title: $0, count: genresCounts.count(for: $0))}
+    }
     var files = [DMEFile]()
     var accounts = [DMEAccount]()
     var objects: [CAResponseObject] = []
@@ -129,40 +137,22 @@ class ImportRepository: NSObject {
     
     func process(file: DMEFile) {
         files.append(file)
-        let fileComponents = file.fileId.components(separatedBy: "_")
-        
-        guard
-            fileComponents.count > 6,
-            fileComponents[4] == "2", //if file type is 'Post'
-            let serviceType = ServiceType(rawValue: fileComponents[2]),
-            let json = file.fileContentAsJSON() as? [[String: Any]] else {
-                print("Could not process file: \(file.fileId)")
+        guard file.fileId.contains("_406_") else {
+            print("Unexpected file \(file.fileId)")
             return
         }
         
-        print("Found: \(json.count) Post objects in \(file.fileId)")
-        
-        var data: [CAResponseObject] = []
-        
-        for jsonObj in json {
-            guard
-                let objData = try? JSONSerialization.data(withJSONObject: jsonObj, options: .prettyPrinted),
-                let responseObject = try? JSONDecoder().decode(CAResponseObject.self, from: objData) else {
-                    print("Could not DECODE file: \(file.fileId)")
-                    continue
-            }
+        do {
+            let songArray = try JSONDecoder().decode([Song].self, from: file.fileContent)
+            process(songs: songArray)
             
-            responseObject.serviceType = serviceType
-            
-            if responseObject.isMyPost {
-                objects.append(responseObject)
-                data.append(responseObject)
-            }
-            else {
-                print("Ignoring someone else's post: \(responseObject.username), text: \(responseObject.text)")
+            DispatchQueue.main.async {
+                self.delegate?.repositoryDidUpdateProcessing(repository: self)
             }
         }
-        compute(data: data)
+        catch {
+            print("Error decoding play history data for file \(file.fileId): \(error)")
+        }
     }
     
     func process(accounts: DMEAccounts) {
@@ -195,6 +185,23 @@ class ImportRepository: NSObject {
         }
         
         return objects.filter { accountIdentifiers.contains($0.accountId) }
+    }
+    
+    private func process(songs: [Song]) {
+        let now = Date().timeIntervalSince1970
+        let twentyFourHoursAgo = now - 24 * 60 * 60
+        for song in songs {
+            // Only process songs listened to in last 24 hours
+            guard song.lastListenedTimestamp > twentyFourHoursAgo else {
+                continue
+            }
+            
+            recentSongs.append(song)
+            let genres = song.genres
+            for genre in genres {
+                genresCounts.add(genre)
+            }
+        }
     }
     
     private func compute(data: [CAResponseObject]) {
