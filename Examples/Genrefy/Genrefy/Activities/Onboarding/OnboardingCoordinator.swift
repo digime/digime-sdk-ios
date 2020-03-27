@@ -101,7 +101,14 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
     }
     
     func authorize() {
-        DigimeService.sharedInstance.dmeClient?.authorizeOngoingAccess(completion: { (session, oAuthToken, error) in
+        let scope = DMEScope()
+        let objects = [DMEServiceObjectType(identifier: 406)]
+        let services = [DMEServiceType(identifier: 19, objectTypes: objects)]
+        let groups = [DMEServiceGroup(identifier: 5, serviceTypes: services)]
+        scope.serviceGroups = groups
+        scope.timeRanges = [DMETimeRange.last(1, unit: .day)]
+        
+        DigimeService.sharedInstance.dmeClient?.authorizeOngoingAccess(scope: scope, oAuthToken: nil) { (session, oAuthToken, error) in
             
             guard let _ = session else {
                 DispatchQueue.main.async {
@@ -124,7 +131,7 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
                 importing.begin()
                 self.cache.setConsentDate(consentDate: Date())
             }
-        })
+        }
     }
 }
 
