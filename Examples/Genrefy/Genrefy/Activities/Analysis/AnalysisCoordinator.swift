@@ -94,9 +94,11 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     }
     
     func repositoryDidUpdateProcessing() {
-        homeViewController.swearPosts = repository?.tfPosts
-        homeViewController.allPosts = repository?.objects
-        homeViewController.reload()
+        guard let repository = repository  else {
+            return
+        }
+        homeViewController.genreSummaries = repository.orderedGenresSummaries
+//        homeViewController.reload()
     }
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {

@@ -24,6 +24,11 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
     typealias GenericCoordinatingDelegate = HomeViewCoordinatingDelegate
     weak var coordinatingDelegate: GenericCoordinatingDelegate?
     
+    var genreSummaries = [GenreSummary]() {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     var allPosts: [CAResponseObject]?
     var swearPosts: [TFPost]?
     private var swearWords = [String]()
@@ -47,7 +52,7 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.delegate = self
+//        tableView.delegate = self
         tableView.dataSource = self
         
         reload()
@@ -196,30 +201,28 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
     }
 }
 
-extension HomeViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section == 1 else {
-            return
-        }
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let swearWord = swearWords[indexPath.row]
-        coordinatingDelegate?.didSelect(word: swearWord)
-    }
-}
+//extension HomeViewController: UITableViewDelegate {
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        guard indexPath.section == 1 else {
+//            return
+//        }
+//
+//        tableView.deselectRow(at: indexPath, animated: true)
+//
+//        let swearWord = swearWords[indexPath.row]
+//        coordinatingDelegate?.didSelect(word: swearWord)
+//    }
+//}
 
 extension HomeViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0, 2:
-            return 1
-        case 1:
-            return swearWords.count
+        case 0:
+            return genreSummaries.count
         default:
             return 0
         }
@@ -227,36 +230,36 @@ extension HomeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
+//        case 0:
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.summaryCell) as? ResultsSummaryTableViewCell else {
+//                return UITableViewCell()
+//            }
+//
+//            let oldestPost = allPosts?.map { $0.createdDate }.min { $0.timeIntervalSinceReferenceDate < $1.timeIntervalSinceReferenceDate }
+//            let state: ResultsSummaryTableViewCell.State = {
+//                if !swearWords.isEmpty {
+//                    return .reviewNeeded
+//                }
+//
+//                let decidedPostsCount = swearPosts?.filter { $0.action == .delete  || $0.action == .ignore || $0.action == .confirmed}.count ?? 0
+//                if decidedPostsCount > 0 {
+//                    return .reviewFinished
+//                }
+//
+//                return .reviewNotNeeded
+//            }()
+//            cell.configure(postCount: allPosts?.count ?? 0, state: state, oldestPost: oldestPost ?? Date())
+//            return cell
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.summaryCell) as? ResultsSummaryTableViewCell else {
-                return UITableViewCell()
-            }
-            
-            let oldestPost = allPosts?.map { $0.createdDate }.min { $0.timeIntervalSinceReferenceDate < $1.timeIntervalSinceReferenceDate }
-            let state: ResultsSummaryTableViewCell.State = {
-                if !swearWords.isEmpty {
-                    return .reviewNeeded
-                }
-                
-                let decidedPostsCount = swearPosts?.filter { $0.action == .delete  || $0.action == .ignore || $0.action == .confirmed}.count ?? 0
-                if decidedPostsCount > 0 {
-                    return .reviewFinished
-                }
-                
-                return .reviewNotNeeded
-            }()
-            cell.configure(postCount: allPosts?.count ?? 0, state: state, oldestPost: oldestPost ?? Date())
-            return cell
-        case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.swearCell) as? SwearCell else {
                 return UITableViewCell()
             }
             
-            let swear = swearWords[indexPath.row]
-            let swearCount = counts[swear] ?? 0
-            cell.swearLabel.text = swear.uppercased()
-            cell.countLabel.text = "\(counts[swear] ?? 0)"
-            cell.amount = CGFloat(swearCount) / CGFloat(topSwearCount)
+            let genreSummary = genreSummaries[indexPath.row]
+            let topGenreCount = genreSummaries[0].count
+            cell.swearLabel.text = genreSummary.title
+            cell.countLabel.text = "\(genreSummary.count)"
+            cell.amount = CGFloat(genreSummary.count) / CGFloat(topGenreCount)
             return cell
         default:
             return UITableViewCell()
@@ -266,7 +269,7 @@ extension HomeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
-        case 0, 2:
+        case 0:
             return UITableViewAutomaticDimension
         default:
             return 60
