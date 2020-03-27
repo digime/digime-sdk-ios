@@ -39,7 +39,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome-home" translatesAutoresizingMaskIntoConstraints="NO" id="gUH-hO-5ik">
-                                <rect key="frame" x="-157.5" y="12" width="635" height="156"/>
+                                <rect key="frame" x="1.5" y="90" width="317.5" height="78"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RLH-zH-fXm">
                                 <rect key="frame" x="93" y="370" width="134" height="32"/>
@@ -101,7 +101,7 @@
                                     <constraint firstAttribute="height" constant="50" id="fGJ-hW-hPS"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="40"/>
-                                <color key="textColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Importing your data" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0E6-0o-KEQ">
@@ -110,26 +110,27 @@
                                     <constraint firstAttribute="height" constant="83" id="QFa-48-oiN"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="24"/>
-                                <color key="textColor" red="0.36078431372549019" green="0.36078431372549019" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome-home" translatesAutoresizingMaskIntoConstraints="NO" id="eoo-Gg-JGQ">
-                                <rect key="frame" x="80" y="204" width="160" height="160"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="AMm-Dn-Uyj">
+                                <rect key="frame" x="140" y="264" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="eoo-Gg-JGQ" secondAttribute="height" multiplier="1:1" id="mTo-hI-Mg0"/>
+                                    <constraint firstAttribute="height" constant="40" id="DZr-8h-WH3"/>
+                                    <constraint firstAttribute="width" constant="40" id="EAI-m9-gsl"/>
                                 </constraints>
-                            </imageView>
+                                <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="0E6-0o-KEQ" firstAttribute="centerX" secondItem="7XH-ig-YLh" secondAttribute="centerX" id="3zl-V1-sAx"/>
                             <constraint firstItem="0E6-0o-KEQ" firstAttribute="bottom" secondItem="SiE-Lt-DuL" secondAttribute="bottom" id="ALc-1W-siE"/>
+                            <constraint firstItem="AMm-Dn-Uyj" firstAttribute="centerY" secondItem="7XH-ig-YLh" secondAttribute="centerY" id="L0v-LV-yxn"/>
                             <constraint firstItem="HeB-ec-9Ct" firstAttribute="leading" secondItem="7XH-ig-YLh" secondAttribute="leadingMargin" id="NNr-dG-Qct"/>
                             <constraint firstItem="HeB-ec-9Ct" firstAttribute="top" secondItem="SiE-Lt-DuL" secondAttribute="top" constant="37" id="WhD-o6-d5p"/>
-                            <constraint firstItem="eoo-Gg-JGQ" firstAttribute="centerX" secondItem="SiE-Lt-DuL" secondAttribute="centerX" id="ebI-P5-r7n"/>
                             <constraint firstItem="HeB-ec-9Ct" firstAttribute="centerX" secondItem="7XH-ig-YLh" secondAttribute="centerX" id="ijS-RB-sCm"/>
-                            <constraint firstItem="eoo-Gg-JGQ" firstAttribute="centerY" secondItem="SiE-Lt-DuL" secondAttribute="centerY" id="lvF-0C-S5V"/>
-                            <constraint firstItem="eoo-Gg-JGQ" firstAttribute="width" secondItem="7XH-ig-YLh" secondAttribute="width" multiplier="0.5" id="uhl-CD-Erb"/>
+                            <constraint firstItem="AMm-Dn-Uyj" firstAttribute="centerX" secondItem="HeB-ec-9Ct" secondAttribute="centerX" id="nuj-sg-O9R"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="SiE-Lt-DuL"/>
                     </view>
