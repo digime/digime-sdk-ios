@@ -78,6 +78,12 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         let controllers = [homeViewController, deleteVC, accountsVC]
         tabBarController.viewControllers = controllers
         tabBarController.delegate = self
+        tabBarController.tabBar.barTintColor = UIColor.black
+        tabBarController.tabBar.tintColor = Theme.highlightColor
+        let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [UITabBarController.self])
+        appearance.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.lightText], for: .normal)
+        appearance.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: Theme.highlightColor], for: .selected)
+        
         updateBadge(value: postsToDelete.count, for: deleteVC.tabBarItem)
         
         navigationController.pushViewController(tabBarController, animated: true)

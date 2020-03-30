@@ -39,7 +39,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome-home" translatesAutoresizingMaskIntoConstraints="NO" id="gUH-hO-5ik">
-                                <rect key="frame" x="1.5" y="90" width="317.5" height="78"/>
+                                <rect key="frame" x="-157.5" y="12" width="635" height="156"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RLH-zH-fXm">
                                 <rect key="frame" x="93" y="370" width="134" height="32"/>
