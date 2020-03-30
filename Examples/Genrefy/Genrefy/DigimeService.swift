@@ -17,7 +17,7 @@ class DigimeService {
     init() {
         // production environment
         let appId = "IfnN9Y27Jym3P1Fad3ks3sTlo22flUBb"
-        let contractId = "r9ZPFD0bUqycDw6qPSg7AyGT7xisR8jM"
+        let contractId = "xv1R4Rc63Od956kHtX5H3SSSAFc9WqpT"
         let p12FileName = "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF"
         let p12Password = "monkey periscope"
         
