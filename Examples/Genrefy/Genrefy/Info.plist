@@ -42,13 +42,11 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tap OK to continue.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Tap OK so this photo can be saved. "TFP" will not see any of your photos.</string>
+	<string>Tap OK so this photo can be saved. &quot;TFP&quot; will not see any of your photos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SedgwickAve-Regular.ttf</string>
 		<string>SedgwickAveDisplay-Regular.ttf</string>
-		<string>Sanchez-Italic.ttf</string>
-		<string>Sanchez-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
