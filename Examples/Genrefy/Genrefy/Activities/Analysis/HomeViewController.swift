@@ -26,11 +26,14 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
     
     var genreSummaries = [GenreSummary]() {
         didSet {
+            totalGenreCount = self.genreSummaries.reduce(0) { $0 + $1.count }
             tableView.reloadData()
         }
     }
+    private var totalGenreCount: Int = 0
     var allPosts: [CAResponseObject]?
     var swearPosts: [TFPost]?
+    
     private var swearWords = [String]()
     private var counts = [String: Int]()
     private let swearRanker = ProfanityRanker()
@@ -48,6 +51,22 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var imageView: UIImageView!
+    
+    private let barColors = [
+        #colorLiteral(red: 0.8431372549, green: 0.1176470588, blue: 0.7254901961, alpha: 1), // #D71EB9
+        #colorLiteral(red: 0.1254901961, green: 0.8705882353, blue: 0.8705882353, alpha: 1), // #20DEDE
+        #colorLiteral(red: 0.8274509804, green: 0.8431372549, blue: 0.1176470588, alpha: 1), // #D3D71E
+        #colorLiteral(red: 0.05882352941, green: 0.8549019608, blue: 0.2823529412, alpha: 1), // #0FDA48
+        #colorLiteral(red: 0.1176470588, green: 0.4941176471, blue: 0.8431372549, alpha: 1), // #1E7ED7
+        #colorLiteral(red: 0.8705882353, green: 0.3058823529, blue: 0.1254901961, alpha: 1), // #DE4E20
+        #colorLiteral(red: 0.5254901961, green: 0.1176470588, blue: 0.8431372549, alpha: 1), // #861ED7
+        #colorLiteral(red: 0.8549019608, green: 0.2039215686, blue: 0.05882352941, alpha: 1), // #DA340F
+        #colorLiteral(red: 0.7490196078, green: 0.9490196078, blue: 0.168627451, alpha: 1), // #BFF22B
+        #colorLiteral(red: 1, green: 0.9176470588, blue: 0.6274509804, alpha: 1), // #FFEAA0
+        #colorLiteral(red: 1, green: 0.5019607843, blue: 0.8, alpha: 1), // #FF80CC
+        #colorLiteral(red: 0.1764705882, green: 0.9294117647, blue: 0.7019607843, alpha: 1), // #2DEDB3
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +82,8 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
 
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 600
+        imageView.image = #imageLiteral(resourceName: "service_19").withRenderingMode(.alwaysTemplate)
+        imageView.tintColor = .white
     }
     
     func reload() {
@@ -256,10 +277,10 @@ extension HomeViewController: UITableViewDataSource {
             }
             
             let genreSummary = genreSummaries[indexPath.row]
-            let topGenreCount = genreSummaries[0].count
             cell.swearLabel.text = genreSummary.title
-            cell.countLabel.text = "\(genreSummary.count)"
-            cell.amount = CGFloat(genreSummary.count) / CGFloat(topGenreCount)
+            cell.countLabel.text = "\(genreSummary.count) songs"
+            cell.amount = CGFloat(genreSummary.count) / CGFloat(totalGenreCount)
+            cell.barColor = barColors[indexPath.row % barColors.count]
             return cell
         default:
             return UITableViewCell()

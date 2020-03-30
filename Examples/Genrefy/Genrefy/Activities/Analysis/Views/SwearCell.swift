@@ -13,18 +13,23 @@ import UIKit
 
 class SwearCell: UITableViewCell {
     
-    @IBOutlet var mainView: UIView!
-    @IBOutlet var viewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var percentView: UIView!
+    @IBOutlet var percentViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet var swearLabel: UILabel!
     @IBOutlet var countLabel: UILabel!
     
-    private let padding: CGFloat = 32.0
+    private let padding: CGFloat = 24
     private var previousFrameWidth: CGFloat = 0.0
+    var barColor: UIColor = .clear {
+        didSet {
+            percentView.backgroundColor = barColor
+        }
+    }
     
     var amount: CGFloat = 0 {
         didSet {
             updateLayout()
-            
+
             guard amount > 0 else {
                 contentView.layoutIfNeeded()
                 return
@@ -51,7 +56,7 @@ class SwearCell: UITableViewCell {
         super.prepareForReuse()
         
         amount = 0
-        mainView.backgroundColor = UIColor(white: 1.0, alpha: amount)
+        percentView.backgroundColor = nil
         swearLabel.text = nil
         countLabel.text = nil
     }
@@ -60,40 +65,18 @@ class SwearCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        viewWidthConstraint.constant = 0
-        
-        mainView.layer.shadowColor = UIColor.black.cgColor
-        mainView.layer.shadowOffset = CGSize(width: 0, height: 2)
-        mainView.layer.shadowRadius = 4
-        mainView.layer.shadowOpacity = 0.35
-        
+        percentViewWidthConstraint.constant = 0
         previousFrameWidth = contentView.frame.width
         
         contentView.layoutIfNeeded()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if highlighted {
-            mainView.backgroundColor = UIColor(white: 0.7, alpha: 1.0)
-        }
-        else {
-            mainView.backgroundColor = UIColor(white: 1.0, alpha: amount)
-        }
     }
 }
 
 // MARK:- Layout Updates
 extension SwearCell {
     private func updateLayout() {
-        let length = (contentView.frame.size.width - padding - 2) * amount
-        viewWidthConstraint.constant = length
-        mainView.backgroundColor = UIColor(white: 1.0, alpha: amount)
+        let length = (contentView.frame.size.width - padding) * amount
+        percentViewWidthConstraint.constant = length
     }
     
     private func generateFeedback() {
