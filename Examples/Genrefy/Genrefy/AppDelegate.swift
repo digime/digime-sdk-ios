@@ -25,11 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Instabug.start(withToken: instabugToken, invocationEvents: .shake)
         CrashReporting.enabled = true
         BugReporting.bugReportingOptions = .none
-        Chats.enabled = false
+        BugReporting.promptOptionsEnabledReportTypes = [.bug, .feedback, .question]
         Replies.enabled = false
         Instabug.welcomeMessageMode = .disabled
         Instabug.setValue("Preparing bug report", forStringWithKey: kIBGCollectingDataText)
-        Instabug.shouldCaptureViewHierarchy = true
+        BugReporting.shouldCaptureViewHierarchy = true
         Instabug.trackUserSteps = true
         Instabug.reproStepsMode = .enabledWithNoScreenshots
         

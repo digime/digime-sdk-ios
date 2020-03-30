@@ -94,11 +94,16 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     }
     
     func repositoryDidUpdateProcessing() {
-        guard let repository = repository  else {
-            return
+        guard
+            let repository = repository,
+            !repository.orderedGenresSummaries.isEmpty else {
+                return
         }
-        homeViewController.genreSummaries = repository.orderedGenresSummaries
-//        homeViewController.reload()
+        
+        let entries = repository.orderedGenresSummaries
+        PersistentStorage.shared.store(genres: entries)
+        homeViewController.genreSummaries = entries
+        homeViewController.reload()
     }
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {

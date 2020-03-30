@@ -37,7 +37,12 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
         configureAppearance()
         
         // If have data, go to analysis, otherwise onboard
-        goToOnboardingCoordinator()
+        if PersistentStorage.shared.dataPersist() {
+            goToAnalysisCoordinator()
+        }
+        else {
+            goToOnboardingCoordinator()
+        }
     }
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {
@@ -54,6 +59,13 @@ extension AppCoordinator {
     func goToOnboardingCoordinator() {
         let coordinator = OnboardingCoordinator(navigationController: navigationController, parentCoordinator: self)
         coordinator.delegate = self
+        childCoordinators.append(coordinator)
+        coordinator.begin()
+    }
+    
+    func goToAnalysisCoordinator() {
+        cache.setOnboarding(value: true)
+        let coordinator = AnalysisCoordinator(navigationController: navigationController, parentCoordinator: self)
         childCoordinators.append(coordinator)
         coordinator.begin()
     }

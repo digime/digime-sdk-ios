@@ -44,6 +44,7 @@
 		1E49BDA624223D80003119F2 /* ReceiptsLinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49BDA524223D80003119F2 /* ReceiptsLinkTableViewCell.swift */; };
 		1E4AEB292199B71800C83328 /* IntroViewControllerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */; };
 		1E4AEB312199FB8000C83328 /* IntroCoordinatingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */; };
+		1E78293C24321E5F0011B5A7 /* PersistentStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */; };
 		1ED470E121AD70E8001B8C1E /* TutorialCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED470E021AD70E8001B8C1E /* TutorialCoordinator.swift */; };
 		271A8AD920FF429F00D94304 /* PromotionalBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271A8AD820FF429F00D94304 /* PromotionalBanner.swift */; };
 		271A8ADD20FF556400D94304 /* PromotionalBanner.xib in Resources */ = {isa = PBXBuildFile; fileRef = 271A8ADC20FF556400D94304 /* PromotionalBanner.xib */; };
@@ -138,6 +139,7 @@
 		1E49BDA524223D80003119F2 /* ReceiptsLinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsLinkTableViewCell.swift; sourceTree = "<group>"; };
 		1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewControllerUseCase.swift; sourceTree = "<group>"; };
 		1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinatingDelegate.swift; sourceTree = "<group>"; };
+		1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentStorage.swift; sourceTree = "<group>"; };
 		1ED470E021AD70E8001B8C1E /* TutorialCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialCoordinator.swift; sourceTree = "<group>"; };
 		271A8AD820FF429F00D94304 /* PromotionalBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionalBanner.swift; sourceTree = "<group>"; };
 		271A8ADC20FF556400D94304 /* PromotionalBanner.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PromotionalBanner.xib; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				27D4A7C421809DD6001485DE /* ProfanityRanker.swift */,
 				276AF971242BB5E000BC3867 /* Song.swift */,
 				276AF973242CB98900BC3867 /* GenreSummary.swift */,
+				1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -583,6 +586,7 @@
 				1E49BDA624223D80003119F2 /* ReceiptsLinkTableViewCell.swift in Sources */,
 				27B5A2B6210230480053D9C4 /* ActivityCoordinating.swift in Sources */,
 				27CB3E8F2422434100425894 /* String+Attributed.swift in Sources */,
+				1E78293C24321E5F0011B5A7 /* PersistentStorage.swift in Sources */,
 				27C675BE20FCAFA100E6AFBC /* AppCoordinator.swift in Sources */,
 				27C675C620FCCD2700E6AFBC /* OnboardingCoordinator.swift in Sources */,
 				27EDC10F20FF9CC50092E661 /* HomeViewController.swift in Sources */,
