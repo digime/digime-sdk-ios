@@ -11,7 +11,7 @@ import UIKit
 /// NOTE: `mainView` is using backgroundColor with modified alpha instead of `alpha`
 /// in order to maintain constant shadow alpha.
 
-class SwearCell: UITableViewCell {
+class GenreCell: UITableViewCell {
     
     @IBOutlet var percentView: UIView!
     @IBOutlet var percentViewWidthConstraint: NSLayoutConstraint!
@@ -73,7 +73,7 @@ class SwearCell: UITableViewCell {
 }
 
 // MARK:- Layout Updates
-extension SwearCell {
+extension GenreCell {
     private func updateLayout() {
         let length = (contentView.frame.size.width - padding) * amount
         percentViewWidthConstraint.constant = length
