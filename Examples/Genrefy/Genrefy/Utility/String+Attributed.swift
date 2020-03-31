@@ -1,6 +1,6 @@
 //
 //  String+Attributed.swift
-//  DigiMeToolbox
+//  Genrefy
 //
 //  Created on 14/08/2019.
 //  Copyright © 2019 digi.me. All rights reserved.

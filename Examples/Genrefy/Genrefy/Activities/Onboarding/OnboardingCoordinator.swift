@@ -19,7 +19,7 @@ class OnboardingCoordinator: NSObject, ActivityCoordinating {
         static let privacyPolicy = "https://www.digi.me/privacy-policy"
     }
     
-    private let cache = TFPCache()
+    private let cache = AppStateCache()
     let identifier: String = UUID().uuidString
     weak var delegate: ImportRepositoryDelegate?
 

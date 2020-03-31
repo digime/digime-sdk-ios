@@ -8,30 +8,17 @@
 
 import DigiMeSDK
 import UIKit
-import Instabug
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var coordinator: ApplicationCoordinating?
-    let instabugToken = "aac22d42eddf44f9c51fb6b2352f6488"
-    private let cache = TFPCache()
+    private let cache = AppStateCache()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let navigationController = UINavigationController()
         navigationController.setNavigationBarHidden(true, animated: false)
-        
-        Instabug.start(withToken: instabugToken, invocationEvents: .shake)
-        CrashReporting.enabled = true
-        BugReporting.bugReportingOptions = .none
-        BugReporting.promptOptionsEnabledReportTypes = [.bug, .feedback, .question]
-        Replies.enabled = false
-        Instabug.welcomeMessageMode = .disabled
-        Instabug.setValue("Preparing bug report", forStringWithKey: kIBGCollectingDataText)
-        BugReporting.shouldCaptureViewHierarchy = true
-        Instabug.trackUserSteps = true
-        Instabug.reproStepsMode = .enabledWithNoScreenshots
         
         coordinator = AppCoordinator(navigationController: navigationController)
         coordinator?.delegate = self

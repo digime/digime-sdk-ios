@@ -12,7 +12,7 @@ class ReceiptsLinkTableViewCell: UITableViewCell {
     typealias GenericCoordinatingDelegate = AccountsViewCoordinatingDelegate
     var coordinatingDelegate: GenericCoordinatingDelegate?
     
-    private let cache = TFPCache()
+    private let cache = AppStateCache()
     
     @IBOutlet weak var viewReceiptButton: UIButton!
     

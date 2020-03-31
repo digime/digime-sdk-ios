@@ -14,11 +14,21 @@ struct Song: Codable {
     }
     
     var lastListenedTimestamp: TimeInterval {
-        createddate / 1000
+        createdDate / 1000
     }
     
-    private let createddate: Double
+    let accountIdentifier: String
+    let identifier: String
+    
+    private let createdDate: Double
     private let track: Track
+    
+    enum CodingKeys: String, CodingKey {
+        case identifier = "entityid"
+        case accountIdentifier  = "accountentityid"
+        case createdDate = "createddate"
+        case track
+    }
 }
 
 fileprivate struct Track: Codable {
