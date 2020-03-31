@@ -38,7 +38,11 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         if let repository = repository {
             homeVC.genreSummaries = repository.allOrderedGenreSummaries
         }
-        
+        else if let genresData = PersistentStorage.shared.loadData(for: "genres.json") {
+            let genres = GenreSummary.genres(from: genresData)
+            homeVC.genreSummaries = genres
+        }
+
         return homeVC
     }()
     
@@ -73,13 +77,18 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     }
     
     func repositoryDidUpdateProcessing() {
-        guard
-            let repository = repository,
-            !repository.orderedGenresSummaries.isEmpty else {
-                return
+        guard let repository = repository else {
+            return
         }
         
         homeViewController.genreSummaries = repository.allOrderedGenreSummaries
+        let genres = repository.allOrderedGenreSummaries
+        let genresData = GenreSummary.data(from: genres)
+        PersistentStorage.shared.store(data: genresData, fileName: "genres.json")
+
+        let songs = repository.recentSongs
+        let songsData = Song.data(from: songs)
+        PersistentStorage.shared.store(data: songsData, fileName: "songs.json")
     }
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {

@@ -20,6 +20,7 @@ class ImportingCoordinator: NSObject, ActivityCoordinating {
     weak var keyViewController: UIViewController?
     var navigationController: UINavigationController
     
+    private var oAuthToken: DMEOAuthToken?
     private var fileCount = 0
     private var fileDownloadedCount = 0
     private var repository: ImportRepository
@@ -33,6 +34,12 @@ class ImportingCoordinator: NSObject, ActivityCoordinating {
         self.navigationController = navigationController
         self.repository = ImportRepository()
         super.init()
+        
+        if
+            let tokenData = UserDefaults.standard.object(forKey: "oAuthToken") as? Data,
+            let token = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [DMEOAuthToken.self], from: tokenData) as? DMEOAuthToken {
+                oAuthToken = token
+        }
         
         repository.delegate = self
     }

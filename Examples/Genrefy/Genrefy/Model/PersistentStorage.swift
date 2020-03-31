@@ -11,7 +11,6 @@ import Foundation
 public class PersistentStorage {
     
     static let shared = PersistentStorage()
-    let fileName = "analyseResult.json"
     
     private func getURL() -> URL? {
         guard let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
@@ -21,32 +20,31 @@ public class PersistentStorage {
         return url
     }
 
-    func store(genres: [GenreSummary]) {
+    func store(data: Data, fileName: String) {
         guard
-            !genres.isEmpty,
+            !data.isEmpty,
             let url = getURL()?.appendingPathComponent(fileName, isDirectory: false) else {
                 return
         }
         
-        if dataPersist() {
+        if dataPersist(for: fileName) {
             try? FileManager.default.removeItem(at: url)
         }
         
-        let data = GenreSummary.data(from: genres)
         FileManager.default.createFile(atPath: url.path, contents: data, attributes: nil)
     }
 
-    func loadGenres() -> [GenreSummary]? {
+    func loadData(for fileName: String) -> Data? {
         guard
             let url = getURL()?.appendingPathComponent(fileName, isDirectory: false),
             let data = FileManager.default.contents(atPath: url.path) else {
                 return nil
         }
         
-        return GenreSummary.genres(from: data)
+        return data
     }
 
-    func reset() {
+    func reset(fileName: String) {
         guard let url = getURL()?.appendingPathComponent(fileName, isDirectory: false) else {
             return
         }
@@ -56,7 +54,7 @@ public class PersistentStorage {
         }
     }
     
-    func dataPersist() -> Bool {
+    func dataPersist(for fileName: String) -> Bool {
         guard let url = getURL()?.appendingPathComponent(fileName, isDirectory: false) else {
             return false
         }

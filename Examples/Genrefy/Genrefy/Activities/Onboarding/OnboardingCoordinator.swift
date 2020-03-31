@@ -122,6 +122,12 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
                 }
                 return
             }
+ 
+            if
+                let oAuthToken = oAuthToken,
+                let tokenData = try? NSKeyedArchiver.archivedData(withRootObject: oAuthToken, requiringSecureCoding: true) {
+                    UserDefaults.standard.set(tokenData, forKey:"oAuthToken")
+            }
             
             let importing = ImportingCoordinator(navigationController: self.navigationController, parentCoordinator: self)
             importing.delegate = self

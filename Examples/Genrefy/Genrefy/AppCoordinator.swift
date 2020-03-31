@@ -37,7 +37,7 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
         configureAppearance()
         
         // If have data, go to analysis, otherwise onboard
-        if PersistentStorage.shared.dataPersist() {
+        if PersistentStorage.shared.dataPersist(for: "genres.json") {
             goToAnalysisCoordinator()
         }
         else {
