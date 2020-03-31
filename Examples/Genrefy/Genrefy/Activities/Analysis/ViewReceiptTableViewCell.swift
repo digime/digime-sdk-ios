@@ -1,6 +1,6 @@
 //
 //  ViewReceiptTableViewCell.swift
-//  TFP
+//  Genrefy
 //
 //  Copyright © 2019 digi.me. All rights reserved.
 //

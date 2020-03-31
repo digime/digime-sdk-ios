@@ -1,6 +1,6 @@
 //
 //  RoundedBorderButton.swift
-//  TFP
+//  Genrefy
 //
 //  Created on 10/12/2018.
 //  Copyright © 2018 digi.me. All rights reserved.

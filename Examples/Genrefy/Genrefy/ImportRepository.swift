@@ -1,6 +1,6 @@
 //
 //  ImportRepository.swift
-//  TFP
+//  Genrefy
 //
 //  Created on 14/08/2018.
 //  Copyright © 2018 digi.me. All rights reserved.
@@ -122,18 +122,13 @@ class ImportRepository: NSObject {
     
     var recentSongs = [Song]()
     var genresCounts = NSCountedSet()
-    var orderedGenresSummaries: [GenreSummary] {
-        return genresCounts.allObjects
-            .compactMap { $0 as? String }
-            .sorted { return genresCounts.count(for: $0) > genresCounts.count(for: $1) }
-            .map { GenreSummary(title: $0, count: genresCounts.count(for: $0))}
+    var allOrderedGenreSummaries: [GenreSummary] {
+        return orderedGenreSummaries(for: genresCounts)
     }
     var files = [DMEFile]()
     var accounts = [DMEAccount]()
-    var objects: [CAResponseObject] = []
-    var tfPosts: [TFPost] = []
     weak var delegate: ImportRepositoryDelegate?
-    private var cache = TFPCache()
+    private var cache = AppStateCache()
     
     func process(file: DMEFile) {
         files.append(file)
@@ -161,36 +156,37 @@ class ImportRepository: NSObject {
         }
     }
     
-    func postsForAccounts(_ filteredAccounts: [DMEAccount]) -> [TFPost]? {
+    func genreSummariesForAccounts(_ filteredAccounts: [DMEAccount]) -> [GenreSummary] {
         if accounts.count == filteredAccounts.count {
-            return tfPosts
+            return allOrderedGenreSummaries
         }
         
         let accountIdentifiers = filteredAccounts.compactMap { $0.identifier }
         if accountIdentifiers.isEmpty {
-            return nil
+            return []
         }
         
-        return tfPosts.filter { accountIdentifiers.contains($0.postObject.accountId) }
-    }
-    
-    func objectsForAccounts(_ filteredAccounts: [DMEAccount]) -> [CAResponseObject]? {
-        if accounts.count == filteredAccounts.count {
-            return objects
+        let filteredSongs = recentSongs.filter { accountIdentifiers.contains($0.accountIdentifier) }
+        let countedSet = NSCountedSet()
+        for song in filteredSongs {
+            let genres = song.genres
+            for genre in genres {
+                countedSet.add(genre)
+            }
         }
         
-        let accountIdentifiers = filteredAccounts.compactMap { $0.identifier }
-        if accountIdentifiers.isEmpty {
-            return nil
-        }
-        
-        return objects.filter { accountIdentifiers.contains($0.accountId) }
+        return orderedGenreSummaries(for: countedSet)
     }
     
     private func process(songs: [Song]) {
         let now = Date().timeIntervalSince1970
         let twentyFourHoursAgo = now - 24 * 60 * 60
         for song in songs {
+            // Only process new songs
+            guard !recentSongs.contains(where: { $0.identifier == song.identifier}) else {
+                continue
+            }
+            
             // Only process songs listened to in last 24 hours
             guard song.lastListenedTimestamp > twentyFourHoursAgo else {
                 continue
@@ -204,29 +200,10 @@ class ImportRepository: NSObject {
         }
     }
     
-    private func compute(data: [CAResponseObject]) {
-        DispatchQueue.global(qos: .background).async {
-            let startTime = CFAbsoluteTimeGetCurrent()
-            let postProcessor = PostsProcessor()
-
-            for obj in data {
-                
-                if let profanityResult = postProcessor.process(post: "\(obj.text) \(obj.title)") {
-                    self.tfPosts.append(TFPost(postObject: obj, matchedWord: profanityResult.matchedString!, matchedIndex: profanityResult.index!))
-                }
-            }
-            
-            let elapsed = CFAbsoluteTimeGetCurrent() - startTime
-            print("Processed: \(data.count) posts in \(String(format: "%.2f", elapsed))")
-            
-            let cachedItems = self.cache.allItems()
-            
-            let matchingPosts = self.tfPosts.filter { cachedItems[$0.postObject.identifier] != nil }
-            matchingPosts.forEach { $0.action = cachedItems[$0.postObject.identifier]! }
-            
-            DispatchQueue.main.async {
-                self.delegate?.repositoryDidUpdateProcessing(repository: self)
-            }
-        }
+    private func orderedGenreSummaries(for countedSet: NSCountedSet) -> [GenreSummary] {
+        return countedSet.allObjects
+            .compactMap { $0 as? String }
+            .sorted { return countedSet.count(for: $0) > countedSet.count(for: $1) }
+            .map { GenreSummary(title: $0, count: countedSet.count(for: $0))}
     }
 }

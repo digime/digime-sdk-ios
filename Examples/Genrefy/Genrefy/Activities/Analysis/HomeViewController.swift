@@ -28,7 +28,7 @@ class HomeViewController: UIViewController, Storyboarded {
     
     private var counts = [String: Int]()
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    private let cache = TFPCache()
+    private let cache = AppStateCache()
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var titleLabel: UILabel!

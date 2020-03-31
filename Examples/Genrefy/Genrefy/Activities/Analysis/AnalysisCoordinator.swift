@@ -14,8 +14,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     
     enum BarItemTags: Int {
         case home = 0
-        case flagged = 1
-        case settings = 2
+        case settings = 1
     }
     
     let identifier: String = UUID().uuidString
@@ -28,22 +27,16 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     weak var keyViewController: UIViewController?
     var navigationController: UINavigationController
     private var tabBarController: UITabBarController
-    
-    private var pendingPost: TFPost?
-    
-    private let cache = TFPCache()
+        
+    private let cache = AppStateCache()
     
     private var filteredAccounts: [DMEAccount] = []
 
-    private var postsToDelete: [TFPost] {
-        return repository?.tfPosts.filter ({ $0.action == .delete }) ?? []
-    }
-    
     private lazy var homeViewController: HomeViewController = {
         let homeVC = HomeViewController.instantiate()
         homeVC.tabBarItem = UITabBarItem(title: NSLocalizedString("Results", comment: ""), image: #imageLiteral(resourceName: "homeIcon"), tag: BarItemTags.home.rawValue)
         if let repository = repository {
-            homeVC.genreSummaries = repository.orderedGenresSummaries
+            homeVC.genreSummaries = repository.allOrderedGenreSummaries
         }
         
         return homeVC
@@ -58,6 +51,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     func begin() {
         let accountsVC = AccountsViewController.instantiate()
         let dataSource = AccountSelectionDataSource(accounts: repository?.accounts ?? [])
+        dataSource.coordinatingDelegate = self
         let presenter = AccountSelectionPresenter(dataSource: dataSource)
         accountsVC.presenter = presenter
         accountsVC.coordinatingDelegate = self
@@ -82,23 +76,30 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         guard let repository = repository  else {
             return
         }
-        homeViewController.genreSummaries = repository.orderedGenresSummaries
-//        homeViewController.reload()
+        homeViewController.genreSummaries = repository.allOrderedGenreSummaries
     }
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {
         removeChild(child)
-       
+
         navigationController.popViewController(animated: true)
+    }
+}
+       
+extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
+    func selectedAccountsChanged(selectedAccounts: [DMEAccount]) {
+        // Filter analysis using selected accounts only
+        filteredAccounts = selectedAccounts
+        if let repository = repository {
+            homeViewController.genreSummaries = repository.genreSummariesForAccounts(filteredAccounts)
+        }
     }
 }
 
 extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
     func reset() {
         
-        if let tfPosts = repository?.tfPosts {
-            cache.deleteItems(identifiers: Set(tfPosts.map{ $0.postObject.identifier}))
-        }
+//        reset cache / stored songs here
         
         cache.setOnboarding(value: nil)
         cache.setExistingUser(value: nil)
@@ -113,15 +114,6 @@ extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
             try DigimeService.sharedInstance.dmeClient?.viewReceiptInDMEApp()
         } catch {
             print("digi.me view receipt failed with error: \(error.localizedDescription)")
-        }
-    }
-    
-    func openDigime() {
-        
-        let digimeURL = URL(string: "digime-ca-master://")!
-        
-        if UIApplication.shared.canOpenURL(digimeURL) {
-            UIApplication.shared.open(digimeURL, options: [:], completionHandler: nil)
         }
     }
 }

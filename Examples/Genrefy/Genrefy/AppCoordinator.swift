@@ -22,7 +22,7 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
     
     var analysisCoordinator: AnalysisCoordinator?
     
-    private let cache = TFPCache()
+    private let cache = AppStateCache()
 
     @objc required init(navigationController: UINavigationController) {
         self.navigationController = navigationController

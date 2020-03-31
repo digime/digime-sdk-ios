@@ -1,6 +1,6 @@
 //
 //  UIFont+Weight.swift
-//  DigiMeToolbox
+//  Genrefy
 //
 //  Created on 09/10/2019.
 //  Copyright © 2019 digi.me. All rights reserved.

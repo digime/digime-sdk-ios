@@ -403,7 +403,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="vDR-7n-Mjo">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="vDR-7n-Mjo">
                                 <rect key="frame" x="16" y="30.5" width="37" height="37"/>
                                 <color key="color" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </activityIndicatorView>

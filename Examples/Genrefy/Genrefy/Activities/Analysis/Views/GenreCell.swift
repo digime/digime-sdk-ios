@@ -1,15 +1,12 @@
 //
-//  SwearCell.swift
-//  TFP
+//  GenreCell.swift
+//  Genrefy
 //
 //  Created by Alex Robinson  on 21/08/2018.
 //  Copyright © 2018 digi.me. All rights reserved.
 //
 
 import UIKit
-
-/// NOTE: `mainView` is using backgroundColor with modified alpha instead of `alpha`
-/// in order to maintain constant shadow alpha.
 
 class GenreCell: UITableViewCell {
     

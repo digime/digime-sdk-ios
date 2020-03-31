@@ -46,7 +46,7 @@ class AccountSelectionDataSource: Coordinated {
             
             return selectedAccountIdentifiers.contains(identifier)
         }
-//        coordinatingDelegate?.selectedAccountsChanged(selectedAccounts: selectedAccounts)
+        coordinatingDelegate?.selectedAccountsChanged(selectedAccounts: selectedAccounts)
         
         return selected
     }
