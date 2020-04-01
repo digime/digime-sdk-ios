@@ -8,7 +8,6 @@
 
 import DigiMeSDK
 import UIKit
-import SafariServices
 
 class AnalysisCoordinator: NSObject, ActivityCoordinating {
     
@@ -38,7 +37,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         if let repository = repository {
             homeVC.genreSummaries = repository.allOrderedGenreSummaries
         }
-        
+
         return homeVC
     }()
     
@@ -73,10 +72,20 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     }
     
     func repositoryDidUpdateProcessing() {
-        guard let repository = repository  else {
+        guard let repository = repository else {
             return
         }
+        
         homeViewController.genreSummaries = repository.allOrderedGenreSummaries
+
+        let songs = repository.recentSongs
+        do {
+            let songData = try JSONEncoder().encode(songs)
+            PersistentStorage.shared.store(data: songData, fileName: "songs.json")
+        }
+        catch {
+            print("Unable to encode song data")
+        }
     }
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {
@@ -99,7 +108,7 @@ extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
 extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
     func reset() {
         
-//        reset cache / stored songs here
+        PersistentStorage.shared.reset(fileName: "songs.json")
         
         cache.setOnboarding(value: nil)
         cache.setExistingUser(value: nil)

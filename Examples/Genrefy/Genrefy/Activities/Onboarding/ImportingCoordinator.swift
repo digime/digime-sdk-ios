@@ -20,6 +20,7 @@ class ImportingCoordinator: NSObject, ActivityCoordinating {
     weak var keyViewController: UIViewController?
     var navigationController: UINavigationController
     
+    private var oAuthToken: DMEOAuthToken?
     private var fileCount = 0
     private var fileDownloadedCount = 0
     private var repository: ImportRepository
@@ -34,6 +35,14 @@ class ImportingCoordinator: NSObject, ActivityCoordinating {
         self.repository = ImportRepository()
         super.init()
         
+        if
+            let tokenData = KeychainService.shared.loadEntry(for: "oAuthToken"),
+            let token = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(tokenData) as? DMEOAuthToken {
+                print("OAuth access token: " + (token?.accessToken ?? "n/a"))
+                print("OAuth refresh token: " + (token?.refreshToken ?? "n/a"))
+                oAuthToken = token
+        }
+
         repository.delegate = self
     }
     
