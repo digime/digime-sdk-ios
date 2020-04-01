@@ -36,11 +36,13 @@ class ImportingCoordinator: NSObject, ActivityCoordinating {
         super.init()
         
         if
-            let tokenData = UserDefaults.standard.object(forKey: "oAuthToken") as? Data,
-            let token = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [DMEOAuthToken.self], from: tokenData) as? DMEOAuthToken {
+            let tokenData = KeychainService.shared.loadEntry(for: "oAuthToken"),
+            let token = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(tokenData) as? DMEOAuthToken {
+                print("OAuth access token: " + (token?.accessToken ?? "n/a"))
+                print("OAuth refresh token: " + (token?.refreshToken ?? "n/a"))
                 oAuthToken = token
         }
-        
+
         repository.delegate = self
     }
     
