@@ -37,8 +37,12 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
         configureAppearance()
         
         // If have data, go to analysis, otherwise onboard
-        if PersistentStorage.shared.dataPersist(for: "genres.json") {
-            goToAnalysisCoordinator()
+        if
+            let songData = PersistentStorage.shared.loadData(for: "songs.json"),
+            let songs = try? JSONDecoder().decode([Song].self, from: songData) {
+            let repository = ImportRepository()
+            repository.process(songs: songs)
+            goToAnalysisCoordinator(repository: repository)
         }
         else {
             goToOnboardingCoordinator()
@@ -63,10 +67,12 @@ extension AppCoordinator {
         coordinator.begin()
     }
     
-    func goToAnalysisCoordinator() {
+    func goToAnalysisCoordinator(repository: ImportRepository) {
         cache.setOnboarding(value: true)
         let coordinator = AnalysisCoordinator(navigationController: navigationController, parentCoordinator: self)
+        analysisCoordinator = coordinator
         childCoordinators.append(coordinator)
+        coordinator.repository = repository
         coordinator.begin()
     }
     
@@ -89,12 +95,7 @@ extension AppCoordinator: ImportRepositoryDelegate {
             analysisCoordinator.repositoryDidUpdateProcessing()
         }
         else {
-            cache.setOnboarding(value: true)
-            let coordinator = AnalysisCoordinator(navigationController: navigationController, parentCoordinator: self)
-            analysisCoordinator = coordinator
-            childCoordinators.append(coordinator)
-            coordinator.repository = repository
-            coordinator.begin()
+            goToAnalysisCoordinator(repository: repository)
         }
     }
 }

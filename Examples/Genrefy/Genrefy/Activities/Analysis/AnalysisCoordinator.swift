@@ -8,7 +8,6 @@
 
 import DigiMeSDK
 import UIKit
-import SafariServices
 
 class AnalysisCoordinator: NSObject, ActivityCoordinating {
     
@@ -37,10 +36,6 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         homeVC.tabBarItem = UITabBarItem(title: NSLocalizedString("Results", comment: ""), image: #imageLiteral(resourceName: "homeIcon"), tag: BarItemTags.home.rawValue)
         if let repository = repository {
             homeVC.genreSummaries = repository.allOrderedGenreSummaries
-        }
-        else if let genresData = PersistentStorage.shared.loadData(for: "genres.json") {
-            let genres = GenreSummary.genres(from: genresData)
-            homeVC.genreSummaries = genres
         }
 
         return homeVC
@@ -82,13 +77,15 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         }
         
         homeViewController.genreSummaries = repository.allOrderedGenreSummaries
-        let genres = repository.allOrderedGenreSummaries
-        let genresData = GenreSummary.data(from: genres)
-        PersistentStorage.shared.store(data: genresData, fileName: "genres.json")
 
         let songs = repository.recentSongs
-        let songsData = Song.data(from: songs)
-        PersistentStorage.shared.store(data: songsData, fileName: "songs.json")
+        do {
+            let songData = try JSONEncoder().encode(songs)
+            PersistentStorage.shared.store(data: songData, fileName: "songs.json")
+        }
+        catch {
+            print("Unable to encode song data")
+        }
     }
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {
@@ -111,7 +108,7 @@ extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
 extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
     func reset() {
         
-//        reset cache / stored songs here
+        PersistentStorage.shared.reset(fileName: "songs.json")
         
         cache.setOnboarding(value: nil)
         cache.setExistingUser(value: nil)
