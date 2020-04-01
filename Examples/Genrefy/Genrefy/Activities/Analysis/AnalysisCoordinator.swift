@@ -49,7 +49,19 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
 
     func begin() {
         let accountsVC = AccountsViewController.instantiate()
-        let dataSource = AccountSelectionDataSource(accounts: repository?.accounts ?? [])
+        var accounts = repository?.accounts ?? []
+    
+        if
+            accounts.isEmpty,
+            let persistedData = PersistentStorage.shared.loadData(for: "accounts.json"),
+            let data = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(persistedData) as? [AnyHashable: Any],
+            let persistedAccounts = data,
+            let identifier = persistedAccounts["consentid"] as? String {
+                let deserialized = DMEAccounts(fileId: identifier, json: persistedAccounts)
+                accounts = deserialized.accounts ?? []
+        }
+        
+        let dataSource = AccountSelectionDataSource(accounts: accounts)
         dataSource.coordinatingDelegate = self
         let presenter = AccountSelectionPresenter(dataSource: dataSource)
         accountsVC.presenter = presenter

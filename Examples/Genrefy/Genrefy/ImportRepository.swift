@@ -62,6 +62,12 @@ class ImportRepository: NSObject {
         if let accounts = accounts.accounts {
             self.accounts = accounts
         }
+        
+        if
+            let accountsDictionary = accounts.json,
+            let accountsData = try? NSKeyedArchiver.archivedData(withRootObject: accountsDictionary, requiringSecureCoding: false) {
+                PersistentStorage.shared.store(data: accountsData, fileName: "accounts.json")
+        }
     }
     
     func genreSummariesForAccounts(_ filteredAccounts: [DMEAccount]) -> [GenreSummary] {
