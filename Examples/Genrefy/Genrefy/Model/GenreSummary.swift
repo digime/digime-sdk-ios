@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct GenreSummary: Codable {
+struct GenreSummary {
     let title: String
     let count: Int
 }
