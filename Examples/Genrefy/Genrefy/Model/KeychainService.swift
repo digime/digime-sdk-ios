@@ -24,7 +24,7 @@ class KeychainService: NSObject {
         if
             status != errSecSuccess,
             let err = SecCopyErrorMessageString(status, nil) {
-            print("Keychain wrapper read entry failed: \(err)")
+            print("KeychainService update entry failed: \(err)")
         }
     }
 
@@ -37,7 +37,7 @@ class KeychainService: NSObject {
         if
             status != errSecSuccess,
             let err = SecCopyErrorMessageString(status, nil) {
-                print("Keychain wrapper remove entry failed: \(err)")
+                print("KeychainService remove entry failed: \(err)")
         }
     }
 
@@ -54,7 +54,7 @@ class KeychainService: NSObject {
         if
             status != errSecSuccess,
             let err = SecCopyErrorMessageString(status, nil) {
-                print("Keychain wrapper write entry failed: \(err)")
+                print("KeychainService write entry failed: \(err)")
         }
     }
 
@@ -72,7 +72,7 @@ class KeychainService: NSObject {
         guard
             status == errSecSuccess,
             let data = dataTypeRef as? Data else {
-                print("Keychain wrapper nothing was retrieved from the keychain. Status code \(status)")
+                print("KeychainService nothing was retrieved from the keychain. Status code \(status)")
                 return nil
         }
 

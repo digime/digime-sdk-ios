@@ -15,11 +15,6 @@ class DigimeService {
     let dmeClient: DMEPullClient?
     
     init() {
-//        let appId = "qgEUV8iJENRiUkuYF5lLpdsOv7Hp0biy"
-//        let contractId = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
-//        let p12FileName = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
-//        let p12Password = "digime"
-        
         let appId = "qgEUV8iJENRiUkuYF5lLpdsOv7Hp0biy"
         let contractId = "xv1R4Rc63Od956kHtX5H3SSSAFc9WqpT"
         let p12FileName = "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF"
