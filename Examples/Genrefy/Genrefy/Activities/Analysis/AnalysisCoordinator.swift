@@ -53,9 +53,9 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     
         if
             accounts.isEmpty,
-            let persistentData = PersistentStorage.shared.loadData(for: "accounts.json"),
-            let persistentDic = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(persistentData) as? [AnyHashable: Any],
-            let restoredAccounts = persistentDic,
+            let persistedData = PersistentStorage.shared.loadData(for: "accounts.json"),
+            let persistedDict = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(persistedData) as? [AnyHashable: Any],
+            let restoredAccounts = persistedDict,
             let identifier = restoredAccounts["consentid"] as? String {
                 let deserialized = DMEAccounts(fileId: identifier, json: restoredAccounts)
                 accounts = deserialized.accounts ?? []
