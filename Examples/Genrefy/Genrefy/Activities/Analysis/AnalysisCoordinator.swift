@@ -9,6 +9,10 @@
 import DigiMeSDK
 import UIKit
 
+protocol AnalysisCoordinatorDelegate: class {
+    func refreshService() -> DigiMeService
+}
+
 class AnalysisCoordinator: NSObject, ActivityCoordinating {
     
     enum BarItemTags: Int {
@@ -22,10 +26,12 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     var childCoordinators: [ActivityCoordinating] = []
     
     var repository: ImportRepository?
+    var digimeService: DigiMeService?
     
     weak var keyViewController: UIViewController?
     var navigationController: UINavigationController
     private var tabBarController: UITabBarController
+    weak var delegate: AnalysisCoordinatorDelegate?
         
     private let cache = AppStateCache()
     
@@ -33,6 +39,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
 
     private lazy var homeViewController: HomeViewController = {
         let homeVC = HomeViewController.instantiate()
+        homeVC.coordinatingDelegate = self
         homeVC.tabBarItem = UITabBarItem(title: NSLocalizedString("Results", comment: ""), image: #imageLiteral(resourceName: "homeIcon"), tag: BarItemTags.home.rawValue)
         if let repository = repository {
             homeVC.genreSummaries = repository.allOrderedGenreSummaries
@@ -94,6 +101,31 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         navigationController.popViewController(animated: true)
     }
 }
+
+extension AnalysisCoordinator: HomeViewControllerDelegate {
+    func refreshData() {
+        digimeService = delegate?.refreshService()
+        let scope = digimeService?.lastDayScope()
+        let token = digimeService?.loadToken()
+        let client = digimeService?.dmeClient
+        client?.authorizeOngoingAccess(scope: scope, oAuthToken: token) { (session, oAuthToken, error) in
+            
+            guard let _ = session else {
+                if let error = error {
+                    print("digi.me authorization failed with error: \(error)")
+                } else {
+                    print("digi.me authorization failed")
+                }
+                return
+            }
+            
+            self.digimeService?.saveToken(oAuthToken)
+            self.digimeService?.getAccounts()
+            self.digimeService?.getSessionData()
+            self.cache.setConsentDate(consentDate: Date())
+        }
+    }
+}
        
 extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
     func selectedAccountsChanged(selectedAccounts: [DMEAccount]) {
@@ -120,7 +152,7 @@ extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
     func viewReceipt() {
         
         do {
-            try DigimeService.sharedInstance.dmeClient?.viewReceiptInDMEApp()
+            try digimeService?.dmeClient.viewReceiptInDMEApp()
         } catch {
             print("digi.me view receipt failed with error: \(error.localizedDescription)")
         }

@@ -21,7 +21,8 @@ class OnboardingCoordinator: NSObject, ActivityCoordinating {
     
     private let cache = AppStateCache()
     let identifier: String = UUID().uuidString
-    weak var delegate: ImportRepositoryDelegate?
+    
+    var digimeService: DigiMeService?
 
     var parentCoordinator: Coordinating
     var childCoordinators: [ActivityCoordinating] = []
@@ -41,7 +42,7 @@ class OnboardingCoordinator: NSObject, ActivityCoordinating {
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {
         removeChild(child)
-        navigationController.popViewController(animated: true)
+        parentCoordinator.childDidFinish(child: self, result: nil)
     }
 }
 
@@ -101,14 +102,10 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
     }
     
     func authorize() {
-        let scope = DMEScope()
-        let objects = [DMEServiceObjectType(identifier: 406)]
-        let services = [DMEServiceType(identifier: 19, objectTypes: objects)]
-        let groups = [DMEServiceGroup(identifier: 5, serviceTypes: services)]
-        scope.serviceGroups = groups
-        scope.timeRanges = [DMETimeRange.last(1, unit: .day)]
+        let scope = digimeService?.lastDayScope()
         
-        DigimeService.sharedInstance.dmeClient?.authorizeOngoingAccess(scope: scope, oAuthToken: nil) { (session, oAuthToken, error) in
+        let client = digimeService?.dmeClient
+        client?.authorizeOngoingAccess(scope: scope, oAuthToken: nil) { (session, oAuthToken, error) in
             
             guard let _ = session else {
                 DispatchQueue.main.async {
@@ -123,18 +120,10 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
                 return
             }
             
-            if
-                let token = oAuthToken,
-                let tokenData = try? NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: false) {
-                
-                print("OAuth access token: " + (token.accessToken ??  "n/a"))
-                print("OAuth refresh token: " + (token.refreshToken ?? "n/a"))
-                
-                KeychainService.shared.saveEntry(data: tokenData, for: "oAuthToken")
-            }
+            self.digimeService?.saveToken(oAuthToken)
 
             let importing = ImportingCoordinator(navigationController: self.navigationController, parentCoordinator: self)
-            importing.delegate = self
+            importing.digimeService = self.digimeService
             self.childCoordinators.append(importing)
             DispatchQueue.main.async {
                 SVProgressHUD.dismiss()
@@ -152,16 +141,5 @@ extension OnboardingCoordinator {
         vc.useCase = HomeViewControllerUseCase()
         vc.coordinatingDelegate = self
         return vc
-    }
-}
-
-// MARK: - ImportRepositoryDelegate
-extension OnboardingCoordinator: ImportRepositoryDelegate {
-    func repositoryDidFinishProcessing() {
-        delegate?.repositoryDidFinishProcessing()
-    }
-    
-    func repositoryDidUpdateProcessing(repository: ImportRepository) {
-        delegate?.repositoryDidUpdateProcessing(repository: repository)
     }
 }

@@ -22,10 +22,19 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
     
     var analysisCoordinator: AnalysisCoordinator?
     
+    private var digimeService: DigiMeService
+    
     private let cache = AppStateCache()
 
     @objc required init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        
+        guard let dmeClient = AppCoordinator.pullClient() else {
+            fatalError("Could not create new DMEPullCLient")
+        }
+        
+        let repository = ImportRepository()
+        digimeService = DigiMeService(client: dmeClient, repository: repository)
     }
     
     deinit {
@@ -34,15 +43,18 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
         
     @objc func begin() {
         
+        digimeService.repository.delegate = self
+        digimeService.delegate = self
+        
         configureAppearance()
         
         // If have data, go to analysis, otherwise onboard
         if
             let songData = PersistentStorage.shared.loadData(for: "songs.json"),
             let songs = try? JSONDecoder().decode([Song].self, from: songData) {
-            let repository = ImportRepository()
-            repository.process(songs: songs)
-            goToAnalysisCoordinator(repository: repository)
+            digimeService.repository.process(songs: songs)
+            goToAnalysisCoordinator(repository: digimeService.repository)
+            analysisCoordinator?.repositoryDidFinishProcessing()
         }
         else {
             goToOnboardingCoordinator()
@@ -51,18 +63,44 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
     
     func childDidFinish(child: ActivityCoordinating, result: Any?) {
         removeChild(child)
-        // child is results coordinator
-        delegate?.reset()
-        // navigationController.popToRootViewController(animated: true)
-        // goToOnboardingCoordinator()
+        
+        if child is OnboardingCoordinator {
+            if let analysisCoordinator = analysisCoordinator {
+                analysisCoordinator.repositoryDidFinishProcessing()
+            }
+        }
+        else{
+        
+            // child is results coordinator
+            delegate?.reset()
+        }
     }
 }
 
+// MARK: - Client Configuration
 extension AppCoordinator {
-    
+    class func pullClient() -> DMEPullClient? {
+        let appId = "qgEUV8iJENRiUkuYF5lLpdsOv7Hp0biy"
+        let contractId = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
+        let p12FileName = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
+        let p12Password = "digime"
+        
+        let configuration = DMEPullConfiguration(appId: appId, contractId: contractId, p12FileName: p12FileName, p12Password: p12Password)
+        configuration?.debugLogEnabled = true
+
+        guard let config = configuration else {
+            fatalError("ERROR: Configuration object not set")
+        }
+        
+        return DMEPullClient(configuration: config)
+    }
+}
+
+// MARK: - Coordination
+extension AppCoordinator {
     func goToOnboardingCoordinator() {
         let coordinator = OnboardingCoordinator(navigationController: navigationController, parentCoordinator: self)
-        coordinator.delegate = self
+        coordinator.digimeService = digimeService
         childCoordinators.append(coordinator)
         coordinator.begin()
     }
@@ -71,6 +109,8 @@ extension AppCoordinator {
         cache.setOnboarding(value: true)
         let coordinator = AnalysisCoordinator(navigationController: navigationController, parentCoordinator: self)
         analysisCoordinator = coordinator
+        coordinator.delegate = self
+        coordinator.digimeService = digimeService
         childCoordinators.append(coordinator)
         coordinator.repository = repository
         coordinator.begin()
@@ -81,13 +121,8 @@ extension AppCoordinator {
     }
 }
 
+// MARK: - ImportingRepositoryDelegate
 extension AppCoordinator: ImportRepositoryDelegate {
-    
-    func repositoryDidFinishProcessing() {
-        if let analysisCoordinator = analysisCoordinator {
-            analysisCoordinator.repositoryDidFinishProcessing()
-        }
-    }
     
     func repositoryDidUpdateProcessing(repository: ImportRepository) {
         if let analysisCoordinator = analysisCoordinator {
@@ -97,5 +132,29 @@ extension AppCoordinator: ImportRepositoryDelegate {
         else {
             goToAnalysisCoordinator(repository: repository)
         }
+    }
+}
+
+// MARK: - DigiMeServiceDelegate
+extension AppCoordinator: DigiMeServiceDelegate {
+    func serviceDidFinishImporting() {
+        if let analysisCoordinator = analysisCoordinator {
+            analysisCoordinator.repositoryDidFinishProcessing()
+        }
+    }
+}
+
+// MARK: - AnalysisCoordinatorDelegate
+extension AppCoordinator: AnalysisCoordinatorDelegate {
+    func refreshService() -> DigiMeService {
+        guard let dmeClient = AppCoordinator.pullClient() else {
+            fatalError("Could not create new DMEPullCLient")
+        }
+        
+        let repository = ImportRepository()
+        digimeService = DigiMeService(client: dmeClient, repository: repository)
+        digimeService.delegate = self
+        digimeService.repository.delegate = self
+        return digimeService
     }
 }

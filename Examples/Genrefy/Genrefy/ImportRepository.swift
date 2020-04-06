@@ -23,7 +23,6 @@ enum ServiceType: String {
 
 @objc protocol ImportRepositoryDelegate {
     func repositoryDidUpdateProcessing(repository: ImportRepository)
-    func repositoryDidFinishProcessing()
 }
 
 class ImportRepository: NSObject {
