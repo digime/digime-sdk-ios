@@ -52,6 +52,7 @@
 		27CB3E8F2422434100425894 /* String+Attributed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E8E2422434100425894 /* String+Attributed.swift */; };
 		27CB3E912422472A00425894 /* ColorCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E902422472A00425894 /* ColorCompatibility.swift */; };
 		27CB3E932422476700425894 /* UIFont+Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E922422476700425894 /* UIFont+Weight.swift */; };
+		27DBCCBD243B23EA006F9551 /* DigiMeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DBCCBC243B23EA006F9551 /* DigiMeService.swift */; };
 		27EAB01321BE813E0070D724 /* RoundedBorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EAB01221BE813E0070D724 /* RoundedBorderButton.swift */; };
 		27EDC10B20FF99BC0092E661 /* AnalysisCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EDC10A20FF99BC0092E661 /* AnalysisCoordinator.swift */; };
 		27EDC10D20FF9C1E0092E661 /* Analysis.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27EDC10C20FF9C1E0092E661 /* Analysis.storyboard */; };
@@ -62,7 +63,6 @@
 		5C8C6B8122A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C6B8022A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift */; };
 		5C8C6B8322A93B340004E7F4 /* ViewReceiptTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C6B8222A93B340004E7F4 /* ViewReceiptTableViewCell.swift */; };
 		5C9B437B22A1134B0012B933 /* StartOverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9B437A22A1134B0012B933 /* StartOverTableViewCell.swift */; };
-		5CA8D5CA23697AC500E0630F /* DigimeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA8D5C923697AC500E0630F /* DigimeService.swift */; };
 		F2562B3E7E72086184B8DE13 /* Pods_Genrefy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 598805F58775ED253BB62D33 /* Pods_Genrefy.framework */; };
 /* End PBXBuildFile section */
 
@@ -114,6 +114,7 @@
 		27CB3E8E2422434100425894 /* String+Attributed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Attributed.swift"; sourceTree = "<group>"; };
 		27CB3E902422472A00425894 /* ColorCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCompatibility.swift; sourceTree = "<group>"; };
 		27CB3E922422476700425894 /* UIFont+Weight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Weight.swift"; sourceTree = "<group>"; };
+		27DBCCBC243B23EA006F9551 /* DigiMeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigiMeService.swift; sourceTree = "<group>"; };
 		27EAB01221BE813E0070D724 /* RoundedBorderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedBorderButton.swift; sourceTree = "<group>"; };
 		27EDC10A20FF99BC0092E661 /* AnalysisCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisCoordinator.swift; sourceTree = "<group>"; };
 		27EDC10C20FF9C1E0092E661 /* Analysis.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Analysis.storyboard; sourceTree = "<group>"; };
@@ -125,7 +126,6 @@
 		5C8C6B8022A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleDetailTableViewCell.swift; sourceTree = "<group>"; };
 		5C8C6B8222A93B340004E7F4 /* ViewReceiptTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReceiptTableViewCell.swift; sourceTree = "<group>"; };
 		5C9B437A22A1134B0012B933 /* StartOverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartOverTableViewCell.swift; sourceTree = "<group>"; };
-		5CA8D5C923697AC500E0630F /* DigimeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigimeService.swift; sourceTree = "<group>"; };
 		716BB90DAB6907C4E62B398A /* Pods-Genrefy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.release.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.release.xcconfig"; sourceTree = "<group>"; };
 		A6B2D724328E2B6943994BE1 /* Pods-Genrefy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.debug.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -211,7 +211,7 @@
 				27C675DF20FE243200E6AFBC /* Views */,
 				27C675A920FCA04900E6AFBC /* AppDelegate.swift */,
 				27C675D720FCF83400E6AFBC /* ImportRepository.swift */,
-				5CA8D5C923697AC500E0630F /* DigimeService.swift */,
+				27DBCCBC243B23EA006F9551 /* DigiMeService.swift */,
 				27C675BD20FCAFA100E6AFBC /* AppCoordinator.swift */,
 				27B5A2882101F6DB0053D9C4 /* Theme.swift */,
 				27C675B220FCA04C00E6AFBC /* Assets.xcassets */,
@@ -466,13 +466,13 @@
 				27C675C120FCAFBD00E6AFBC /* Coordinating.swift in Sources */,
 				27B5A27D21008E5C0053D9C4 /* AccountTableViewCell.swift in Sources */,
 				27CB3E8C2422409100425894 /* PromiseModalViewController.swift in Sources */,
-				5CA8D5CA23697AC500E0630F /* DigimeService.swift in Sources */,
 				271A8AE120FF7D1D00D94304 /* Nibbed.swift in Sources */,
 				27B5A2892101F6DB0053D9C4 /* Theme.swift in Sources */,
 				27EDC10B20FF99BC0092E661 /* AnalysisCoordinator.swift in Sources */,
 				1E4AEB312199FB8000C83328 /* IntroCoordinatingDelegate.swift in Sources */,
 				1E4AEB292199B71800C83328 /* IntroViewControllerUseCase.swift in Sources */,
 				27B5A28321009D240053D9C4 /* AccountCell.swift in Sources */,
+				27DBCCBD243B23EA006F9551 /* DigiMeService.swift in Sources */,
 				27C675AA20FCA04900E6AFBC /* AppDelegate.swift in Sources */,
 				27B5A2B4210230240053D9C4 /* ApplicationCoordinating.swift in Sources */,
 				5C8C6B8322A93B340004E7F4 /* ViewReceiptTableViewCell.swift in Sources */,
@@ -629,7 +629,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = "$(SRCROOT)/Genrefy/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -651,7 +651,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = "$(SRCROOT)/Genrefy/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

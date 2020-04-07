@@ -8,7 +8,14 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, Storyboarded {
+@objc protocol HomeViewControllerDelegate: CoordinatingDelegate {
+    func refreshData()
+}
+
+class HomeViewController: UIViewController, Storyboarded, Coordinated {
+    
+    typealias GenericCoordinatingDelegate = HomeViewControllerDelegate
+    var coordinatingDelegate: GenericCoordinatingDelegate?
     
     static var storyboardName = "Analysis"
     
@@ -33,6 +40,7 @@ class HomeViewController: UIViewController, Storyboarded {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var imageView: UIImageView!
+    @IBOutlet var refreshButton: UIButton!
     
     private let barColors = [
         #colorLiteral(red: 0.8431372549, green: 0.1176470588, blue: 0.7254901961, alpha: 1), // #D71EB9
@@ -60,8 +68,11 @@ class HomeViewController: UIViewController, Storyboarded {
         tableView.estimatedRowHeight = 600
         imageView.image = #imageLiteral(resourceName: "service_19").withRenderingMode(.alwaysTemplate)
         imageView.tintColor = .white
+        activityIndicator.hidesWhenStopped = true
+        
         if activityIndicator.isAnimating {
             imageView.isHidden = true
+            refreshButton.isHidden = true
         }
     }
     
@@ -70,9 +81,17 @@ class HomeViewController: UIViewController, Storyboarded {
         DispatchQueue.main.async {
             
             self.imageView.isHidden = false
-            self.activityIndicator.hidesWhenStopped = true
+            self.refreshButton.isHidden = false
             self.activityIndicator.stopAnimating()
         }
+    }
+    
+    @IBAction func refresh() {
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.startAnimating()
+        imageView.isHidden = true
+        refreshButton.isHidden = true
+        coordinatingDelegate?.refreshData()
     }
 }
 
