@@ -30,7 +30,7 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
         self.navigationController = navigationController
         
         guard let dmeClient = AppCoordinator.pullClient() else {
-            fatalError("Could not create new DMEPullCLient")
+            fatalError("Could not create new DMEPullClient")
         }
         
         let repository = ImportRepository()
@@ -148,7 +148,7 @@ extension AppCoordinator: DigiMeServiceDelegate {
 extension AppCoordinator: AnalysisCoordinatorDelegate {
     func refreshService() -> DigiMeService {
         guard let dmeClient = AppCoordinator.pullClient() else {
-            fatalError("Could not create new DMEPullCLient")
+            fatalError("Could not create new DMEPullClient")
         }
         
         let repository = ImportRepository()
