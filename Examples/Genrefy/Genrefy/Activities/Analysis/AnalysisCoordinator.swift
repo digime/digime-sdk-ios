@@ -139,6 +139,11 @@ extension AnalysisCoordinator: HomeViewControllerDelegate {
                 } else {
                     print("digi.me authorization failed")
                 }
+                
+                DispatchQueue.main.async {
+                    self.repositoryDidFinishProcessing()
+                }
+                
                 return
             }
             
