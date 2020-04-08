@@ -91,6 +91,14 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     
     func repositoryDidFinishProcessing() {
         homeViewController.hideActivityIndicator()
+        
+        guard let repository = repository else {
+            return
+        }
+        
+        if repository.allOrderedGenreSummaries.isEmpty {
+            homeViewController.showNoResults()
+        }
     }
     
     func repositoryDidUpdateProcessing() {

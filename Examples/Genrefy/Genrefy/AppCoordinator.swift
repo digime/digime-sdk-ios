@@ -146,6 +146,11 @@ extension AppCoordinator: DigiMeServiceDelegate {
             analysisCoordinator.repositoryDidUpdateProcessing()
             analysisCoordinator.repositoryDidFinishProcessing()
         }
+        else {
+            goToAnalysisCoordinator()
+            analysisCoordinator?.repositoryDidUpdateProcessing()
+            analysisCoordinator?.repositoryDidFinishProcessing()
+        }
     }
 }
 
