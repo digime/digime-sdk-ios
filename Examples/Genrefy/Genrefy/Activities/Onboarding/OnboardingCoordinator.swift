@@ -11,10 +11,6 @@ import SVProgressHUD
 import UIKit
 
 class OnboardingCoordinator: NSObject, ActivityCoordinating {
-    struct Result {
-        let data: ImportRepository
-    }
-    
     private let cache = AppStateCache()
     let identifier: String = UUID().uuidString
     

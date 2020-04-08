@@ -33,7 +33,6 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
     }
     private var totalGenreCount: Int = 0
     
-    private var counts = [String: Int]()
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     @IBOutlet var tableView: UITableView!

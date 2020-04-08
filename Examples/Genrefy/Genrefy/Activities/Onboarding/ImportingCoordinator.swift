@@ -20,10 +20,7 @@ class ImportingCoordinator: NSObject, ActivityCoordinating {
     weak var keyViewController: UIViewController?
     var navigationController: UINavigationController
     
-    private var fileCount = 0
-    private var fileDownloadedCount = 0
     private var importingViewController: ImportingViewController?
-    private var failedFileIdKeys = [String: Bool]()
     weak var delegate: ImportRepositoryDelegate?
     var digimeService: DigiMeService?
     
