@@ -54,7 +54,9 @@ class DigiMeService {
             }
 
             self.serialQueue.sync {
-                self.delegate?.serviceDidFinishImporting()
+                DispatchQueue.main.async {
+                    self.delegate?.serviceDidFinishImporting()
+                }
             }
         })
     }

@@ -25,7 +25,10 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     var parentCoordinator: Coordinating
     var childCoordinators: [ActivityCoordinating] = []
     
-    var repository: ImportRepository?
+    var repository: ImportRepository? {
+        return digimeService?.repository
+    }
+    
     var digimeService: DigiMeService?
     
     weak var keyViewController: UIViewController?
@@ -88,6 +91,14 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     
     func repositoryDidFinishProcessing() {
         homeViewController.hideActivityIndicator()
+        
+        guard let repository = repository else {
+            return
+        }
+        
+        if repository.allOrderedGenreSummaries.isEmpty {
+            homeViewController.showNoResults()
+        }
     }
     
     func repositoryDidUpdateProcessing() {

@@ -51,7 +51,7 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
             let songData = PersistentStorage.shared.loadData(for: "songs.json"),
             let songs = try? JSONDecoder().decode([Song].self, from: songData) {
             digimeService.repository.process(songs: songs)
-            goToAnalysisCoordinator(repository: digimeService.repository)
+            goToAnalysisCoordinator()
             analysisCoordinator?.repositoryDidFinishProcessing()
         }
         else {
@@ -103,13 +103,12 @@ extension AppCoordinator {
         coordinator.begin()
     }
     
-    func goToAnalysisCoordinator(repository: ImportRepository) {
+    func goToAnalysisCoordinator() {
         let coordinator = AnalysisCoordinator(navigationController: navigationController, parentCoordinator: self)
         analysisCoordinator = coordinator
         coordinator.delegate = self
         coordinator.digimeService = digimeService
         childCoordinators.append(coordinator)
-        coordinator.repository = repository
         coordinator.begin()
     }
     
@@ -122,12 +121,16 @@ extension AppCoordinator {
 extension AppCoordinator: ImportRepositoryDelegate {
     
     func repositoryDidUpdateProcessing(repository: ImportRepository) {
+        guard repository == digimeService.repository else {
+            print("Unexpected repository updated")
+            return
+        }
+        
         if let analysisCoordinator = analysisCoordinator {
-            analysisCoordinator.repository = repository
             analysisCoordinator.repositoryDidUpdateProcessing()
         }
         else {
-            goToAnalysisCoordinator(repository: repository)
+            goToAnalysisCoordinator()
         }
     }
 }
@@ -136,7 +139,14 @@ extension AppCoordinator: ImportRepositoryDelegate {
 extension AppCoordinator: DigiMeServiceDelegate {
     func serviceDidFinishImporting() {
         if let analysisCoordinator = analysisCoordinator {
+            
+            analysisCoordinator.repositoryDidUpdateProcessing()
             analysisCoordinator.repositoryDidFinishProcessing()
+        }
+        else {
+            goToAnalysisCoordinator()
+            analysisCoordinator?.repositoryDidUpdateProcessing()
+            analysisCoordinator?.repositoryDidFinishProcessing()
         }
     }
 }

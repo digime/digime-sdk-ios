@@ -74,13 +74,15 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
     }
     
     func hideActivityIndicator() {
-
-        DispatchQueue.main.async {
-            
-            self.imageView.isHidden = false
-            self.refreshButton.isHidden = false
-            self.activityIndicator.stopAnimating()
-        }
+        self.imageView.isHidden = false
+        self.refreshButton.isHidden = false
+        self.activityIndicator.stopAnimating()
+    }
+    
+    func showNoResults() {
+        let alert = UIAlertController(title: "No data", message: "Looks like you have not listened to any songs in last 24 hours.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
     
     @IBAction func refresh() {
@@ -122,7 +124,6 @@ extension HomeViewController: UITableViewDataSource {
         default:
             return UITableViewCell()
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
