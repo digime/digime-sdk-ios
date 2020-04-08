@@ -35,7 +35,6 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
     
     private var counts = [String: Int]()
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    private let cache = AppStateCache()
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var titleLabel: UILabel!
@@ -62,8 +61,6 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
 
         tableView.dataSource = self
         
-        cache.setExistingUser(value: true)
-
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 600
         imageView.image = #imageLiteral(resourceName: "service_19").withRenderingMode(.alwaysTemplate)

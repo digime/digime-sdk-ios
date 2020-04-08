@@ -15,10 +15,6 @@ class OnboardingCoordinator: NSObject, ActivityCoordinating {
         let data: ImportRepository
     }
     
-    enum Constants {
-        static let privacyPolicy = "https://www.digi.me/privacy-policy"
-    }
-    
     private let cache = AppStateCache()
     let identifier: String = UUID().uuidString
     
@@ -51,38 +47,6 @@ extension OnboardingCoordinator: IntroCoordinatingDelegate {
     
     func primaryButtonAction(sender: IntroViewController) {
         startConsentRequest()
-    }
-    
-    func secondaryButtonAction(sender: IntroViewController) {
-        let popupModalTransition = PopupModalTransition()
-        popupModalTransition.delegate = self
-        let promiseModalViewController = PromiseModalViewController()
-        promiseModalViewController.coordinatingDelegate = self
-        promiseModalViewController.transitionManager = popupModalTransition
-        promiseModalViewController.modalPresentationStyle = .custom
-        navigationController.present(promiseModalViewController, animated: true, completion: nil)
-    }
-}
-
-// MARK: - PromiseModalCoordinatingDelegate
-extension OnboardingCoordinator: PromiseModalCoordinatingDelegate {
-    func privacyPolicyButtonAction() {
-        guard let url = URL(string: Constants.privacyPolicy) else {
-            return
-        }
-        
-        UIApplication.shared.open(url)
-    }
-}
-
-// MARK: - PopupModalTransitionDelegate
-extension OnboardingCoordinator: PopupModalTransitionDelegate {
-    func dismiss() {
-        navigationController.dismiss(animated: true, completion: nil)
-    }
-    
-    var popupSize: CGSize? {
-        return nil
     }
 }
 

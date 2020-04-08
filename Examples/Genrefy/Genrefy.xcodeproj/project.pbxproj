@@ -16,7 +16,6 @@
 		1E78293E243347A30011B5A7 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1E78293D243347A30011B5A7 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 */; };
 		1E7829762433665A0011B5A7 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1E7829752433665A0011B5A7 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		1E782978243488170011B5A7 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E782977243488170011B5A7 /* KeychainService.swift */; };
-		271A8AE120FF7D1D00D94304 /* Nibbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271A8AE020FF7D1D00D94304 /* Nibbed.swift */; };
 		276AF972242BB5E000BC3867 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF971242BB5E000BC3867 /* Song.swift */; };
 		276AF974242CB98900BC3867 /* GenreSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF973242CB98900BC3867 /* GenreSummary.swift */; };
 		277759D1219AEF350025C4A4 /* String+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277759D0219AEF350025C4A4 /* String+Bold.swift */; };
@@ -45,10 +44,6 @@
 		27C675D820FCF83400E6AFBC /* ImportRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C675D720FCF83400E6AFBC /* ImportRepository.swift */; };
 		27C675DA20FCF9EE00E6AFBC /* ImportingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C675D920FCF9EE00E6AFBC /* ImportingCoordinator.swift */; };
 		27C675E120FE259600E6AFBC /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C675E020FE259600E6AFBC /* RoundedButton.swift */; };
-		27CB3E8724223D0B00425894 /* PopupModalTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E8624223D0B00425894 /* PopupModalTransition.swift */; };
-		27CB3E8924223E3C00425894 /* PopupBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E8824223E3C00425894 /* PopupBackgroundView.swift */; };
-		27CB3E8C2422409100425894 /* PromiseModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E8A2422409100425894 /* PromiseModalViewController.swift */; };
-		27CB3E8D2422409100425894 /* PromiseModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27CB3E8B2422409100425894 /* PromiseModalViewController.xib */; };
 		27CB3E8F2422434100425894 /* String+Attributed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E8E2422434100425894 /* String+Attributed.swift */; };
 		27CB3E912422472A00425894 /* ColorCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E902422472A00425894 /* ColorCompatibility.swift */; };
 		27CB3E932422476700425894 /* UIFont+Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E922422476700425894 /* UIFont+Weight.swift */; };
@@ -76,7 +71,6 @@
 		1E78293D243347A30011B5A7 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12; sourceTree = "<group>"; };
 		1E7829752433665A0011B5A7 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
 		1E782977243488170011B5A7 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
-		271A8AE020FF7D1D00D94304 /* Nibbed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nibbed.swift; sourceTree = "<group>"; };
 		276AF971242BB5E000BC3867 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		276AF973242CB98900BC3867 /* GenreSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSummary.swift; sourceTree = "<group>"; };
 		277759D0219AEF350025C4A4 /* String+Bold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Bold.swift"; sourceTree = "<group>"; };
@@ -107,10 +101,6 @@
 		27C675D720FCF83400E6AFBC /* ImportRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportRepository.swift; sourceTree = "<group>"; };
 		27C675D920FCF9EE00E6AFBC /* ImportingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportingCoordinator.swift; sourceTree = "<group>"; };
 		27C675E020FE259600E6AFBC /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
-		27CB3E8624223D0B00425894 /* PopupModalTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupModalTransition.swift; sourceTree = "<group>"; };
-		27CB3E8824223E3C00425894 /* PopupBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupBackgroundView.swift; sourceTree = "<group>"; };
-		27CB3E8A2422409100425894 /* PromiseModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseModalViewController.swift; sourceTree = "<group>"; };
-		27CB3E8B2422409100425894 /* PromiseModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PromiseModalViewController.xib; sourceTree = "<group>"; };
 		27CB3E8E2422434100425894 /* String+Attributed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Attributed.swift"; sourceTree = "<group>"; };
 		27CB3E902422472A00425894 /* ColorCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCompatibility.swift; sourceTree = "<group>"; };
 		27CB3E922422476700425894 /* UIFont+Weight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Weight.swift"; sourceTree = "<group>"; };
@@ -206,7 +196,6 @@
 				0637F1202122E31500892081 /* Model */,
 				27C675C220FCB1F200E6AFBC /* Activities */,
 				27C675BF20FCAFBD00E6AFBC /* Protocols */,
-				27CB3E8524223CFB00425894 /* Transitions */,
 				06D279412121CA7400B4BC98 /* Utility */,
 				27C675DF20FE243200E6AFBC /* Views */,
 				27C675A920FCA04900E6AFBC /* AppDelegate.swift */,
@@ -230,7 +219,6 @@
 				27B5A2B5210230480053D9C4 /* ActivityCoordinating.swift */,
 				27B5A2B7210230650053D9C4 /* Coordinated.swift */,
 				27C675CD20FCD46300E6AFBC /* Storyboarded.swift */,
-				271A8AE020FF7D1D00D94304 /* Nibbed.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -286,22 +274,11 @@
 		27C675DF20FE243200E6AFBC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				27CB3E8A2422409100425894 /* PromiseModalViewController.swift */,
-				27CB3E8B2422409100425894 /* PromiseModalViewController.xib */,
-				27CB3E8824223E3C00425894 /* PopupBackgroundView.swift */,
 				27C675E020FE259600E6AFBC /* RoundedButton.swift */,
 				27EAB01221BE813E0070D724 /* RoundedBorderButton.swift */,
 				27B5A28A2101F7A00053D9C4 /* RoundedImageView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		27CB3E8524223CFB00425894 /* Transitions */ = {
-			isa = PBXGroup;
-			children = (
-				27CB3E8624223D0B00425894 /* PopupModalTransition.swift */,
-			);
-			path = Transitions;
 			sourceTree = "<group>";
 		};
 		E3C73FC5C04925F4CD3B8112 /* Frameworks */ = {
@@ -385,7 +362,6 @@
 				27C675B620FCA04C00E6AFBC /* LaunchScreen.storyboard in Resources */,
 				27C675B320FCA04C00E6AFBC /* Assets.xcassets in Resources */,
 				1E78293E243347A30011B5A7 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 in Resources */,
-				27CB3E8D2422409100425894 /* PromiseModalViewController.xib in Resources */,
 				27C675C820FCD18900E6AFBC /* Onboarding.storyboard in Resources */,
 				1E7829762433665A0011B5A7 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */,
 			);
@@ -459,14 +435,11 @@
 				27C675E120FE259600E6AFBC /* RoundedButton.swift in Sources */,
 				27C675D620FCEA0600E6AFBC /* ImportingViewController.swift in Sources */,
 				27B5A2872101E3FA0053D9C4 /* AccountSelectionCoordinatingDelegate.swift in Sources */,
-				27CB3E8924223E3C00425894 /* PopupBackgroundView.swift in Sources */,
 				5C9B437B22A1134B0012B933 /* StartOverTableViewCell.swift in Sources */,
 				27C675CE20FCD46300E6AFBC /* Storyboarded.swift in Sources */,
 				276AF974242CB98900BC3867 /* GenreSummary.swift in Sources */,
 				27C675C120FCAFBD00E6AFBC /* Coordinating.swift in Sources */,
 				27B5A27D21008E5C0053D9C4 /* AccountTableViewCell.swift in Sources */,
-				27CB3E8C2422409100425894 /* PromiseModalViewController.swift in Sources */,
-				271A8AE120FF7D1D00D94304 /* Nibbed.swift in Sources */,
 				27B5A2892101F6DB0053D9C4 /* Theme.swift in Sources */,
 				27EDC10B20FF99BC0092E661 /* AnalysisCoordinator.swift in Sources */,
 				1E4AEB312199FB8000C83328 /* IntroCoordinatingDelegate.swift in Sources */,
@@ -479,7 +452,6 @@
 				27C675D820FCF83400E6AFBC /* ImportRepository.swift in Sources */,
 				27EAB01321BE813E0070D724 /* RoundedBorderButton.swift in Sources */,
 				27CB3E932422476700425894 /* UIFont+Weight.swift in Sources */,
-				27CB3E8724223D0B00425894 /* PopupModalTransition.swift in Sources */,
 				27B5A2B8210230650053D9C4 /* Coordinated.swift in Sources */,
 				27CB3E912422472A00425894 /* ColorCompatibility.swift in Sources */,
 				27EDC11120FF9CD90092E661 /* AccountsViewController.swift in Sources */,

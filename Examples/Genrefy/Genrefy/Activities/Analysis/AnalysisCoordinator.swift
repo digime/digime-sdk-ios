@@ -165,9 +165,6 @@ extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
         
         PersistentStorage.shared.reset(fileName: "songs.json")
         
-        cache.setOnboarding(value: nil)
-        cache.setExistingUser(value: nil)
-        
         navigationController.popViewController(animated: true)
         parentCoordinator.childDidFinish(child: self, result: nil)
     }
