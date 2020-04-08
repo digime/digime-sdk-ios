@@ -14,18 +14,12 @@ class IntroViewController: UIViewController, Storyboarded, Coordinated {
     typealias GenericCoordinatingDelegate = IntroCoordinatingDelegate
     weak var coordinatingDelegate: GenericCoordinatingDelegate?
     
-    @IBOutlet var secondaryButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var mainTitleLabel: UILabel!
     @IBOutlet var primaryButton: RoundedButton!
-    @IBOutlet var secondaryButton: UIButton!
     
     @IBAction func primaryButtonAction(_ sender: Any) {
         coordinatingDelegate?.primaryButtonAction(sender: self)
-    }
-    
-    @IBAction func secondaryButtonAction(_ sender: UIButton) {
-        coordinatingDelegate?.secondaryButtonAction(sender: self)
     }
     
     var useCase: IntroViewControllerUseCase!
@@ -37,11 +31,8 @@ class IntroViewController: UIViewController, Storyboarded, Coordinated {
         primaryButton.backgroundColor = Theme.buttonColor
         mainTitleLabel.font = UIFont.systemFont(ofSize: Device.IS_IPHONE_5 ? 20 : 24, weight: .light)
         
-        secondaryButtonHeightConstraint.constant = Device.IS_IPHONE_5 ? 0 : 20
-        
         useCase.configure(mainImageView: mainImageView)
         useCase.configure(mainTitleLabel: mainTitleLabel)
         useCase.configure(primaryButton: primaryButton)
-        useCase.configure(secondaryButton: secondaryButton)
     }
 }

@@ -11,5 +11,4 @@ import Foundation
 @objc protocol IntroCoordinatingDelegate: CoordinatingDelegate {
     
     func primaryButtonAction(sender: IntroViewController)
-    func secondaryButtonAction(sender: IntroViewController)
 }

@@ -2,7 +2,7 @@
 //  GenreCell.swift
 //  Genrefy
 //
-//  Created by Alex Robinson  on 21/08/2018.
+//  Created on 21/08/2018.
 //  Copyright © 2018 digi.me. All rights reserved.
 //
 
