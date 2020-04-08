@@ -24,8 +24,6 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
     
     private var digimeService: DigiMeService
     
-    private let cache = AppStateCache()
-
     @objc required init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         
@@ -106,7 +104,6 @@ extension AppCoordinator {
     }
     
     func goToAnalysisCoordinator(repository: ImportRepository) {
-        cache.setOnboarding(value: true)
         let coordinator = AnalysisCoordinator(navigationController: navigationController, parentCoordinator: self)
         analysisCoordinator = coordinator
         coordinator.delegate = self

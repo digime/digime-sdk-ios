@@ -14,8 +14,6 @@ protocol IntroViewControllerUseCase {
     func configure(mainImageView: UIImageView)
     func configure(mainTitleLabel: UILabel)
     func configure(primaryButton: UIButton)
-    func configure(skipButton: UIButton)
-    func configure(secondaryButton: UIButton)
 }
 
 struct HomeViewControllerUseCase: IntroViewControllerUseCase {
@@ -30,13 +28,5 @@ struct HomeViewControllerUseCase: IntroViewControllerUseCase {
     func configure(primaryButton: UIButton) {
         primaryButton.setTitle("PLUG ME IN", for: .normal)
         primaryButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-    }
-    
-    func configure(skipButton: UIButton) {
-        skipButton.isHidden = true
-    }
-    
-    func configure(secondaryButton: UIButton) {
-        secondaryButton.isHidden = true
     }
 }
