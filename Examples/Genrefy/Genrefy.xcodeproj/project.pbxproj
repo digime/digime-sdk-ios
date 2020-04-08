@@ -48,7 +48,6 @@
 		27CB3E912422472A00425894 /* ColorCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E902422472A00425894 /* ColorCompatibility.swift */; };
 		27CB3E932422476700425894 /* UIFont+Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CB3E922422476700425894 /* UIFont+Weight.swift */; };
 		27DBCCBD243B23EA006F9551 /* DigiMeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DBCCBC243B23EA006F9551 /* DigiMeService.swift */; };
-		27EAB01321BE813E0070D724 /* RoundedBorderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EAB01221BE813E0070D724 /* RoundedBorderButton.swift */; };
 		27EDC10B20FF99BC0092E661 /* AnalysisCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EDC10A20FF99BC0092E661 /* AnalysisCoordinator.swift */; };
 		27EDC10D20FF9C1E0092E661 /* Analysis.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27EDC10C20FF9C1E0092E661 /* Analysis.storyboard */; };
 		27EDC10F20FF9CC50092E661 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EDC10E20FF9CC50092E661 /* HomeViewController.swift */; };
@@ -105,7 +104,6 @@
 		27CB3E902422472A00425894 /* ColorCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCompatibility.swift; sourceTree = "<group>"; };
 		27CB3E922422476700425894 /* UIFont+Weight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Weight.swift"; sourceTree = "<group>"; };
 		27DBCCBC243B23EA006F9551 /* DigiMeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigiMeService.swift; sourceTree = "<group>"; };
-		27EAB01221BE813E0070D724 /* RoundedBorderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedBorderButton.swift; sourceTree = "<group>"; };
 		27EDC10A20FF99BC0092E661 /* AnalysisCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisCoordinator.swift; sourceTree = "<group>"; };
 		27EDC10C20FF9C1E0092E661 /* Analysis.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Analysis.storyboard; sourceTree = "<group>"; };
 		27EDC10E20FF9CC50092E661 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -275,7 +273,6 @@
 			isa = PBXGroup;
 			children = (
 				27C675E020FE259600E6AFBC /* RoundedButton.swift */,
-				27EAB01221BE813E0070D724 /* RoundedBorderButton.swift */,
 				27B5A28A2101F7A00053D9C4 /* RoundedImageView.swift */,
 			);
 			path = Views;
@@ -450,7 +447,6 @@
 				27B5A2B4210230240053D9C4 /* ApplicationCoordinating.swift in Sources */,
 				5C8C6B8322A93B340004E7F4 /* ViewReceiptTableViewCell.swift in Sources */,
 				27C675D820FCF83400E6AFBC /* ImportRepository.swift in Sources */,
-				27EAB01321BE813E0070D724 /* RoundedBorderButton.swift in Sources */,
 				27CB3E932422476700425894 /* UIFont+Weight.swift in Sources */,
 				27B5A2B8210230650053D9C4 /* Coordinated.swift in Sources */,
 				27CB3E912422472A00425894 /* ColorCompatibility.swift in Sources */,

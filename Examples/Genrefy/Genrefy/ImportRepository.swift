@@ -35,7 +35,6 @@ class ImportRepository: NSObject {
     var files = [DMEFile]()
     var accounts = [DMEAccount]()
     weak var delegate: ImportRepositoryDelegate?
-    private var cache = AppStateCache()
     
     func process(file: DMEFile) {
         files.append(file)

@@ -64,10 +64,6 @@ class AccountSelectionDataSource: Coordinated {
         return 5
     }
     
-    func titleForSection(_ index: Int) -> String? {
-        return nil
-    }
-    
     func itemAt(indexPath: IndexPath) -> AccountSelectionItem? {
         let account = sortedAccounts[indexPath.row]
         guard let identifier = account.identifier else {

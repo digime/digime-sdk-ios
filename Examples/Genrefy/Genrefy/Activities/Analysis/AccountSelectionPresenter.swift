@@ -59,19 +59,6 @@ class AccountSelectionPresenter {
         return dataSource.numberOfSections
     }
     
-    func heightForFooter(section:Int) -> CGFloat {
-        switch section {
-        case 0:
-            return 100
-        default:
-            return 0
-        }
-    }
-    
-    func titleForHeader(section: Int) -> String? {
-        return dataSource.titleForSection(section)
-    }
-    
     private func canToggleCell(at indexPath:IndexPath) -> Bool {
         return numberOfRows(section: indexPath.section) > 1
     }
