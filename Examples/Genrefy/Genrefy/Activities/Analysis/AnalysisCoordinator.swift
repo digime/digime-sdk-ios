@@ -25,7 +25,10 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     var parentCoordinator: Coordinating
     var childCoordinators: [ActivityCoordinating] = []
     
-    var repository: ImportRepository?
+    var repository: ImportRepository? {
+        return digimeService?.repository
+    }
+    
     var digimeService: DigiMeService?
     
     weak var keyViewController: UIViewController?
