@@ -42,7 +42,7 @@
 
 - (BOOL)canHandleAction:(DMEOpenAction *)action
 {
-    return [action isEqualToString:@"data"];
+    return [action isEqualToString:@"data"] || [action isEqualToString:@"authorize"];
 }
 
 - (void)handleAction:(DMEOpenAction *)action withParameters:(NSDictionary<NSString *,id> *)parameters
