@@ -47,7 +47,7 @@ Ongoing Access is for you if:
 
 
 ## Example
-We have built an example app called "Genrefy" which can be access from examples folder. It uses Ongoing Access to show the user their most listened to genres of music on Spotify. The app is already configured, simply Build and Run.
+We have built an example app called "Genrefy" which can be accessed from examples folder. It uses Ongoing Access to show the user their most listened to genres of music on Spotify. The app is already configured, simply Build and Run.
 
 
 ## How to use
