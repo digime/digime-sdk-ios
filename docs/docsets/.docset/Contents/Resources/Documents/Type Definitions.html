@@ -63,6 +63,9 @@
                 <a class="nav-group-task-link" href="migration-tips.html">Migration Tips</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="ongoing-access.html">Ongoing Access</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="postbox.html">Postbox</a>
               </li>
               <li class="nav-group-task">
@@ -165,6 +168,9 @@
                 <a class="nav-group-task-link" href="Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Constants.html#/c:@kDMEAuthorizationCode">kDMEAuthorizationCode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Constants.html#/c:@kDMEClientSchemePrefix">kDMEClientSchemePrefix</a>
               </li>
               <li class="nav-group-task">
@@ -210,6 +216,9 @@
                 <a class="nav-group-task-link" href="Constants.html#/c:@kDMEPostboxPublicKey">kDMEPostboxPublicKey</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Constants.html#/c:@kDMEPreAuthorizationCode">kDMEPreAuthorizationCode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Constants.html#/c:@kDMERegisteredAppID">kDMERegisteredAppID</a>
               </li>
               <li class="nav-group-task">
@@ -244,6 +253,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Constants.html#/c:@kDMETimingFetchSessionKey">kDMETimingFetchSessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Constants.html#/c:@kDMETimingRequestAuthorizationCode">kDMETimingRequestAuthorizationCode</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Constants.html#/c:@kDMETimingTotal">kDMETimingTotal</a>
@@ -297,6 +309,9 @@
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
               </li>
               <li class="nav-group-task">
@@ -326,6 +341,85 @@
           <div class="section-content">
             <div class="task-group">
               <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion"></a>
+                    <a name="//apple_ref/objc/Type/DMEOngoingAccessAuthorizationCompletion" class="dashAnchor"></a>
+                    <a class="token" href="#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>DMEOngoingAccessAuthorizationCompletion - executed when authorization stage for Ongoing Access has completed. Return to 3d party app.</p>
+
+<p>expiresOn - expiration date
+tokenType - string describing type: like Bearer</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEOngoingAccessAuthorizationCompletion</span><span class="p">)(</span>
+    <span class="n"><a href="Classes/DMESession.html">DMESession</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="n">DMEOAuthToken</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DMEOngoingAccessAuthorizationCompletion</span> <span class="o">=</span> <span class="p">(</span><span class="kt"><a href="Classes/DMESession.html">DMESession</a></span><span class="p">?,</span> <span class="kt">DMEOAuthToken</span><span class="p">?,</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>session</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The session if authorization is successful, nil if not.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>oAuthToken</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>OAuth data such as: access and refresh tokens, expiration date and type.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>nil if authorization is successful, otherwise an error specifying what went wrong.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>

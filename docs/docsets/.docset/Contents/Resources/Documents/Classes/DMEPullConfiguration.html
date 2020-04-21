@@ -63,6 +63,9 @@
                 <a class="nav-group-task-link" href="../migration-tips.html">Migration Tips</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../ongoing-access.html">Ongoing Access</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../postbox.html">Postbox</a>
               </li>
               <li class="nav-group-task">
@@ -165,6 +168,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEAuthorizationCode">kDMEAuthorizationCode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEClientSchemePrefix">kDMEClientSchemePrefix</a>
               </li>
               <li class="nav-group-task">
@@ -210,6 +216,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEPostboxPublicKey">kDMEPostboxPublicKey</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEPreAuthorizationCode">kDMEPreAuthorizationCode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMERegisteredAppID">kDMERegisteredAppID</a>
               </li>
               <li class="nav-group-task">
@@ -244,6 +253,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMETimingFetchSessionKey">kDMETimingFetchSessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@kDMETimingRequestAuthorizationCode">kDMETimingRequestAuthorizationCode</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMETimingTotal">kDMETimingTotal</a>
@@ -297,6 +309,9 @@
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
               </li>
               <li class="nav-group-task">
@@ -332,6 +347,38 @@
           <div class="section-content">
             <div class="task-group">
               <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPullConfiguration(py)publicKeyHex"></a>
+                    <a name="//apple_ref/objc/Property/publicKeyHex" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPullConfiguration(py)publicKeyHex">publicKeyHex</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Your rsa public key hex.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">readwrite</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">publicKeyHex</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">publicKeyHex</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -457,6 +504,41 @@ Defaults to 100. This is affected by <code><a href="../Classes/DMEPullConfigurat
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">maxStalePolls</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPullConfiguration(py)autoRecoverExpiredCredentials"></a>
+                    <a name="//apple_ref/objc/Property/autoRecoverExpiredCredentials" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPullConfiguration(py)autoRecoverExpiredCredentials">autoRecoverExpiredCredentials</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Determines whether the user is automatically forwarded
+to digi.me app when the <code>DMEOAuthToken</code> could not be refreshed by the SDK.
+Default to YES.
+Setting this to NO will in stead return a <code>AuthErrorOAuthTokenExpired</code> error.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">assign</span><span class="p">,</span> <span class="n">readwrite</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">autoRecoverExpiredCredentials</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">autoRecoverExpiredCredentials</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>

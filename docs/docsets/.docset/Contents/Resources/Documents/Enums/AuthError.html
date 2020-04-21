@@ -63,6 +63,9 @@
                 <a class="nav-group-task-link" href="../migration-tips.html">Migration Tips</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../ongoing-access.html">Ongoing Access</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../postbox.html">Postbox</a>
               </li>
               <li class="nav-group-task">
@@ -165,6 +168,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEAuthorizationCode">kDMEAuthorizationCode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEClientSchemePrefix">kDMEClientSchemePrefix</a>
               </li>
               <li class="nav-group-task">
@@ -210,6 +216,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEPostboxPublicKey">kDMEPostboxPublicKey</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEPreAuthorizationCode">kDMEPreAuthorizationCode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMERegisteredAppID">kDMERegisteredAppID</a>
               </li>
               <li class="nav-group-task">
@@ -244,6 +253,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMETimingFetchSessionKey">kDMETimingFetchSessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@kDMETimingRequestAuthorizationCode">kDMETimingRequestAuthorizationCode</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMETimingTotal">kDMETimingTotal</a>
@@ -295,6 +307,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
@@ -352,7 +367,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="n">AuthErrorGeneral</span>    <span class="o">=</span> <span class="mi">1</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="n">AuthErrorGeneral</span> <span class="o">=</span> <span class="mi">1</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -384,7 +399,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="n">AuthErrorCancelled</span>  <span class="o">=</span> <span class="mi">5</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="n">AuthErrorCancelled</span> <span class="o">=</span> <span class="mi">5</span></code></pre>
 
                         </div>
                         <div class="language">
@@ -486,6 +501,38 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="k">case</span> <span class="n">scopeOutOfBounds</span> <span class="o">=</span> <span class="mi">11</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@E@AuthError@AuthErrorOAuthTokenExpired"></a>
+                    <a name="//apple_ref/objc/Case/AuthErrorOAuthTokenExpired" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@E@AuthError@AuthErrorOAuthTokenExpired">AuthErrorOAuthTokenExpired</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="n">AuthErrorOAuthTokenExpired</span> <span class="o">=</span> <span class="mi">12</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">oAuthTokenExpired</span> <span class="o">=</span> <span class="mi">12</span></code></pre>
 
                         </div>
                       </div>

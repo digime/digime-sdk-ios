@@ -63,6 +63,9 @@
                 <a class="nav-group-task-link" href="../migration-tips.html">Migration Tips</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../ongoing-access.html">Ongoing Access</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../postbox.html">Postbox</a>
               </li>
               <li class="nav-group-task">
@@ -165,6 +168,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDME3dPartyAppName">kDME3dPartyAppName</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEAuthorizationCode">kDMEAuthorizationCode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEClientSchemePrefix">kDMEClientSchemePrefix</a>
               </li>
               <li class="nav-group-task">
@@ -210,6 +216,9 @@
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEPostboxPublicKey">kDMEPostboxPublicKey</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@kDMEPreAuthorizationCode">kDMEPreAuthorizationCode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMERegisteredAppID">kDMERegisteredAppID</a>
               </li>
               <li class="nav-group-task">
@@ -244,6 +253,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMETimingFetchSessionKey">kDMETimingFetchSessionKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Constants.html#/c:@kDMETimingRequestAuthorizationCode">kDMETimingRequestAuthorizationCode</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Constants.html#/c:@kDMETimingTotal">kDMETimingTotal</a>
@@ -295,6 +307,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
@@ -547,6 +562,61 @@ Extracts private key as hex string from p12File from a specific bundle. This wil
                       <div>
                         <h4>Return Value</h4>
                         <p>hex string representation of the private key</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMECryptoUtilities(cm)randomBytesWithLength:"></a>
+                    <a name="//apple_ref/objc/Method/+randomBytesWithLength:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMECryptoUtilities(cm)randomBytesWithLength:">+randomBytesWithLength:</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Generates random data using length as a parameter.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nf">randomBytesWithLength</span><span class="p">:(</span><span class="kt">int</span><span class="p">)</span><span class="nv">length</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">randomBytes</span><span class="p">(</span><span class="n">withLength</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Data</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>length</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>int</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>NSData - random bytes for the specified length.</p>
                       </div>
                     </section>
                   </div>
