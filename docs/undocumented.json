@@ -44,14 +44,14 @@
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/DMEClient.h",
-      "line": 45,
+      "line": 50,
       "symbol": "DMEClient.-init",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/DMEClient.h",
-      "line": 46,
+      "line": 51,
       "symbol": "DMEClient.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
