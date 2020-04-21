@@ -55,7 +55,7 @@
 
 + (NSError *)authError:(AuthError)authError reference:(nullable NSString *)errorReference
 {
-    if (errorReference != nil)
+    if ([errorReference length] > 0)
     {
         NSMutableDictionary<NSErrorUserInfoKey, id> *userInfo = [NSMutableDictionary dictionary];
         NSString *errorDescription = [[self class] authDescription:authError];

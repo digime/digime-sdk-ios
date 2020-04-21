@@ -29,7 +29,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) DMESessionManager *sessionManager;
 
 /**
- Session metadata. Contains additional debug information collected during the session lifetime.
+ Session metadata. Contains additional information collected during the session lifetime.
+ The following keys can be used to retrieve data after interacting with digi.me app:
+ - kDMEDigiMeVersion. This can be useful for raising issues with digi.me support
+ - kDMESessionKey
+ - kDMEContractId
+ - kDMEResponse
  */
 @property (strong, nonatomic, readonly) NSDictionary<NSString *, id> *metadata;
 

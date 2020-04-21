@@ -143,8 +143,8 @@
 
 - (void)filterMetadata:(NSDictionary<NSString *,id> *)metadata
 {
-    // default legacy keys
-    NSMutableArray *allowedKeys = @[kDMESessionKey, kDMEResponse, kDMERegisteredAppID].mutableCopy;
+    // default keys
+    NSMutableArray *allowedKeys = @[kDMESessionKey, kDMEResponse, kDMERegisteredAppID, kDMEDigiMeVersion].mutableCopy;
     // timing keys
     [allowedKeys addObjectsFromArray:@[kDMETimingDataGetAllFiles, kDMETimingDataGetFile, kDMETimingFetchContractPermission, kDMETimingFetchDataGetAccount, kDMETimingFetchDataGetFileList, kDMETimingFetchSessionKey, kDMEDataRequest, kDMEFetchContractDetails, kDMEUpdateContractPermission, kDMETimingTotal, kDMETimingRequestAuthorizationCode]];
     // timing debug keys

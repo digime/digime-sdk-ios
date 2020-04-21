@@ -12,6 +12,7 @@
 
 NSString * const kDMESessionKey = @"sessionKey";
 NSString * const kDMEResponse = @"result";
+NSString * const kDMEDigiMeVersion = @"digiMeVersion";
 NSString * const kDMERegisteredAppID = @"appId";
 NSString * const kDMEPostboxId = @"postboxId";
 NSString * const kDMEPostboxPublicKey = @"publicKey";
@@ -33,7 +34,6 @@ NSString * const kDMEDebugPlatform = @"debugPlatform";
 NSString * const kDMEContractId = @"contractId";
 NSString * const kDMEContractType = @"debugContractType";
 NSString * const kDMEDeviceId = @"debugDeviceId";
-NSString * const kDMEDigiMeVersion = @"debugDigiMeVersion";
 NSString * const kDMEUserId = @"debugUserId";
 NSString * const kDMELibraryId = @"debugLibraryId";
 NSString * const kDMEPCloudType = @"debugPcloudType";
