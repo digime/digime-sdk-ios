@@ -12,6 +12,8 @@
 #import "NSData+DMECrypto.h"
 
 static NSString * const kDigiMeAPIVersion = @"v1.4";
+static NSString * const kDigiMeOAuthAPIVersion = @"v1";
+static NSString * const kDigiMeJWKSAPIVersion = @"v1";
 
 @interface DMERequestFactory()
 
@@ -37,6 +39,48 @@ static NSString * const kDigiMeAPIVersion = @"v1.4";
 }
 
 #pragma mark - Public
+
+- (NSURLRequest *)preAuthRequestWithBearer:(NSString *)jwtBearer
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/authorize", self.baseOAuthUrlPath]];
+    NSString *authorization = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:authorization forHTTPHeaderField:@"Authorization"];
+    return request;
+}
+
+- (NSURLRequest *)preAuthValidationRequest
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/oauth", self.baseJWKSUrlPath]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    return request;
+}
+
+- (NSURLRequest *)authRequestWithBearer:(NSString *)jwtBearer
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/token", self.baseOAuthUrlPath]];
+    NSString *authorization = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:authorization forHTTPHeaderField:@"Authorization"];
+    return request;
+}
+
+- (NSURLRequest *)dataTriggerRequestWithBearer:(NSString *)jwtBearer
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/trigger?schemaVersion=5.0.0&prefetch=false", self.baseUrlPath]];
+    NSString *authorization = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:authorization forHTTPHeaderField:@"Authorization"];
+    return request;
+}
 
 - (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<DMEDataRequest>)scope
 {
@@ -134,6 +178,16 @@ static NSString * const kDigiMeAPIVersion = @"v1.4";
 - (NSString *)baseUrlPath
 {
     return [NSString stringWithFormat:@"%@%@/permission-access", self.baseUrl, kDigiMeAPIVersion];
+}
+
+- (NSString *)baseOAuthUrlPath
+{
+    return [NSString stringWithFormat:@"%@%@/oauth", self.baseUrl, kDigiMeOAuthAPIVersion];
+}
+
+- (NSString *)baseJWKSUrlPath
+{
+    return [NSString stringWithFormat:@"%@%@/jwks", self.baseUrl, kDigiMeJWKSAPIVersion];
 }
 
 - (NSDictionary *)sdkAgent

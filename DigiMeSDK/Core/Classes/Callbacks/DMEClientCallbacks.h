@@ -17,6 +17,7 @@
 @class DMEPostbox;
 @class DMESession;
 @class DMEFileList;
+@class DMEOAuthToken;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,6 +28,18 @@ NS_ASSUME_NONNULL_BEGIN
  @param error nil if authorization is successful, otherwise an error specifying what went wrong
  */
 typedef void (^DMEAuthorizationCompletion) (DMESession * _Nullable session, NSError * _Nullable error);
+
+/**
+DMEOngoingAccessAuthorizationCompletion - executed when authorization stage for Ongoing Access has completed. Return to 3d party app.
+
+expiresOn - expiration date
+tokenType - string describing type: like Bearer
+ 
+@param session The session if authorization is successful, nil if not.
+@param oAuthToken OAuth data such as: access and refresh tokens, expiration date and type.
+@param error nil if authorization is successful, otherwise an error specifying what went wrong.
+*/
+typedef void (^DMEOngoingAccessAuthorizationCompletion) (DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error);
 
 /**
  DMEPostboxCreationCompletion - executed when a Postbox is created.

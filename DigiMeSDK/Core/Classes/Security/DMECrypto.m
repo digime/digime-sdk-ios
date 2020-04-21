@@ -6,6 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
+#import <DigiMeSDK/DigiMeSDK-Swift.h>
 #import "DMEClientConfiguration.h"
 #import "DMECrypto.h"
 #import <CommonCrypto/CommonCryptor.h>
@@ -764,18 +765,6 @@ static const NSInteger kHashLength = 64;
     return ret;
 }
 
-#pragma mark - Random
-
-+ (NSData *)getRandomUnsignedCharacters:(int)length
-{
-    NSMutableData *data = [NSMutableData dataWithLength:length];
-    
-    __attribute__((unused)) int result = SecRandomCopyBytes(kSecRandomDefault,
-                                                            (size_t)length,
-                                                            data.mutableBytes);
-    return data;
-}
-
 #pragma mark - Postbox
 
 + (NSString *)encryptMetadata:(NSData *)metadata symmetricalKey:(NSData *)symmetricalKey initializationVector:(NSData *)iv
@@ -799,6 +788,131 @@ static const NSInteger kHashLength = 64;
     NSData *encryptedData = [[self class] encryptAes256UsingKey:symmetricalKey initializationVector:iv data:payload error:&error];
     NSAssert(error == nil, @"Postbox data. An encryption error occured");
     return encryptedData;
+}
+
+#pragma mark - Ongoing Access
+
+// Pre-Authorisation code request
++ (NSString *)createPreAuthorizationJwtWithAppId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex
+{
+    return [self createPreAuthorizationJwtWithAppId:appId contractId:contractId privateKey:privateKeyHex publicKey:nil];
+}
+
++ (NSString *)createPreAuthorizationJwtWithAppId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex
+{
+    NSString *publicKeyBase64;
+    if (publicKeyHex)
+    {
+        NSData *publicKeyData = [publicKeyHex hexToBytes];
+        publicKeyBase64 = [publicKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    }
+    
+    NSData *privateKeyData = [privateKeyHex hexToBytes];
+    NSString *privateKeyBase64 = [privateKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSString *preAuthorizationJWT = [DMEJWTUtility signedPreAuthJwt:appId contractId:contractId privateKey:privateKeyBase64 publicKey:publicKeyBase64];
+    NSAssert(preAuthorizationJWT != nil, @"An error occured generating pre-auth jwt token");
+    return preAuthorizationJWT;
+}
+
+// Validating Pre-Authorisation code
++ (NSString *)preAuthCodeFromJwt:(NSString *)jwt publicKey:(NSString *)publicKey
+{
+    NSData *publicKeyData = [self stripPublicHeadersfromPEMCertificate:publicKey];
+    NSAssert(publicKeyData != nil, @"An error occured validating pre-auth jwt token. Public key is incorrect format.");
+    NSString *publicKeyBase64 = [publicKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSString *validatedJWT = [DMEJWTUtility preAuthCodeFrom:jwt publicKey:publicKeyBase64];
+    NSAssert(validatedJWT != nil, @"An error occured validating pre-auth jwt token");
+    return validatedJWT;
+}
+
+// Authorisation code request
++ (NSString *)createAuthJwtWithAuthCode:(NSString *)authCode appId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex
+{
+    return [self createAuthJwtWithAuthCode:authCode appId:appId contractId:contractId privateKey:privateKeyHex publicKey:nil];
+}
+
++ (NSString *)createAuthJwtWithAuthCode:(NSString *)authCode appId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex
+{
+    NSString *publicKeyBase64;
+    if (publicKeyHex)
+    {
+        NSData *publicKeyData = [publicKeyHex hexToBytes];
+        publicKeyBase64 = [publicKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    }
+    
+    NSData *privateKeyData = [privateKeyHex hexToBytes];
+    NSString *privateKeyBase64 = [privateKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSString *authorizationJWT = [DMEJWTUtility signedAuthJwt:authCode appId:appId contractId:contractId privateKey:privateKeyBase64 publicKey:publicKeyBase64];
+    NSAssert(authorizationJWT != nil, @"An error occured generating auth jwt token");
+    return authorizationJWT;
+}
+
+// Data trigger
++ (NSString *)createDataTriggerJwtWithAccessToken:(NSString *)accessToken appId:(NSString *)appId contractId:(NSString *)contractId sessionKey:(NSString *)sessionKey privateKey:(NSString *)privateKeyHex
+{
+    return [self createDataTriggerJwtWithAccessToken:accessToken appId:appId contractId:contractId sessionKey:sessionKey privateKey:privateKeyHex publicKey:nil];
+}
+
++ (NSString *)createDataTriggerJwtWithAccessToken:(NSString *)accessToken appId:(NSString *)appId contractId:(NSString *)contractId sessionKey:(NSString *)sessionKey privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex
+{
+    NSString *publicKeyBase64;
+    if (publicKeyHex)
+    {
+        NSData *publicKeyData = [publicKeyHex hexToBytes];
+        publicKeyBase64 = [publicKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    }
+    
+    NSData *privateKeyData = [privateKeyHex hexToBytes];
+    NSString *privateKeyBase64 = [privateKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSString *dataTriggerJWT = [DMEJWTUtility dataTriggerJwt:accessToken appId:appId contractId:contractId sessionKey:sessionKey privateKey:privateKeyBase64 publicKey:publicKeyBase64];
+    NSAssert(dataTriggerJWT != nil, @"An error occured generating data trigger jwt token");
+    return dataTriggerJWT;
+}
+
+// Refresh OAuth token
++ (NSString *)createRefreshJwtWithRefreshToken:(NSString *)refreshToken appId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex
+{
+    return [self createRefreshJwtWithRefreshToken:refreshToken appId:appId contractId:contractId privateKey:privateKeyHex publicKey:nil];
+}
+
++ (NSString *)createRefreshJwtWithRefreshToken:(NSString *)refreshToken appId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex
+{
+    NSString *publicKeyBase64;
+    if (publicKeyHex)
+    {
+        NSData *publicKeyData = [publicKeyHex hexToBytes];
+        publicKeyBase64 = [publicKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    }
+    
+    NSData *privateKeyData = [privateKeyHex hexToBytes];
+    NSString *privateKeyBase64 = [privateKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSString *refreshTokenJWT = [DMEJWTUtility refreshJwtFrom:refreshToken appId:appId contractId:contractId privateKey:privateKeyBase64 publicKey:publicKeyBase64];
+    NSAssert(refreshTokenJWT != nil, @"An error occured generating refresh jwt token");
+    return refreshTokenJWT;
+}
+
++ (nullable NSData *)stripPublicHeadersfromPEMCertificate:(NSString *)pemCert
+{
+     return [self stripHeader:@"-----BEGIN RSA PUBLIC KEY-----" footer:@"-----END RSA PUBLIC KEY-----" fromPEM:pemCert];
+}
+
++ (nullable NSData *)stripPrivateHeadersfromPEMCertificate:(NSString *)pemCert
+{
+     return [self stripHeader:@"-----BEGIN RSA PRIVATE KEY-----" footer:@"-----END RSA PRIVATE KEY-----" fromPEM:pemCert];
+}
+
++ (nullable NSData *)stripHeader:(NSString *)header footer:(NSString *)footer fromPEM:(NSString *)pemCert
+{
+    if (!pemCert.length)
+        return nil;
+    NSScanner *scanner = [NSScanner scannerWithString:pemCert];
+    NSString *certificateHex;
+    [scanner scanUpToString:header intoString:nil];
+    [scanner scanString:header intoString:nil];
+    [scanner scanUpToString:footer intoString:&certificateHex];
+    certificateHex = [certificateHex stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    NSData *data= [[NSData alloc] initWithBase64EncodedString:certificateHex options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    return data;
 }
 
 @end

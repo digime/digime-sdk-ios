@@ -16,11 +16,12 @@ static NSString * const DME_AUTHORIZATION_ERROR = @"me.digi.sdk.authorization";
  Enum representing possible Authorization errors.
  */
 typedef NS_ENUM(NSInteger, AuthError) {
-    AuthErrorGeneral    = 1, //general error
-    AuthErrorCancelled  = 5, //authorization cancelled
+    AuthErrorGeneral = 1, // general error
+    AuthErrorCancelled = 5, // authorization cancelled
     AuthErrorInvalidSession = 7, //invalid session
     AuthErrorInvalidSessionKey = 10, //session key returned by digi.me app is invalid
-    AuthErrorScopeOutOfBounds = 11, // requested scope is out of bounds of Contract scope.
+    AuthErrorScopeOutOfBounds = 11, // requested scope is out of bounds of Contract scope
+    AuthErrorOAuthTokenExpired = 12, // OAuthToken expired. Use `authorize` without token to refresh.
 };
 
 /**

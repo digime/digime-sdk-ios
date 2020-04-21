@@ -16,6 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DMEPullConfiguration : DMEBaseConfiguration
 
 /**
+ Your rsa public key hex. 
+ */
+@property (nonatomic, copy, nullable) NSString *publicKeyHex;
+
+/**
  Your rsa private key hex. This property MUST be set before you can call authorize.
  */
 @property (nonatomic, copy) NSString *privateKeyHex;
@@ -37,6 +42,14 @@ NS_ASSUME_NONNULL_BEGIN
  Defaults to 100. This is affected by `pollInterval`. Using default values these would result in 100 * 3 = 300 seconds (5 minutes).
  */
 @property (nonatomic) NSInteger maxStalePolls;
+
+/**
+ Determines whether the user is automatically forwarded
+ to digi.me app when the `DMEOAuthToken` could not be refreshed by the SDK.
+ Default to YES.
+ Setting this to NO will in stead return a `AuthErrorOAuthTokenExpired` error.
+ */
+@property (nonatomic) BOOL autoRecoverExpiredCredentials;
 
 /**
  Designated Initializer

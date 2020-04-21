@@ -81,4 +81,17 @@
     return hexKey;
 }
 
+#pragma mark - Random
+
++ (NSData *)randomBytesWithLength:(int)length
+{
+    NSMutableData *data = [NSMutableData dataWithLength:length];
+    int status = SecRandomCopyBytes(kSecRandomDefault, (size_t)length, data.mutableBytes);
+    if (status != errSecSuccess)
+    {
+        NSLog(@"[DMECrypto] Error creating random bytes. Error status code: %@", @((NSInteger) status));
+    }
+    return data;
+}
+
 @end

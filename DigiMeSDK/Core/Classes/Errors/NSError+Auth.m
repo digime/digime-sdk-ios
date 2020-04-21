@@ -44,8 +44,12 @@
         case AuthErrorScopeOutOfBounds:
             return @"Requested scope is out of bounds of the Contract scope.";
             break;
+            
+        case AuthErrorOAuthTokenExpired:
+            return @"OAuthToken expired. Use `authorize` without token in order to get a new token.";
+            break;
     }
-    
+
     return NSLocalizedString(@"", @"");
 }
 

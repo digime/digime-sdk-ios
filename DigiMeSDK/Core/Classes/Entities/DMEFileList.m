@@ -146,7 +146,7 @@
     }
 }
 
-+ (DMEFileSyncState)syncStateFromString:(NSString * _Nullable)string
++ (DMEFileSyncState)syncStateFromString:(nullable NSString *)string
 {
     if ([string isEqualToString:@"running"])
     {

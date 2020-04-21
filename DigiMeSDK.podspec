@@ -1,14 +1,15 @@
 Pod::Spec.new do |s|
 
     s.name         	= "DigiMeSDK"
-    s.version      	= "3.1.1"
+    s.version      	= "3.2.0"
     s.summary      	= "digi.me iOS Consent Access SDK"
     s.homepage     	= "https://github.com/digime/digime-sdk-ios"
     s.license      	= { :type => "MIT", :file => "LICENSE" }
     s.author       	= { "digi.me Ltd." => "ios@digi.me" }
-    s.platform     	= :ios, "10.0"
+    s.platform     	= :ios, "11.0"
     s.dependency "Brotli"
     s.dependency "GZIP"
+    s.dependency "SwiftJWT"
     s.swift_version = "4.2"
     s.source       	= {
         :git => "https://github.com/digime/digime-sdk-ios.git",
@@ -26,7 +27,13 @@ Pod::Spec.new do |s|
     'DigiMeSDK/Core/Classes/Security/DMECertificatePinner.h',
     'DigiMeSDK/Core/Classes/Security/DMECrypto.h',
     'DigiMeSDK/Core/Classes/Security/DMEDataDecryptor.h',
-    'DigiMeSDK/Core/Classes/Utility/*.h',
+    'DigiMeSDK/Core/Classes/Utility/DMECompressor.h',
+    'DigiMeSDK/Core/Classes/Utility/DMEDataRequestSerializer.h',
+    'DigiMeSDK/Core/Classes/Utility/DMEFileListDeserializer.h',
+    'DigiMeSDK/Core/Classes/Utility/DMESessionDeserializer.h',
+    'DigiMeSDK/Core/Classes/Utility/DMEStatusLogger.h',
+    'DigiMeSDK/Core/Classes/Utility/DMEValidator.h',
+    'DigiMeSDK/Core/Classes/Utility/UIViewController+DMEExtension.h',
     'DigiMeSDK/Core/Classes/DMEAPIClient+Private.h',
     'DigiMeSDK/Core/Classes/DMEAppCommunicator+Private.h',
     'DigiMeSDK/Core/Classes/DMENativeConsentManager.h',

@@ -25,7 +25,8 @@ typedef NS_ENUM(NSInteger, SDKError) {
     SDKErrorNoPrivateKeyHex = 7,    // No private key hex set
     SDKErrorNoURLScheme = 8,        // URL Scheme not set in Info.plist
     SDKErrorDigiMeAppNotFound = 11, // Querying the 'digime' schema failed.
-    SDKErrorFileListPollingTimeout = 12 // File List time out reached as there have been no changes.
+    SDKErrorFileListPollingTimeout = 12, // File List time out reached as there have been no changes.
+    SDKErrorOAuthTokenNotSet = 13 // OAuth token not set on client instance
 };
 
 /**

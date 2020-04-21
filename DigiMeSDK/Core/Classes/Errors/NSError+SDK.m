@@ -55,6 +55,10 @@
             
         case SDKErrorFileListPollingTimeout:
             return @"File List time out reached as there have been no changes during the number of retries specified in `DMEPullConfiguration`.";
+            
+        case SDKErrorOAuthTokenNotSet:
+            return @"OAuth token not set on client instance. Please ensure that client instance is correctly initialized.";
+            break;
     }
 }
 

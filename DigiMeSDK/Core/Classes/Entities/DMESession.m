@@ -23,6 +23,7 @@ NSString * const kDMETimingFetchContractPermission = @"timingFetchContractPermis
 NSString * const kDMETimingFetchDataGetAccount = @"timingFetchAccount";
 NSString * const kDMETimingFetchDataGetFileList = @"timingFetchFileList";
 NSString * const kDMETimingFetchSessionKey = @"timingFetchSessionKey";
+NSString * const kDMETimingRequestAuthorizationCode = @"timingRequestAuthorizationCode";
 NSString * const kDMEDataRequest = @"timingDataRequest";
 NSString * const kDMEFetchContractDetails = @"timingFetchContractDetails";
 NSString * const kDMEUpdateContractPermission = @"timingUpdateContractPermission";
@@ -40,6 +41,8 @@ NSString * const kDMEResultValueSuccess = @"SUCCESS";
 NSString * const kDMEResultValueError = @"ERROR";
 NSString * const kDMEResultValueCancel = @"CANCEL";
 NSString * const kDMEErrorReference = @"reference";
+NSString * const kDMEPreAuthorizationCode = @"preAuthorizationCode";
+NSString * const kDMEAuthorizationCode = @"authorizationCode";
 
 @implementation DMESession
 

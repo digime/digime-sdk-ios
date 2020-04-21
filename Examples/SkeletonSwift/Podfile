@@ -1,0 +1,12 @@
+platform :ios, '10.0'
+use_frameworks!
+
+target 'DigiMeSDKExampleSwift' do
+  pod 'DigiMeSDK', :path => '../../'
+
+  target 'DigiMeSDKExampleSwiftTests' do
+    inherit! :search_paths
+
+    
+  end
+end
