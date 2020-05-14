@@ -306,6 +306,9 @@
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAuthorizationCompletion">DMEAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
               </li>
               <li class="nav-group-task">
@@ -330,7 +333,7 @@
       <article class="main-content">
 
         <section class="section">
-          <div class="section-content">
+          <div class="section-content top-matter">
             <h1>Type Definitions</h1>
             <p>The following type definitions are available globally.</p>
 
@@ -341,6 +344,65 @@
           <div class="section-content">
             <div class="task-group">
               <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:DMEClientCallbacks.h@T@DMEAuthorizationCompletion"></a>
+                    <a name="//apple_ref/objc/Type/DMEAuthorizationCompletion" class="dashAnchor"></a>
+                    <a class="token" href="#/c:DMEClientCallbacks.h@T@DMEAuthorizationCompletion">DMEAuthorizationCompletion</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>DMEAuthorizationCompletion - executed when authorization stage has completed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEAuthorizationCompletion</span><span class="p">)(</span><span class="n"><a href="Classes/DMESession.html">DMESession</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span>
+                                           <span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>session</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The session if authorization is successful, nil if not</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>nil if authorization is successful, otherwise an error specifying what went wrong</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -365,12 +427,7 @@ tokenType - string describing type: like Bearer</p>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEOngoingAccessAuthorizationCompletion</span><span class="p">)(</span>
-    <span class="n"><a href="Classes/DMESession.html">DMESession</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="n">DMEOAuthToken</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DMEOngoingAccessAuthorizationCompletion</span> <span class="o">=</span> <span class="p">(</span><span class="kt"><a href="Classes/DMESession.html">DMESession</a></span><span class="p">?,</span> <span class="kt">DMEOAuthToken</span><span class="p">?,</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+    <span class="n"><a href="Classes/DMESession.html">DMESession</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="n">DMEOAuthToken</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -441,12 +498,7 @@ tokenType - string describing type: like Bearer</p>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEPostboxCreationCompletion</span><span class="p">)(</span><span class="n"><a href="Classes/DMEPostbox.html">DMEPostbox</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span>
-                                             <span class="kt">int</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DMEPostboxCreationCompletion</span> <span class="o">=</span> <span class="p">(</span><span class="kt"><a href="Classes/DMEPostbox.html">DMEPostbox</a></span><span class="p">?,</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                                             <span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -504,12 +556,7 @@ tokenType - string describing type: like Bearer</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEPostboxDataPushCompletion</span><span class="p">)(</span><span class="kt">int</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DMEPostboxDataPushCompletion</span> <span class="o">=</span> <span class="p">(</span><span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEPostboxDataPushCompletion</span><span class="p">)(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -555,12 +602,7 @@ tokenType - string describing type: like Bearer</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEFileContentCompletion</span><span class="p">)(</span><span class="n">DMEFile</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DMEFileContentCompletion</span> <span class="o">=</span> <span class="p">(</span><span class="kt">DMEFile</span><span class="p">?,</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEFileContentCompletion</span><span class="p">)(</span><span class="n">DMEFile</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -589,9 +631,9 @@ tokenType - string describing type: like Bearer</p>
                               <td>
                                 <div>
                                   <p>nil if retrieval is succesful, otherwise an error specifying what went wrong. The error&rsquo;s user info will contain the id of the file this error relates to. e.g.
-@code
+<code>
 NSString *fileId = error.userInfo[kFileIdKey];
-@endcode</p>
+</code></p>
                                 </div>
                               </td>
                             </tr>
@@ -621,12 +663,8 @@ NSString *fileId = error.userInfo[kFileIdKey];
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMESessionFileListCompletion</span><span class="p">)(</span><span class="n"><a href="Classes/DMEFileList.html">DMEFileList</a></span> <span class="o">*</span><span class="p">,</span> <span class="kt">int</span><span class="p">)</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DMESessionFileListCompletion</span> <span class="o">=</span> <span class="p">(</span><span class="kt"><a href="Classes/DMEFileList.html">DMEFileList</a></span><span class="p">?,</span> <span class="kt">Int32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMESessionFileListCompletion</span><span class="p">)(</span><span class="n"><a href="Classes/DMEFileList.html">DMEFileList</a></span> <span class="o">*</span><span class="n">_Nonnull</span><span class="p">,</span>
+                                             <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">_Nonnull</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -684,12 +722,8 @@ NSString *fileId = error.userInfo[kFileIdKey];
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMESessionDataCompletion</span><span class="p">)(</span><span class="n"><a href="Classes/DMEFileList.html">DMEFileList</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DMESessionDataCompletion</span> <span class="o">=</span> <span class="p">(</span><span class="kt"><a href="Classes/DMEFileList.html">DMEFileList</a></span><span class="p">?,</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMESessionDataCompletion</span><span class="p">)(</span><span class="n"><a href="Classes/DMEFileList.html">DMEFileList</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span>
+                                         <span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -747,12 +781,8 @@ NSString *fileId = error.userInfo[kFileIdKey];
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEAccountsCompletion</span><span class="p">)(</span><span class="n"><a href="Classes/DMEAccounts.html">DMEAccounts</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">typealias</span> <span class="kt">DMEAccountsCompletion</span> <span class="o">=</span> <span class="p">(</span><span class="kt"><a href="Classes/DMEAccounts.html">DMEAccounts</a></span><span class="p">?,</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+                          <pre class="highlight objective_c"><code><span class="k">typedef</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="n">DMEAccountsCompletion</span><span class="p">)(</span><span class="n"><a href="Classes/DMEAccounts.html">DMEAccounts</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span>
+                                      <span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -798,8 +828,8 @@ NSString *fileId = error.userInfo[kFileIdKey];
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-04-21)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-05-14)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

@@ -306,6 +306,9 @@
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAuthorizationCompletion">DMEAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
               </li>
               <li class="nav-group-task">
@@ -330,7 +333,7 @@
       <article class="main-content">
 
         <section class="section">
-          <div class="section-content">
+          <div class="section-content top-matter">
             <h1>DMETimeRange</h1>
               <div class="declaration">
                 <div class="language">
@@ -370,11 +373,6 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">from</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">from</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -400,11 +398,6 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">to</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">to</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -434,11 +427,6 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">last</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">last</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -448,7 +436,7 @@
                     <code>
                     <a name="/c:objc(cs)DMETimeRange(cm)from:"></a>
                     <a name="//apple_ref/objc/Method/+from:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMETimeRange(cm)from:">+from:</a>
+                    <a class="token" href="#/c:objc(cs)DMETimeRange(cm)from:">+from:<wbr></a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -466,11 +454,6 @@
                           <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">from</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">from</span><span class="p">;</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">from</span><span class="p">(</span><span class="n">_</span> <span class="nv">from</span><span class="p">:</span> <span class="kt">Date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">DMETimeRange</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -480,7 +463,7 @@
                     <code>
                     <a name="/c:objc(cs)DMETimeRange(cm)priorTo:"></a>
                     <a name="//apple_ref/objc/Method/+priorTo:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMETimeRange(cm)priorTo:">+priorTo:</a>
+                    <a class="token" href="#/c:objc(cs)DMETimeRange(cm)priorTo:">+priorTo:<wbr></a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -498,11 +481,6 @@
                           <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">priorTo</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">priorTo</span><span class="p">;</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">prior</span><span class="p">(</span><span class="n"><a href="../Classes/DMETimeRange.html#/c:objc(cs)DMETimeRange(py)to">to</a></span> <span class="nv">priorTo</span><span class="p">:</span> <span class="kt">Date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">DMETimeRange</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -512,7 +490,7 @@
                     <code>
                     <a name="/c:objc(cs)DMETimeRange(cm)from:to:"></a>
                     <a name="//apple_ref/objc/Method/+from:to:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMETimeRange(cm)from:to:">+from:to:</a>
+                    <a class="token" href="#/c:objc(cs)DMETimeRange(cm)from:to:">+from:<wbr>to:<wbr></a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -530,11 +508,6 @@
                           <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">from</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">from</span> <span class="nf">to</span><span class="p">:(</span><span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">to</span><span class="p">;</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">from</span><span class="p">(</span><span class="n">_</span> <span class="nv">from</span><span class="p">:</span> <span class="kt">Date</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="kt">Date</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">DMETimeRange</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -544,7 +517,7 @@
                     <code>
                     <a name="/c:objc(cs)DMETimeRange(cm)last:unit:"></a>
                     <a name="//apple_ref/objc/Method/+last:unit:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMETimeRange(cm)last:unit:">+last:unit:</a>
+                    <a class="token" href="#/c:objc(cs)DMETimeRange(cm)last:unit:">+last:<wbr>unit:<wbr></a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -562,11 +535,6 @@
                           <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">DMETimeRange</span> <span class="o">*</span><span class="p">)</span><span class="nf">last</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">x</span> <span class="nf">unit</span><span class="p">:(</span><span class="n"><a href="../Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a></span><span class="p">)</span><span class="nv">unit</span><span class="p">;</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">last</span><span class="p">(</span><span class="n">_</span> <span class="nv">x</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">,</span> <span class="nv">unit</span><span class="p">:</span> <span class="kt"><a href="../Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">DMETimeRange</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -579,8 +547,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-04-21)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-05-14)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
