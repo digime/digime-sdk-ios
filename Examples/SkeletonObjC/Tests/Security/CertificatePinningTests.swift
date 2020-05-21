@@ -18,11 +18,8 @@ class CertificatePinningTests: XCTestCase {
     }
     
     func testCertificatePinningTestsPositive() {
-        let contentBaseURL = "https://api.digi.me"
         let expectation = XCTestExpectation(description: "Connection to Argon endpoints should succeed if certificates match")
-        guard let baseUrl = URL(string: contentBaseURL) else {
-            return
-        }
+        let baseUrl = URL(string: "https://api.digi.me")!
         
         let certPinningConnection = CertificatePinningConnection(url: baseUrl) { disposition in
             XCTAssert(disposition == URLSession.AuthChallengeDisposition.useCredential, "Request challenge disposition doesn't match the expectation")
@@ -33,12 +30,8 @@ class CertificatePinningTests: XCTestCase {
     }
     
     func testCertificatePinningTestsNegative() {
-        let contentBaseURL = "https://www.google.com/"
         let expectation = XCTestExpectation(description: "When using fake FQDN it should fail")
-        guard let baseUrl = URL(string: contentBaseURL) else {
-            return
-        }
-        
+        let baseUrl = URL(string: "https://www.google.com/")!
         let certPinningConnection = CertificatePinningConnection(url: baseUrl) { disposition in
             XCTAssert(disposition == URLSession.AuthChallengeDisposition.cancelAuthenticationChallenge, "Request challenge disposition doesn't match the expectation")
             expectation.fulfill()
