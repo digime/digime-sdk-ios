@@ -29,5 +29,6 @@
 #import "DMEAppCommunicator+Test.h"
 #import <DigiMeSDK/DMERequestFactory.h>
 #import <DigiMeSDK/DMEDataRequestSerializer.h>
+#import <DigiMeSDK/DMECertificatePinner.h>
 
 #endif /* DigiMeSDKExampleTests_Bridging_Header_h */

@@ -30,7 +30,7 @@ class DMEApiClientTests: XCTestCase {
     }
     
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
 }
@@ -116,7 +116,7 @@ extension DMEApiClientTests {
             return true
         }, response: { request in
             let stubData = sessionIdentifier.data(using: String.Encoding.utf8)
-            return OHHTTPStubsResponse(
+            return HTTPStubsResponse(
                 data: stubData!,
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
