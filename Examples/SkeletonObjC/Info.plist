@@ -44,7 +44,7 @@
 			<string>Consent Access</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>digime-ca-IfnN9Y27Jym3P1Fad3ks3sTlo22flUBb</string>
+				<string>digime-ca-YOUR_APP_ID</string>
 			</array>
 		</dict>
 	</array>
