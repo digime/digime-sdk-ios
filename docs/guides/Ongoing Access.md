@@ -47,7 +47,15 @@ Ongoing Access is for you if:
 
 
 ## Example
-We have built an example app called "Genrefy" which can be accessed from examples folder. It uses Ongoing Access to show the user their most listened to genres of music on Spotify. The app is already configured, simply Build and Run.
+We have built an example app called "Genrefy" which can be accessed from examples folder. It uses Ongoing Access to show the user their most listened to genres of music on Spotify. The app is already configured. Simply:
+
+1. Head on over to the [Dev Portal](https://go.digi.me/developers/register) to request an `appId`
+
+
+2. Replace `YOUR_APP_ID` string with the appId you get
+
+
+3. Build and Run.
 
 
 ## How to use
