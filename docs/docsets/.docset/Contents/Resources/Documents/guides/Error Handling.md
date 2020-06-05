@@ -107,7 +107,7 @@ Below are the 5 most common errors you could run into, and the steps you should 
 
 #### `me.digi.sdk - SDKErrorDigiMeAppNotFound`:
 **Encountered**: When the user doesn't have the digi.me application installed, and you have disabled guest consent in the client config.
-**Resolution**: Enable guest consent mode (see [Guest Consent](Guest-Consent.html) for more info), or, direct the user to install the digi.me app.
+**Resolution**: Enable guest consent mode (see [Guest Consent](guest-consent.html) for more info), or, direct the user to install the digi.me app.
 
 *Please Note: The SDK will automatically open the store listing for the digi.me app if this error is encountered and guest consent is disabled.*
 

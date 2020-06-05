@@ -1,13 +1,6 @@
 {
   "warnings": [
     {
-      "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Callbacks/DMEClientCallbacks.h",
-      "line": 73,
-      "symbol": "kFileIdKey",
-      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/DMEAppCommunicator.h",
       "line": 13,
       "symbol": "kDMEClientSchemePrefix",
@@ -65,7 +58,7 @@
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/DMEPullConfiguration.h",
-      "line": 62,
+      "line": 75,
       "symbol": "DMEPullConfiguration.-initWithAppId:contractId:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.instance",
       "warning": "undocumented"
@@ -367,125 +360,146 @@
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 26,
-      "symbol": "kDMEDataRequest",
+      "symbol": "kDMETimingRequestAuthorizationCode",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 27,
-      "symbol": "kDMEFetchContractDetails",
+      "symbol": "kDMEDataRequest",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 28,
-      "symbol": "kDMEUpdateContractPermission",
+      "symbol": "kDMEFetchContractDetails",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 29,
-      "symbol": "kDMEDebugAppId",
+      "symbol": "kDMEUpdateContractPermission",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 30,
-      "symbol": "kDMEDebugBundleVersion",
+      "symbol": "kDMEDebugAppId",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 31,
-      "symbol": "kDMEDebugPlatform",
+      "symbol": "kDMEDebugBundleVersion",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 32,
-      "symbol": "kDMEContractId",
+      "symbol": "kDMEDebugPlatform",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 33,
-      "symbol": "kDMEContractType",
+      "symbol": "kDMEContractId",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 34,
-      "symbol": "kDMEDeviceId",
+      "symbol": "kDMEContractType",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 35,
-      "symbol": "kDMEDigiMeVersion",
+      "symbol": "kDMEDeviceId",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 36,
-      "symbol": "kDMEUserId",
+      "symbol": "kDMEDigiMeVersion",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 37,
-      "symbol": "kDMELibraryId",
+      "symbol": "kDMEUserId",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 38,
-      "symbol": "kDMEPCloudType",
+      "symbol": "kDMELibraryId",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 39,
-      "symbol": "kDMEResultValueSuccess",
+      "symbol": "kDMEPCloudType",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 40,
-      "symbol": "kDMEResultValueError",
+      "symbol": "kDMEResultValueSuccess",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 41,
-      "symbol": "kDMEResultValueCancel",
+      "symbol": "kDMEResultValueError",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
       "line": 42,
+      "symbol": "kDMEResultValueCancel",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
+      "line": 43,
       "symbol": "kDMEErrorReference",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
-      "line": 58,
+      "line": 44,
+      "symbol": "kDMEPreAuthorizationCode",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
+      "line": 45,
+      "symbol": "kDMEAuthorizationCode",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Entities/DMESession.h",
+      "line": 61,
       "symbol": "DMESession.+new",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
@@ -618,21 +632,28 @@
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Errors/NSError+Auth.h",
-      "line": 31,
+      "line": 24,
+      "symbol": "AuthError.AuthErrorOAuthTokenExpired",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Errors/NSError+Auth.h",
+      "line": 32,
       "symbol": "NSError(Auth).+authError:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Errors/NSError+Auth.h",
-      "line": 32,
+      "line": 33,
       "symbol": "NSError(Auth).+authError:additionalInfo:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Errors/NSError+Auth.h",
-      "line": 33,
+      "line": 34,
       "symbol": "NSError(Auth).+authError:reference:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
@@ -716,14 +737,21 @@
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Errors/NSError+SDK.h",
-      "line": 36,
+      "line": 29,
+      "symbol": "SDKError.SDKErrorOAuthTokenNotSet",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.enumcase",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Errors/NSError+SDK.h",
+      "line": 37,
       "symbol": "NSError(SDK).+sdkError:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
     },
     {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Errors/NSError+SDK.h",
-      "line": 37,
+      "line": 38,
       "symbol": "NSError(SDK).+setSDKError:toError:",
       "symbol_kind": "sourcekitten.source.lang.objc.decl.method.class",
       "warning": "undocumented"
