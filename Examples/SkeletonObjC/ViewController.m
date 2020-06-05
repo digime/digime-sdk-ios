@@ -26,8 +26,9 @@
 
 - (DMEPullConfiguration *)createSampleConfiguration
 {
-    // production
-    NSString *appId = @"IfnN9Y27Jym3P1Fad3ks3sTlo22flUBb";
+    // get YOUR_APP_ID here - https://go.digi.me/developers/register
+    // Don't forget to replace YOUR_APP_ID part in URLSchemes in Info.plist
+    NSString *appId = @"YOUR_APP_ID";
     NSString *contractId = @"r9ZPFD0bUqycDw6qPSg7AyGT7xisR8jM";
     DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:@"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF" p12Password:@"monkey periscope"];
     configuration.debugLogEnabled = YES;

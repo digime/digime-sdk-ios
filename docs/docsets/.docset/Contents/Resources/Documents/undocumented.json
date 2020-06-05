@@ -1,6 +1,13 @@
 {
   "warnings": [
     {
+      "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/Callbacks/DMEClientCallbacks.h",
+      "line": 86,
+      "symbol": "kFileIdKey",
+      "symbol_kind": "sourcekitten.source.lang.objc.decl.constant",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/alexyushchenko/digime/github/digime-sdk-ios/docs/../DigiMeSDK/Core/Classes/DMEAppCommunicator.h",
       "line": 13,
       "symbol": "kDMEClientSchemePrefix",
