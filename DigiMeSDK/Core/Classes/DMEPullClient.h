@@ -93,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param oAuthToken valid OAuth token
  @param completion Block called when authorization has completed
  */
-- (void)authorizeOngoingAccessWithOptions:(DMESessionOptions * _Nullable)options oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion  NS_SWIFT_NAME(authorizeOngoingAccess(scope:oAuthToken:completion:));
+- (void)authorizeOngoingAccessWithOptions:(DMESessionOptions * _Nullable)options oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion  NS_SWIFT_NAME(authorizeOngoingAccess(options:oAuthToken:completion:));
 
 /**
  Fetches content for all the requested files.
