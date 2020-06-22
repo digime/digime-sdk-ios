@@ -63,9 +63,11 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
     
     func authorize() {
         let scope = digimeService?.lastDayScope()
+        let options = DMESessionOptions()
+        options.scope = scope
         
         let client = digimeService?.dmeClient
-        client?.authorizeOngoingAccess(scope: scope, oAuthToken: nil) { (session, oAuthToken, error) in
+        client?.authorizeOngoingAccess(options: options, oAuthToken: nil) { (session, oAuthToken, error) in
             
             guard let _ = session else {
                 DispatchQueue.main.async {
