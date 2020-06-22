@@ -12,7 +12,7 @@ import XCTest
 
 class DMERequestFactoryTests: XCTestCase {
     var sut: DMERequestFactory!
-    var scope: DMEScope!
+    var options: DMESessionOptions!
     var testAppId: String!
     var testContractId: String!
     var sessionKey: String!
@@ -24,9 +24,11 @@ class DMERequestFactoryTests: XCTestCase {
         testContractId = "testContractId"
         sessionKey = "testSessionKey"
         
-        scope = DMEScope()
+        options = DMESessionOptions()
+        let scope = DMEScope()
         let timeRange = DMETimeRange.last(10, unit: DMETimeRangeUnit.day)
-        scope.timeRanges = [timeRange]
+        options.scope = scope
+        options.scope!.timeRanges = [timeRange]
         
         let configuration = DMEPullConfiguration(appId: testAppId, contractId: testContractId, p12FileName: "digimetest", p12Password: "digimetest")
         sut = DMERequestFactory(configuration: configuration!)
@@ -34,12 +36,12 @@ class DMERequestFactoryTests: XCTestCase {
     
     override func tearDown() {
         sut = nil
-        scope = nil
+        options = nil
         super.tearDown()
     }
     
     func testSessionRequest() {
-        let request = sut.sessionRequest(withAppId: testAppId, contractId: testContractId, scope: scope)
+        let request = sut.sessionRequest(withAppId: testAppId, contractId: testContractId, options: options)
         XCTAssert(request.httpMethod == "POST", "Error testing session request. Http method is incorrect.")
         XCTAssert(request.httpBody != nil, "Error testing session request. Body is empty.")
         XCTAssert(request.url != nil, "Error testing session request. Url is empty.")
@@ -60,7 +62,7 @@ class DMERequestFactoryTests: XCTestCase {
         let accept = postKeys[Keys.accept] as? [String: String]
         XCTAssert(accept != nil, "Error testing session request. Post key accept is missing.")
         XCTAssert(accept?[Keys.compression] == "gzip", "Error testing session request.")
-        XCTAssert(postKeys[scope.context] as? [AnyHashable: Any] != nil, "Error testing session request.")
+        XCTAssert(postKeys[options.scope!.context] as? [AnyHashable: Any] != nil, "Error testing session request.")
     }
     
     func testFileListRequest() {

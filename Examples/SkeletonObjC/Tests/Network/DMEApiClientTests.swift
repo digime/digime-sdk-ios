@@ -17,20 +17,22 @@ class DMEApiClientTests: XCTestCase {
     
     var sut: DMEAPIClient!
     var configuration: DMEClientConfiguration!
-    var scope: DMEScope!
+    var options: DMESessionOptions!
     
     override func setUp() {
         super.setUp()
         
-        scope = DMEScope()
+        options = DMESessionOptions()
+        let scope = DMEScope()
         let timeRange = DMETimeRange.last(10, unit: DMETimeRangeUnit.day)
         scope.timeRanges = [timeRange]
+        options.scope = scope
         configuration = DMEPullConfiguration(appId:  "testAppId", contractId: "testContractId", p12FileName: "digimetest", p12Password: "digimetest")
         sut = DMEAPIClient(configuration: configuration!)
     }
     
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
         super.tearDown()
     }
 }
@@ -43,7 +45,7 @@ extension DMEApiClientTests {
         let expectation = XCTestExpectation(description: "success called")
         let sessionId = "sessionId"
         stubGetPullSession(sessionIdentifier: sessionId)
-        sut.requestSession(withScope: scope, success: { data in
+        sut.requestSession(options: options, success: { data in
             
             XCTAssertNotNil(data)
                 if let actualContents = String(data: data, encoding: .utf8) {
@@ -74,12 +76,12 @@ extension DMEApiClientTests {
         let serviceType4 = DMEServiceType.init(identifier: 12, objectTypes: serviceObjectTypes)
         let serviceTypes = [serviceType1, serviceType2, serviceType3, serviceType4]
         let serviceGroup1 = DMEServiceGroup.init(identifier: 1, serviceTypes:serviceTypes)
-        scope.serviceGroups = [serviceGroup1]
+        options.scope?.serviceGroups = [serviceGroup1]
         
         let expectation = XCTestExpectation(description: "success called")
         let sessionId = "sessionId"
         stubGetPullSession(sessionIdentifier: sessionId)
-        sut.requestSession(withScope: scope, success: { data in
+        sut.requestSession(options: options, success: { data in
             
             XCTAssertNotNil(data)
             if let actualContents = String(data: data, encoding: .utf8) {
@@ -116,7 +118,7 @@ extension DMEApiClientTests {
             return true
         }, response: { request in
             let stubData = sessionIdentifier.data(using: String.Encoding.utf8)
-            return OHHTTPStubsResponse(
+            return HTTPStubsResponse(
                 data: stubData!,
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]

@@ -17,6 +17,7 @@
 #import "NSData+DMECrypto.h"
 #import "NSString+DMECrypto.h"
 #import "DMEStatusLogger.h"
+#import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 static const NSString *kWorkQueue = @"kWorkQueue";
 
@@ -66,11 +67,11 @@ static const NSString *kWorkQueue = @"kWorkQueue";
 
 #pragma mark - Session
 
-- (void)requestSessionWithScope:(nullable id<DMEDataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure
+- (void)requestSessionWithOptions:(DMESessionOptions *)options success:(void (^)(NSData * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
 {
     NSDictionary *headers = [self defaultHeaders];
     NSURLSession *session = [self sessionWithHeaders:headers];
-    NSURLRequest *request = [self.requestFactory sessionRequestWithAppId:self.configuration.appId contractId:self.configuration.contractId scope:scope];
+    NSURLRequest *request = [self.requestFactory sessionRequestWithAppId:self.configuration.appId contractId:self.configuration.contractId options:options];
     HandlerBlock defaultHandler = [self defaultResponseHandlerForDomain:DME_AUTHORIZATION_ERROR success:success failure:failure];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:defaultHandler];
     

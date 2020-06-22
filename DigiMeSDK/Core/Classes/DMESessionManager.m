@@ -11,12 +11,14 @@
 #import "DMEAPIClient.h"
 #import "DMESessionDeserializer.h"
 #import "DMEClient+Private.h"
+#import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 @interface DMESessionManager()
 
 @property (nonatomic, strong, readonly) DMEAPIClient *apiClient;
 @property (nonatomic, strong, readwrite) DMESession *currentSession;
 @property (nonatomic, strong, readonly) NSString *contractId;
+@property (nonatomic, strong, nullable, readwrite) DMESessionOptions *options;
 
 @end
 
@@ -36,12 +38,13 @@
     return self;
 }
 
-- (void)sessionWithScope:(id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion
+- (void)sessionWithOptions:(DMESessionOptions * _Nullable)options completion:(DMEAuthorizationCompletion)completion
 {
+    self.options = options;
     //create new session. We always retrieve new session when requesting authorization
     [self invalidateCurrentSession];
     
-    [self.apiClient requestSessionWithScope:scope success:^(NSData * _Nonnull data) {
+    [self.apiClient requestSessionWithOptions:options success:^(NSData * _Nonnull data) {
         
         NSError *error;
         DMESession *session = [DMESessionDeserializer deserialize:data sessionManager:self contractId:self.contractId error:&error];

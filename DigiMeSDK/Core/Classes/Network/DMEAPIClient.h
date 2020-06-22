@@ -10,6 +10,7 @@
 #import "DMEClientConfiguration.h"
 
 NS_ASSUME_NONNULL_BEGIN
+@class DMESessionOptions;
 @protocol DMEDataRequest;
 
 @protocol DMEAPIClientDelegate <NSObject>
@@ -50,11 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Initiates session key request.
 
- @param scope optional DMEDataRequest scope filter
+ @param options optional DMESessionOptions session configuration
  @param success completion block receiving NSData
  @param failure failure block receiving NSError
  */
-- (void)requestSessionWithScope:(nullable id<DMEDataRequest>)scope success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure;
+- (void)requestSessionWithOptions:(DMESessionOptions * _Nullable)options success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure NS_SWIFT_NAME(requestSession(options:success:failure:));
 
 /**
 Initiates a request for a pre-authentication code.

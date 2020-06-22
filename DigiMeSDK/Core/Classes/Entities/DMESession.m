@@ -9,6 +9,7 @@
 #import "DMESession+Private.h"
 #import "DMESessionManager.h"
 #import "DMEDataRequest.h"
+#import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 NSString * const kDMESessionKey = @"sessionKey";
 NSString * const kDMEResponse = @"result";
@@ -59,7 +60,7 @@ NSString * const kDMEAuthorizationCode = @"authorizationCode";
         _sessionManager = sessionManager;
         _sessionId = contractId;
         _createdDate = [NSDate date];
-        _scope = sessionManager.scope;
+        _options = sessionManager.options;
         _metadata = [NSDictionary new];
     }
     
