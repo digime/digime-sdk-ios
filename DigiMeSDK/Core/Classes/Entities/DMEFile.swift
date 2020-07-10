@@ -2,7 +2,7 @@
 //  DMEFile.swift
 //  DigiMeSDK
 //
-//  Created by on 16/05/2019.
+//  Created on 16/05/2019.
 //  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 

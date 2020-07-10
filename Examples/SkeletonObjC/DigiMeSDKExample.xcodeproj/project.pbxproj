@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -29,7 +29,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* ConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */; };
-		62C18AF99A9497D8A3E720FB /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96294C45238A8DE794D377D0 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */; };
+		75B8CE0B007F48B4C4CB9B48 /* Pods_DigiMeSDKExample_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6590A97AAB1C6C82F0543722 /* Pods_DigiMeSDKExample_Tests.framework */; };
 		F10A299494502273BC6DCCF9 /* Pods_DigiMeSDKExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDBBA978775B406581B0DF0 /* Pods_DigiMeSDKExample.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,7 +52,7 @@
 		0643264C20222D6000B10CD9 /* LogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LogViewController.m; sourceTree = "<group>"; };
 		0643264E202234CD00B10CD9 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0942F6F62FE849602F192529 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		0F8DC0A9C8329629993FF78A /* DigiMeSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DigiMeSDK.podspec; path = ../DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		0F8DC0A9C8329629993FF78A /* DigiMeSDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DigiMeSDK.podspec; path = ../../DigiMeSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		1E7802CD2318138C0070D14E /* DMEApiClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEApiClientTests.swift; sourceTree = "<group>"; };
 		1E8749911F77A39600D4E028 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		1EA9FCE323857AEB0036D9FF /* DMERequestFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMERequestFactoryTests.swift; sourceTree = "<group>"; };
@@ -60,12 +60,14 @@
 		1EC22EEF230EE13C000D17AA /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
 		1EC22EF0230EE13C000D17AA /* CryptographyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		1EC22EF1230EE13C000D17AA /* digimetest.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = digimetest.p12; sourceTree = "<group>"; };
+		1EDDA27B89728D03FE2DA95F /* Pods-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		270A82F82301B77E000C2F56 /* DataRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataRequestTests.swift; sourceTree = "<group>"; };
 		2716BB3223707CF100F0A8F6 /* DMEOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEOperationTests.swift; sourceTree = "<group>"; };
 		2716BB34237088FC00F0A8F6 /* DMEPullClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEPullClientTests.swift; sourceTree = "<group>"; };
 		2716BB682371822600F0A8F6 /* DMEPullClient+Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DMEPullClient+Tests.h"; sourceTree = "<group>"; };
 		2716BB9B23718A6B00F0A8F6 /* FileListResponseStaticRunning.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FileListResponseStaticRunning.json; sourceTree = "<group>"; };
 		27BE504822047D97004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
+		4467DC03B933F0278065AC8C /* Pods-DigiMeSDKExample_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample_Tests.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		5B9224AD2BCD9674E941CC5C /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
 		5C2A09D42338F92D0098D20F /* DMELoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMELoggerTests.swift; sourceTree = "<group>"; };
 		5C2A09DA23390C7F0098D20F /* DMEErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMEErrorTests.swift; sourceTree = "<group>"; };
@@ -79,7 +81,7 @@
 		607FACE51AFB9204008FA782 /* DigiMeSDKExample_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DigiMeSDKExample_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* ConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationTests.swift; sourceTree = "<group>"; };
-		96294C45238A8DE794D377D0 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6590A97AAB1C6C82F0543722 /* Pods_DigiMeSDKExample_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFDBBA978775B406581B0DF0 /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C8FE9BA60AECABAE7B8A01 /* Pods-DigiMeSDKExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.release.xcconfig"; sourceTree = "<group>"; };
 		FD832B8B467B7908DC8E0F57 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -98,7 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				62C18AF99A9497D8A3E720FB /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework in Frameworks */,
+				75B8CE0B007F48B4C4CB9B48 /* Pods_DigiMeSDKExample_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				BFDBBA978775B406581B0DF0 /* Pods_DigiMeSDKExample.framework */,
-				96294C45238A8DE794D377D0 /* Pods_DigiMeSDKExample_DigiMeSDKExample_Tests.framework */,
+				6590A97AAB1C6C82F0543722 /* Pods_DigiMeSDKExample_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -234,8 +236,9 @@
 				C2C8FE9BA60AECABAE7B8A01 /* Pods-DigiMeSDKExample.release.xcconfig */,
 				FD832B8B467B7908DC8E0F57 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */,
 				0942F6F62FE849602F192529 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */,
+				1EDDA27B89728D03FE2DA95F /* Pods-DigiMeSDKExample_Tests.debug.xcconfig */,
+				4467DC03B933F0278065AC8C /* Pods-DigiMeSDKExample_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -361,15 +364,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample_Tests/Pods-DigiMeSDKExample_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		12C77D3E570C9085563373FD /* [CP] Embed Pods Frameworks */ = {
@@ -426,7 +429,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExample-DigiMeSDKExample_Tests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExample_Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -647,7 +650,7 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FD832B8B467B7908DC8E0F57 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.debug.xcconfig */;
+			baseConfigurationReference = 1EDDA27B89728D03FE2DA95F /* Pods-DigiMeSDKExample_Tests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "";
 				DEVELOPMENT_TEAM = 5LDPS9F284;
@@ -672,7 +675,7 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0942F6F62FE849602F192529 /* Pods-DigiMeSDKExample-DigiMeSDKExample_Tests.release.xcconfig */;
+			baseConfigurationReference = 4467DC03B933F0278065AC8C /* Pods-DigiMeSDKExample_Tests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "";
 				DEVELOPMENT_TEAM = 5LDPS9F284;

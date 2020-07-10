@@ -52,7 +52,7 @@
     }
     
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:nil completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithOptions:nil completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
