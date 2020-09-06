@@ -43,6 +43,8 @@ extern NSString * const kDMEResultValueCancel;
 extern NSString * const kDMEErrorReference;
 extern NSString * const kDMEPreAuthorizationCode;
 extern NSString * const kDMEAuthorizationCode;
+extern NSString * const kDMECallbackUrl;
+extern NSString * const kDMEClientSchemePrefix;
 
 @class DMESessionManager;
 @class DMESessionOptions;
