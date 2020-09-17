@@ -12,6 +12,7 @@
 
 @class DMEPullConfiguration;
 @class DMEFileList;
+@class DMESessionOptions;
 @protocol DMEDataRequest;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -49,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param scope Custom scope that will be applied to available data.
  @param completion Block called when authorization has completed
  */
-- (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion NS_SWIFT_NAME(authorize(scope:completion:));
+- (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion __attribute((deprecated("Use authorizeWithOptions:completion: instead."))) NS_SWIFT_NAME(authorize(scope:completion:));
 
 /**
  Initializes ongoing contract authentication. Once user has given consent in digi.me app all subsequent data retrieval calls will be done without digi.me client app involvement.
@@ -67,7 +68,32 @@ NS_ASSUME_NONNULL_BEGIN
  @param oAuthToken valid OAuth token
  @param completion Block called when authorization has completed
  */
-- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(scope:oAuthToken:completion:));
+- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion __attribute((deprecated("Use authorizeOngoingAccessWithOptions:oAuthToken:completion: instead."))) NS_SWIFT_NAME(authorizeOngoingAccess(scope:oAuthToken:completion:));
+
+/**
+ Initializes contract authentication with custom session configuration.
+ This will first attempt to create a session.
+ If session creation is successful will then follow different authentication flows
+ depending on the value of `guestEnabled` flag in the configuration:
+ - Guest is enabled:
+ Either redirect to the digi.me application (if installed) or present options for user to choose a one-time share or download the digi.me app.
+ - Guest is not enabled:
+ Redirect to the digi.me application (if installed).
+ 
+ @param options additional session configuration options
+ @param completion Block called when authorization has completed
+ */
+- (void)authorizeWithOptions:(DMESessionOptions * _Nullable)options completion:(DMEAuthorizationCompletion)completion NS_SWIFT_NAME(authorize(options:completion:));
+
+/**
+ Initializes ongoing contract authentication with custom session configuration. Once user has given consent in digi.me app all subsequent data retrieval calls will be done without digi.me client app involvement.
+ This authorization flow enables 3rd parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers
+ 
+ @param options additional session configuration options
+ @param oAuthToken valid OAuth token
+ @param completion Block called when authorization has completed
+ */
+- (void)authorizeOngoingAccessWithOptions:(DMESessionOptions * _Nullable)options oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion  NS_SWIFT_NAME(authorizeOngoingAccess(options:oAuthToken:completion:));
 
 /**
  Fetches content for all the requested files.

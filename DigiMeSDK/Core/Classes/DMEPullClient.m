@@ -31,7 +31,7 @@
 @property (nonatomic, strong, readonly) DMENativeConsentManager *nativeConsentManager;
 @property (nonatomic, strong, readonly) DMEGuestConsentManager *guestConsentManager;
 @property (nonatomic, strong, nullable) DMEPreConsentViewController *preconsentViewController;
-@property (nonatomic, strong, nullable) id<DMEDataRequest> scope;
+@property (nonatomic, strong, nullable) DMESessionOptions *options;
 @property (nonatomic, strong, nullable) DMEFileListCache *fileCache;
 @property (nonatomic, readonly) DMEFileSyncState syncState;
 @property (nonatomic, strong, nullable) void (^sessionDataCompletion)(DMEFileList * _Nullable fileList, NSError * _Nullable error);
@@ -97,10 +97,17 @@
 
 - (void)authorizeWithCompletion:(nonnull DMEAuthorizationCompletion)completion
 {
-    [self authorizeWithScope:nil completion:completion];
+    [self authorizeWithOptions:nil completion:completion];
 }
 
 - (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)completion
+{
+    DMESessionOptions *options = [DMESessionOptions new];
+    options.scope = scope;
+    [self authorizeWithOptions:options completion:completion];
+}
+
+- (void)authorizeWithOptions:(DMESessionOptions *)options completion:(DMEAuthorizationCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -110,23 +117,23 @@
         return;
     }
     
-    self.scope = scope;
+    self.options = options;
     
     if (((DMEPullConfiguration *)self.configuration).guestEnabled)
     {
-        [self authorizeGuestWithScope:scope completion:completion];
+        [self authorizeGuestWithOptions:options completion:completion];
     }
     else
     {
-        [self authorizeNativeWithScope:scope completion:completion];
+        [self authorizeNativeWithOptions:options completion:completion];
     }
 }
 
-- (void)authorizeNativeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)completion
+- (void)authorizeNativeWithOptions:(DMESessionOptions * _Nullable)options completion:(nonnull DMEAuthorizationCompletion)completion
 {
     // Get session
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithOptions:options completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
@@ -164,7 +171,7 @@
 
 - (void)authorizeNative
 {
-    [self authorizeNativeWithScope:self.scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+    [self authorizeNativeWithOptions:self.options completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         [self executeCompletionWithSession:session error:error];
     }];
 }
@@ -172,10 +179,17 @@
 #pragma mark - Ongoing Access Authorisation
 - (void)authorizeOngoingAccessWithСompletion:(nonnull DMEOngoingAccessAuthorizationCompletion)completion
 {
-    [self authorizeOngoingAccessWithScope:nil oAuthToken:nil completion:completion];
+    [self authorizeOngoingAccessWithOptions:nil oAuthToken:nil completion:completion];
 }
 
 - (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion
+{
+    DMESessionOptions *options = [DMESessionOptions new];
+    options.scope = scope;
+    [self authorizeOngoingAccessWithOptions:options oAuthToken:oAuthToken completion:completion];
+}
+
+- (void)authorizeOngoingAccessWithOptions:(DMESessionOptions * _Nullable)options oAuthToken:(DMEOAuthToken *)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -185,10 +199,10 @@
         return;
     }
     
-    self.scope = scope;
+    self.options = options;
     
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithOptions:options completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         if (session == nil)
@@ -402,23 +416,23 @@ DMEAuthorizationCompletion _authorizationCompletion;
     _authorizationCompletion = authorizationCompletion;
 }
 
-- (void)authorizeGuestWithScope:(id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion
+- (void)authorizeGuestWithOptions:(DMESessionOptions * _Nullable)options completion:(DMEAuthorizationCompletion)completion
 {
     if (![NSThread currentThread].isMainThread)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self authorizeGuestWithScope:scope completion:completion];
+            [self authorizeGuestWithOptions:options completion:completion];
         });
         return;
     }
     
     if ([self.appCommunicator canOpenDMEApp])
     {
-        [self authorizeNativeWithScope:scope completion:completion];
+        [self authorizeNativeWithOptions:options completion:completion];
     }
     else
     {
-        self.scope = scope;
+        self.options = options;
         [self setAuthorizationCompletion:completion];
         self.preconsentViewController = [DMEPreConsentViewController new];
         self.preconsentViewController.delegate = self;
@@ -430,7 +444,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
 - (void)authorizeGuest
 {
     __weak __typeof(self)weakSelf = self;
-    [self.sessionManager sessionWithScope:self.scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+    [self.sessionManager sessionWithOptions:self.options completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         

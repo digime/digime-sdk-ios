@@ -131,7 +131,10 @@ extension AnalysisCoordinator: HomeViewControllerDelegate {
         let scope = digimeService?.lastDayScope()
         let token = digimeService?.loadToken()
         let client = digimeService?.dmeClient
-        client?.authorizeOngoingAccess(scope: scope, oAuthToken: token) { (session, oAuthToken, error) in
+        let options = DMESessionOptions()
+        options.scope = scope
+        
+        client?.authorizeOngoingAccess(options: options, oAuthToken: token) { (session, oAuthToken, error) in
             
             guard let _ = session else {
                 if let error = error {

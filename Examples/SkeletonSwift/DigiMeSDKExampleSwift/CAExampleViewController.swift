@@ -212,7 +212,7 @@ class CAExampleViewController: UIViewController {
     func resumeOngoingAccess() {
         resetClient()
         updateNavigationBar("Resuming Ongoing Access")
-        dmeClient?.authorizeOngoingAccess(scope: nil, oAuthToken: oAuthToken, completion: { session, oAuthToken, error in
+        dmeClient?.authorizeOngoingAccess(options: nil, oAuthToken: oAuthToken, completion: { session, oAuthToken, error in
             
             guard let session = session else {
                 if let error = error {

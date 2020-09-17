@@ -25,6 +25,12 @@
 
 # Postbox
 
+<hr>
+**This SDK feature is for evaluation purposes only.**
+
+Please get in touch if you are interested in using it in a live product solution by emailing [support@digi.me](mailto:support@digi.me) and we can discuss your requirements and the suitability of Postbox within your solution.
+<hr>
+
 ## Introduction
 
 digi.me is a data portability facilitator. As such, we support the flow of data in both directions - from the user to you, and from you back to the user. This process of 'giving data back' is known as Postbox and will henceforth be referred to as such.

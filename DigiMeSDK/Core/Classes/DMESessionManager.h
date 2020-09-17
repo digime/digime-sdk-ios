@@ -14,12 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class DMEAPIClient;
 @class DMEClient;
+@class DMESessionOptions;
 
 @interface DMESessionManager : NSObject
 
 @property (nonatomic, strong, nullable, readonly) DMESession *currentSession;
 
-@property (nonatomic, strong, nullable, readonly) id<DMEDataRequest> scope;
+@property (nonatomic, strong, nullable, readonly) DMESessionOptions *options;
 
 - (instancetype)initWithApiClient:(DMEAPIClient *)apiClient contractId:(NSString *)contractId NS_DESIGNATED_INITIALIZER;
 
@@ -29,10 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Will return session object. Either existing session will be re-used, or new session will be created.
 
- @param scope optional DMEDataRequest that sets scope filter for the session.
+ @param options optional DMESessionOptions that specifies additional configuration for the session.
  @param completion DMEAuthorizationCompletion
  */
-- (void)sessionWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion;
+- (void)sessionWithOptions:(DMESessionOptions * _Nullable)options completion:(DMEAuthorizationCompletion)completion NS_SWIFT_NAME(session(options:completion:));
 
 
 /**

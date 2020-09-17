@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class DMESessionOptions;
 @protocol DMEClientConfiguration;
 @protocol DMEDataRequest;
 
@@ -38,10 +39,10 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param appId NSString
  @param contractId NSString
- @param scope id<DataRequest>
+ @param options `DMESessionOptions`
  @return NSURLRequest
  */
-- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<DMEDataRequest>)scope;
+- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId options:(nullable DMESessionOptions *)options;
 
 
 /**

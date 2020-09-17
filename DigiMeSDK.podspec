@@ -24,7 +24,6 @@ Pod::Spec.new do |s|
     'DigiMeSDK/Core/Classes/Network/DMEAPIClient.h',
     'DigiMeSDK/Core/Classes/Network/DMEOperation.h',
     'DigiMeSDK/Core/Classes/Network/DMERequestFactory.h',
-    'DigiMeSDK/Core/Classes/Security/DMECertificatePinner.h',
     'DigiMeSDK/Core/Classes/Security/DMECrypto.h',
     'DigiMeSDK/Core/Classes/Security/DMEDataDecryptor.h',
     'DigiMeSDK/Core/Classes/Utility/DMECompressor.h',
