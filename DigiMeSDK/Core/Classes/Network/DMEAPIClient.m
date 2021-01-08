@@ -269,12 +269,8 @@ static const NSString *kWorkQueue = @"kWorkQueue";
             }
             
             NSDictionary *errorDict = responseDictionary[@"error"];
-            
-            if (errorDict)
-            {
-                NSError *apiError = [NSError errorWithDomain:domain code:httpResp.statusCode userInfo:errorDict];
-                failure(apiError);
-            }
+            NSError *apiError = [NSError errorWithDomain:domain code:httpResp.statusCode userInfo:errorDict];
+            failure(apiError);
         }
         else
         {

@@ -265,6 +265,7 @@
                     {
                         NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
                         completion(nil, nil, errorToReport);
+                        return;
                     }
 
                     strongSelf.oAuthToken = oAuthToken ;

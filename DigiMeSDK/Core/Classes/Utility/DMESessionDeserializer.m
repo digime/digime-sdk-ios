@@ -16,11 +16,12 @@
     
     NSString *sessionKey = json[@"sessionKey"];
     NSString *sessionExchangeToken = json[@"sessionExchangeToken"];
-    NSDate *expiry = [NSDate dateWithTimeIntervalSince1970:[json[@"expiry"] doubleValue]/1000];
+    NSNumber *expiry = json[@"expiry"];
     
     if (sessionKey && sessionExchangeToken && expiry)
     {
-        return [[DMESession alloc] initWithSessionKey:sessionKey exchangeToken:sessionExchangeToken expiryDate:expiry contractId:contractId sessionManager:sessionManager];
+        NSDate *expiryDate = [NSDate dateWithTimeIntervalSince1970:expiry.doubleValue/1000];
+        return [[DMESession alloc] initWithSessionKey:sessionKey exchangeToken:sessionExchangeToken expiryDate:expiryDate contractId:contractId sessionManager:sessionManager];
     }
     
     return nil;
