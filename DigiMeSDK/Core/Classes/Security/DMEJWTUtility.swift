@@ -19,7 +19,7 @@ public class DMEJWTUtility: NSObject {
     }
 
     // claims to request a pre-authorization code
-    class PayloadRequestPreauthJWT: NSObject, Decodable, Claims {
+    class PayloadRequestPreauthJWT: NSObject, Claims {
         var clientId: String?
         var codeChallenge: String?
         var codeChallengeMethod: String?
@@ -44,7 +44,7 @@ public class DMEJWTUtility: NSObject {
     }
     
     // claims to validate pre-authorization code
-    class PayloadValidatePreauthJWT: NSObject, Decodable, Claims {
+    class PayloadValidatePreauthJWT: NSObject, Claims {
         var preAuthCode: String?
 
         enum CodingKeys: String, CodingKey {
@@ -53,7 +53,7 @@ public class DMEJWTUtility: NSObject {
     }
     
     // claims to request a authorization code
-    class PayloadRequestAuthJWT: NSObject, Decodable, Claims {
+    class PayloadRequestAuthJWT: NSObject, Claims {
         var clientId: String?
         var code: String?
         var codeVerifier: String?
@@ -74,7 +74,7 @@ public class DMEJWTUtility: NSObject {
     }
     
     // claims to validate authorization and refresh tokens
-    class PayloadValidateAuthJWT: NSObject, Decodable, Claims {
+    class PayloadValidateAuthJWT: NSObject, Claims {
         var accessToken: String?
         var expiresTimestamp: Double?
         var refreshToken: String?
@@ -89,7 +89,7 @@ public class DMEJWTUtility: NSObject {
     }
     
     // claims to request data trigger
-    class PayloadDataTriggerJWT: NSObject, Decodable, Claims {
+    class PayloadDataTriggerJWT: NSObject, Claims {
         var accessToken: String?
         var clientId: String?
         var nonce: String?
@@ -108,7 +108,7 @@ public class DMEJWTUtility: NSObject {
     }
     
     // claims to request OAuth token renewal
-    class PayloadRefreshOAuthJWT: NSObject, Decodable, Claims {
+    class PayloadRefreshOAuthJWT: NSObject, Claims {
         var clientId: String?
         var grantType: String?
         var nonce: String?
@@ -122,6 +122,30 @@ public class DMEJWTUtility: NSObject {
             case nonce
             case redirectUrl = "redirect_uri"
             case refreshToken = "refresh_token"
+            case timestamp
+        }
+    }
+    
+    class PayloadPostboxPush: NSObject, Claims {
+        var accessToken: String?
+        var clientId: String?
+        var iv: String?
+        var metadata: String?
+        var nonce: String?
+        var redirectUrl: String?
+        var sessionKey: String?
+        var symmetricalKey: String?
+        var timestamp: Double?
+        
+        enum CodingKeys: String, CodingKey {
+            case accessToken = "access_token"
+            case clientId = "client_id"
+            case iv
+            case metadata
+            case nonce
+            case redirectUrl = "redirect_uri"
+            case sessionKey = "session_key"
+            case symmetricalKey = "symmetrical_key"
             case timestamp
         }
     }
@@ -353,6 +377,53 @@ public class DMEJWTUtility: NSObject {
         // NB! this redirect schema must exist in the CA contract definition, otherwise preauth request will fail!
         claims.redirectUrl = "digime-ca-\(appId)"
         claims.refreshToken = refreshToken
+        claims.timestamp = NSDate().timeIntervalSince1970 * 1000.0
+
+        // signing
+        var jwt = JWT(header: header, claims: claims)
+        let signer = JWTSigner.ps512(privateKey: privateKeyData)
+        guard let signedJwt = try? jwt.sign(using: signer) else {
+            print("DigiMeSDK: Error signing our test token")
+            return nil
+        }
+
+        // validation
+        guard
+            let publicKeyBase64 = publicKey,
+            let publicKeyData = convertKeyString(publicKeyBase64) else {
+                return signedJwt
+        }
+        
+        let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
+        let isVerified = JWT<PayloadRefreshOAuthJWT>.verify(signedJwt, using: verifier)
+
+        return isVerified ? signedJwt : nil
+    }
+    
+    @objc(postboxPushJwtFromAccessToken:appId:contractId:iv:metadata:sessionKey:symmetricalKey:privateKey:publicKey:)
+    public class func postboxPushJwt(from accessToken: String, appId: String, contractId: String, iv: String, metadata: String, sessionKey: String, symmetricalKey: String, privateKey: String, publicKey: String?) -> String? {
+        guard
+            privateKey.isBase64(),
+            let privateKeyData = convertKeyString(privateKey) else {
+                print("DigiMeSDK: Error creating RSA key")
+                return nil
+        }
+        
+        /*
+         NSString *metadata = [[headers[@"metadata"] stringByReplacingOccurrencesOfString:@"\n" withString:@""]stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+         NSString *symmetricalKey = [[headers[@"symmetricalKey"] stringByReplacingOccurrencesOfString:@"\n" withString:@""]stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+         */
+        let claims = PayloadPostboxPush()
+        claims.accessToken = accessToken
+        claims.clientId = "\(appId)_\(contractId)"
+        claims.iv = iv
+        claims.metadata = metadata
+        claims.nonce = (DMECryptoUtilities.randomBytes(withLength: 16) as NSData).hexString()
+        
+        // NB! this redirect schema must exist in the CA contract definition, otherwise preauth request will fail!
+        claims.redirectUrl = "digime-ca-\(appId)"
+        claims.sessionKey = sessionKey
+        claims.symmetricalKey = symmetricalKey
         claims.timestamp = NSDate().timeIntervalSince1970 * 1000.0
 
         // signing

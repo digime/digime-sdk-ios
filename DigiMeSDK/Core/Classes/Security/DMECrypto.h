@@ -160,7 +160,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Create and sign the new access token JWT with a private key
  
- @param accessToken - OAuth access token..
+ @param accessToken - OAuth access token.
  @param appId NSString - 3rd party application identifier.
  @param contractId NSString - CA Contract identifier.
  @param privateKeyHex NSString - 3rd party RSA private key in hex format.
@@ -172,7 +172,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Create and sign the new refresh token JWT with a private key
  
- @param refreshToken - OAuth refresh token..
+ @param refreshToken - OAuth refresh token.
  @param appId NSString - 3rd party application identifier.
  @param contractId NSString - CA Contract identifier.
  @param privateKeyHex NSString - 3rd party RSA private key in hex format.
@@ -183,7 +183,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Create and sign the new refresh token JWT with a private key
  
- @param refreshToken - OAuth refresh token..
+ @param refreshToken - OAuth refresh token.
  @param appId NSString - 3rd party application identifier.
  @param contractId NSString - CA Contract identifier.
  @param privateKeyHex NSString - 3rd party RSA private key in hex format.
@@ -191,6 +191,21 @@ NS_ASSUME_NONNULL_BEGIN
  @return NSString - JSON Web Token signed with PS512 algorithm.
  */
 + (NSString *)createRefreshJwtWithRefreshToken:(NSString *)refreshToken appId:(NSString *)appId contractId:(NSString *)contractId privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex;
+
+/**
+ Create and sign the Postbox push JWT with a private key
+
+ @param accessToken - OAuth access token.
+ @param appId NSString - 3rd party application identifier.
+ @param contractId NSString - CA Contract identifier.
+ @param iv NSData - The initialization vector
+ @param metadata NSString - The encrypted metadata
+ @param sessionKey NSSTring - The session key
+ @param symmetricalKey NSString - The encrypted symetrical key
+ @param privateKeyHex NSString - 3rd party RSA private key in hex format.
+ @param publicKeyHex NSString -  3rd party RSA public key in hex format. Optional parameter.
+ */
++ (NSString *)createPostboxPushJwtWithAccessToken:(nullable NSString *)accessToken appId:(NSString *)appId contractId:(NSString *)contractId initializationVector:(NSData *)iv metadata:(NSString *)metadata sessionKey:(NSString *)sessionKey symmetricalKey:(NSString *)symmetricalKey privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex;
 
 @end
 

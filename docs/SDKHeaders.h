@@ -20,5 +20,6 @@
 #import "../DigiMeSDK/Core/Classes/Errors/NSError+API.h"
 #import "../DigiMeSDK/Core/Classes/Errors/NSError+Auth.h"
 #import "../DigiMeSDK/Core/Classes/Errors/NSError+SDK.h"
-#import "../DigiMeSDK/Postbox/Classes/DMEPostbox.h" 
+#import "../DigiMeSDK/Postbox/Classes/DMEPostbox.h"
+#import "../DigiMeSDK/Postbox/Classes/DMEOngoingPostbox.h"
 #import "../DigiMeSDK/DigiMeSDK.h"

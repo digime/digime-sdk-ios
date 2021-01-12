@@ -85,7 +85,7 @@
 
 - (nullable NSError *)validateClient
 {
-    if (!((DMEPullConfiguration *)self.configuration).privateKeyHex)
+    if (![self privateKeyHex])
     {
         return [NSError sdkError:SDKErrorNoPrivateKeyHex];
     }
@@ -268,8 +268,8 @@
                         return;
                     }
 
-                    strongSelf.oAuthToken = oAuthToken ;
-                    completion(session, oAuthToken , nil);
+                    strongSelf.oAuthToken = oAuthToken;
+                    completion(session, oAuthToken, nil);
                 });
             } failure:^(NSError *error) {
                 completion(nil, nil, error);

@@ -66,11 +66,11 @@ NS_ASSUME_NONNULL_BEGIN
  Creates NSURLRequest for pushing data content.
  
  @param postboxId NSString
- @param payload NSData
- @param headers NSDictionary
+ @param data NSData - payload to push to Postbox
+ @param jwtBearer NSString - signed JSON Web Token
  @return NSURLRequest
  */
-- (NSURLRequest *)pushRequestWithPostboxId:(NSString *)postboxId payload:(NSData *)payload headerParameters:(NSDictionary *)headers;
+- (NSURLRequest *)pushRequestWithPostboxId:(NSString *)postboxId payload:(NSData *)data bearer:(NSString *)jwtBearer;
 
 /**
 Creates NSURLRequest for acquiring a pre-authentication code.

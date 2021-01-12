@@ -209,7 +209,7 @@ static const NSString *kWorkQueue = @"kWorkQueue";
  */
 - (NSURLSession *)sessionWithHeaders:(NSDictionary *)headers
 {
-    NSURLSessionConfiguration*  configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     configuration.HTTPAdditionalHeaders = headers;
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
     return session;

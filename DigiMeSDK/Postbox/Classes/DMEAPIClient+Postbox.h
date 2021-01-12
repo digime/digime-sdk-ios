@@ -27,6 +27,19 @@ NS_ASSUME_NONNULL_BEGIN
                      data:(NSData *)data
                completion:(DMEPostboxDataPushCompletion)completion;
 
+/**
+ Pushes data to user's Postbox.
+ 
+ @param postbox Ongoing Postbox
+ @param metadata NSData
+ @param data NSData
+ @param completion DMEOngoingPostboxCompletion
+ */
+- (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox
+                        metadata:(NSData *)metadata
+                            data:(NSData *)data
+                      completion:(DMEOngoingPostboxCompletion)completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

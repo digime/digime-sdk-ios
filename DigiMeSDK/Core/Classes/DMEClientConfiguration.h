@@ -65,6 +65,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy) NSString *contractId;
 
+/**
+ Your rsa private key hex. This property MUST be set before you can call authorize.
+ */
+@property (nonatomic, copy) NSString *privateKeyHex;
+
+/**
+ Determines whether the user is automatically forwarded
+ to digi.me app when the `DMEOAuthToken` could not be refreshed by the SDK.
+ Default to YES.
+ Setting this to NO will instead return a `AuthErrorOAuthTokenExpired` error.
+ */
+@property (nonatomic) BOOL autoRecoverExpiredCredentials;
+
 @end
 
 NS_ASSUME_NONNULL_END
