@@ -36,32 +36,21 @@
     return self;
 }
 
-- (void)latestVerificationPublicKeyWithSuccess:(void (^)(NSString * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
+- (void)requestPreAuthorizationCodeWithPublicKey:(NSString *)publicKey success:(void (^)(NSString * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
 {
-    if (self.verificationKey && [self.verificationKey isValid])
-    {
-        success(self.verificationKey.publicKey);
-        return;
-    }
+    NSString *jwtRequestBearer = [DMECrypto createPreAuthorizationJwtWithAppId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.configuration.privateKeyHex publicKey:publicKey];
     
-    [self.apiClient requestValidationDataForPreAuthenticationCodeWithSuccess:^(NSData * _Nonnull data) {
-        NSError *error;
-        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+    __weak __typeof(self)weakSelf = self;
+    [self.apiClient requestPreauthorizationCodeWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
+        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSString *jwtResponse = jsonResponse[@"token"];
         
-        if (error)
-        {
-            failure(error);
-            return;
-        }
-        
-        NSArray *keys = jsonResponse[@"keys"];
-        NSDictionary *firstKey = keys.firstObject;
-        NSString *publicKey = firstKey[@"pem"];
-        self.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
-        success(publicKey);
-    } failure:^(NSError * _Nonnull error) {
-        failure(error);
-    }];
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        [strongSelf latestVerificationPublicKeyWithSuccess:^(NSString * _Nonnull publicKey) {
+            NSString *preAuthCode = [DMECrypto preAuthCodeFromJwt:jwtResponse publicKey:publicKey];
+            success(preAuthCode);
+        } failure:failure];
+    } failure:failure];
 }
 
 - (void)requestOAuthTokenForAuthCode:(NSString *)authCode publicKey:(nullable NSString *)publicKey success:(void (^)(DMEOAuthToken * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
@@ -142,6 +131,34 @@
         }
         
         errorHandler(error);
+    }];
+}
+
+- (void)latestVerificationPublicKeyWithSuccess:(void (^)(NSString * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
+{
+    if (self.verificationKey && [self.verificationKey isValid])
+    {
+        success(self.verificationKey.publicKey);
+        return;
+    }
+    
+    [self.apiClient requestValidationDataForPreAuthenticationCodeWithSuccess:^(NSData * _Nonnull data) {
+        NSError *error;
+        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        
+        if (error)
+        {
+            failure(error);
+            return;
+        }
+        
+        NSArray *keys = jsonResponse[@"keys"];
+        NSDictionary *firstKey = keys.firstObject;
+        NSString *publicKey = firstKey[@"pem"];
+        self.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
+        success(publicKey);
+    } failure:^(NSError * _Nonnull error) {
+        failure(error);
     }];
 }
 

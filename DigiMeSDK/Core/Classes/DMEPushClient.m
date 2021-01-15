@@ -8,14 +8,12 @@
 
 #import "DMEAPIClient+Postbox.h"
 #import "DMEClient+Private.h"
-#import "DMECrypto.h"
 #import "DMEOAuthService.h"
 #import "DMEOngoingPostbox.h"
 #import "DMEPostboxConsentManager.h"
 #import "DMEPushClient.h"
 #import "DMEPushConfiguration.h"
 #import "DMESessionManager.h"
-#import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 @interface DMEPushClient ()
 
@@ -132,19 +130,9 @@
             return;
         }
         
-        NSString *jwtRequestBearer = [DMECrypto createPreAuthorizationJwtWithAppId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.privateKeyHex];
-        [strongSelf.apiClient requestPreauthorizationCodeWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
+        [strongSelf.oAuthService requestPreAuthorizationCodeWithPublicKey:nil success:^(NSString * _Nonnull preAuthCode) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
-
-            NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            NSString *jwtResponse = jsonResponse[@"token"];
-            
-            [strongSelf.oAuthService latestVerificationPublicKeyWithSuccess:^(NSString * _Nonnull publicKey) {
-                NSString *preAuthCode = [DMECrypto preAuthCodeFromJwt:jwtResponse publicKey:publicKey];
-                [strongSelf authorizeOngoingPostboxWithPreAuthCode:preAuthCode completion:completion];
-            } failure:^(NSError * _Nonnull error) {
-                completion(nil, error);
-            }];
+            [strongSelf authorizeOngoingPostboxWithPreAuthCode:preAuthCode completion:completion];
         } failure:^(NSError * _Nonnull error) {
             completion(nil, error);
         }];

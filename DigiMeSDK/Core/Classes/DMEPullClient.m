@@ -22,7 +22,6 @@
 #import "DMEPullConfiguration.h"
 #import "DMESessionManager.h"
 #import "UIViewController+DMEExtension.h"
-#import "DMEOperation.h"
 #import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 @interface DMEPullClient () <DMEPreConsentViewControllerDelegate, DMEAPIClientDelegate>
@@ -208,19 +207,9 @@
             return;
         }
         
-        NSString *jwtRequestBearer = [DMECrypto createPreAuthorizationJwtWithAppId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
-        [strongSelf.apiClient requestPreauthorizationCodeWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
+        [strongSelf.oAuthService requestPreAuthorizationCodeWithPublicKey:[self publicKeyHex] success:^(NSString * _Nonnull preAuthCode) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
-
-            NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            NSString *jwtResponse = jsonResponse[@"token"];
-            
-            [strongSelf.oAuthService latestVerificationPublicKeyWithSuccess:^(NSString * _Nonnull publicKey) {
-                NSString *preAuthCode = [DMECrypto preAuthCodeFromJwt:jwtResponse publicKey:publicKey];
-                [strongSelf authorizeNativeOngoingAccessWithPreAuthCode:preAuthCode completion:completion];
-            } failure:^(NSError * _Nonnull error) {
-                completion(nil, nil, error);
-            }];
+            [strongSelf authorizeNativeOngoingAccessWithPreAuthCode:preAuthCode completion:completion];
         } failure:^(NSError * _Nonnull error) {
             completion(nil, nil, error);
         }];
@@ -243,31 +232,16 @@
             return;
         }
         
-        NSString *jwtRequestBearer = [DMECrypto createAuthJwtWithAuthCode:authCode appId:strongSelf.configuration.appId contractId:strongSelf.configuration.contractId privateKey:strongSelf.privateKeyHex publicKey:strongSelf.publicKeyHex];
-        [strongSelf.apiClient requestAccessAndRefreshTokensWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
+        [strongSelf.oAuthService requestOAuthTokenForAuthCode:authCode publicKey:[self publicKeyHex] success:^(DMEOAuthToken * _Nonnull oAuthToken) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
-            
-            NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            NSString *jwtResponse = jsonResponse[@"token"];
-            
-            [strongSelf.oAuthService latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
-                DMEOAuthToken *oAuthToken = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (oAuthToken == nil)
-                    {
-                        NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                        completion(nil, nil, errorToReport);
-                        return;
-                    }
-
-                    strongSelf.oAuthToken = oAuthToken;
-                    completion(session, oAuthToken, nil);
-                });
-            } failure:^(NSError *error) {
-                completion(nil, nil, error);
-            }];
+            strongSelf.oAuthToken = oAuthToken;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(session, oAuthToken, nil);
+            });
         } failure:^(NSError * _Nonnull error) {
-            completion(nil, nil, error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil, nil, error);
+            });
         }];
     }];
 }
@@ -318,51 +292,6 @@
             } errorHandler:^(NSError * _Nonnull error) {
                 completion(nil, nil, error);
             }];
-            return;
-        }
-        
-        completion(nil, nil, error);
-    }];
-}
-
-#pragma mark - Refresh OAuth access token
-- (void)renewAccessTokenWithOAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(nonnull DMEOngoingAccessAuthorizationCompletion)completion
-{
-    NSString *jwtRefreshTokenBearer = [DMECrypto createRefreshJwtWithRefreshToken:oAuthToken.refreshToken appId:self.configuration.appId contractId:self.configuration.contractId privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
-    
-    __weak typeof(self) weakSelf = self;
-    [self.apiClient renewAccessTokenWithBearer:jwtRefreshTokenBearer success:^(NSData * _Nonnull data) {
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        NSString *jwtResponse = jsonResponse[@"token"];
-        [strongSelf.oAuthService latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
-            __strong __typeof(weakSelf)strongSelf = weakSelf;
-            DMEOAuthToken *oAuthToken = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
-            strongSelf.oAuthToken = oAuthToken;
-            [strongSelf triggerDataRetrievalWithCompletion:completion];
-        } failure:^(NSError *error) {
-            completion(nil, nil, error);
-        }];
-    } failure:^(NSError * _Nonnull error) {
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        
-        //clear stored token, since it is now effectively invalid.
-        strongSelf.oAuthToken = nil;
-        
-        if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
-        {
-            DMEPullConfiguration *configuration = (DMEPullConfiguration *)strongSelf.configuration;
-            if (configuration.autoRecoverExpiredCredentials)
-            {
-                // authorize without token, via digi.me app
-                [strongSelf authorizeOngoingAccessWithСompletion:completion];
-            }
-            else
-            {
-                NSError *tokenError = [NSError authError:AuthErrorOAuthTokenExpired additionalInfo:error.userInfo];
-                completion(nil, nil, tokenError);
-            }
-                
             return;
         }
         

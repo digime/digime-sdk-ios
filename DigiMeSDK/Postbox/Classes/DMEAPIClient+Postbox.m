@@ -7,25 +7,41 @@
 //
 
 
-#import "DMEOperation.h"
-#import "DMEClient.h"
-#import "DMECrypto.h"
-#import "DMERequestFactory.h"
-#import "DMEOngoingPostbox.h"
-#import "DMEPostbox.h"
-#import "DMECryptoUtilities.h"
-#import "NSString+DMECrypto.h"
-#import "NSData+DMECrypto.h"
 #import "DMEAPIClient+Postbox.h"
-
-#import "DMEClient+Private.h"
 #import "DMEAPIClient+Private.h"
+#import "DMEClient.h"
+#import "DMEClient+Private.h"
+#import "DMECrypto.h"
+#import "DMECryptoUtilities.h"
+#import "DMEOngoingPostbox.h"
+#import "DMEOperation.h"
+#import "DMEPostbox.h"
+#import "DMERequestFactory.h"
+#import "NSData+DMECrypto.h"
+#import "NSString+DMECrypto.h"
 
 @implementation DMEAPIClient (Postbox)
 
 #pragma mark - Data Push
 
 - (void)pushDataToPostbox:(DMEPostbox *)postbox
+                 metadata:(NSData *)metadata
+                     data:(NSData *)data
+               completion:(DMEPostboxDataPushCompletion)completion
+{
+    [self pushDataToPostbox:postbox accessToken:nil metadata:metadata data:data completion:completion];
+}
+
+- (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox
+                        metadata:(NSData *)metadata
+                            data:(NSData *)data
+                      completion:(DMEPostboxDataPushCompletion)completion
+{
+    [self pushDataToPostbox:postbox accessToken:postbox.oAuthToken.accessToken metadata:metadata data:data completion:completion];
+}
+
+- (void)pushDataToPostbox:(DMEPostbox *)postbox
+              accessToken:(nullable NSString *)accessToken
                  metadata:(NSData *)metadata
                      data:(NSData *)data
                completion:(DMEPostboxDataPushCompletion)completion
@@ -38,56 +54,13 @@
         
         NSDictionary *headers = [self defaultPostboxHeaders];
         NSURLSession *session = [self sessionWithHeaders:headers];
-        NSURLRequest *request = [self pushRequestToPostbox:postbox accessToken:nil metadata:metadata data:data];
+        NSURLRequest *request = [self pushRequestToPostbox:postbox accessToken:accessToken metadata:metadata data:data];
         HandlerBlock pushHandler = [self pushResponseHandlerForDomain:DME_API_ERROR completion:completion];
         
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             
             NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
             
-            if (httpResp.statusCode == 404)
-            {
-                if (![weakOperation retry])
-                {
-                    pushHandler(data, response, error);
-                    [weakOperation finishDoingWork];
-                }
-                
-                // Return if operation will retry
-                // Return if operation cannot retry
-                return;
-            }
-            
-            pushHandler(data, response, error);
-            [weakOperation finishDoingWork];
-        }];
-        
-        [dataTask resume];
-    };
-    
-    [self.queue addOperation:operation];
-}
-
-- (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox
-                        metadata:(NSData *)metadata
-                            data:(NSData *)data
-                      completion:(DMEPostboxDataPushCompletion)completion
-{
-    DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.configuration];
-    
-    __weak __typeof(DMEOperation *) weakOperation = operation;
-    
-    operation.workBlock = ^{
-        
-        NSDictionary *headers = [self defaultPostboxHeaders];
-        NSURLSession *session = [self sessionWithHeaders:headers];
-        NSURLRequest *request = [self pushRequestToPostbox:postbox accessToken:postbox.oAuthToken.accessToken metadata:metadata data:data];
-        HandlerBlock pushHandler = [self pushResponseHandlerForDomain:DME_API_ERROR completion:completion];
-        
-        NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-            
-            NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
-            // Handle oauth errors
             if (httpResp.statusCode == 404)
             {
                 if (![weakOperation retry])
