@@ -71,7 +71,7 @@
 - (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox
                         metadata:(NSData *)metadata
                             data:(NSData *)data
-                      completion:(DMEOngoingPostboxCompletion)completion
+                      completion:(DMEPostboxDataPushCompletion)completion
 {
     DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.configuration];
     
@@ -82,16 +82,7 @@
         NSDictionary *headers = [self defaultPostboxHeaders];
         NSURLSession *session = [self sessionWithHeaders:headers];
         NSURLRequest *request = [self pushRequestToPostbox:postbox accessToken:postbox.oAuthToken.accessToken metadata:metadata data:data];
-        HandlerBlock pushHandler = [self pushResponseHandlerForDomain:DME_API_ERROR completion:^(NSError * _Nullable error) {
-            if (error != nil)
-            {
-                completion(nil, error);
-                return;
-            }
-            
-            // TODO: Update oAuthToken if necessary
-            completion(postbox, nil);
-        }];
+        HandlerBlock pushHandler = [self pushResponseHandlerForDomain:DME_API_ERROR completion:completion];
         
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             

@@ -7,9 +7,9 @@
 //
 
 #import "DMEAPIClient+Postbox.h"
-#import "DMEAuthorityPublicKey.h"
 #import "DMEClient+Private.h"
 #import "DMECrypto.h"
+#import "DMEOAuthService.h"
 #import "DMEOngoingPostbox.h"
 #import "DMEPostboxConsentManager.h"
 #import "DMEPushClient.h"
@@ -19,8 +19,8 @@
 
 @interface DMEPushClient ()
 
-@property (nonatomic, strong) DMEPostboxConsentManager *postboxManager;
-@property (nonatomic, strong, nullable) DMEAuthorityPublicKey *verificationKey;
+@property (nonatomic, strong, readonly) DMEPostboxConsentManager *postboxManager;
+@property (nonatomic, strong, readonly) DMEOAuthService *oAuthService;
 
 @end
 
@@ -32,6 +32,7 @@
     if (self)
     {
         _postboxManager = [[DMEPostboxConsentManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
+        _oAuthService = [[DMEOAuthService alloc] initWithConfiguration:configuration apiClient:self.apiClient];
     }
     
     return self;
@@ -100,7 +101,7 @@
 
 #pragma mark - Ongoing Postbox
 
-- (void)authorizeOngoingPostboxWithExistingPostbox:(DMEOngoingPostbox *)postbox completion:(DMEOngoingPostboxCompletion)completion
+- (void)authorizeOngoingPostboxWithExistingPostbox:(nullable DMEOngoingPostbox *)postbox completion:(DMEOngoingPostboxCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -138,59 +139,36 @@
             NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             NSString *jwtResponse = jsonResponse[@"token"];
             
-            [strongSelf.apiClient requestValidationDataForPreAuthenticationCodeWithSuccess:^(NSData * _Nonnull data) {
-                 __strong __typeof(weakSelf)strongSelf = weakSelf;
-                NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-                NSArray *keys = jsonResponse[@"keys"];
-                NSDictionary *firstKey = keys.firstObject;
-                NSString *publicKey = firstKey[@"pem"];
-                // save authority public key for later usage
-                strongSelf.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
+            [strongSelf.oAuthService latestVerificationPublicKeyWithSuccess:^(NSString * _Nonnull publicKey) {
                 NSString *preAuthCode = [DMECrypto preAuthCodeFromJwt:jwtResponse publicKey:publicKey];
-                [strongSelf.postboxManager requestOngoingPostboxWithPreAuthCode:preAuthCode completion:^(DMEPostbox * _Nullable postbox, NSString * _Nullable accessCode, NSError * _Nullable error) {
-                    if (error || accessCode == nil)
-                    {
-                        // Notify on main thread
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                            completion(nil, errorToReport);
-                        });
-                        return;
-                    }
-                    
-                    NSString *jwtRequestBearer = [DMECrypto createAuthJwtWithAuthCode:accessCode appId:strongSelf.configuration.appId contractId:strongSelf.configuration.contractId privateKey:strongSelf.privateKeyHex];
-                    [strongSelf.apiClient requestAccessAndRefreshTokensWithBearer:jwtRequestBearer success:^(NSData * _Nonnull data) {
-                        __strong __typeof(weakSelf)strongSelf = weakSelf;
-                        
-                        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-                        NSString *jwtResponse = jsonResponse[@"token"];
-                        
-                        [strongSelf latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
-                            DMEOAuthToken *oAuthToken = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                if (oAuthToken == nil)
-                                {
-                                    NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                                    completion(nil, errorToReport);
-                                    return;
-                                }
-
-//                                strongSelf.oAuthToken = oAuthToken;
-                                DMEOngoingPostbox *ongoingPostbox = [[DMEOngoingPostbox alloc] initWithPostbox:postbox oAuthToken:oAuthToken];
-                                completion(ongoingPostbox, nil);
-                            });
-                        } failure:^(NSError *error) {
-                            completion(nil, error);
-                        }];
-                    } failure:^(NSError * _Nonnull error) {
-                        completion(nil, error);
-                    }];
-                }];
-                
+                [strongSelf authorizeOngoingPostboxWithPreAuthCode:preAuthCode completion:completion];
             } failure:^(NSError * _Nonnull error) {
                 completion(nil, error);
             }];
-            
+        } failure:^(NSError * _Nonnull error) {
+            completion(nil, error);
+        }];
+    }];
+}
+
+- (void)authorizeOngoingPostboxWithPreAuthCode:(NSString *)preAuthCode completion:(nonnull DMEOngoingPostboxCompletion)completion
+{
+    __weak __typeof(self)weakSelf = self;
+    [self.postboxManager requestOngoingPostboxWithPreAuthCode:preAuthCode completion:^(DMEPostbox * _Nullable postbox, NSString * _Nullable accessCode, NSError * _Nullable error) {
+        if (error || accessCode == nil)
+        {
+            // Notify on main thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+                completion(nil, errorToReport);
+            });
+            return;
+        }
+        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        [strongSelf.oAuthService requestOAuthTokenForAuthCode:accessCode publicKey:nil success:^(DMEOAuthToken * _Nonnull oAuthToken) {
+            DMEOngoingPostbox *ongoingPostbox = [[DMEOngoingPostbox alloc] initWithPostbox:postbox oAuthToken:oAuthToken];
+            completion(ongoingPostbox, nil);
         } failure:^(NSError * _Nonnull error) {
             completion(nil, error);
         }];
@@ -199,34 +177,66 @@
 
 - (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox metadata:(NSData *)metadata data:(NSData *)data completion:(DMEOngoingPostboxCompletion)completion
 {
+    __weak typeof(self) weakSelf = self;
     
-}
-
-- (void)latestVerificationPublicKeyWithSuccess:(void(^)(NSString *publicKey))success failure:(void(^)(NSError *error))failure
-{
-    if (self.verificationKey && [self.verificationKey isValid])
+    // Validate session
+    if (![self.sessionManager isSessionValid])
     {
-        success(self.verificationKey.publicKey);
+        // Get new session if possible
+        [self authorizeOngoingPostboxWithExistingPostbox:postbox completion:^(DMEOngoingPostbox * _Nullable updatedPostbox, NSError * _Nullable error) {
+            [weakSelf pushDataToOngoingPostbox:updatedPostbox metadata:metadata data:data completion:completion];
+        }];
+        
         return;
     }
     
-    [self.apiClient requestValidationDataForPreAuthenticationCodeWithSuccess:^(NSData * _Nonnull data) {
-        NSError *error;
-        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-        
-        if (error)
+    [self.apiClient pushDataToPostbox:postbox metadata:metadata data:data completion:^(NSError * _Nullable error) {
+        if (error == nil)
         {
-            failure(error);
+            completion(postbox, nil);
             return;
         }
         
-        NSArray *keys = jsonResponse[@"keys"];
-        NSDictionary *firstKey = keys.firstObject;
-        NSString *publicKey = firstKey[@"pem"];
-        self.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
-        success(publicKey);
-    } failure:^(NSError * _Nonnull error) {
-        failure(error);
+        // This is the place where we should update Access token using Refresh token.
+        // Access token valid for one day, refresh token is valid for 30 days.
+        // When you renew Access token you will get new Access token and new Refresh token, but refresh token's expiration date will be the same as for the previous.
+        // It means in any scenario 3rd party should ask for user's consent every month.
+        if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
+        {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            [strongSelf.oAuthService renewAccessTokenWithOAuthToken:postbox.oAuthToken publicKey:nil retryHandler:^(DMEOAuthToken * _Nonnull oAuthToken) {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                DMEOngoingPostbox *updatedPostbox = [[DMEOngoingPostbox alloc] initWithPostbox:postbox oAuthToken:oAuthToken];
+                [strongSelf pushDataToOngoingPostbox:updatedPostbox metadata:metadata data:data completion:completion];
+                
+            } reauthHandler:^{
+                // Authorize without token, via digi.me app
+                [strongSelf reauthorizeOngoingPostboxAndPushWithMetadata:metadata data:data completion:completion];
+                
+            } errorHandler:^(NSError * _Nonnull error) {
+                completion(nil, error);
+            }];
+            return;
+        }
+        
+        completion(nil, error);
+    }];
+}
+
+- (void)reauthorizeOngoingPostboxAndPushWithMetadata:(NSData *)metadata data:(NSData *)data completion:(DMEOngoingPostboxCompletion)completion
+{
+    __weak typeof(self) weakSelf = self;
+    
+    // Authorize without token, via digi.me app
+    [self authorizeOngoingPostboxWithExistingPostbox:nil completion:^(DMEOngoingPostbox * _Nullable postbox, NSError * _Nullable error) {
+        if (error != nil)
+        {
+            completion(nil, error);
+            return;
+        }
+        
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        [strongSelf pushDataToOngoingPostbox:postbox metadata:metadata data:data completion:completion];
     }];
 }
 

@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox
                         metadata:(NSData *)metadata
                             data:(NSData *)data
-                      completion:(DMEOngoingPostboxCompletion)completion;
+                      completion:(DMEPostboxDataPushCompletion)completion;
 
 @end
 

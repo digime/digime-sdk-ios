@@ -8,7 +8,6 @@
 
 #import "DMEAccounts.h"
 #import "DMEAPIClient.h"
-#import "DMEAuthorityPublicKey.h"
 #import "DMEClient+Private.h"
 #import "DMECrypto.h"
 #import "NSString+DMECrypto.h"
@@ -17,6 +16,7 @@
 #import "DMEFileListDeserializer.h"
 #import "DMEGuestConsentManager.h"
 #import "DMENativeConsentManager.h"
+#import "DMEOAuthService.h"
 #import "DMEPreConsentViewController.h"
 #import "DMEPullClient.h"
 #import "DMEPullConfiguration.h"
@@ -30,6 +30,7 @@
 @property (nonatomic, strong, readonly) DMEDataDecryptor *dataDecryptor;
 @property (nonatomic, strong, readonly) DMENativeConsentManager *nativeConsentManager;
 @property (nonatomic, strong, readonly) DMEGuestConsentManager *guestConsentManager;
+@property (nonatomic, strong, readonly) DMEOAuthService *oAuthService;
 @property (nonatomic, strong, nullable) DMEPreConsentViewController *preconsentViewController;
 @property (nonatomic, strong, nullable) id<DMEDataRequest> scope;
 @property (nonatomic, strong, nullable) DMEFileListCache *fileCache;
@@ -45,7 +46,6 @@
 @property (nonatomic, strong, nullable) NSString *publicKeyHex;
 @property (nonatomic, strong, nullable) NSString *privateKeyHex;
 @property (nonatomic, strong, nullable) DMEOAuthToken *oAuthToken;
-@property (nonatomic, strong, nullable) DMEAuthorityPublicKey *verificationKey;
 
 @end
 
@@ -61,6 +61,7 @@
         _nativeConsentManager = [[DMENativeConsentManager alloc] initWithSessionManager:self.sessionManager appId:self.configuration.appId];
         _guestConsentManager = [[DMEGuestConsentManager alloc] initWithSessionManager:self.sessionManager configuration:self.configuration];
         _dataDecryptor = [[DMEDataDecryptor alloc] initWithConfiguration:configuration];
+        _oAuthService = [[DMEOAuthService alloc] initWithConfiguration:configuration apiClient:self.apiClient];
         _fileCache = [DMEFileListCache new];
         _fetchingSessionData = NO;
         _stalePollCount = 0;
@@ -214,21 +215,12 @@
             NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             NSString *jwtResponse = jsonResponse[@"token"];
             
-            [strongSelf.apiClient requestValidationDataForPreAuthenticationCodeWithSuccess:^(NSData * _Nonnull data) {
-                 __strong __typeof(weakSelf)strongSelf = weakSelf;
-                NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-                NSArray *keys = jsonResponse[@"keys"];
-                NSDictionary *firstKey = keys.firstObject;
-                NSString *publicKey = firstKey[@"pem"];
-                // save authority public key for later usage
-                strongSelf.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
+            [strongSelf.oAuthService latestVerificationPublicKeyWithSuccess:^(NSString * _Nonnull publicKey) {
                 NSString *preAuthCode = [DMECrypto preAuthCodeFromJwt:jwtResponse publicKey:publicKey];
                 [strongSelf authorizeNativeOngoingAccessWithPreAuthCode:preAuthCode completion:completion];
-                
             } failure:^(NSError * _Nonnull error) {
                 completion(nil, nil, error);
             }];
-            
         } failure:^(NSError * _Nonnull error) {
             completion(nil, nil, error);
         }];
@@ -258,7 +250,7 @@
             NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             NSString *jwtResponse = jsonResponse[@"token"];
             
-            [strongSelf latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
+            [strongSelf.oAuthService latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
                 DMEOAuthToken *oAuthToken = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (oAuthToken == nil)
@@ -277,34 +269,6 @@
         } failure:^(NSError * _Nonnull error) {
             completion(nil, nil, error);
         }];
-    }];
-}
-
-- (void)latestVerificationPublicKeyWithSuccess:(void(^)(NSString *publicKey))success failure:(void(^)(NSError *error))failure
-{
-    if (self.verificationKey && [self.verificationKey isValid])
-    {
-        success(self.verificationKey.publicKey);
-        return;
-    }
-    
-    [self.apiClient requestValidationDataForPreAuthenticationCodeWithSuccess:^(NSData * _Nonnull data) {
-        NSError *error;
-        NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-        
-        if (error)
-        {
-            failure(error);
-            return;
-        }
-        
-        NSArray *keys = jsonResponse[@"keys"];
-        NSDictionary *firstKey = keys.firstObject;
-        NSString *publicKey = firstKey[@"pem"];
-        self.verificationKey = [[DMEAuthorityPublicKey alloc] initWithPublicKey:publicKey date:[NSDate date]];
-        success(publicKey);
-    } failure:^(NSError * _Nonnull error) {
-        failure(error);
     }];
 }
 
@@ -340,10 +304,20 @@
         // This is the place where we should update Access token using Refresh token.
         // Access token valid for one day, refresh token is valid for 30 days.
         // When you renew Access token you will get new Access token and new Refresh token, but refresh token's expiration date will be the same as for the previous.
-        // It means in any scenarion 3rd party should ask for user's consent every month.
+        // It means in any scenario 3rd party should ask for user's consent every month.
         if (error.code == 401 && [error.userInfo[@"code"] isEqualToString:@"InvalidToken"])
         {
-            [strongSelf renewAccessTokenWithOAuthToken:strongSelf.oAuthToken completion:completion];
+            [strongSelf.oAuthService renewAccessTokenWithOAuthToken:strongSelf.oAuthToken publicKey:[self publicKeyHex] retryHandler:^(DMEOAuthToken * _Nonnull oAuthToken) {
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                strongSelf.oAuthToken = oAuthToken;
+                [strongSelf triggerDataRetrievalWithCompletion:completion];
+            } reauthHandler:^{
+                // Authorize without token, via digi.me app
+                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                [strongSelf authorizeOngoingAccessWithСompletion:completion];
+            } errorHandler:^(NSError * _Nonnull error) {
+                completion(nil, nil, error);
+            }];
             return;
         }
         
@@ -361,7 +335,8 @@
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         NSString *jwtResponse = jsonResponse[@"token"];
-        [strongSelf latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
+        [strongSelf.oAuthService latestVerificationPublicKeyWithSuccess:^(NSString *publicKey) {
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
             DMEOAuthToken *oAuthToken = [DMEJWTUtility oAuthTokenFrom:jwtResponse publicKey:publicKey];
             strongSelf.oAuthToken = oAuthToken;
             [strongSelf triggerDataRetrievalWithCompletion:completion];
