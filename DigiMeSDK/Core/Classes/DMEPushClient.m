@@ -36,13 +36,6 @@
     return self;
 }
 
-#pragma mark - Property accessors
-
-- (nullable NSString *)privateKeyHex
-{
-    return ((DMEPushConfiguration *)self.configuration).privateKeyHex;
-}
-
 #pragma mark - One-off Postbox
 
 - (void)openDMEAppForPostboxImport
@@ -54,13 +47,16 @@
     }
 }
 
+// Public func - notify completion on main thread
 - (void)createPostboxWithCompletion:(DMEPostboxCreationCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
     if (validationError != nil)
     {
-        completion(nil, validationError);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(nil, validationError);
+        });
         return;
     }
     
@@ -87,19 +83,34 @@
     }];
 }
 
+// Public func - notify completion on main thread
 - (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
                      data:(NSData *)data
                completion:(DMEPostboxDataPushCompletion)completion
 {
     [self.apiClient pushDataToPostbox:postbox metadata:metadata data:data completion:^(NSError * _Nullable error) {
-        completion(error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(error);
+        });
     }];
 }
 
 #pragma mark - Ongoing Postbox
 
+// Public func - notify completion on main thread
 - (void)authorizeOngoingPostboxWithExistingPostbox:(nullable DMEOngoingPostbox *)postbox completion:(DMEOngoingPostboxCompletion)completion
+{
+    [self authorizeOngoingPostboxWithExistingPostbox:postbox internalCompletion:^(DMEOngoingPostbox * _Nullable postbox, NSError * _Nullable error) {
+        // Forward completion to main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(postbox, error);
+        });
+    }];
+}
+
+// Private func - no need to notify completion on main thread
+- (void)authorizeOngoingPostboxWithExistingPostbox:(nullable DMEOngoingPostbox *)postbox internalCompletion:(DMEOngoingPostboxCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -116,10 +127,7 @@
         
         if (!session)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(nil, error ?: [NSError authError:AuthErrorGeneral]);
-            });
-            
+            completion(nil, error ?: [NSError authError:AuthErrorGeneral]);
             return;
         }
         
@@ -139,17 +147,15 @@
     }];
 }
 
+// Private func - no need to notify completion on main thread
 - (void)authorizeOngoingPostboxWithPreAuthCode:(NSString *)preAuthCode completion:(nonnull DMEOngoingPostboxCompletion)completion
 {
     __weak __typeof(self)weakSelf = self;
     [self.postboxManager requestOngoingPostboxWithPreAuthCode:preAuthCode completion:^(DMEPostbox * _Nullable postbox, NSString * _Nullable accessCode, NSError * _Nullable error) {
         if (error || accessCode == nil)
         {
-            // Notify on main thread
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                completion(nil, errorToReport);
-            });
+            NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+            completion(nil, errorToReport);
             return;
         }
         
@@ -163,7 +169,19 @@
     }];
 }
 
+// Public func - notify completion on main thread
 - (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox metadata:(NSData *)metadata data:(NSData *)data completion:(DMEOngoingPostboxCompletion)completion
+{
+    [self pushDataToOngoingPostbox:postbox metadata:metadata data:data internalCompletion:^(DMEOngoingPostbox * _Nullable postbox, NSError * _Nullable error) {
+        // Forward completion to main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(postbox, error);
+        });
+    }];
+}
+
+// Private func - no need to notify completion on main thread
+- (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox metadata:(NSData *)metadata data:(NSData *)data internalCompletion:(DMEOngoingPostboxCompletion)completion
 {
     __weak typeof(self) weakSelf = self;
     
@@ -211,12 +229,13 @@
     }];
 }
 
+// Private func - no need to notify completion on main thread
 - (void)reauthorizeOngoingPostboxAndPushWithMetadata:(NSData *)metadata data:(NSData *)data completion:(DMEOngoingPostboxCompletion)completion
 {
     __weak typeof(self) weakSelf = self;
     
     // Authorize without token, via digi.me app
-    [self authorizeOngoingPostboxWithExistingPostbox:nil completion:^(DMEOngoingPostbox * _Nullable postbox, NSError * _Nullable error) {
+    [self authorizeOngoingPostboxWithExistingPostbox:nil internalCompletion:^(DMEOngoingPostbox * _Nullable postbox, NSError * _Nullable error) {
         if (error != nil)
         {
             completion(nil, error);
@@ -224,7 +243,7 @@
         }
         
         __strong __typeof(weakSelf)strongSelf = weakSelf;
-        [strongSelf pushDataToOngoingPostbox:postbox metadata:metadata data:data completion:completion];
+        [strongSelf pushDataToOngoingPostbox:postbox metadata:metadata data:data internalCompletion:completion];
     }];
 }
 

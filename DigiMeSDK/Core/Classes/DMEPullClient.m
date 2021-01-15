@@ -36,7 +36,7 @@
 @property (nonatomic, readonly) DMEFileSyncState syncState;
 @property (nonatomic, strong, nullable) void (^sessionDataCompletion)(DMEFileList * _Nullable fileList, NSError * _Nullable error);
 @property (nonatomic, strong, nullable) void (^sessionContentHandler)(DMEFile * _Nullable file, NSError * _Nullable error);
-@property (nonatomic, strong, nullable) void (^sessionFileListCompletion)(NSError * _Nullable);
+@property (nonatomic, strong, nullable) void (^sessionFileListCompletion)(NSError * _Nullable error);
 @property (nonatomic, strong, nullable) void (^sessionFileListUpdateHandler)(DMEFileList * fileList, NSArray *fileIds);
 @property (nonatomic) BOOL fetchingSessionData;
 @property (nonatomic) NSInteger stalePollCount;
@@ -76,31 +76,27 @@
     return ((DMEPullConfiguration *)self.configuration).publicKeyHex;
 }
 
-- (nullable NSString *)privateKeyHex
-{
-    return ((DMEPullConfiguration *)self.configuration).privateKeyHex;
-}
-
-#pragma mark - Validation
-
-- (nullable NSError *)validateClient
-{
-    if (![self privateKeyHex])
-    {
-        return [NSError sdkError:SDKErrorNoPrivateKeyHex];
-    }
-    
-    return [super validateClient];
-}
-
 #pragma mark - Authorization
 
+// Public func - notify completion on main thread
 - (void)authorizeWithCompletion:(nonnull DMEAuthorizationCompletion)completion
 {
     [self authorizeWithScope:nil completion:completion];
 }
 
+// Public func - notify completion on main thread
 - (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)completion
+{
+    [self authorizeWithScope:scope internalCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+        // Notify on main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(session, error);
+        });
+    }];
+}
+
+// Private func - no need to notify completion on main thread
+- (void)authorizeWithScope:(id<DMEDataRequest>)scope internalCompletion:(nonnull DMEAuthorizationCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -122,6 +118,7 @@
     }
 }
 
+// Private func - no need to notify completion on main thread
 - (void)authorizeNativeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)completion
 {
     // Get session
@@ -131,34 +128,13 @@
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
         {
-            // Notify on main thread
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                completion(nil, errorToReport);
-            });
+            NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+            completion(nil, errorToReport);
             return;
         }
         
-        //begin authorization
-        [strongSelf authorizeNativeWithCompletion:completion];
-    }];
-}
-
-- (void)authorizeNativeWithCompletion:(nonnull DMEAuthorizationCompletion)completion
-{
-    __weak __typeof(self)weakSelf = self;
-    [self.nativeConsentManager beginAuthorizationWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
-        
-        //notify on main thread.
-        __strong __typeof(weakSelf)strongSelf = weakSelf;
-        if (strongSelf.configuration.debugLogEnabled)
-        {
-            NSLog(@"[DMEClient] isMain thread: %@", ([NSThread currentThread].isMainThread ? @"YES" : @"NO"));
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion(session, error);
-        });
+        // Begin authorization
+        [strongSelf.nativeConsentManager beginAuthorizationWithCompletion:completion];
     }];
 }
 
@@ -170,12 +146,25 @@
 }
 
 #pragma mark - Ongoing Access Authorisation
+// Public func - notify completion on main thread
 - (void)authorizeOngoingAccessWithСompletion:(nonnull DMEOngoingAccessAuthorizationCompletion)completion
 {
     [self authorizeOngoingAccessWithScope:nil oAuthToken:nil completion:completion];
 }
 
+// Public func - notify completion on main thread
 - (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion
+{
+    [self authorizeOngoingAccessWithScope:scope oAuthToken:oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
+        // Notify on main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(session, oAuthToken, error);
+        });
+    }];
+}
+
+// Private func - no need to notify completion on main thread
+- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken internalCompletion:(DMEOngoingAccessAuthorizationCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -193,10 +182,8 @@
         
         if (session == nil)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                completion(nil, nil, errorToReport);
-            });
+            NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+            completion(nil, nil, errorToReport);
             return;
         }
         
@@ -216,6 +203,7 @@
     }];
 }
 
+// Private func - no need to notify completion on main thread
 - (void)authorizeNativeOngoingAccessWithPreAuthCode:(NSString *)preAuthCode completion:(nonnull DMEOngoingAccessAuthorizationCompletion)completion
 {
     __weak __typeof(self)weakSelf = self;
@@ -224,29 +212,24 @@
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (error || session == nil || authCode == nil)
         {
-            // Notify on main thread
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
-                completion(nil, nil, errorToReport);
-            });
+            NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+            completion(nil, nil, errorToReport);
             return;
         }
         
         [strongSelf.oAuthService requestOAuthTokenForAuthCode:authCode publicKey:[self publicKeyHex] success:^(DMEOAuthToken * _Nonnull oAuthToken) {
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             strongSelf.oAuthToken = oAuthToken;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(session, oAuthToken, nil);
-            });
+            completion(session, oAuthToken, nil);
         } failure:^(NSError * _Nonnull error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(nil, nil, error);
-            });
+            completion(nil, nil, error);
         }];
     }];
 }
 
 #pragma mark - Ongoing Access Data retrieval
+
+// Private func - no need to notify completion on main thread
 - (void)triggerDataRetrievalWithCompletion:(nonnull DMEOngoingAccessAuthorizationCompletion)completion
 {
     //validate session
@@ -269,9 +252,8 @@
     NSString *jwtTriggerDataBearer = [DMECrypto createDataTriggerJwtWithAccessToken:self.oAuthToken.accessToken appId:self.configuration.appId contractId:self.configuration.contractId sessionKey:self.sessionManager.currentSession.sessionKey privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
     
     [self.apiClient requestDataTriggerWithBearer:jwtTriggerDataBearer success:^(NSData * _Nonnull data) {
-         __strong __typeof(weakSelf)strongSelf = weakSelf;
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         completion(strongSelf.sessionManager.currentSession, strongSelf.oAuthToken, nil);
-        
     } failure:^(NSError * _Nonnull error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
 
@@ -288,7 +270,7 @@
             } reauthHandler:^{
                 // Authorize without token, via digi.me app
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
-                [strongSelf authorizeOngoingAccessWithСompletion:completion];
+                [strongSelf authorizeOngoingAccessWithScope:self.scope oAuthToken:nil internalCompletion:completion];
             } errorHandler:^(NSError * _Nonnull error) {
                 completion(nil, nil, error);
             }];
@@ -352,16 +334,9 @@ DMEAuthorizationCompletion _authorizationCompletion;
     }];
 }
 
+// Private func - no need to notify completion on main thread
 - (void)executeCompletionWithSession:(DMESession * _Nullable )session error:(NSError * _Nullable)error
 {
-    if (![NSThread currentThread].isMainThread)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self executeCompletionWithSession:session error:error];
-        });
-        return;
-    }
-    
     if (_authorizationCompletion != nil)
     {
         _authorizationCompletion(session, error);
@@ -388,16 +363,38 @@ DMEAuthorizationCompletion _authorizationCompletion;
 }
 
 #pragma mark - Get File List
--(void)getSessionFileListWithUpdateHandler:(DMESessionFileListCompletion)updateHandler completion:(void (^)(NSError * _Nullable))completion
+
+// Public func - notify completion and update handler on main thread
+- (void)getSessionFileListWithUpdateHandler:(DMESessionFileListCompletion)updateHandler completion:(void (^)(NSError * _Nullable))completion
 {
-    self.sessionFileListUpdateHandler = updateHandler;
-    self.sessionFileListCompletion = completion;
+    self.sessionFileListUpdateHandler = ^(DMEFileList * fileList, NSArray *fileIds) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            updateHandler(fileList, fileIds);
+        });
+    };
+    self.sessionFileListCompletion = ^(NSError * error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(error);
+        });
+    };
     [self beginFileListPollingIfRequired];
 }
 
+// Public func - notify completion on main thread
 - (void)getFileListWithCompletion:(void (^)(DMEFileList * _Nullable fileList, NSError  * _Nullable error))completion
 {
-    //validate session
+    [self getFileListWithInternalCompletion:^(DMEFileList * _Nullable fileList, NSError * _Nullable error) {
+        // Notify on main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(fileList, error);
+        });
+    }];
+}
+
+// Private func - no need to notify completion on main thread
+- (void)getFileListWithInternalCompletion:(void (^)(DMEFileList * _Nullable fileList, NSError  * _Nullable error))completion
+{
+    // Validate session
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
@@ -405,18 +402,13 @@ DMEAuthorizationCompletion _authorizationCompletion;
         return;
     }
     
-    //initiate file list request
+    // Initiate file list request
     [self.apiClient requestFileListForSessionWithKey:self.sessionManager.currentSession.sessionKey success:^(NSData * _Nonnull data) {
         NSError *error;
         DMEFileList *fileList = [DMEFileListDeserializer deserialize:data error:&error];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion(fileList, error);
-        });
+        completion(fileList, error);
     } failure:^(NSError * _Nonnull error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion(nil, error);
-        });
+        completion(nil, error);
     }];
 }
 
@@ -474,6 +466,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
     }
 }
 
+// Private func - no need to notify update handler on main thread
 - (void)refreshFileList
 {
     if (self.configuration.debugLogEnabled)
@@ -481,7 +474,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
         NSLog(@"DigiMeSDK: Refreshing file list");
     }
     
-    [self getFileListWithCompletion:^(DMEFileList * _Nullable fileList, NSError * _Nullable error) {
+    [self getFileListWithInternalCompletion:^(DMEFileList * _Nullable fileList, NSError * _Nullable error) {
         
         if (fileList == nil)
         {
@@ -531,6 +524,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
     }];
 }
 
+// Private func - no need to notify update handler on main thread
 - (void)handleNewFileListItems:(NSArray *)items
 {
     NSArray *allFiles = [items valueForKey:@"name"];
@@ -553,7 +547,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
                     NSLog(@"DigiMeSDK: Adding file to download queue: %@", fileId);
                 }
                 
-                [self getSessionDataWithFileId:fileId completion:self.sessionContentHandler];
+                [self getSessionDataWithFileId:fileId internalCompletion:self.sessionContentHandler];
             }
         }
     }
@@ -588,6 +582,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
     return DMEFileSyncStateUnknown;
 }
 
+// Private func - no need to notify completion on main thread
 - (void)completeSessionDataFetchWithError:(NSError * _Nullable)error
 {
     if (self.sessionDataCompletion)
@@ -641,21 +636,47 @@ DMEAuthorizationCompletion _authorizationCompletion;
 }
 
 #pragma mark - Get File Content
+
+// Public func - notify completion and download handler on main thread
 - (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(DMESessionDataCompletion)completion
 {
-    self.sessionDataCompletion = completion;
-    self.sessionContentHandler = fileContentHandler;
+    self.sessionDataCompletion = ^(DMEFileList * _Nullable fileList, NSError * _Nullable error) {
+        // Notify on main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(fileList, error);
+        });
+    };
+    self.sessionContentHandler = ^(DMEFile * _Nullable file, NSError * _Nullable error) {
+        // Notify on main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            fileContentHandler(file, error);
+        });
+    };
+    
     [self beginFileListPollingIfRequired];
 }
 
+// Public func - notify completion on main thread
 - (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
 {
     [self getSessionDataWithFileId:fileId completion:completion];
 }
 
+// Public func - notify completion on main thread
 - (void)getSessionDataWithFileId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
 {
-    //validate session
+    [self getSessionDataWithFileId:fileId internalCompletion:^(DMEFile * _Nullable file, NSError * _Nullable error) {
+        // Notify on main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(file, error);
+        });
+    }];
+}
+
+// Private func - no need to notify completion on main thread
+- (void)getSessionDataWithFileId:(NSString *)fileId internalCompletion:(DMEFileContentCompletion)completion
+{
+    // Validate session
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession additionalInfo:@{ kFileIdKey: fileId }];
@@ -664,7 +685,7 @@ DMEAuthorizationCompletion _authorizationCompletion;
         return;
     }
     
-    //initiate file content request
+    // Initiate file content request
     __weak __typeof(self)weakSelf = self;
     [self.apiClient requestFileWithId:fileId sessionKey:self.sessionManager.currentSession.sessionKey success:^(NSData * _Nonnull data) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
@@ -672,19 +693,15 @@ DMEAuthorizationCompletion _authorizationCompletion;
         [strongSelf processFileData:data fileId:fileId completion:completion];
         
     } failure:^(NSError * _Nonnull error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // Add fileId to error before passing to completion
-            NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
-            userInfo[kFileIdKey] = fileId;
-            NSError *newError = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
-            if (completion)
-            {
-                completion(nil, newError);
-            }
-        });
+        // Add fileId to error before passing to completion
+        NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+        userInfo[kFileIdKey] = fileId;
+        NSError *newError = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+        completion(nil, newError);
     }];
 }
 
+// Private func - no need to notify completion on main thread
 - (void)processFileData:(NSData *)data fileId:(NSString *)fileId completion:(DMEFileContentCompletion)completion
 {
     DMEFile *file;
@@ -704,28 +721,26 @@ DMEAuthorizationCompletion _authorizationCompletion;
         error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (completion)
-        {
-            completion(file, error);
-        }
-    });
+    completion(file, error);
 }
 
 
 #pragma mark - Accounts
 
+// Public func - notify completion on main thread
 - (void)getSessionAccountsWithCompletion:(DMEAccountsCompletion)completion
 {
-    //validate session
+    // Validate session
     if (![self.sessionManager isSessionValid])
     {
         NSError *error = [NSError authError:AuthErrorInvalidSession];
-        completion(nil, error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(nil, error);
+        });
         return;
     }
     
-    //initiate accounts request
+    // Initiate accounts request
     [self.apiClient requestFileWithId:@"accounts.json" sessionKey:self.sessionManager.currentSession.sessionKey success:^(NSData * _Nonnull data) {
 
         DMEAccounts *accounts;

@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Hands off to the DigiMe app to request a Postbox that can be used to send data to a user's library.
  
- @param completion DMEPostboxCreationCompletion
+ @param completion Block called on main thread when postbox creation finished
  */
 - (void)createPostboxWithCompletion:(DMEPostboxCreationCompletion)completion;
 
@@ -37,10 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
  Once data is in the user's Postbox, it will need importing into the user's library.
  This can be accomplished by simply opening the digi.me client app by calling `openDMEAppForPostboxImport`.
  
- @param postbox The ongoing Postbox to push data to.
+ @param postbox The ongoing Postbox to push data to
  @param metadata The metadata describing the data being pushed
  @param data The data to push to user's library
- @param completion Block called when pushing data has completed.
+ @param completion Block called on main thread when pushing data has completed
  */
 - (void)pushDataToPostbox:(DMEPostbox *)postbox
                  metadata:(NSData *)metadata
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
  The caller is expected to retain the ongoing postbox to allow continued access to push data to user's library.
  
  @param postbox An existing ongoing Postbox (if available)
- @param completion Block called when authorization has completed
+ @param completion Block called on main thread when authorization has completed
  */
 - (void)authorizeOngoingPostboxWithExistingPostbox:(nullable DMEOngoingPostbox *)postbox completion:(DMEOngoingPostboxCompletion)completion;
 
@@ -78,10 +78,10 @@ NS_ASSUME_NONNULL_BEGIN
  
  If the tokens have expired and cannot be refreshed, the digi.me client app may be opened to request user consent and new tokens will be issued.
  
- @param postbox The ongoing Postbox to push data to.
+ @param postbox The ongoing Postbox to push data to
  @param metadata The metadata describing the data being pushed
  @param data The data to push to user's library
- @param completion Block called when pushing data has completed.
+ @param completion Block called on main thread when pushing data has completed
  */
 - (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox
                         metadata:(NSData *)metadata
