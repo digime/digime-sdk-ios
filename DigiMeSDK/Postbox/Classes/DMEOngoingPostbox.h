@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  A Postbox with ongoing access to user's library
  */
-@interface DMEOngoingPostbox : DMEPostbox
+@interface DMEOngoingPostbox : DMEPostbox <NSSecureCoding>
 
 /**
  The OAuth token used for continued consent to push data. This is required in order to post data to the Postbox without digi.me client app involvement.
