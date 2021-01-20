@@ -401,7 +401,7 @@ public class DMEJWTUtility: NSObject {
     }
     
     @objc(postboxPushJwtFromAccessToken:appId:contractId:iv:metadata:sessionKey:symmetricalKey:privateKey:publicKey:)
-    public class func postboxPushJwt(from accessToken: String, appId: String, contractId: String, iv: String, metadata: String, sessionKey: String, symmetricalKey: String, privateKey: String, publicKey: String?) -> String? {
+    public class func postboxPushJwt(from accessToken: String?, appId: String, contractId: String, iv: String, metadata: String, sessionKey: String, symmetricalKey: String, privateKey: String, publicKey: String?) -> String? {
         guard
             privateKey.isBase64(),
             let privateKeyData = convertKeyString(privateKey) else {
@@ -409,21 +409,17 @@ public class DMEJWTUtility: NSObject {
                 return nil
         }
         
-        /*
-         NSString *metadata = [[headers[@"metadata"] stringByReplacingOccurrencesOfString:@"\n" withString:@""]stringByReplacingOccurrencesOfString:@"\r" withString:@""];
-         NSString *symmetricalKey = [[headers[@"symmetricalKey"] stringByReplacingOccurrencesOfString:@"\n" withString:@""]stringByReplacingOccurrencesOfString:@"\r" withString:@""];
-         */
         let claims = PayloadPostboxPush()
         claims.accessToken = accessToken
         claims.clientId = "\(appId)_\(contractId)"
         claims.iv = iv
-        claims.metadata = metadata
+        claims.metadata = metadata.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil)
         claims.nonce = (DMECryptoUtilities.randomBytes(withLength: 16) as NSData).hexString()
         
         // NB! this redirect schema must exist in the CA contract definition, otherwise preauth request will fail!
         claims.redirectUrl = "digime-ca-\(appId)"
         claims.sessionKey = sessionKey
-        claims.symmetricalKey = symmetricalKey
+        claims.symmetricalKey = symmetricalKey.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil)
         claims.timestamp = NSDate().timeIntervalSince1970 * 1000.0
 
         // signing

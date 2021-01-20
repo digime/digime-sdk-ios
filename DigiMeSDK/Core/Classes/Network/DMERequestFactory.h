@@ -104,7 +104,7 @@ Creates NSURLRequest for triggering data (this makes protected resources associa
 - (NSURLRequest *)dataTriggerRequestWithBearer:(NSString *)jwtBearer;
 
 /**
- Base url used for all API calls. You can override this with DMEConfig.plist
+ Base url used for all API calls.
  */
 @property (nonatomic, strong, readonly) NSString *baseUrl;
 

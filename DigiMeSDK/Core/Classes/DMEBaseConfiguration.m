@@ -9,8 +9,6 @@
 #import "DMEBaseConfiguration.h"
 #import "DMECryptoUtilities.h"
 
-NSString * const kDMEConfigFileName = @"DMEConfig";
-
 @interface DMEBaseConfiguration()
 
 @end
