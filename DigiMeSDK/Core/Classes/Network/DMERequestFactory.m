@@ -13,8 +13,8 @@
 #import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 static NSString * const kDigiMeAPIVersion = @"v1.4";
-static NSString * const kDigiMeOAuthAPIVersion = @"v1";
-static NSString * const kDigiMeJWKSAPIVersion = @"v1";
+static NSString * const kDigiMeOAuthAPIVersion = @"v1.4";
+static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
 
 @interface DMERequestFactory()
 
