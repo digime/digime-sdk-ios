@@ -87,7 +87,16 @@
 // Public func - notify completion on main thread
 - (void)authorizeWithScope:(id<DMEDataRequest>)scope completion:(nonnull DMEAuthorizationCompletion)completion
 {
-    [self authorizeWithScope:scope internalCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+    // Deprecated - forward to replacement
+    DMESessionOptions *options = [DMESessionOptions new];
+    options.scope = scope;
+    [self authorizeWithOptions:options completion:completion];
+}
+
+// Public func - notify completion on main thread
+- (void)authorizeWithOptions:(DMESessionOptions *)options completion:(DMEAuthorizationCompletion)completion
+{
+    [self authorizeWithOptions:options internalCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         // Notify on main thread
         dispatch_async(dispatch_get_main_queue(), ^{
             completion(session, error);
@@ -96,14 +105,7 @@
 }
 
 // Private func - no need to notify completion on main thread
-- (void)authorizeWithScope:(id<DMEDataRequest>)scope internalCompletion:(nonnull DMEAuthorizationCompletion)completion
-{
-    DMESessionOptions *options = [DMESessionOptions new];
-    options.scope = scope;
-    [self authorizeWithOptions:options completion:completion];
-}
-
-- (void)authorizeWithOptions:(DMESessionOptions *)options completion:(DMEAuthorizationCompletion)completion
+- (void)authorizeWithOptions:(DMESessionOptions *)options internalCompletion:(nonnull DMEAuthorizationCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -162,7 +164,16 @@
 // Public func - notify completion on main thread
 - (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion
 {
-    [self authorizeOngoingAccessWithScope:scope oAuthToken:oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
+    // Deprectaed - forward to replacement
+    DMESessionOptions *options = [DMESessionOptions new];
+    options.scope = scope;
+    [self authorizeOngoingAccessWithOptions:options oAuthToken:oAuthToken completion:completion];
+}
+
+// Public func - notify completion on main thread
+- (void)authorizeOngoingAccessWithOptions:(nullable DMESessionOptions *)options oAuthToken:(DMEOAuthToken *)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion
+{
+    [self authorizeOngoingAccessWithOptions:options oAuthToken:oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
         // Notify on main thread
         dispatch_async(dispatch_get_main_queue(), ^{
             completion(session, oAuthToken, error);
@@ -171,14 +182,7 @@
 }
 
 // Private func - no need to notify completion on main thread
-- (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken internalCompletion:(DMEOngoingAccessAuthorizationCompletion)completion
-{
-    DMESessionOptions *options = [DMESessionOptions new];
-    options.scope = scope;
-    [self authorizeOngoingAccessWithOptions:options oAuthToken:oAuthToken completion:completion];
-}
-
-- (void)authorizeOngoingAccessWithOptions:(DMESessionOptions * _Nullable)options oAuthToken:(DMEOAuthToken *)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion
+- (void)authorizeOngoingAccessWithOptions:(nullable DMESessionOptions *)options oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken internalCompletion:(DMEOngoingAccessAuthorizationCompletion)completion
 {
     // Validation
     NSError *validationError = [self validateClient];
@@ -284,7 +288,7 @@
             } reauthHandler:^{
                 // Authorize without token, via digi.me app
                 __strong __typeof(weakSelf)strongSelf = weakSelf;
-                [strongSelf authorizeOngoingAccessWithScope:self.scope oAuthToken:nil internalCompletion:completion];
+                [strongSelf authorizeOngoingAccessWithOptions:self.options oAuthToken:nil internalCompletion:completion];
             } errorHandler:^(NSError * _Nonnull error) {
                 completion(nil, nil, error);
             }];

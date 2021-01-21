@@ -81,9 +81,9 @@ NS_ASSUME_NONNULL_BEGIN
  Redirect to the digi.me application (if installed).
  
  @param options additional session configuration options
- @param completion Block called when authorization has completed
+ @param completion Block called on main thread when authorization has completed
  */
-- (void)authorizeWithOptions:(DMESessionOptions * _Nullable)options completion:(DMEAuthorizationCompletion)completion NS_SWIFT_NAME(authorize(options:completion:));
+- (void)authorizeWithOptions:(nullable DMESessionOptions *)options completion:(DMEAuthorizationCompletion)completion NS_SWIFT_NAME(authorize(options:completion:));
 
 /**
  Initializes ongoing contract authentication with custom session configuration. Once user has given consent in digi.me app all subsequent data retrieval calls will be done without digi.me client app involvement.
@@ -91,9 +91,9 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param options additional session configuration options
  @param oAuthToken valid OAuth token
- @param completion Block called when authorization has completed
+ @param completion Block called on main thread when authorization has completed
  */
-- (void)authorizeOngoingAccessWithOptions:(DMESessionOptions * _Nullable)options oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion  NS_SWIFT_NAME(authorizeOngoingAccess(options:oAuthToken:completion:));
+- (void)authorizeOngoingAccessWithOptions:(nullable DMESessionOptions *)options oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion  NS_SWIFT_NAME(authorizeOngoingAccess(options:oAuthToken:completion:));
 
 /**
  Fetches content for all the requested files.
