@@ -12,8 +12,8 @@
 #import "NSData+DMECrypto.h"
 
 static NSString * const kDigiMeAPIVersion = @"v1.5";
-static NSString * const kDigiMeOAuthAPIVersion = @"v1";
-static NSString * const kDigiMeJWKSAPIVersion = @"v1";
+static NSString * const kDigiMeOAuthAPIVersion = @"v1.4";
+static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
 
 @interface DMERequestFactory()
 
