@@ -26,8 +26,9 @@
 
 - (DMEPullConfiguration *)createSampleConfiguration
 {
-    // production
-    NSString *appId = @"IfnN9Y27Jym3P1Fad3ks3sTlo22flUBb";
+    // get YOUR_APP_ID here - https://go.digi.me/developers/register
+    // Don't forget to replace YOUR_APP_ID part in URLSchemes in Info.plist
+    NSString *appId = @"YOUR_APP_ID";
     NSString *contractId = @"r9ZPFD0bUqycDw6qPSg7AyGT7xisR8jM";
     DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:appId contractId:contractId p12FileName:@"fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF" p12Password:@"monkey periscope"];
     configuration.debugLogEnabled = YES;
@@ -56,13 +57,6 @@
                                 ];
 
     self.toolbarItems = barButtonItems;
-    
-//    NSData *tokenData = [[NSUserDefaults standardUserDefaults] objectForKey:@"oauth_token"];
-//
-//    if (tokenData)
-//    {
-//        self.oAuthToken = [NSKeyedUnarchiver unarchiveObjectWithData:tokenData];
-//    }
 }
 
 - (void)zoomIn
@@ -111,7 +105,7 @@
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Beginning Ongoing Access"];
     __weak __typeof(self)weakSelf = self;
-    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
+    [self.dmeClient authorizeOngoingAccessWithOptions:nil oAuthToken:nil completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong __typeof(weakSelf)strongSelf = weakSelf;
             if (session == nil)
@@ -127,9 +121,6 @@
             [strongSelf.logVC logMessage:[NSString stringWithFormat:@"OAuth expiration date: %@", oAuthToken.expiresOn]];
             
             strongSelf.oAuthToken = oAuthToken;
-            
-//            NSData *tokenData = [NSKeyedArchiver archivedDataWithRootObject:oAuthToken];
-//            [[NSUserDefaults standardUserDefaults] setObject:tokenData forKey:@"oauth_token"];
 
             //Uncomment relevant method depending on which you wish to receive.
             [strongSelf getAccounts];
@@ -155,6 +146,7 @@
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Beginning Legacy Flow"];
      __weak __typeof(self)weakSelf = self;
+    
     [self.dmeClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         if (session == nil)
@@ -240,7 +232,7 @@
     [self resetClient];
     [self updateNavigationBarWithMessage:@"Retrieving Ongoing Access File List"];
      __weak __typeof(self)weakSelf = self;
-    [self.dmeClient authorizeOngoingAccessWithScope:nil oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
+    [self.dmeClient authorizeOngoingAccessWithOptions:nil oAuthToken:self.oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error != nil)

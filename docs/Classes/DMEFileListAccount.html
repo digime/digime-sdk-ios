@@ -306,6 +306,9 @@
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAuthorizationCompletion">DMEAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
               </li>
               <li class="nav-group-task">
@@ -330,7 +333,7 @@
       <article class="main-content">
 
         <section class="section">
-          <div class="section-content">
+          <div class="section-content top-matter">
             <h1>DMEFileListAccount</h1>
               <div class="declaration">
                 <div class="language">
@@ -418,7 +421,7 @@
                     <code>
                     <a name="/c:objc(cs)DMEFileListAccount(im)initWithIdentifier:syncState:error:"></a>
                     <a name="//apple_ref/objc/Method/-initWithIdentifier:syncState:error:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMEFileListAccount(im)initWithIdentifier:syncState:error:">-initWithIdentifier:syncState:error:</a>
+                    <a class="token" href="#/c:objc(cs)DMEFileListAccount(im)initWithIdentifier:syncState:error:">-initWithIdentifier:<wbr>syncState:<wbr>error:<wbr></a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -436,11 +439,6 @@
                           <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithIdentifier</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">identifier</span>
                                  <span class="nf">syncState</span><span class="p">:(</span><span class="n"><a href="../Enums/DMEFileSyncState.html">DMEFileSyncState</a></span><span class="p">)</span><span class="nv">syncState</span>
                                      <span class="nf">error</span><span class="p">:(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">error</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">syncState</span><span class="p">:</span> <span class="kt"><a href="../Enums/DMEFileSyncState.html">DMEFileSyncState</a></span><span class="p">,</span> <span class="nv">error</span><span class="p">:</span> <span class="p">[</span><span class="kt">AnyHashable</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span></code></pre>
 
                         </div>
                       </div>
@@ -517,11 +515,6 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">identifier</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -547,11 +540,6 @@
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n"><a href="../Enums/DMEFileSyncState.html">DMEFileSyncState</a></span> <span class="n">syncState</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">syncState</span><span class="p">:</span> <span class="kt"><a href="../Enums/DMEFileSyncState.html">DMEFileSyncState</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -581,11 +569,6 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">syncStateString</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">syncStateString</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -613,11 +596,6 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n">NSDictionary</span> <span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">error</span></code></pre>
 
                         </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">error</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -630,8 +608,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-04-21)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-09-17)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

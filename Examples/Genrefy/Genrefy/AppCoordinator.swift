@@ -78,7 +78,10 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
 // MARK: - Client Configuration
 extension AppCoordinator {
     class func pullClient() -> DMEPullClient? {
-        let appId = "qgEUV8iJENRiUkuYF5lLpdsOv7Hp0biy"
+        
+        // get YOUR_APP_ID here - https://go.digi.me/developers/register
+        // Don't forget to replace YOUR_APP_ID part in URLSchemes in Info.plist
+        let appId = "YOUR_APP_ID"
         let contractId = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
         let p12FileName = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
         let p12Password = "digime"

@@ -306,6 +306,9 @@
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAuthorizationCompletion">DMEAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a>
               </li>
               <li class="nav-group-task">
@@ -330,7 +333,7 @@
       <article class="main-content">
 
         <section class="section">
-          <div class="section-content">
+          <div class="section-content top-matter">
             <h1>DMECryptoUtilities</h1>
               <div class="declaration">
                 <div class="language">
@@ -352,7 +355,7 @@
                     <code>
                     <a name="/c:objc(cs)DMECryptoUtilities(cm)privateKeyHexFromP12File:password:"></a>
                     <a name="//apple_ref/objc/Method/+privateKeyHexFromP12File:password:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMECryptoUtilities(cm)privateKeyHexFromP12File:password:">+privateKeyHexFromP12File:password:</a>
+                    <a class="token" href="#/c:objc(cs)DMECryptoUtilities(cm)privateKeyHexFromP12File:password:">+privateKeyHexFromP12File:<wbr>password:<wbr></a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -369,11 +372,6 @@
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">privateKeyHexFromP12File</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">p12FileName</span>
                                        <span class="nf">password</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">password</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">privateKeyHex</span><span class="p">(</span><span class="n">fromP12File</span> <span class="nv">p12FileName</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -420,7 +418,7 @@
                     <code>
                     <a name="/c:objc(cs)DMECryptoUtilities(cm)privateKeyHexFromP12Data:password:"></a>
                     <a name="//apple_ref/objc/Method/+privateKeyHexFromP12Data:password:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMECryptoUtilities(cm)privateKeyHexFromP12Data:password:">+privateKeyHexFromP12Data:password:</a>
+                    <a class="token" href="#/c:objc(cs)DMECryptoUtilities(cm)privateKeyHexFromP12Data:password:">+privateKeyHexFromP12Data:<wbr>password:<wbr></a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -438,11 +436,6 @@ Extracts private key as hex string from p12 file in NSData format. This will ret
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">privateKeyHexFromP12Data</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">p12FileData</span>
                                        <span class="nf">password</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">password</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">privateKeyHex</span><span class="p">(</span><span class="n">fromP12Data</span> <span class="nv">p12FileData</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -489,7 +482,7 @@ Extracts private key as hex string from p12 file in NSData format. This will ret
                     <code>
                     <a name="/c:objc(cs)DMECryptoUtilities(cm)privateKeyHexFromP12File:password:bundle:"></a>
                     <a name="//apple_ref/objc/Method/+privateKeyHexFromP12File:password:bundle:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMECryptoUtilities(cm)privateKeyHexFromP12File:password:bundle:">+privateKeyHexFromP12File:password:bundle:</a>
+                    <a class="token" href="#/c:objc(cs)DMECryptoUtilities(cm)privateKeyHexFromP12File:password:bundle:">+privateKeyHexFromP12File:<wbr>password:<wbr>bundle:<wbr></a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -508,11 +501,6 @@ Extracts private key as hex string from p12File from a specific bundle. This wil
                           <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">nullable</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">privateKeyHexFromP12File</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">p12FileName</span>
                                        <span class="nf">password</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">password</span>
                                          <span class="nf">bundle</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSBundle</span> <span class="o">*</span><span class="p">)</span><span class="nv">bundle</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">privateKeyHex</span><span class="p">(</span><span class="n">fromP12File</span> <span class="nv">p12FileName</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">bundle</span><span class="p">:</span> <span class="kt">Bundle</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -571,7 +559,7 @@ Extracts private key as hex string from p12File from a specific bundle. This wil
                     <code>
                     <a name="/c:objc(cs)DMECryptoUtilities(cm)randomBytesWithLength:"></a>
                     <a name="//apple_ref/objc/Method/+randomBytesWithLength:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMECryptoUtilities(cm)randomBytesWithLength:">+randomBytesWithLength:</a>
+                    <a class="token" href="#/c:objc(cs)DMECryptoUtilities(cm)randomBytesWithLength:">+randomBytesWithLength:<wbr></a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -587,11 +575,6 @@ Extracts private key as hex string from p12File from a specific bundle. This wil
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nf">randomBytesWithLength</span><span class="p">:(</span><span class="kt">int</span><span class="p">)</span><span class="nv">length</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">class</span> <span class="kd">func</span> <span class="nf">randomBytes</span><span class="p">(</span><span class="n">withLength</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Data</span></code></pre>
 
                         </div>
                       </div>
@@ -629,8 +612,8 @@ Extracts private key as hex string from p12File from a specific bundle. This wil
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-04-21)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-09-17)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

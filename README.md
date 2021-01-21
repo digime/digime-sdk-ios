@@ -1,4 +1,4 @@
-![](https://i.imgur.com/zAHoOwe.png)
+![](https://securedownloads.digi.me/partners/digime/SDKReadmeBanner.png)
 
 <p align="center">
     <a href="https://developers.digi.me/slack/join">

@@ -1,5 +1,5 @@
 //
-//  ScopeTests.swift
+//  ConfigurationTests.swift
 //  DigiMeSDKExample_Tests
 //
 //  Created on 12/08/2019.

@@ -10,6 +10,7 @@
 #import "DMERequestFactory.h"
 #import "DMEDataRequestSerializer.h"
 #import "NSData+DMECrypto.h"
+#import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 static NSString * const kDigiMeAPIVersion = @"v1.5";
 static NSString * const kDigiMeOAuthAPIVersion = @"v1.4";
@@ -82,7 +83,7 @@ static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
     return request;
 }
 
-- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId scope:(nullable id<DMEDataRequest>)scope
+- (NSURLRequest *)sessionRequestWithAppId:(NSString *)appId contractId:(NSString *)contractId options:(DMESessionOptions *)options
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/session", self.baseUrlPath]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
@@ -93,14 +94,25 @@ static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
     postKeys[@"sdkAgent"] = self.sdkAgent;
     postKeys[@"accept"] = @{ @"compression" : @"gzip" };
     
-    if (scope != nil)
+    if (options.scope != nil)
     {
-        NSDictionary *serializedScope = [DMEDataRequestSerializer serialize:scope];
+        NSDictionary *serializedScope = [DMEDataRequestSerializer serialize:options.scope];
         
         if (serializedScope != nil)
         {
-            postKeys[scope.context] = serializedScope;
+            postKeys[options.scope.context] = serializedScope;
         }
+    }
+    
+    if (options.limits != nil)
+    {
+        NSInteger duration = options.limits.duration.sourceFetch;
+        postKeys[@"limits"] =
+        @{
+            @"duration": @{
+                    @"sourceFetch": @(duration)
+            }
+        };
     }
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postKeys options:0 error:nil];

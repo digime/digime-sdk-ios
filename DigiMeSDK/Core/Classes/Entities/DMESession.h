@@ -45,6 +45,7 @@ extern NSString * const kDMEPreAuthorizationCode;
 extern NSString * const kDMEAuthorizationCode;
 
 @class DMESessionManager;
+@class DMESessionOptions;
 @protocol DMEDataRequest;
 
 /**
@@ -109,9 +110,9 @@ extern NSString * const kDMEAuthorizationCode;
 
 
 /**
- Session Scope - this is the limiting scope object used to create session.
+ Session Options - these are the additional session parameters used to create session.
  */
-@property (nonatomic, strong, readonly, nullable) id<DMEDataRequest> scope;
+@property (nonatomic, strong, readonly, nullable) DMESessionOptions *options;
 
 
 /**

@@ -19,7 +19,7 @@ class DMEPullClientTests: XCTestCase {
     }
 
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
     }
 
     func testPullSessionCancellation() {
@@ -46,7 +46,7 @@ class DMEPullClientTests: XCTestCase {
         
         let sut = DMEPullClient(configuration: configuration)
         
-        sut.sessionManager.session(withScope: nil) { session, error in
+        sut.sessionManager.session(options: nil) { session, error in
             sut.getSessionData(downloadHandler: { file, error in
                 XCTFail("File download was not expected to complete. Session fetching should have been cancelled.")
             }) { error, _  in
@@ -98,7 +98,7 @@ extension DMEPullClientTests {
             
             return true
         }, response: { request in
-            return OHHTTPStubsResponse(
+            return HTTPStubsResponse(
                 data: sessionData,
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
@@ -120,7 +120,7 @@ extension DMEPullClientTests {
             
             return true
         }, response: { request in
-            return OHHTTPStubsResponse(
+            return HTTPStubsResponse(
                 data: response,
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"]
@@ -144,7 +144,7 @@ extension DMEPullClientTests {
             
             return true
         }, response: { request in
-            return OHHTTPStubsResponse(
+            return HTTPStubsResponse(
                 data: data,
                 statusCode: 404,
                 headers: ["Content-Type": "application/json"]
