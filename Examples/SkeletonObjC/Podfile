@@ -1,5 +1,14 @@
-use_frameworks!
 platform :ios, '11.0'
+
+install! 'cocoapods',
+    :generate_multiple_pod_projects => true,
+    :incremental_installation => true
+
+inhibit_all_warnings!
+use_frameworks!
+use_modular_headers!
+
+source 'https://cdn.cocoapods.org/'
 
 target 'DigiMeSDKExample' do
   pod 'DigiMeSDK', :path => '../../'

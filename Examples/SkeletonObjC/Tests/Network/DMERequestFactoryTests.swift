@@ -84,17 +84,10 @@ class DMERequestFactoryTests: XCTestCase {
     
     func testPushRequest() {
         let postboxId = "testPostboxId"
-        let iv = "testIv"
-        let symmetricalKey = "testSymmetricalKey"
-        let metadata = "testMetaData"
-        var headers: [String: String] = [:]
-        headers[Keys.sessionKey] = sessionKey
-        headers[Keys.metadata] = metadata
-        headers[Keys.iv] = iv
-        headers[Keys.symmetricalKey] = symmetricalKey
+        let bearer = UUID().uuidString
         
         let payload = Data()
-        let request = sut.pushRequest(withPostboxId: postboxId, payload: payload, headerParameters: headers)
+        let request = sut.pushRequest(withPostboxId: postboxId, payload: payload, bearer: bearer)
         
         XCTAssert(request.httpMethod == "POST", "Error testing postbox push request. Http method is incorrect.")
         XCTAssert(request.httpBody != nil, "Error testing postbox push request. Body is empty.")
@@ -118,11 +111,8 @@ class DMERequestFactoryTests: XCTestCase {
         }
         
         XCTAssert(headerFields[Keys.contentType] != nil, "Error testing postbox push request. Content type param is missing.")
-        XCTAssert(headerFields[Keys.acceptPostbox] != nil, "Error testing session request. Accept header param is missing.")
-        XCTAssert(headerFields[Keys.sessionKey] == sessionKey, "Error testing session request. Session key param is missing.")
-        XCTAssert(headerFields[Keys.metadata] == metadata, "Error testing session request. Metadata param is missing.")
-        XCTAssert(headerFields[Keys.iv] == iv, "Error testing session request. Initialization vector param is missing.")
-        XCTAssert(headerFields[Keys.symmetricalKey] == symmetricalKey, "Error testing session request. Symmetrical key param is missing.")
+        XCTAssert(headerFields[Keys.acceptPostbox] != nil, "Error testing postbox push request. Accept header param is missing.")
+        XCTAssert(headerFields[Keys.authorization] == "Bearer \(bearer)", "Error testing postbox push request. Authorization header is either missing or incorrect.")
     }
     
     private struct Keys {
@@ -137,5 +127,6 @@ class DMERequestFactoryTests: XCTestCase {
         static let symmetricalKey = "symmetricalKey"
         static let iv = "iv"
         static let metadata = "metadata"
+        static let authorization = "Authorization"
     }
 }
