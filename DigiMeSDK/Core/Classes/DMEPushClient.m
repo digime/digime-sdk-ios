@@ -154,7 +154,9 @@
     [self.postboxManager requestOngoingPostboxWithPreAuthCode:preAuthCode completion:^(DMEPostbox * _Nullable postbox, NSString * _Nullable accessCode, NSError * _Nullable error) {
         if (error || accessCode == nil)
         {
-            NSError *errorToReport = error ?: [NSError authError:AuthErrorGeneral];
+            
+            // If no error or access code must be due to attempting to get ongoing postbox with a one-off contract
+            NSError *errorToReport = error ?: [NSError sdkError:SDKErrorIncorrectContractType];
             completion(nil, errorToReport);
             return;
         }
