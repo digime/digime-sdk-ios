@@ -43,7 +43,6 @@
 @property (nonatomic, strong, nullable) DMEFileList *sessionFileList;
 @property (nonatomic, strong, nullable) NSError *sessionError;
 @property (nonatomic, strong, nullable) NSString *publicKeyHex;
-@property (nonatomic, strong, nullable) NSString *privateKeyHex;
 @property (nonatomic, strong, nullable) DMEOAuthToken *oAuthToken;
 
 @end
@@ -173,7 +172,7 @@
 // Public func - notify completion on main thread
 - (void)authorizeOngoingAccessWithOptions:(nullable DMESessionOptions *)options oAuthToken:(DMEOAuthToken *)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion
 {
-    [self authorizeOngoingAccessWithOptions:options oAuthToken:oAuthToken completion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
+    [self authorizeOngoingAccessWithOptions:options oAuthToken:oAuthToken internalCompletion:^(DMESession * _Nullable session, DMEOAuthToken * _Nullable oAuthToken, NSError * _Nullable error) {
         // Notify on main thread
         dispatch_async(dispatch_get_main_queue(), ^{
             completion(session, oAuthToken, error);
@@ -267,7 +266,7 @@
     
     __weak typeof(self) weakSelf = self;
     
-    NSString *jwtTriggerDataBearer = [DMECrypto createDataTriggerJwtWithAccessToken:self.oAuthToken.accessToken appId:self.configuration.appId contractId:self.configuration.contractId sessionKey:self.sessionManager.currentSession.sessionKey privateKey:self.privateKeyHex publicKey:self.publicKeyHex];
+    NSString *jwtTriggerDataBearer = [DMECrypto createDataTriggerJwtWithAccessToken:self.oAuthToken.accessToken appId:self.configuration.appId contractId:self.configuration.contractId sessionKey:self.sessionManager.currentSession.sessionKey privateKey:self.configuration.privateKeyHex publicKey:self.publicKeyHex];
     
     [self.apiClient requestDataTriggerWithBearer:jwtTriggerDataBearer success:^(NSData * _Nonnull data) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
