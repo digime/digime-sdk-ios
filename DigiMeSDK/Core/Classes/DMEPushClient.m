@@ -198,7 +198,7 @@
         return;
     }
     
-    [self.apiClient pushDataToPostbox:postbox metadata:metadata data:data completion:^(NSError * _Nullable error) {
+    [self.apiClient pushDataToOngoingPostbox:postbox metadata:metadata data:data completion:^(NSError * _Nullable error) {
         if (error == nil)
         {
             completion(postbox, nil);
