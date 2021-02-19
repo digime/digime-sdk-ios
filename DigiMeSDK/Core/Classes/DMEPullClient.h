@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
          Either redirect to the digi.me application (if installed) or present options for user to choose a one-time share or download the digi.me app.
  - Guest is not enabled:
          Redirect to the digi.me application (if installed).
- @param completion Block called when authorization has completed
+ @param completion Block called on main thread when authorization has completed
  */
 - (void)authorizeWithCompletion:(DMEAuthorizationCompletion)completion;
 
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  Redirect to the digi.me application (if installed).
  
  @param scope Custom scope that will be applied to available data.
- @param completion Block called when authorization has completed
+ @param completion Block called on main thread when authorization has completed
  */
 - (void)authorizeWithScope:(nullable id<DMEDataRequest>)scope completion:(DMEAuthorizationCompletion)completion __attribute((deprecated("Use authorizeWithOptions:completion: instead."))) NS_SWIFT_NAME(authorize(scope:completion:));
 
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  Initializes ongoing contract authentication. Once user has given consent in digi.me app all subsequent data retrieval calls will be done without digi.me client app involvement.
  This authorization flow enables 3rd parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers.
  
- @param completion Block called when authorization has completed
+ @param completion Block called on main thread when authorization has completed
  */
 - (void)authorizeOngoingAccessWithСompletion:(DMEOngoingAccessAuthorizationCompletion)completion NS_SWIFT_NAME(authorizeOngoingAccess(completion:));
 
@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param scope Custom scope that will be applied to available data.
  @param oAuthToken valid OAuth token
- @param completion Block called when authorization has completed
+ @param completion Block called on main thread when authorization has completed
  */
 - (void)authorizeOngoingAccessWithScope:(nullable id<DMEDataRequest>)scope oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion __attribute((deprecated("Use authorizeOngoingAccessWithOptions:oAuthToken:completion: instead."))) NS_SWIFT_NAME(authorizeOngoingAccess(scope:oAuthToken:completion:));
 
@@ -81,9 +81,9 @@ NS_ASSUME_NONNULL_BEGIN
  Redirect to the digi.me application (if installed).
  
  @param options additional session configuration options
- @param completion Block called when authorization has completed
+ @param completion Block called on main thread when authorization has completed
  */
-- (void)authorizeWithOptions:(DMESessionOptions * _Nullable)options completion:(DMEAuthorizationCompletion)completion NS_SWIFT_NAME(authorize(options:completion:));
+- (void)authorizeWithOptions:(nullable DMESessionOptions *)options completion:(DMEAuthorizationCompletion)completion NS_SWIFT_NAME(authorize(options:completion:));
 
 /**
  Initializes ongoing contract authentication with custom session configuration. Once user has given consent in digi.me app all subsequent data retrieval calls will be done without digi.me client app involvement.
@@ -91,9 +91,9 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param options additional session configuration options
  @param oAuthToken valid OAuth token
- @param completion Block called when authorization has completed
+ @param completion Block called on main thread when authorization has completed
  */
-- (void)authorizeOngoingAccessWithOptions:(DMESessionOptions * _Nullable)options oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion  NS_SWIFT_NAME(authorizeOngoingAccess(options:oAuthToken:completion:));
+- (void)authorizeOngoingAccessWithOptions:(nullable DMESessionOptions *)options oAuthToken:(DMEOAuthToken * _Nullable)oAuthToken completion:(DMEOngoingAccessAuthorizationCompletion)completion  NS_SWIFT_NAME(authorizeOngoingAccess(options:oAuthToken:completion:));
 
 /**
  Fetches content for all the requested files.
@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
  N.B. A session must already have been authorized
  
  @param fileContentHandler Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
- @param completion Contains final snapshot of DMEFileList. Error object will be set if an error occurred, nil otherwise
+ @param completion Block called on main thread when fetch completed. Contains final snapshot of DMEFileList. Error object will be set if an error occurred, nil otherwise
  */
 - (void)getSessionDataWithDownloadHandler:(DMEFileContentCompletion)fileContentHandler completion:(DMESessionDataCompletion)completion NS_SWIFT_NAME(getSessionData(downloadHandler:completion:));
 
@@ -112,7 +112,7 @@ NS_ASSUME_NONNULL_BEGIN
  Fetches file content for fileId. The fileId may be retrieved from the download handler in getSessionDataWithDownloadHandler:completion:.
  
  @param fileId NSString id if the file to fetch.
- @param completion Reports result of fetch. Either contains the file or an error if fetch failed
+ @param completion Block called on main thread when fetch completed. Either contains the file or an error if fetch failed
  */
 - (void)getSessionDataForFileWithId:(NSString *)fileId completion:(DMEFileContentCompletion)completion __attribute((deprecated("Use getSessionDataWithFileId:completion: instead."))) NS_SWIFT_UNAVAILABLE("Swift name now associated with getSessionDataWithFileId:completion:");
 
@@ -120,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
  Fetches file content for fileId. The fileId may be retrieved from the download handler in getSessionDataWithDownloadHandler:completion:.
  
  @param fileId NSString id if the file to fetch.
- @param completion Reports result of fetch. Either contains the file or an error if fetch failed
+ @param completion Block called on main thread when fetch completed. Either contains the file or an error if fetch failed
  */
 - (void)getSessionDataWithFileId:(NSString *)fileId completion:(DMEFileContentCompletion)completion NS_SWIFT_NAME(getSessionData(fileId:completion:));
 
@@ -133,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
  together with an array of fileIds that have been added or updated since last snapshot.
  Only notified when a change has occurred. See `DMESessionFileListCompletion` for details.
  
- @param completion executed when file list has finished updating, and no more changes will come.
+ @param completion Block called on main thread when file list has finished updating, and no more changes will come.
  Error object will be set if an error occurred, nil otherwise.
  */
 - (void)getSessionFileListWithUpdateHandler:(DMESessionFileListCompletion)updateHandler completion:(void (^)(NSError * _Nullable error))completion NS_SWIFT_NAME(getSessionFileList(updateHandler:completion:));
@@ -141,14 +141,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Fetches file list which contains current snapshot of the sync progress, and a list of files that are available for download.
  
- @param completion Completion block executed once request has completed successfully.
+ @param completion Completion block executed on main thread once request has completed successfully.
  */
 - (void)getFileListWithCompletion:(void (^)(DMEFileList * _Nullable fileList, NSError  * _Nullable error))completion;
 
 /**
  Fetches the accounts available for the authorized contract.
  
- @param completion Reports result of fetch. Either contains the accounts or an error if fetch failed
+ @param completion Block called on main thread when fetch completed. Either contains the accounts or an error if fetch failed
  */
 - (void)getSessionAccountsWithCompletion:(DMEAccountsCompletion)completion NS_SWIFT_NAME(getSessionAccounts(completion:));
 

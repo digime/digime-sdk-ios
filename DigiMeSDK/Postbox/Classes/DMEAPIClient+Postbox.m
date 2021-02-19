@@ -7,18 +7,18 @@
 //
 
 
-#import "DMEOperation.h"
-#import "DMEClient.h"
-#import "DMECrypto.h"
-#import "DMERequestFactory.h"
-#import "DMEPostbox.h"
-#import "DMECryptoUtilities.h"
-#import "NSString+DMECrypto.h"
-#import "NSData+DMECrypto.h"
 #import "DMEAPIClient+Postbox.h"
-
-#import "DMEClient+Private.h"
 #import "DMEAPIClient+Private.h"
+#import "DMEClient.h"
+#import "DMEClient+Private.h"
+#import "DMECrypto.h"
+#import "DMECryptoUtilities.h"
+#import "DMEOngoingPostbox.h"
+#import "DMEOperation.h"
+#import "DMEPostbox.h"
+#import "DMERequestFactory.h"
+#import "NSData+DMECrypto.h"
+#import "NSString+DMECrypto.h"
 
 @implementation DMEAPIClient (Postbox)
 
@@ -29,21 +29,32 @@
                      data:(NSData *)data
                completion:(DMEPostboxDataPushCompletion)completion
 {
+    [self pushDataToPostbox:postbox accessToken:nil metadata:metadata data:data completion:completion];
+}
+
+- (void)pushDataToOngoingPostbox:(DMEOngoingPostbox *)postbox
+                        metadata:(NSData *)metadata
+                            data:(NSData *)data
+                      completion:(DMEPostboxDataPushCompletion)completion
+{
+    [self pushDataToPostbox:postbox accessToken:postbox.oAuthToken.accessToken metadata:metadata data:data completion:completion];
+}
+
+- (void)pushDataToPostbox:(DMEPostbox *)postbox
+              accessToken:(nullable NSString *)accessToken
+                 metadata:(NSData *)metadata
+                     data:(NSData *)data
+               completion:(DMEPostboxDataPushCompletion)completion
+{
     DMEOperation *operation = [[DMEOperation alloc] initWithConfiguration:self.configuration];
     
     __weak __typeof(DMEOperation *) weakOperation = operation;
     
     operation.workBlock = ^{
         
-        NSData *symmetricalKey = [DMECryptoUtilities randomBytesWithLength:32];
-        NSData *iv = [DMECryptoUtilities randomBytesWithLength:16];
-        NSString *metadataEncryptedString = [DMECrypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
-        NSData *payload = [DMECrypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
-        NSString *keyEncrypted = [DMECrypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey contractId:self.configuration.contractId];
-        NSDictionary *metadataHeaders = [self postboxHeadersWithSessionKey:postbox.sessionKey symmetricalKey:keyEncrypted initializationVector:[iv hexString] metadata:metadataEncryptedString];
         NSDictionary *headers = [self defaultPostboxHeaders];
         NSURLSession *session = [self sessionWithHeaders:headers];
-        NSURLRequest *request = [self.requestFactory pushRequestWithPostboxId:postbox.postboxId payload:payload headerParameters:metadataHeaders];
+        NSURLRequest *request = [self pushRequestToPostbox:postbox accessToken:accessToken metadata:metadata data:data];
         HandlerBlock pushHandler = [self pushResponseHandlerForDomain:DME_API_ERROR completion:completion];
         
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -58,8 +69,8 @@
                     [weakOperation finishDoingWork];
                 }
                 
-                //return if operation will retry
-                //return if operation cannot retry
+                // Return if operation will retry
+                // Return if operation cannot retry
                 return;
             }
             
@@ -82,20 +93,21 @@
               };
 }
 
-/**
- Convenience method.
- 
- @return NSDictionary headers required for Postbox data push.
- */
-- (NSDictionary *)postboxHeadersWithSessionKey:(NSString *)sessionKey symmetricalKey:(NSString *)symmetricalKey initializationVector:(NSString *)iv metadata:(NSString *)metadata
+- (NSURLRequest *)pushRequestToPostbox:(DMEPostbox *)postbox
+                           accessToken:(nullable NSString *)accessToken
+                              metadata:(NSData *)metadata
+                                  data:(NSData *)data
 {
-    return @{ @"Content-Type": @"multipart/form-data",
-              @"Accept": @"application/json",
-              @"sessionKey": sessionKey,
-              @"symmetricalKey": symmetricalKey,
-              @"iv": iv,
-              @"metadata": metadata,
-              };
+    NSData *symmetricalKey = [DMECryptoUtilities randomBytesWithLength:32];
+    NSData *iv = [DMECryptoUtilities randomBytesWithLength:16];
+    
+    NSString *encryptedMetadata = [DMECrypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv];
+    NSData *payload = [DMECrypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv];
+    NSString *encryptedSymmetricalKey = [DMECrypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey contractId:self.configuration.contractId];
+    
+    NSString *bearer = [DMECrypto createPostboxPushJwtWithAccessToken:accessToken appId:self.configuration.appId contractId:self.configuration.contractId initializationVector:iv metadata:encryptedMetadata sessionKey:postbox.sessionKey symmetricalKey:encryptedSymmetricalKey privateKey:self.configuration.privateKeyHex publicKey:nil];
+    
+    return [self.requestFactory pushRequestWithPostboxId:postbox.postboxId payload:payload bearer:bearer];
 }
 
 - (HandlerBlock)pushResponseHandlerForDomain:(NSString *)domain completion:(void(^)(NSError * _Nullable error))completion

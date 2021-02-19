@@ -13,35 +13,39 @@ import XCTest
 class ConfigurationTests: XCTestCase {
     
     func testDefaultPullConfigurationValues() {
-        let sut = DMEPullConfiguration(appId: "appid1", contractId: "contractid1", privateKeyHex: "keyhex1")
+        let appId = UUID().uuidString
+        let contractId = UUID().uuidString
+        let privateKeyHex = UUID().uuidString
+        let sut = DMEPullConfiguration(appId: appId, contractId: contractId, privateKeyHex: privateKeyHex)
+        checkBaseConfigurationValues(sut: sut, appId: appId, contractId: contractId, privateKeyHex: privateKeyHex)
         
-        XCTAssert(sut.globalTimeout == 25, "Expected `globalTimeout` to equal 25, got \(sut.globalTimeout)")
-        XCTAssertTrue(sut.retryOnFail, "Expected `retryOnFail` to equal true, got false")
-        XCTAssert(sut.retryDelay == 750, "Expected `retryDelay` to equal 755, got \(sut.retryDelay)")
-        XCTAssertTrue(sut.retryWithExponentialBackOff, "Expected `retryWithExponentialBackOff` to equal true, got false")
-        XCTAssert(sut.maxRetryCount == 5, "Expected `maxRetryCount` to equal 5, got \(sut.maxRetryCount)")
-        XCTAssert(sut.maxConcurrentRequests == 5, "Expected `maxConcurrentRequests` to equal 5, got \(sut.maxConcurrentRequests)")
-        XCTAssertFalse(sut.debugLogEnabled, "Expected `debugLogEnabled` to equal false, got true")
-        XCTAssert(sut.baseUrl == "https://api.digi.me/", "Expected `baseUrl` to equal `https://api.digi.me/`, got \(sut.baseUrl)")
-        XCTAssert(sut.appId == "appid1", "Expected `appId` to equal `appid1`, got \(sut.appId)")
-        XCTAssert(sut.contractId == "contractid1", "Expected `contractId` to equal `contractid1`, got \(sut.contractId)")
+        XCTAssertNil(sut.publicKeyHex, "Expected `publicKeyHex` to be nil, got \(sut.publicKeyHex!)")
         XCTAssertTrue(sut.guestEnabled, "Expected `guestEnabled` to equal true, got false")
-        XCTAssert(sut.privateKeyHex == "keyhex1", "Expected `privateKeyHex` to equal `keyhex1`, got \(sut.privateKeyHex)")
+        XCTAssert(sut.pollInterval == 3, "Expected `pollInterval` to equal 3, got \(sut.pollInterval)")
+        XCTAssert(sut.maxStalePolls == 100, "Expected `maxStalePolls` to equal 100, got \(sut.maxStalePolls)")
     }
     
     
     func testDefaultPushConfigurationValues() {
-        let sut = DMEPushConfiguration(appId: "appid1", contractId: "contractid1")
-        
+        let appId = UUID().uuidString
+        let contractId = UUID().uuidString
+        let privateKeyHex = UUID().uuidString
+        let sut = DMEPushConfiguration(appId: appId, contractId: contractId, privateKeyHex: privateKeyHex)
+        checkBaseConfigurationValues(sut: sut, appId: appId, contractId: contractId, privateKeyHex: privateKeyHex)
+    }
+    
+    private func checkBaseConfigurationValues(sut: DMEBaseConfiguration, appId: String, contractId: String, privateKeyHex: String) {
         XCTAssert(sut.globalTimeout == 25, "Expected `globalTimeout` to equal 25, got \(sut.globalTimeout)")
         XCTAssertTrue(sut.retryOnFail, "Expected `retryOnFail` to equal true, got false")
-        XCTAssert(sut.retryDelay == 750, "Expected `retryDelay` to equal 755, got \(sut.retryDelay)")
+        XCTAssert(sut.retryDelay == 750, "Expected `retryDelay` to equal 750 got \(sut.retryDelay)")
         XCTAssertTrue(sut.retryWithExponentialBackOff, "Expected `retryWithExponentialBackOff` to equal true, got false")
         XCTAssert(sut.maxRetryCount == 5, "Expected `maxRetryCount` to equal 5, got \(sut.maxRetryCount)")
         XCTAssert(sut.maxConcurrentRequests == 5, "Expected `maxConcurrentRequests` to equal 5, got \(sut.maxConcurrentRequests)")
         XCTAssertFalse(sut.debugLogEnabled, "Expected `debugLogEnabled` to equal false, got true")
         XCTAssert(sut.baseUrl == "https://api.digi.me/", "Expected `baseUrl` to equal `https://api.digi.me/`, got \(sut.baseUrl)")
-        XCTAssert(sut.appId == "appid1", "Expected `appId` to equal `appid1`, got \(sut.appId)")
-        XCTAssert(sut.contractId == "contractid1", "Expected `contractId` to equal `contractid1`, got \(sut.contractId)")
+        XCTAssert(sut.appId == appId, "Expected `appId` to equal `\(appId)`, got \(sut.appId)")
+        XCTAssert(sut.contractId == contractId, "Expected `contractId` to equal `\(contractId)`, got \(sut.contractId)")
+        XCTAssert(sut.privateKeyHex == privateKeyHex, "Expected `privateKeyHex` to equal `\(privateKeyHex)`, got \(sut.privateKeyHex)")
+        XCTAssertTrue(sut.autoRecoverExpiredCredentials, "Expected `autoRecoverExpiredCredentials` to equal true, got false")
     }
 }

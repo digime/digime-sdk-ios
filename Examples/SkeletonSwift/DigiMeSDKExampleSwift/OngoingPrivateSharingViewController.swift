@@ -1,5 +1,5 @@
 //
-//  CAExampleViewController.swift
+//  OngoingPrivateSharingViewController.swift
 //  DigiMeSDKExampleSwift
 //
 //  Created on 22/02/2018.
@@ -9,29 +9,50 @@
 import UIKit
 import DigiMeSDK
 
-class CAExampleViewController: UIViewController {
+class OngoingPrivateSharingViewController: UIViewController {
     
-    var dmeClient: DMEPullClient?
-    var logVC: LogViewController!
-    var configuration: DMEPullConfiguration?
-    var oAuthToken: DMEOAuthToken?
+    private var dmeClient: DMEPullClient?
+    private var logVC: LogViewController!
+    private var configuration: DMEPullConfiguration?
+    private var oAuthToken: DMEOAuthToken?
+    
+    private enum Configuration {
+        #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
+        static let appId = "YOUR_APP_ID"
+        
+        #warning("REPLACE 'YOUR_CONTRACT_ID' with your Private Sharing contract ID.")
+        static let contractId = "YOUR_CONTRACT_ID"
+        
+        #warning("REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.")
+        static let p12Password = "YOUR_P12_PASSWORD"
+        
+        #warning("REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.")
+        static let p12FileName = "YOUR_P12_FILE_NAME"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "CA Example"
+        title = "Ongoing Private Sharing Example"
         
         logVC = LogViewController(frame: UIScreen.main.bounds)
         view.addSubview(logVC)
         view.bringSubviewToFront(logVC)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start", style: .plain, target: self, action: #selector(CAExampleViewController.runTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Start", style: .plain, target: self, action: #selector(runTapped))
         
         logVC.log(message: "Please press 'Start' to begin requesting data. Also make sure that digi.me app is installed and onboarded.")
         
         navigationController?.isToolbarHidden = false
-        let barButtonItems = [UIBarButtonItem(title: "➖", style: .plain, target: self, action: #selector(CAExampleViewController.zoomOut)),UIBarButtonItem(title: "➕", style: .plain, target: self, action: #selector(CAExampleViewController.zoomIn))]
+        let barButtonItems = [UIBarButtonItem(title: "➖", style: .plain, target: self, action: #selector(zoomOut)),UIBarButtonItem(title: "➕", style: .plain, target: self, action: #selector(zoomIn))]
         toolbarItems = barButtonItems
+        
+        let alert = UIAlertController(title:"digi.me", message:"See our Genrefy example app for a more detailed example of ongoing private sharing.", preferredStyle:.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) -> Void in
+        }))
+
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func zoomIn() {
@@ -43,70 +64,37 @@ class CAExampleViewController: UIViewController {
     }
     
     @objc func runTapped() {
-        let actionSheet = UIAlertController(title:"digi.me", message:"Choose Consent Access flow", preferredStyle:.actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
-            
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: "Ongoing Consent Access", style: .default, handler: { (action) -> Void in
-            self.runOngoingAccessFlow()
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: "Legacy Consent Access", style: .default, handler: { (action) -> Void in
-            self.runLegacyFlow()
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        self.present(actionSheet, animated: true, completion: nil)
+        self.runOngoingAccessFlow()
     }
     
     private func resetClient() {
         // - GET STARTED -
-        if let config = DMEPullConfiguration(appId: Constants.appId, contractId: Constants.CAContractId, p12FileName: Constants.p12FileName, p12Password: Constants.p12Password) {
+        if let config = DMEPullConfiguration(appId: Configuration.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) {
             config.debugLogEnabled = true
             dmeClient = nil
             dmeClient = DMEPullClient(configuration: config)
             configuration = config
+        }
+        else {
+            logVC.log(message: "Setup Error: Valid contract details need to be set")
         }
     }
     
     private func clearNavigationBar() {
         DispatchQueue.main.async {
             self.navigationItem.leftBarButtonItem = nil
-            self.title = "CA Example"
+            self.title = "Ongoing Private Sharing Example"
         }
     }
     
     private func updateNavigationBar(_ message: String) {
-        DispatchQueue.main.async {
-            let activityIndicator = UIActivityIndicatorView(style: .gray)
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: activityIndicator)
-            activityIndicator.startAnimating()
-            self.title = message
-        }
-    }
-    
-    // Consent Access legacy flow
-    private func runLegacyFlow() {
-        resetClient()
-        updateNavigationBar("Beginning Legacy Flow")
-        dmeClient?.authorize { (session, error) in
-            
-            guard let session = session else {
-                if let error = error {
-                    self.logVC.log(message: "Authorization failed: " + error.localizedDescription)
-                }
-                self.clearNavigationBar()
-                return
+        if dmeClient != nil {
+            DispatchQueue.main.async {
+                let activityIndicator = UIActivityIndicatorView(style: .gray)
+                self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: activityIndicator)
+                activityIndicator.startAnimating()
+                self.title = message
             }
-            
-            self.logVC.log(message: "Authorization Succeeded for session: " + session.sessionKey)
-            
-            //Uncomment relevant method depending on which you wish to recieve.
-            self.getAccounts()
-            self.getSessionData()
-            //self.getSessionFileList()
         }
     }
     
@@ -120,11 +108,12 @@ class CAExampleViewController: UIViewController {
                 self.clearNavigationBar()
                 return
             }
-            
+
             self.logVC.log(message: "Account Content: " + "\(String(describing: accounts.json!))")
+            self.logVC.log(message: "\n\nPlease press 'Start' to request data agin (without digi.me interaction).")
         }
     }
-    
+
     private func getSessionData() {
         updateNavigationBar("Session Data")
         dmeClient?.getSessionData(downloadHandler: { (file, error) in
@@ -135,7 +124,7 @@ class CAExampleViewController: UIViewController {
                 self.clearNavigationBar()
                 return
             }
-            
+
             self.logVC.log(message: "Downloaded file: \(file.fileId), record count: \(file.fileContentAsJSON()?.count ?? 0)")
         }) { (fileList, error) in
             if let error = error {
@@ -143,12 +132,13 @@ class CAExampleViewController: UIViewController {
             }
             else {
                 self.logVC.log(message: "-------------Finished fetching session data!-------------")
+                self.logVC.log(message: "\n\nPlease press 'Start' to request data agin (without digi.me interaction).")
             }
-            
+
             self.clearNavigationBar()
         }
     }
-    
+
     private func getSessionFileList() {
         updateNavigationBar("Session File List")
         dmeClient?.getSessionFileList(updateHandler: { (fileList, fileIds) in
@@ -164,8 +154,9 @@ class CAExampleViewController: UIViewController {
             }
             else {
                 self.logVC.log(message: "-------------Finished fetching session FileList!-------------")
+                self.logVC.log(message: "\n\nPlease press 'Start' to request data agin (without digi.me interaction).")
             }
-            
+
             self.clearNavigationBar()
         }
     }
@@ -173,8 +164,7 @@ class CAExampleViewController: UIViewController {
     // Consent Access ongoing flow
     private func runOngoingAccessFlow() {
         guard
-            self.oAuthToken != nil,
-            let expiresOn = self.oAuthToken?.expiresOn,
+            let expiresOn = oAuthToken?.expiresOn,
             Date().compare(expiresOn) == .orderedAscending else {
                 self.beginOngoingAccess()
                 return
@@ -202,7 +192,7 @@ class CAExampleViewController: UIViewController {
             
             self.oAuthToken = oAuthToken
             
-            //Uncomment relevant method depending on which you wish to recieve.
+            // Uncomment relevant method depending on which you wish to receive.
             self.getAccounts()
             self.getSessionData()
             //self.getSessionFileList()
@@ -228,7 +218,7 @@ class CAExampleViewController: UIViewController {
             
             self.oAuthToken = oAuthToken
             
-            //Uncomment relevant method depending on which you wish to recieve.
+            // Uncomment relevant method depending on which you wish to receive.
             self.getAccounts()
             self.getSessionData()
             //self.getSessionFileList()
