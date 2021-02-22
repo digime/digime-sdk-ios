@@ -23,6 +23,14 @@
 
 <br>
 
+# DigiMeSDK 4.x.x Migration Tips
+
+Here are some key SDK changes that may help you get to grips with it if you are migrating from 3.x.x to 4.x.x versions:
+
+1. `DMEPushConfiguration` now needs to instantiated with a private key.
+
+2. For consistency, all callbacks now occur on the main thread, so you may need to adjust your code to take this into account.
+
 # DigiMeSDK 3.x.x Migration Tips
 Here are some key SDK changes that may help you get to grips with it if you are migrating from 2.x.x to 3.x.x versions:
 

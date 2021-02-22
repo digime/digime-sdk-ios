@@ -361,6 +361,14 @@
 </p>
 
 <p><br></p>
+<h1 id='digimesdk-4-x-x-migration-tips' class='heading'>DigiMeSDK 4.x.x Migration Tips</h1>
+
+<p>Here are some key SDK changes that may help you get to grips with it if you are migrating from 3.x.x to 4.x.x versions:</p>
+
+<ol>
+<li><p><code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> now needs to instantiated with a private key.</p></li>
+<li><p>For consistency, all callbacks now occur on the main thread, so you may need to adjust your code to take this into account.</p></li>
+</ol>
 <h1 id='digimesdk-3-x-x-migration-tips' class='heading'>DigiMeSDK 3.x.x Migration Tips</h1>
 
 <p>Here are some key SDK changes that may help you get to grips with it if you are migrating from 2.x.x to 3.x.x versions:</p>
