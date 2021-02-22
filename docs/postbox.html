@@ -393,7 +393,8 @@
 
 <p>In a production environment, you will also be required to obtain your own <code>Contract ID</code> from digi.me support. However, for sandbox purposes, we provide the following example value:</p>
 
-<p><strong>Example Contract ID:</strong> <code>Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn</code></p>
+<p><strong>Example Contract ID:</strong> <code>Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn</code>
+See <a href="https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift">Swift Example App</a> for private key details.</p>
 <h3 id='2-configuring-callback-forwarding' class='heading'>2. Configuring Callback Forwarding:</h3>
 
 <p>Because the digi.me Private Sharing SDK opens the digi.me app for authorization, you are required to forward the <code>openURL</code> event through to the SDK so that it may process responses. In your application&rsquo;s delegate (typically <code>AppDelegate</code>) override <code>application:openURL:options:</code> method as below:</p>
@@ -439,13 +440,13 @@ And register custom URL scheme so that your app can receive the callback from Di
 
 <p><code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code> is the object you will primarily interface with to use the SDK. It is instantiated with a <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object.</p>
 
-<p>The <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object is instantiated with your <code>AppID</code> and <code>Private Key</code> in hex format. The below code snippet shows you how to combine all this to get a configured <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code>:</p>
+<p>The <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object is instantiated with your <code>AppID</code>, <code>ContractID</code> and <code>Private Key</code> in hex format. The below code snippet shows you how to combine all this to get a configured <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code>:</p>
 <h5 id='objective-c' class='heading'>Objective-C</h5>
-<pre class="highlight objective_c"><code><span class="n">DMEPushConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushConfiguration</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithAppId</span><span class="p">:</span><span class="s">@"YOUR_APP_ID"</span> <span class="nf">contractId</span><span class="p">:</span><span class="s">@"YOUR_CONTRACT_ID"</span><span class="p">];</span>
+<pre class="highlight objective_c"><code><span class="n">DMEPushConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushConfiguration</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithAppId</span><span class="p">:</span><span class="s">@"YOUR_APP_ID"</span> <span class="nf">contractId</span><span class="p">:</span><span class="s">@"YOUR_CONTRACT_ID"</span> <span class="n">privateKeyHex</span><span class="o">:</span><span class="s">@"YOUR_PRIVATE_KEY"</span><span class="p">];</span>
 <span class="n">DMEPushClient</span> <span class="o">*</span><span class="n">pushClient</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushClient</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithConfiguration</span><span class="p">:</span><span class="n">configuration</span><span class="p">];</span>
 </code></pre>
 <h5 id='swift' class='heading'>Swift</h5>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DMEPushConfiguration</span><span class="p">(</span><span class="nv">appId</span><span class="p">:</span> <span class="s">"YOUR_APP_ID"</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="s">"YOUR_CONTRACT_ID"</span><span class="p">)</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DMEPushConfiguration</span><span class="p">(</span><span class="nv">appId</span><span class="p">:</span> <span class="s">"YOUR_APP_ID"</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="s">"YOUR_CONTRACT_ID"</span><span class="p">,</span> <span class="nv">privateKeyHex</span><span class="p">:</span> <span class="s">"YOUR_PRIVATE_KEY"</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">pushClient</span> <span class="o">=</span> <span class="kt">DMEPushClient</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="n">configuration</span><span class="p">)</span>
 </code></pre>
 <h3 id='4-requesting-consent' class='heading'>4. Requesting Consent:</h3>
@@ -482,6 +483,12 @@ And register custom URL scheme so that your app can receive the callback from Di
   <span class="c1">// Handle error, if any.</span>
 <span class="p">}</span>
 </code></pre>
+<h3 id='6-multiple-data-pushes' class='heading'>6. Multiple Data Pushes:</h3>
+
+<p>Multiple data pushes can be made to a postbox within
+ the duration of the session. To make data pushes over mulitple app sessions, you can create a new postbox for each app session (which requires user&rsquo;s consent for each session).</p>
+
+<p>Alternatively you can create an <a href="ongoing-postbox.html">Ongoing Postbox</a>, which only requires user&rsquo;s consent once, and store a reference to the ongoing postbox between app sessions.</p>
 
 <p><em>NB: Please refer to our Postbox example in the <a href="https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift">Swift Example App</a> for more details on data and metadata.</em></p>
 

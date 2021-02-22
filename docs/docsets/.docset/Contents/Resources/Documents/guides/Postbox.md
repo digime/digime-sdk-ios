@@ -62,6 +62,7 @@ To access the digi.me platform, you need to obtain an `AppID` for your applicati
 In a production environment, you will also be required to obtain your own `Contract ID` from digi.me support. However, for sandbox purposes, we provide the following example value:
 
 **Example Contract ID:** `Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn`
+See [Swift Example App](https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift) for private key details.
 
 ### 2. Configuring Callback Forwarding:
 
@@ -114,17 +115,17 @@ where `YOUR_APP_ID` should be replaced with your `AppID`.
 ### 3. Configuring the `DMEPushClient` object:
 `DMEPushClient` is the object you will primarily interface with to use the SDK. It is instantiated with a `DMEPushConfiguration` object.
 
-The `DMEPushConfiguration` object is instantiated with your `AppID` and `Private Key` in hex format. The below code snippet shows you how to combine all this to get a configured `DMEPushClient`:
+The `DMEPushConfiguration` object is instantiated with your `AppID`, `ContractID` and `Private Key` in hex format. The below code snippet shows you how to combine all this to get a configured `DMEPushClient`:
 
 #####Objective-C
 ```objc
-DMEPushConfiguration *configuration = [[DMEPushConfiguration alloc] initWithAppId:@"YOUR_APP_ID" contractId:@"YOUR_CONTRACT_ID"];
+DMEPushConfiguration *configuration = [[DMEPushConfiguration alloc] initWithAppId:@"YOUR_APP_ID" contractId:@"YOUR_CONTRACT_ID" privateKeyHex:@"YOUR_PRIVATE_KEY"];
 DMEPushClient *pushClient = [[DMEPushClient alloc] initWithConfiguration:configuration];
 ```
 
 #####Swift
 ```swift
-let configuration = DMEPushConfiguration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID")
+let configuration = DMEPushConfiguration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID", privateKeyHex: "YOUR_PRIVATE_KEY")
 let pushClient = DMEPushClient(configuration: configuration)
 ```
 
@@ -171,5 +172,12 @@ pushClient.pushData(to: postbox, metadata: metadata, data: data) { error in
   // Handle error, if any.
 }
 ```
+
+### 6. Multiple Data Pushes:
+
+Multiple data pushes can be made to a postbox within
+ the duration of the session. To make data pushes over mulitple app sessions, you can create a new postbox for each app session (which requires user's consent for each session).
+
+Alternatively you can create an [Ongoing Postbox](ongoing-postbox.html), which only requires user's consent once, and store a reference to the ongoing postbox between app sessions.
 
 *NB: Please refer to our Postbox example in the [Swift Example App](https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift) for more details on data and metadata.*
