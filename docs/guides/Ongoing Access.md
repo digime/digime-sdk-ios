@@ -89,7 +89,7 @@ Our recommendation would be to save it to keychain.
 
 ### Access Restoration
 
-If you have previously obtained user's consent, and are in posession of a `DMEOAuthToken`, you can get data from your users without them having to leave your app.
+If you have previously obtained user's consent, and are in possession of a `DMEOAuthToken`, you can get data from your users without them having to leave your app.
 
 To do this, simply call the following method on a **new** `DMEPullClient` instance:
 
