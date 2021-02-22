@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Contributing  Reference</title>
+    <title>Ongoing Postbox  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -15,7 +15,7 @@
   <body>
 
 
-    <a title="Contributing  Reference"></a>
+    <a title="Ongoing Postbox  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -37,7 +37,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html"> Reference</a>
       <img class="carat" src="img/carat.png" />
-      Contributing  Reference
+      Ongoing Postbox  Reference
     </p>
 
     <div class="content-wrapper">
@@ -361,124 +361,97 @@
 </p>
 
 <p><br></p>
-<h2 id='contributing' class='heading'>Contributing</h2>
+<h1 id='ongoing-postbox' class='heading'>Ongoing Postbox</h1>
+<h2 id='introduction' class='heading'>Introduction</h2>
 
-<p>We are open to, and grateful for, any contributions made by the community. When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.</p>
-<h2 id='code-of-conduct' class='heading'>Code of Conduct</h2>
+<p>An Ongoing Postbox allows your app to push data to the user over multiple app sessions without the use of digi.me app <strong>after</strong> initial consent has been given*.</p>
 
-<p>We have adopted the <a href="https://www.contributor-covenant.org/">Contributor Covenant</a> as our Code of Conduct, and we expect project participants to adhere to it.
-Please read the full text so that you can understand what actions will and will not be tolerated.</p>
-<h3 id='our-pledge' class='heading'>Our Pledge</h3>
+<p>From developer perspective the authorization process is almost identical to regular authorization. Under the hood we use OAuth 2.0 with JWT and JWS with RSA signing and verification to issue a medium lived, refreshable OAuth token, which is used to re-query user&rsquo;s data without the need to leave your app.</p>
 
-<p>In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, gender identity and expression, level of experience,
-nationality, personal appearance, race, religion, or sexual identity and
-orientation.</p>
-<h3 id='our-standards' class='heading'>Our Standards</h3>
+<p>Here is a simplified sequence diagram of how the OAuth flow is implemented:
+<img src="https://securedownloads.digi.me/partners/digime/OngoingAccess.png" alt=""></p>
 
-<p>Examples of behavior that contributes to creating a positive environment include:</p>
+<p><em>The SDK handles all of this for you.</em></p>
+
+<p>Ongoing Access is for you if:</p>
 
 <ul>
-<li>Using welcoming and inclusive language</li>
-<li>Being respectful of differing viewpoints and experiences</li>
-<li>Gracefully accepting constructive criticism</li>
-<li>Focusing on what is best for the community</li>
-<li>Showing empathy towards other community members</li>
+<li>You need to regularly push data to your user</li>
+<li>You are using an ongoing push contract</li>
 </ul>
 
-<p>Examples of unacceptable behavior by participants include:</p>
+<p>* <em><code>refreshTokens</code> used to refresh <code>accessTokens</code> do eventually expire (for example - 30 days). When this happens, user will need to be directed back to digi.me app for re-authorization.</em></p>
+<h2 id='example' class='heading'>Example</h2>
 
-<ul>
-<li>The use of sexualized language or imagery and unwelcome sexual attention or
-advances</li>
-<li>Trolling, insulting/derogatory comments, and personal or political attacks</li>
-<li>Public or private harassment</li>
-<li>Publishing others&rsquo; private information, such as a physical or electronic
-address, without explicit permission</li>
-<li>Other conduct which could reasonably be considered inappropriate in a
-professional setting</li>
-</ul>
-<h3 id='our-responsibilities' class='heading'>Our Responsibilities</h3>
+<p>Please refer to our Ongoing Postbox example in the <a href="https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift">Swift Example App</a> for more details on data and metadata.</p>
+<h2 id='how-to-use' class='heading'>How to use</h2>
+<h3 id='create-ongoing-postbox' class='heading'>Create Ongoing Postbox</h3>
 
-<p>Project maintainers are responsible for clarifying the standards of acceptable
-behavior and are expected to take appropriate and fair corrective action in
-response to any instances of unacceptable behavior.</p>
-
-<p>Project maintainers have the right and responsibility to remove, edit, or
-reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, or to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.</p>
-<h3 id='scope' class='heading'>Scope</h3>
-
-<p>This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the project or its community. Examples of
-representing a project or community include using an official project e-mail
-address, posting via an official social media account, or acting as an appointed
-representative at an online or offline event. Representation of a project may be
-further defined and clarified by project maintainers.</p>
-<h3 id='enforcement' class='heading'>Enforcement</h3>
-
-<p>Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at <a href="mailto:support@digi.me">support@digi.me</a>. All
-complaints will be reviewed and investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The project team is
-obligated to maintain confidentiality with regard to the reporter of an incident.
-Further details of specific enforcement policies may be posted separately.</p>
-
-<p>Project maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project&rsquo;s leadership.</p>
-<h2 id='open-development' class='heading'>Open Development</h2>
-
-<p>All work on our SDK happens directly on Github. Core team members and external contributors send pull requests which go through the same review process.</p>
-<h2 id='semantic-versioning' class='heading'>Semantic Versioning</h2>
-
-<p>Our SDK follows semantic versioning. Patch versions are reserved for bug fixes, minor versions for new features and major version for any breaking changes.</p>
-<h2 id='branch-organisation' class='heading'>Branch Organisation</h2>
-
-<p>Please submit all changes directly to the master branch. We do our best to keep master in good shape, with all tests passing. Master could potentially have breaking changes to your application if we&rsquo;re working on the next major release.</p>
-<h2 id='workflow-and-pull-requests' class='heading'>Workflow and Pull Requests</h2>
-
-<p>For non-trivial changes, please open an issue with a proposal for a new feature or refactoring before starting on the work. We don&rsquo;t want you to waste your efforts on a pull request that we won&rsquo;t want to accept. The core team will be monitoring for all pull requests. We require that tests to be included with your pull requests if you&rsquo;ve added code that should be tested. Two approvers are needed before code can be merged.</p>
-<h2 id='development' class='heading'>Development</h2>
-
-<p>To start working on the SDK, fork, then clone the repo:</p>
-
-<p><code>git clone https://www.github.com/&lt;your_username&gt;/digime-sdk-ios.git</code></p>
-<h4 id='installation' class='heading'>Installation</h4>
-<h3 id='cocoapods' class='heading'>Cocoapods</h3>
-
-<ol>
-<li><p>Add <code>DigiMeSDK</code> folder to root of your project folder.</p></li>
-<li><p>Add <code>DigiMeSDK</code> to your <code>Podfile</code>:</p></li>
-</ol>
-<pre class="highlight ruby"><code><span class="n">use_frameworks!</span>
-<span class="n">source</span> <span class="s1">'https://github.com/CocoaPods/Specs.git'</span>
-<span class="n">platform</span> <span class="ss">:ios</span><span class="p">,</span> <span class="s1">'12.0'</span>
-
-<span class="n">target</span> <span class="s1">'TargetName'</span> <span class="k">do</span>
-  <span class="n">pod</span> <span class="s1">'DigiMeSDK'</span><span class="p">,</span> <span class="ss">:path</span> <span class="o">=&gt;</span> <span class="s1">'../'</span>
-<span class="k">end</span>
+<p>Simply use the new <code>authorizeOngoingPostbox</code> method on an instance of <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code>:</p>
+<h5 id='objective-c' class='heading'>Objective-c</h5>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">pushClient</span> <span class="nf">authorizeOngoingPostboxWithExistingPostbox</span><span class="p">:</span><span class="nb">nil</span> <span class="nf">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMEOngoingPostbox</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">postbox</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// You may now push data to the postbox</span>
+<span class="p">}];</span>
+</code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="n">pushClient</span><span class="o">.</span><span class="nf">authorizeOngoingPostbox</span><span class="p">(</span><span class="nv">withExisting</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">postbox</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+    <span class="c1">// You may now push data to the postbox</span>
+<span class="p">})</span>
 </code></pre>
 
-<blockquote>
-<p>NOTE
-We do not currently support linking DigiMeSDK as a Static Library.</p>
+<p>You may notice that upon completion of this method, the SDK supplies a <code>DMEOngoingPostbox</code> which contains the postbox identifier and an OAuth token.  This is <strong>key</strong> to restoring access to the Ongoing Postbox and we recommend you store this - you will need it later.</p>
 
-<p><strong>use_frameworks!</strong> flag must be set in the Podfile</p>
-</blockquote>
+<p>Our recommendation would be to save it to keychain.</p>
+<h3 id='refreshing-ongoing-postbox' class='heading'>Refreshing Ongoing Postbox</h3>
 
-<ol>
-<li>Navigate to the directory of your <code>Podfile</code> and run the following command:</li>
-</ol>
-<pre class="highlight shell"><code>    <span class="nv">$ </span>pod <span class="nb">install</span> <span class="nt">--repo-update</span>
+<p>If you have previously obtained user&rsquo;s consent, and are in possession of a <code>DMEOngoingPostbox</code>, you can push data to your users without them having to leave your app.</p>
+
+<p>To do this, simply call the following method on a <strong>new</strong> <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code> instance:</p>
+<h5 id='objective-c' class='heading'>Objective-c</h5>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">pushClient</span> <span class="nf">authorizeOngoingPostboxWithExistingPostbox</span><span class="p">:</span> <span class="n">myOngoingPostbox</span> <span class="nf">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMEOngoingPostbox</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">postbox</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// You may now push data to the postbox</span>
+<span class="p">}];</span>
 </code></pre>
-<h2 id='license' class='heading'>License</h2>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="n">pushClient</span><span class="o">.</span><span class="nf">authorizeOngoingPostbox</span><span class="p">(</span><span class="nv">withExisting</span><span class="p">:</span> <span class="n">myOngoingPostbox</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">postbox</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+    <span class="c1">// You may now push data to the postbox</span>
+<span class="p">})</span>
+</code></pre>
 
-<p>By contributing to our SDK, you agree that your contributions will be licensed under its Apache 2.0 license.</p>
+<p>It is important to replace your existing Ongoing Postbox with the one returned in the completion block as this may contain an updated session key which will be required to push data.</p>
+<h3 id='push-data-to-ongoing-postbox' class='heading'>Push Data to Ongoing Postbox</h3>
+
+<p>There is a new function in <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code> dedicated to pushing to an Ongoing Postbox:</p>
+<h5 id='objective-c' class='heading'>Objective-c</h5>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">pushClient</span> <span class="nf">pushDataToOngoingPostbox</span><span class="p">:</span><span class="n">myOngoingPostbox</span> <span class="nf">metdata</span><span class="p">:</span><span class="n">myMetadata</span> <span class="n">data</span><span class="o">:</span><span class="n">myData</span> <span class="n">completion</span> <span class="o">:^</span><span class="p">(</span><span class="n">DMEOngoingPostbox</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">postbox</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Handle error or store updated Ongoing Postbox</span>
+<span class="p">}];</span>
+</code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="nf">pushData</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">myOngoingPostbox</span><span class="p">,</span> <span class="nv">metadata</span><span class="p">:</span> <span class="n">myMetadata</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="n">myData</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">updatedPostbox</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+    <span class="c1">// Handle error or store updated Ongoing Postbox</span>
+<span class="p">})</span>
+</code></pre>
+
+<p>It is important to replace your existing Ongoing Postbox with the one returned in the completion block as it may contain an updated OAuth token.</p>
+
+<p>This is because the SDK will try to automatically refresh an <code>accessToken</code> using a <code>refreshToken</code>, if necessary, (both of these contained in <code>DMEOAuthToken</code> in the <code>DMEOngoingPostbox</code>), generating a new <code>DMEOAuthToken</code>.</p>
+<h4 id='configuration-options' class='heading'>Configuration Options</h4>
+
+<p>There is a new property available on <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object - <code>autoRecoverExpiredCredentials</code>. This defaults to <code>true</code>, which means that if the <code>refreshToken</code> contained in <code>DMEOAuthToken</code> has expired, the user will be directed to the digi.me app, so that this can be regenerated.</p>
+
+<p>If you wish to direct the user back to digi.me app manually, set this property to:</p>
+<h5 id='objective-c' class='heading'>Objective-c</h5>
+<pre class="highlight objective_c"><code><span class="n">configuration</span><span class="p">.</span><span class="n">autoRecoverExpiredCredentials</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+</code></pre>
+<h5 id='swift' class='heading'>Swift</h5>
+<pre class="highlight swift"><code><span class="n">configuration</span><span class="o">.</span><span class="n">autoRecoverExpiredCredentials</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</code></pre>
+
+<p>When set to <code>false</code>, the SDK will return an <code>AuthErrorOAuthTokenExpired</code> error in completion.</p>
+<h3 id='anything-else' class='heading'>Anything else?</h3>
+
+<p>If you need help setting up the rest of the flow, or simply more detail, then head on over to <a href="getting-started.html">Getting Started</a>.</p>
 
           </div>
         </section>
