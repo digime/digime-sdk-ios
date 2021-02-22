@@ -91,13 +91,15 @@ scope.serviceGroups = [entertainmentServiceGroup] // The scope is still valid, a
 
 ## Providing `DMEScope`
 
-When calling `authorize` on your `DMEPullClient`, simply pass in your `DMEScope` object:
+When calling `authorize` on your `DMEPullClient`, simply wrap your `DMEScope` object in a `DMESessionOptions` object and pass in:
 
 #####Objective-C
 ```objc
 DMEScope *scope = [DMEScope new];
 scope.timeRanges = @[[DMETimeRange last:6 unit:DMETimeRangeUnitMonth]];
-[pullClient authorizeWithScope:scope completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
+DMESessionOptions *options = [DMESessionOptions new];
+options.scope = scope;
+[pullClient authorizeWithOptions:options completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
 
 }];
 ```
@@ -106,7 +108,9 @@ scope.timeRanges = @[[DMETimeRange last:6 unit:DMETimeRangeUnitMonth]];
 ```swift
 let scope = DMEScope()
 scope.timeRanges = [DMETimeRange.last(6, unit: .month)]
-pullClient.authorize(scope: scope, completion: { session, error in
+let options = DMESessionOptions()
+options.scope = scopes
+pullClient.authorize(options: options, completion: { session, error in
 
 })
 ```
