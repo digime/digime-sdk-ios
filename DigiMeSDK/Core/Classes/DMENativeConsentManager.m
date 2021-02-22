@@ -56,7 +56,7 @@
     
     NSError *error;
     
-    if(![self.sessionManager isSessionKeyValid:sessionKey])
+    if (![self.sessionManager isSessionKeyValid:sessionKey])
     {
         error = [NSError authError:AuthErrorInvalidSessionKey];
     }
@@ -73,19 +73,15 @@
     {
         // Need to know if we succeeded.
         DMESession *session = error == nil ? self.session : nil;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.authCompletionBlock(session, error);
-            self.authCompletionBlock = nil;
-        });
+        self.authCompletionBlock(session, error);
+        self.authCompletionBlock = nil;
     }
     else if (self.ongoingAccessExchangeCompletionBlock)
     {
         // Need to know if we succeeded.
         DMESession *session = error == nil ? self.session : nil;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.ongoingAccessExchangeCompletionBlock(session, authorizationCode, error);
-            self.ongoingAccessExchangeCompletionBlock = nil;
-        });
+        self.ongoingAccessExchangeCompletionBlock(session, authorizationCode, error);
+        self.ongoingAccessExchangeCompletionBlock = nil;
     }
     
     [self.appCommunicator removeCallbackHandler:self];

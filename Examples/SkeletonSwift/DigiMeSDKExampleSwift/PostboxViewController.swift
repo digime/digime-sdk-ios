@@ -1,5 +1,5 @@
 //
-//  PostboxExampleViewController.swift
+//  PostboxViewController.swift
 //  DigiMeSDKExampleSwift
 //
 //  Copyright © 2019 digi.me. All rights reserved.
@@ -8,14 +8,29 @@
 import UIKit
 import DigiMeSDK
 
-class PostboxExampleViewController: UIViewController {
+class PostboxViewController: UIViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     
-    var successfullyPushedToPostbox = false
-    var dmeClient: DMEPushClient?
+    private var successfullyPushedToPostbox = false
+    private var dmeClient: DMEPushClient?
+    private var ongoingPostbox: DMEOngoingPostbox?
+    
+    private enum Configuration {
+        #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
+        static let appId = "YOUR_APP_ID"
+        
+        #warning("REPLACE 'YOUR_CONTRACT_ID' with your Postbox contract ID.")
+        static let contractId = "YOUR_CONTRACT_ID"
+        
+        #warning("REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.")
+        static let p12Password = "YOUR_P12_PASSWORD"
+        
+        #warning("REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.")
+        static let p12FileName = "YOUR_P12_FILE_NAME"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +46,10 @@ class PostboxExampleViewController: UIViewController {
             
             dmeClient?.openDMEAppForPostboxImport()
         } else {
-            let configuration = DMEPushConfiguration(appId: Constants.appId, contractId: Constants.postboxContractId)
+            guard let configuration = DMEPushConfiguration(appId: Configuration.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) else {
+                return
+            }
+            
             dmeClient = DMEPushClient(configuration: configuration)
             
             dmeClient?.createPostbox { (postbox, error) in

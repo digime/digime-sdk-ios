@@ -26,7 +26,8 @@ typedef NS_ENUM(NSInteger, SDKError) {
     SDKErrorNoURLScheme = 8,        // URL Scheme not set in Info.plist
     SDKErrorDigiMeAppNotFound = 11, // Querying the 'digime' schema failed.
     SDKErrorFileListPollingTimeout = 12, // File List time out reached as there have been no changes.
-    SDKErrorOAuthTokenNotSet = 13 // OAuth token not set on client instance
+    SDKErrorOAuthTokenNotSet = 13, // OAuth token not set on client instance.
+    SDKErrorIncorrectContractType = 14, // Attempting to call ongoing API with a one-off contract.
 };
 
 /**

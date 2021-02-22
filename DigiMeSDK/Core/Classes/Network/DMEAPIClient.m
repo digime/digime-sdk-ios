@@ -210,7 +210,7 @@ static const NSString *kWorkQueue = @"kWorkQueue";
  */
 - (NSURLSession *)sessionWithHeaders:(NSDictionary *)headers
 {
-    NSURLSessionConfiguration*  configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     configuration.HTTPAdditionalHeaders = headers;
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
     return session;
@@ -270,12 +270,8 @@ static const NSString *kWorkQueue = @"kWorkQueue";
             }
             
             NSDictionary *errorDict = responseDictionary[@"error"];
-            
-            if (errorDict)
-            {
-                NSError *apiError = [NSError errorWithDomain:domain code:httpResp.statusCode userInfo:errorDict];
-                failure(apiError);
-            }
+            NSError *apiError = [NSError errorWithDomain:domain code:httpResp.statusCode userInfo:errorDict];
+            failure(apiError);
         }
         else
         {

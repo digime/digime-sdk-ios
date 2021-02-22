@@ -20,5 +20,6 @@
 #import "../DigiMeSDK/Core/Classes/Entities/DMEServiceType.h"
 #import "../DigiMeSDK/Core/Classes/Entities/DMEServiceObjectType.h"
 #import "../DigiMeSDK/Core/Classes/Entities/DMEServiceGroup.h"
-#import "../DigiMeSDK/Postbox/Classes/DMEPostbox.h" 
+#import "../DigiMeSDK/Postbox/Classes/DMEPostbox.h"
+#import "../DigiMeSDK/Postbox/Classes/DMEOngoingPostbox.h"
 #import "../DigiMeSDK/DigiMeSDK.h"

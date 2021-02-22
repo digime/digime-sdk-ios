@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DMEOAuthToken : NSObject
+@interface DMEOAuthToken : NSObject <NSSecureCoding>
 
 // access token - gives access to protected resources via the digi.me Public API, without requiring users to disclose their digi.me credentials.
 @property (nonatomic, copy, nullable) NSString *accessToken;

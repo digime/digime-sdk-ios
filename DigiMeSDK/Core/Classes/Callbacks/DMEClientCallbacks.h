@@ -15,6 +15,7 @@
 @class DMEAccounts;
 @class DMEFile;
 @class DMEPostbox;
+@class DMEOngoingPostbox;
 @class DMESession;
 @class DMEFileList;
 @class DMEOAuthToken;
@@ -55,6 +56,14 @@ typedef void (^DMEPostboxCreationCompletion) (DMEPostbox * _Nullable postbox, NS
  @param error nil if push is succesful, otherwise an error specifying what went wrong
  */
 typedef void (^DMEPostboxDataPushCompletion) (NSError * _Nullable error);
+
+/**
+ DMEOngoingPostboxCompletion - executed when an ongoing Postbox is created/updated or when data is pushed to ongoing Postbox.
+
+ @param postbox The ongoing Postbox if creation is successful, nil if not
+ @param error nil if ongoing Postbox creation is successful, otherwise an error specifying what went wrong
+ */
+typedef void (^DMEOngoingPostboxCompletion) (DMEOngoingPostbox * _Nullable postbox, NSError * _Nullable error);
 
 /**
  DMEFileContentCompletion - executed when a file has been retrieved.

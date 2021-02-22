@@ -39,7 +39,7 @@ class DMEOperationTests: XCTestCase {
             
             //allow queue opportunity to call `cancel` on all operations.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                XCTAssertTrue(queue.operationCount == 0, "Expected tere to be 0 operations, but there are \(queue.operationCount)")
+                XCTAssertTrue(queue.operationCount == 0, "Expected there to be 0 operations, but there are \(queue.operationCount)")
                 expectation.fulfill()
             }
         }
@@ -47,7 +47,7 @@ class DMEOperationTests: XCTestCase {
         wait(for: [expectation], timeout: 3)
     }
     
-    // this operation will complete in 3 seconds. It ust be cancelled before that happens or it will fail the test.
+    // this operation will complete in 3 seconds. It must be cancelled before that happens or it will fail the test.
     func cancellableWaitingOperation(configuration: DMEClientConfiguration) -> DMEOperation {
         let operation = DMEOperation(configuration: configuration)
         operation.workBlock = { [unowned operation] in
