@@ -80,7 +80,7 @@ In a production environment, you will also be required to obtain your own `Contr
 **Example Contract ID:** `fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF `
 <br>
 **Example Private Key:**
-	<br>&nbsp;&nbsp;&nbsp;&nbsp;Download: [P12 Key Store](https://github.com/digime/digime-sdk-ios/blob/master/Example/fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12?raw=true)
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;Download: [P12 Key Store](https://github.com/digime/digime-sdk-ios/blob/master/Examples/SkeletonObjC/fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12?raw=true)
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;Password: `monkey periscope`
 
 You should include the P12 file in your project assets folder.
