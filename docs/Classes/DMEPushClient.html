@@ -14,7 +14,7 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Class/DMEPushClient" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Class/DMEPushClient" class="dashAnchor"></a>
 
     <a title="DMEPushClient Class Reference"></a>
 
@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
            Docs
         </a>
-         (55% documented)
+        
       </p>
     
       <p class="header-col--secondary">
@@ -32,6 +32,12 @@
         </form>
       </p>
     
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
     
     </header>
 
@@ -112,10 +118,37 @@
                 <a class="nav-group-task-link" href="../Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEDuration.html">DMEDuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFile.html">DMEFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMEFileList.html">DMEFileList</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMEFileListAccount.html">DMEFileListAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFileListCache.html">DMEFileListCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFileListItem.html">DMEFileListItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFileMetadata.html">DMEFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEJWTUtility.html">DMEJWTUtility</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMELimits.html">DMELimits</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEOAuthToken.html">DMEOAuthToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEOngoingPostbox.html">DMEOngoingPostbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMEPostbox.html">DMEPostbox</a>
@@ -149,6 +182,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMESessionOptions.html">DMESessionOptions</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMETimeRange.html">DMETimeRange</a>
@@ -281,7 +317,13 @@
                 <a class="nav-group-task-link" href="../Enums/AuthError.html">AuthError</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DMEDataParsingError.html">DMEDataParsingError</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DMEFileSyncState.html">DMEFileSyncState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DMEMimeType.html">DMEMimeType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
@@ -300,6 +342,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DMEDataRequest.html">DMEDataRequest</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DMEInitialisableFromRawData.html">DMEInitialisableFromRawData</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -316,6 +361,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingPostboxCompletion">DMEOngoingPostboxCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
@@ -340,8 +388,13 @@
             <h1>DMEPushClient</h1>
               <div class="declaration">
                 <div class="language">
-                  
+                  <p class="aside-title">Objective-C</p>
                   <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEPushClient</span> <span class="p">:</span> <span class="nc"><a href="../Classes/DMEClient.html">DMEClient</a></span></code></pre>
+
+                </div>
+                <div class="language">
+                  <p class="aside-title">Swift</p>
+                  <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">DMEPushClient</span> <span class="p">:</span> <span class="kt"><a href="../Classes/DMEClient.html">DMEClient</a></span></code></pre>
 
                 </div>
               </div>
@@ -358,7 +411,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPushClient(im)initWithConfiguration:"></a>
-                    <a name="//apple_ref/objc/Method/-initWithConfiguration:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-initWithConfiguration:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPushClient(im)initWithConfiguration:">-initWithConfiguration:<wbr></a>
                     </code>
                   </div>
@@ -377,42 +430,33 @@
                           <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithConfiguration</span><span class="p">:(</span><span class="n"><a href="../Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">configuration</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span></code></pre>
 
                         </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(cs)DMEPushClient(im)openDMEAppForPostboxImport"></a>
-                    <a name="//apple_ref/objc/Method/-openDMEAppForPostboxImport" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMEPushClient(im)openDMEAppForPostboxImport">-openDMEAppForPostboxImport</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>After you have pushed data into a postbox, you can trigger the digi.me app to then import the data into the user library.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">openDMEAppForPostboxImport</span><span class="p">;</span></code></pre>
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/One-off%20Postbox"></a>
+                <a name="//apple_ref/swift/Section/One-off Postbox" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/One-off%20Postbox"></a>
+                  <h3 class="section-name"><p>One-off Postbox</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPushClient(im)createPostboxWithCompletion:"></a>
-                    <a name="//apple_ref/objc/Method/-createPostboxWithCompletion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-createPostboxWithCompletion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPushClient(im)createPostboxWithCompletion:">-createPostboxWithCompletion:<wbr></a>
                     </code>
                   </div>
@@ -432,6 +476,11 @@
     <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">createPostbox</span><span class="p">(</span><span class="n">withCompletion</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                       <div>
                         <h4>Parameters</h4>
@@ -445,7 +494,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>DMEPostboxCreationCompletion</p>
+                                  <p>Block called on main thread when postbox creation finished</p>
                                 </div>
                               </td>
                             </tr>
@@ -459,7 +508,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPushClient(im)pushDataToPostbox:metadata:data:completion:"></a>
-                    <a name="//apple_ref/objc/Method/-pushDataToPostbox:metadata:data:completion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-pushDataToPostbox:metadata:data:completion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPushClient(im)pushDataToPostbox:metadata:data:completion:">-pushDataToPostbox:<wbr>metadata:<wbr>data:<wbr>completion:<wbr></a>
                     </code>
                   </div>
@@ -470,6 +519,9 @@
                       <div class="abstract">
                         <p>Pushes data to user&rsquo;s Postbox.</p>
 
+<p>Once data is in the user&rsquo;s Postbox, it will need importing into the user&rsquo;s library.
+This can be accomplished by simply opening the digi.me client app by calling <code>openDMEAppForPostboxImport</code>.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -479,6 +531,11 @@
                  <span class="nf">metadata</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">metadata</span>
                      <span class="nf">data</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">data</span>
                <span class="nf">completion</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxDataPushCompletion">DMEPostboxDataPushCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">pushData</span><span class="p">(</span><span class="n">to</span> <span class="nv">postbox</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMEPostbox.html">DMEPostbox</a></span><span class="p">,</span> <span class="nv">metadata</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -494,7 +551,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>DMEPostbox</p>
+                                  <p>The ongoing Postbox to push data to</p>
                                 </div>
                               </td>
                             </tr>
@@ -506,7 +563,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>NSData</p>
+                                  <p>The metadata describing the data being pushed</p>
                                 </div>
                               </td>
                             </tr>
@@ -518,7 +575,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>NSData</p>
+                                  <p>The data to push to user&rsquo;s library</p>
                                 </div>
                               </td>
                             </tr>
@@ -530,7 +587,224 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>DMEPostboxDataPushCompletion</p>
+                                  <p>Block called on main thread when pushing data has completed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPushClient(im)openDMEAppForPostboxImport"></a>
+                    <a name="//apple_ref/swift/Method/-openDMEAppForPostboxImport" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPushClient(im)openDMEAppForPostboxImport">-openDMEAppForPostboxImport</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>After you have pushed data into a Postbox, you can trigger the digi.me app to then import the data into the user library.
+This only applies to one-off Postboxes, not for ongoing Postboxes.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">openDMEAppForPostboxImport</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">openDMEAppForPostboxImport</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Ongoing%20Postbox"></a>
+                <a name="//apple_ref/swift/Section/Ongoing Postbox" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Ongoing%20Postbox"></a>
+                  <h3 class="section-name"><p>Ongoing Postbox</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPushClient(im)authorizeOngoingPostboxWithExistingPostbox:completion:"></a>
+                    <a name="//apple_ref/swift/Method/-authorizeOngoingPostboxWithExistingPostbox:completion:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPushClient(im)authorizeOngoingPostboxWithExistingPostbox:completion:">-authorizeOngoingPostboxWithExistingPostbox:<wbr>completion:<wbr></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes ongoing contract authentication and intially requests a Postbox that can be used to send data to a user&rsquo;s library. Once user has given consent in digi.me app all subsequent data push calls will be done without digi.me client app involvement.</p>
+
+<p>This authorization flow enables 3rd parties to access protected resources, without requiring users to disclose their digi.me credentials to the consumers.</p>
+
+<p>On first call (when <code>existingPostbox</code> is <code>nil</code>), digi.me client app is opened to request consent. If granted, then completion will contain postbox.</p>
+
+<p>On subsequent calls, when <code>existingPostbox</code> is passed, a new session is created (if necessary) and a new postbox object is returned in completion.</p>
+
+<p>The caller is expected to retain the ongoing postbox to allow continued access to push data to user&rsquo;s library.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+    <span class="nf">authorizeOngoingPostboxWithExistingPostbox</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">nullable</span> <span class="n"><a href="../Classes/DMEOngoingPostbox.html">DMEOngoingPostbox</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">postbox</span>
+                                    <span class="nf">completion</span><span class="p">:</span>
+                                        <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingPostboxCompletion">DMEOngoingPostboxCompletion</a></span><span class="p">)</span>
+                                            <span class="n">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">authorizeOngoingPostbox</span><span class="p">(</span><span class="n">withExistingPostbox</span> <span class="nv">postbox</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>postbox</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An existing ongoing Postbox (if available)</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called on main thread when authorization has completed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(cs)DMEPushClient(im)pushDataToOngoingPostbox:metadata:data:completion:"></a>
+                    <a name="//apple_ref/swift/Method/-pushDataToOngoingPostbox:metadata:data:completion:" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(cs)DMEPushClient(im)pushDataToOngoingPostbox:metadata:data:completion:">-pushDataToOngoingPostbox:<wbr>metadata:<wbr>data:<wbr>completion:<wbr></a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Pushes data to user&rsquo;s Postbox and automaitcally imports the</p>
+
+<p>Upon completion, the returned Postbox should be retained in place of the one passed in as it may contain updated OAuth tokens if they needed refreshing.</p>
+
+<p>If the tokens have expired and cannot be refreshed, the digi.me client app may be opened to request user consent and new tokens will be issued.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">pushDataToOngoingPostbox</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Classes/DMEOngoingPostbox.html">DMEOngoingPostbox</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">postbox</span>
+                        <span class="nf">metadata</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">metadata</span>
+                            <span class="nf">data</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSData</span> <span class="o">*</span><span class="p">)</span><span class="nv">data</span>
+                      <span class="nf">completion</span><span class="p">:</span>
+                          <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingPostboxCompletion">DMEOngoingPostboxCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">pushData</span><span class="p">(</span><span class="n">toOngoingPostbox</span> <span class="nv">postbox</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">metadata</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>postbox</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ongoing Postbox to push data to</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>metadata</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The metadata describing the data being pushed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The data to push to user&rsquo;s library</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called on main thread when pushing data has completed</p>
                                 </div>
                               </td>
                             </tr>
@@ -548,7 +822,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-02-18)</p>
+      <p>&copy; 2021 <a class="link" href="https://developer.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-02-23)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

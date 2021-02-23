@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DMESession Class Reference</title>
+    <title>DMEMimeType Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Class/DMESession" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Enum/DMEMimeType" class="dashAnchor"></a>
 
-    <a title="DMESession Class Reference"></a>
+    <a title="DMEMimeType Enumeration Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html"> Reference</a>
       <img class="carat" src="../img/carat.png" />
-      DMESession Class Reference
+      DMEMimeType Enumeration Reference
     </p>
 
     <div class="content-wrapper">
@@ -385,20 +385,16 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>DMESession</h1>
+            <h1>DMEMimeType</h1>
               <div class="declaration">
                 <div class="language">
-                  <p class="aside-title">Objective-C</p>
-                  <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMESession</span> <span class="p">:</span> <span class="nc">NSObject</span></code></pre>
-
-                </div>
-                <div class="language">
-                  <p class="aside-title">Swift</p>
-                  <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">DMESession</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+                  
+                  <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DMEMimeType</span> <span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">CaseIterable</span><span class="p">,</span> <span class="kt">ExpressibleByStringLiteral</span></code></pre>
 
                 </div>
               </div>
-            <p>Session object managed by the SDK. Used for authorization and data interaction.</p>
+            <p>Undocumented</p>
 
           </div>
         </section>
@@ -410,34 +406,25 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(im)init"></a>
-                    <a name="//apple_ref/swift/Method/-init" class="dashAnchor"></a>
-                    <a class="token discouraged" href="#/c:objc(cs)DMESession(im)init">-init</a>
+                    <a name="/s:s26ExpressibleByStringLiteralP0cD4TypeQa"></a>
+                    <a name="//apple_ref/swift/Alias/StringLiteralType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s26ExpressibleByStringLiteralP0cD4TypeQa">StringLiteralType</a>
                     </code>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
                     <section class="section">
                       <div class="pointer"></div>
-                      <div class="aside aside-unavailable">
-                        <p class="aside-title">Unavailable</p>
-                        
-                      </div>
                       <div class="abstract">
-                        <p>-init unavailable. Use -initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span><span class="n">init</span><span class="p">;</span></code></pre>
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">StringLiteralType</span> <span class="o">=</span> <span class="kt">String</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>instancetype</p>
                       </div>
                     </section>
                   </div>
@@ -445,19 +432,41 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(cm)new"></a>
-                    <a name="//apple_ref/swift/Method/+new" class="dashAnchor"></a>
-                    <a class="token discouraged" href="#/c:objc(cs)DMESession(cm)new">+new</a>
+                    <a name="/s:s26ExpressibleByStringLiteralP06stringD0x0cD4TypeQz_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(stringLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s26ExpressibleByStringLiteralP06stringD0x0cD4TypeQz_tcfc">init(stringLiteral:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
                     <section class="section">
                       <div class="pointer"></div>
-                      <div class="aside aside-unavailable">
-                        <p class="aside-title">Unavailable</p>
+                      <div class="abstract">
                         
                       </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">stringLiteral</span> <span class="nv">value</span><span class="p">:</span> <span class="kt"><a href="../Enums/DMEMimeType.html#/s:s26ExpressibleByStringLiteralP0cD4TypeQa">StringLiteralType</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeApplication_json"></a>
+                    <a name="//apple_ref/swift/Element/application_json" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeApplication_json">application_json</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
                       <div class="abstract">
                         <p>Undocumented</p>
 
@@ -465,8 +474,8 @@
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">+</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="n">new</span> <span class="n">NS_UNAVAILABLE</span><span class="p">;</span></code></pre>
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">application_json</span></code></pre>
 
                         </div>
                       </div>
@@ -476,9 +485,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(im)initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:"></a>
-                    <a name="//apple_ref/swift/Method/-initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMESession(im)initWithSessionKey:exchangeToken:expiryDate:contractId:sessionManager:">-initWithSessionKey:<wbr>exchangeToken:<wbr>expiryDate:<wbr>contractId:<wbr>sessionManager:<wbr></a>
+                    <a name="/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeApplication_octetStream"></a>
+                    <a name="//apple_ref/swift/Element/application_octetStream" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeApplication_octetStream">application_octetStream</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -486,127 +495,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Designated object initializer.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">nonnull</span> <span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithSessionKey</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">sessionKey</span>
-                             <span class="nf">exchangeToken</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">exchangeToken</span>
-                                <span class="nf">expiryDate</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSDate</span> <span class="o">*</span><span class="p">)</span><span class="nv">expiryDate</span>
-                                <span class="nf">contractId</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">contractId</span>
-                            <span class="nf">sessionManager</span><span class="p">:</span>
-                                <span class="p">(</span><span class="n">nonnull</span> <span class="n">DMESessionManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">sessionManager</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">sessionKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">exchangeToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">expiryDate</span><span class="p">:</span> <span class="kt">Date</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">sessionManager</span><span class="p">:</span> <span class="kt">DMESessionManager</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>sessionKey</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Session key</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>exchangeToken</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Session exchange token</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>expiryDate</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Session expiry date</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>contractId</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The contract identifier this session relates to</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>sessionManager</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The manager managing this session</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>instancetype</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/c:objc(cs)DMESession(py)sessionKey"></a>
-                    <a name="//apple_ref/swift/Property/sessionKey" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMESession(py)sessionKey">sessionKey</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Session Key.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">sessionKey</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">sessionKey</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">application_octetStream</span></code></pre>
 
                         </div>
                       </div>
@@ -616,9 +512,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(py)sessionExchangeToken"></a>
-                    <a name="//apple_ref/swift/Property/sessionExchangeToken" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMESession(py)sessionExchangeToken">sessionExchangeToken</a>
+                    <a name="/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_jpeg"></a>
+                    <a name="//apple_ref/swift/Element/image_jpeg" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_jpeg">image_jpeg</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -626,19 +522,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Session key exchange token.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">sessionExchangeToken</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">sessionExchangeToken</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">image_jpeg</span></code></pre>
 
                         </div>
                       </div>
@@ -648,9 +539,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(py)expiryDate"></a>
-                    <a name="//apple_ref/swift/Property/expiryDate" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMESession(py)expiryDate">expiryDate</a>
+                    <a name="/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_tiff"></a>
+                    <a name="//apple_ref/swift/Element/image_tiff" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_tiff">image_tiff</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -658,19 +549,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Date when session will expire.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">expiryDate</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">expiryDate</span><span class="p">:</span> <span class="kt">Date</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">image_tiff</span></code></pre>
 
                         </div>
                       </div>
@@ -680,9 +566,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(py)sessionManager"></a>
-                    <a name="//apple_ref/swift/Property/sessionManager" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMESession(py)sessionManager">sessionManager</a>
+                    <a name="/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_png"></a>
+                    <a name="//apple_ref/swift/Element/image_png" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_png">image_png</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -690,19 +576,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Session manager attached to the session.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">weak</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">DMESessionManager</span> <span class="o">*</span><span class="n">_Nullable</span> <span class="n">sessionManager</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">weak</span> <span class="k">var</span> <span class="nv">sessionManager</span><span class="p">:</span> <span class="kt">DMESessionManager</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">image_png</span></code></pre>
 
                         </div>
                       </div>
@@ -712,9 +593,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(py)createdDate"></a>
-                    <a name="//apple_ref/swift/Property/createdDate" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMESession(py)createdDate">createdDate</a>
+                    <a name="/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_gif"></a>
+                    <a name="//apple_ref/swift/Element/image_gif" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_gif">image_gif</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -722,19 +603,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Date session was created.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDate</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">createdDate</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">createdDate</span><span class="p">:</span> <span class="kt">Date</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">image_gif</span></code></pre>
 
                         </div>
                       </div>
@@ -744,9 +620,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(py)sessionId"></a>
-                    <a name="//apple_ref/swift/Property/sessionId" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMESession(py)sessionId">sessionId</a>
+                    <a name="/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_bmp"></a>
+                    <a name="//apple_ref/swift/Element/image_bmp" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeImage_bmp">image_bmp</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -754,19 +630,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Session Identifier - this is currently set to a contract identifier.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">sessionId</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">sessionId</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">image_bmp</span></code></pre>
 
                         </div>
                       </div>
@@ -776,9 +647,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(py)options"></a>
-                    <a name="//apple_ref/swift/Property/options" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMESession(py)options">options</a>
+                    <a name="/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeText_plain"></a>
+                    <a name="//apple_ref/swift/Element/text_plain" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeText_plain">text_plain</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -786,19 +657,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Session Options - these are the additional session parameters used to create session.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">nullable</span><span class="p">)</span> <span class="n"><a href="../Classes/DMESessionOptions.html">DMESessionOptions</a></span> <span class="o">*</span><span class="n">options</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMESessionOptions.html">DMESessionOptions</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">text_plain</span></code></pre>
 
                         </div>
                       </div>
@@ -808,9 +674,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:objc(cs)DMESession(py)metadata"></a>
-                    <a name="//apple_ref/swift/Property/metadata" class="dashAnchor"></a>
-                    <a class="token" href="#/c:objc(cs)DMESession(py)metadata">metadata</a>
+                    <a name="/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeText_json"></a>
+                    <a name="//apple_ref/swift/Element/text_json" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@DigiMeSDK@E@DMEMimeType@DMEMimeTypeText_json">text_json</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -818,19 +684,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Session metadata. Contains additional debug information collected during the session lifetime.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
-                          <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSDictionary</span><span class="o">&lt;</span><span class="n">NSString</span> <span class="o">*</span><span class="p">,</span> <span class="n">id</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">metadata</span><span class="p">;</span></code></pre>
-
-                        </div>
-                        <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">metadata</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">text_json</span></code></pre>
 
                         </div>
                       </div>
