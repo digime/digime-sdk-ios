@@ -107,7 +107,7 @@ pullClient.authorizeOngoingAccess(scope: nil, oAuthToken: oAuthToken, completion
 })
 ```
 
-One important thing to note here - the `DMEAuthToken` returned in `completion` may not be the same token you have passed in. This is because the SDK will try to automatically refresh an `accessToken` using a `refreshToken` (both of these contained in `DMEOAuthToken`), generating a new `DMEOAuthToken`. This means you should replace your old token with the one you receive in `completion`.
+One important thing to note here - the `DMEOAuthToken` returned in `completion` may not be the same token you have passed in. This is because the SDK will try to automatically refresh an `accessToken` using a `refreshToken` (both of these contained in `DMEOAuthToken`), generating a new `DMEOAuthToken`. This means you should replace your old token with the one you receive in `completion`.
 
 Under the hood the SDK will trigger data query using the `DMEOAuthToken` which, if valid, will start preparing user's protected resources for access. This time however, the user will remain in your app.
 

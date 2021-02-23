@@ -14,6 +14,7 @@
 #import "../DigiMeSDK/Core/Classes/Entities/DMEAccounts.h"
 #import "../DigiMeSDK/Core/Classes/Entities/DMEDataRequest.h"
 #import "../DigiMeSDK/Core/Classes/Entities/DMEFileList.h"
+#import "../DigiMeSDK/Core/Classes/Entities/DMEOAuthToken.h"
 #import "../DigiMeSDK/Core/Classes/Entities/DMEScope.h"
 #import "../DigiMeSDK/Core/Classes/Entities/DMESession.h"
 #import "../DigiMeSDK/Core/Classes/Entities/DMETimeRange.h"
