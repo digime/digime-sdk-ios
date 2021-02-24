@@ -22,14 +22,14 @@ class PostboxViewController: UIViewController {
         #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
         static let appId = "YOUR_APP_ID"
         
-        #warning("REPLACE 'YOUR_CONTRACT_ID' with your Postbox contract ID.")
-        static let contractId = "YOUR_CONTRACT_ID"
+        #warning("REPLACE example contract ID with your Postbox contract ID.")
+        static let contractId = "Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn"
         
-        #warning("REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.")
-        static let p12Password = "YOUR_P12_PASSWORD"
+        #warning("REPLACE example .p12 password with password provided by digi.me Ltd.")
+        static let p12Password = "digime"
         
-        #warning("REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.")
-        static let p12FileName = "YOUR_P12_FILE_NAME"
+        #warning("REPLACE example .p12 file name with .p12 file name provided by digi.me Ltd.")
+        static let p12FileName = "Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn"
     }
     
     override func viewDidLoad() {
