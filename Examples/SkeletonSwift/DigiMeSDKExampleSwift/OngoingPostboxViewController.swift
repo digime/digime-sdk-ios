@@ -13,6 +13,7 @@ class OngoingPostboxViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet weak var relaunchLabel: UILabel!
     
     private let kPostboxKey = "ongoing_postbox"
     private var dmeClient: DMEPushClient?
@@ -59,7 +60,10 @@ class OngoingPostboxViewController: UIViewController {
         title = "Ongoing Postbox Example"
         
         actionButton.addTarget(self, action: #selector(createPostbox), for: .touchUpInside)
-        self.actionButton.setTitle("SEND ME A RECEIPT", for: .normal)
+        actionButton.setTitle(ongoingPostbox != nil ? "SEND ANOTHER RECEIPT" : "SEND ME A RECEIPT", for: .normal)
+            
+        
+        relaunchLabel.isHidden = true
     }
     
     @objc func createPostbox() {
@@ -85,9 +89,8 @@ class OngoingPostboxViewController: UIViewController {
             self.ongoingPostbox = postbox
             
             DispatchQueue.main.async {
-                self.titleLabel.text = "Sending..."
-                self.subtitleLabel.text = nil
-                self.actionButton.isHidden = true
+                self.actionButton.isEnabled = false
+                self.actionButton.setTitle("Sending...", for: .normal)
             }
             
             self.pushData(to: postbox)
@@ -110,7 +113,7 @@ class OngoingPostboxViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.titleLabel.text = "Get a copy of your latest shopping receipt to your digi.me library"
                         self.subtitleLabel.text = "Please ensure you have the digi.me application installed."
-                        self.actionButton.isHidden = false
+                        self.actionButton.isEnabled = true
                         self.actionButton.setTitle("SEND ME A RECEIPT", for: .normal)
                     }
                 }
@@ -121,8 +124,9 @@ class OngoingPostboxViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.titleLabel.text = "All done!"
                         self.subtitleLabel.text = "Your purchase receipt has been sent, please check your digi.me library."
-                        self.actionButton.isHidden = false
-                        self.actionButton.setTitle("SEND ME ANOTHER RECEIPT", for: .normal)
+                        self.actionButton.isEnabled = true
+                        self.actionButton.setTitle("SEND ANOTHER RECEIPT", for: .normal)
+                        self.relaunchLabel.isHidden = false
                     }
                 }
                 
