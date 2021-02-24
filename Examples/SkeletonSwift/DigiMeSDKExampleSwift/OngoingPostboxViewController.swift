@@ -14,8 +14,30 @@ class OngoingPostboxViewController: UIViewController {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     
+    private let kPostboxKey = "ongoing_postbox"
     private var dmeClient: DMEPushClient?
-    private var ongoingPostbox: DMEOngoingPostbox?
+    
+    // Ideally this would be stored somewhere more secure, like the keychain.
+    // However for this example, we are just using UserDefaults.
+    private var ongoingPostbox: DMEOngoingPostbox? {
+        get {
+            guard let data = UserDefaults.standard.object(forKey: kPostboxKey) as? Data else {
+                return nil
+            }
+            
+            return try? NSKeyedUnarchiver.unarchivedObject(ofClass: DMEOngoingPostbox.self, from: data)
+        }
+        
+        set {
+            if let newValue = newValue,
+               let data = try? NSKeyedArchiver.archivedData(withRootObject: newValue, requiringSecureCoding: true) {
+                UserDefaults.standard.setValue(data, forKey: kPostboxKey)
+            }
+            else {
+                UserDefaults.standard.removeObject(forKey: kPostboxKey)
+            }
+        }
+    }
     
     private enum Configuration {
         #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
@@ -80,8 +102,6 @@ class OngoingPostboxViewController: UIViewController {
             let metadataToPush = try JSONEncoder().encode(metadata)
             
             let dataToPush = try JSONEncoder().encode(Receipt())
-            
-            // Update title in metadata
             
             dmeClient?.pushData(to: postbox, metadata: metadataToPush, data: dataToPush) { updatedPostbox, error in
                 if let error = error {
