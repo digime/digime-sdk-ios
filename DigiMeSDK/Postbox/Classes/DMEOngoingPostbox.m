@@ -32,8 +32,8 @@ static NSString * const kPublicKeyCodingKey = @"kPublicKeyCodingKey";
 - (nullable instancetype)initWithCoder:(NSCoder *)decoder
 {
     NSString *sessionKey = [decoder decodeObjectOfClass:[NSString class] forKey:kSessionKeyCodingKey];
-    NSString *postboxId = [decoder decodeObjectOfClass:[NSString class] forKey:kSessionKeyCodingKey];
-    DMEOAuthToken *oAuthToken = [decoder decodeObjectOfClass:[DMEOAuthToken class] forKey:kSessionKeyCodingKey];
+    NSString *postboxId = [decoder decodeObjectOfClass:[NSString class] forKey:kPostboxIdCodingKey];
+    DMEOAuthToken *oAuthToken = [decoder decodeObjectOfClass:[DMEOAuthToken class] forKey:kOAuthTokenCodingKey];
     
     if (sessionKey == nil || postboxId == nil || oAuthToken == nil)
     {
@@ -41,7 +41,7 @@ static NSString * const kPublicKeyCodingKey = @"kPublicKeyCodingKey";
     }
     
     DMEOngoingPostbox *ongoingPostbox = [self initWithSessionKey:sessionKey postboxId:postboxId oAuthToken:oAuthToken];
-    ongoingPostbox = [decoder decodeObjectOfClass:[NSString class] forKey:kPublicKeyCodingKey];
+    ongoingPostbox.postboxRSAPublicKey = [decoder decodeObjectOfClass:[NSString class] forKey:kPublicKeyCodingKey];
     
     return ongoingPostbox;
 }
