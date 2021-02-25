@@ -14,7 +14,29 @@ class OngoingPrivateSharingViewController: UIViewController {
     private var dmeClient: DMEPullClient?
     private var logVC: LogViewController!
     private var configuration: DMEPullConfiguration?
-    private var oAuthToken: DMEOAuthToken?
+    private let kAuthTokenKey = "ongoing_private_sharing_token"
+    
+    // Ideally this would be stored somewhere more secure, like the keychain.
+    // However for this example, we are just using UserDefaults.
+    private var oAuthToken: DMEOAuthToken? {
+        get {
+            guard let data = UserDefaults.standard.object(forKey: kAuthTokenKey) as? Data else {
+                return nil
+            }
+            
+            return try? NSKeyedUnarchiver.unarchivedObject(ofClass: DMEOAuthToken.self, from: data)
+        }
+        
+        set {
+            if let newValue = newValue,
+               let data = try? NSKeyedArchiver.archivedData(withRootObject: newValue, requiringSecureCoding: true) {
+                UserDefaults.standard.setValue(data, forKey: kAuthTokenKey)
+            }
+            else {
+                UserDefaults.standard.removeObject(forKey: kAuthTokenKey)
+            }
+        }
+    }
     
     private enum Configuration {
         // This contract is a one-off contract which allows SDK user to read user's Spotify
@@ -105,7 +127,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             }
 
             self.logVC.log(message: "Account Content: " + "\(String(describing: accounts.json!))")
-            self.logVC.log(message: "\n\nPlease press 'Start' to request data agin (without digi.me interaction).")
+            self.logVC.log(message: "\n\nPlease press 'Start' to request data again.\n\nAlternatively, try relaunching the app and starting again.\n\nIn either case you will see that it doesn't open the digi.me application to check permission.\n")
         }
     }
 
@@ -127,7 +149,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             }
             else {
                 self.logVC.log(message: "-------------Finished fetching session data!-------------")
-                self.logVC.log(message: "\n\nPlease press 'Start' to request data agin (without digi.me interaction).")
+                self.logVC.log(message: "\n\nPlease press 'Start' to request data again.\n\nAlternatively, try relaunching the app and starting again.\n\nIn either case you will see that it doesn't open the digi.me application to check permission.\n")
             }
 
             self.clearNavigationBar()
@@ -149,7 +171,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             }
             else {
                 self.logVC.log(message: "-------------Finished fetching session FileList!-------------")
-                self.logVC.log(message: "\n\nPlease press 'Start' to request data agin (without digi.me interaction).")
+                self.logVC.log(message: "\n\nPlease press 'Start' to request data again.\n\nAlternatively, try relaunching the app and starting again.\n\nIn either case you will see that it doesn't open the digi.me application to check permission.\n")
             }
 
             self.clearNavigationBar()
@@ -189,8 +211,8 @@ class OngoingPrivateSharingViewController: UIViewController {
             
             // Uncomment relevant method depending on which you wish to receive.
             self.getAccounts()
-//            self.getSessionData()
-            //self.getSessionFileList()
+            self.getSessionData()
+//            self.getSessionFileList()
         })
     }
     
@@ -215,8 +237,8 @@ class OngoingPrivateSharingViewController: UIViewController {
             
             // Uncomment relevant method depending on which you wish to receive.
             self.getAccounts()
-//            self.getSessionData()
-            //self.getSessionFileList()
+            self.getSessionData()
+//            self.getSessionFileList()
         })
     }
 }
