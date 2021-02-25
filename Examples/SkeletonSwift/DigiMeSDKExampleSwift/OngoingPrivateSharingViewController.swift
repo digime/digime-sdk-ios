@@ -17,17 +17,12 @@ class OngoingPrivateSharingViewController: UIViewController {
     private var oAuthToken: DMEOAuthToken?
     
     private enum Configuration {
-        #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
-        static let appId = "YOUR_APP_ID"
-        
-        #warning("REPLACE example contract ID with your Private Sharing contract ID.")
-        static let contractId = "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF"
-        
-        #warning("REPLACE example .p12 password with password provided by digi.me Ltd.")
-        static let p12Password = "monkey periscope"
-        
-        #warning("REPLACE example .p12 file name with .p12 file name provided by digi.me Ltd.")
-        static let p12FileName = "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF"
+        // This contract is a one-off contract which allows SDK user to read user's Spotify
+        // data from the past 6 months user over multiple sessions.
+        // User consent is required just once (via digi.me app).
+        static let contractId = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
+        static let p12Password = "digime"
+        static let p12FileName = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
     }
     
     override func viewDidLoad() {
@@ -69,7 +64,7 @@ class OngoingPrivateSharingViewController: UIViewController {
     
     private func resetClient() {
         // - GET STARTED -
-        if let config = DMEPullConfiguration(appId: Configuration.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) {
+        if let config = DMEPullConfiguration(appId: AppInfo.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) {
             config.debugLogEnabled = true
             dmeClient = nil
             dmeClient = DMEPullClient(configuration: config)
@@ -194,7 +189,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             
             // Uncomment relevant method depending on which you wish to receive.
             self.getAccounts()
-            self.getSessionData()
+//            self.getSessionData()
             //self.getSessionFileList()
         })
     }
@@ -220,7 +215,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             
             // Uncomment relevant method depending on which you wish to receive.
             self.getAccounts()
-            self.getSessionData()
+//            self.getSessionData()
             //self.getSessionFileList()
         })
     }

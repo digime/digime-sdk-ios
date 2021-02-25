@@ -41,16 +41,10 @@ class OngoingPostboxViewController: UIViewController {
     }
     
     private enum Configuration {
-        #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
-        static let appId = "YOUR_APP_ID"
-        
-        #warning("REPLACE example contract ID with your ongoing Postbox contract ID.")
+        // This contract is an ongoing contract which allows SDK user to push multiple files to user over multiple sessions.
+        // User consent is required just once (via digi.me app).
         static let contractId = "V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v"
-        
-        #warning("REPLACE example .p12 password with password provided by digi.me Ltd.")
         static let p12Password = "digime"
-        
-        #warning("REPLACE example .p12 file name with .p12 file name provided by digi.me Ltd.")
         static let p12FileName = "V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v"
     }
     
@@ -68,7 +62,7 @@ class OngoingPostboxViewController: UIViewController {
     
     @objc func createPostbox() {
         
-        guard let configuration = DMEPushConfiguration(appId: Configuration.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) else {
+        guard let configuration = DMEPushConfiguration(appId: AppInfo.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) else {
             return
         }
         

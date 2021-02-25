@@ -17,16 +17,11 @@ class PrivateSharingViewController: UIViewController {
     private var oAuthToken: DMEOAuthToken?
     
     private enum Configuration {
-        #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
-        static let appId = "YOUR_APP_ID"
-        
-        #warning("REPLACE example contract ID with your Private Sharing contract ID.")
+        // This contract is a one-off contract which allows SDK user to read user's social,
+        // financial, health, fitness and music data from 1 June 2017 to 30 June 2018 user over multiple sessions.
+        // Each session requires the user's consent (via digi.me app).
         static let contractId = "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF"
-        
-        #warning("REPLACE example .p12 password with password provided by digi.me Ltd.")
         static let p12Password = "monkey periscope"
-        
-        #warning("REPLACE example .p12 file name with .p12 file name provided by digi.me Ltd.")
         static let p12FileName = "fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF"
     }
     
@@ -80,7 +75,7 @@ class PrivateSharingViewController: UIViewController {
     
     private func resetClient() {
         // - GET STARTED -
-        if let config = DMEPullConfiguration(appId: Configuration.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) {
+        if let config = DMEPullConfiguration(appId: AppInfo.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) {
             config.debugLogEnabled = true
             dmeClient = nil
             dmeClient = DMEPullClient(configuration: config)
