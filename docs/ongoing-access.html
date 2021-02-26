@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (55% documented)
+        
       </p>
     
       <p class="header-col--secondary">
@@ -31,6 +31,12 @@
         </form>
       </p>
     
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
     
     </header>
 
@@ -63,6 +69,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="ongoing-access.html">Ongoing Access</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="ongoing-postbox.html">Ongoing Postbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="postbox.html">Postbox</a>
@@ -108,10 +117,37 @@
                 <a class="nav-group-task-link" href="Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEDuration.html">DMEDuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFile.html">DMEFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEFileList.html">DMEFileList</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEFileListAccount.html">DMEFileListAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileListCache.html">DMEFileListCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileListItem.html">DMEFileListItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileMetadata.html">DMEFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEJWTUtility.html">DMEJWTUtility</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMELimits.html">DMELimits</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEOAuthToken.html">DMEOAuthToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEOngoingPostbox.html">DMEOngoingPostbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEPostbox.html">DMEPostbox</a>
@@ -145,6 +181,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMESessionOptions.html">DMESessionOptions</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMETimeRange.html">DMETimeRange</a>
@@ -277,7 +316,13 @@
                 <a class="nav-group-task-link" href="Enums/AuthError.html">AuthError</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DMEDataParsingError.html">DMEDataParsingError</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/DMEFileSyncState.html">DMEFileSyncState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DMEMimeType.html">DMEMimeType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
@@ -296,6 +341,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/DMEDataRequest.html">DMEDataRequest</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DMEInitialisableFromRawData.html">DMEInitialisableFromRawData</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -312,6 +360,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingPostboxCompletion">DMEOngoingPostboxCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
@@ -404,12 +455,12 @@
 
 <p><em>See <a href="getting-started.html#5-fetching-data">Fetching Data</a> for more details on post-consent steps.</em></p>
 
-<p>You may notice that upon completion of this method, the SDK supplies a <code>DMEOAuthToken</code>. This is <strong>key</strong> to access restoration and we recommend you store this - you will need it later.</p>
+<p>You may notice that upon completion of this method, the SDK supplies a <code><a href="Classes/DMEOAuthToken.html">DMEOAuthToken</a></code>. This is <strong>key</strong> to access restoration and we recommend you store this - you will need it later.</p>
 
 <p>Our recommendation would be to save it to keychain.</p>
 <h3 id='access-restoration' class='heading'>Access Restoration</h3>
 
-<p>If you have previously obtained user&rsquo;s consent, and are in posession of a <code>DMEOAuthToken</code>, you can get data from your users without them having to leave your app.</p>
+<p>If you have previously obtained user&rsquo;s consent, and are in possession of a <code><a href="Classes/DMEOAuthToken.html">DMEOAuthToken</a></code>, you can get data from your users without them having to leave your app.</p>
 
 <p>To do this, simply call the following method on a <strong>new</strong> <code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code> instance:</p>
 <h5 id='objective-c' class='heading'>Objective-c</h5>
@@ -423,12 +474,12 @@
 <span class="p">})</span>
 </code></pre>
 
-<p>One important thing to note here - the <code>DMEAuthToken</code> returned in <code>completion</code> may not be the same token you have passed in. This is because the SDK will try to automatically refresh an <code>accessToken</code> using a <code>refreshToken</code> (both of these contained in <code>DMEOAuthToken</code>), generating a new <code>DMEOAuthToken</code>. This means you should replace your old token with the one you receive in <code>completion</code>.</p>
+<p>One important thing to note here - the <code><a href="Classes/DMEOAuthToken.html">DMEOAuthToken</a></code> returned in <code>completion</code> may not be the same token you have passed in. This is because the SDK will try to automatically refresh an <code>accessToken</code> using a <code>refreshToken</code> (both of these contained in <code><a href="Classes/DMEOAuthToken.html">DMEOAuthToken</a></code>), generating a new <code><a href="Classes/DMEOAuthToken.html">DMEOAuthToken</a></code>. This means you should replace your old token with the one you receive in <code>completion</code>.</p>
 
-<p>Under the hood the SDK will trigger data query using the <code>DMEOAuthToken</code> which, if valid, will start preparing user&rsquo;s protected resources for access. This time however, the user will remain in your app.</p>
+<p>Under the hood the SDK will trigger data query using the <code><a href="Classes/DMEOAuthToken.html">DMEOAuthToken</a></code> which, if valid, will start preparing user&rsquo;s protected resources for access. This time however, the user will remain in your app.</p>
 <h4 id='configuration-options' class='heading'>Configuration Options</h4>
 
-<p>There is a new property available on <code><a href="Classes/DMEPullConfiguration.html">DMEPullConfiguration</a></code> object - <code>autoRecoverExpiredCredentials</code>. This defaults to <code>true</code>, which means that if the <code>refreshToken</code> contained in <code>DMEOAuthToken</code> has expired, the user will be directed to the digi.me app, so that this can be regenerated.</p>
+<p>There is a new property available on <code><a href="Classes/DMEPullConfiguration.html">DMEPullConfiguration</a></code> object - <code>autoRecoverExpiredCredentials</code>. This defaults to <code>true</code>, which means that if the <code>refreshToken</code> contained in <code><a href="Classes/DMEOAuthToken.html">DMEOAuthToken</a></code> has expired, the user will be directed to the digi.me app, so that this can be regenerated.</p>
 
 <p>If you wish to direct the user back to digi.me app manually, set this property to:</p>
 <h5 id='objective-c' class='heading'>Objective-c</h5>
@@ -452,7 +503,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-01-26)</p>
+      <p>&copy; 2021 <a class="link" href="https://developer.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-02-23)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

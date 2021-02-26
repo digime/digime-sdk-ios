@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (55% documented)
+        
       </p>
     
       <p class="header-col--secondary">
@@ -31,6 +31,12 @@
         </form>
       </p>
     
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
     
     </header>
 
@@ -63,6 +69,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="ongoing-access.html">Ongoing Access</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="ongoing-postbox.html">Ongoing Postbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="postbox.html">Postbox</a>
@@ -108,10 +117,37 @@
                 <a class="nav-group-task-link" href="Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEDuration.html">DMEDuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFile.html">DMEFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEFileList.html">DMEFileList</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEFileListAccount.html">DMEFileListAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileListCache.html">DMEFileListCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileListItem.html">DMEFileListItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileMetadata.html">DMEFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEJWTUtility.html">DMEJWTUtility</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMELimits.html">DMELimits</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEOAuthToken.html">DMEOAuthToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEOngoingPostbox.html">DMEOngoingPostbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEPostbox.html">DMEPostbox</a>
@@ -145,6 +181,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMESessionOptions.html">DMESessionOptions</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMETimeRange.html">DMETimeRange</a>
@@ -277,7 +316,13 @@
                 <a class="nav-group-task-link" href="Enums/AuthError.html">AuthError</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DMEDataParsingError.html">DMEDataParsingError</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/DMEFileSyncState.html">DMEFileSyncState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DMEMimeType.html">DMEMimeType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
@@ -296,6 +341,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/DMEDataRequest.html">DMEDataRequest</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DMEInitialisableFromRawData.html">DMEInitialisableFromRawData</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -312,6 +360,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingPostboxCompletion">DMEOngoingPostboxCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
@@ -415,18 +466,22 @@
 </code></pre>
 <h2 id='providing-code-dmescope-code' class='heading'>Providing <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code></h2>
 
-<p>When calling <code>authorize</code> on your <code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code>, simply pass in your <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code> object:</p>
+<p>When calling <code>authorize</code> on your <code><a href="Classes/DMEPullClient.html">DMEPullClient</a></code>, simply wrap your <code><a href="Classes.html#/c:objc(cs)DMEScope">DMEScope</a></code> object in a <code><a href="Classes/DMESessionOptions.html">DMESessionOptions</a></code> object and pass in:</p>
 <h5 id='objective-c' class='heading'>Objective-C</h5>
 <pre class="highlight objective_c"><code><span class="n">DMEScope</span> <span class="o">*</span><span class="n">scope</span> <span class="o">=</span> <span class="p">[</span><span class="n">DMEScope</span> <span class="nf">new</span><span class="p">];</span>
 <span class="n">scope</span><span class="p">.</span><span class="n">timeRanges</span> <span class="o">=</span> <span class="p">@[[</span><span class="n">DMETimeRange</span> <span class="nf">last</span><span class="p">:</span><span class="mi">6</span> <span class="nf">unit</span><span class="p">:</span><span class="n">DMETimeRangeUnitMonth</span><span class="p">]];</span>
-<span class="p">[</span><span class="n">pullClient</span> <span class="nf">authorizeWithScope</span><span class="p">:</span><span class="n">scope</span> <span class="nf">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMESession</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">session</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">DMESessionOptions</span> <span class="o">*</span><span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="n">DMESessionOptions</span> <span class="nf">new</span><span class="p">];</span>
+<span class="n">options</span><span class="p">.</span><span class="n">scope</span> <span class="o">=</span> <span class="n">scope</span><span class="p">;</span>
+<span class="p">[</span><span class="n">pullClient</span> <span class="nf">authorizeWithOptions</span><span class="p">:</span><span class="n">options</span> <span class="nf">completion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">DMESession</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">session</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span> <span class="n">_Nullable</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span>
 
 <span class="p">}];</span>
 </code></pre>
 <h5 id='swift' class='heading'>Swift</h5>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">scope</span> <span class="o">=</span> <span class="kt">DMEScope</span><span class="p">()</span>
 <span class="n">scope</span><span class="o">.</span><span class="n">timeRanges</span> <span class="o">=</span> <span class="p">[</span><span class="kt">DMETimeRange</span><span class="o">.</span><span class="nf">last</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="nv">unit</span><span class="p">:</span> <span class="o">.</span><span class="n">month</span><span class="p">)]</span>
-<span class="n">pullClient</span><span class="o">.</span><span class="nf">authorize</span><span class="p">(</span><span class="nv">scope</span><span class="p">:</span> <span class="n">scope</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">session</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+<span class="k">let</span> <span class="nv">options</span> <span class="o">=</span> <span class="kt">DMESessionOptions</span><span class="p">()</span>
+<span class="n">options</span><span class="o">.</span><span class="n">scope</span> <span class="o">=</span> <span class="n">scopes</span>
+<span class="n">pullClient</span><span class="o">.</span><span class="nf">authorize</span><span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="n">options</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">session</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
 
 <span class="p">})</span>
 </code></pre>
@@ -440,7 +495,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-01-26)</p>
+      <p>&copy; 2021 <a class="link" href="https://developer.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-02-23)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
