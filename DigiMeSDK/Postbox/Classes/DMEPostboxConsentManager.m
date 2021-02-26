@@ -77,17 +77,12 @@
     
     if (self.postboxCompletionBlock)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.postboxCompletionBlock(postbox, err);
-        });
+        self.postboxCompletionBlock(postbox, err);
     }
     else if (self.ongoingPostboxCompletionBlock)
     {
         NSString *authorizationCode = parameters[kDMEAuthorizationCode];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.ongoingPostboxCompletionBlock(postbox, authorizationCode, err);
-        });
+        self.ongoingPostboxCompletionBlock(postbox, authorizationCode, err);
     }
     
     [self.appCommunicator removeCallbackHandler:self];

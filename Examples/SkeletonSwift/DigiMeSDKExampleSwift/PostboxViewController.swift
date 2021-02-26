@@ -19,17 +19,11 @@ class PostboxViewController: UIViewController {
     private var ongoingPostbox: DMEOngoingPostbox?
     
     private enum Configuration {
-        #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
-        static let appId = "YOUR_APP_ID"
-        
-        #warning("REPLACE 'YOUR_CONTRACT_ID' with your Postbox contract ID.")
-        static let contractId = "YOUR_CONTRACT_ID"
-        
-        #warning("REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.")
-        static let p12Password = "YOUR_P12_PASSWORD"
-        
-        #warning("REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.")
-        static let p12FileName = "YOUR_P12_FILE_NAME"
+        // This contract is a one-off contract which allows SDK user to push multiple files to user over multiple sessions.
+        // Each session requires the user's consent (via digi.me app).
+        static let contractId = "Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn"
+        static let p12Password = "digime"
+        static let p12FileName = "Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn"
     }
     
     override func viewDidLoad() {
@@ -46,7 +40,7 @@ class PostboxViewController: UIViewController {
             
             dmeClient?.openDMEAppForPostboxImport()
         } else {
-            guard let configuration = DMEPushConfiguration(appId: Configuration.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) else {
+            guard let configuration = DMEPushConfiguration(appId: AppInfo.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) else {
                 return
             }
             

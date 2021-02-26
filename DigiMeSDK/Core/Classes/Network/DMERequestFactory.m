@@ -12,7 +12,8 @@
 #import "NSData+DMECrypto.h"
 #import <DigiMeSDK/DigiMeSDK-Swift.h>
 
-static NSString * const kDigiMeAPIVersion = @"v1.5";
+static NSString * const kDigiMeAPIVersion = @"v1.4";
+static NSString * const kDigiMeOngoingPostboxAPIVersion = @"v1.5"; // Use only for ongoing postbox as there is breaking change for pulling data
 static NSString * const kDigiMeOAuthAPIVersion = @"v1.4";
 static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
 
@@ -140,7 +141,8 @@ static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
 
 - (NSURLRequest *)pushRequestWithPostboxId:(NSString *)postboxId payload:(NSData *)data bearer:(NSString *)jwtBearer
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/postbox/%@", self.baseUrlPath, postboxId]];
+    // This uses a newer API version which we cannot yet adopt for other API calls as it includes breaking changes.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/permission-access/postbox/%@", self.baseUrl, kDigiMeOngoingPostboxAPIVersion, postboxId]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     
     [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];

@@ -43,7 +43,7 @@
             </objects>
             <point key="canvasLocation" x="-1010" y="133"/>
         </scene>
-        <!--Welcome View Controller-->
+        <!--digi.me SDK Examples-->
         <scene sceneID="AQ5-O4-8e9">
             <objects>
                 <viewController storyboardIdentifier="WelcomeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4V4-pX-RQV" customClass="WelcomeViewController" customModule="DigiMeSDKExampleSwift" customModuleProvider="target" sceneMemberID="viewController">
@@ -112,18 +112,18 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="WVk-wt-Odg">
-                                        <rect key="frame" x="10" y="330" width="315.5" height="97"/>
+                                        <rect key="frame" x="0.0" y="330" width="335" height="97"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cny-iJ-rAu">
-                                                <rect key="frame" x="0.0" y="0.0" width="315.5" height="56"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="56"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                 <state key="normal" title="Ongoing Postbox"/>
                                                 <connections>
                                                     <segue destination="y8h-Rd-KqN" kind="show" identifier="ShowOngoingPostboxExample" id="MBt-Je-1hx"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LabelFor ongoing postbox contracts with minimal interaction with digi.me app" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtf-HD-YsF">
-                                                <rect key="frame" x="0.0" y="56" width="315.5" height="41"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For ongoing postbox contracts with minimal interaction with digi.me app" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtf-HD-YsF">
+                                                <rect key="frame" x="0.0" y="56" width="335" height="41"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -194,15 +194,25 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9MU-so-mzh">
+                                <rect key="frame" x="20" y="362" width="335" height="81.5"/>
+                                <string key="text">Now try relaunching the app and sending another receipt - you will see that it doesn't open the digi.me application to check permission.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ijt-VF-vGn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="9MU-so-mzh" firstAttribute="leading" secondItem="Ijt-VF-vGn" secondAttribute="leading" constant="20" id="Bnd-U7-x02"/>
                             <constraint firstItem="T5z-4j-IEa" firstAttribute="top" secondItem="p0L-RD-PsB" secondAttribute="bottom" constant="10" id="Gs2-k6-pRJ"/>
                             <constraint firstItem="p0L-RD-PsB" firstAttribute="top" secondItem="Ijt-VF-vGn" secondAttribute="top" constant="60" id="Lyn-bh-CTF"/>
                             <constraint firstItem="T5z-4j-IEa" firstAttribute="trailing" secondItem="p0L-RD-PsB" secondAttribute="trailing" id="P9I-1b-2vY"/>
                             <constraint firstItem="99i-j1-fqh" firstAttribute="leading" secondItem="bVy-Zw-3jZ" secondAttribute="leading" id="QbY-60-ap7"/>
                             <constraint firstItem="p0L-RD-PsB" firstAttribute="leading" secondItem="bVy-Zw-3jZ" secondAttribute="trailing" constant="20" id="RkO-5d-AmO"/>
+                            <constraint firstItem="9MU-so-mzh" firstAttribute="top" secondItem="99i-j1-fqh" secondAttribute="bottom" constant="36" id="VVG-sI-WEz"/>
+                            <constraint firstItem="Ijt-VF-vGn" firstAttribute="trailing" secondItem="9MU-so-mzh" secondAttribute="trailing" constant="20" id="XwC-Pv-MH6"/>
                             <constraint firstItem="bVy-Zw-3jZ" firstAttribute="leading" secondItem="Ijt-VF-vGn" secondAttribute="leading" constant="20" id="e2P-KR-7Kz"/>
                             <constraint firstItem="99i-j1-fqh" firstAttribute="top" secondItem="T5z-4j-IEa" secondAttribute="bottom" constant="50" id="jv5-X0-Pim"/>
                             <constraint firstItem="99i-j1-fqh" firstAttribute="trailing" secondItem="T5z-4j-IEa" secondAttribute="trailing" id="sqI-3b-1sh"/>
@@ -214,6 +224,7 @@
                     <navigationItem key="navigationItem" id="elv-ZR-UvY"/>
                     <connections>
                         <outlet property="actionButton" destination="99i-j1-fqh" id="FPr-AX-Cp0"/>
+                        <outlet property="relaunchLabel" destination="9MU-so-mzh" id="Yig-O3-eoI"/>
                         <outlet property="subtitleLabel" destination="T5z-4j-IEa" id="70s-We-WW9"/>
                         <outlet property="titleLabel" destination="p0L-RD-PsB" id="mq4-fD-vUL"/>
                     </connections>

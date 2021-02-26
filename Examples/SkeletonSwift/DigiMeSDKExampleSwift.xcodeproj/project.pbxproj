@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		271E113425D28CBB00C00F07 /* OngoingPrivateSharingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271E113325D28CBB00C00F07 /* OngoingPrivateSharingViewController.swift */; };
+		278AC80725E6990800D4E748 /* V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 278AC80625E6990800D4E748 /* V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v.p12 */; };
+		278AC80B25E6990E00D4E748 /* Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 278AC80525E698FB00D4E748 /* Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn.p12 */; };
+		278AC81C25E7A4EB00D4E748 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278AC81B25E7A4EB00D4E748 /* AppInfo.swift */; };
+		278AC82425E7A5AF00D4E748 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 278AC82325E7A5AF00D4E748 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 */; };
 		27BE504B22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */; };
 		27F8056525B8820800179E7F /* OngoingPostboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F8056425B8820800179E7F /* OngoingPostboxViewController.swift */; };
 		5C16D5E3203ECABA00947940 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C16D5E2203ECABA00947940 /* AppDelegate.swift */; };
@@ -46,6 +50,11 @@
 /* Begin PBXFileReference section */
 		0AE890231F6E363A4E59DF3B /* Pods-DigiMeSDKExampleSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleSwift.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExampleSwift/Pods-DigiMeSDKExampleSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		271E113325D28CBB00C00F07 /* OngoingPrivateSharingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OngoingPrivateSharingViewController.swift; sourceTree = "<group>"; };
+		278AC80125E6987800D4E748 /* DigiMeSDKExampleSwiftTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigiMeSDKExampleSwiftTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		278AC80525E698FB00D4E748 /* Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn.p12; sourceTree = "<group>"; };
+		278AC80625E6990800D4E748 /* V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v.p12; sourceTree = "<group>"; };
+		278AC81B25E7A4EB00D4E748 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		278AC82325E7A5AF00D4E748 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12; sourceTree = "<group>"; };
 		27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12; sourceTree = "<group>"; };
 		27F8056425B8820800179E7F /* OngoingPostboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OngoingPostboxViewController.swift; sourceTree = "<group>"; };
 		5C16D5DF203ECABA00947940 /* DigiMeSDKExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +109,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		278AC81225E7A26800D4E748 /* Private Keys */ = {
+			isa = PBXGroup;
+			children = (
+				278AC80525E698FB00D4E748 /* Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn.p12 */,
+				27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */,
+				278AC80625E6990800D4E748 /* V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v.p12 */,
+				278AC82325E7A5AF00D4E748 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 */,
+			);
+			path = "Private Keys";
+			sourceTree = "<group>";
+		};
 		5C16D5D6203ECABA00947940 = {
 			isa = PBXGroup;
 			children = (
@@ -132,7 +152,8 @@
 				5C2816C322DF28680052CCD7 /* PostboxViewController.swift */,
 				27F8056425B8820800179E7F /* OngoingPostboxViewController.swift */,
 				5C16D614203ED12800947940 /* LogViewController.swift */,
-				27BE504A22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 */,
+				278AC81B25E7A4EB00D4E748 /* AppInfo.swift */,
+				278AC81225E7A26800D4E748 /* Private Keys */,
 				5C2816C722DF2D570052CCD7 /* POSTBOXDATA.json */,
 				5C2816C822DF2D570052CCD7 /* POSTBOXMETADATA.json */,
 				5C16D5EE203ECABB00947940 /* Info.plist */,
@@ -147,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				5C16D5F7203ECABB00947940 /* DigiMeSDKExampleSwiftTests.swift */,
+				278AC80125E6987800D4E748 /* DigiMeSDKExampleSwiftTests-Bridging-Header.h */,
 				5C16D5F9203ECABB00947940 /* Info.plist */,
 			);
 			path = DigiMeSDKExampleSwiftTests;
@@ -295,9 +317,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C2816CA22DF2D570052CCD7 /* POSTBOXMETADATA.json in Resources */,
+				278AC80725E6990800D4E748 /* V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v.p12 in Resources */,
+				278AC82425E7A5AF00D4E748 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 in Resources */,
 				5C16D5ED203ECABA00947940 /* LaunchScreen.storyboard in Resources */,
 				5C16D5EA203ECABA00947940 /* Assets.xcassets in Resources */,
 				5C2816C922DF2D570052CCD7 /* POSTBOXDATA.json in Resources */,
+				278AC80B25E6990E00D4E748 /* Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn.p12 in Resources */,
 				5C16D5E8203ECABA00947940 /* Main.storyboard in Resources */,
 				27BE504B22047F80004DC356 /* fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12 in Resources */,
 			);
@@ -412,6 +437,7 @@
 				5C16D5E3203ECABA00947940 /* AppDelegate.swift in Sources */,
 				5C16D615203ED12800947940 /* LogViewController.swift in Sources */,
 				271E113425D28CBB00C00F07 /* OngoingPrivateSharingViewController.swift in Sources */,
+				278AC81C25E7A4EB00D4E748 /* AppInfo.swift in Sources */,
 				5C2816C622DF28710052CCD7 /* WelcomeViewController.swift in Sources */,
 				5C2816C422DF28680052CCD7 /* PostboxViewController.swift in Sources */,
 			);
@@ -592,7 +618,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocapods.demo.DigiMeSDKExampleSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -608,7 +634,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocapods.demo.DigiMeSDKExampleSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -626,7 +652,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocapods.demo.DigiMeSDKExampleSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DigiMeSDKExampleSwiftTests/DigiMeSDKExampleSwiftTests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DigiMeSDKExampleSwift.app/DigiMeSDKExampleSwift";
 			};
@@ -645,7 +671,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocapods.demo.DigiMeSDKExampleSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "DigiMeSDKExampleSwiftTests/DigiMeSDKExampleSwiftTests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DigiMeSDKExampleSwift.app/DigiMeSDKExampleSwift";
 			};
@@ -661,7 +687,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocapods.demo.DigiMeSDKExampleSwiftUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = DigiMeSDKExampleSwift;
 			};
@@ -677,7 +703,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.cocapods.demo.DigiMeSDKExampleSwiftUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = DigiMeSDKExampleSwift;
 			};

@@ -14,20 +14,37 @@ class OngoingPrivateSharingViewController: UIViewController {
     private var dmeClient: DMEPullClient?
     private var logVC: LogViewController!
     private var configuration: DMEPullConfiguration?
-    private var oAuthToken: DMEOAuthToken?
+    private let kAuthTokenKey = "ongoing_private_sharing_token"
+    
+    // Ideally this would be stored somewhere more secure, like the keychain.
+    // However for this example, we are just using UserDefaults.
+    private var oAuthToken: DMEOAuthToken? {
+        get {
+            guard let data = UserDefaults.standard.object(forKey: kAuthTokenKey) as? Data else {
+                return nil
+            }
+            
+            return try? NSKeyedUnarchiver.unarchivedObject(ofClass: DMEOAuthToken.self, from: data)
+        }
+        
+        set {
+            if let newValue = newValue,
+               let data = try? NSKeyedArchiver.archivedData(withRootObject: newValue, requiringSecureCoding: true) {
+                UserDefaults.standard.setValue(data, forKey: kAuthTokenKey)
+            }
+            else {
+                UserDefaults.standard.removeObject(forKey: kAuthTokenKey)
+            }
+        }
+    }
     
     private enum Configuration {
-        #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
-        static let appId = "YOUR_APP_ID"
-        
-        #warning("REPLACE 'YOUR_CONTRACT_ID' with your Private Sharing contract ID.")
-        static let contractId = "YOUR_CONTRACT_ID"
-        
-        #warning("REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.")
-        static let p12Password = "YOUR_P12_PASSWORD"
-        
-        #warning("REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.")
-        static let p12FileName = "YOUR_P12_FILE_NAME"
+        // This contract is a one-off contract which allows SDK user to read user's Spotify
+        // data from the past 6 months user over multiple sessions.
+        // User consent is required just once (via digi.me app).
+        static let contractId = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
+        static let p12Password = "digime"
+        static let p12FileName = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
     }
     
     override func viewDidLoad() {
@@ -69,7 +86,7 @@ class OngoingPrivateSharingViewController: UIViewController {
     
     private func resetClient() {
         // - GET STARTED -
-        if let config = DMEPullConfiguration(appId: Configuration.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) {
+        if let config = DMEPullConfiguration(appId: AppInfo.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) {
             config.debugLogEnabled = true
             dmeClient = nil
             dmeClient = DMEPullClient(configuration: config)
@@ -110,7 +127,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             }
 
             self.logVC.log(message: "Account Content: " + "\(String(describing: accounts.json!))")
-            self.logVC.log(message: "\n\nPlease press 'Start' to request data agin (without digi.me interaction).")
+            self.logVC.log(message: "\n\nPlease press 'Start' to request data again.\n\nAlternatively, try relaunching the app and starting again.\n\nIn either case you will see that it doesn't open the digi.me application to check permission.\n")
         }
     }
 
@@ -132,7 +149,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             }
             else {
                 self.logVC.log(message: "-------------Finished fetching session data!-------------")
-                self.logVC.log(message: "\n\nPlease press 'Start' to request data agin (without digi.me interaction).")
+                self.logVC.log(message: "\n\nPlease press 'Start' to request data again.\n\nAlternatively, try relaunching the app and starting again.\n\nIn either case you will see that it doesn't open the digi.me application to check permission.\n")
             }
 
             self.clearNavigationBar()
@@ -154,7 +171,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             }
             else {
                 self.logVC.log(message: "-------------Finished fetching session FileList!-------------")
-                self.logVC.log(message: "\n\nPlease press 'Start' to request data agin (without digi.me interaction).")
+                self.logVC.log(message: "\n\nPlease press 'Start' to request data again.\n\nAlternatively, try relaunching the app and starting again.\n\nIn either case you will see that it doesn't open the digi.me application to check permission.\n")
             }
 
             self.clearNavigationBar()
@@ -195,7 +212,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             // Uncomment relevant method depending on which you wish to receive.
             self.getAccounts()
             self.getSessionData()
-            //self.getSessionFileList()
+//            self.getSessionFileList()
         })
     }
     
@@ -221,7 +238,7 @@ class OngoingPrivateSharingViewController: UIViewController {
             // Uncomment relevant method depending on which you wish to receive.
             self.getAccounts()
             self.getSessionData()
-            //self.getSessionFileList()
+//            self.getSessionFileList()
         })
     }
 }

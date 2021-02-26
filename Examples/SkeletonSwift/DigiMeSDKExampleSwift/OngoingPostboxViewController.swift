@@ -13,22 +13,39 @@ class OngoingPostboxViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet weak var relaunchLabel: UILabel!
     
+    private let kPostboxKey = "ongoing_postbox"
     private var dmeClient: DMEPushClient?
-    private var ongoingPostbox: DMEOngoingPostbox?
+    
+    // Ideally this would be stored somewhere more secure, like the keychain.
+    // However for this example, we are just using UserDefaults.
+    private var ongoingPostbox: DMEOngoingPostbox? {
+        get {
+            guard let data = UserDefaults.standard.object(forKey: kPostboxKey) as? Data else {
+                return nil
+            }
+            
+            return try? NSKeyedUnarchiver.unarchivedObject(ofClass: DMEOngoingPostbox.self, from: data)
+        }
+        
+        set {
+            if let newValue = newValue,
+               let data = try? NSKeyedArchiver.archivedData(withRootObject: newValue, requiringSecureCoding: true) {
+                UserDefaults.standard.setValue(data, forKey: kPostboxKey)
+            }
+            else {
+                UserDefaults.standard.removeObject(forKey: kPostboxKey)
+            }
+        }
+    }
     
     private enum Configuration {
-        #warning("REPLACE 'YOUR_APP_ID' with your App ID. Also don't forget to set the app id in CFBundleURLSchemes.")
-        static let appId = "YOUR_APP_ID"
-        
-        #warning("REPLACE 'YOUR_CONTRACT_ID' with your Postbox contract ID.")
-        static let contractId = "YOUR_CONTRACT_ID"
-        
-        #warning("REPLACE 'YOUR_P12_PASSWORD' with password provided by digi.me Ltd.")
-        static let p12Password = "YOUR_P12_PASSWORD"
-        
-        #warning("REPLACE 'YOUR_P12_FILE_NAME' with .p12 file name (without the .p12 extension) provided by digi.me Ltd.")
-        static let p12FileName = "YOUR_P12_FILE_NAME"
+        // This contract is an ongoing contract which allows SDK user to push multiple files to user over multiple sessions.
+        // User consent is required just once (via digi.me app).
+        static let contractId = "V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v"
+        static let p12Password = "digime"
+        static let p12FileName = "V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v"
     }
     
     override func viewDidLoad() {
@@ -37,12 +54,15 @@ class OngoingPostboxViewController: UIViewController {
         title = "Ongoing Postbox Example"
         
         actionButton.addTarget(self, action: #selector(createPostbox), for: .touchUpInside)
-        self.actionButton.setTitle("SEND ME A RECEIPT", for: .normal)
+        actionButton.setTitle(ongoingPostbox != nil ? "SEND ANOTHER RECEIPT" : "SEND ME A RECEIPT", for: .normal)
+            
+        
+        relaunchLabel.isHidden = true
     }
     
     @objc func createPostbox() {
         
-        guard let configuration = DMEPushConfiguration(appId: Configuration.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) else {
+        guard let configuration = DMEPushConfiguration(appId: AppInfo.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) else {
             return
         }
         
@@ -63,9 +83,8 @@ class OngoingPostboxViewController: UIViewController {
             self.ongoingPostbox = postbox
             
             DispatchQueue.main.async {
-                self.titleLabel.text = "Sending..."
-                self.subtitleLabel.text = nil
-                self.actionButton.isHidden = true
+                self.actionButton.isEnabled = false
+                self.actionButton.setTitle("Sending...", for: .normal)
             }
             
             self.pushData(to: postbox)
@@ -81,8 +100,6 @@ class OngoingPostboxViewController: UIViewController {
             
             let dataToPush = try JSONEncoder().encode(Receipt())
             
-            // Update title in metadata
-            
             dmeClient?.pushData(to: postbox, metadata: metadataToPush, data: dataToPush) { updatedPostbox, error in
                 if let error = error {
                     print("Upload Error: \(error.localizedDescription)")
@@ -90,7 +107,7 @@ class OngoingPostboxViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.titleLabel.text = "Get a copy of your latest shopping receipt to your digi.me library"
                         self.subtitleLabel.text = "Please ensure you have the digi.me application installed."
-                        self.actionButton.isHidden = false
+                        self.actionButton.isEnabled = true
                         self.actionButton.setTitle("SEND ME A RECEIPT", for: .normal)
                     }
                 }
@@ -101,8 +118,9 @@ class OngoingPostboxViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.titleLabel.text = "All done!"
                         self.subtitleLabel.text = "Your purchase receipt has been sent, please check your digi.me library."
-                        self.actionButton.isHidden = false
-                        self.actionButton.setTitle("SEND ME ANOTHER RECEIPT", for: .normal)
+                        self.actionButton.isEnabled = true
+                        self.actionButton.setTitle("SEND ANOTHER RECEIPT", for: .normal)
+                        self.relaunchLabel.isHidden = false
                     }
                 }
                 
