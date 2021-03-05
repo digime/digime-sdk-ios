@@ -13,6 +13,7 @@
 #import <DigiMeSDK/DigiMeSDK-Swift.h>
 
 static NSString * const kDigiMeAPIVersion = @"v1.4";
+static NSString * const kDigiMeOngoingPostboxAPIVersion = @"v1.5"; // Use only for ongoing postbox as there is breaking change for pulling data
 static NSString * const kDigiMeOAuthAPIVersion = @"v1.4";
 static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
 
@@ -138,25 +139,23 @@ static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
     return request;
 }
 
-- (NSURLRequest *)pushRequestWithPostboxId:(NSString *)postboxId payload:(NSData *)data headerParameters:(NSDictionary *)headers
+- (NSURLRequest *)pushRequestWithPostboxId:(NSString *)postboxId payload:(NSData *)data bearer:(NSString *)jwtBearer
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/postbox/%@", self.baseUrlPath, postboxId]];
+    // This uses a newer API version which we cannot yet adopt for other API calls as it includes breaking changes.
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/permission-access/postbox/%@", self.baseUrl, kDigiMeOngoingPostboxAPIVersion, postboxId]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:self.config.globalTimeout];
     
     [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
     [request setHTTPMethod:@"POST"];
     
     NSString *boundary = [self generateBoundaryString];
-    NSString *metadata = [[headers[@"metadata"] stringByReplacingOccurrencesOfString:@"\n" withString:@""]stringByReplacingOccurrencesOfString:@"\r" withString:@""];
-    NSString *symmetricalKey = [[headers[@"symmetricalKey"] stringByReplacingOccurrencesOfString:@"\n" withString:@""]stringByReplacingOccurrencesOfString:@"\r" withString:@""];
-    
+
     NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
     [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:headers[@"sessionKey"] forHTTPHeaderField: @"sessionKey"];
-    [request setValue:symmetricalKey forHTTPHeaderField: @"symmetricalKey"];
-    [request setValue:headers[@"iv"] forHTTPHeaderField: @"iv"];
-    [request setValue:metadata forHTTPHeaderField: @"metadata"];
+    
+    NSString *authorization = [NSString stringWithFormat:@"Bearer %@", jwtBearer];
+    [request setValue:authorization forHTTPHeaderField:@"Authorization"];
     
     NSMutableData *body = [NSMutableData data];
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -166,7 +165,7 @@ static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
     if (data)
     {
         [body appendData:data];
-        [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     }
     
     [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -175,7 +174,6 @@ static NSString * const kDigiMeJWKSAPIVersion = @"v1.4";
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     
     return request;
-
 }
 
 - (NSString *)generateBoundaryString {

@@ -61,6 +61,11 @@
         return [NSError sdkError:SDKErrorInvalidContract];
     }
     
+    if (!self.configuration.privateKeyHex)
+    {
+        return [NSError sdkError:SDKErrorNoPrivateKeyHex];
+    }
+    
     return nil;
 }
 

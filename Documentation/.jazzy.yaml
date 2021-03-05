@@ -1,0 +1,12 @@
+theme: fullwidth
+readme: ../README.md
+documentation: guides/*md
+output: ../docs
+docset_path: ../docsets/.docset
+exclude: [DMEJWTUtility.swift]
+sourcekitten_sourcefile: [swiftDoc.json,objcDoc.json]
+clean: true
+hide_documentation_coverage: true
+author: digi.me
+author_url: https://developer.digi.me
+github_url: https://github.com/digime/digime-sdk-ios

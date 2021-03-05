@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import DigiMeSDKExampleSwift
 
 class DigiMeSDKExampleSwiftTests: XCTestCase {
     

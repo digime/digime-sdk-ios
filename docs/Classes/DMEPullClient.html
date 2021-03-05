@@ -14,7 +14,7 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Class/DMEPullClient" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Class/DMEPullClient" class="dashAnchor"></a>
 
     <a title="DMEPullClient Class Reference"></a>
 
@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
            Docs
         </a>
-         (55% documented)
+        
       </p>
     
       <p class="header-col--secondary">
@@ -32,6 +32,12 @@
         </form>
       </p>
     
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
     
     </header>
 
@@ -64,6 +70,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../ongoing-access.html">Ongoing Access</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../ongoing-postbox.html">Ongoing Postbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../postbox.html">Postbox</a>
@@ -109,10 +118,37 @@
                 <a class="nav-group-task-link" href="../Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEDuration.html">DMEDuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFile.html">DMEFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMEFileList.html">DMEFileList</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMEFileListAccount.html">DMEFileListAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFileListCache.html">DMEFileListCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFileListItem.html">DMEFileListItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFileMetadata.html">DMEFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEJWTUtility.html">DMEJWTUtility</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMELimits.html">DMELimits</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEOAuthToken.html">DMEOAuthToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEOngoingPostbox.html">DMEOngoingPostbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMEPostbox.html">DMEPostbox</a>
@@ -146,6 +182,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMESessionOptions.html">DMESessionOptions</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMETimeRange.html">DMETimeRange</a>
@@ -278,7 +317,13 @@
                 <a class="nav-group-task-link" href="../Enums/AuthError.html">AuthError</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DMEDataParsingError.html">DMEDataParsingError</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DMEFileSyncState.html">DMEFileSyncState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DMEMimeType.html">DMEMimeType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
@@ -297,6 +342,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DMEDataRequest.html">DMEDataRequest</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DMEInitialisableFromRawData.html">DMEInitialisableFromRawData</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -313,6 +361,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingPostboxCompletion">DMEOngoingPostboxCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
@@ -337,8 +388,13 @@
             <h1>DMEPullClient</h1>
               <div class="declaration">
                 <div class="language">
-                  
+                  <p class="aside-title">Objective-C</p>
                   <pre class="highlight objective_c"><code><span class="k">@interface</span> <span class="nc">DMEPullClient</span> <span class="p">:</span> <span class="nc"><a href="../Classes/DMEClient.html">DMEClient</a></span></code></pre>
+
+                </div>
+                <div class="language">
+                  <p class="aside-title">Swift</p>
+                  <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">DMEPullClient</span> <span class="p">:</span> <span class="kt"><a href="../Classes/DMEClient.html">DMEClient</a></span></code></pre>
 
                 </div>
               </div>
@@ -355,7 +411,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)initWithConfiguration:"></a>
-                    <a name="//apple_ref/objc/Method/-initWithConfiguration:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-initWithConfiguration:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)initWithConfiguration:">-initWithConfiguration:<wbr></a>
                     </code>
                   </div>
@@ -374,6 +430,11 @@
                           <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="n">instancetype</span><span class="p">)</span><span class="nf">initWithConfiguration</span><span class="p">:(</span><span class="n"><a href="../Classes/DMEPullConfiguration.html">DMEPullConfiguration</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">configuration</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMEPullConfiguration.html">DMEPullConfiguration</a></span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -382,7 +443,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)authorizeWithCompletion:"></a>
-                    <a name="//apple_ref/objc/Method/-authorizeWithCompletion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-authorizeWithCompletion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)authorizeWithCompletion:">-authorizeWithCompletion:<wbr></a>
                     </code>
                   </div>
@@ -411,6 +472,11 @@ depending on the value of <code>guestEnabled</code> flag in the configuration:</
                           <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeWithCompletion</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAuthorizationCompletion">DMEAuthorizationCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">authorize</span><span class="p">(</span><span class="n">withCompletion</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                       <div>
                         <h4>Parameters</h4>
@@ -424,7 +490,7 @@ depending on the value of <code>guestEnabled</code> flag in the configuration:</
                               </td>
                               <td>
                                 <div>
-                                  <p>Block called when authorization has completed</p>
+                                  <p>Block called on main thread when authorization has completed</p>
                                 </div>
                               </td>
                             </tr>
@@ -438,7 +504,7 @@ depending on the value of <code>guestEnabled</code> flag in the configuration:</
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)authorizeWithScope:completion:"></a>
-                    <a name="//apple_ref/objc/Method/-authorizeWithScope:completion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-authorizeWithScope:completion:" class="dashAnchor"></a>
                     <a class="token discouraged" href="#/c:objc(cs)DMEPullClient(im)authorizeWithScope:completion:">-authorizeWithScope:<wbr>completion:<wbr></a>
                     </code>
                   </div>
@@ -498,7 +564,7 @@ Redirect to the digi.me application (if installed).</p></li>
                               </td>
                               <td>
                                 <div>
-                                  <p>Block called when authorization has completed</p>
+                                  <p>Block called on main thread when authorization has completed</p>
                                 </div>
                               </td>
                             </tr>
@@ -512,7 +578,7 @@ Redirect to the digi.me application (if installed).</p></li>
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)authorizeOngoingAccessWithСompletion:"></a>
-                    <a name="//apple_ref/objc/Method/-authorizeOngoingAccessWithСompletion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-authorizeOngoingAccessWithСompletion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)authorizeOngoingAccessWithСompletion:">-authorizeOngoingAccessWithСompletion:<wbr></a>
                     </code>
                   </div>
@@ -533,6 +599,11 @@ This authorization flow enables 3rd parties to access protected resources, witho
     <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a></span><span class="p">)</span><span class="n">completion</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">authorizeOngoingAccess</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                       <div>
                         <h4>Parameters</h4>
@@ -546,7 +617,7 @@ This authorization flow enables 3rd parties to access protected resources, witho
                               </td>
                               <td>
                                 <div>
-                                  <p>Block called when authorization has completed</p>
+                                  <p>Block called on main thread when authorization has completed</p>
                                 </div>
                               </td>
                             </tr>
@@ -560,7 +631,7 @@ This authorization flow enables 3rd parties to access protected resources, witho
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)authorizeOngoingAccessWithScope:oAuthToken:completion:"></a>
-                    <a name="//apple_ref/objc/Method/-authorizeOngoingAccessWithScope:oAuthToken:completion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-authorizeOngoingAccessWithScope:oAuthToken:completion:" class="dashAnchor"></a>
                     <a class="token discouraged" href="#/c:objc(cs)DMEPullClient(im)authorizeOngoingAccessWithScope:oAuthToken:completion:">-authorizeOngoingAccessWithScope:<wbr>oAuthToken:<wbr>completion:<wbr></a>
                     </code>
                   </div>
@@ -584,7 +655,7 @@ This authorization flow enables 3rd parties to access protected resources, witho
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
     <span class="nf">authorizeOngoingAccessWithScope</span><span class="p">:(</span><span class="n">nullable</span> <span class="n">id</span><span class="o">&lt;</span><span class="n"><a href="../Protocols/DMEDataRequest.html">DMEDataRequest</a></span><span class="o">&gt;</span><span class="p">)</span><span class="nv">scope</span>
-                         <span class="nf">oAuthToken</span><span class="p">:(</span><span class="n">DMEOAuthToken</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">oAuthToken</span>
+                         <span class="nf">oAuthToken</span><span class="p">:(</span><span class="n"><a href="../Classes/DMEOAuthToken.html">DMEOAuthToken</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">oAuthToken</span>
                          <span class="nf">completion</span><span class="p">:</span>
                              <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a></span><span class="p">)</span>
                                  <span class="n">completion</span><span class="p">;</span></code></pre>
@@ -627,7 +698,7 @@ This authorization flow enables 3rd parties to access protected resources, witho
                               </td>
                               <td>
                                 <div>
-                                  <p>Block called when authorization has completed</p>
+                                  <p>Block called on main thread when authorization has completed</p>
                                 </div>
                               </td>
                             </tr>
@@ -641,7 +712,7 @@ This authorization flow enables 3rd parties to access protected resources, witho
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)authorizeWithOptions:completion:"></a>
-                    <a name="//apple_ref/objc/Method/-authorizeWithOptions:completion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-authorizeWithOptions:completion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)authorizeWithOptions:completion:">-authorizeWithOptions:<wbr>completion:<wbr></a>
                     </code>
                   </div>
@@ -667,8 +738,13 @@ Redirect to the digi.me application (if installed).</p></li>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
-                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeWithOptions</span><span class="p">:(</span><span class="n">DMESessionOptions</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">options</span>
+                          <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">authorizeWithOptions</span><span class="p">:(</span><span class="n">nullable</span> <span class="n"><a href="../Classes/DMESessionOptions.html">DMESessionOptions</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">options</span>
                   <span class="nf">completion</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAuthorizationCompletion">DMEAuthorizationCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">authorize</span><span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMESessionOptions.html">DMESessionOptions</a></span><span class="p">?,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -696,7 +772,7 @@ Redirect to the digi.me application (if installed).</p></li>
                               </td>
                               <td>
                                 <div>
-                                  <p>Block called when authorization has completed</p>
+                                  <p>Block called on main thread when authorization has completed</p>
                                 </div>
                               </td>
                             </tr>
@@ -710,7 +786,7 @@ Redirect to the digi.me application (if installed).</p></li>
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)authorizeOngoingAccessWithOptions:oAuthToken:completion:"></a>
-                    <a name="//apple_ref/objc/Method/-authorizeOngoingAccessWithOptions:oAuthToken:completion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-authorizeOngoingAccessWithOptions:oAuthToken:completion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)authorizeOngoingAccessWithOptions:oAuthToken:completion:">-authorizeOngoingAccessWithOptions:<wbr>oAuthToken:<wbr>completion:<wbr></a>
                     </code>
                   </div>
@@ -728,11 +804,16 @@ This authorization flow enables 3rd parties to access protected resources, witho
                         <div class="language">
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-    <span class="nf">authorizeOngoingAccessWithOptions</span><span class="p">:(</span><span class="n">DMESessionOptions</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">options</span>
-                           <span class="nf">oAuthToken</span><span class="p">:(</span><span class="n">DMEOAuthToken</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">oAuthToken</span>
+    <span class="nf">authorizeOngoingAccessWithOptions</span><span class="p">:(</span><span class="n">nullable</span> <span class="n"><a href="../Classes/DMESessionOptions.html">DMESessionOptions</a></span> <span class="o">*</span><span class="p">)</span><span class="nv">options</span>
+                           <span class="nf">oAuthToken</span><span class="p">:(</span><span class="n"><a href="../Classes/DMEOAuthToken.html">DMEOAuthToken</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">)</span><span class="nv">oAuthToken</span>
                            <span class="nf">completion</span><span class="p">:</span>
                                <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a></span><span class="p">)</span>
                                    <span class="n">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">authorizeOngoingAccess</span><span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="kt"><a href="../Classes/DMESessionOptions.html">DMESessionOptions</a></span><span class="p">?,</span> <span class="nv">oAuthToken</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -772,7 +853,7 @@ This authorization flow enables 3rd parties to access protected resources, witho
                               </td>
                               <td>
                                 <div>
-                                  <p>Block called when authorization has completed</p>
+                                  <p>Block called on main thread when authorization has completed</p>
                                 </div>
                               </td>
                             </tr>
@@ -786,7 +867,7 @@ This authorization flow enables 3rd parties to access protected resources, witho
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)getSessionDataWithDownloadHandler:completion:"></a>
-                    <a name="//apple_ref/objc/Method/-getSessionDataWithDownloadHandler:completion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-getSessionDataWithDownloadHandler:completion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)getSessionDataWithDownloadHandler:completion:">-getSessionDataWithDownloadHandler:<wbr>completion:<wbr></a>
                     </code>
                   </div>
@@ -811,6 +892,11 @@ Therefore multiple the handlers may be called concurrently, so the handler shoul
             <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a></span><span class="p">)</span><span class="nv">fileContentHandler</span>
                                <span class="nf">completion</span><span class="p">:</span>
                                    <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMESessionDataCompletion">DMESessionDataCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getSessionData</span><span class="p">(</span><span class="n">downloadHandler</span> <span class="nv">fileContentHandler</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -838,7 +924,7 @@ Therefore multiple the handlers may be called concurrently, so the handler shoul
                               </td>
                               <td>
                                 <div>
-                                  <p>Contains final snapshot of DMEFileList. Error object will be set if an error occurred, nil otherwise</p>
+                                  <p>Block called on main thread when fetch completed. Contains final snapshot of DMEFileList. Error object will be set if an error occurred, nil otherwise</p>
                                 </div>
                               </td>
                             </tr>
@@ -852,7 +938,7 @@ Therefore multiple the handlers may be called concurrently, so the handler shoul
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)getSessionDataForFileWithId:completion:"></a>
-                    <a name="//apple_ref/objc/Method/-getSessionDataForFileWithId:completion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-getSessionDataForFileWithId:completion:" class="dashAnchor"></a>
                     <a class="token discouraged" href="#/c:objc(cs)DMEPullClient(im)getSessionDataForFileWithId:completion:">-getSessionDataForFileWithId:<wbr>completion:<wbr></a>
                     </code>
                   </div>
@@ -903,7 +989,7 @@ Therefore multiple the handlers may be called concurrently, so the handler shoul
                               </td>
                               <td>
                                 <div>
-                                  <p>Reports result of fetch. Either contains the file or an error if fetch failed</p>
+                                  <p>Block called on main thread when fetch completed. Either contains the file or an error if fetch failed</p>
                                 </div>
                               </td>
                             </tr>
@@ -917,7 +1003,7 @@ Therefore multiple the handlers may be called concurrently, so the handler shoul
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)getSessionDataWithFileId:completion:"></a>
-                    <a name="//apple_ref/objc/Method/-getSessionDataWithFileId:completion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-getSessionDataWithFileId:completion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)getSessionDataWithFileId:completion:">-getSessionDataWithFileId:<wbr>completion:<wbr></a>
                     </code>
                   </div>
@@ -935,6 +1021,11 @@ Therefore multiple the handlers may be called concurrently, so the handler shoul
                           <p class="aside-title">Objective-C</p>
                           <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">getSessionDataWithFileId</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">fileId</span>
                       <span class="nf">completion</span><span class="p">:(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEFileContentCompletion">DMEFileContentCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getSessionData</span><span class="p">(</span><span class="nv">fileId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -962,7 +1053,7 @@ Therefore multiple the handlers may be called concurrently, so the handler shoul
                               </td>
                               <td>
                                 <div>
-                                  <p>Reports result of fetch. Either contains the file or an error if fetch failed</p>
+                                  <p>Block called on main thread when fetch completed. Either contains the file or an error if fetch failed</p>
                                 </div>
                               </td>
                             </tr>
@@ -976,7 +1067,7 @@ Therefore multiple the handlers may be called concurrently, so the handler shoul
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)getSessionFileListWithUpdateHandler:completion:"></a>
-                    <a name="//apple_ref/objc/Method/-getSessionFileListWithUpdateHandler:completion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-getSessionFileListWithUpdateHandler:completion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)getSessionFileListWithUpdateHandler:completion:">-getSessionFileListWithUpdateHandler:<wbr>completion:<wbr></a>
                     </code>
                   </div>
@@ -997,6 +1088,11 @@ Not intended to be used in conjunction with <code>getSessionData(downloadHandler
             <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMESessionFileListCompletion">DMESessionFileListCompletion</a></span><span class="p">)</span><span class="nv">updateHandler</span>
                                  <span class="nf">completion</span><span class="p">:(</span><span class="n">nonnull</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span>
                                                 <span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">))</span><span class="n">completion</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getSessionFileList</span><span class="p">(</span><span class="nv">updateHandler</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1026,7 +1122,7 @@ Only notified when a change has occurred. See <code><a href="../Type%20Definitio
                               </td>
                               <td>
                                 <div>
-                                  <p>executed when file list has finished updating, and no more changes will come.
+                                  <p>Block called on main thread when file list has finished updating, and no more changes will come.
 Error object will be set if an error occurred, nil otherwise.</p>
                                 </div>
                               </td>
@@ -1041,7 +1137,7 @@ Error object will be set if an error occurred, nil otherwise.</p>
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)getFileListWithCompletion:"></a>
-                    <a name="//apple_ref/objc/Method/-getFileListWithCompletion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-getFileListWithCompletion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)getFileListWithCompletion:">-getFileListWithCompletion:<wbr></a>
                     </code>
                   </div>
@@ -1061,6 +1157,11 @@ Error object will be set if an error occurred, nil otherwise.</p>
     <span class="p">(</span><span class="n">nonnull</span> <span class="kt">void</span> <span class="p">(</span><span class="o">^</span><span class="p">)(</span><span class="n"><a href="../Classes/DMEFileList.html">DMEFileList</a></span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">_Nullable</span><span class="p">))</span><span class="nv">completion</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getFileList</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Classes/DMEFileList.html">DMEFileList</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                       <div>
                         <h4>Parameters</h4>
@@ -1074,7 +1175,7 @@ Error object will be set if an error occurred, nil otherwise.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>Completion block executed once request has completed successfully.</p>
+                                  <p>Completion block executed on main thread once request has completed successfully.</p>
                                 </div>
                               </td>
                             </tr>
@@ -1088,7 +1189,7 @@ Error object will be set if an error occurred, nil otherwise.</p>
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)getSessionAccountsWithCompletion:"></a>
-                    <a name="//apple_ref/objc/Method/-getSessionAccountsWithCompletion:" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-getSessionAccountsWithCompletion:" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)getSessionAccountsWithCompletion:">-getSessionAccountsWithCompletion:<wbr></a>
                     </code>
                   </div>
@@ -1108,6 +1209,11 @@ Error object will be set if an error occurred, nil otherwise.</p>
     <span class="p">(</span><span class="n">nonnull</span> <span class="n"><a href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEAccountsCompletion">DMEAccountsCompletion</a></span><span class="p">)</span><span class="nv">completion</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getSessionAccounts</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                       <div>
                         <h4>Parameters</h4>
@@ -1121,7 +1227,7 @@ Error object will be set if an error occurred, nil otherwise.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>Reports result of fetch. Either contains the accounts or an error if fetch failed</p>
+                                  <p>Block called on main thread when fetch completed. Either contains the accounts or an error if fetch failed</p>
                                 </div>
                               </td>
                             </tr>
@@ -1135,7 +1241,7 @@ Error object will be set if an error occurred, nil otherwise.</p>
                   <div>
                     <code>
                     <a name="/c:objc(cs)DMEPullClient(im)cancel"></a>
-                    <a name="//apple_ref/objc/Method/-cancel" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Method/-cancel" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(cs)DMEPullClient(im)cancel">-cancel</a>
                     </code>
                   </div>
@@ -1154,6 +1260,11 @@ Error object will be set if an error occurred, nil otherwise.</p>
                           <pre class="highlight objective_c"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">cancel</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">cancel</span><span class="p">()</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -1166,7 +1277,7 @@ Error object will be set if an error occurred, nil otherwise.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-01-26)</p>
+      <p>&copy; 2021 <a class="link" href="https://developer.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-02-23)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -67,6 +67,8 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
 
 - (void)openDigiMeAppWithAction:(DMEOpenAction *)action parameters:(NSDictionary *)parameters
 {
+    NSArray *actionComponents = [action componentsSeparatedByString:@"/"];
+    NSAssert(actionComponents.count < 3, @"Invalid action. Should contain at most one '/'");
     self.sentAction = action;
     self.sentParameters = parameters;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -77,7 +79,12 @@ static NSTimeInterval const kDMETimerInterval = 0.5;
         }
         
         NSURLComponents *components = [NSURLComponents componentsWithURL:[self digiMeBaseURL] resolvingAgainstBaseURL:NO];
-        components.host = action;
+        components.host = actionComponents[0];
+        
+        if (actionComponents.count == 2)
+        {
+            components.path = [NSString stringWithFormat:@"/%@", actionComponents[1]];
+        }
         
         NSMutableArray *newQueryItems = [NSMutableArray arrayWithArray:components.queryItems] ?: [NSMutableArray array];
         [newQueryItems addObject:[NSURLQueryItem queryItemWithName:kDMESdkVersion value:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]]];

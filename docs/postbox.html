@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
            Docs
         </a>
-         (55% documented)
+        
       </p>
     
       <p class="header-col--secondary">
@@ -31,6 +31,12 @@
         </form>
       </p>
     
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
     
     </header>
 
@@ -63,6 +69,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="ongoing-access.html">Ongoing Access</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="ongoing-postbox.html">Ongoing Postbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="postbox.html">Postbox</a>
@@ -108,10 +117,37 @@
                 <a class="nav-group-task-link" href="Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEDuration.html">DMEDuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFile.html">DMEFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEFileList.html">DMEFileList</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEFileListAccount.html">DMEFileListAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileListCache.html">DMEFileListCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileListItem.html">DMEFileListItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEFileMetadata.html">DMEFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEJWTUtility.html">DMEJWTUtility</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMELimits.html">DMELimits</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEOAuthToken.html">DMEOAuthToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMEOngoingPostbox.html">DMEOngoingPostbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMEPostbox.html">DMEPostbox</a>
@@ -145,6 +181,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DMESessionOptions.html">DMESessionOptions</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DMETimeRange.html">DMETimeRange</a>
@@ -277,7 +316,13 @@
                 <a class="nav-group-task-link" href="Enums/AuthError.html">AuthError</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DMEDataParsingError.html">DMEDataParsingError</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/DMEFileSyncState.html">DMEFileSyncState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DMEMimeType.html">DMEMimeType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
@@ -296,6 +341,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/DMEDataRequest.html">DMEDataRequest</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DMEInitialisableFromRawData.html">DMEInitialisableFromRawData</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -312,6 +360,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingPostboxCompletion">DMEOngoingPostboxCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
@@ -390,7 +441,8 @@
 
 <p>In a production environment, you will also be required to obtain your own <code>Contract ID</code> from digi.me support. However, for sandbox purposes, we provide the following example value:</p>
 
-<p><strong>Example Contract ID:</strong> <code>Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn</code></p>
+<p><strong>Example Contract ID:</strong> <code>Cb1JC2tIatLfF7LH1ksmdNx4AfYPszIn</code>
+See <a href="https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift">Swift Example App</a> for private key details.</p>
 <h3 id='2-configuring-callback-forwarding' class='heading'>2. Configuring Callback Forwarding:</h3>
 
 <p>Because the digi.me Private Sharing SDK opens the digi.me app for authorization, you are required to forward the <code>openURL</code> event through to the SDK so that it may process responses. In your application&rsquo;s delegate (typically <code>AppDelegate</code>) override <code>application:openURL:options:</code> method as below:</p>
@@ -436,13 +488,13 @@ And register custom URL scheme so that your app can receive the callback from Di
 
 <p><code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code> is the object you will primarily interface with to use the SDK. It is instantiated with a <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object.</p>
 
-<p>The <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object is instantiated with your <code>AppID</code> and <code>Private Key</code> in hex format. The below code snippet shows you how to combine all this to get a configured <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code>:</p>
+<p>The <code><a href="Classes.html#/c:objc(cs)DMEPushConfiguration">DMEPushConfiguration</a></code> object is instantiated with your <code>AppID</code>, <code>ContractID</code> and <code>Private Key</code> in hex format. The below code snippet shows you how to combine all this to get a configured <code><a href="Classes/DMEPushClient.html">DMEPushClient</a></code>:</p>
 <h5 id='objective-c' class='heading'>Objective-C</h5>
-<pre class="highlight objective_c"><code><span class="n">DMEPushConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushConfiguration</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithAppId</span><span class="p">:</span><span class="s">@"YOUR_APP_ID"</span> <span class="nf">contractId</span><span class="p">:</span><span class="s">@"YOUR_CONTRACT_ID"</span><span class="p">];</span>
+<pre class="highlight objective_c"><code><span class="n">DMEPushConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushConfiguration</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithAppId</span><span class="p">:</span><span class="s">@"YOUR_APP_ID"</span> <span class="nf">contractId</span><span class="p">:</span><span class="s">@"YOUR_CONTRACT_ID"</span> <span class="n">privateKeyHex</span><span class="o">:</span><span class="s">@"YOUR_PRIVATE_KEY"</span><span class="p">];</span>
 <span class="n">DMEPushClient</span> <span class="o">*</span><span class="n">pushClient</span> <span class="o">=</span> <span class="p">[[</span><span class="n">DMEPushClient</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithConfiguration</span><span class="p">:</span><span class="n">configuration</span><span class="p">];</span>
 </code></pre>
 <h5 id='swift' class='heading'>Swift</h5>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DMEPushConfiguration</span><span class="p">(</span><span class="nv">appId</span><span class="p">:</span> <span class="s">"YOUR_APP_ID"</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="s">"YOUR_CONTRACT_ID"</span><span class="p">)</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">DMEPushConfiguration</span><span class="p">(</span><span class="nv">appId</span><span class="p">:</span> <span class="s">"YOUR_APP_ID"</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="s">"YOUR_CONTRACT_ID"</span><span class="p">,</span> <span class="nv">privateKeyHex</span><span class="p">:</span> <span class="s">"YOUR_PRIVATE_KEY"</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">pushClient</span> <span class="o">=</span> <span class="kt">DMEPushClient</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="n">configuration</span><span class="p">)</span>
 </code></pre>
 <h3 id='4-requesting-consent' class='heading'>4. Requesting Consent:</h3>
@@ -479,6 +531,12 @@ And register custom URL scheme so that your app can receive the callback from Di
   <span class="c1">// Handle error, if any.</span>
 <span class="p">}</span>
 </code></pre>
+<h3 id='6-multiple-data-pushes' class='heading'>6. Multiple Data Pushes:</h3>
+
+<p>Multiple data pushes can be made to a postbox within
+ the duration of the session. To make data pushes over mulitple app sessions, you can create a new postbox for each app session (which requires user&rsquo;s consent for each session).</p>
+
+<p>Alternatively you can create an <a href="ongoing-postbox.html">Ongoing Postbox</a>, which only requires user&rsquo;s consent once, and store a reference to the ongoing postbox between app sessions.</p>
 
 <p><em>NB: Please refer to our Postbox example in the <a href="https://github.com/digime/digime-sdk-ios/tree/master/ExampleSwift">Swift Example App</a> for more details on data and metadata.</em></p>
 
@@ -489,7 +547,7 @@ And register custom URL scheme so that your app can receive the callback from Di
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-01-26)</p>
+      <p>&copy; 2021 <a class="link" href="https://developer.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-02-23)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

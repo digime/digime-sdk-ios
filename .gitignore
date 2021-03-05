@@ -32,4 +32,9 @@ Carthage
 #
 Pods/
 Podfile.lock
+
+# jazzy & sourcekitten document generation
 docs/docsets/
+docsets/
+Documentation/objcDoc.json
+Documentation/swiftDoc.json

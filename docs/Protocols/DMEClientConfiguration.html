@@ -14,7 +14,7 @@
   </head>
   <body>
 
-    <a name="//apple_ref/objc/Protocol/DMEClientConfiguration" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Protocol/DMEClientConfiguration" class="dashAnchor"></a>
 
     <a title="DMEClientConfiguration Protocol Reference"></a>
 
@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
            Docs
         </a>
-         (55% documented)
+        
       </p>
     
       <p class="header-col--secondary">
@@ -32,6 +32,12 @@
         </form>
       </p>
     
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
     
     </header>
 
@@ -64,6 +70,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../ongoing-access.html">Ongoing Access</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../ongoing-postbox.html">Ongoing Postbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../postbox.html">Postbox</a>
@@ -109,10 +118,37 @@
                 <a class="nav-group-task-link" href="../Classes/DMECryptoUtilities.html">DMECryptoUtilities</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEDuration.html">DMEDuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFile.html">DMEFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMEFileList.html">DMEFileList</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMEFileListAccount.html">DMEFileListAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFileListCache.html">DMEFileListCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFileListItem.html">DMEFileListItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEFileMetadata.html">DMEFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEJWTUtility.html">DMEJWTUtility</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMELimits.html">DMELimits</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEOAuthToken.html">DMEOAuthToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMEOngoingPostbox.html">DMEOngoingPostbox</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMEPostbox.html">DMEPostbox</a>
@@ -146,6 +182,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMESession.html">DMESession</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DMESessionOptions.html">DMESessionOptions</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DMETimeRange.html">DMETimeRange</a>
@@ -278,7 +317,13 @@
                 <a class="nav-group-task-link" href="../Enums/AuthError.html">AuthError</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DMEDataParsingError.html">DMEDataParsingError</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DMEFileSyncState.html">DMEFileSyncState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DMEMimeType.html">DMEMimeType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DMETimeRangeUnit.html">DMETimeRangeUnit</a>
@@ -297,6 +342,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DMEDataRequest.html">DMEDataRequest</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DMEInitialisableFromRawData.html">DMEInitialisableFromRawData</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -313,6 +361,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingAccessAuthorizationCompletion">DMEOngoingAccessAuthorizationCompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEOngoingPostboxCompletion">DMEOngoingPostboxCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Type%20Definitions.html#/c:DMEClientCallbacks.h@T@DMEPostboxCreationCompletion">DMEPostboxCreationCompletion</a>
@@ -337,8 +388,13 @@
             <h1>DMEClientConfiguration</h1>
               <div class="declaration">
                 <div class="language">
-                  
+                  <p class="aside-title">Objective-C</p>
                   <pre class="highlight objective_c"><code><span class="k">@protocol</span> <span class="nc">DMEClientConfiguration</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span></code></pre>
+
+                </div>
+                <div class="language">
+                  <p class="aside-title">Swift</p>
+                  <pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">DMEClientConfiguration</span></code></pre>
 
                 </div>
               </div>
@@ -355,7 +411,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)globalTimeout"></a>
-                    <a name="//apple_ref/objc/Property/globalTimeout" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/globalTimeout" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)globalTimeout">globalTimeout</a>
                     </code>
                   </div>
@@ -374,6 +430,11 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSTimeInterval</span> <span class="n">globalTimeout</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">globalTimeout</span><span class="p">:</span> <span class="kt">Int32</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -382,7 +443,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)retryOnFail"></a>
-                    <a name="//apple_ref/objc/Property/retryOnFail" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/retryOnFail" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)retryOnFail">retryOnFail</a>
                     </code>
                   </div>
@@ -401,6 +462,11 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">retryOnFail</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">retryOnFail</span><span class="p">:</span> <span class="kt">Int32</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -409,7 +475,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)retryDelay"></a>
-                    <a name="//apple_ref/objc/Property/retryDelay" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/retryDelay" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)retryDelay">retryDelay</a>
                     </code>
                   </div>
@@ -428,6 +494,11 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSInteger</span> <span class="n">retryDelay</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">retryDelay</span><span class="p">:</span> <span class="kt">Int32</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -436,7 +507,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)retryWithExponentialBackOff"></a>
-                    <a name="//apple_ref/objc/Property/retryWithExponentialBackOff" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/retryWithExponentialBackOff" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)retryWithExponentialBackOff">retryWithExponentialBackOff</a>
                     </code>
                   </div>
@@ -455,6 +526,11 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">retryWithExponentialBackOff</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">retryWithExponentialBackOff</span><span class="p">:</span> <span class="kt">Int32</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -463,7 +539,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)maxRetryCount"></a>
-                    <a name="//apple_ref/objc/Property/maxRetryCount" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/maxRetryCount" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)maxRetryCount">maxRetryCount</a>
                     </code>
                   </div>
@@ -482,6 +558,11 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSInteger</span> <span class="n">maxRetryCount</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">maxRetryCount</span><span class="p">:</span> <span class="kt">Int32</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -490,7 +571,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)maxConcurrentRequests"></a>
-                    <a name="//apple_ref/objc/Property/maxConcurrentRequests" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/maxConcurrentRequests" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)maxConcurrentRequests">maxConcurrentRequests</a>
                     </code>
                   </div>
@@ -509,6 +590,11 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSInteger</span> <span class="n">maxConcurrentRequests</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">maxConcurrentRequests</span><span class="p">:</span> <span class="kt">Int32</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -517,7 +603,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)debugLogEnabled"></a>
-                    <a name="//apple_ref/objc/Property/debugLogEnabled" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/debugLogEnabled" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)debugLogEnabled">debugLogEnabled</a>
                     </code>
                   </div>
@@ -536,6 +622,11 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">debugLogEnabled</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">debugLogEnabled</span><span class="p">:</span> <span class="kt">Int32</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -544,7 +635,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)baseUrl"></a>
-                    <a name="//apple_ref/objc/Property/baseUrl" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/baseUrl" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)baseUrl">baseUrl</a>
                     </code>
                   </div>
@@ -563,6 +654,11 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">baseUrl</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">baseUrl</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;!</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -571,7 +667,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)appId"></a>
-                    <a name="//apple_ref/objc/Property/appId" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/appId" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)appId">appId</a>
                     </code>
                   </div>
@@ -590,6 +686,11 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">,</span> <span class="n">readonly</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">appId</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">appId</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;!</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -598,7 +699,7 @@
                   <div>
                     <code>
                     <a name="/c:objc(pl)DMEClientConfiguration(py)contractId"></a>
-                    <a name="//apple_ref/objc/Property/contractId" class="dashAnchor"></a>
+                    <a name="//apple_ref/swift/Property/contractId" class="dashAnchor"></a>
                     <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)contractId">contractId</a>
                     </code>
                   </div>
@@ -617,6 +718,78 @@
                           <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">contractId</span><span class="p">;</span></code></pre>
 
                         </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">contractId</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;!</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)DMEClientConfiguration(py)privateKeyHex"></a>
+                    <a name="//apple_ref/swift/Property/privateKeyHex" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)privateKeyHex">privateKeyHex</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Your rsa private key hex. This property MUST be set before you can call authorize.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">copy</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">_Nonnull</span> <span class="n">privateKeyHex</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">privateKeyHex</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Int32</span><span class="o">&gt;!</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:objc(pl)DMEClientConfiguration(py)autoRecoverExpiredCredentials"></a>
+                    <a name="//apple_ref/swift/Property/autoRecoverExpiredCredentials" class="dashAnchor"></a>
+                    <a class="token" href="#/c:objc(pl)DMEClientConfiguration(py)autoRecoverExpiredCredentials">autoRecoverExpiredCredentials</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Determines whether the user is automatically forwarded
+to digi.me app when the <code><a href="../Classes/DMEOAuthToken.html">DMEOAuthToken</a></code> could not be refreshed by the SDK.
+Default to YES.
+Setting this to NO will instead return a <code>AuthErrorOAuthTokenExpired</code> error.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Objective-C</p>
+                          <pre class="highlight objective_c"><code><span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">)</span> <span class="n">BOOL</span> <span class="n">autoRecoverExpiredCredentials</span><span class="p">;</span></code></pre>
+
+                        </div>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">autoRecoverExpiredCredentials</span><span class="p">:</span> <span class="kt">Int32</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -629,7 +802,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-01-26)</p>
+      <p>&copy; 2021 <a class="link" href="https://developer.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-02-23)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

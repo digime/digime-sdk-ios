@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name         	= "DigiMeSDK"
-    s.version      	= "3.3.0"
+    s.version      	= "4.0.0"
     s.summary      	= "digi.me iOS Consent Access SDK"
     s.homepage     	= "https://github.com/digime/digime-sdk-ios"
     s.license      	= { :type => "MIT", :file => "LICENSE" }
@@ -26,6 +26,7 @@ Pod::Spec.new do |s|
     'DigiMeSDK/Core/Classes/Network/DMERequestFactory.h',
     'DigiMeSDK/Core/Classes/Security/DMECrypto.h',
     'DigiMeSDK/Core/Classes/Security/DMEDataDecryptor.h',
+    'DigiMeSDK/Core/Classes/Security/DMEOAuthService.h',
     'DigiMeSDK/Core/Classes/Utility/DMECompressor.h',
     'DigiMeSDK/Core/Classes/Utility/DMEDataRequestSerializer.h',
     'DigiMeSDK/Core/Classes/Utility/DMEFileListDeserializer.h',

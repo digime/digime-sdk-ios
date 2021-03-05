@@ -6,36 +6,21 @@
 //  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 
-#import "DMECryptoUtilities.h"
 #import "DMEPullConfiguration.h"
 
 @implementation DMEPullConfiguration
 
 - (instancetype)initWithAppId:(NSString *)appId contractId:(NSString *)contractId privateKeyHex:(NSString *)privateKeyHex
 {
-    self = [super initWithAppId:appId contractId:contractId];
+    self = [super initWithAppId:appId contractId:contractId privateKeyHex:privateKeyHex];
     if (self)
     {
-        _privateKeyHex = privateKeyHex;
         _guestEnabled = YES;
         _pollInterval = 3.0;
         _maxStalePolls = 100;
-        _autoRecoverExpiredCredentials = YES;
     }
     
     return self;
-}
-
-- (nullable instancetype)initWithAppId:(NSString *)appId contractId:(NSString *)contractId p12FileName:(NSString *)p12FileName p12Password:(NSString *)p12Password
-{
-    NSString *privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File: p12FileName password: p12Password];
-    
-    if (!privateKeyHex)
-    {
-        return nil;
-    }
-    
-    return [self initWithAppId:appId contractId:contractId privateKeyHex:privateKeyHex];
 }
 
 @end

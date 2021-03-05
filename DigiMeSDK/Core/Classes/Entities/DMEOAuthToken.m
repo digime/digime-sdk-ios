@@ -10,6 +10,11 @@
 
 @implementation DMEOAuthToken
 
++ (BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
     [encoder encodeObject:self.accessToken forKey:@"accessToken"];
@@ -20,13 +25,14 @@
 
 - (id)initWithCoder:(NSCoder *)decoder
 {
-    if((self = [super init]))
+    if ((self = [super init]))
     {
-        self.accessToken = [decoder decodeObjectForKey:@"accessToken"];
-        self.expiresOn = [decoder decodeObjectForKey:@"expiresOn"];
-        self.refreshToken = [decoder decodeObjectForKey:@"refreshToken"];
-        self.tokenType = [decoder decodeObjectForKey:@"tokenType"];
+        self.accessToken = [decoder decodeObjectOfClass:[NSString class] forKey:@"accessToken"];
+        self.expiresOn = [decoder decodeObjectOfClass:[NSDate class] forKey:@"expiresOn"];
+        self.refreshToken = [decoder decodeObjectOfClass:[NSString class] forKey:@"refreshToken"];
+        self.tokenType = [decoder decodeObjectOfClass:[NSString class] forKey:@"tokenType"];
     }
+    
     return self;
 }
 

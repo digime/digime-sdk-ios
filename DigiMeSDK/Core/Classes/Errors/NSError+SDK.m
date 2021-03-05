@@ -58,7 +58,9 @@
             
         case SDKErrorOAuthTokenNotSet:
             return @"OAuth token not set on client instance. Please ensure that client instance is correctly initialized.";
-            break;
+            
+        case SDKErrorIncorrectContractType:
+            return @"Attempting to use a one-off contract for ongoing API (which use OAuth tokens). Please us the corresponding oneoff API instead.";
     }
 }
 

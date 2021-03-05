@@ -891,6 +891,28 @@ static const NSInteger kHashLength = 64;
     return refreshTokenJWT;
 }
 
+// Postbox Push
++ (NSString *)createPostboxPushJwtWithAccessToken:(nullable NSString *)accessToken appId:(NSString *)appId contractId:(NSString *)contractId initializationVector:(NSData *)iv metadata:(NSString *)metadata sessionKey:(NSString *)sessionKey symmetricalKey:(NSString *)symmetricalKey privateKey:(NSString *)privateKeyHex
+{
+    return [self createPostboxPushJwtWithAccessToken:accessToken appId:appId contractId:contractId initializationVector:iv metadata:metadata sessionKey:sessionKey symmetricalKey:symmetricalKey privateKey:privateKeyHex publicKey:nil];
+}
+
++ (NSString *)createPostboxPushJwtWithAccessToken:(nullable NSString *)accessToken appId:(NSString *)appId contractId:(NSString *)contractId initializationVector:(NSData *)iv metadata:(NSString *)metadata sessionKey:(NSString *)sessionKey symmetricalKey:(NSString *)symmetricalKey privateKey:(NSString *)privateKeyHex publicKey:(nullable NSString *)publicKeyHex
+{
+    NSString *publicKeyBase64;
+    if (publicKeyHex)
+    {
+        NSData *publicKeyData = [publicKeyHex hexToBytes];
+        publicKeyBase64 = [publicKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    }
+    
+    NSData *privateKeyData = [privateKeyHex hexToBytes];
+    NSString *privateKeyBase64 = [privateKeyData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    NSString *jwt = [DMEJWTUtility postboxPushJwtFromAccessToken:accessToken appId:appId contractId:contractId iv:[iv hexString] metadata:metadata sessionKey:sessionKey symmetricalKey:symmetricalKey privateKey:privateKeyBase64 publicKey:publicKeyBase64];
+    NSAssert(jwt != nil, @"An error occured generating postbox push jwt token");
+    return jwt;
+}
+
 + (nullable NSData *)stripPublicHeadersfromPEMCertificate:(NSString *)pemCert
 {
      return [self stripHeader:@"-----BEGIN RSA PUBLIC KEY-----" footer:@"-----END RSA PUBLIC KEY-----" fromPEM:pemCert];

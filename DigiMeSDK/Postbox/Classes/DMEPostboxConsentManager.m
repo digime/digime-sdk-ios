@@ -19,6 +19,7 @@
 @property (nonatomic, weak, readonly) DMEAppCommunicator *appCommunicator;
 @property (nonatomic, copy, readonly) NSString *appId;
 @property (nonatomic, copy, nullable) DMEPostboxCreationCompletion postboxCompletionBlock;
+@property (nonatomic, copy, nullable) DMEOngoingPostboxAuthCodeExchangeCompletion ongoingPostboxCompletionBlock;
 
 @end
 
@@ -49,7 +50,6 @@
     NSString *result = parameters[kDMEResponse];
     NSString *sessionKey = parameters[kDMESessionKey];
     NSString *postboxId = parameters[kDMEPostboxId];
-    NSString *postboxPublicKey = parameters[kDMEPostboxPublicKey];
     NSString *reference = parameters[kDMEErrorReference];
     
     [self filterMetadata: parameters];
@@ -72,15 +72,17 @@
     else
     {
         postbox = [[DMEPostbox alloc] initWithSessionKey:sessionKey andPostboxId:postboxId];
-        postbox.postboxRSAPublicKey = postboxPublicKey;
+        postbox.postboxRSAPublicKey = parameters[kDMEPostboxPublicKey];
     }
     
     if (self.postboxCompletionBlock)
     {
-        // Need to know if we succeeded.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.postboxCompletionBlock(postbox, err);
-        });
+        self.postboxCompletionBlock(postbox, err);
+    }
+    else if (self.ongoingPostboxCompletionBlock)
+    {
+        NSString *authorizationCode = parameters[kDMEAuthorizationCode];
+        self.ongoingPostboxCompletionBlock(postbox, authorizationCode, err);
     }
     
     [self.appCommunicator removeCallbackHandler:self];
@@ -98,17 +100,48 @@
     
     if (![self.sessionManager isSessionValid])
     {
-        completion(nil, nil);
+        NSError *error = [NSError authError:AuthErrorInvalidSession];
+        completion(nil, error);
         return;
     }
     
     self.postboxCompletionBlock = completion;
     
-    DMEOpenAction *action = @"postbox";
+    DMEOpenAction *action = @"postbox/create";
     NSDictionary *params = @{
                              kDMESessionKey: self.session.sessionKey,
                              kDMERegisteredAppID: self.appId,
                              };
+    
+    [self.appCommunicator addCallbackHandler:self];
+    [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
+}
+
+- (void)requestOngoingPostboxWithPreAuthCode:(NSString *)preAuthorizationCode completion:(DMEOngoingPostboxAuthCodeExchangeCompletion)completion
+{
+    if (![NSThread currentThread].isMainThread)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self requestOngoingPostboxWithPreAuthCode:preAuthorizationCode completion:completion];
+        });
+        return;
+    }
+    
+    if (![self.sessionManager isSessionValid])
+    {
+        NSError *error = [NSError authError:AuthErrorInvalidSession];
+        completion(nil, nil, error);
+        return;
+    }
+    
+    self.ongoingPostboxCompletionBlock = completion;
+    
+    DMEOpenAction *action = @"postbox/create";
+    NSDictionary *params = @{
+        kDMESessionKey: self.session.sessionKey,
+        kDMERegisteredAppID: self.appId,
+        kDMEPreAuthorizationCode: preAuthorizationCode,
+    };
     
     [self.appCommunicator addCallbackHandler:self];
     [self.appCommunicator openDigiMeAppWithAction:action parameters:params];
