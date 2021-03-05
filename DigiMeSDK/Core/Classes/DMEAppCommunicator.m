@@ -12,7 +12,6 @@
 #import <StoreKit/StoreKit.h>
 #import "UIViewController+DMEExtension.h"
 
-NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 static NSString * const kDMEClientScheme = @"digime-ca-master";
 static NSString * const kDMESdkVersion = @"sdkVersion";
 static NSInteger  const kDMEClientAppstoreID = 1234541790;

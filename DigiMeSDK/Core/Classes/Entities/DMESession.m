@@ -43,7 +43,9 @@ NSString * const kDMEResultValueError = @"ERROR";
 NSString * const kDMEResultValueCancel = @"CANCEL";
 NSString * const kDMEErrorReference = @"reference";
 NSString * const kDMEPreAuthorizationCode = @"preAuthorizationCode";
-NSString * const kDMEAuthorizationCode = @"authorizationCode";
+NSString * const kDMEAuthorizationCode = @"code";
+NSString * const kDMECallbackUrl = @"callbackUrl";
+NSString * const kDMEClientSchemePrefix = @"digime-ca-";
 
 @implementation DMESession
 

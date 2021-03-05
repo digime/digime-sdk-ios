@@ -109,6 +109,7 @@
     
     DMEOpenAction *action = @"postbox/create";
     NSDictionary *params = @{
+                             kDMECallbackUrl: [self callbackUrlString],
                              kDMESessionKey: self.session.sessionKey,
                              kDMERegisteredAppID: self.appId,
                              };
@@ -160,6 +161,25 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self IN %@", allowedKeys];
     NSDictionary *whiteDictionary = [metadata dictionaryWithValuesForKeys:[metadata.allKeys filteredArrayUsingPredicate:predicate]];
     self.session.metadata = whiteDictionary;
+}
+
+- (NSString *)callbackUrlString
+{
+    NSURLComponents *domainComponents = [NSURLComponents new];
+    domainComponents.scheme = [NSString stringWithFormat:@"%@%@", kDMEClientSchemePrefix, self.appId];
+    domainComponents.host = @"data";
+    NSDictionary *callbackParams = @{
+                             kDMESessionKey: self.session.sessionKey,
+                             kDMERegisteredAppID: self.appId,
+                             };
+    NSURLComponents *callbackComponents = [NSURLComponents componentsWithURL:domainComponents.URL resolvingAgainstBaseURL:NO];
+    NSMutableArray *newQueryItems = [NSMutableArray arrayWithArray:callbackComponents.queryItems] ?: [NSMutableArray array];
+    [callbackParams enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+        [newQueryItems addObject:[NSURLQueryItem queryItemWithName:key value:obj]];
+    }];
+    callbackComponents.queryItems = newQueryItems;
+    NSURL *callbackURL = callbackComponents.URL;
+    return [callbackURL absoluteString];
 }
 
 @end
