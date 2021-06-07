@@ -9,7 +9,7 @@
 import Foundation
 
 enum TimeRange: Encodable {
-    enum Unit : String {
+    enum Unit: String {
         case day = "d"
         case month = "m"
         case year = "y"
@@ -29,7 +29,7 @@ enum TimeRange: Encodable {
         switch self {
         case .after(let from):
             try container.encode(from.timeIntervalSince1970, forKey: .from)
-        case .between(let from, let to):
+        case let .between(from, to):
             // Allow for cases where user has inadvertently set the `to` date to before the `from` date
             let firstDate = min(from, to)
             let lastDate = max(from, to)
@@ -37,7 +37,7 @@ enum TimeRange: Encodable {
             try container.encode(lastDate.timeIntervalSince1970, forKey: .to)
         case .before(let to):
             try container.encode(to.timeIntervalSince1970, forKey: .to)
-        case .last(let amount, let unit):
+        case let .last(amount, unit):
             try container.encode("\(amount)\(unit.rawValue)", forKey: .last)
         }
     }

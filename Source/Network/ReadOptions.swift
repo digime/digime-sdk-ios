@@ -14,7 +14,7 @@ struct ReadOptions: Encodable {
     let accept: ReadAccept?
     
     init?(accept: ReadAccept? = nil, limits: Limits? = nil, scope: Scope? = nil) {
-        guard accept != nil || limits != nil  || scope != nil else {
+        guard accept != nil || limits != nil || scope != nil else {
             return nil
         }
         

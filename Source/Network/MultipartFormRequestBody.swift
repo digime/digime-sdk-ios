@@ -22,7 +22,7 @@ struct MultipartFormRequestBody: RequestBody {
     
     private var formData = MultipartFormData()
     
-    func setData(block:(MultipartFormData) -> Void) {
+    func setData(block: (MultipartFormData) -> Void) {
         block(formData)
         let data = formData.encode()
     }

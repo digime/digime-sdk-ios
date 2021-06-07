@@ -78,7 +78,7 @@ enum NetworkRouter {
         case .trigger:
             return "/permission-access/trigger"
             
-        case .read(let sessionKey, let fileId):
+        case let .read(sessionKey, fileId):
             var path = "/permission-access/query/\(sessionKey)"
             if let fileId = fileId {
                 path += "/\(fileId)"
@@ -96,14 +96,14 @@ enum NetworkRouter {
         case .tokenExchange, .read:
             return nil
             
-        case .authorize(_, let agent, let readOptions):
+        case let .authorize(_, agent, readOptions):
             guard let body = AuthorizeBody(agent: agent, options: readOptions) else {
                 return nil
             }
             
             return try? JSONRequestBody(parameters: body)
             
-        case .trigger(_, let agent, let readOptions):
+        case let .trigger(_, agent, readOptions):
             guard let body = TriggerBody(agent: agent, options: readOptions) else {
                 return nil
             }
@@ -137,14 +137,12 @@ extension NetworkRouter: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         let url = URL(string: baseURLPath)!
 
-    
         var request = URLRequest(url: url.appendingPathComponent(path))
         request.httpMethod = method
         if let authorizationToken = authorizationToken {
             request.setValue("Bearer " + authorizationToken, forHTTPHeaderField: "Authorization")
         }
 
-        
         if let body = body {
             request.httpBody = body.data
             body.headers.forEach { request.setValue($1, forHTTPHeaderField: $0) }
