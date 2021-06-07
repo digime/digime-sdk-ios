@@ -13,7 +13,7 @@
 		27D31A2B266A4EAB00DB2524 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A29266A4EAB00DB2524 /* Main.storyboard */; };
 		27D31A2D266A4EAD00DB2524 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A2C266A4EAD00DB2524 /* Assets.xcassets */; };
 		27D31A30266A4EAD00DB2524 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A2E266A4EAD00DB2524 /* LaunchScreen.storyboard */; };
-		27D31A3B266A4EAD00DB2524 /* DigiMeSDKExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31A3A266A4EAD00DB2524 /* DigiMeSDKExampleTests.swift */; };
+		27D31BEB266E231C00DB2524 /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31BEA266E231C00DB2524 /* RouterTests.swift */; };
 		5BC1D72537268454317E1CB9 /* Pods_DigiMeSDKExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 823514C1A272DAE89DBA96F0 /* Pods_DigiMeSDKExampleTests.framework */; };
 		974FC74F642DDB1512EA13A4 /* Pods_DigiMeSDKExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFB8BF0E162E6D15C1C3BABC /* Pods_DigiMeSDKExample.framework */; };
 /* End PBXBuildFile section */
@@ -38,8 +38,8 @@
 		27D31A2F266A4EAD00DB2524 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		27D31A31266A4EAD00DB2524 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27D31A36266A4EAD00DB2524 /* DigiMeSDKExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DigiMeSDKExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		27D31A3A266A4EAD00DB2524 /* DigiMeSDKExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigiMeSDKExampleTests.swift; sourceTree = "<group>"; };
 		27D31A3C266A4EAD00DB2524 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		27D31BEA266E231C00DB2524 /* RouterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
 		823514C1A272DAE89DBA96F0 /* Pods_DigiMeSDKExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FC2E34EC9641F71F9260F9A /* Pods-DigiMeSDKExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleTests.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExampleTests/Pods-DigiMeSDKExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		AA33104DD7681020F98F1938 /* Pods-DigiMeSDKExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.release.xcconfig"; sourceTree = "<group>"; };
@@ -105,10 +105,18 @@
 		27D31A39266A4EAD00DB2524 /* DigiMeSDKExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				27D31A3A266A4EAD00DB2524 /* DigiMeSDKExampleTests.swift */,
+				27D31BE9266E230200DB2524 /* Network */,
 				27D31A3C266A4EAD00DB2524 /* Info.plist */,
 			);
 			path = DigiMeSDKExampleTests;
+			sourceTree = "<group>";
+		};
+		27D31BE9266E230200DB2524 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				27D31BEA266E231C00DB2524 /* RouterTests.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		7318BCE517FF712805769161 /* Frameworks */ = {
@@ -329,7 +337,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27D31A3B266A4EAD00DB2524 /* DigiMeSDKExampleTests.swift in Sources */,
+				27D31BEB266E231C00DB2524 /* RouterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
