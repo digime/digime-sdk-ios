@@ -180,6 +180,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
+				ORGANIZATIONNAME = "digi.me Limited";
 				TargetAttributes = {
 					27D31A1F266A4EAB00DB2524 = {
 						CreatedOnToolsVersion = 12.5;
