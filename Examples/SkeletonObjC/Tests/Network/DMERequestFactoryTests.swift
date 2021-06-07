@@ -130,4 +130,3 @@ class DMERequestFactoryTests: XCTestCase {
         static let authorization = "Authorization"
     }
 }
-
