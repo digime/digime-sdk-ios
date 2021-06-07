@@ -12,6 +12,7 @@ source 'https://cdn.cocoapods.org/'
 
 target 'DigiMeSDKExample' do
   pod 'DigiMeSDK', :path => '../../'
+  pod 'SwiftLint'
 
   target 'DigiMeSDKExampleTests' do
     inherit! :search_paths
