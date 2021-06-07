@@ -229,10 +229,11 @@ cyclomatic_complexity:
   ignores_case_statements: false
 
 file_header:
+  severity: error
   required_pattern: |
                     \/\/
                     \/\/  SWIFTLINT_CURRENT_FILENAME
-                    \/\/  \DigiMeSDK|DigiMeSDKExample\
+                    \/\/  DigiMeSDK(Example)?
                     \/\/
                     \/\/  Created on \d{1,2}\/\d{1,2}\/\d{4}\.
                     \/\/  Copyright © \d{4}(\s?-\s?\d{4})? digi\.me( Limited)?\. All rights reserved\.
