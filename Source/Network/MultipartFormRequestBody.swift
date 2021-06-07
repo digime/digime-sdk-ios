@@ -13,6 +13,7 @@ struct MultipartFormRequestBody: RequestBody {
         [
             "Content-Type": "multipart/form-data; boundary=\(formData.boundary)",
             "Content-Length": "\(formData.encodedData?.count ?? 0)",
+            "Accept": "application/json",
         ]
     }
     

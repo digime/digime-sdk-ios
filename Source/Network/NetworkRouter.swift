@@ -12,7 +12,7 @@ enum NetworkRouter {
     case authorize(jwt: String, agent: Agent?, readOptions: ReadOptions?)
     case tokenExchange(jwt: String)
     case trigger(jwt: String, agent: Agent?, readOptions: ReadOptions?)
-    case read(sessionKey: String, fileId: String?)
+    case read(sessionKey: String, fileId: String? = nil)
     case write(postboxId: String, payload: Data, jwt: String)
     
     private struct AuthorizeBody: Encodable {
