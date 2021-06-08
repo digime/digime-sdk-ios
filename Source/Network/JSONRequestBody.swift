@@ -17,6 +17,6 @@ struct JSONRequestBody: RequestBody {
     }
     
     init<T: Encodable>(parameters: T) throws {
-        data = try JSONEncoder().encode(parameters)
+        data = try parameters.encoded()
     }
 }
