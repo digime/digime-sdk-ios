@@ -17,9 +17,16 @@ public struct Configuration {
     /// Your contract identifier
     let contractId: String
     
-    /// Your PKCS1 private key
+    /// Your PKCS1 private key - the bits between "-----BEGIN RSA PRIVATE KEY-----" and "-----END RSA PRIVATE KEY-----"
     let privateKey: String
     
-    /// Your PKCS1 public key
+    /// Your PKCS1 public key - the bits between "-----BEGIN RSA PUBLIC KEY-----" and "-----END RSA PUBLIC KEY-----"
     let publicKey: String?
+    
+    public init(appId: String, contractId: String, privateKey: String, publicKey: String? = nil) {
+        self.appId = appId
+        self.contractId = contractId
+        self.privateKey = privateKey
+        self.publicKey = publicKey
+    }
 }

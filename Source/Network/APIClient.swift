@@ -10,6 +10,7 @@ import Foundation
 
 enum HTTPError: Error {
     case noResponse
+    case noData
     case unsuccesfulStatusCode(Int, response: ErrorResponse?)
 }
 
@@ -39,12 +40,12 @@ class APIClient {
         return URLSession(configuration: configuration)
     }()
     
-    private lazy var agent: Agent = {
+    lazy var agent: Agent = {
         let version = Bundle(for: Self.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
         return Agent(name: "ios", version: version)
     }()
 
-    func makeRequest<T: Decodable>(_ router: NetworkRouter, completion: @escaping (Result<T?, Error>) -> Void) {
+    func makeRequest<T: Decodable>(_ router: NetworkRouter, completion: @escaping (Result<T, Error>) -> Void) {
         guard let request = try? router.asURLRequest() else {
             return
         }
@@ -80,7 +81,7 @@ class APIClient {
             }
             
             guard let data = data else {
-                completion(.success(nil))
+                completion(.failure(HTTPError.noData))
                 return
             }
             

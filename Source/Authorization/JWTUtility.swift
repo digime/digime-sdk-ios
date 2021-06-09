@@ -46,7 +46,7 @@ class JWTUtility: NSObject {
     
     // claims to validate pre-authorization code
     class PayloadValidatePreauthJWT: NSObject, Claims {
-        var preAuthCode: String?
+        var preAuthCode: String
 
         enum CodingKeys: String, CodingKey {
             case preAuthCode = "preauthorization_code"
@@ -158,10 +158,8 @@ class JWTUtility: NSObject {
     ///   - contractId: contract identifier
     ///   - privateKey: private key in base 64 format
     ///   - publicKey: public key in base 64 format
-    class func signedPreAuthJwt(_ appId: String, contractId: String, privateKey: String, publicKey: String?) -> String? {
-        guard
-            privateKey.isBase64(),
-            let privateKeyData = convertKeyString(privateKey) else {
+    class func preAuthorizationRequestJWT(configuration: Configuration) -> String? {
+        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
                 print("DigiMeSDK: Error creating RSA key")
                 return nil
         }
@@ -172,11 +170,11 @@ class JWTUtility: NSObject {
         saveCodeVerifier(codeVerifier)
         
         let claims = PayloadRequestPreauthJWT(
-            clientId: "\(appId)_\(contractId)",
+            clientId: configuration.clientId,
             codeChallenge: codeChallenge,
             
             // NB! this redirect schema must exist in the contract definition, otherwise preauth request will fail!
-            redirectUri: "digime-ca-\(appId)"
+            redirectUri: configuration.redirectUri
         )
 
         // signing
@@ -189,7 +187,7 @@ class JWTUtility: NSObject {
 
         // validation
         guard
-            let publicKeyBase64 = publicKey,
+            let publicKeyBase64 = configuration.publicKey,
             let publicKey = convertKeyString(publicKeyBase64) else {
                 return signedJwt
         }
@@ -249,30 +247,24 @@ class JWTUtility: NSObject {
     
     /// Extracts preAuthorization code from JWT
     /// - Parameters:
-    ///   - publicKey: public key in base 64 format
+    ///   - keySet: JSON Web Key StoSetre
     ///   - jwt: pre-authorization code wrapped in JWT
-    class func preAuthCode(from jwt: String, publicKey: String) -> String? {
-        guard
-            publicKey.isBase64(),
-            let publicKeyData = convertKeyString(publicKey) else {
-                print("DigiMeSDK: Error creating RSA public key")
+    class func preAuthCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, Error> {
+        let decoder = JWTDecoder { kid in
+            guard
+                let key = keySet.keys.first(where: { $0.kid == kid }),
+                let data = convertKeyString(key.pem) else {
+                NSLog("Error retrieving matching JWT verifier")
                 return nil
+            }
+            
+            return JWTVerifier.ps512(publicKey: data)
         }
         
-        // validation
-        let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
-        let isVerified = JWT<PayloadValidatePreauthJWT>.verify(jwt, using: verifier)
-        
-        guard isVerified else {
-            return nil
+        return Result {
+            let decodedJwt = try decoder.decode(JWT<PayloadValidatePreauthJWT>.self, fromString: jwt)
+            return decodedJwt.claims.preAuthCode
         }
-        
-        let decoder = JWTDecoder(jwtVerifier: verifier)
-        let decodedJwt = try? decoder.decode(JWT<PayloadValidatePreauthJWT>.self, fromString: jwt)
-        guard let preauthCode = decodedJwt?.claims.preAuthCode else {
-            return nil
-        }
-        return preauthCode
     }
     
     /// Extracts access and refresh tokens from JWT, and wraps in `DMEOAuthToken`.
