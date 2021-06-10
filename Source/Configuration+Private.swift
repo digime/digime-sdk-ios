@@ -15,6 +15,6 @@ internal extension Configuration {
     }
     
     var redirectUri: String {
-        "digime-ca-\(appId)"
+        "digime-ca-\(appId)://"
     }
 }

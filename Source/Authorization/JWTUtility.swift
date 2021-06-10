@@ -174,7 +174,7 @@ class JWTUtility: NSObject {
             codeChallenge: codeChallenge,
             
             // NB! this redirect schema must exist in the contract definition, otherwise preauth request will fail!
-            redirectUri: configuration.redirectUri
+            redirectUri: configuration.redirectUri + "auth"
         )
 
         // signing
