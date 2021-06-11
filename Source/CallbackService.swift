@@ -42,7 +42,7 @@ public class CallbackService {
             return false
         }
         
-        let parameters = urlComponents.queryItems?.reduce(into: [String: String]()) { result, item in
+        let parameters = urlComponents.queryItems?.reduce(into: [String: String?]()) { result, item in
             result[item.name] = item.value
         } ?? [:]
         
@@ -63,5 +63,5 @@ public class CallbackService {
 
 protocol CallbackHandler: AnyObject {
     func canHandleAction(_ action: String) -> Bool
-    func handleAction(_ action: String, with parameters: [String: String])
+    func handleAction(_ action: String, with parameters: [String: String?])
 }
