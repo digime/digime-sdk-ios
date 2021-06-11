@@ -6,6 +6,7 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
+import DigiMeSDK
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -47,5 +48,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+    }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let context = URLContexts.first else {
+            return
+        }
+        
+        CallbackService.shared().handleCallback(url: context.url)
     }
 }

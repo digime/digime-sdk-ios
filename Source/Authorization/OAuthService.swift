@@ -25,12 +25,14 @@ class OAuthService {
         let key: String
     }
     
+    // Can be used for raw response from server where `token` is the JWT
+    // and as result when `token` is the extracted pre-authrozation code
     struct PreAuthResponse: Decodable {
         let token: String
         let session: Session
     }
     
-    func requestPreAuthorizationCode(publicKey: String?, completion: @escaping (Result<String, Error>) -> Void) {
+    func requestPreAuthorizationCode(readOptions: ReadOptions?, completion: @escaping (Result<PreAuthResponse, Error>) -> Void) {
         guard let jwt = JWTUtility.preAuthorizationRequestJWT(configuration: configuration) else {
             fatalError("Invalid pre-authorization request JWT")
         }
@@ -89,6 +91,6 @@ struct JSONWebKeySet: Decodable {
     
     // Cache for 15 minutes
     var isValid: Bool {
-        Date() < date.addingTimeInterval(15*60)
+        Date() < date.addingTimeInterval(15 * 60)
     }
 }
