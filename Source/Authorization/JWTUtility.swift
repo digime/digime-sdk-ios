@@ -13,6 +13,19 @@ import SwiftJWT
 extension OAuthToken: Claims {
 }
 
+protocol RequestClaims: Claims {
+}
+
+extension RequestClaims {
+    func encode() throws -> String {
+        let jsonEncoder = JSONEncoder()
+        jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
+        jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
+        let data = try jsonEncoder.encode(self)
+        return JWTEncoder.base64urlEncodedString(data: data)
+    }
+}
+
 class JWTUtility: NSObject {
    
     // Default JWT header
@@ -21,7 +34,7 @@ class JWTUtility: NSObject {
     }
 
     // claims to request a pre-authorization code
-    struct PayloadRequestPreauthJWT: Claims {
+    private struct PayloadRequestPreauthJWT: RequestClaims {
         let clientId: String
         let codeChallenge: String
         let codeChallengeMethod = "S256"
@@ -37,18 +50,10 @@ class JWTUtility: NSObject {
             self.codeChallenge = codeChallenge
             self.redirectUri = redirectUri
         }
-        
-        func encode() throws -> String {
-            let jsonEncoder = JSONEncoder()
-            jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
-            jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
-            let data = try jsonEncoder.encode(self)
-            return JWTEncoder.base64urlEncodedString(data: data)
-        }
     }
     
     // claims to validate pre-authorization code
-    struct PayloadValidatePreauthJWT: Claims {
+    private struct PayloadValidatePreauthJWT: Claims {
         var preAuthCode: String
 
         enum CodingKeys: String, CodingKey {
@@ -57,7 +62,7 @@ class JWTUtility: NSObject {
     }
     
     // claims to request a authorization code
-    struct PayloadRequestAuthJWT: Claims {
+    private struct PayloadRequestAuthJWT: RequestClaims {
         let clientId: String
         let code: String
         let codeVerifier: String
@@ -72,18 +77,10 @@ class JWTUtility: NSObject {
             self.codeVerifier = codeVerifier
             self.redirectUri = redirectUri
         }
-        
-        func encode() throws -> String {
-            let jsonEncoder = JSONEncoder()
-            jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
-            jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
-            let data = try jsonEncoder.encode(self)
-            return JWTEncoder.base64urlEncodedString(data: data)
-        }
     }
     
     // claims to request data trigger
-    struct PayloadDataTriggerJWT: Claims {
+    private struct PayloadDataTriggerJWT: RequestClaims {
         let accessToken: String
         let clientId: String
         let nonce = JWTUtility.generateNonce()
@@ -95,18 +92,10 @@ class JWTUtility: NSObject {
             self.clientId = clientId
             self.redirectUri = redirectUri
         }
-        
-        func encode() throws -> String {
-            let jsonEncoder = JSONEncoder()
-            jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
-            jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
-            let data = try jsonEncoder.encode(self)
-            return JWTEncoder.base64urlEncodedString(data: data)
-        }
     }
     
     // claims to request OAuth token renewal
-    struct PayloadRefreshOAuthJWT: Claims {
+    private struct PayloadRefreshOAuthJWT: RequestClaims {
         let clientId: String
         let grantType = "refresh_token"
         let nonce = JWTUtility.generateNonce()
@@ -119,17 +108,9 @@ class JWTUtility: NSObject {
             self.clientId = clientId
             self.redirectUri = redirectUri
         }
-        
-        func encode() throws -> String {
-            let jsonEncoder = JSONEncoder()
-            jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
-            jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
-            let data = try jsonEncoder.encode(self)
-            return JWTEncoder.base64urlEncodedString(data: data)
-        }
     }
     
-    class PayloadWriteJWT: Claims {
+    private struct PayloadWriteJWT: RequestClaims {
         let accessToken: String
         let clientId: String
         let iv: String
@@ -146,14 +127,6 @@ class JWTUtility: NSObject {
             self.metadata = metadata
             self.redirectUri = redirectUri
             self.symmetricalKey = symmetricalKey
-        }
-        
-        func encode() throws -> String {
-            let jsonEncoder = JSONEncoder()
-            jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
-            jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
-            let data = try jsonEncoder.encode(self)
-            return JWTEncoder.base64urlEncodedString(data: data)
         }
     }
 
@@ -298,7 +271,7 @@ class JWTUtility: NSObject {
         let claims = PayloadDataTriggerJWT(
             accessToken: accessToken,
             clientId: configuration.clientId,
-            redirectUri: configuration.redirectUri
+            redirectUri: configuration.redirectUri + "data"
         )
 
         // signing
@@ -335,7 +308,7 @@ class JWTUtility: NSObject {
         let claims = PayloadRefreshOAuthJWT(
             refreshToken: refreshToken,
             clientId: configuration.clientId,
-            redirectUri: configuration.redirectUri
+            redirectUri: configuration.redirectUri + "auth"
         )
 
         // signing
@@ -376,7 +349,7 @@ class JWTUtility: NSObject {
             clientId: configuration.clientId,
             iv: iv,
             metadata: metadata,
-            redirectUri: configuration.redirectUri,
+            redirectUri: configuration.redirectUri + "write",
             symmetricalKey: symmetricalKey
         )
 
