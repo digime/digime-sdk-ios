@@ -135,11 +135,6 @@ class JWTUtility: NSObject {
     /// - Parameters:
     ///   - configuration: this SDK's instance configuration
     class func preAuthorizationRequestJWT(configuration: Configuration) -> String? {
-        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
-            print("DigiMeSDK: Error creating RSA key")
-            return nil
-        }
-        
         let randomBytes = secureRandomData(length: 32)
         let codeVerifier = randomBytes.base64URLEncodedString()
         let codeChallenge = Data(SHA256.hash(data: codeVerifier.data(using: .utf8)!)).base64URLEncodedString()
@@ -152,26 +147,8 @@ class JWTUtility: NSObject {
             // NB! this redirect schema must exist in the contract definition, otherwise preauth request will fail!
             redirectUri: configuration.redirectUri + "auth"
         )
-
-        // signing
-        var jwt = JWT(header: header, claims: claims)
-        let signer = JWTSigner.ps512(privateKey: privateKeyData)
-        guard let signedJwt = try? jwt.sign(using: signer) else {
-            print("DigiMeSDK: Error signing preAuth JWT")
-            return nil
-        }
-
-        // validation
-        guard
-            let publicKeyBase64 = configuration.publicKey,
-            let publicKey = convertKeyString(publicKeyBase64) else {
-                return signedJwt
-        }
         
-        let verifier = JWTVerifier.ps512(publicKey: publicKey)
-        let isVerified = JWT<PayloadRequestPreauthJWT>.verify(signedJwt, using: verifier)
-
-        return isVerified ? signedJwt : nil
+        return createRequestJWT(claims: claims, configuration: configuration)
     }
     
     /// Creates request JWT which can be used to get an authentication token
@@ -179,11 +156,6 @@ class JWTUtility: NSObject {
     ///   - authCode: OAuth authorization code
     ///   - configuration: this SDK's instance configuration
     class func authorizationRequestJWT(authCode: String, configuration: Configuration) -> String? {
-        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
-            print("DigiMeSDK: Error creating RSA key")
-            return nil
-        }
-
         let claims = PayloadRequestAuthJWT(
             clientId: configuration.clientId,
             code: authCode,
@@ -192,26 +164,8 @@ class JWTUtility: NSObject {
             // NB! this redirect schema must exist in the contract definition, otherwise preauth request will fail!
             redirectUri: configuration.redirectUri + "auth"
         )
-
-        // signing
-        var jwt = JWT(header: header, claims: claims)
-        let signer = JWTSigner.ps512(privateKey: privateKeyData)
-        guard let signedJwt = try? jwt.sign(using: signer) else {
-            print("DigiMeSDK: Error signing auth JWT")
-            return nil
-        }
-
-        // validation
-        guard
-            let publicKeyBase64 = configuration.publicKey,
-            let publicKey = convertKeyString(publicKeyBase64) else {
-                return signedJwt
-        }
         
-        let verifier = JWTVerifier.ps512(publicKey: publicKey)
-        let isVerified = JWT<PayloadRequestAuthJWT>.verify(signedJwt, using: verifier)
-
-        return isVerified ? signedJwt : nil
+        return createRequestJWT(claims: claims, configuration: configuration)
     }
     
     /// Extracts preAuthorization code from JWT
@@ -263,36 +217,13 @@ class JWTUtility: NSObject {
     ///   - accessToken: OAuth access token
     ///   - configuration: this SDK's instance configuration
     class func dataTriggerRequestJWT(accessToken: String, configuration: Configuration) -> String? {
-        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
-            print("DigiMeSDK: Error creating RSA key")
-            return nil
-        }
-        
         let claims = PayloadDataTriggerJWT(
             accessToken: accessToken,
             clientId: configuration.clientId,
             redirectUri: configuration.redirectUri + "data"
         )
-
-        // signing
-        var jwt = JWT(header: header, claims: claims)
-        let signer = JWTSigner.ps512(privateKey: privateKeyData)
-        guard let signedJwt = try? jwt.sign(using: signer) else {
-            print("DigiMeSDK: Error signing data trigger JWT")
-            return nil
-        }
-
-        // validation
-        guard
-            let publicKeyBase64 = configuration.publicKey,
-            let publicKeyData = convertKeyString(publicKeyBase64) else {
-                return signedJwt
-        }
         
-        let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
-        let isVerified = JWT<PayloadDataTriggerJWT>.verify(signedJwt, using: verifier)
-
-        return isVerified ? signedJwt : nil
+        return createRequestJWT(claims: claims, configuration: configuration)
     }
     
     /// Creates request JWT which can be used to refresh oauth tokens
@@ -300,36 +231,13 @@ class JWTUtility: NSObject {
     ///   - refreshToken: OAuth refresh token
     ///   - configuration: this SDK's instance configuration
     class func refreshTokensRequestJWT(refreshToken: String, configuration: Configuration) -> String? {
-        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
-            print("DigiMeSDK: Error creating RSA key")
-            return nil
-        }
-        
         let claims = PayloadRefreshOAuthJWT(
             refreshToken: refreshToken,
             clientId: configuration.clientId,
             redirectUri: configuration.redirectUri + "auth"
         )
-
-        // signing
-        var jwt = JWT(header: header, claims: claims)
-        let signer = JWTSigner.ps512(privateKey: privateKeyData)
-        guard let signedJwt = try? jwt.sign(using: signer) else {
-            print("DigiMeSDK: Error signing our test token")
-            return nil
-        }
-
-        // validation
-        guard
-            let publicKeyBase64 = configuration.publicKey,
-            let publicKeyData = convertKeyString(publicKeyBase64) else {
-                return signedJwt
-        }
         
-        let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
-        let isVerified = JWT<PayloadRefreshOAuthJWT>.verify(signedJwt, using: verifier)
-
-        return isVerified ? signedJwt : nil
+        return createRequestJWT(claims: claims, configuration: configuration)
     }
     
     /// Creates request JWT which can be used to write data
@@ -340,10 +248,6 @@ class JWTUtility: NSObject {
     ///   - symmetricalKey: symmetrical key used to encrypt data
     ///   - configuration: this SDK's instance configuration
     class func writeRequestJWT(accessToken: String, iv: String, metadata: String, symmetricalKey: String, configuration: Configuration) -> String? {
-        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
-            print("DigiMeSDK: Error creating RSA key")
-            return nil
-        }
         let claims = PayloadWriteJWT(
             accessToken: accessToken,
             clientId: configuration.clientId,
@@ -352,6 +256,17 @@ class JWTUtility: NSObject {
             redirectUri: configuration.redirectUri + "write",
             symmetricalKey: symmetricalKey
         )
+
+        return createRequestJWT(claims: claims, configuration: configuration)
+    }
+    
+    // MARK: - Utility functions
+    
+    private class func createRequestJWT<T: RequestClaims>(claims: T, configuration: Configuration) -> String? {
+        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
+            print("DigiMeSDK: Error creating RSA key")
+            return nil
+        }
 
         // signing
         var jwt = JWT(header: header, claims: claims)
@@ -373,8 +288,6 @@ class JWTUtility: NSObject {
 
         return isVerified ? signedJwt : nil
     }
-    
-    // MARK: - Utility functions
     
     private class func generateNonce() -> String {
         secureRandomHexString(length: 16)
