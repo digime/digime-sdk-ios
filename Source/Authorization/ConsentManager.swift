@@ -171,15 +171,6 @@ extension ConsentManager: SFSafariViewControllerDelegate {
         
         finish(with: .failure(AuthError.userCancelled))
     }
-    
-    @available(iOS 14.0, *)
-    func safariViewControllerWillOpenInBrowser(_ controller: SFSafariViewController) {
-        guard controller === safariViewController else {
-            return
-        }
-        
-        
-    }
 }
 
 extension ConsentManager: UIAdaptivePresentationControllerDelegate {

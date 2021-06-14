@@ -48,7 +48,7 @@ class JWTUtility: NSObject {
     }
     
     // claims to validate pre-authorization code
-    class PayloadValidatePreauthJWT: NSObject, Claims {
+    struct PayloadValidatePreauthJWT: Claims {
         var preAuthCode: String
 
         enum CodingKeys: String, CodingKey {
@@ -106,45 +106,54 @@ class JWTUtility: NSObject {
     }
     
     // claims to request OAuth token renewal
-    class PayloadRefreshOAuthJWT: NSObject, Claims {
-        var clientId: String?
-        var grantType: String?
-        var nonce: String?
-        var redirectUrl: String?
-        var refreshToken: String?
-        var timestamp: Double?
+    struct PayloadRefreshOAuthJWT: Claims {
+        let clientId: String
+        let grantType = "refresh_token"
+        let nonce = JWTUtility.generateNonce()
+        let redirectUri: String
+        let refreshToken: String
+        let timestamp = Date()
         
-        enum CodingKeys: String, CodingKey {
-            case clientId = "client_id"
-            case grantType = "grant_type"
-            case nonce
-            case redirectUrl = "redirect_uri"
-            case refreshToken = "refresh_token"
-            case timestamp
+        init(refreshToken: String, clientId: String, redirectUri: String) {
+            self.refreshToken = refreshToken
+            self.clientId = clientId
+            self.redirectUri = redirectUri
+        }
+        
+        func encode() throws -> String {
+            let jsonEncoder = JSONEncoder()
+            jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
+            jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
+            let data = try jsonEncoder.encode(self)
+            return JWTEncoder.base64urlEncodedString(data: data)
         }
     }
     
-    class PayloadPostboxPush: NSObject, Claims {
-        var accessToken: String?
-        var clientId: String?
-        var iv: String?
-        var metadata: String?
-        var nonce: String?
-        var redirectUrl: String?
-        var sessionKey: String?
-        var symmetricalKey: String?
-        var timestamp: Double?
+    class PayloadWriteJWT: Claims {
+        let accessToken: String
+        let clientId: String
+        let iv: String
+        let metadata: String
+        let nonce = JWTUtility.generateNonce()
+        let redirectUri: String
+        let symmetricalKey: String
+        let timestamp = Date()
         
-        enum CodingKeys: String, CodingKey {
-            case accessToken = "access_token"
-            case clientId = "client_id"
-            case iv
-            case metadata
-            case nonce
-            case redirectUrl = "redirect_uri"
-            case sessionKey = "session_key"
-            case symmetricalKey = "symmetrical_key"
-            case timestamp
+        init(accessToken: String, clientId: String, iv: String, metadata: String, redirectUri: String, symmetricalKey: String) {
+            self.accessToken = accessToken
+            self.clientId = clientId
+            self.iv = iv
+            self.metadata = metadata
+            self.redirectUri = redirectUri
+            self.symmetricalKey = symmetricalKey
+        }
+        
+        func encode() throws -> String {
+            let jsonEncoder = JSONEncoder()
+            jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
+            jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
+            let data = try jsonEncoder.encode(self)
+            return JWTEncoder.base64urlEncodedString(data: data)
         }
     }
 
@@ -280,7 +289,7 @@ class JWTUtility: NSObject {
     /// - Parameters:
     ///   - accessToken: OAuth access token
     ///   - configuration: this SDK's instance configuration
-    class func dataTriggerRequestJwt(_ accessToken: String, configuration: Configuration) -> String? {
+    class func dataTriggerRequestJWT(accessToken: String, configuration: Configuration) -> String? {
         guard let privateKeyData = convertKeyString(configuration.privateKey) else {
             print("DigiMeSDK: Error creating RSA key")
             return nil
@@ -313,23 +322,21 @@ class JWTUtility: NSObject {
         return isVerified ? signedJwt : nil
     }
     
-    class func refreshJwt(from refreshToken: String, appId: String, contractId: String, privateKey: String, publicKey: String?) -> String? {
-        guard
-            privateKey.isBase64(),
-            let privateKeyData = convertKeyString(privateKey) else {
-                print("DigiMeSDK: Error creating RSA key")
-                return nil
+    /// Creates request JWT which can be used to refresh oauth tokens
+    /// - Parameters:
+    ///   - refreshToken: OAuth refresh token
+    ///   - configuration: this SDK's instance configuration
+    class func refreshTokensRequestJWT(refreshToken: String, configuration: Configuration) -> String? {
+        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
+            print("DigiMeSDK: Error creating RSA key")
+            return nil
         }
         
-        let claims = PayloadRefreshOAuthJWT()
-        claims.clientId = "\(appId)_\(contractId)"
-        claims.grantType = "refresh_token"
-        claims.nonce = generateNonce()
-        
-        // NB! this redirect schema must exist in the CA contract definition, otherwise preauth request will fail!
-        claims.redirectUrl = "digime-ca-\(appId)"
-        claims.refreshToken = refreshToken
-        claims.timestamp = NSDate().timeIntervalSince1970 * 1000.0
+        let claims = PayloadRefreshOAuthJWT(
+            refreshToken: refreshToken,
+            clientId: configuration.clientId,
+            redirectUri: configuration.redirectUri
+        )
 
         // signing
         var jwt = JWT(header: header, claims: claims)
@@ -341,7 +348,7 @@ class JWTUtility: NSObject {
 
         // validation
         guard
-            let publicKeyBase64 = publicKey,
+            let publicKeyBase64 = configuration.publicKey,
             let publicKeyData = convertKeyString(publicKeyBase64) else {
                 return signedJwt
         }
@@ -352,47 +359,47 @@ class JWTUtility: NSObject {
         return isVerified ? signedJwt : nil
     }
     
-//    class func postboxPushJwt(from accessToken: String?, appId: String, contractId: String, iv: String, metadata: String, sessionKey: String, symmetricalKey: String, privateKey: String, publicKey: String?) -> String? {
-//        guard
-//            privateKey.isBase64(),
-//            let privateKeyData = convertKeyString(privateKey) else {
-//                print("DigiMeSDK: Error creating RSA key")
-//                return nil
-//        }
-//
-//        let claims = PayloadPostboxPush()
-//        claims.accessToken = accessToken
-//        claims.clientId = "\(appId)_\(contractId)"
-//        claims.iv = iv
-//        claims.metadata = metadata.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil)
-//        claims.nonce = generateNonce()
-//
-//        // NB! this redirect schema must exist in the CA contract definition, otherwise preauth request will fail!
-//        claims.redirectUrl = "digime-ca-\(appId)"
-//        claims.sessionKey = sessionKey
-//        claims.symmetricalKey = symmetricalKey.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil)
-//        claims.timestamp = NSDate().timeIntervalSince1970 * 1000.0
-//
-//        // signing
-//        var jwt = JWT(header: header, claims: claims)
-//        let signer = JWTSigner.ps512(privateKey: privateKeyData)
-//        guard let signedJwt = try? jwt.sign(using: signer) else {
-//            print("DigiMeSDK: Error signing our test token")
-//            return nil
-//        }
-//
-//        // validation
-//        guard
-//            let publicKeyBase64 = publicKey,
-//            let publicKeyData = convertKeyString(publicKeyBase64) else {
-//                return signedJwt
-//        }
-//
-//        let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
-//        let isVerified = JWT<PayloadRefreshOAuthJWT>.verify(signedJwt, using: verifier)
-//
-//        return isVerified ? signedJwt : nil
-//    }
+    /// Creates request JWT which can be used to write data
+    /// - Parameters:
+    ///   - accessToken: OAuth refresh token
+    ///   - iv: iv used to encrypt data
+    ///   - metadat: metadata describing data being pushed
+    ///   - symmetricalKey: symmetrical key used to encrypt data
+    ///   - configuration: this SDK's instance configuration
+    class func writeRequestJWT(accessToken: String, iv: String, metadata: String, symmetricalKey: String, configuration: Configuration) -> String? {
+        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
+            print("DigiMeSDK: Error creating RSA key")
+            return nil
+        }
+        let claims = PayloadWriteJWT(
+            accessToken: accessToken,
+            clientId: configuration.clientId,
+            iv: iv,
+            metadata: metadata,
+            redirectUri: configuration.redirectUri,
+            symmetricalKey: symmetricalKey
+        )
+
+        // signing
+        var jwt = JWT(header: header, claims: claims)
+        let signer = JWTSigner.ps512(privateKey: privateKeyData)
+        guard let signedJwt = try? jwt.sign(using: signer) else {
+            print("DigiMeSDK: Error signing our test token")
+            return nil
+        }
+
+        // validation
+        guard
+            let publicKeyBase64 = configuration.publicKey,
+            let publicKeyData = convertKeyString(publicKeyBase64) else {
+                return signedJwt
+        }
+
+        let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
+        let isVerified = JWT<PayloadRefreshOAuthJWT>.verify(signedJwt, using: verifier)
+
+        return isVerified ? signedJwt : nil
+    }
     
     // MARK: - Utility functions
     

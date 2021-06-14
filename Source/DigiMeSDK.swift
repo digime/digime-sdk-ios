@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// The entry point to the SDK
 public class DigiMeSDK {
     
     private let configuration: Configuration
@@ -16,10 +17,14 @@ public class DigiMeSDK {
     var service: OAuthService?
     var consentManager: ConsentManager?
     
+    /// Initialises a new instance of SDK.
+    /// A new instance should be created for each contract the app uses
+    /// - Parameter configuration: The configuration which defines this instance
     public init(configuration: Configuration) {
         self.configuration = configuration
     }
     
+    /// Blah blah - for dev purposes only
     public func testNewUser() {
         // During dev, this allows use to test flow inrementally
         let apiClient = APIClient()

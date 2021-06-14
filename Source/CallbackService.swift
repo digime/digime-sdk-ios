@@ -10,6 +10,10 @@ import Foundation
 
 public class CallbackService {
     
+    /// The shared instance of the callback service.
+    /// Handles communication to the SDK
+    ///
+    /// - Returns: A shared instance of `CallbackService`
     public class func shared() -> CallbackService {
         sharedService
     }
@@ -19,7 +23,13 @@ public class CallbackService {
     }()
     
     private weak var callbackHandler: CallbackHandler?
-
+    
+    /// Call this when app receives a callback that the SDK should handle
+    /// This should be called from either:
+    /// `func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool` or
+    /// `func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>)` if using scene delagtes
+    /// - Parameter url: The URL containing the callback
+    /// - Returns: `true` if the URL was handled by the SDK, `false` otherwise
     @discardableResult
     public func handleCallback(url: URL) -> Bool {
         guard url.absoluteString.hasPrefix("digime-ca-") else {
