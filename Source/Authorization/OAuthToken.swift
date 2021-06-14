@@ -8,9 +8,32 @@
 
 import Foundation
 
-struct OAuthToken {
-    let accessToken: String
-    let refreshToken: String
-    let expiry: Date
-    let tokenType: String?
+struct OAuthToken: Codable {
+    struct Token: Codable {
+        let expiry: Date
+        let value: String
+        
+        enum CodingKeys: String, CodingKey {
+            case expiry = "expires_on"
+            case value
+        }
+    }
+    
+    struct Identifier: Codable {
+        let id: String
+    }
+    
+    let accessToken: Token
+    let refreshToken: Token
+    let identifier: Identifier
+    let consentId: String
+    let tokenType: String
+    
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case refreshToken = "refresh_token"
+        case identifier
+        case consentId = "consentid"
+        case tokenType = "token_type"
+    }
 }

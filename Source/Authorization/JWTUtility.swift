@@ -10,6 +10,9 @@ import CryptoKit
 import Foundation
 import SwiftJWT
 
+extension OAuthToken: Claims {
+}
+
 class JWTUtility: NSObject {
    
     // Default JWT header
@@ -54,38 +57,28 @@ class JWTUtility: NSObject {
     }
     
     // claims to request a authorization code
-    class PayloadRequestAuthJWT: NSObject, Claims {
-        var clientId: String?
-        var code: String?
-        var codeVerifier: String?
-        var grantType: String?
-        var nonce: String?
-        var redirectUrl: String?
-        var timestamp: Double?
-
-        enum CodingKeys: String, CodingKey {
-            case clientId = "client_id"
-            case code
-            case codeVerifier = "code_verifier"
-            case grantType = "grant_type"
-            case nonce
-            case redirectUrl = "redirect_uri"
-            case timestamp
-        }
-    }
-    
-    // claims to validate authorization and refresh tokens
-    class PayloadValidateAuthJWT: NSObject, Claims {
-        var accessToken: String?
-        var expiresTimestamp: Double?
-        var refreshToken: String?
-        var tokenType: String?
+    struct PayloadRequestAuthJWT: Claims {
+        let clientId: String
+        let code: String
+        let codeVerifier: String
+        let grantType = "authorization_code"
+        let nonce = JWTUtility.generateNonce()
+        let redirectUri: String
+        let timestamp = Date()
         
-        enum CodingKeys: String, CodingKey {
-            case accessToken = "access_token"
-            case expiresTimestamp = "expires_on"
-            case refreshToken = "refresh_token"
-            case tokenType = "token_type"
+        init(clientId: String, code: String, codeVerifier: String, redirectUri: String) {
+            self.clientId = clientId
+            self.code = code
+            self.codeVerifier = codeVerifier
+            self.redirectUri = redirectUri
+        }
+        
+        func encode() throws -> String {
+            let jsonEncoder = JSONEncoder()
+            jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
+            jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
+            let data = try jsonEncoder.encode(self)
+            return JWTEncoder.base64urlEncodedString(data: data)
         }
     }
     
@@ -205,24 +198,20 @@ class JWTUtility: NSObject {
     ///   - contractId: contract identifier
     ///   - privateKey: private key in base 64 format
     ///   - publicKey: public key in base 64 format
-    class func signedAuthJwt(_ authCode: String, appId: String, contractId: String, privateKey: String, publicKey: String?) -> String? {
-        guard
-            privateKey.isBase64(),
-            let privateKeyData = convertKeyString(privateKey) else {
+    class func authorizationRequestJWT(authCode: String, configuration: Configuration) -> String? {
+        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
                 print("DigiMeSDK: Error creating RSA key")
                 return nil
         }
 
-        let claims = PayloadRequestAuthJWT()
-        claims.clientId = "\(appId)_\(contractId)"
-        claims.code = authCode
-        claims.codeVerifier = retrieveCodeVerifier()
-        claims.grantType = "authorization_code"
-        claims.nonce = generateNonce()
-        
-        // NB! this redirect schema must exist in the CA contract definition, otherwise preauth request will fail!
-        claims.redirectUrl = "digime-ca-\(appId)"
-        claims.timestamp = NSDate().timeIntervalSince1970 * 1000.0
+        let claims = PayloadRequestAuthJWT(
+            clientId: configuration.clientId,
+            code: authCode,
+            codeVerifier: retrieveCodeVerifier()!,
+            
+            // NB! this redirect schema must exist in the contract definition, otherwise preauth request will fail!
+            redirectUri: configuration.redirectUri + "auth"
+        )
 
         // signing
         var jwt = JWT(header: header, claims: claims)
@@ -234,7 +223,7 @@ class JWTUtility: NSObject {
 
         // validation
         guard
-            let publicKeyBase64 = publicKey,
+            let publicKeyBase64 = configuration.publicKey,
             let publicKey = convertKeyString(publicKeyBase64) else {
                 return signedJwt
         }
@@ -267,39 +256,26 @@ class JWTUtility: NSObject {
         }
     }
     
-    /// Extracts access and refresh tokens from JWT, and wraps in `DMEOAuthToken`.
+    /// Extracts access and refresh tokens from JWT, and wraps in `OAuthToken`.
     /// - Parameters
     ///  - jwt: JSON Web Token containing access/refresh token pair.
     ///  - publicKey: public key in base 64 format
-    class func oAuthToken(from jwt: String, publicKey: String) -> OAuthToken? {
-        guard let publicKeyData = convertKeyString(publicKey) else {
-                print("DigiMeSDK: Error creating RSA public key")
+    class func oAuthToken(from jwt: String, keySet: JSONWebKeySet) -> Result<OAuthToken, Error> {
+        let decoder = JWTDecoder { kid in
+            guard
+                let key = keySet.keys.first(where: { $0.kid == kid }),
+                let data = convertKeyString(key.pem) else {
+                NSLog("Error retrieving matching JWT verifier")
                 return nil
+            }
+            
+            return JWTVerifier.ps512(publicKey: data)
         }
         
-        // validation
-        let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
-        let isVerified = JWT<PayloadValidateAuthJWT>.verify(jwt, using: verifier)
-        
-        guard isVerified else {
-            return nil
+        return Result {
+            let decodedJwt = try decoder.decode(JWT<OAuthToken>.self, fromString: jwt)
+            return decodedJwt.claims
         }
-        
-        let decoder = JWTDecoder(jwtVerifier: verifier)
-        let jwt = try? decoder.decode(JWT<PayloadValidateAuthJWT>.self, fromString: jwt)
-        guard
-            let accessToken = jwt?.claims.accessToken,
-            let refreshToken = jwt?.claims.refreshToken,
-            let expiresTimestamp = jwt?.claims.expiresTimestamp else {
-            return nil
-        }
-        
-        return OAuthToken(
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            expiry: Date(timeIntervalSince1970: expiresTimestamp),
-            tokenType: jwt?.claims.tokenType
-        )
     }
     
     /// Creates request JWT which can be used to trigger data

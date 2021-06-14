@@ -49,6 +49,27 @@ class OAuthService {
         }
     }
     
+    private struct AuthResponse: Decodable {
+        let token: String
+    }
+    
+    func requestTokenExchange(authCode: String, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
+        guard let jwt = JWTUtility.authorizationRequestJWT(authCode: authCode, configuration: configuration) else {
+            fatalError("Invalid pre-authorization request JWT")
+        }
+        
+        apiClient.makeRequest(.tokenExchange(jwt: jwt)) { [weak self] (result: Result<AuthResponse, Error>) in
+            switch result {
+            case .success(let response):
+                self?.extractOAuthToken(from: response) { result in
+                    completion(result)
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     private func extractPeAuthorizationCode(from response: PreAuthResponse, completion: @escaping (Result<String, Error>) -> Void) {
         latestJsonWebKeySet { result in
             let newResult = result.flatMap { JWTUtility.preAuthCode(from: response.token, keySet: $0) }
@@ -56,7 +77,11 @@ class OAuthService {
         }
     }
     
-    func requestTokenExchange(authCode: String, publicKey: String?, completion: (Result<PreAuthResponse, Error>) -> Void) {
+    private func extractOAuthToken(from response: AuthResponse, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
+        latestJsonWebKeySet { result in
+            let newResult = result.flatMap { JWTUtility.oAuthToken(from: response.token, keySet: $0) }
+            completion(newResult)
+        }
     }
     
     private func latestJsonWebKeySet(completion: @escaping (Result<JSONWebKeySet, Error>) -> Void) {
