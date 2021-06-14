@@ -83,21 +83,25 @@ class JWTUtility: NSObject {
     }
     
     // claims to request data trigger
-    class PayloadDataTriggerJWT: NSObject, Claims {
-        var accessToken: String?
-        var clientId: String?
-        var nonce: String?
-        var redirectUrl: String?
-        var sessionKey: String?
-        var timestamp: Double?
+    struct PayloadDataTriggerJWT: Claims {
+        let accessToken: String
+        let clientId: String
+        let nonce = JWTUtility.generateNonce()
+        let redirectUri: String
+        let timestamp = Date()
 
-        enum CodingKeys: String, CodingKey {
-            case accessToken = "access_token"
-            case clientId = "client_id"
-            case nonce
-            case redirectUrl = "redirect_uri"
-            case sessionKey = "session_key"
-            case timestamp
+        init(accessToken: String, clientId: String, redirectUri: String) {
+            self.accessToken = accessToken
+            self.clientId = clientId
+            self.redirectUri = redirectUri
+        }
+        
+        func encode() throws -> String {
+            let jsonEncoder = JSONEncoder()
+            jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
+            jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
+            let data = try jsonEncoder.encode(self)
+            return JWTEncoder.base64urlEncodedString(data: data)
         }
     }
     
@@ -147,14 +151,11 @@ class JWTUtility: NSObject {
     /// Creates request JWT which can be used to get a preAuthentication token
     ///
     /// - Parameters:
-    ///   - appId: application identifier
-    ///   - contractId: contract identifier
-    ///   - privateKey: private key in base 64 format
-    ///   - publicKey: public key in base 64 format
+    ///   - configuration: this SDK's instance configuration
     class func preAuthorizationRequestJWT(configuration: Configuration) -> String? {
         guard let privateKeyData = convertKeyString(configuration.privateKey) else {
-                print("DigiMeSDK: Error creating RSA key")
-                return nil
+            print("DigiMeSDK: Error creating RSA key")
+            return nil
         }
         
         let randomBytes = secureRandomData(length: 32)
@@ -194,14 +195,11 @@ class JWTUtility: NSObject {
     /// Creates request JWT which can be used to get an authentication token
     /// - Parameters:
     ///   - authCode: OAuth authorization code
-    ///   - appId: application identifier
-    ///   - contractId: contract identifier
-    ///   - privateKey: private key in base 64 format
-    ///   - publicKey: public key in base 64 format
+    ///   - configuration: this SDK's instance configuration
     class func authorizationRequestJWT(authCode: String, configuration: Configuration) -> String? {
         guard let privateKeyData = convertKeyString(configuration.privateKey) else {
-                print("DigiMeSDK: Error creating RSA key")
-                return nil
+            print("DigiMeSDK: Error creating RSA key")
+            return nil
         }
 
         let claims = PayloadRequestAuthJWT(
@@ -281,28 +279,18 @@ class JWTUtility: NSObject {
     /// Creates request JWT which can be used to trigger data
     /// - Parameters:
     ///   - accessToken: OAuth access token
-    ///   - appId: application identifier
-    ///   - contractId: contract identifier
-    ///   - sessionKey: session key
-    ///   - privateKey: private key in base 64 format
-    ///   - publicKey: public key in base 64 format
-    class func dataTriggerJwt(_ accessToken: String, appId: String, contractId: String, sessionKey: String, privateKey: String, publicKey: String?) -> String? {
-        guard
-            privateKey.isBase64(),
-            let privateKeyData = convertKeyString(privateKey) else {
-                print("DigiMeSDK: Error creating RSA key")
-                return nil
+    ///   - configuration: this SDK's instance configuration
+    class func dataTriggerRequestJwt(_ accessToken: String, configuration: Configuration) -> String? {
+        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
+            print("DigiMeSDK: Error creating RSA key")
+            return nil
         }
         
-        let claims = PayloadDataTriggerJWT()
-        claims.accessToken = accessToken
-        claims.clientId = "\(appId)_\(contractId)"
-        claims.nonce = generateNonce()
-        
-        // NB! this redirect schema must exist in the CA contract definition, otherwise this request will fail!
-        claims.redirectUrl = "digime-ca-\(appId)"
-        claims.sessionKey = sessionKey
-        claims.timestamp = NSDate().timeIntervalSince1970 * 1000.0
+        let claims = PayloadDataTriggerJWT(
+            accessToken: accessToken,
+            clientId: configuration.clientId,
+            redirectUri: configuration.redirectUri
+        )
 
         // signing
         var jwt = JWT(header: header, claims: claims)
@@ -314,7 +302,7 @@ class JWTUtility: NSObject {
 
         // validation
         guard
-            let publicKeyBase64 = publicKey,
+            let publicKeyBase64 = configuration.publicKey,
             let publicKeyData = convertKeyString(publicKeyBase64) else {
                 return signedJwt
         }
