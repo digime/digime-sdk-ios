@@ -114,10 +114,10 @@ class ConsentManager: NSObject {
         return .success(response)
     }
     
-    private func processErrorCallback(parameters: [String: String?]) -> AuthError {
+    private func processErrorCallback(parameters: [String: String?]) -> ConsentError {
         guard
             let code = parameters[ResponseKey.code.rawValue] as? String,
-            let error = AuthError(rawValue: code) else {
+            let error = ConsentError(rawValue: code) else {
             return .unexpectedError
         }
         
@@ -169,7 +169,7 @@ extension ConsentManager: SFSafariViewControllerDelegate {
             return
         }
         
-        finish(with: .failure(AuthError.userCancelled))
+        finish(with: .failure(ConsentError.userCancelled))
     }
 }
 
@@ -179,6 +179,6 @@ extension ConsentManager: UIAdaptivePresentationControllerDelegate {
             return
         }
         
-        finish(with: .failure(AuthError.userCancelled))
+        finish(with: .failure(ConsentError.userCancelled))
     }
 }

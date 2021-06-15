@@ -1,5 +1,5 @@
 //
-//  AuthError.swift
+//  ConsentError.swift
 //  DigiMeSDK
 //
 //  Created on 11/06/2021.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum AuthError: String, Error {
+enum ConsentError: String, Error {
     case initializeCheckFailed = "INITIALIZE_CHECK_FAIL"
     case userCancelled = "USER_CANCEL"
     case serviceOnboardError = "ONBOARD_ERROR"
