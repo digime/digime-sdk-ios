@@ -33,7 +33,7 @@ class JWTUtility: NSObject {
         Header(typ: "JWT")
     }
 
-    // claims to request a pre-authorization code
+    // Claims to request a pre-authorization code
     private struct PayloadRequestPreauthJWT: RequestClaims {
         let clientId: String
         let codeChallenge: String
@@ -44,16 +44,10 @@ class JWTUtility: NSObject {
         let responseType = "code"
         let state = JWTUtility.secureRandomHexString(length: 32)
         let timestamp = Date()
-        
-        init(clientId: String, codeChallenge: String, redirectUri: String) {
-            self.clientId = clientId
-            self.codeChallenge = codeChallenge
-            self.redirectUri = redirectUri
-        }
     }
     
-    // claims to validate pre-authorization code
-    private struct PayloadValidatePreauthJWT: Claims {
+    // Claims for pre-authorization code response
+    private struct PayloadResponsePreauthJWT: Claims {
         var preAuthCode: String
 
         enum CodingKeys: String, CodingKey {
@@ -61,7 +55,7 @@ class JWTUtility: NSObject {
         }
     }
     
-    // claims to request a authorization code
+    // Claims to request a authorization code
     private struct PayloadRequestAuthJWT: RequestClaims {
         let clientId: String
         let code: String
@@ -70,31 +64,18 @@ class JWTUtility: NSObject {
         let nonce = JWTUtility.generateNonce()
         let redirectUri: String
         let timestamp = Date()
-        
-        init(clientId: String, code: String, codeVerifier: String, redirectUri: String) {
-            self.clientId = clientId
-            self.code = code
-            self.codeVerifier = codeVerifier
-            self.redirectUri = redirectUri
-        }
     }
     
-    // claims to request data trigger
+    // Claims to request data trigger
     private struct PayloadDataTriggerJWT: RequestClaims {
         let accessToken: String
         let clientId: String
         let nonce = JWTUtility.generateNonce()
         let redirectUri: String
         let timestamp = Date()
-
-        init(accessToken: String, clientId: String, redirectUri: String) {
-            self.accessToken = accessToken
-            self.clientId = clientId
-            self.redirectUri = redirectUri
-        }
     }
     
-    // claims to request OAuth token renewal
+    // Claims to request OAuth token renewal
     private struct PayloadRefreshOAuthJWT: RequestClaims {
         let clientId: String
         let grantType = "refresh_token"
@@ -102,14 +83,9 @@ class JWTUtility: NSObject {
         let redirectUri: String
         let refreshToken: String
         let timestamp = Date()
-        
-        init(refreshToken: String, clientId: String, redirectUri: String) {
-            self.refreshToken = refreshToken
-            self.clientId = clientId
-            self.redirectUri = redirectUri
-        }
     }
     
+    // Claims to request writing data
     private struct PayloadWriteJWT: RequestClaims {
         let accessToken: String
         let clientId: String
@@ -119,15 +95,6 @@ class JWTUtility: NSObject {
         let redirectUri: String
         let symmetricalKey: String
         let timestamp = Date()
-        
-        init(accessToken: String, clientId: String, iv: String, metadata: String, redirectUri: String, symmetricalKey: String) {
-            self.accessToken = accessToken
-            self.clientId = clientId
-            self.iv = iv
-            self.metadata = metadata
-            self.redirectUri = redirectUri
-            self.symmetricalKey = symmetricalKey
-        }
     }
 
     /// Creates request JWT which can be used to get a preAuthentication token
@@ -152,6 +119,7 @@ class JWTUtility: NSObject {
     }
     
     /// Creates request JWT which can be used to get an authentication token
+    ///
     /// - Parameters:
     ///   - authCode: OAuth authorization code
     ///   - configuration: this SDK's instance configuration
@@ -169,6 +137,7 @@ class JWTUtility: NSObject {
     }
     
     /// Extracts preAuthorization code from JWT
+    ///
     /// - Parameters:
     ///   - keySet: JSON Web Key StoSetre
     ///   - jwt: pre-authorization code wrapped in JWT
@@ -185,12 +154,13 @@ class JWTUtility: NSObject {
         }
         
         return Result {
-            let decodedJwt = try decoder.decode(JWT<PayloadValidatePreauthJWT>.self, fromString: jwt)
+            let decodedJwt = try decoder.decode(JWT<PayloadResponsePreauthJWT>.self, fromString: jwt)
             return decodedJwt.claims.preAuthCode
         }
     }
     
     /// Extracts access and refresh tokens from JWT, and wraps in `OAuthToken`.
+    ///
     /// - Parameters
     ///  - jwt: JSON Web Token containing access/refresh token pair.
     ///  - publicKey: public key in base 64 format
@@ -213,6 +183,7 @@ class JWTUtility: NSObject {
     }
     
     /// Creates request JWT which can be used to trigger data
+    ///
     /// - Parameters:
     ///   - accessToken: OAuth access token
     ///   - configuration: this SDK's instance configuration
@@ -227,20 +198,22 @@ class JWTUtility: NSObject {
     }
     
     /// Creates request JWT which can be used to refresh oauth tokens
+    ///
     /// - Parameters:
     ///   - refreshToken: OAuth refresh token
     ///   - configuration: this SDK's instance configuration
     class func refreshTokensRequestJWT(refreshToken: String, configuration: Configuration) -> String? {
         let claims = PayloadRefreshOAuthJWT(
-            refreshToken: refreshToken,
             clientId: configuration.clientId,
-            redirectUri: configuration.redirectUri + "auth"
+            redirectUri: configuration.redirectUri + "auth",
+            refreshToken: refreshToken
         )
         
         return createRequestJWT(claims: claims, configuration: configuration)
     }
     
     /// Creates request JWT which can be used to write data
+    ///
     /// - Parameters:
     ///   - accessToken: OAuth refresh token
     ///   - iv: iv used to encrypt data
@@ -261,7 +234,6 @@ class JWTUtility: NSObject {
     }
     
     // MARK: - Utility functions
-    
     private class func createRequestJWT<T: RequestClaims>(claims: T, configuration: Configuration) -> String? {
         guard let privateKeyData = convertKeyString(configuration.privateKey) else {
             print("DigiMeSDK: Error creating RSA key")
@@ -331,16 +303,12 @@ class JWTUtility: NSObject {
         return publicKeyData
     }
     
-    ///
     /// Get the Base64 representation of a PEM encoded string after stripping off the PEM markers.
     ///
     /// - Parameters:
-    ///        - pemString:        `String` containing PEM formatted data.
-    ///
-    /// - Returns:                Base64 encoded `String` containing the data.
-    ///
+    ///   - pemString: `String` containing PEM formatted data.
+    /// - Returns: Base64 encoded `String` containing the data.
     private class func base64String(for pemString: String) -> String? {
-        
         // Filter looking for new lines...
         var lines = pemString
             .components(separatedBy: "\n")

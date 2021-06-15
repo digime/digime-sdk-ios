@@ -51,7 +51,7 @@ public class DigiMeSDK {
         }
     }
     
-    private func exchangeToken(authResponse: AuthResponse) {
+    private func exchangeToken(authResponse: ConsentResponse) {
         service?.requestTokenExchange(authCode: authResponse.authorizationCode) { result in
             do {
                 let response = try result.get()

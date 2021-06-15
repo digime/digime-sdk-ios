@@ -70,6 +70,23 @@ class OAuthService {
         }
     }
     
+    func renewAccessToken(oauthToken: OAuthToken, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
+        guard let jwt = JWTUtility.refreshTokensRequestJWT(refreshToken: oauthToken.refreshToken.value, configuration: configuration) else {
+            fatalError("Invalid pre-authorization request JWT")
+        }
+        
+        apiClient.makeRequest(.authorize(jwt: jwt, agent: nil, readOptions: nil)) { [weak self] (result: Result<AuthResponse, Error>) in
+            switch result {
+            case .success(let response):
+                self?.extractOAuthToken(from: response) { result in
+                    completion(result)
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     private func extractPeAuthorizationCode(from response: PreAuthResponse, completion: @escaping (Result<String, Error>) -> Void) {
         latestJsonWebKeySet { result in
             let newResult = result.flatMap { JWTUtility.preAuthCode(from: response.token, keySet: $0) }
@@ -99,23 +116,5 @@ class OAuthService {
             
             completion(result)
         }
-    }
-}
-
-struct JSONWebKey: Decodable {
-    let e: String // RSA public exponent
-    let kid: String // Key identifier
-    let kty: String // Key type identifies the cryptographic algorithm family used with the key, such as 'RSA' or 'EC'
-    let n: String // RSA Modulus
-    let pem: String // PCKS1 public pem encoded publkic key representation
-}
-
-struct JSONWebKeySet: Decodable {
-    let keys: [JSONWebKey]
-    let date = Date()
-    
-    // Cache for 15 minutes
-    var isValid: Bool {
-        Date() < date.addingTimeInterval(15 * 60)
     }
 }

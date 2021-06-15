@@ -14,7 +14,7 @@ enum CallbackError: Error {
     case invalidCallbackParameters
 }
 
-struct AuthResponse {
+struct ConsentResponse {
     struct WriteInfo {
         let postboxId: String
         let publicKey: String
@@ -33,7 +33,7 @@ struct AuthResponse {
 
 class ConsentManager: NSObject {
     private let configuration: Configuration
-    private var userConsentCompletion: ((Result<AuthResponse, Error>) -> Void)?
+    private var userConsentCompletion: ((Result<ConsentResponse, Error>) -> Void)?
     private var safariViewController: SFSafariViewController?
     
     private enum ResponseKey: String {
@@ -47,7 +47,7 @@ class ConsentManager: NSObject {
         self.configuration = configuration
     }
     
-    func requestUserConsent(preAuthCode: String, serviceId: Int?, completion: @escaping ((Result<AuthResponse, Error>) -> Void)) {
+    func requestUserConsent(preAuthCode: String, serviceId: Int?, completion: @escaping ((Result<ConsentResponse, Error>) -> Void)) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
                 self.requestUserConsent(preAuthCode: preAuthCode, serviceId: serviceId, completion: completion)
@@ -80,7 +80,7 @@ class ConsentManager: NSObject {
         UIViewController.topMostViewController()?.present(viewController, animated: true, completion: nil)
     }
     
-    private func finish(with result: Result<AuthResponse, Error>) {
+    private func finish(with result: Result<ConsentResponse, Error>) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
                 self.finish(with: result)
@@ -96,21 +96,21 @@ class ConsentManager: NSObject {
         userConsentCompletion = nil
     }
     
-    private func processSuccessCallback(parameters: [String: String?]) -> Result<AuthResponse, Error> {
+    private func processSuccessCallback(parameters: [String: String?]) -> Result<ConsentResponse, Error> {
         guard
             let status = parameters[ResponseKey.state.rawValue] as? String,
             let code = parameters[ResponseKey.code.rawValue] as? String else {
             return .failure(CallbackError.invalidCallbackParameters)
         }
         
-        var writeInfo: AuthResponse.WriteInfo?
+        var writeInfo: ConsentResponse.WriteInfo?
         if
             let postboxId = parameters[ResponseKey.postboxId.rawValue] as? String,
             let publicKey = parameters[ResponseKey.publicKey.rawValue] as? String {
             writeInfo = .init(postboxId: postboxId, publicKey: publicKey)
         }
 
-        let response = AuthResponse(code: code, status: status, writeInfo: writeInfo)
+        let response = ConsentResponse(code: code, status: status, writeInfo: writeInfo)
         return .success(response)
     }
     
@@ -144,7 +144,7 @@ extension ConsentManager: CallbackHandler {
             return
         }
         
-        let result: Result<AuthResponse, Error>!
+        let result: Result<ConsentResponse, Error>!
         switch action {
         case "auth":
             result = processSuccessCallback(parameters: parameters)

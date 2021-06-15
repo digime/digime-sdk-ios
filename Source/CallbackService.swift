@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Handles callbacks via inter-app communication such as deeplinks
 public class CallbackService {
     
     /// The shared instance of the callback service.
