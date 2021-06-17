@@ -50,13 +50,18 @@ enum Crypto {
         return try encryptRSA(data: data, publicKey: secKey)
     }
     
-    static func decrypt(encryptedBase64EncodedData data: Data, privateKey: String) throws -> Data {
-        guard let keyData = Data(base64Encoded: privateKey) else {
+    static func decryptRSA(data: Data, privateKey: String) throws -> Data {
+        let keyString = privateKey.replacingOccurrences(of: "-----BEGIN PRIVATE KEY-----\n", with: "").replacingOccurrences(of: "\n-----END PRIVATE KEY-----", with: "")
+        guard let keyData = Data(base64Encoded: keyString) else {
             throw CryptoError.stringToDataConversionFailed
         }
         
         let secKey = try secKey(keyData: keyData, isPublic: false)
         
+        return try decryptRSA(data: data, privateKey: secKey)
+    }
+    
+    static func decrypt(encryptedBase64EncodedData data: Data, privateKey: String) throws -> Data {
         // Split data into components
         let encryptedDskLength = 256
         let divLength = kCCBlockSizeAES128
@@ -69,7 +74,7 @@ enum Crypto {
         let div = data[divRange]
         let encryptedFileData = data[encryptedFileDataRange]
         
-        let dsk = try decryptRSA(data: encryptedDsk, privateKey: secKey)
+        let dsk = try decryptRSA(data: encryptedDsk, privateKey: privateKey)
         let aes = try AES256(key: dsk, iv: div)
         let fileDataWithHash = try aes.decrypt(encryptedFileData)
         
