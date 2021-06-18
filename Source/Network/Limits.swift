@@ -3,7 +3,7 @@
 //  DigiMeSDK
 //
 //  Created on 06/06/2021.
-//  Copyright © 2021 diig.me Limited. All rights reserved.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import Foundation

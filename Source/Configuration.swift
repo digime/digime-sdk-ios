@@ -17,12 +17,18 @@ public struct Configuration {
     /// Your contract identifier
     let contractId: String
     
-    /// Your PKCS1 private key - the bits between "-----BEGIN RSA PRIVATE KEY-----" and "-----END RSA PRIVATE KEY-----"
+    /// Your PKCS1 private key in PEM format - the bits between "-----BEGIN RSA PRIVATE KEY-----" and "-----END RSA PRIVATE KEY-----"
     let privateKey: String
     
-    /// Your PKCS1 public key - the bits between "-----BEGIN RSA PUBLIC KEY-----" and "-----END RSA PUBLIC KEY-----"
+    /// Your PKCS1 public key in PEM format - the bits between "-----BEGIN RSA PUBLIC KEY-----" and "-----END RSA PUBLIC KEY-----"
     let publicKey: String?
     
+    /// Creates a configuration
+    /// - Parameters:
+    ///   - appId: Your application identifier
+    ///   - contractId: Your contract identifier
+    ///   - privateKey: Your PKCS1 private key in PEM format
+    ///   - publicKey: Your PKCS1 public key in PEM format
     public init(appId: String, contractId: String, privateKey: String, publicKey: String? = nil) {
         self.appId = appId
         self.contractId = contractId

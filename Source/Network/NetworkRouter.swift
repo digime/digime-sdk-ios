@@ -14,6 +14,7 @@ enum NetworkRouter {
     case trigger(jwt: String, agent: Agent?, readOptions: ReadOptions?)
     case read(sessionKey: String, fileId: String? = nil)
     case write(postboxId: String, payload: Data, jwt: String)
+    case jwks
     
     private struct AuthorizeBody: Encodable {
         struct Actions: Encodable {
@@ -62,7 +63,7 @@ enum NetworkRouter {
         case .authorize, .tokenExchange, .trigger, .write:
             return "POST"
             
-        case .read:
+        case .read, .jwks:
             return "GET"
         }
     }
@@ -88,12 +89,15 @@ enum NetworkRouter {
             
         case .write(let postboxId, _, _):
             return "/permission-access/postbox/\(postboxId)"
+            
+        case .jwks:
+            return "/jwks/oauth"
         }
     }
     
     private var body: RequestBody? {
         switch self {
-        case .tokenExchange, .read:
+        case .tokenExchange, .read, .jwks:
             return nil
             
         case let .authorize(_, agent, readOptions):
@@ -127,7 +131,7 @@ enum NetworkRouter {
              .write(_, _, let token):
             return token
             
-        case .read:
+        case .read, .jwks:
             return nil
         }
     }
