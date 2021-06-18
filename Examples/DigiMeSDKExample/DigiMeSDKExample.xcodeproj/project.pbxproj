@@ -14,6 +14,8 @@
 		27D31A2D266A4EAD00DB2524 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A2C266A4EAD00DB2524 /* Assets.xcassets */; };
 		27D31A30266A4EAD00DB2524 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A2E266A4EAD00DB2524 /* LaunchScreen.storyboard */; };
 		27D31BEB266E231C00DB2524 /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31BEA266E231C00DB2524 /* RouterTests.swift */; };
+		27E3DE7E267B8A250048A84C /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E3DE7C267B8A250048A84C /* CryptographyTests.swift */; };
+		27E3DE7F267B8A250048A84C /* CryptographyTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27E3DE7D267B8A250048A84C /* CryptographyTestingAssets.plist */; };
 		5BC1D72537268454317E1CB9 /* Pods_DigiMeSDKExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 823514C1A272DAE89DBA96F0 /* Pods_DigiMeSDKExampleTests.framework */; };
 		974FC74F642DDB1512EA13A4 /* Pods_DigiMeSDKExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DFB8BF0E162E6D15C1C3BABC /* Pods_DigiMeSDKExample.framework */; };
 /* End PBXBuildFile section */
@@ -40,6 +42,8 @@
 		27D31A36266A4EAD00DB2524 /* DigiMeSDKExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DigiMeSDKExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		27D31A3C266A4EAD00DB2524 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27D31BEA266E231C00DB2524 /* RouterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
+		27E3DE7C267B8A250048A84C /* CryptographyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
+		27E3DE7D267B8A250048A84C /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
 		823514C1A272DAE89DBA96F0 /* Pods_DigiMeSDKExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FC2E34EC9641F71F9260F9A /* Pods-DigiMeSDKExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleTests.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExampleTests/Pods-DigiMeSDKExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		AA33104DD7681020F98F1938 /* Pods-DigiMeSDKExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.release.xcconfig"; sourceTree = "<group>"; };
@@ -105,6 +109,7 @@
 		27D31A39266A4EAD00DB2524 /* DigiMeSDKExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				27E3DE7B267B897E0048A84C /* Security */,
 				27D31BE9266E230200DB2524 /* Network */,
 				27D31A3C266A4EAD00DB2524 /* Info.plist */,
 			);
@@ -117,6 +122,15 @@
 				27D31BEA266E231C00DB2524 /* RouterTests.swift */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		27E3DE7B267B897E0048A84C /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				27E3DE7D267B8A250048A84C /* CryptographyTestingAssets.plist */,
+				27E3DE7C267B8A250048A84C /* CryptographyTests.swift */,
+			);
+			path = Security;
 			sourceTree = "<group>";
 		};
 		7318BCE517FF712805769161 /* Frameworks */ = {
@@ -234,6 +248,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27E3DE7F267B8A250048A84C /* CryptographyTestingAssets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +353,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27D31BEB266E231C00DB2524 /* RouterTests.swift in Sources */,
+				27E3DE7E267B8A250048A84C /* CryptographyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
