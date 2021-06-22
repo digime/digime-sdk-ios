@@ -100,10 +100,6 @@ class APIClient {
         }.resume()
     }
     
-    func preflight(completion: @escaping (Result<Void, Error>) -> Void) {
-        completion(.success(()))
-    }
-    
     private func logStatusMessage(from response: HTTPURLResponse) {
         let headers = response.allHeaderFields
         guard

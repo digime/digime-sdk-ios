@@ -14,8 +14,8 @@ public class DigiMeSDK {
     private let configuration: Configuration
     
     // dev only?
-    var service: OAuthService?
-    var consentManager: ConsentManager?
+    var authService: OAuthService
+    var consentManager: ConsentManager
     let credentialCache: CredentialCache
     let apiClient: APIClient
     
@@ -26,22 +26,29 @@ public class DigiMeSDK {
         self.configuration = configuration
         self.credentialCache = CredentialCache()
         self.apiClient = APIClient(credentialCache: credentialCache)
-        self.service = OAuthService(configuration: configuration, apiClient: apiClient)
+        self.authService = OAuthService(configuration: configuration, apiClient: apiClient)
         self.consentManager = ConsentManager(configuration: configuration)
     }
     
     /// Blah blah - for dev purposes only
-    public func testNewUser() {
+    public func testNewUser(completion: @escaping (Error?) -> Void) {
         // Auth - needs app to be able to receive response via URL
-        service?.requestPreAuthorizationCode(readOptions: nil) { result in
+        authService.requestPreAuthorizationCode(readOptions: nil) { result in
             if let response = try? result.get() {
-                self.performAuth(preAuthResponse: response)
+                self.performAuth(preAuthResponse: response) { result in
+                    switch result {
+                    case .success():
+                        completion(nil)
+                    case .failure(let error):
+                        completion(error)
+                    }
+                }
             }
         }
     }
     
     public func write(data: Data, metadata: Data, completion: @escaping (Result<Void, Error>) -> Void) {
-        apiClient.preflight { result in
+        preflight { result in
             do {
                 _ = try result.get()
             }
@@ -49,45 +56,106 @@ public class DigiMeSDK {
                 completion(.failure(error))
             }
             
-            let symmetricalKey = Data() // [DMECryptoUtilities randomBytesWithLength:32]
-            let iv = Data() // [DMECryptoUtilities randomBytesWithLength:16]
-            
-            let encryptedMetadata = "" // [DMECrypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv]
-            let payload = Data() // [DMECrypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv]
-            let enxcyptedSymmetricalKey = "" // [DMECrypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey contractId:self.configuration.contractId]
-            
-            guard let credentials = self.credentialCache.contents else {
-                return// completion(.failure(<#T##Error#>))
+            guard
+                let credentials = self.credentialCache.contents,
+                let writeAccessInfo = credentials.writeAccessInfo else {
+                return// completion(.failure(<#T##Error#>)) // What error should we return?
             }
             
-            let jwt = JWTUtility.writeRequestJWT(accessToken: credentials.accessToken.value, iv: iv, metadata: encryptedMetadata, symmetricalKey: encryptedMetadata, configuration: self.configuration)
-//            self.apiClient.makeRequest(.write(postboxId: "", payload: payload, jwt: jwt)) { (result: Result<Session, Error>) in
-//                
-//            }
-        }
-    }
-    
-    private func performAuth(preAuthResponse: OAuthService.PreAuthResponse) {
-        consentManager?.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: nil) { result in
+            let symmetricKey = AES256.generateSymmetricKey()
+            let iv = AES256.generateInitializationVector()
+            
             do {
-                let response = try result.get()
-                self.exchangeToken(authResponse: response)
+                let aes = try AES256(key: symmetricKey, iv: iv)
+                
+                let encryptedMetadata = try aes.encrypt(metadata).base64EncodedString(options: .lineLength64Characters)
+                let payload = try aes.encrypt(data)
+                let encryptedSymmetricKey = try Crypto.encrypt(symmetricKey: symmetricKey, publicKey: writeAccessInfo.publicKey)
+                guard let jwt = JWTUtility.writeRequestJWT(accessToken: credentials.token.accessToken.value, iv: iv, metadata: encryptedMetadata, symmetricKey: encryptedSymmetricKey, configuration: self.configuration) else {
+                    return //completion(.failure(<#T##Error#>)) // What error should we return?
+                }
+                
+                self.apiClient.makeRequest(.write(postboxId: writeAccessInfo.postboxId, payload: payload, jwt: jwt)) { (result: Result<Session, Error>) in
+                    completion(result.map { _ in Void() })
+                }
             }
             catch {
-                print(error)
+                return completion(.failure(error))
             }
         }
     }
     
-    private func exchangeToken(authResponse: ConsentResponse) {
-        service?.requestTokenExchange(authCode: authResponse.authorizationCode) { result in
+    // Only needed for data read/writes
+    private func preflight(completion: @escaping (Result<Void, Error>) -> Void) {
+        // Check we have credentials
+        guard let credentials = credentialCache.contents else {
+            return completion(.failure(SDKError.authenticationRequired))
+        }
+        
+        guard credentials.token.accessToken.isValid else {
+            return refreshTokens(credentials: credentials, completion: completion)
+        }
+        
+        completion(.success(()))
+    }
+    
+    private func refreshTokens(credentials: Credentials, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard credentials.token.refreshToken.isValid else {
+            return reauthorize(accessToken: credentials.token.accessToken, completion: completion)
+        }
+        
+        authService.renewAccessToken(oauthToken: credentials.token) { result in
             do {
                 let response = try result.get()
-
+                let newCredentials = Credentials(token: response, writeAccessInfo: credentials.writeAccessInfo)
+                self.credentialCache.contents = newCredentials
                 print(response)
+                completion(.success(()))
             }
             catch {
                 print(error)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func reauthorize(accessToken: OAuthToken.Token, completion: @escaping (Result<Void, Error>) -> Void) {
+        authService.requestPreAuthorizationCode(readOptions: nil, accessToken: accessToken.value) { result in
+            do {
+                let response = try result.get()
+                self.performAuth(preAuthResponse: response, completion: completion)
+            }
+            catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func performAuth(preAuthResponse: OAuthService.PreAuthResponse, completion: @escaping (Result<Void, Error>) -> Void) {
+        consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: nil) { result in
+            do {
+                let response = try result.get()
+                self.exchangeToken(authResponse: response, completion: completion)
+            }
+            catch {
+                print(error)
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func exchangeToken(authResponse: ConsentResponse, completion: @escaping (Result<Void, Error>) -> Void) {
+        authService.requestTokenExchange(authCode: authResponse.authorizationCode) { result in
+            do {
+                let response = try result.get()
+                let credentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo)
+                self.credentialCache.contents = credentials
+                print(response)
+                completion(.success(()))
+            }
+            catch {
+                print(error)
+                completion(.failure(error))
             }
         }
     }

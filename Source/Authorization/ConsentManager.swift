@@ -14,20 +14,20 @@ enum CallbackError: Error {
     case invalidCallbackParameters
 }
 
+struct WriteAccessInfo: Codable {
+    let postboxId: String
+    let publicKey: String
+}
+
 struct ConsentResponse {
-    struct WriteInfo {
-        let postboxId: String
-        let publicKey: String
-    }
-    
     let authorizationCode: String
     let status: String
-    let writeInfo: WriteInfo? // For write request authorization only
+    let writeAccessInfo: WriteAccessInfo? // For write request authorization only
     
-    init(code: String, status: String, writeInfo: WriteInfo? = nil) {
+    init(code: String, status: String, writeAccessInfo: WriteAccessInfo? = nil) {
         self.authorizationCode = code
         self.status = status
-        self.writeInfo = writeInfo
+        self.writeAccessInfo = writeAccessInfo
     }
 }
 
@@ -103,14 +103,14 @@ class ConsentManager: NSObject {
             return .failure(CallbackError.invalidCallbackParameters)
         }
         
-        var writeInfo: ConsentResponse.WriteInfo?
+        var writeAccessInfo: WriteAccessInfo?
         if
             let postboxId = parameters[ResponseKey.postboxId.rawValue] as? String,
             let publicKey = parameters[ResponseKey.publicKey.rawValue] as? String {
-            writeInfo = .init(postboxId: postboxId, publicKey: publicKey)
+            writeAccessInfo = .init(postboxId: postboxId, publicKey: publicKey)
         }
 
-        let response = ConsentResponse(code: code, status: status, writeInfo: writeInfo)
+        let response = ConsentResponse(code: code, status: status, writeAccessInfo: writeAccessInfo)
         return .success(response)
     }
     

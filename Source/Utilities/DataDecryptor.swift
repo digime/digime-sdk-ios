@@ -6,10 +6,6 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
-enum SDKError: Error {
-    case invalidData
-}
-
 class DataDecryptor {
     private let configuration: Configuration
     

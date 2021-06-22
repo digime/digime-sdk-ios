@@ -15,7 +15,7 @@ class CredentialCache: Caching {
         return keychainId.data(using: String.Encoding.utf8, allowLossyConversion: false)!
     }
     
-    var contents: OAuthToken? {
+    var contents: Credentials? {
         get {
             let query: [NSString: AnyObject] = [
                 kSecClass: kSecClassKey,
@@ -30,7 +30,7 @@ class CredentialCache: Caching {
             if
                 status == errSecSuccess,
                 let data = dataTypeRef as? Data,
-                let contents = try? data.decoded() as OAuthToken {
+                let contents = try? data.decoded() as Credentials {
                 return contents
             }
             
