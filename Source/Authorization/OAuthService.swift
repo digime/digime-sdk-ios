@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Session: Decodable {
+struct Session: Codable {
     let expiry: Double
     let key: String
 }

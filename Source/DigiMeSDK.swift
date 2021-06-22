@@ -57,7 +57,7 @@ public class DigiMeSDK {
             }
             
             guard
-                let credentials = self.credentialCache.contents,
+                let credentials = self.credentialCache.credentials(for: self.configuration.contractId),
                 let writeAccessInfo = credentials.writeAccessInfo else {
                 return// completion(.failure(<#T##Error#>)) // What error should we return?
             }
@@ -88,7 +88,7 @@ public class DigiMeSDK {
     // Only needed for data read/writes
     private func preflight(completion: @escaping (Result<Void, Error>) -> Void) {
         // Check we have credentials
-        guard let credentials = credentialCache.contents else {
+        guard let credentials = credentialCache.credentials(for: configuration.contractId) else {
             return completion(.failure(SDKError.authenticationRequired))
         }
         
@@ -108,7 +108,7 @@ public class DigiMeSDK {
             do {
                 let response = try result.get()
                 let newCredentials = Credentials(token: response, writeAccessInfo: credentials.writeAccessInfo)
-                self.credentialCache.contents = newCredentials
+                self.credentialCache.setCredentials(newCredentials, for: self.configuration.contractId)
                 print(response)
                 completion(.success(()))
             }
@@ -149,7 +149,7 @@ public class DigiMeSDK {
             do {
                 let response = try result.get()
                 let credentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo)
-                self.credentialCache.contents = credentials
+                self.credentialCache.setCredentials(credentials, for: self.configuration.contractId)
                 print(response)
                 completion(.success(()))
             }
