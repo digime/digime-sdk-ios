@@ -16,30 +16,58 @@ public class DigiMeSDK {
     // dev only?
     var service: OAuthService?
     var consentManager: ConsentManager?
+    let credentialCache: CredentialCache
+    let apiClient: APIClient
     
     /// Initialises a new instance of SDK.
     /// A new instance should be created for each contract the app uses
     /// - Parameter configuration: The configuration which defines this instance
     public init(configuration: Configuration) {
         self.configuration = configuration
+        self.credentialCache = CredentialCache()
+        self.apiClient = APIClient(credentialCache: credentialCache)
+        self.service = OAuthService(configuration: configuration, apiClient: apiClient)
+        self.consentManager = ConsentManager(configuration: configuration)
     }
     
     /// Blah blah - for dev purposes only
     public func testNewUser() {
-        // During dev, this allows use to test flow inrementally
-        let apiClient = APIClient()
-        service = OAuthService(configuration: configuration, apiClient: apiClient)
-        consentManager = ConsentManager(configuration: configuration)
-        
         // Auth - needs app to be able to receive response via URL
         service?.requestPreAuthorizationCode(readOptions: nil) { result in
             if let response = try? result.get() {
-                self.peformAuth(preAuthResponse: response)
+                self.performAuth(preAuthResponse: response)
             }
         }
     }
     
-    private func peformAuth(preAuthResponse: OAuthService.PreAuthResponse) {
+    public func write(data: Data, metadata: Data, completion: @escaping (Result<Void, Error>) -> Void) {
+        apiClient.preflight { result in
+            do {
+                _ = try result.get()
+            }
+            catch {
+                completion(.failure(error))
+            }
+            
+            let symmetricalKey = Data() // [DMECryptoUtilities randomBytesWithLength:32]
+            let iv = Data() // [DMECryptoUtilities randomBytesWithLength:16]
+            
+            let encryptedMetadata = "" // [DMECrypto encryptMetadata:metadata symmetricalKey:symmetricalKey initializationVector:iv]
+            let payload = Data() // [DMECrypto encryptData:data symmetricalKey:symmetricalKey initializationVector:iv]
+            let enxcyptedSymmetricalKey = "" // [DMECrypto encryptSymmetricalKey:symmetricalKey rsaPublicKey:postbox.postboxRSAPublicKey contractId:self.configuration.contractId]
+            
+            guard let credentials = self.credentialCache.contents else {
+                return// completion(.failure(<#T##Error#>))
+            }
+            
+            let jwt = JWTUtility.writeRequestJWT(accessToken: credentials.accessToken.value, iv: iv, metadata: encryptedMetadata, symmetricalKey: encryptedMetadata, configuration: self.configuration)
+//            self.apiClient.makeRequest(.write(postboxId: "", payload: payload, jwt: jwt)) { (result: Result<Session, Error>) in
+//                
+//            }
+        }
+    }
+    
+    private func performAuth(preAuthResponse: OAuthService.PreAuthResponse) {
         consentManager?.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: nil) { result in
             do {
                 let response = try result.get()
@@ -55,7 +83,7 @@ public class DigiMeSDK {
         service?.requestTokenExchange(authCode: authResponse.authorizationCode) { result in
             do {
                 let response = try result.get()
-    
+
                 print(response)
             }
             catch {

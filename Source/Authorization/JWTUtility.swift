@@ -220,11 +220,11 @@ class JWTUtility: NSObject {
     ///   - metadat: metadata describing data being pushed
     ///   - symmetricalKey: symmetrical key used to encrypt data
     ///   - configuration: this SDK's instance configuration
-    class func writeRequestJWT(accessToken: String, iv: String, metadata: String, symmetricalKey: String, configuration: Configuration) -> String? {
+    class func writeRequestJWT(accessToken: String, iv: Data, metadata: String, symmetricalKey: String, configuration: Configuration) -> String? {
         let claims = PayloadWriteJWT(
             accessToken: accessToken,
             clientId: configuration.clientId,
-            iv: iv,
+            iv: iv.hexString,
             metadata: metadata,
             redirectUri: configuration.redirectUri + "write",
             symmetricalKey: symmetricalKey
@@ -266,9 +266,7 @@ class JWTUtility: NSObject {
     }
     
     private class func secureRandomHexString(length: Int) -> String {
-        secureRandomBytes(length: length)
-            .map { String(format: "%02x", $0) }
-            .joined()
+        secureRandomBytes(length: length).hexString
     }
     
     private class func secureRandomData(length: Int) -> Data {

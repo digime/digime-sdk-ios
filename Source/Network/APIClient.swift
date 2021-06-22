@@ -30,6 +30,7 @@ struct ErrorWrapper: Decodable {
 
 class APIClient {
     
+    private let credentialCache: CredentialCache
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = [
@@ -44,6 +45,10 @@ class APIClient {
         let version = Bundle(for: Self.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
         return Agent(name: "ios", version: version)
     }()
+    
+    init(credentialCache: CredentialCache) {
+        self.credentialCache = credentialCache
+    }
 
     func makeRequest<T: Decodable>(_ router: NetworkRouter, completion: @escaping (Result<T, Error>) -> Void) {
         guard let request = try? router.asURLRequest() else {
@@ -95,8 +100,8 @@ class APIClient {
         }.resume()
     }
     
-    private func preflight() {
-        
+    func preflight(completion: @escaping (Result<Void, Error>) -> Void) {
+        completion(.success(()))
     }
     
     private func logStatusMessage(from response: HTTPURLResponse) {
