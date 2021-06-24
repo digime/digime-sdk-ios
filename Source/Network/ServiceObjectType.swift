@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ServiceObjectType: Encodable {
+public struct ServiceObjectType: Encodable {
     let identifier: UInt
     
     enum CodingKeys: String, CodingKey {

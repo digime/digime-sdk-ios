@@ -35,7 +35,10 @@ class CredentialCache {
             return contents
         }
         
-        NSLog("OAuthToken has been set in the keychain, but could not retrieve. Error: \(status)")
+        if status != errSecItemNotFound {
+            NSLog("OAuthToken has been set in the keychain, but could not retrieve. Error: \(status)")
+        }
+        
         return nil
     }
     

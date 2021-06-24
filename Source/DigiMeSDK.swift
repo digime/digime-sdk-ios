@@ -13,11 +13,11 @@ public class DigiMeSDK {
     
     private let configuration: Configuration
     
-    // dev only?
-    var authService: OAuthService
-    var consentManager: ConsentManager
-    let credentialCache: CredentialCache
-    let apiClient: APIClient
+    private let authService: OAuthService
+    private let consentManager: ConsentManager
+    private let credentialCache: CredentialCache
+    private let sessionCache: SessionCache
+    private let apiClient: APIClient
     
     /// Initialises a new instance of SDK.
     /// A new instance should be created for each contract the app uses
@@ -28,16 +28,88 @@ public class DigiMeSDK {
         self.apiClient = APIClient(credentialCache: credentialCache)
         self.authService = OAuthService(configuration: configuration, apiClient: apiClient)
         self.consentManager = ConsentManager(configuration: configuration)
+        self.sessionCache = SessionCache()
     }
     
-    /// Blah blah - for dev purposes only
-    public func testNewUser(completion: @escaping (Error?) -> Void) {
-        // Auth - needs app to be able to receive response via URL
+    /// Authorizes user and creates a session during which user can retrieve data from added sources
+    ///
+    /// If the user has not already authorized, will present a view controller in which user consents and optionally chooses a source to add.
+    ///
+    /// If user has already authorized, refreshes the session, if necessary.
+    ///
+    /// - Parameters:
+    ///   - readOptions: Options to filter which data is read from sources
+    ///   - completion: Block called upon authorization compeltion with any errors encountered.
+    public func authorize(readOptions: ReadOptions?, completion: @escaping (Error?) -> Void) {
+        if let validationError = validateClient() {
+            return completion(validationError)
+        }
+        
+        validateOrRefreshCredentials { result in
+            switch result {
+            case .success(let credentials):
+                self.refreshSession(credentials: credentials, readOptions: readOptions, completion: completion)
+                
+            case .failure(SDKError.authenticationRequired):
+                self.beginAuth(readOptions: readOptions, completion: completion)
+                
+            case .failure(let error):
+                completion(error)
+            }
+        }
+    }
+    
+    public func write(data: Data, metadata: Data, completion: @escaping (Result<Void, Error>) -> Void) {
+        validateOrRefreshCredentials { result in
+            switch result {
+            case .success(let credentials):
+                self.write(data: data, metadata: metadata, credentials: credentials, completion: completion)
+            
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func write(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let writeAccessInfo = credentials.writeAccessInfo else {
+            return// completion(.failure(T##Error)) // What error should we return?
+        }
+        
+        let symmetricKey = AES256.generateSymmetricKey()
+        let iv = AES256.generateInitializationVector()
+        
+        do {
+            let aes = try AES256(key: symmetricKey, iv: iv)
+            
+            let encryptedMetadata = try aes.encrypt(metadata).base64EncodedString(options: .lineLength64Characters)
+            let payload = try aes.encrypt(data)
+            let encryptedSymmetricKey = try Crypto.encrypt(symmetricKey: symmetricKey, publicKey: writeAccessInfo.publicKey)
+            guard let jwt = JWTUtility.writeRequestJWT(accessToken: credentials.token.accessToken.value, iv: iv, metadata: encryptedMetadata, symmetricKey: encryptedSymmetricKey, configuration: self.configuration) else {
+                return //completion(.failure(<#T##Error#>)) // What error should we return?
+            }
+            
+            self.apiClient.makeRequest(.write(postboxId: writeAccessInfo.postboxId, payload: payload, jwt: jwt)) { (result: Result<SessionResponse, Error>) in
+                if let response = try? result.get() {
+                    self.sessionCache.contents = response.session
+                }
+                
+                completion(result.map { _ in Void() })
+            }
+        }
+        catch {
+            completion(.failure(error))
+        }
+    }
+    
+    // Auth - needs app to be able to receive response via URL
+    private func beginAuth(readOptions: ReadOptions?, completion: @escaping (Error?) -> Void) {
         authService.requestPreAuthorizationCode(readOptions: nil) { result in
             if let response = try? result.get() {
-                self.performAuth(preAuthResponse: response) { result in
+                self.sessionCache.contents = response.session
+                self.performAuth(preAuthResponse: response, serviceId: nil) { result in
                     switch result {
-                    case .success():
+                    case .success:
                         completion(nil)
                     case .failure(let error):
                         completion(error)
@@ -47,46 +119,30 @@ public class DigiMeSDK {
         }
     }
     
-    public func write(data: Data, metadata: Data, completion: @escaping (Result<Void, Error>) -> Void) {
-        preflight { result in
+    // Refresh read session by triggering source sync
+    private func refreshSession(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Error?) -> Void) {
+        if let session = sessionCache.contents,
+           session.isValid {
+            return completion(nil)
+        }
+        
+        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+            return //completion(.failure(<#T##Error#>)) // What error should we return?
+        }
+        
+        apiClient.makeRequest(.trigger(jwt: jwt, agent: apiClient.agent, readOptions: readOptions)) { (result: Result<SessionResponse, Error>) in
             do {
-                _ = try result.get()
+                let response = try result.get()
+                self.sessionCache.contents = response.session
+                completion(nil)
             }
             catch {
-                completion(.failure(error))
-            }
-            
-            guard
-                let credentials = self.credentialCache.credentials(for: self.configuration.contractId),
-                let writeAccessInfo = credentials.writeAccessInfo else {
-                return// completion(.failure(<#T##Error#>)) // What error should we return?
-            }
-            
-            let symmetricKey = AES256.generateSymmetricKey()
-            let iv = AES256.generateInitializationVector()
-            
-            do {
-                let aes = try AES256(key: symmetricKey, iv: iv)
-                
-                let encryptedMetadata = try aes.encrypt(metadata).base64EncodedString(options: .lineLength64Characters)
-                let payload = try aes.encrypt(data)
-                let encryptedSymmetricKey = try Crypto.encrypt(symmetricKey: symmetricKey, publicKey: writeAccessInfo.publicKey)
-                guard let jwt = JWTUtility.writeRequestJWT(accessToken: credentials.token.accessToken.value, iv: iv, metadata: encryptedMetadata, symmetricKey: encryptedSymmetricKey, configuration: self.configuration) else {
-                    return //completion(.failure(<#T##Error#>)) // What error should we return?
-                }
-                
-                self.apiClient.makeRequest(.write(postboxId: writeAccessInfo.postboxId, payload: payload, jwt: jwt)) { (result: Result<Session, Error>) in
-                    completion(result.map { _ in Void() })
-                }
-            }
-            catch {
-                return completion(.failure(error))
+                completion(error)
             }
         }
     }
     
-    // Only needed for data read/writes
-    private func preflight(completion: @escaping (Result<Void, Error>) -> Void) {
+    private func validateOrRefreshCredentials(completion: @escaping (Result<Credentials, Error>) -> Void) {
         // Check we have credentials
         guard let credentials = credentialCache.credentials(for: configuration.contractId) else {
             return completion(.failure(SDKError.authenticationRequired))
@@ -96,10 +152,10 @@ public class DigiMeSDK {
             return refreshTokens(credentials: credentials, completion: completion)
         }
         
-        completion(.success(()))
+        completion(.success(credentials))
     }
     
-    private func refreshTokens(credentials: Credentials, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func refreshTokens(credentials: Credentials, completion: @escaping (Result<Credentials, Error>) -> Void) {
         guard credentials.token.refreshToken.isValid else {
             return reauthorize(accessToken: credentials.token.accessToken, completion: completion)
         }
@@ -110,7 +166,7 @@ public class DigiMeSDK {
                 let newCredentials = Credentials(token: response, writeAccessInfo: credentials.writeAccessInfo)
                 self.credentialCache.setCredentials(newCredentials, for: self.configuration.contractId)
                 print(response)
-                completion(.success(()))
+                completion(.success(newCredentials))
             }
             catch {
                 print(error)
@@ -119,11 +175,12 @@ public class DigiMeSDK {
         }
     }
     
-    private func reauthorize(accessToken: OAuthToken.Token, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func reauthorize(accessToken: OAuthToken.Token, completion: @escaping (Result<Credentials, Error>) -> Void) {
         authService.requestPreAuthorizationCode(readOptions: nil, accessToken: accessToken.value) { result in
             do {
                 let response = try result.get()
-                self.performAuth(preAuthResponse: response, completion: completion)
+                self.sessionCache.contents = response.session
+                self.performAuth(preAuthResponse: response, serviceId: nil, completion: completion)
             }
             catch {
                 completion(.failure(error))
@@ -131,7 +188,7 @@ public class DigiMeSDK {
         }
     }
     
-    private func performAuth(preAuthResponse: OAuthService.PreAuthResponse, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func performAuth(preAuthResponse: PreAuthResponse, serviceId: Int?, completion: @escaping (Result<Credentials, Error>) -> Void) {
         consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: nil) { result in
             do {
                 let response = try result.get()
@@ -144,19 +201,32 @@ public class DigiMeSDK {
         }
     }
     
-    private func exchangeToken(authResponse: ConsentResponse, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func exchangeToken(authResponse: ConsentResponse, completion: @escaping (Result<Credentials, Error>) -> Void) {
         authService.requestTokenExchange(authCode: authResponse.authorizationCode) { result in
             do {
                 let response = try result.get()
                 let credentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo)
                 self.credentialCache.setCredentials(credentials, for: self.configuration.contractId)
                 print(response)
-                completion(.success(()))
+                completion(.success(credentials))
             }
             catch {
                 print(error)
                 completion(.failure(error))
             }
         }
+    }
+    
+    private func validateClient() -> Error? {
+        guard let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]] else {
+            return SDKError.noUrlScheme
+        }
+        
+        let urlSchemes = urlTypes.compactMap { $0["CFBundleURLSchemes"] as? [String] }.flatMap { $0 }
+        if !urlSchemes.contains("digime-ca-\(configuration.appId)") {
+            return SDKError.noUrlScheme
+        }
+        
+        return nil
     }
 }

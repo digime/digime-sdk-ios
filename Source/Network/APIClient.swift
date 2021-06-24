@@ -61,27 +61,30 @@ class APIClient {
                 return
             }
             
-            guard let httpResonse = response as? HTTPURLResponse else {
+            guard let httpResponse = response as? HTTPURLResponse else {
                 completion(.failure(HTTPError.noResponse))
                 return
             }
             
-            self.logStatusMessage(from: httpResonse)
+            self.logStatusMessage(from: httpResponse)
             
-            guard (200..<300).contains(httpResonse.statusCode) else {
+            guard (200..<300).contains(httpResponse.statusCode) else {
                 var errorWrapper: ErrorWrapper?
                 if let data = data {
                     errorWrapper = try? data.decoded()
                 }
                 
                 if let errorResponse = errorWrapper?.error {
-                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResonse.statusCode), error code: \(errorResponse.code), message: \(errorResponse.message)")
+                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode), error code: \(errorResponse.code), message: \(errorResponse.message)")
+                }
+                else if let data = data, let message = String(data: data, encoding: .utf8) {
+                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode) \(message)")
                 }
                 else {
-                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResonse.statusCode)")
+                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode)")
                 }
                 
-                completion(.failure(HTTPError.unsuccesfulStatusCode(httpResonse.statusCode, response: errorWrapper?.error)))
+                completion(.failure(HTTPError.unsuccesfulStatusCode(httpResponse.statusCode, response: errorWrapper?.error)))
                 return
             }
             

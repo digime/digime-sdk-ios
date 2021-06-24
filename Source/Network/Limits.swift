@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct Limits: Encodable {
+public struct Limits: Encodable {
     let duration: Duration
     
-    init(duration: Duration) {
+    public init(duration: Duration) {
         self.duration = duration
     }
     
-    init(sourceFetchDuration: Int) {
+    public init(sourceFetchDuration: Int) {
         duration = Duration(sourceFetch: sourceFetchDuration)
     }
 }

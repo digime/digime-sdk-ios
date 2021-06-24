@@ -41,6 +41,8 @@ class ConsentManager: NSObject {
         case code
         case postboxId
         case publicKey
+        case success
+        case errorCode
     }
 
     init(configuration: Configuration) {
@@ -61,8 +63,7 @@ class ConsentManager: NSObject {
         
         var percentEncodedQueryItems = [
             URLQueryItem(name: "code", value: preAuthCode),
-            URLQueryItem(name: "errorCallback", value: "\(self.configuration.redirectUri)error".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)),
-            URLQueryItem(name: "successCallback", value: "\(self.configuration.redirectUri)auth".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)),
+            URLQueryItem(name: "callback", value: "\(self.configuration.redirectUri)auth".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)),
         ]
         
         if let serviceId = serviceId {
@@ -116,8 +117,8 @@ class ConsentManager: NSObject {
     
     private func processErrorCallback(parameters: [String: String?]) -> ConsentError {
         guard
-            let code = parameters[ResponseKey.code.rawValue] as? String,
-            let error = ConsentError(rawValue: code) else {
+            let errorCode = parameters[ResponseKey.errorCode.rawValue] as? String,
+            let error = ConsentError(rawValue: errorCode) else {
             return .unexpectedError
         }
         
@@ -127,7 +128,7 @@ class ConsentManager: NSObject {
 
 extension ConsentManager: CallbackHandler {
     func canHandleAction(_ action: String) -> Bool {
-        action == "auth" || action == "error"
+        action == "auth"
     }
     
     func handleAction(_ action: String, with parameters: [String: String?]) {
@@ -145,20 +146,27 @@ extension ConsentManager: CallbackHandler {
         }
         
         let result: Result<ConsentResponse, Error>!
-        switch action {
-        case "auth":
+        defer {
+            presentingViewController.dismiss(animated: true) {
+                self.finish(with: result)
+            }
+        }
+        
+        guard let success = parameters[ResponseKey.success.rawValue] else {
+            result = .failure(CallbackError.invalidCallbackParameters)
+            return
+        }
+        
+        switch success {
+        case "true":
             result = processSuccessCallback(parameters: parameters)
             
-        case "error":
+        case "false":
             let error = processErrorCallback(parameters: parameters)
             result = .failure(error)
             
         default:
             result = .failure(CallbackError.unexpectedCallbackAction)
-        }
-        
-        presentingViewController.dismiss(animated: true) {
-            self.finish(with: result)
         }
     }
 }

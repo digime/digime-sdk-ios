@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ServiceGroup: Encodable {
+public struct ServiceGroup: Encodable {
     let identifier: UInt
     let serviceTypes: [ServiceType]
     

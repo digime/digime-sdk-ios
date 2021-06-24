@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct Duration: Encodable {
+public struct Duration: Encodable {
     let sourceFetch: Int
-    static func unlimited() -> Duration {
+    public static func unlimited() -> Duration {
         Duration(sourceFetch: 0)
     }
 }

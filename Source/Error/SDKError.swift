@@ -14,5 +14,8 @@ public enum SDKError: Error {
     // Could not deserialize data
     case invalidData
     
+    // URL Scheme not set in Info.plist
+    case noUrlScheme
+    
     case authenticationRequired
 }

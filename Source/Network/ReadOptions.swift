@@ -8,12 +8,12 @@
 
 import Foundation
 
-struct ReadOptions: Encodable {
+public struct ReadOptions: Encodable {
     let limits: Limits?
     let scope: Scope?
     let accept: ReadAccept?
     
-    init?(accept: ReadAccept? = nil, limits: Limits? = nil, scope: Scope? = nil) {
+    public init?(accept: ReadAccept? = nil, limits: Limits? = nil, scope: Scope? = nil) {
         guard accept != nil || limits != nil || scope != nil else {
             return nil
         }

@@ -9,8 +9,13 @@
 import Foundation
 
 struct Session: Codable {
-    let expiry: Double
+    let expiry: Double // timestamp in milliseconds since 1970
     let key: String
+    
+    var isValid: Bool {
+        // Allow at least one minute before expiry
+        expiry > (Date().timeIntervalSince1970 * 1000 + 60)
+    }
 }
 
 class OAuthService {
@@ -25,13 +30,8 @@ class OAuthService {
         self.apiClient = apiClient
     }
         
-    // Can be used for raw response from server where `token` is the JWT
+    // PreAuthResponse can be used for raw response from server where `token` is the JWT
     // and as result when `token` is the extracted pre-authrozation code
-    struct PreAuthResponse: Decodable {
-        let token: String
-        let session: Session
-    }
-    
     func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String? = nil, completion: @escaping (Result<PreAuthResponse, Error>) -> Void) {
         guard let jwt = JWTUtility.preAuthorizationRequestJWT(configuration: configuration, accessToken: accessToken) else {
             fatalError("Invalid pre-authorization request JWT")
@@ -40,7 +40,7 @@ class OAuthService {
         apiClient.makeRequest(.authorize(jwt: jwt, agent: apiClient.agent, readOptions: readOptions)) { [weak self] (result: Result<PreAuthResponse, Error>) in
             switch result {
             case .success(let response):
-                self?.extractPeAuthorizationCode(from: response) { result in
+                self?.extractPreAuthorizationCode(from: response) { result in
                     completion(result.map { PreAuthResponse(token: $0, session: response.session) })
                 }
             case .failure(let error):
@@ -49,13 +49,9 @@ class OAuthService {
         }
     }
     
-    private struct AuthResponse: Decodable {
-        let token: String
-    }
-    
     func requestTokenExchange(authCode: String, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
         guard let jwt = JWTUtility.authorizationRequestJWT(authCode: authCode, configuration: configuration) else {
-            fatalError("Invalid pre-authorization request JWT")
+            fatalError("Invalid authorization request JWT")
         }
         
         apiClient.makeRequest(.tokenExchange(jwt: jwt)) { [weak self] (result: Result<AuthResponse, Error>) in
@@ -72,7 +68,7 @@ class OAuthService {
     
     func renewAccessToken(oauthToken: OAuthToken, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
         guard let jwt = JWTUtility.refreshTokensRequestJWT(refreshToken: oauthToken.refreshToken.value, configuration: configuration) else {
-            fatalError("Invalid pre-authorization request JWT")
+            fatalError("Invalid refresh tokens request JWT")
         }
         
         apiClient.makeRequest(.tokenExchange(jwt: jwt)) { [weak self] (result: Result<AuthResponse, Error>) in
@@ -87,7 +83,7 @@ class OAuthService {
         }
     }
     
-    private func extractPeAuthorizationCode(from response: PreAuthResponse, completion: @escaping (Result<String, Error>) -> Void) {
+    private func extractPreAuthorizationCode(from response: PreAuthResponse, completion: @escaping (Result<String, Error>) -> Void) {
         latestJsonWebKeySet { result in
             let newResult = result.flatMap { JWTUtility.preAuthCode(from: response.token, keySet: $0) }
             completion(newResult)

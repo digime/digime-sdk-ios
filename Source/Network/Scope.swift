@@ -8,11 +8,11 @@
 
 import Foundation
 
-struct Scope: Encodable {
+public struct Scope: Encodable {
     let serviceGroups: [ServiceGroup]?
     let timeRanges: [TimeRange]?
     
-    init?(serviceGroups: [ServiceGroup]? = nil, timeRanges: [TimeRange]? = nil) {
+    public init?(serviceGroups: [ServiceGroup]? = nil, timeRanges: [TimeRange]? = nil) {
         guard serviceGroups != nil || timeRanges != nil else {
             return nil
         }
