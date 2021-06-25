@@ -51,7 +51,7 @@ class APIClient {
         self.credentialCache = credentialCache
     }
 
-    func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<(T.ResponseType, HTTPHeader), Error>) -> Void) {
+    func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, Error>) -> Void) {
         guard let request = try? route.toUrlRequest() else {
             return
         }
@@ -95,13 +95,10 @@ class APIClient {
             }
             
             let httpHeaders = httpResponse.allHeaderFields
-            if let data = data as? T.ResponseType {
-                return completion(.success((data, httpHeaders)))
-            }
             
             do {
-                let result = try data.decoded() as T.ResponseType
-                completion(.success((result, httpHeaders)))
+                let result = try route.parseResponse(data: data, headers: httpHeaders)
+                completion(.success(result))
             }
             catch {
                 completion(.failure(error))

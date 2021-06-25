@@ -69,23 +69,21 @@ public class DigiMeSDK {
         }
     }
     
-    public func readAccounts(completion: @escaping (Result<AccountList, Error>) -> Void) {
+    public func readAccounts(completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
         let credentials = credentialCache.credentials(for: configuration.contractId)!
         refreshSession(credentials: credentials, readOptions: nil) { result in
             do {
                 let session = try result.get()
                 self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
                     do {
-                        let (data, headers) = try result.get()
-                        guard
-                            let metadataBase64 = headers["X-Metadata"] as? String,
-                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
-                            return completion(.failure(SDKError.invalidData))
+                        let (data, fileInfo) = try result.get()
+                        var unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
+                        if fileInfo.compression == "gzip" {
+                            unpackedData = try DataCompressor.gzip.decompress(data: unpackedData)
                         }
-                        
-                        let unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
-                        let decompressed = try DataCompressor.gzip.decompress(data: data)
-                        let stringData = String(data: data, encoding: .utf8)
+                    
+                        let accounts = try unpackedData.decoded() as AccountsInfo
+                        completion(.success(accounts))
                     }
                     catch {
                         completion(.failure(error))
@@ -109,13 +107,13 @@ public class DigiMeSDK {
                 
                 self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
                     do {
-                        let (data, headers) = try result.get()
-                        guard
-                            let metadataBase64 = headers["X-Metadata"] as? String,
-                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
-                            return completion(.failure(SDKError.invalidData))
-                        }
-                        
+                        let (data, fileInfo) = try result.get()
+//                        guard
+//                            let metadataBase64 = headers["X-Metadata"] as? String,
+//                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
+//                            return completion(.failure(SDKError.invalidData))
+//                        }
+
                         let unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
                         let decompressed = try DataCompressor.gzip.decompress(data: data)
                         let stringData = String(data: data, encoding: .utf8)
@@ -131,20 +129,20 @@ public class DigiMeSDK {
         }
     }
     
-    public func readFileList(completion: @escaping (Result<AccountList, Error>) -> Void) {
+    public func readFileList(completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
         let credentials = credentialCache.credentials(for: configuration.contractId)!
         refreshSession(credentials: credentials, readOptions: nil) { result in
             do {
                 let session = try result.get()
                 self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
                     do {
-                        let (data, headers) = try result.get()
-                        guard
-                            let metadataBase64 = headers["X-Metadata"] as? String,
-                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
-                            return completion(.failure(SDKError.invalidData))
-                        }
-                        
+                        let (data, fileInfo) = try result.get()
+//                        guard
+//                            let metadataBase64 = headers["X-Metadata"] as? String,
+//                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
+//                            return completion(.failure(SDKError.invalidData))
+//                        }
+
                         let unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
                         let decompressed = try DataCompressor.gzip.decompress(data: data)
                         let stringData = String(data: data, encoding: .utf8)
@@ -191,7 +189,7 @@ public class DigiMeSDK {
             }
             
             self.apiClient.makeRequest(WriteDataRoute(postboxId: writeAccessInfo.postboxId, payload: payload, jwt: jwt)) { result in
-                if let (response, _) = try? result.get() {
+                if let response = try? result.get() {
                     self.sessionCache.contents = response.session
                 }
                 
@@ -233,7 +231,7 @@ public class DigiMeSDK {
         
         apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, agent: nil, readOptions: readOptions)) { result in
             do {
-                let (response, _) = try result.get()
+                let response = try result.get()
                 self.sessionCache.contents = response.session
                 completion(.success(response.session))
             }

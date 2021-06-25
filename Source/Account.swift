@@ -9,25 +9,25 @@
 import Foundation
 
 /// A data source
-public struct Account {
+public struct Account: Decodable {
     
     /// The account's identifier
-    let identifier: String
+    let `id`: String
     
     /// The account's name
     let name: String
     
-    let number: String
+    let number: String? // which accounts have this?
     
     let service: ServiceDescriptor
 }
 
-public struct ServiceDescriptor {
+public struct ServiceDescriptor: Decodable {
     let name: String
     let logo: String?
 }
 
-public struct AccountList {
-    let fileId: String
+public struct AccountsInfo: Decodable {
     let accounts: [Account]
+    let consentid: String
 }

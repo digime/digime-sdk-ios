@@ -51,7 +51,7 @@ enum Crypto {
     }
     
     static func decryptRSA(data: Data, privateKey: String) throws -> Data {
-        let keyString = privateKey.replacingOccurrences(of: "-----BEGIN PRIVATE KEY-----\n", with: "").replacingOccurrences(of: "\n-----END PRIVATE KEY-----", with: "")
+        let keyString = privateKey.replacingOccurrences(of: "-----BEGIN PRIVATE KEY-----\n", with: "").replacingOccurrences(of: "\n-----END PRIVATE KEY-----", with: "").replacingOccurrences(of: "\n", with: "")
         guard let keyData = Data(base64Encoded: keyString) else {
             throw CryptoError.stringToDataConversionFailed
         }

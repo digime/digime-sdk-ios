@@ -22,7 +22,7 @@ struct WriteDataRoute: Route {
         return body
     }
     
-    var customHeaders: [String : String] {
+    var customHeaders: [String: String] {
         ["Authorization": "Bearer " + jwt]
     }
     

@@ -9,8 +9,7 @@
 import Foundation
 
 protocol Route {
-//    associatedtype RequestType: RequestBody
-    associatedtype ResponseType: Decodable
+    associatedtype ResponseType
     static var method: String { get }
     static var path: String { get }
     

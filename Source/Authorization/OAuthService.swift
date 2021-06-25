@@ -39,7 +39,7 @@ class OAuthService {
 
         apiClient.makeRequest(AuthorizeRoute(jwt: jwt, agent: nil, readOptions: readOptions)) { [weak self] result in
             switch result {
-            case .success(let (response, _)):
+            case .success(let response):
                 self?.extractPreAuthorizationCode(from: response) { result in
                     completion(result.map { PreAuthResponse(token: $0, session: response.session) })
                 }
@@ -56,7 +56,7 @@ class OAuthService {
         
         apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
             switch result {
-            case .success(let (response, _)):
+            case .success(let response):
                 self?.extractOAuthToken(from: response) { result in
                     completion(result)
                 }
@@ -73,7 +73,7 @@ class OAuthService {
         
         apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
             switch result {
-            case .success(let (response, _)):
+            case .success(let response):
                 self?.extractOAuthToken(from: response) { result in
                     completion(result)
                 }
@@ -106,11 +106,11 @@ class OAuthService {
         }
         
         apiClient.makeRequest(WebKeySetRoute()) { result in
-            if let (jwks, _) = try? result.get() {
+            if let jwks = try? result.get() {
                 self.jwks = jwks
             }
             
-            completion(result.map { $0.0 } )
+            completion(result.map { $0 })
         }
     }
 }
