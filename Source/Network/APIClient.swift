@@ -29,6 +29,7 @@ struct ErrorWrapper: Decodable {
 }
 
 class APIClient {
+    typealias HTTPHeader = [AnyHashable: Any]
     
     private let credentialCache: CredentialCache
     private lazy var session: URLSession = {
@@ -50,11 +51,11 @@ class APIClient {
         self.credentialCache = credentialCache
     }
 
-    func makeRequest<T: Decodable>(_ router: NetworkRouter, completion: @escaping (Result<T, Error>) -> Void) {
-        guard let request = try? router.asURLRequest() else {
+    func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<(T.ResponseType, HTTPHeader), Error>) -> Void) {
+        guard let request = try? route.toUrlRequest() else {
             return
         }
-        
+                
         session.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
@@ -93,15 +94,73 @@ class APIClient {
                 return
             }
             
+            let httpHeaders = httpResponse.allHeaderFields
+            if let data = data as? T.ResponseType {
+                return completion(.success((data, httpHeaders)))
+            }
+            
             do {
-                let result = try data.decoded() as T
-                completion(.success(result))
+                let result = try data.decoded() as T.ResponseType
+                completion(.success((result, httpHeaders)))
             }
             catch {
                 completion(.failure(error))
             }
         }.resume()
     }
+
+//    func makeRequest<T: Decodable>(_ router: NetworkRouter, completion: @escaping (Result<T, Error>) -> Void) {
+//        guard let request = try? router.asURLRequest() else {
+//            return
+//        }
+//        
+//        session.dataTask(with: request) { data, response, error in
+//            if let error = error {
+//                completion(.failure(error))
+//                return
+//            }
+//            
+//            guard let httpResponse = response as? HTTPURLResponse else {
+//                completion(.failure(HTTPError.noResponse))
+//                return
+//            }
+//            
+//            self.logStatusMessage(from: httpResponse)
+//            
+//            guard (200..<300).contains(httpResponse.statusCode) else {
+//                var errorWrapper: ErrorWrapper?
+//                if let data = data {
+//                    errorWrapper = try? data.decoded()
+//                }
+//                
+//                if let errorResponse = errorWrapper?.error {
+//                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode), error code: \(errorResponse.code), message: \(errorResponse.message)")
+//                }
+//                else if let data = data, let message = String(data: data, encoding: .utf8) {
+//                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode) \(message)")
+//                }
+//                else {
+//                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode)")
+//                }
+//                
+//                completion(.failure(HTTPError.unsuccesfulStatusCode(httpResponse.statusCode, response: errorWrapper?.error)))
+//                return
+//            }
+//            
+//            guard let data = data else {
+//                completion(.failure(HTTPError.noData))
+//                return
+//            }
+//            
+//            do {
+//                let result = try data.decoded() as T
+//                completion(.success(result))
+//            }
+//            catch {
+//                completion(.failure(error))
+//            }
+//        }.resume()
+//    }
     
     private func logStatusMessage(from response: HTTPURLResponse) {
         let headers = response.allHeaderFields

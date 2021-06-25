@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
     s.author       	= { "digi.me Ltd." => "ios@digi.me" }
     s.platform     	= :ios, "13.0"
     s.dependency "Brotli"
-    s.dependency "GZIP"
+    s.dependency "GzipSwift"
     s.dependency "SwiftJWT"
     s.swift_version = "5.0"
     s.source       	= {

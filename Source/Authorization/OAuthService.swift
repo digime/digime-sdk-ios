@@ -37,9 +37,9 @@ class OAuthService {
             fatalError("Invalid pre-authorization request JWT")
         }
 
-        apiClient.makeRequest(.authorize(jwt: jwt, agent: apiClient.agent, readOptions: readOptions)) { [weak self] (result: Result<PreAuthResponse, Error>) in
+        apiClient.makeRequest(AuthorizeRoute(jwt: jwt, agent: nil, readOptions: readOptions)) { [weak self] result in
             switch result {
-            case .success(let response):
+            case .success(let (response, _)):
                 self?.extractPreAuthorizationCode(from: response) { result in
                     completion(result.map { PreAuthResponse(token: $0, session: response.session) })
                 }
@@ -54,9 +54,9 @@ class OAuthService {
             fatalError("Invalid authorization request JWT")
         }
         
-        apiClient.makeRequest(.tokenExchange(jwt: jwt)) { [weak self] (result: Result<AuthResponse, Error>) in
+        apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
             switch result {
-            case .success(let response):
+            case .success(let (response, _)):
                 self?.extractOAuthToken(from: response) { result in
                     completion(result)
                 }
@@ -71,9 +71,9 @@ class OAuthService {
             fatalError("Invalid refresh tokens request JWT")
         }
         
-        apiClient.makeRequest(.tokenExchange(jwt: jwt)) { [weak self] (result: Result<AuthResponse, Error>) in
+        apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
             switch result {
-            case .success(let response):
+            case .success(let (response, _)):
                 self?.extractOAuthToken(from: response) { result in
                     completion(result)
                 }
@@ -105,12 +105,12 @@ class OAuthService {
             return
         }
         
-        apiClient.makeRequest(.jwks) { (result: Result<JSONWebKeySet, Error>) in
-            if let jwks = try? result.get() {
+        apiClient.makeRequest(WebKeySetRoute()) { result in
+            if let (jwks, _) = try? result.get() {
                 self.jwks = jwks
             }
             
-            completion(result)
+            completion(result.map { $0.0 } )
         }
     }
 }

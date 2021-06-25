@@ -18,6 +18,12 @@ public class DigiMeSDK {
     private let credentialCache: CredentialCache
     private let sessionCache: SessionCache
     private let apiClient: APIClient
+    private let dataDecryptor: DataDecryptor
+    
+    private var sessionDataCompletion: ((Result<FileList, Error>) -> Void)?
+    private var sessionContentHandler: ((Result<File, Error>) -> Void)?
+    
+    private var isFetchingSessionData = false
     
     /// Initialises a new instance of SDK.
     /// A new instance should be created for each contract the app uses
@@ -29,6 +35,9 @@ public class DigiMeSDK {
         self.authService = OAuthService(configuration: configuration, apiClient: apiClient)
         self.consentManager = ConsentManager(configuration: configuration)
         self.sessionCache = SessionCache()
+        self.dataDecryptor = DataDecryptor(configuration: configuration)
+        
+//        credentialCache.setCredentials(nil, for: configuration.contractId)
     }
     
     /// Authorizes user and creates a session during which user can retrieve data from added sources
@@ -48,13 +57,105 @@ public class DigiMeSDK {
         validateOrRefreshCredentials { result in
             switch result {
             case .success(let credentials):
-                self.refreshSession(credentials: credentials, readOptions: readOptions, completion: completion)
+                completion(nil)
+//                self.refreshSession(credentials: credentials, readOptions: readOptions, completion: completion)
                 
             case .failure(SDKError.authenticationRequired):
                 self.beginAuth(readOptions: readOptions, completion: completion)
                 
             case .failure(let error):
                 completion(error)
+            }
+        }
+    }
+    
+    public func readAccounts(completion: @escaping (Result<AccountList, Error>) -> Void) {
+        let credentials = credentialCache.credentials(for: configuration.contractId)!
+        refreshSession(credentials: credentials, readOptions: nil) { result in
+            do {
+                let session = try result.get()
+                self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
+                    do {
+                        let (data, headers) = try result.get()
+                        guard
+                            let metadataBase64 = headers["X-Metadata"] as? String,
+                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
+                            return completion(.failure(SDKError.invalidData))
+                        }
+                        
+                        let unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
+                        let decompressed = try DataCompressor.gzip.decompress(data: data)
+                        let stringData = String(data: data, encoding: .utf8)
+                    }
+                    catch {
+                        completion(.failure(error))
+                    }
+                }
+            }
+            catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    public func readFiles(downloadHandler: @escaping (Result<File, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
+        let credentials = credentialCache.credentials(for: configuration.contractId)!
+        refreshSession(credentials: credentials, readOptions: nil) { result in
+            do {
+                let session = try result.get()
+                
+                self.sessionDataCompletion = completion
+                self.sessionContentHandler = downloadHandler
+                
+                self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
+                    do {
+                        let (data, headers) = try result.get()
+                        guard
+                            let metadataBase64 = headers["X-Metadata"] as? String,
+                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
+                            return completion(.failure(SDKError.invalidData))
+                        }
+                        
+                        let unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
+                        let decompressed = try DataCompressor.gzip.decompress(data: data)
+                        let stringData = String(data: data, encoding: .utf8)
+                    }
+                    catch {
+                        completion(.failure(error))
+                    }
+                }
+            }
+            catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    public func readFileList(completion: @escaping (Result<AccountList, Error>) -> Void) {
+        let credentials = credentialCache.credentials(for: configuration.contractId)!
+        refreshSession(credentials: credentials, readOptions: nil) { result in
+            do {
+                let session = try result.get()
+                self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
+                    do {
+                        let (data, headers) = try result.get()
+                        guard
+                            let metadataBase64 = headers["X-Metadata"] as? String,
+                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
+                            return completion(.failure(SDKError.invalidData))
+                        }
+                        
+                        let unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
+                        let decompressed = try DataCompressor.gzip.decompress(data: data)
+                        let stringData = String(data: data, encoding: .utf8)
+                    }
+                    catch {
+                        completion(.failure(error))
+                    }
+                }
+            }
+            catch {
+                completion(.failure(error))
             }
         }
     }
@@ -89,8 +190,8 @@ public class DigiMeSDK {
                 return //completion(.failure(<#T##Error#>)) // What error should we return?
             }
             
-            self.apiClient.makeRequest(.write(postboxId: writeAccessInfo.postboxId, payload: payload, jwt: jwt)) { (result: Result<SessionResponse, Error>) in
-                if let response = try? result.get() {
+            self.apiClient.makeRequest(WriteDataRoute(postboxId: writeAccessInfo.postboxId, payload: payload, jwt: jwt)) { result in
+                if let (response, _) = try? result.get() {
                     self.sessionCache.contents = response.session
                 }
                 
@@ -107,7 +208,7 @@ public class DigiMeSDK {
         authService.requestPreAuthorizationCode(readOptions: nil) { result in
             if let response = try? result.get() {
                 self.sessionCache.contents = response.session
-                self.performAuth(preAuthResponse: response, serviceId: nil) { result in
+                self.performAuth(preAuthResponse: response, serviceId: 2) { result in
                     switch result {
                     case .success:
                         completion(nil)
@@ -120,24 +221,24 @@ public class DigiMeSDK {
     }
     
     // Refresh read session by triggering source sync
-    private func refreshSession(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Error?) -> Void) {
+    private func refreshSession(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Session, Error>) -> Void) {
         if let session = sessionCache.contents,
            session.isValid {
-            return completion(nil)
+            return completion(.success(session))
         }
         
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
             return //completion(.failure(<#T##Error#>)) // What error should we return?
         }
         
-        apiClient.makeRequest(.trigger(jwt: jwt, agent: apiClient.agent, readOptions: readOptions)) { (result: Result<SessionResponse, Error>) in
+        apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, agent: nil, readOptions: readOptions)) { result in
             do {
-                let response = try result.get()
+                let (response, _) = try result.get()
                 self.sessionCache.contents = response.session
-                completion(nil)
+                completion(.success(response.session))
             }
             catch {
-                completion(error)
+                completion(.failure(error))
             }
         }
     }
@@ -189,7 +290,7 @@ public class DigiMeSDK {
     }
     
     private func performAuth(preAuthResponse: PreAuthResponse, serviceId: Int?, completion: @escaping (Result<Credentials, Error>) -> Void) {
-        consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: nil) { result in
+        consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: serviceId) { result in
             do {
                 let response = try result.get()
                 self.exchangeToken(authResponse: response, completion: completion)
@@ -228,5 +329,15 @@ public class DigiMeSDK {
         }
         
         return nil
+    }
+    
+    // MARK: - File Contents
+    private func beginFileListPollingIfRequired() {
+        guard !isFetchingSessionData else {
+            return
+        }
+        
+        isFetchingSessionData = true
+        
     }
 }
