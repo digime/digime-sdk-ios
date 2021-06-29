@@ -20,10 +20,21 @@ public class DigiMeSDK {
     private let apiClient: APIClient
     private let dataDecryptor: DataDecryptor
     
+    private lazy var fileService: FileService = {
+        FileService(apiClient: apiClient, dataDecryptor: dataDecryptor)
+    }()
+    
     private var sessionDataCompletion: ((Result<FileList, Error>) -> Void)?
-    private var sessionContentHandler: ((Result<File, Error>) -> Void)?
+    private var sessionContentHandler: ((Result<FileContainer<RawData>, Error>) -> Void)?
     
     private var isFetchingSessionData = false
+    private var fileListCache = FileListCache()
+    private var sessionError: Error?
+    private var sessionFileList: FileList?
+    private var stalePollCount = 0
+    
+    private let maxStalePolls = 100
+    private let pollInterval: TimeInterval = 3
     
     /// Initialises a new instance of SDK.
     /// A new instance should be created for each contract the app uses
@@ -96,7 +107,7 @@ public class DigiMeSDK {
         }
     }
     
-    public func readFiles(downloadHandler: @escaping (Result<File, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
+    public func readFiles(downloadHandler: @escaping (Result<FileContainer<RawData>, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
         let credentials = credentialCache.credentials(for: configuration.contractId)!
         refreshSession(credentials: credentials, readOptions: nil) { result in
             do {
@@ -105,52 +116,23 @@ public class DigiMeSDK {
                 self.sessionDataCompletion = completion
                 self.sessionContentHandler = downloadHandler
                 
-                self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
-                    do {
-                        let (data, fileInfo) = try result.get()
-//                        guard
-//                            let metadataBase64 = headers["X-Metadata"] as? String,
-//                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
-//                            return completion(.failure(SDKError.invalidData))
+                self.beginFileListPollingIfRequired()
+                
+//                self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
+//                    do {
+//                        let (data, fileInfo) = try result.get()
+//                        var unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
+//                        if fileInfo.compression == "gzip" {
+//                            unpackedData = try DataCompressor.gzip.decompress(data: unpackedData)
 //                        }
-
-                        let unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
-                        let decompressed = try DataCompressor.gzip.decompress(data: data)
-                        let stringData = String(data: data, encoding: .utf8)
-                    }
-                    catch {
-                        completion(.failure(error))
-                    }
-                }
-            }
-            catch {
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    public func readFileList(completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
-        let credentials = credentialCache.credentials(for: configuration.contractId)!
-        refreshSession(credentials: credentials, readOptions: nil) { result in
-            do {
-                let session = try result.get()
-                self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
-                    do {
-                        let (data, fileInfo) = try result.get()
-//                        guard
-//                            let metadataBase64 = headers["X-Metadata"] as? String,
-//                            let metadataData = Data(base64URLEncoded: metadataBase64) else {
-//                            return completion(.failure(SDKError.invalidData))
-//                        }
-
-                        let unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
-                        let decompressed = try DataCompressor.gzip.decompress(data: data)
-                        let stringData = String(data: data, encoding: .utf8)
-                    }
-                    catch {
-                        completion(.failure(error))
-                    }
-                }
+//
+//                        let fileList = try unpackedData.decoded() as FileList
+//                        completion(.success(fileList))
+//                    }
+//                    catch {
+//                        completion(.failure(error))
+//                    }
+//                }
             }
             catch {
                 completion(.failure(error))
@@ -335,7 +317,119 @@ public class DigiMeSDK {
             return
         }
         
+        fileListCache.reset()
         isFetchingSessionData = true
+//        apiClient.delegate = self
+        refreshFileList()
+        scheduleNextPoll()
+    }
+    
+    private func refreshFileList() {
+        readFileList { result in
+            switch result {
+            case .success(let fileList):
+                let fileListDidChange = fileList != self.sessionFileList
+                self.stalePollCount += fileListDidChange ? 0 : 1
+                guard self.stalePollCount < self.maxStalePolls else {
+                    self.sessionError = SDKError.fileListPollingTimeout
+                    return
+                }
+                
+                // If subsequent fetch clears the error (stale one or otherwise) - great, no need to report it back up the chain
+                self.sessionError = nil
+                self.sessionFileList = fileList
+                let newItems = self.fileListCache.newItems(from: fileList.files)
+                let allFiles = newItems.map { $0.name }
+                
+                self.handleNewFileListItems(newItems)
+
+            case .failure(let error):
+            // If the error occurred we don't want to terminate right away
+            // There could still be files downloading. Instead, we will store the sessionError
+            // which will be forwarded in completion once all file have been downloaded
+            
+            // If no files are being downloaded, we can terminate session fetch right away
+                if !self.fileService.isDownloadingFiles {
+                    self.completeSessionDataFetch(error: error)
+                }
+                
+                self.sessionError = error
+            }
+        }
+    }
+    
+    private func handleNewFileListItems(_ items: [FileListItem]) {
+        guard !items.isEmpty else {
+            return
+        }
         
+        NSLog("DigiMeSDK: Found new files to sync: \(items.count)")
+        fileListCache.add(items: items)
+        
+        // If contentHandler is not provided, no need to download
+        guard let sessionContentHandler = sessionContentHandler else {
+            return
+        }
+        let credentials = credentialCache.credentials(for: configuration.contractId)!
+        refreshSession(credentials: credentials, readOptions: nil) { result in
+            do {
+                let session = try result.get()
+                items.forEach { item in
+                    NSLog("DigiMeSDK: Adding file to download queue: \(item.name)")
+                    self.fileService.downloadFile(sessionKey: session.key, fileId: item.name, completion: sessionContentHandler)
+                }
+            }
+            catch {
+                self.sessionError = error
+            }
+        }
+    }
+    
+    private func readFileList(completion: @escaping (Result<FileList, Error>) -> Void) {
+        let credentials = credentialCache.credentials(for: configuration.contractId)!
+        refreshSession(credentials: credentials, readOptions: nil) { result in
+            do {
+                let session = try result.get()
+                self.apiClient.makeRequest(FileListRoute(sessionKey: session.key), completion: completion)
+            }
+            catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func scheduleNextPoll() {
+        
+    }
+    
+    private func completeSessionDataFetch(error: Error?) {
+//        sessionDataCompletion?(error != nil ? .failure(error!) : .success(<#T##FileList#>))
+    }
+}
+
+class FileListCache {
+    
+    
+    private var cache = [String: Date]()
+//    var allItems: [FileListItem] {
+//        cache.map { FileListItem(name: $0, updateDate: $1) }
+//    }
+//
+    func newItems(from items: [FileListItem]) -> [FileListItem] {
+        items.filter { item in
+            guard let existingItem = cache[item.name] else {
+                return true
+            }
+
+            return existingItem < item.updatedDate
+        }
+    }
+
+    func add(items: [FileListItem]) {
+        items.forEach { cache[$0.name] = $0.updatedDate }
+    }
+    
+    func reset() {
+        cache = [:]
     }
 }

@@ -15,12 +15,7 @@ struct ReadDataRoute: Route {
     static let path = "permission-access/query"
     
     var pathParameters: [String] {
-        var parameters = [sessionKey]
-        if let fileId = fileId {
-            parameters.append(fileId)
-        }
-        
-        return parameters
+        [sessionKey, fileId]
     }
     
     var customHeaders: [String: String] {
@@ -28,7 +23,7 @@ struct ReadDataRoute: Route {
     }
     
     let sessionKey: String
-    let fileId: String?
+    let fileId: String
 
     func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType {
         guard
@@ -47,7 +42,7 @@ struct FileInfo: Decodable {
     let metadata: FileMetadata?
 }
 
-struct FileMetadata: Decodable {
+public struct FileMetadata: Decodable {
     let objectCount: Int
     let objectType: String
     let serviceGroup: String

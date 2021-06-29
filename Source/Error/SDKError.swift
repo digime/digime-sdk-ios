@@ -18,4 +18,6 @@ public enum SDKError: Error {
     case noUrlScheme
     
     case authenticationRequired
+    
+    case fileListPollingTimeout
 }

@@ -42,7 +42,10 @@ extension Route {
     func toUrlRequest() -> URLRequest {
         // Add all the parameters
         var urlComponents = URLComponents(string: APIConfig.baseURLPath)!
-        urlComponents.queryItems = queryParameters
+        
+        if !queryParameters.isEmpty {
+            urlComponents.queryItems = queryParameters
+        }
         
         var url = urlComponents.url!.appendingPathComponent(Self.path)
         
@@ -59,6 +62,7 @@ extension Route {
             request.httpBody = body.data
             body.headers.forEach { request.setValue($1, forHTTPHeaderField: $0) }
         }
+        
         return request
     }
 }

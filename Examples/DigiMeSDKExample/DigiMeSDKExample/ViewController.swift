@@ -51,6 +51,15 @@ wtEHEfBLVfL+dCrCpgjLOb18ZXpFM2LuX1+mB347D3d5k8OnHY0hrfZZI5x8hQFT
 
         sdk = DigiMeSDK(configuration: config)
         sdk?.authorize(readOptions: nil) { _ in
+//            self.sdk?.readAccounts { result in
+//
+//            }
+            
+            self.sdk?.readFiles(downloadHandler: { result in
+                
+            }, completion: { result in
+                
+            })
         }
     }
 }
