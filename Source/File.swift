@@ -8,16 +8,6 @@
 
 import Foundation
 
-/// A data source
-public struct File: Decodable {
-    
-    /// The service's identifier
-    let identifier: String
-    
-    /// The service's name
-    let name: String
-}
-
 public enum DataParsingError: Error {
     case couldNotDeserialiseRawData
 }

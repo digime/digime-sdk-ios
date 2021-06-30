@@ -27,14 +27,19 @@ public class DigiMeSDK {
     private var sessionDataCompletion: ((Result<FileList, Error>) -> Void)?
     private var sessionContentHandler: ((Result<FileContainer<RawData>, Error>) -> Void)?
     
-    private var isFetchingSessionData = false
+    /*@Atomic*/ private var isFetchingSessionData = false
     private var fileListCache = FileListCache()
     private var sessionError: Error?
     private var sessionFileList: FileList?
     private var stalePollCount = 0
     
     private let maxStalePolls = 100
-    private let pollInterval: TimeInterval = 3
+    private let pollInterval = 3
+    
+    private var isSyncRunning: Bool {
+        // If no session file list, could be because we haven't received response yet, so assume is running
+        return sessionFileList?.status.state.isRunning ?? true
+    }
     
     /// Initialises a new instance of SDK.
     /// A new instance should be created for each contract the app uses
@@ -319,7 +324,10 @@ public class DigiMeSDK {
         
         fileListCache.reset()
         isFetchingSessionData = true
-//        apiClient.delegate = self
+        fileService.allDownloadsFinishedHandler = {
+            NSLog("DigiMeSDK: Finished downloading all files")
+            self.evaluateSessionDataFetchProgress(schedulePoll: false)
+        }
         refreshFileList()
         scheduleNextPoll()
     }
@@ -399,16 +407,56 @@ public class DigiMeSDK {
     }
     
     private func scheduleNextPoll() {
-        
+        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(pollInterval)) { [weak self] in
+            self?.evaluateSessionDataFetchProgress(schedulePoll: true)
+        }
     }
     
     private func completeSessionDataFetch(error: Error?) {
-//        sessionDataCompletion?(error != nil ? .failure(error!) : .success(<#T##FileList#>))
+        sessionDataCompletion?(error != nil ? .failure(error!) : .success(sessionFileList!))
+        clearSessionData()
+    }
+    
+    private func clearSessionData() {
+        isFetchingSessionData = false
+        
+        fileListCache.reset()
+        sessionFileList = nil
+        sessionDataCompletion = nil
+        sessionContentHandler = nil
+        fileService.allDownloadsFinishedHandler = nil
+//        fileService = nil
+        sessionError = nil
+        stalePollCount = 0
+    }
+    
+    private func evaluateSessionDataFetchProgress(schedulePoll: Bool) {
+        guard isFetchingSessionData else {
+            return
+        }
+        
+        NSLog("DigiMeSDK: Sync state - \(sessionFileList != nil ? sessionFileList!.status.state.rawValue : "unknown")")
+        
+        // If sessionError is not nil, then syncState is irrelevant, as it will be the previous successful fileList call.
+        if (sessionError != nil || !isSyncRunning) && !self.fileService.isDownloadingFiles {
+            NSLog("DigiMeSDK: Finished fetching session data.")
+            
+            completeSessionDataFetch(error: sessionError)
+            return
+        }
+        else if schedulePoll {
+            scheduleNextPoll()
+        }
+        
+        // Not checking sessionError here on purpose. If we are here, then there are files still being downloaded
+        // so we may as well poll the file list again, just in case the error clears.
+        if isSyncRunning {
+            refreshFileList()
+        }
     }
 }
 
 class FileListCache {
-    
     
     private var cache = [String: Date]()
 //    var allItems: [FileListItem] {

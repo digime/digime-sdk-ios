@@ -25,7 +25,7 @@ public struct FileList: Decodable {
 }
 
 struct SyncStatus: Decodable {
-    let details: [SyncAccount]
+    let details: [SyncAccount] // Not available in 'pending' state
     let state: SyncState
     
     enum CodingKeys: String, CodingKey {
@@ -37,15 +37,15 @@ struct SyncStatus: Decodable {
         let rawState = try container.decode(String.self, forKey: .state)
         state = SyncState(rawValue: rawState) ?? .unknown
         
-        let detailsArray = try container.decode(DynamicallyKeyedArray<SyncAccount>.self, forKey: .details)
-        details = detailsArray.flatMap { $0 }
+        let detailsArray = try container.decodeIfPresent(DynamicallyKeyedArray<SyncAccount>.self, forKey: .details)
+        details = detailsArray?.flatMap { $0 } ?? []
     }
 }
 
 struct SyncAccount: Decodable {
     let identifier: String
     let state: SyncState
-    let error: SyncError? // Only when partial or completed state
+    let error: SyncError? // Only available for 'partial' state
     
     enum CodingKeys: String, CodingKey {
         case state, error
@@ -79,6 +79,15 @@ enum SyncState: String, Decodable {
     case completed
     
     case unknown
+    
+    var isRunning: Bool {
+        switch self {
+        case .running, .pending, .unknown:
+            return true
+        case .partial, .completed:
+            return false
+        }
+    }
 }
 
 extension FileList: Equatable {
@@ -86,7 +95,6 @@ extension FileList: Equatable {
         return false
     }
 }
-
 
 // Add generic parameter clause
 struct DynamicallyKeyedArray<T: Decodable>: Decodable {
