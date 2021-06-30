@@ -21,6 +21,7 @@ struct ErrorResponse: Decodable {
     
     let code: String
     let message: String
+    let reference: String?
     let recovery: Recovery?
 }
 

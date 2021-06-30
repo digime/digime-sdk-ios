@@ -198,7 +198,7 @@ class JWTUtility: NSObject {
         let claims = PayloadDataTriggerJWT(
             accessToken: accessToken,
             clientId: configuration.clientId,
-            redirectUri: configuration.redirectUri + "data"
+            redirectUri: configuration.redirectUri + "auth"
         )
         
         return createRequestJWT(claims: claims, configuration: configuration)

@@ -1,5 +1,5 @@
 //
-//  DigiMeSDK.swift
+//  DigiMe.swift
 //  DigiMeSDK
 //
 //  Created on 08/06/2021.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// The entry point to the SDK
-public class DigiMeSDK {
+public class DigiMe {
     
     private let configuration: Configuration
     
