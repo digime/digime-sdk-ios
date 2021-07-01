@@ -38,7 +38,7 @@ struct SyncStatus: Decodable {
         state = SyncState(rawValue: rawState) ?? .unknown
         
         let detailsArray = try container.decodeIfPresent(DynamicallyKeyedArray<SyncAccount>.self, forKey: .details)
-        details = detailsArray?.flatMap { $0 } ?? []
+        details = detailsArray?.compactMap { $0 } ?? []
     }
 }
 
@@ -96,14 +96,12 @@ extension FileList: Equatable {
     }
 }
 
-// Add generic parameter clause
 struct DynamicallyKeyedArray<T: Decodable>: Decodable {
 
     typealias ArrayType = [T]
 
     private var array: ArrayType
 
-    // Define DynamicCodingKey type needed for creating decoding container from JSONDecoder
     private struct DynamicCodingKey: CodingKey {
 
         // Use for string-keyed dictionary
@@ -121,23 +119,15 @@ struct DynamicallyKeyedArray<T: Decodable>: Decodable {
     }
 
     init(from decoder: Decoder) throws {
-
-        // Create decoding container using DynamicCodingKeys
-        // The container will contain all the JSON first level key
         let container = try decoder.container(keyedBy: DynamicCodingKey.self)
 
         var tempArray = ArrayType()
 
-        // Loop through each keys in container
         for key in container.allKeys {
-
-            // ***
-            // Decode T using key & keep decoded T object in tempArray
             let decodedObject = try container.decode(T.self, forKey: DynamicCodingKey(stringValue: key.stringValue)!)
             tempArray.append(decodedObject)
         }
 
-        // Finish decoding all T objects. Thus assign tempArray to array.
         array = tempArray
     }
 }
@@ -149,16 +139,21 @@ extension DynamicallyKeyedArray: Collection {
     typealias Element = ArrayType.Element
 
     // The upper and lower bounds of the collection, used in iterations
-    var startIndex: Index { return array.startIndex }
-    var endIndex: Index { return array.endIndex }
+    var startIndex: Index {
+        array.startIndex
+    }
+    
+    var endIndex: Index {
+        array.endIndex
+    }
 
     // Required subscript, based on a dictionary index
     subscript(index: Index) -> Iterator.Element {
-        get { return array[index] }
+        array[index]
     }
 
     // Method that returns the next index when iterating
     func index(after i: Index) -> Index {
-        return array.index(after: i)
+        array.index(after: i)
     }
 }

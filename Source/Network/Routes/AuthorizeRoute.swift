@@ -15,35 +15,38 @@ struct AuthorizeRoute: Route {
     static let path = "oauth/authorize"
     
     var requestBody: RequestBody? {
-        guard let body = AuthorizeBody(agent: agent, options: readOptions) else {
-            return nil
-        }
-        
+        let body = AuthorizeBody(options: readOptions)
         return try? JSONRequestBody(parameters: body)
     }
     
-    var customHeaders: [String : String] {
+    var customHeaders: [String: String] {
         ["Authorization": "Bearer " + jwt]
     }
     
     private struct AuthorizeBody: Encodable {
         struct Actions: Encodable {
-            let pull: ReadOptions?
+            let pull: PullOptions
+        }
+        
+        struct PullOptions: Encodable {
+            let limits: Limits?
+            let scope: Scope?
+            let accept = ReadAccept.gzipCompression
+            
+            init(readOptions: ReadOptions?) {
+                self.limits = readOptions?.limits
+                self.scope = readOptions?.scope
+            }
         }
         
         let actions: Actions?
-        let agent: Agent?
-        init?(agent: Agent?, options: ReadOptions?) {
-            guard agent != nil || options != nil else {
-                return nil
-            }
-            
-            self.agent = agent
-            self.actions = Actions(pull: options)
+        let agent = APIConfig.agent
+        
+        init(options: ReadOptions?) {
+            self.actions = Actions(pull: PullOptions(readOptions: options))
         }
     }
     
     let jwt: String
-    let agent: Agent?
     let readOptions: ReadOptions?
 }

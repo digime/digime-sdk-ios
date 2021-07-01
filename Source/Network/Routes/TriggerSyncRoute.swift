@@ -15,36 +15,26 @@ struct TriggerSyncRoute: Route {
     static let path = "permission-access/trigger"
     
     var requestBody: RequestBody? {
-        guard let body = TriggerBody(agent: agent, options: readOptions) else {
-            return nil
-        }
-        
+        let body = TriggerBody(options: readOptions)
         return try? JSONRequestBody(parameters: body)
     }
     
-    var customHeaders: [String : String] {
+    var customHeaders: [String: String] {
         ["Authorization": "Bearer " + jwt]
     }
     
     private struct TriggerBody: Encodable {
-        let agent: Agent?
+        let agent = APIConfig.agent
         let limits: Limits?
         let scope: Scope?
-        let accept: ReadAccept?
+        let accept = ReadAccept.gzipCompression
         
-        init?(agent: Agent?, options: ReadOptions?) {
-            guard agent != nil || options != nil else {
-                return nil
-            }
-            
-            self.agent = agent
+        init(options: ReadOptions?) {
             self.limits = options?.limits
             self.scope = options?.scope
-            self.accept = options?.accept
         }
     }
     
     let jwt: String
-    let agent: Agent?
     let readOptions: ReadOptions?
 }

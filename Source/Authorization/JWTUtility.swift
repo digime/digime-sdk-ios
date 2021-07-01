@@ -38,13 +38,13 @@ class JWTUtility: NSObject {
         let accessToken: String?
         let clientId: String
         let codeChallenge: String
-        let codeChallengeMethod = "S256"
-        let nonce = JWTUtility.generateNonce()
+        var codeChallengeMethod = "S256"
+        var nonce = JWTUtility.generateNonce()
         let redirectUri: String
-        let responseMode = "query"
-        let responseType = "code"
-        let state = JWTUtility.secureRandomHexString(length: 32)
-        let timestamp = Date()
+        var responseMode = "query"
+        var responseType = "code"
+        var state = JWTUtility.secureRandomHexString(length: 32)
+        var timestamp = Date()
     }
     
     // Claims for pre-authorization code response
@@ -61,29 +61,29 @@ class JWTUtility: NSObject {
         let clientId: String
         let code: String
         let codeVerifier: String
-        let grantType = "authorization_code"
-        let nonce = JWTUtility.generateNonce()
+        var grantType = "authorization_code"
+        var nonce = JWTUtility.generateNonce()
         let redirectUri: String
-        let timestamp = Date()
+        var timestamp = Date()
     }
     
     // Claims to request data trigger
     private struct PayloadDataTriggerJWT: RequestClaims {
         let accessToken: String
         let clientId: String
-        let nonce = JWTUtility.generateNonce()
+        var nonce = JWTUtility.generateNonce()
         let redirectUri: String
-        let timestamp = Date()
+        var timestamp = Date()
     }
     
     // Claims to request OAuth token renewal
     private struct PayloadRefreshOAuthJWT: RequestClaims {
         let clientId: String
-        let grantType = "refresh_token"
-        let nonce = JWTUtility.generateNonce()
+        var grantType = "refresh_token"
+        var nonce = JWTUtility.generateNonce()
         let redirectUri: String
         let refreshToken: String
-        let timestamp = Date()
+        var timestamp = Date()
     }
     
     // Claims to request writing data
@@ -92,10 +92,10 @@ class JWTUtility: NSObject {
         let clientId: String
         let iv: String
         let metadata: String
-        let nonce = JWTUtility.generateNonce()
+        var nonce = JWTUtility.generateNonce()
         let redirectUri: String
         let symmetricalKey: String
-        let timestamp = Date()
+        var timestamp = Date()
     }
 
     /// Creates request JWT which can be used to get a pre-authentication token
@@ -233,7 +233,7 @@ class JWTUtility: NSObject {
             clientId: configuration.clientId,
             iv: iv.hexString,
             metadata: metadata,
-            redirectUri: configuration.redirectUri + "write",
+            redirectUri: configuration.redirectUri + "auth",
             symmetricalKey: symmetricKey
         )
 
@@ -277,7 +277,7 @@ class JWTUtility: NSObject {
     }
     
     private class func secureRandomData(length: Int) -> Data {
-        Data(bytes: secureRandomBytes(length: length))
+        Data(secureRandomBytes(length: length))
     }
     
     private class func secureRandomBytes(length: Int) -> [UInt8] {
@@ -315,7 +315,7 @@ class JWTUtility: NSObject {
     /// - Returns: Base64 encoded `String` containing the data.
     private class func base64String(for pemString: String) -> String? {
         // Filter looking for new lines...
-        var lines = pemString
+        let lines = pemString
             .components(separatedBy: "\n")
             .filter { !$0.hasPrefix("-----BEGIN") && !$0.hasPrefix("-----END") }
         

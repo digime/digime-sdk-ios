@@ -16,4 +16,9 @@ public struct ServiceType: Encodable {
         case identifier = "id"
         case serviceObjectTypes
     }
+    
+    public init(identifier: UInt, objectTypes: [ServiceObjectType]) {
+        self.identifier = identifier
+        self.serviceObjectTypes = objectTypes
+    }
 }

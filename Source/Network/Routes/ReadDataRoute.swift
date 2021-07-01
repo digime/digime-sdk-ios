@@ -43,8 +43,8 @@ struct FileInfo: Decodable {
 }
 
 public struct FileMetadata: Decodable {
-    let objectCount: Int
-    let objectType: String
-    let serviceGroup: String
-    let serviceName: String
+    public let objectCount: Int
+    public let objectType: String
+    public let serviceGroup: String
+    public let serviceName: String
 }

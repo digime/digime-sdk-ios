@@ -12,6 +12,10 @@ struct JSONWebKeySet: Decodable {
     let keys: [JSONWebKey]
     let date = Date()
     
+    private enum CodingKeys: String, CodingKey {
+        case keys
+    }
+    
     // Cache for 15 minutes
     var isValid: Bool {
         Date() < date.addingTimeInterval(15 * 60)

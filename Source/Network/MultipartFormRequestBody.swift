@@ -25,7 +25,7 @@ struct MultipartFormRequestBody: RequestBody {
     
     func setData(block: (MultipartFormData) -> Void) {
         block(formData)
-        let data = formData.encode()
+        formData.encode()
     }
 }
 

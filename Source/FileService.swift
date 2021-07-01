@@ -90,7 +90,7 @@ class FileDownloadOperation: RetryingOperation {
             }
             catch let error as HTTPError {
                 switch error {
-                case let .unsuccesfulStatusCode(404, _) where self.canRetry:
+                case .unsuccesfulStatusCode(404, _) where self.canRetry:
                     // Queue a retry, so don't finish or call download handler
                     self.retry()
                     newResult = nil

@@ -8,14 +8,14 @@
 
 import Foundation
 
-public enum ReadAccept: Encodable {
+enum ReadAccept: Encodable {
     case gzipCompression
     
     enum CodingKeys: String, CodingKey {
         case compression
     }
     
-    public func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .gzipCompression:

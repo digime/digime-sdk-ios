@@ -37,7 +37,7 @@ class OAuthService {
             fatalError("Invalid pre-authorization request JWT")
         }
 
-        apiClient.makeRequest(AuthorizeRoute(jwt: jwt, agent: nil, readOptions: readOptions)) { [weak self] result in
+        apiClient.makeRequest(AuthorizeRoute(jwt: jwt, readOptions: readOptions)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.extractPreAuthorizationCode(from: response) { result in
@@ -109,8 +109,8 @@ class OAuthService {
             if let jwks = try? result.get() {
                 self.jwks = jwks
             }
-            
-            completion(result.map { $0 })
+
+            completion(result)
         }
     }
 }

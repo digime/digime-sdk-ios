@@ -64,7 +64,7 @@ public class DigiMe {
     ///
     /// - Parameters:
     ///   - readOptions: Options to filter which data is read from sources
-    ///   - completion: Block called upon authorization compeltion with any errors encountered.
+    ///   - completion: Block called upon authorization completion with any errors encountered.
     public func authorize(readOptions: ReadOptions?, completion: @escaping (Error?) -> Void) {
         if let validationError = validateClient() {
             return completion(validationError)
@@ -72,9 +72,8 @@ public class DigiMe {
         
         validateOrRefreshCredentials { result in
             switch result {
-            case .success(let credentials):
+            case .success:
                 completion(nil)
-//                self.refreshSession(credentials: credentials, readOptions: readOptions, completion: completion)
                 
             case .failure(SDKError.authenticationRequired):
                 self.beginAuth(readOptions: readOptions, completion: completion)
@@ -112,37 +111,11 @@ public class DigiMe {
         }
     }
     
-    public func readFiles(downloadHandler: @escaping (Result<FileContainer<RawData>, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
-        let credentials = credentialCache.credentials(for: configuration.contractId)!
-        refreshSession(credentials: credentials, readOptions: nil) { result in
-            do {
-                let session = try result.get()
-                
-                self.sessionDataCompletion = completion
-                self.sessionContentHandler = downloadHandler
-                
-                self.beginFileListPollingIfRequired()
-                
-//                self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
-//                    do {
-//                        let (data, fileInfo) = try result.get()
-//                        var unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
-//                        if fileInfo.compression == "gzip" {
-//                            unpackedData = try DataCompressor.gzip.decompress(data: unpackedData)
-//                        }
-//
-//                        let fileList = try unpackedData.decoded() as FileList
-//                        completion(.success(fileList))
-//                    }
-//                    catch {
-//                        completion(.failure(error))
-//                    }
-//                }
-            }
-            catch {
-                completion(.failure(error))
-            }
-        }
+    public func readFiles(readOptions: ReadOptions?, downloadHandler: @escaping (Result<FileContainer<RawData>, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
+        self.sessionDataCompletion = completion
+        self.sessionContentHandler = downloadHandler
+        
+        self.beginFileListPollingIfRequired()
     }
     
     public func write(data: Data, metadata: Data, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -216,7 +189,7 @@ public class DigiMe {
             return //completion(.failure(<#T##Error#>)) // What error should we return?
         }
         
-        apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, agent: nil, readOptions: readOptions)) { result in
+        apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, readOptions: readOptions)) { result in
             do {
                 let response = try result.get()
                 self.sessionCache.contents = response.session
@@ -347,7 +320,6 @@ public class DigiMe {
                 self.sessionError = nil
                 self.sessionFileList = fileList
                 let newItems = self.fileListCache.newItems(from: fileList.files)
-                let allFiles = newItems.map { $0.name }
                 
                 self.handleNewFileListItems(newItems)
 

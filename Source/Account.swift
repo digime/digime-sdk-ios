@@ -9,25 +9,37 @@
 import Foundation
 
 /// A data source
-public struct Account: Decodable {
+public struct Account: Codable {
     
     /// The account's identifier
-    let `id`: String
+    public let identifier: String
     
     /// The account's name
-    let name: String
+    public let name: String
     
-    let number: String? // which accounts have this?
+    public let number: String? // which accounts have this?
     
-    let service: ServiceDescriptor
+    public let service: ServiceDescriptor
+
+    enum CodingKeys: String, CodingKey {
+        case identifier = "id"
+        case name
+        case number
+        case service
+    }
 }
 
-public struct ServiceDescriptor: Decodable {
-    let name: String
-    let logo: String?
+public struct ServiceDescriptor: Codable {
+    public let name: String
+    public let logo: String?
 }
 
-public struct AccountsInfo: Decodable {
-    let accounts: [Account]
-    let consentid: String
+public struct AccountsInfo: Codable {
+    public let accounts: [Account]
+    public let consentId: String
+    
+    enum CodingKeys: String, CodingKey {
+        case accounts
+        case consentId = "consentid"
+    }
 }

@@ -12,12 +12,13 @@ public struct Scope: Encodable {
     let serviceGroups: [ServiceGroup]?
     let timeRanges: [TimeRange]?
     
-    public init?(serviceGroups: [ServiceGroup]? = nil, timeRanges: [TimeRange]? = nil) {
-        guard serviceGroups != nil || timeRanges != nil else {
-            return nil
-        }
-        
+    public init(serviceGroups: [ServiceGroup], timeRanges: [TimeRange]? = nil) {
         self.serviceGroups = serviceGroups
+        self.timeRanges = timeRanges
+    }
+    
+    public init(timeRanges: [TimeRange]) {
+        self.serviceGroups = nil
         self.timeRanges = timeRanges
     }
 }

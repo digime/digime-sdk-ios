@@ -9,9 +9,13 @@
 import Foundation
 
 public struct ServiceObjectType: Encodable {
-    let identifier: UInt
+    public let identifier: UInt
     
     enum CodingKeys: String, CodingKey {
         case identifier = "id"
+    }
+    
+    public init(identifier: UInt) {
+        self.identifier = identifier
     }
 }
