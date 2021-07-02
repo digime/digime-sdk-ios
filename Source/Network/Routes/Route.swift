@@ -41,7 +41,7 @@ extension Route {
     
     func toUrlRequest() -> URLRequest {
         // Add all the parameters
-        var urlComponents = URLComponents(string: APIConfig.baseURLPath)!
+        var urlComponents = URLComponents(string: APIConfig.baseURLPathWithVersion)!
         
         if !queryParameters.isEmpty {
             urlComponents.queryItems = queryParameters

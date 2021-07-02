@@ -34,6 +34,7 @@ struct ConsentResponse {
 class ConsentManager: NSObject {
     private let configuration: Configuration
     private var userConsentCompletion: ((Result<ConsentResponse, Error>) -> Void)?
+    private var addServiceCompletion: ((Result<Void, Error>) -> Void)?
     private var safariViewController: SFSafariViewController?
     
     private enum ResponseKey: String {
@@ -43,6 +44,11 @@ class ConsentManager: NSObject {
         case publicKey
         case success
         case errorCode
+    }
+    
+    private enum Action: String {
+        case auth
+        case service
     }
 
     init(configuration: Configuration) {
@@ -59,11 +65,11 @@ class ConsentManager: NSObject {
         
         userConsentCompletion = completion
         CallbackService.shared().setCallbackHandler(self)
-        var components = URLComponents(string: "https://api.development.devdigi.me/apps/saas/authorize")!
+        var components = URLComponents(string: "\(APIConfig.baseURLPath)/apps/saas/authorize")!
         
         var percentEncodedQueryItems = [
             URLQueryItem(name: "code", value: preAuthCode),
-            URLQueryItem(name: "callback", value: "\(self.configuration.redirectUri)auth".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)),
+            URLQueryItem(name: "callback", value: "\(self.configuration.redirectUri)\(Action.auth.rawValue)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)),
         ]
         
         if let serviceId = serviceId {
@@ -71,7 +77,22 @@ class ConsentManager: NSObject {
         }
         
         components.percentEncodedQueryItems = percentEncodedQueryItems
-        let url = components.url!
+        open(url: components.url!)
+    }
+    
+    func addService(identifier: Int, token: String, completion: @escaping ((Result<Void, Error>) -> Void)) {
+        var components = URLComponents(string: "\(APIConfig.baseURLPath)/apps/saas/onboard")!
+        
+        components.percentEncodedQueryItems = [
+            URLQueryItem(name: "code", value: token),
+            URLQueryItem(name: "callback", value: "\(self.configuration.redirectUri)\(Action.service.rawValue)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)),
+            URLQueryItem(name: "service", value: "\(identifier)"),
+        ]
+        
+        open(url: components.url!)
+    }
+    
+    private func open(url: URL) {
         let viewController = SFSafariViewController(url: url)
         viewController.delegate = self
         viewController.presentationController?.delegate = self
@@ -81,23 +102,112 @@ class ConsentManager: NSObject {
         UIViewController.topMostViewController()?.present(viewController, animated: true, completion: nil)
     }
     
-    private func finish(with result: Result<ConsentResponse, Error>) {
+    private func finishUserConsent(with result: Result<ConsentResponse, Error>) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
-                self.finish(with: result)
+                self.finishUserConsent(with: result)
             }
             return
         }
         
-        safariViewController?.delegate = nil
-        safariViewController?.presentationController?.delegate = nil
-        safariViewController = nil
+        reset()
         
         userConsentCompletion?(result)
         userConsentCompletion = nil
+        addServiceCompletion = nil
     }
     
-    private func processSuccessCallback(parameters: [String: String?]) -> Result<ConsentResponse, Error> {
+    private func finishAddService(with result: Result<Void, Error>) {
+        guard Thread.current.isMainThread else {
+            DispatchQueue.main.async {
+                self.finishAddService(with: result)
+            }
+            return
+        }
+        
+        reset()
+        
+        addServiceCompletion?(result)
+        addServiceCompletion = nil
+        userConsentCompletion = nil
+    }
+    
+    private func userCancelled() {
+        guard Thread.current.isMainThread else {
+            DispatchQueue.main.async {
+                self.userCancelled()
+            }
+            return
+        }
+        
+        reset()
+        
+        addServiceCompletion?(.failure(ConsentError.userCancelled))
+        addServiceCompletion = nil
+        
+        userConsentCompletion?(.failure(ConsentError.userCancelled))
+        userConsentCompletion = nil
+    }
+    
+    private func reset() {
+        safariViewController?.delegate = nil
+        safariViewController?.presentationController?.delegate = nil
+        safariViewController = nil
+    }
+    
+    private func handleAuthAction(parameters: [String: String?], presentingViewController: UIViewController) {
+        let result: Result<ConsentResponse, Error>!
+        defer {
+            presentingViewController.dismiss(animated: true) {
+                self.finishUserConsent(with: result)
+            }
+        }
+        
+        guard let success = parameters[ResponseKey.success.rawValue] else {
+            result = .failure(CallbackError.invalidCallbackParameters)
+            return
+        }
+        
+        switch success {
+        case "true":
+            result = processAuthSuccessCallback(parameters: parameters)
+            
+        case "false":
+            let error = processErrorCallback(parameters: parameters)
+            result = .failure(error)
+            
+        default:
+            result = .failure(CallbackError.invalidCallbackParameters)
+        }
+    }
+    
+    private func handleServiceAction(parameters: [String: String?], presentingViewController: UIViewController) {
+        let result: Result<Void, Error>!
+        defer {
+            presentingViewController.dismiss(animated: true) {
+                self.finishAddService(with: result)
+            }
+        }
+        
+        guard let success = parameters[ResponseKey.success.rawValue] else {
+            result = .failure(CallbackError.invalidCallbackParameters)
+            return
+        }
+        
+        switch success {
+        case "true":
+            result = .success(())
+            
+        case "false":
+            let error = processErrorCallback(parameters: parameters)
+            result = .failure(error)
+            
+        default:
+            result = .failure(CallbackError.invalidCallbackParameters)
+        }
+    }
+    
+    private func processAuthSuccessCallback(parameters: [String: String?]) -> Result<ConsentResponse, Error> {
         guard
             let status = parameters[ResponseKey.state.rawValue] as? String,
             let code = parameters[ResponseKey.code.rawValue] as? String else {
@@ -128,7 +238,7 @@ class ConsentManager: NSObject {
 
 extension ConsentManager: CallbackHandler {
     func canHandleAction(_ action: String) -> Bool {
-        action == "auth"
+        Action(rawValue: action) != nil
     }
     
     func handleAction(_ action: String, with parameters: [String: String?]) {
@@ -145,28 +255,16 @@ extension ConsentManager: CallbackHandler {
             return
         }
         
-        let result: Result<ConsentResponse, Error>!
-        defer {
-            presentingViewController.dismiss(animated: true) {
-                self.finish(with: result)
-            }
-        }
-        
-        guard let success = parameters[ResponseKey.success.rawValue] else {
-            result = .failure(CallbackError.invalidCallbackParameters)
+        guard let actionToHandle = Action(rawValue: action) else {
             return
         }
         
-        switch success {
-        case "true":
-            result = processSuccessCallback(parameters: parameters)
-            
-        case "false":
-            let error = processErrorCallback(parameters: parameters)
-            result = .failure(error)
-            
-        default:
-            result = .failure(CallbackError.unexpectedCallbackAction)
+        switch actionToHandle {
+        case .auth:
+            handleAuthAction(parameters: parameters, presentingViewController: presentingViewController)
+        
+        case .service:
+            handleServiceAction(parameters: parameters, presentingViewController: presentingViewController)
         }
     }
 }
@@ -177,7 +275,7 @@ extension ConsentManager: SFSafariViewControllerDelegate {
             return
         }
         
-        finish(with: .failure(ConsentError.userCancelled))
+        userCancelled()
     }
 }
 
@@ -187,6 +285,6 @@ extension ConsentManager: UIAdaptivePresentationControllerDelegate {
             return
         }
         
-        finish(with: .failure(ConsentError.userCancelled))
+        userCancelled()
     }
 }

@@ -67,7 +67,7 @@ class JWTUtility: NSObject {
         var timestamp = Date()
     }
     
-    // Claims to request data trigger
+    // Claims to request data trigger. Also used for requesting reference token and deleting user
     private struct PayloadDataTriggerJWT: RequestClaims {
         let accessToken: String
         let clientId: String

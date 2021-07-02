@@ -1,5 +1,5 @@
 //
-//  ServiceGroup.swift
+//  ServiceGroupScope.swift
 //  DigiMeSDK
 //
 //  Created on 06/06/2021.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ServiceGroup: Encodable {
+public struct ServiceGroupScope: Encodable {
     let identifier: UInt
     let serviceTypes: [ServiceType]
     

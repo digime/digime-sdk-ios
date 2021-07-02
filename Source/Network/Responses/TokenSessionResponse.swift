@@ -1,5 +1,5 @@
 //
-//  PreAuthResponse.swift
+//  TokenSessionResponse.swift
 //  DigiMeSDK
 //
 //  Created on 08/06/2021.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct PreAuthResponse: Decodable {
+struct TokenSessionResponse: Decodable {
     let token: String
     let session: Session
 }

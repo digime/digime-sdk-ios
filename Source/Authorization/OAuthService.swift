@@ -30,9 +30,9 @@ class OAuthService {
         self.apiClient = apiClient
     }
         
-    // PreAuthResponse can be used for raw response from server where `token` is the JWT
+    // TokenSessionResponse can be used for raw response from server where `token` is the JWT
     // and as result when `token` is the extracted pre-authrozation code
-    func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String? = nil, completion: @escaping (Result<PreAuthResponse, Error>) -> Void) {
+    func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String? = nil, completion: @escaping (Result<TokenSessionResponse, Error>) -> Void) {
         guard let jwt = JWTUtility.preAuthorizationRequestJWT(configuration: configuration, accessToken: accessToken) else {
             fatalError("Invalid pre-authorization request JWT")
         }
@@ -41,7 +41,7 @@ class OAuthService {
             switch result {
             case .success(let response):
                 self?.extractPreAuthorizationCode(from: response) { result in
-                    completion(result.map { PreAuthResponse(token: $0, session: response.session) })
+                    completion(result.map { TokenSessionResponse(token: $0, session: response.session) })
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -83,7 +83,23 @@ class OAuthService {
         }
     }
     
-    private func extractPreAuthorizationCode(from response: PreAuthResponse, completion: @escaping (Result<String, Error>) -> Void) {
+    func requestReferenceToken(oauthToken: OAuthToken, completion: @escaping (Result<TokenSessionResponse, Error>) -> Void) {
+        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
+            fatalError("Invalid reference token request JWT")
+        }
+        
+        apiClient.makeRequest(TokenReferenceRoute(jwt: jwt), completion: completion)
+    }
+    
+    func deleteUser(oauthToken: OAuthToken, completion: @escaping (Result<DeleteUserResponse, Error>) -> Void) {
+        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
+            fatalError("Invalid delete user token request JWT")
+        }
+        
+        apiClient.makeRequest(DeleteUserRoute(jwt: jwt), completion: completion)
+    }
+    
+    private func extractPreAuthorizationCode(from response: TokenSessionResponse, completion: @escaping (Result<String, Error>) -> Void) {
         latestJsonWebKeySet { result in
             let newResult = result.flatMap { JWTUtility.preAuthCode(from: response.token, keySet: $0) }
             completion(newResult)

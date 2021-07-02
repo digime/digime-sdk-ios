@@ -9,10 +9,10 @@
 import Foundation
 
 public struct Scope: Encodable {
-    let serviceGroups: [ServiceGroup]?
+    let serviceGroups: [ServiceGroupScope]?
     let timeRanges: [TimeRange]?
     
-    public init(serviceGroups: [ServiceGroup], timeRanges: [TimeRange]? = nil) {
+    public init(serviceGroups: [ServiceGroupScope], timeRanges: [TimeRange]? = nil) {
         self.serviceGroups = serviceGroups
         self.timeRanges = timeRanges
     }

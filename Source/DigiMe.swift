@@ -41,6 +41,16 @@ public class DigiMe {
         return sessionFileList?.status.state.isRunning ?? true
     }
     
+    /// The scopes for retrieving available services
+    public enum AvailableServicesScope {
+        
+        // Limits response to services that this contract can access
+        case thisContractOnly
+        
+        // Responds with all services
+        case all
+    }
+    
     /// Initialises a new instance of SDK.
     /// A new instance should be created for each contract the app uses
     /// - Parameter configuration: The configuration which defines this instance
@@ -63,9 +73,10 @@ public class DigiMe {
     /// If user has already authorized, refreshes the session, if necessary.
     ///
     /// - Parameters:
-    ///   - readOptions: Options to filter which data is read from sources
+    ///   - serviceId: Identifier of initial service to add. Only valid in first authorize where user has not granted consent. Ignored for all subsequent calls.
+    ///   - readOptions: Options to filter which data is read from sources for this session
     ///   - completion: Block called upon authorization completion with any errors encountered.
-    public func authorize(readOptions: ReadOptions?, completion: @escaping (Error?) -> Void) {
+    public func authorize(serviceId: Int? = nil, readOptions: ReadOptions? = nil, completion: @escaping (Error?) -> Void) {
         if let validationError = validateClient() {
             return completion(validationError)
         }
@@ -76,7 +87,40 @@ public class DigiMe {
                 completion(nil)
                 
             case .failure(SDKError.authenticationRequired):
-                self.beginAuth(readOptions: readOptions, completion: completion)
+                self.beginAuth(serviceId: serviceId, readOptions: readOptions, completion: completion)
+                
+            case .failure(let error):
+                completion(error)
+            }
+        }
+    }
+    
+    /// Once a user has granted consent, adds an additional service
+    /// - Parameters:
+    ///   - identifier: Identifier of service to add.
+    ///   - completion: Block called upon completion with any errors encountered
+    public func addService(identifier: Int, completion: @escaping (Error?) -> Void) {
+        validateOrRefreshCredentials { result in
+            switch result {
+            case .success(let credentials):
+            self.authService.requestReferenceToken(oauthToken: credentials.token) { result in
+                do {
+                    let response = try result.get()
+                    self.sessionCache.contents = response.session
+                    self.consentManager.addService(identifier: identifier, token: response.token) { result in
+                        switch result {
+                        case .success:
+                            completion(nil)
+                            
+                        case .failure(let error):
+                            completion(error)
+                        }
+                    }
+                }
+                catch {
+                    completion(error)
+                }
+            }
                 
             case .failure(let error):
                 completion(error)
@@ -130,6 +174,29 @@ public class DigiMe {
         }
     }
     
+    public func deleteUser(completion: @escaping (Result<Bool, Error>) -> Void) {
+        validateOrRefreshCredentials { result in
+            switch result {
+            case .success(let credentials):
+                self.authService.deleteUser(oauthToken: credentials.token) { result in
+                    completion(result.map { $0.deleted })
+                }
+            
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    /// Get a list of possible services a user can add to their digi.me
+    /// - Parameters:
+    ///   - scope: Scope to limit response
+    ///   - completion: Block called upon completion with either the service list or any errors encountered
+    public func availableServices(scope: AvailableServicesScope = .thisContractOnly, completion: @escaping (Result<ServicesResponse, Error>) -> Void) {
+        let route = ServicesRoute(contractId: scope == .thisContractOnly ? configuration.contractId : nil)
+        apiClient.makeRequest(route, completion: completion)
+    }
+    
     private func write(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let writeAccessInfo = credentials.writeAccessInfo else {
             return// completion(.failure(T##Error)) // What error should we return?
@@ -162,11 +229,12 @@ public class DigiMe {
     }
     
     // Auth - needs app to be able to receive response via URL
-    private func beginAuth(readOptions: ReadOptions?, completion: @escaping (Error?) -> Void) {
-        authService.requestPreAuthorizationCode(readOptions: nil) { result in
-            if let response = try? result.get() {
+    private func beginAuth(serviceId: Int? = nil, readOptions: ReadOptions? = nil, completion: @escaping (Error?) -> Void) {
+        authService.requestPreAuthorizationCode(readOptions: readOptions) { result in
+            do {
+                let response = try result.get()
                 self.sessionCache.contents = response.session
-                self.performAuth(preAuthResponse: response, serviceId: 2) { result in
+                self.performAuth(preAuthResponse: response, serviceId: serviceId) { result in
                     switch result {
                     case .success:
                         completion(nil)
@@ -174,6 +242,9 @@ public class DigiMe {
                         completion(error)
                     }
                 }
+            }
+            catch {
+                completion(error)
             }
         }
     }
@@ -247,7 +318,7 @@ public class DigiMe {
         }
     }
     
-    private func performAuth(preAuthResponse: PreAuthResponse, serviceId: Int?, completion: @escaping (Result<Credentials, Error>) -> Void) {
+    private func performAuth(preAuthResponse: TokenSessionResponse, serviceId: Int?, completion: @escaping (Result<Credentials, Error>) -> Void) {
         consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: serviceId) { result in
             do {
                 let response = try result.get()

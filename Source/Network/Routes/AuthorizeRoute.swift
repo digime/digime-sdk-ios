@@ -9,7 +9,7 @@
 import Foundation
 
 struct AuthorizeRoute: Route {
-    typealias ResponseType = PreAuthResponse
+    typealias ResponseType = TokenSessionResponse
     
     static let method = "POST"
     static let path = "oauth/authorize"
