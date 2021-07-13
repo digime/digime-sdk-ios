@@ -91,7 +91,7 @@ class OAuthService {
         apiClient.makeRequest(TokenReferenceRoute(jwt: jwt), completion: completion)
     }
     
-    func deleteUser(oauthToken: OAuthToken, completion: @escaping (Result<DeleteUserResponse, Error>) -> Void) {
+    func deleteUser(oauthToken: OAuthToken, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
             fatalError("Invalid delete user token request JWT")
         }

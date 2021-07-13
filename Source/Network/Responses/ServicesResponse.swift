@@ -9,7 +9,5 @@
 import Foundation
 
 struct ServicesResponse: Decodable {
-    let countries: [ServiceCountry]
-    let serviceGroups: [ServiceGroup]
-    let services: [Service]
+    let data: ServicesInfo
 }

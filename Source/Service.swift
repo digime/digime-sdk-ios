@@ -8,6 +8,13 @@
 
 import Foundation
 
+/// Info for services and related groups
+public struct ServicesInfo: Decodable {
+    public let countries: [ServiceCountry]
+    public let serviceGroups: [ServiceGroup]
+    public let services: [Service]
+}
+
 /// A data source
 public struct Service: Codable {
     private struct ServiceGroupReference: Codable {
@@ -25,8 +32,8 @@ public struct Service: Codable {
     /// The service's name
     public let name: String
     
-    
-    public var servcieGroupIds: [Int] {
+    /// The identifiers of the service group this service belongs to
+    public var serviceGroupIds: [Int] {
         serviceGroups.map { $0.identifier }
     }
     

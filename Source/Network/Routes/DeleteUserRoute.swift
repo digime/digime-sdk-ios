@@ -9,7 +9,7 @@
 import Foundation
 
 struct DeleteUserRoute: Route {
-    typealias ResponseType = DeleteUserResponse
+    typealias ResponseType = Void
     
     static let method = "DELETE"
     static let path = "user"

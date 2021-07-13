@@ -9,7 +9,7 @@
 import Foundation
 
 /// The entry point to the SDK
-public class DigiMe {
+public final class DigiMe {
     
     private let configuration: Configuration
     
@@ -44,10 +44,10 @@ public class DigiMe {
     /// The scopes for retrieving available services
     public enum AvailableServicesScope {
         
-        // Limits response to services that this contract can access
+        /// Limits response to services that this contract can access
         case thisContractOnly
         
-        // Responds with all services
+        /// Responds with all services
         case all
     }
     
@@ -174,16 +174,22 @@ public class DigiMe {
         }
     }
     
-    public func deleteUser(completion: @escaping (Result<Bool, Error>) -> Void) {
+    public func deleteUser(completion: @escaping (Error?) -> Void) {
         validateOrRefreshCredentials { result in
             switch result {
             case .success(let credentials):
                 self.authService.deleteUser(oauthToken: credentials.token) { result in
-                    completion(result.map { $0.deleted })
+                    switch result {
+                    case .success:
+                        self.credentialCache.setCredentials(nil, for: self.configuration.contractId)
+                        completion(nil)
+                    case .failure(let error):
+                        completion(error)
+                    }
                 }
             
             case .failure(let error):
-                completion(.failure(error))
+                completion(error)
             }
         }
     }
@@ -192,9 +198,11 @@ public class DigiMe {
     /// - Parameters:
     ///   - scope: Scope to limit response
     ///   - completion: Block called upon completion with either the service list or any errors encountered
-    public func availableServices(scope: AvailableServicesScope = .thisContractOnly, completion: @escaping (Result<ServicesResponse, Error>) -> Void) {
+    public func availableServices(scope: AvailableServicesScope = .thisContractOnly, completion: @escaping (Result<ServicesInfo, Error>) -> Void) {
         let route = ServicesRoute(contractId: scope == .thisContractOnly ? configuration.contractId : nil)
-        apiClient.makeRequest(route, completion: completion)
+        apiClient.makeRequest(route) { result in
+            completion(result.map { $0.data })
+        }
     }
     
     private func write(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Void, Error>) -> Void) {

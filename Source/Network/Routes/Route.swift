@@ -67,6 +67,12 @@ extension Route {
     }
 }
 
+extension Route where ResponseType == Void {
+    func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType {
+        return ()
+    }
+}
+
 extension Route where ResponseType == Data {
     func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType {
         return data
