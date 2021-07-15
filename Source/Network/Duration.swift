@@ -14,3 +14,9 @@ public struct Duration: Encodable {
         Duration(sourceFetch: 0)
     }
 }
+
+extension Duration: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int) {
+        self.sourceFetch = value
+    }
+}
