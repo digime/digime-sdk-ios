@@ -17,6 +17,6 @@ public struct Duration: Encodable {
 
 extension Duration: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int) {
-        self.sourceFetch = value
+        self.sourceFetch = max(value, 0)
     }
 }
