@@ -61,7 +61,8 @@ class AsyncOperation: Operation {
 
     // swiftlint:disable unavailable_function
     override func main() {
-        fatalError("Subclasses must implement `main` without overriding super.")
+        // This is a deliberate use of `fatalError` to ensure that subclasses implement `main` function without calling `super`
+        fatalError("Subclasses must implement `main` without calling super.")
     }
     // swiftlint:enable unavailable_function
 

@@ -20,4 +20,6 @@ public enum SDKError: Error {
     case authenticationRequired
     
     case fileListPollingTimeout
+    
+    case invalidPrivateOrPublicKey
 }

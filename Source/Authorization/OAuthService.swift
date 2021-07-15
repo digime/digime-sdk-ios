@@ -34,7 +34,9 @@ class OAuthService {
     // and as result when `token` is the extracted pre-authrozation code
     func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String? = nil, completion: @escaping (Result<TokenSessionResponse, Error>) -> Void) {
         guard let jwt = JWTUtility.preAuthorizationRequestJWT(configuration: configuration, accessToken: accessToken) else {
-            fatalError("Invalid pre-authorization request JWT")
+            NSLog("Invalid pre-authorization request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
         }
 
         apiClient.makeRequest(AuthorizeRoute(jwt: jwt, readOptions: readOptions)) { [weak self] result in
@@ -51,7 +53,9 @@ class OAuthService {
     
     func requestTokenExchange(authCode: String, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
         guard let jwt = JWTUtility.authorizationRequestJWT(authCode: authCode, configuration: configuration) else {
-            fatalError("Invalid authorization request JWT")
+            NSLog("Invalid authorization request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
         }
         
         apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
@@ -68,7 +72,9 @@ class OAuthService {
     
     func renewAccessToken(oauthToken: OAuthToken, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
         guard let jwt = JWTUtility.refreshTokensRequestJWT(refreshToken: oauthToken.refreshToken.value, configuration: configuration) else {
-            fatalError("Invalid refresh tokens request JWT")
+            NSLog("Invalid refresh tokens request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
         }
         
         apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
@@ -85,7 +91,9 @@ class OAuthService {
     
     func requestReferenceToken(oauthToken: OAuthToken, completion: @escaping (Result<TokenSessionResponse, Error>) -> Void) {
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
-            fatalError("Invalid reference token request JWT")
+            NSLog("Invalid reference token request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
         }
         
         apiClient.makeRequest(TokenReferenceRoute(jwt: jwt), completion: completion)
@@ -93,7 +101,9 @@ class OAuthService {
     
     func deleteUser(oauthToken: OAuthToken, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
-            fatalError("Invalid delete user token request JWT")
+            NSLog("Invalid delete user token request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
         }
         
         apiClient.makeRequest(DeleteUserRoute(jwt: jwt), completion: completion)

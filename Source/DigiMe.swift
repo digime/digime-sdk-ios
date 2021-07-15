@@ -510,10 +510,7 @@ public final class DigiMe {
 class FileListCache {
     
     private var cache = [String: Date]()
-//    var allItems: [FileListItem] {
-//        cache.map { FileListItem(name: $0, updateDate: $1) }
-//    }
-//
+
     func newItems(from items: [FileListItem]) -> [FileListItem] {
         items.filter { item in
             guard let existingItem = cache[item.name] else {
