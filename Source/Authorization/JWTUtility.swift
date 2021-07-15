@@ -35,6 +35,7 @@ class JWTUtility: NSObject {
 
     // Claims to request a pre-authorization code
     private struct PayloadRequestPreauthJWT: RequestClaims {
+        let accessToken: String?
         let clientId: String
         let codeChallenge: String
         let codeChallengeMethod = "S256"
@@ -97,17 +98,23 @@ class JWTUtility: NSObject {
         let timestamp = Date()
     }
 
-    /// Creates request JWT which can be used to get a preAuthentication token
+    /// Creates request JWT which can be used to get a pre-authentication token
+    ///
+    /// If a contract has already been linked to a library and both its access and refersh tokens have expired, then passing the expired access token will reauthorize access to the library
+    ///
+    /// If one contract has been linked to a library and another contract wants to be linked to the same library, then pass the access token for the contract which is already linked
     ///
     /// - Parameters:
     ///   - configuration: this SDK's instance configuration
-    class func preAuthorizationRequestJWT(configuration: Configuration) -> String? {
+    ///   - accessToken: An existing access token
+    class func preAuthorizationRequestJWT(configuration: Configuration, accessToken: String? = nil) -> String? {
         let randomBytes = secureRandomData(length: 32)
         let codeVerifier = randomBytes.base64URLEncodedString()
         let codeChallenge = Data(SHA256.hash(data: codeVerifier.data(using: .utf8)!)).base64URLEncodedString()
         saveCodeVerifier(codeVerifier)
         
         let claims = PayloadRequestPreauthJWT(
+            accessToken: accessToken,
             clientId: configuration.clientId,
             codeChallenge: codeChallenge,
             
@@ -218,16 +225,16 @@ class JWTUtility: NSObject {
     ///   - accessToken: OAuth refresh token
     ///   - iv: iv used to encrypt data
     ///   - metadat: metadata describing data being pushed
-    ///   - symmetricalKey: symmetrical key used to encrypt data
+    ///   - symmetricKey: symmetrical key used to encrypt data
     ///   - configuration: this SDK's instance configuration
-    class func writeRequestJWT(accessToken: String, iv: String, metadata: String, symmetricalKey: String, configuration: Configuration) -> String? {
+    class func writeRequestJWT(accessToken: String, iv: Data, metadata: String, symmetricKey: String, configuration: Configuration) -> String? {
         let claims = PayloadWriteJWT(
             accessToken: accessToken,
             clientId: configuration.clientId,
-            iv: iv,
+            iv: iv.hexString,
             metadata: metadata,
             redirectUri: configuration.redirectUri + "write",
-            symmetricalKey: symmetricalKey
+            symmetricalKey: symmetricKey
         )
 
         return createRequestJWT(claims: claims, configuration: configuration)
@@ -266,9 +273,7 @@ class JWTUtility: NSObject {
     }
     
     private class func secureRandomHexString(length: Int) -> String {
-        secureRandomBytes(length: length)
-            .map { String(format: "%02x", $0) }
-            .joined()
+        secureRandomBytes(length: length).hexString
     }
     
     private class func secureRandomData(length: Int) -> Data {

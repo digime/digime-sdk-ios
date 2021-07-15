@@ -17,6 +17,10 @@ struct OAuthToken: Codable {
             case expiry = "expires_on"
             case value
         }
+        
+        var isValid: Bool {
+            expiry > Date()
+        }
     }
     
     struct Identifier: Codable {

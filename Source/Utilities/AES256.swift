@@ -32,6 +32,14 @@ struct AES256 {
         self.iv = iv
     }
     
+    static func generateSymmetricKey() -> Data {
+        Crypto.secureRandomData(length: kCCKeySizeAES256)
+    }
+    
+    static func generateInitializationVector() -> Data {
+        Crypto.secureRandomData(length: kCCBlockSizeAES128)
+    }
+    
     /// Encrypt with AES-CBC algorithm
     func encrypt(_ digest: Data) throws -> Data {
         return try crypt(input: digest, operation: CCOperation(kCCEncrypt))

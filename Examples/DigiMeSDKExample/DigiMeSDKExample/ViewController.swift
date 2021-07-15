@@ -50,6 +50,7 @@ wtEHEfBLVfL+dCrCpgjLOb18ZXpFM2LuX1+mB347D3d5k8OnHY0hrfZZI5x8hQFT
         let config = Configuration(appId: appId, contractId: contractId, privateKey: privateKey)
 
         sdk = DigiMeSDK(configuration: config)
-        sdk?.testNewUser()
+        sdk?.testNewUser { _ in
+        }
     }
 }

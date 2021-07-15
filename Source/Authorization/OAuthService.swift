@@ -8,6 +8,11 @@
 
 import Foundation
 
+struct Session: Codable {
+    let expiry: Double
+    let key: String
+}
+
 class OAuthService {
     
     private let configuration: Configuration
@@ -19,12 +24,7 @@ class OAuthService {
         self.configuration = configuration
         self.apiClient = apiClient
     }
-    
-    struct Session: Decodable {
-        let expiry: Double
-        let key: String
-    }
-    
+        
     // Can be used for raw response from server where `token` is the JWT
     // and as result when `token` is the extracted pre-authrozation code
     struct PreAuthResponse: Decodable {
@@ -32,8 +32,8 @@ class OAuthService {
         let session: Session
     }
     
-    func requestPreAuthorizationCode(readOptions: ReadOptions?, completion: @escaping (Result<PreAuthResponse, Error>) -> Void) {
-        guard let jwt = JWTUtility.preAuthorizationRequestJWT(configuration: configuration) else {
+    func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String? = nil, completion: @escaping (Result<PreAuthResponse, Error>) -> Void) {
+        guard let jwt = JWTUtility.preAuthorizationRequestJWT(configuration: configuration, accessToken: accessToken) else {
             fatalError("Invalid pre-authorization request JWT")
         }
 
@@ -75,7 +75,7 @@ class OAuthService {
             fatalError("Invalid pre-authorization request JWT")
         }
         
-        apiClient.makeRequest(.authorize(jwt: jwt, agent: nil, readOptions: nil)) { [weak self] (result: Result<AuthResponse, Error>) in
+        apiClient.makeRequest(.tokenExchange(jwt: jwt)) { [weak self] (result: Result<AuthResponse, Error>) in
             switch result {
             case .success(let response):
                 self?.extractOAuthToken(from: response) { result in
