@@ -21,7 +21,7 @@ enum Crypto {
     }
     
     static func secureRandomData(length: Int) -> Data {
-        Data(bytes: secureRandomBytes(length: length))
+        Data(secureRandomBytes(length: length))
     }
     
     static func secureRandomBytes(length: Int) -> [UInt8] {
@@ -51,7 +51,7 @@ enum Crypto {
     }
     
     static func decryptRSA(data: Data, privateKey: String) throws -> Data {
-        let keyString = privateKey.replacingOccurrences(of: "-----BEGIN PRIVATE KEY-----\n", with: "").replacingOccurrences(of: "\n-----END PRIVATE KEY-----", with: "")
+        let keyString = privateKey.replacingOccurrences(of: "-----BEGIN PRIVATE KEY-----\n", with: "").replacingOccurrences(of: "\n-----END PRIVATE KEY-----", with: "").replacingOccurrences(of: "\n", with: "")
         guard let keyData = Data(base64Encoded: keyString) else {
             throw CryptoError.stringToDataConversionFailed
         }
@@ -102,7 +102,7 @@ enum Crypto {
             kSecAttrKeyType: kSecAttrKeyTypeRSA,
             kSecAttrKeyClass: keyClass,
             kSecAttrKeySizeInBits: keyData.count * 8,
-            kSecReturnPersistentRef: kCFBooleanTrue,
+            kSecReturnPersistentRef: kCFBooleanTrue as Any,
         ] as CFDictionary
         
         var error: Unmanaged<CFError>?
@@ -114,7 +114,7 @@ enum Crypto {
     }
     
     private static func encryptRSA(data: Data, publicKey: SecKey) throws -> Data {
-        var blockSize = SecKeyGetBlockSize(publicKey)
+        let blockSize = SecKeyGetBlockSize(publicKey)
         
         let maxChunkSize = blockSize - 42 // For OAEP padding
         

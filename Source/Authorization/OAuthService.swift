@@ -9,8 +9,13 @@
 import Foundation
 
 struct Session: Codable {
-    let expiry: Double
+    let expiry: Double // timestamp in milliseconds since 1970
     let key: String
+    
+    var isValid: Bool {
+        // Allow at least one minute before expiry
+        expiry > (Date().timeIntervalSince1970 * 1000 + 60)
+    }
 }
 
 class OAuthService {
@@ -25,23 +30,20 @@ class OAuthService {
         self.apiClient = apiClient
     }
         
-    // Can be used for raw response from server where `token` is the JWT
+    // TokenSessionResponse can be used for raw response from server where `token` is the JWT
     // and as result when `token` is the extracted pre-authrozation code
-    struct PreAuthResponse: Decodable {
-        let token: String
-        let session: Session
-    }
-    
-    func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String? = nil, completion: @escaping (Result<PreAuthResponse, Error>) -> Void) {
+    func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String? = nil, completion: @escaping (Result<TokenSessionResponse, Error>) -> Void) {
         guard let jwt = JWTUtility.preAuthorizationRequestJWT(configuration: configuration, accessToken: accessToken) else {
-            fatalError("Invalid pre-authorization request JWT")
+            NSLog("Invalid pre-authorization request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
         }
 
-        apiClient.makeRequest(.authorize(jwt: jwt, agent: apiClient.agent, readOptions: readOptions)) { [weak self] (result: Result<PreAuthResponse, Error>) in
+        apiClient.makeRequest(AuthorizeRoute(jwt: jwt, readOptions: readOptions)) { [weak self] result in
             switch result {
             case .success(let response):
-                self?.extractPeAuthorizationCode(from: response) { result in
-                    completion(result.map { PreAuthResponse(token: $0, session: response.session) })
+                self?.extractPreAuthorizationCode(from: response) { result in
+                    completion(result.map { TokenSessionResponse(token: $0, session: response.session) })
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -49,16 +51,14 @@ class OAuthService {
         }
     }
     
-    private struct AuthResponse: Decodable {
-        let token: String
-    }
-    
     func requestTokenExchange(authCode: String, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
         guard let jwt = JWTUtility.authorizationRequestJWT(authCode: authCode, configuration: configuration) else {
-            fatalError("Invalid pre-authorization request JWT")
+            NSLog("Invalid authorization request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
         }
         
-        apiClient.makeRequest(.tokenExchange(jwt: jwt)) { [weak self] (result: Result<AuthResponse, Error>) in
+        apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.extractOAuthToken(from: response) { result in
@@ -72,10 +72,12 @@ class OAuthService {
     
     func renewAccessToken(oauthToken: OAuthToken, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
         guard let jwt = JWTUtility.refreshTokensRequestJWT(refreshToken: oauthToken.refreshToken.value, configuration: configuration) else {
-            fatalError("Invalid pre-authorization request JWT")
+            NSLog("Invalid refresh tokens request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
         }
         
-        apiClient.makeRequest(.tokenExchange(jwt: jwt)) { [weak self] (result: Result<AuthResponse, Error>) in
+        apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.extractOAuthToken(from: response) { result in
@@ -87,7 +89,27 @@ class OAuthService {
         }
     }
     
-    private func extractPeAuthorizationCode(from response: PreAuthResponse, completion: @escaping (Result<String, Error>) -> Void) {
+    func requestReferenceToken(oauthToken: OAuthToken, completion: @escaping (Result<TokenSessionResponse, Error>) -> Void) {
+        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
+            NSLog("Invalid reference token request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
+        }
+        
+        apiClient.makeRequest(TokenReferenceRoute(jwt: jwt), completion: completion)
+    }
+    
+    func deleteUser(oauthToken: OAuthToken, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
+            NSLog("Invalid delete user token request JWT")
+            completion(.failure(SDKError.invalidPrivateOrPublicKey))
+            return
+        }
+        
+        apiClient.makeRequest(DeleteUserRoute(jwt: jwt), completion: completion)
+    }
+    
+    private func extractPreAuthorizationCode(from response: TokenSessionResponse, completion: @escaping (Result<String, Error>) -> Void) {
         latestJsonWebKeySet { result in
             let newResult = result.flatMap { JWTUtility.preAuthCode(from: response.token, keySet: $0) }
             completion(newResult)
@@ -109,11 +131,11 @@ class OAuthService {
             return
         }
         
-        apiClient.makeRequest(.jwks) { (result: Result<JSONWebKeySet, Error>) in
+        apiClient.makeRequest(WebKeySetRoute()) { result in
             if let jwks = try? result.get() {
                 self.jwks = jwks
             }
-            
+
             completion(result)
         }
     }

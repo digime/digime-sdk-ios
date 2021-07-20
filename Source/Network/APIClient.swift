@@ -21,6 +21,7 @@ struct ErrorResponse: Decodable {
     
     let code: String
     let message: String
+    let reference: String?
     let recovery: Recovery?
 }
 
@@ -29,6 +30,7 @@ struct ErrorWrapper: Decodable {
 }
 
 class APIClient {
+    typealias HTTPHeader = [AnyHashable: Any]
     
     private let credentialCache: CredentialCache
     private lazy var session: URLSession = {
@@ -41,47 +43,43 @@ class APIClient {
         return URLSession(configuration: configuration)
     }()
     
-    lazy var agent: Agent = {
-        let version = Bundle(for: Self.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
-        return Agent(name: "ios", version: version)
-    }()
-    
     init(credentialCache: CredentialCache) {
         self.credentialCache = credentialCache
     }
 
-    func makeRequest<T: Decodable>(_ router: NetworkRouter, completion: @escaping (Result<T, Error>) -> Void) {
-        guard let request = try? router.asURLRequest() else {
-            return
-        }
-        
+    func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, Error>) -> Void) {
+        let request = route.toUrlRequest()
+                
         session.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
             
-            guard let httpResonse = response as? HTTPURLResponse else {
+            guard let httpResponse = response as? HTTPURLResponse else {
                 completion(.failure(HTTPError.noResponse))
                 return
             }
             
-            self.logStatusMessage(from: httpResonse)
+            self.logStatusMessage(from: httpResponse)
             
-            guard (200..<300).contains(httpResonse.statusCode) else {
+            guard (200..<300).contains(httpResponse.statusCode) else {
                 var errorWrapper: ErrorWrapper?
                 if let data = data {
                     errorWrapper = try? data.decoded()
                 }
                 
                 if let errorResponse = errorWrapper?.error {
-                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResonse.statusCode), error code: \(errorResponse.code), message: \(errorResponse.message)")
+                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode), error code: \(errorResponse.code), message: \(errorResponse.message)")
+                }
+                else if let data = data, let message = String(data: data, encoding: .utf8) {
+                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode) \(message)")
                 }
                 else {
-                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResonse.statusCode)")
+                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode)")
                 }
                 
-                completion(.failure(HTTPError.unsuccesfulStatusCode(httpResonse.statusCode, response: errorWrapper?.error)))
+                completion(.failure(HTTPError.unsuccesfulStatusCode(httpResponse.statusCode, response: errorWrapper?.error)))
                 return
             }
             
@@ -90,8 +88,10 @@ class APIClient {
                 return
             }
             
+            let httpHeaders = httpResponse.allHeaderFields
+            
             do {
-                let result = try data.decoded() as T
+                let result = try route.parseResponse(data: data, headers: httpHeaders)
                 completion(.success(result))
             }
             catch {

@@ -12,13 +12,13 @@ class SessionCache: Caching {
     private let userDefaults = UserDefaults.standard
     private let key = "me.digi.sdk.session"
     
-    var contents: [Session]? {
+    var contents: Session? {
         get {
             guard let results = userDefaults.data(forKey: key) else {
                 return nil
             }
             
-            return try? results.decoded() as [Session]
+            return try? results.decoded() as Session
         }
         
         set {

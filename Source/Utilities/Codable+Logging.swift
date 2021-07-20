@@ -40,9 +40,14 @@ extension Encodable {
 }
 
 extension Data {
-    func decoded<T: Decodable>() throws -> T {
+    func decoded<T: Decodable>(dateDecodingStrategy: JSONDecoder.DateDecodingStrategy? = nil) throws -> T {
         do {
-            return try JSONDecoder().decode(T.self, from: self)
+            let decoder = JSONDecoder()
+            if let dateDecodingStrategy = dateDecodingStrategy {
+                decoder.dateDecodingStrategy = dateDecodingStrategy
+            }
+            
+            return try decoder.decode(T.self, from: self)
         }
         catch {
             if let error = (error as? DecodingError) {

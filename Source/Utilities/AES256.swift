@@ -51,8 +51,6 @@ struct AES256 {
     }
     
     private func crypt(input: Data, operation: CCOperation) throws -> Data {
-        let inputBuffer = [UInt8](input)
-        
         var outputBytes = [UInt8](repeating: 0, count: input.count + kCCBlockSizeAES128)
         var numBytesWritten = 0
         var status = CCCryptorStatus(kCCSuccess)

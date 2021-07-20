@@ -8,17 +8,15 @@
 
 import Foundation
 
-struct ReadOptions: Encodable {
+public struct ReadOptions: Encodable {
     let limits: Limits?
     let scope: Scope?
-    let accept: ReadAccept?
     
-    init?(accept: ReadAccept? = nil, limits: Limits? = nil, scope: Scope? = nil) {
-        guard accept != nil || limits != nil || scope != nil else {
+    public init?(limits: Limits? = nil, scope: Scope? = nil) {
+        guard limits != nil || scope != nil else {
             return nil
         }
         
-        self.accept = accept
         self.limits = limits
         self.scope = scope
     }

@@ -8,8 +8,8 @@
 
 import Foundation
 
-enum TimeRange: Encodable {
-    enum Unit: String {
+public enum TimeRange: Encodable {
+    public enum Unit: String {
         case day = "d"
         case month = "m"
         case year = "y"
@@ -24,7 +24,7 @@ enum TimeRange: Encodable {
         case from, to, last
     }
 
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .after(let from):

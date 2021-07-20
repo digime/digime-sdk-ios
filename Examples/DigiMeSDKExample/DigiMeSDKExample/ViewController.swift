@@ -11,7 +11,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    private var sdk: DigiMeSDK?
+    private var sdk: DigiMe?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +49,17 @@ wtEHEfBLVfL+dCrCpgjLOb18ZXpFM2LuX1+mB347D3d5k8OnHY0hrfZZI5x8hQFT
 
         let config = Configuration(appId: appId, contractId: contractId, privateKey: privateKey)
 
-        sdk = DigiMeSDK(configuration: config)
-        sdk?.testNewUser { _ in
+        sdk = DigiMeSDK.DigiMe(configuration: config)
+        sdk?.authorize(readOptions: nil) { _ in
+//            self.sdk?.readAccounts { result in
+//
+//            }
+            
+            self.sdk?.readFiles(downloadHandler: { result in
+                print("Download handler: \(result)")
+            }, completion: { result in
+                print("Download compelted: \(result)")
+            })
         }
     }
 }

@@ -4,7 +4,7 @@ install! 'cocoapods',
     :generate_multiple_pod_projects => true,
     :incremental_installation => true
 
-inhibit_all_warnings!
+#inhibit_all_warnings!
 use_frameworks!
 use_modular_headers!
 

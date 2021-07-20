@@ -8,9 +8,15 @@
 
 import Foundation
 
-struct Duration: Encodable {
+public struct Duration: Encodable {
     let sourceFetch: Int
-    static func unlimited() -> Duration {
+    public static func unlimited() -> Duration {
         Duration(sourceFetch: 0)
+    }
+}
+
+extension Duration: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int) {
+        self.sourceFetch = max(value, 0)
     }
 }

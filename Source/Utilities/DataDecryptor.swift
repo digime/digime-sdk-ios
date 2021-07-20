@@ -13,26 +13,27 @@ class DataDecryptor {
         self.configuration = configuration
     }
     
+    // IF WE ONLY PROCESS DATA OBJECTS, WE CAN EITHER CHANGE SIGNATURE OF FUNCTION TO ACCEPT DATA OBJECT ONLY OR REMOVE WHOLE CLASS AS IT IS WRAPPING ONE CRYPTO CALL
     func decrypt(fileContent: Any) throws -> Data {
-        if let fileContent = fileContent as? String {
-            if let base64Data = Data(base64Encoded: fileContent) {
-                return try Crypto.decrypt(encryptedBase64EncodedData: base64Data, privateKey: configuration.privateKey)
-            }
-            else if let data = fileContent.data(using: .utf8) {
-                return data
-            }
+        if let data = fileContent as? Data {
+            return try Crypto.decrypt(encryptedBase64EncodedData: data, privateKey: configuration.privateKey)
         }
-        else if fileContent is [String: AnyHashable] || fileContent is [AnyHashable] {
-            do {
-                return try JSONSerialization.data(withJSONObject: fileContent, options: [])
-            }
-            catch {
-                throw SDKError.invalidData
-            }
-        }
-        else if let data = fileContent as? Data {
-            return data
-        }
+//        else if let fileContent = fileContent as? String {
+//            if let base64Data = Data(base64Encoded: fileContent) {
+//                return try Crypto.decrypt(encryptedBase64EncodedData: base64Data, privateKey: configuration.privateKey)
+//            }
+//            else if let data = fileContent.data(using: .utf8) {
+//                return data
+//            }
+//        }
+//        else if fileContent is [String: AnyHashable] || fileContent is [AnyHashable] {
+//            do {
+//                return try JSONSerialization.data(withJSONObject: fileContent, options: [])
+//            }
+//            catch {
+//                throw SDKError.invalidData
+//            }
+//        }
         
         throw SDKError.invalidData
     }

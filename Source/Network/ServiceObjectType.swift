@@ -8,10 +8,14 @@
 
 import Foundation
 
-struct ServiceObjectType: Encodable {
-    let identifier: UInt
+public struct ServiceObjectType: Encodable {
+    public let identifier: UInt
     
     enum CodingKeys: String, CodingKey {
         case identifier = "id"
+    }
+    
+    public init(identifier: UInt) {
+        self.identifier = identifier
     }
 }

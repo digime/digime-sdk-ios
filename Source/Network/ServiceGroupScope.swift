@@ -1,5 +1,5 @@
 //
-//  ServiceGroup.swift
+//  ServiceGroupScope.swift
 //  DigiMeSDK
 //
 //  Created on 06/06/2021.
@@ -8,12 +8,17 @@
 
 import Foundation
 
-struct ServiceGroup: Encodable {
+public struct ServiceGroupScope: Encodable {
     let identifier: UInt
     let serviceTypes: [ServiceType]
     
     enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case serviceTypes
+    }
+    
+    public init(identifier: UInt, serviceTypes: [ServiceType]) {
+        self.identifier = identifier
+        self.serviceTypes = serviceTypes
     }
 }
