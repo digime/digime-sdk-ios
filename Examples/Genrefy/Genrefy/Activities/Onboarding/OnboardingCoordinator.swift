@@ -63,27 +63,21 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
     
     func authorize() {
         let scope = digimeService?.lastDayScope()
-        let options = DMESessionOptions()
-        options.scope = scope
+        let options = ReadOptions(limits: nil, scope: scope)
         
         let client = digimeService?.dmeClient
-        client?.authorizeOngoingAccess(options: options, oAuthToken: nil) { (session, oAuthToken, error) in
-            
-            guard let _ = session else {
+        
+        client?.authorize(serviceId: 16, readOptions: options) { error in
+            if let error = error {
+                print("digi.me authorization failed with error: \(error)")
                 DispatchQueue.main.async {
                     SVProgressHUD.dismiss()
                     self.goBack()
                 }
-                if let error = error {
-                    print("digi.me authorization failed with error: \(error)")
-                } else {
-                    print("digi.me authorization failed")
-                }
+                
                 return
             }
             
-            self.digimeService?.saveToken(oAuthToken)
-
             let importing = ImportingCoordinator(navigationController: self.navigationController, parentCoordinator: self)
             importing.digimeService = self.digimeService
             self.childCoordinators.append(importing)

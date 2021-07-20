@@ -41,6 +41,10 @@ public final class DigiMe {
         return sessionFileList?.status.state.isRunning ?? true
     }
     
+    public var isConnected: Bool {
+        credentialCache.credentials(for: configuration.contractId) != nil
+    }
+    
     /// The scopes for retrieving available services
     public enum AvailableServicesScope {
         
@@ -57,7 +61,7 @@ public final class DigiMe {
     public init(configuration: Configuration) {
         self.configuration = configuration
         self.credentialCache = CredentialCache()
-        self.apiClient = APIClient(credentialCache: credentialCache)
+        self.apiClient = APIClient()
         self.authService = OAuthService(configuration: configuration, apiClient: apiClient)
         self.consentManager = ConsentManager(configuration: configuration)
         self.sessionCache = SessionCache()

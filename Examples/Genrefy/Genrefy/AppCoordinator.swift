@@ -24,12 +24,10 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
     
     private var digimeService: DigiMeService
     
-    @objc required init(navigationController: UINavigationController) {
+    required init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         
-        guard let dmeClient = AppCoordinator.pullClient() else {
-            fatalError("Could not create new DMEPullClient")
-        }
+        let dmeClient = AppCoordinator.digiMeClient()
         
         let repository = ImportRepository()
         digimeService = DigiMeService(client: dmeClient, repository: repository)
@@ -39,7 +37,7 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
         navigationController.delegate = nil
     }
         
-    @objc func begin() {
+    func begin() {
         
         digimeService.repository.delegate = self
         digimeService.delegate = self
@@ -77,23 +75,43 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
 
 // MARK: - Client Configuration
 extension AppCoordinator {
-    class func pullClient() -> DMEPullClient? {
+    class func digiMeClient() -> DigiMe {
         
-        // get YOUR_APP_ID here - https://go.digi.me/developers/register
+        // Get YOUR_APP_ID here - https://go.digi.me/developers/register
         // Don't forget to replace YOUR_APP_ID part in URLSchemes in Info.plist
         let appId = "YOUR_APP_ID"
         let contractId = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
-        let p12FileName = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
-        let p12Password = "digime"
+        let privateKey = """
+MIIEowIBAAKCAQEAvup5e4PbVBVNHtRosFXPPvZCO1kNySe9qo2zI+QnHk7jyK2Y
+11MGJiVLkxKp02bGV4NlK5ASptLH22imPSYP/INE1p+XxcSIth1rFZy0b/aWDktM
+SB5KMWhIhcmcjLqTuQ8q6qQFDhRVUfBtgbTz64LQ29IHc5EBSN4XzMYwnybbJ6ye
+hR5IHoZugRkZA/HZadlPpnygIIN9X2TcuNGaaNh8yum6Jl9xLKpid4CzACTc3Gxg
+wdn9o05nzYndnYJqwo2QxreCXifuCZTpjhFW42dqtdRc5YyWFgf1Q8WuaGhBQBNb
+P62NLLNUm194IOSUZMl0B8/PYyFjgKmI2M1GEQIDAQABAoIBAE1jstb0vkW5VMe4
+hq9kOVxmarawBLyT1Xh7dDCKXakVhZRlel1elFGGMLpviFPfh2sWIj6kakshik5Q
+f4KuGTDc7Vyq2NUcM+bOyge6vBHevTkSINvjG2Qnx64j6cfKIfOUSGtRDZOFfoh2
+k41OksnW/178JnUcRI8LKE6j0DXS0NcZ//ToJMkYVqCuBqSE0TjX7VXL9Vad9D9v
+P4UYjC3ZX8InRCd8akzwhi7x9nZf0zvGtXemEuVOYkOJMLg3ZheYKPpHZgO6Tqhi
+tYiwa+YSr6VJ5WvlLFy3LTkwsWg/gdT4JNCV6X/rWrU4JXnJIgdgVgIM+4bwSoFv
+I9D7zAECgYEA6vIkmdUOv7SDzgfn4w9MgvePGTYZZDbcYPOM0qhDhY0OJhXMgc6L
+hiB6+xvm8HnEfGdbak7eYyTZ/Z7Oe2YxDl9pYGZ3AQAKbDT7liuDQGZWRMUYdGtA
+2mRjIi99P8ufeXXLrTwPIk/MPldfd6+dCEZ3mB8sM4T0mSo4kKfdi7ECgYEA0AY/
+RdInONgfuzvDf1w9+vsxRaDsWUdiDGRo04nqNlTduxqTSDKCoLMUS6EipANMuOxO
+rmxlXfvF7GPaWj4tgrYR0QeJLhk2ScdTe2apGkLgfLnPovaAxPIneaF+xoaSwhSx
+PRt4sygYxB6fNQ7KMvofPETPprMt4AC9H5Ve2GECgYAiLcPBVUtl/B7IlEHZuFoL
+G3SH2GTtPUXmHMg5xRy9iv2p8LXllGSbyJHbgf2gsjYxWt/joUGc7rl/ueCT9xPf
+4WV1DrL1REo/351SBVZ8weZ+7qVWGlw+6Se6y2nPJBI5GzfcJcaV2UH/N7q9sKCJ
+mabATJijjg3/UjMUaDdEoQKBgQCRWcwcHRsKvPhu+vM+qlUkaR+kZyy9tQLtZbtZ
+E6RzEhlcAtWmPKTJZFdqAM0TjLqu+25+sX6ijKle4uZO5+Mk0dLhG0Le0v77ziqm
+rrS5hMEWZT6Pv216Lzkl45GRZbZlpc+xwuAzTnD/l+XmTM87j0kD85CkCc6kFeAP
+kW8UAQKBgFv91+8v1pFlPGgbwT3NFM/z9CIbjTl+5wAzvSPO8q2tGXDBO2dpt+2U
+XTB5irocXRj2XXn1sMpGBJGf4AKRrIhQNIoAhouh7btYBAD7+eT8SlGQ75wKkaDW
+u3W6P+D7xkopNDDFki7IcLyaRzKvXjGf8HeKz0YP+XomHb25Bc3A
+"""
         
-        let configuration = DMEPullConfiguration(appId: appId, contractId: contractId, p12FileName: p12FileName, p12Password: p12Password)
-        configuration?.debugLogEnabled = true
-
-        guard let config = configuration else {
-            fatalError("ERROR: Configuration object not set")
-        }
+        let configuration = Configuration(appId: appId, contractId: contractId, privateKey: privateKey, publicKey: nil)
         
-        return DMEPullClient(configuration: config)
+        return DigiMe(configuration: configuration)
     }
 }
 
@@ -157,10 +175,7 @@ extension AppCoordinator: DigiMeServiceDelegate {
 // MARK: - AnalysisCoordinatorDelegate
 extension AppCoordinator: AnalysisCoordinatorDelegate {
     func refreshService() -> DigiMeService {
-        guard let dmeClient = AppCoordinator.pullClient() else {
-            fatalError("Could not create new DMEPullClient")
-        }
-        
+        let dmeClient = AppCoordinator.digiMeClient()
         let repository = ImportRepository()
         digimeService = DigiMeService(client: dmeClient, repository: repository)
         digimeService.delegate = self

@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc protocol IntroCoordinatingDelegate: CoordinatingDelegate {
+protocol IntroCoordinatingDelegate: CoordinatingDelegate {
     
     func primaryButtonAction(sender: IntroViewController)
 }

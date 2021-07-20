@@ -9,7 +9,7 @@
 import Foundation
 
 enum APIConfig {
-    static let baseURLPath = "https://api.development.devdigi.me"
+    static let baseURLPath = "https://api.digi.me"
     static let baseURLPathWithVersion = baseURLPath + "/v1.6"
     
     static var agent: Agent = {

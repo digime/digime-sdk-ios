@@ -8,7 +8,7 @@
 
 import DigiMeSDK
 
-@objc protocol AccountSelectionCoordinatingDelegate: CoordinatingDelegate {
+protocol AccountSelectionCoordinatingDelegate: CoordinatingDelegate {
     
-    func selectedAccountsChanged(selectedAccounts: [DMEAccount])
+    func selectedAccountsChanged(selectedAccounts: [Account])
 }

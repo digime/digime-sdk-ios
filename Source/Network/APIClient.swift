@@ -32,7 +32,6 @@ struct ErrorWrapper: Decodable {
 class APIClient {
     typealias HTTPHeader = [AnyHashable: Any]
     
-    private let credentialCache: CredentialCache
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = [
@@ -43,10 +42,6 @@ class APIClient {
         return URLSession(configuration: configuration)
     }()
     
-    init(credentialCache: CredentialCache) {
-        self.credentialCache = credentialCache
-    }
-
     func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, Error>) -> Void) {
         let request = route.toUrlRequest()
                 

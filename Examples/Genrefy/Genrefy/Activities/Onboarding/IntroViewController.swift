@@ -8,11 +8,10 @@
 
 import UIKit
 
-class IntroViewController: UIViewController, Storyboarded, Coordinated {
+class IntroViewController: UIViewController, Storyboarded {
     static var storyboardName = "Onboarding"
     
-    typealias GenericCoordinatingDelegate = IntroCoordinatingDelegate
-    weak var coordinatingDelegate: GenericCoordinatingDelegate?
+    weak var coordinatingDelegate: IntroCoordinatingDelegate?
     
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var mainTitleLabel: UILabel!

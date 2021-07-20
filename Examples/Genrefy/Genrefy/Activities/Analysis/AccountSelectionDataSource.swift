@@ -9,23 +9,16 @@
 import DigiMeSDK
 import Foundation
 
-class AccountSelectionDataSource: Coordinated {
-    typealias GenericCoordinatingDelegate = AccountSelectionCoordinatingDelegate
-    weak var coordinatingDelegate: GenericCoordinatingDelegate?
+class AccountSelectionDataSource {
+    weak var coordinatingDelegate: AccountSelectionCoordinatingDelegate?
     
-    private var sortedAccounts: [DMEAccount]
+    private var sortedAccounts: [Account]
     var selectedAccountIdentifiers: Set<String>
     
-    init(accounts: [DMEAccount]) {
+    init(accounts: [Account]) {
         sortedAccounts = accounts
             .sorted(by: { account1, account2 in
-                guard
-                    let service1 = account1.service?.name,
-                    let service2 = account2.service?.name else {
-                        return true
-                }
-                
-                return service1.compare(service2, options: .caseInsensitive) == .orderedAscending
+                return account1.service.name.compare(account2.service.name, options: .caseInsensitive) == .orderedAscending
             })
         selectedAccountIdentifiers = Set(sortedAccounts.compactMap { $0.identifier })
     }
@@ -40,11 +33,7 @@ class AccountSelectionDataSource: Coordinated {
         }
         
         let selectedAccounts = sortedAccounts.filter { account in
-            guard let identifier = account.identifier else {
-                return false
-            }
-            
-            return selectedAccountIdentifiers.contains(identifier)
+            return selectedAccountIdentifiers.contains(account.identifier)
         }
         coordinatingDelegate?.selectedAccountsChanged(selectedAccounts: selectedAccounts)
         
@@ -66,11 +55,7 @@ class AccountSelectionDataSource: Coordinated {
     
     func itemAt(indexPath: IndexPath) -> AccountSelectionItem? {
         let account = sortedAccounts[indexPath.row]
-        guard let identifier = account.identifier else {
-            return nil
-        }
-        
-        let selected = selectedAccountIdentifiers.contains(identifier)
-        return AccountSelectionItem(uid: identifier, account: account, selected: selected)
+        let selected = selectedAccountIdentifiers.contains(account.identifier)
+        return AccountSelectionItem(uid: account.identifier, account: account, selected: selected)
     }
 }

@@ -26,8 +26,14 @@ public struct Service: Codable {
     
     private let serviceGroups: [ServiceGroupReference]
     
-    /// The service's identifier
+    /// The service's identifier for authorization
     public let identifier: Int
+    
+    /// The service's identifier for scoping data requests
+    ///
+    /// This differs to the identifier for authorization because multiple services
+    /// may share the same `serviceIdentifier` but each have a different authorization identifier.
+    public let serviceIdentifier: Int
     
     /// The service's name
     public let name: String
@@ -41,6 +47,7 @@ public struct Service: Codable {
         case identifier = "id"
         case name
         case serviceGroups
+        case serviceIdentifier = "serviceId"
     }
 }
 

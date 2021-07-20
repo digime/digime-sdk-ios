@@ -22,18 +22,16 @@ class AccountSelectionPresenter {
         
         let isToggleable = canToggleCell(at: indexPath)
         
-        cell.setAccountIdentifier(item.account.identifier ?? "")
-        cell.display(serviceName: item.account.service?.name)
+        cell.setAccountIdentifier(item.account.identifier)
+        cell.display(serviceName: item.account.service.name)
         cell.display(accountName: item.account.name)
         cell.display(toggleable: isToggleable, selected: item.selected, animated: false)
         
-        if
-            let serviceName = item.account.service?.name,
-            let service = ServiceType(name: serviceName) {
+        if let service = ServiceTypeConverter(name: item.account.service.name) {
             cell.display(icon: UIImage(named: "service_\(service.rawValue)"))
         }
         else {
-            cell.display(imageUrl: item.account.service?.logo)
+            cell.display(imageUrl: item.account.service.logo)
         }
         
         cell.setSelectionChangedCallback { uniqueIdentifier in

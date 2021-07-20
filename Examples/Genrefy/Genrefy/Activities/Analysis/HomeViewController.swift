@@ -8,14 +8,13 @@
 
 import UIKit
 
-@objc protocol HomeViewControllerDelegate: CoordinatingDelegate {
+protocol HomeViewControllerDelegate: CoordinatingDelegate {
     func refreshData()
 }
 
-class HomeViewController: UIViewController, Storyboarded, Coordinated {
+class HomeViewController: UIViewController, Storyboarded {
     
-    typealias GenericCoordinatingDelegate = HomeViewControllerDelegate
-    var coordinatingDelegate: GenericCoordinatingDelegate?
+    var coordinatingDelegate: HomeViewControllerDelegate?
     
     static var storyboardName = "Analysis"
     
@@ -60,7 +59,7 @@ class HomeViewController: UIViewController, Storyboarded, Coordinated {
 
         tableView.dataSource = self
         
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 600
         imageView.image = #imageLiteral(resourceName: "service_19").withRenderingMode(.alwaysTemplate)
         imageView.tintColor = .white
@@ -128,7 +127,7 @@ extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0:
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         default:
             return 60
         }

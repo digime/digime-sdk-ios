@@ -14,7 +14,7 @@ class ReceiptsLinkTableViewCell: UITableViewCell {
     
     private let cache = AppStateCache()
     
-    @IBOutlet weak var viewReceiptButton: UIButton!
+    @IBOutlet weak var receiptLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,20 +27,13 @@ class ReceiptsLinkTableViewCell: UITableViewCell {
         formatter.dateFormat = "MMM d,yyyy h:mm a"
         let dateString = formatter.string(from: date)
         
-        let highlightedText = "Control our access in your digi.me."
-        let text = "You consented to privately share with us via digi.me on \(dateString).\n\(highlightedText)"
+        let text = "You consented to privately share with us via digi.me on \(dateString)."
         let attributedString = NSMutableAttributedString(string: text)
 
         let boldFont = UIFont.systemFont(ofSize: 18.0, weight: .bold)
-        let highlightedTextRange = (text as NSString).range(of: highlightedText)
         let boldTextRange = (text as NSString).range(of: dateString)
-        attributedString.addAttribute(NSAttributedStringKey.font, value: boldFont, range: boldTextRange)
-        attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: Theme.buttonColor, range: highlightedTextRange)
+        attributedString.addAttribute(.font, value: boldFont, range: boldTextRange)
 
-        viewReceiptButton.setAttributedTitle(attributedString, for: .normal)
-    }
-    
-    @IBAction func viewReceipt() {
-        coordinatingDelegate?.viewReceipt()
+        receiptLabel.attributedText = attributedString
     }
 }

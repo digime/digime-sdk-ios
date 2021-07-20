@@ -8,15 +8,12 @@
 
 import UIKit
 
-@objc protocol AccountsViewCoordinatingDelegate: CoordinatingDelegate {
+protocol AccountsViewCoordinatingDelegate: CoordinatingDelegate {
     func reset()
-    func viewReceipt()
 }
 
-class AccountsViewController: UIViewController, Storyboarded, Coordinated {
-    
-    typealias GenericCoordinatingDelegate = AccountsViewCoordinatingDelegate
-    var coordinatingDelegate: GenericCoordinatingDelegate?
+class AccountsViewController: UIViewController, Storyboarded {
+    var coordinatingDelegate: AccountsViewCoordinatingDelegate?
     
     static var storyboardName = "Analysis"
     
@@ -69,11 +66,7 @@ extension AccountsViewController: UITableViewDataSource {
             cell.sectionTitleLabel.text = "Privacy"
             return cell
         case .receipts:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ReceiptsLinkTableViewCell", for: indexPath)
-            if let cell = cell as? ReceiptsLinkTableViewCell {
-                cell.coordinatingDelegate = coordinatingDelegate
-            }
-            return cell
+            return tableView.dequeueReusableCell(withIdentifier: "ReceiptsLinkTableViewCell", for: indexPath)
         case .reset:
             let cell = tableView.dequeueReusableCell(withIdentifier: "StartOverTableViewCell", for: indexPath) as! StartOverTableViewCell
             cell.coordinatingDelegate = coordinatingDelegate

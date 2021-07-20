@@ -27,6 +27,6 @@ struct HomeViewControllerUseCase: IntroViewControllerUseCase {
     
     func configure(primaryButton: UIButton) {
         primaryButton.setTitle("PLUG ME IN", for: .normal)
-        primaryButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        primaryButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
 }

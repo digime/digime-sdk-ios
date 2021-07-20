@@ -8,7 +8,7 @@
 
 import DigiMeSDK
 
-enum ServiceType: String {
+enum ServiceTypeConverter: String {
     case spotify = "19"
     
     init?(name: String) {
@@ -21,7 +21,7 @@ enum ServiceType: String {
     }
 }
 
-@objc protocol ImportRepositoryDelegate {
+protocol ImportRepositoryDelegate: AnyObject {
     func repositoryDidUpdateProcessing(repository: ImportRepository)
 }
 
@@ -32,19 +32,19 @@ class ImportRepository: NSObject {
     var allOrderedGenreSummaries: [GenreSummary] {
         return orderedGenreSummaries(for: genresCounts)
     }
-    var files = [DMEFile]()
-    var accounts = [DMEAccount]()
+    var files = [FileContainer<RawData>]()
+    var accounts = [Account]()
     weak var delegate: ImportRepositoryDelegate?
     
-    func process(file: DMEFile) {
+    func process(file: FileContainer<RawData>) {
         files.append(file)
-        guard file.fileId.contains("_406_") else {
-            print("Unexpected file \(file.fileId)")
+        guard file.metadata?.objectType == "playhistory" else {
+            print("Unexpected file \(file.identifier)")
             return
         }
         
         do {
-            let songArray = try JSONDecoder().decode([Song].self, from: file.fileContent)
+            let songArray = try JSONDecoder().decode([Song].self, from: file.content)
             process(songs: songArray)
             
             DispatchQueue.main.async {
@@ -52,23 +52,19 @@ class ImportRepository: NSObject {
             }
         }
         catch {
-            print("Error decoding play history data for file \(file.fileId): \(error)")
+            print("Error decoding play history data for file \(file.identifier): \(error)")
         }
     }
     
-    func process(accounts: DMEAccounts) {
-        if let accounts = accounts.accounts {
-            self.accounts = accounts
-        }
+    func process(accountsInfo: AccountsInfo) {
+        accounts = accountsInfo.accounts
         
-        if
-            let accountsDictionary = accounts.json,
-            let accountsData = try? NSKeyedArchiver.archivedData(withRootObject: accountsDictionary, requiringSecureCoding: false) {
-                PersistentStorage.shared.store(data: accountsData, fileName: "accounts.json")
+        if let accountsData = try? JSONEncoder().encode(accounts) {
+            PersistentStorage.shared.store(data: accountsData, fileName: "accounts.json")
         }
     }
     
-    func genreSummariesForAccounts(_ filteredAccounts: [DMEAccount]) -> [GenreSummary] {
+    func genreSummariesForAccounts(_ filteredAccounts: [Account]) -> [GenreSummary] {
         if accounts.count == filteredAccounts.count {
             return allOrderedGenreSummaries
         }
