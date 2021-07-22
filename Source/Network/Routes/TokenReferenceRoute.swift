@@ -12,7 +12,7 @@ struct TokenReferenceRoute: Route {
     typealias ResponseType = TokenSessionResponse
     
     static let method = "POST"
-    static let path = "oauth/reference"
+    static let path = "oauth/token/reference"
     
     var customHeaders: [String: String] {
         ["Authorization": "Bearer " + jwt]

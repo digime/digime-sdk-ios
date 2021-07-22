@@ -93,13 +93,15 @@ class ConsentManager: NSObject {
     }
     
     private func open(url: URL) {
-        let viewController = SFSafariViewController(url: url)
-        viewController.delegate = self
-        viewController.presentationController?.delegate = self
-        viewController.dismissButtonStyle = .cancel
-        safariViewController = viewController
-        
-        UIViewController.topMostViewController()?.present(viewController, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let viewController = SFSafariViewController(url: url)
+            viewController.delegate = self
+            viewController.presentationController?.delegate = self
+            viewController.dismissButtonStyle = .cancel
+            self.safariViewController = viewController
+            
+            UIViewController.topMostViewController()?.present(viewController, animated: true, completion: nil)
+        }
     }
     
     private func finishUserConsent(with result: Result<ConsentResponse, Error>) {

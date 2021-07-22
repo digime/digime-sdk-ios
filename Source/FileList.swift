@@ -9,13 +9,13 @@
 import Foundation
 
 public struct FileListItem: Decodable, Equatable {
-    let name: String
+    public let name: String
     let objectVersion: String
     let updatedDate: Date
 }
 
 public struct FileList: Decodable {
-    let files: [FileListItem]
+    public let files: [FileListItem]
     let status: SyncStatus
     
     enum CodingKeys: String, CodingKey {
