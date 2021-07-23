@@ -96,7 +96,16 @@ class OAuthService {
             return
         }
         
-        apiClient.makeRequest(TokenReferenceRoute(jwt: jwt), completion: completion)
+        apiClient.makeRequest(TokenReferenceRoute(jwt: jwt)) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.extractReferenceCode(from: response) { result in
+                    completion(result.map { TokenSessionResponse(token: $0, session: response.session) })
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
     
     func deleteUser(oauthToken: OAuthToken, completion: @escaping (Result<Void, Error>) -> Void) {
@@ -119,6 +128,13 @@ class OAuthService {
     private func extractOAuthToken(from response: AuthResponse, completion: @escaping (Result<OAuthToken, Error>) -> Void) {
         latestJsonWebKeySet { result in
             let newResult = result.flatMap { JWTUtility.oAuthToken(from: response.token, keySet: $0) }
+            completion(newResult)
+        }
+    }
+    
+    private func extractReferenceCode(from response: TokenSessionResponse, completion: @escaping (Result<String, Error>) -> Void) {
+        latestJsonWebKeySet { result in
+            let newResult = result.flatMap { JWTUtility.referenceCode(from: response.token, keySet: $0) }
             completion(newResult)
         }
     }

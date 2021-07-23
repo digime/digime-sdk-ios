@@ -49,10 +49,23 @@ class JWTUtility: NSObject {
     
     // Claims for pre-authorization code response
     private struct PayloadResponsePreauthJWT: Claims {
-        var preAuthCode: String
+        let preAuthCode: String
 
         enum CodingKeys: String, CodingKey {
             case preAuthCode = "preauthorization_code"
+        }
+    }
+    
+    // Claims for pre-authorization code response
+    private struct PayloadResponseTokenReferenceJWT: Claims {
+        let referenceCode: String
+        let tokenType: String
+        let expiry: Date
+
+        enum CodingKeys: String, CodingKey {
+            case referenceCode = "reference_code"
+            case tokenType = "token_type"
+            case expiry = "expires_on"
         }
     }
     
@@ -146,8 +159,9 @@ class JWTUtility: NSObject {
     /// Extracts preAuthorization code from JWT
     ///
     /// - Parameters:
-    ///   - keySet: JSON Web Key StoSetre
     ///   - jwt: pre-authorization code wrapped in JWT
+    ///   - keySet: JSON Web Key Set
+    /// - Returns: The pre-authorization code if successful or an error if not
     class func preAuthCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, Error> {
         let decoder = JWTDecoder { kid in
             guard
@@ -168,9 +182,10 @@ class JWTUtility: NSObject {
     
     /// Extracts access and refresh tokens from JWT, and wraps in `OAuthToken`.
     ///
-    /// - Parameters
-    ///  - jwt: JSON Web Token containing access/refresh token pair.
-    ///  - publicKey: public key in base 64 format
+    /// - Parameters:
+    ///   - jwt: JSON Web Token containing access/refresh token pair.
+    ///   - keySet: JSON Web Key Set
+    /// - Returns: An `OAuthToken` if successful or an error if not
     class func oAuthToken(from jwt: String, keySet: JSONWebKeySet) -> Result<OAuthToken, Error> {
         let decoder = JWTDecoder { kid in
             guard
@@ -186,6 +201,30 @@ class JWTUtility: NSObject {
         return Result {
             let decodedJwt = try decoder.decode(JWT<OAuthToken>.self, fromString: jwt)
             return decodedJwt.claims
+        }
+    }
+    
+    /// Extracts reference code from JWT
+    ///
+    /// - Parameters:
+    ///   - jwt: reference code wrapped in JWT
+    ///   - keySet: JSON Web Key Set
+    /// - Returns: The reference code if successful or an error if not
+    class func referenceCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, Error> {
+        let decoder = JWTDecoder { kid in
+            guard
+                let key = keySet.keys.first(where: { $0.kid == kid }),
+                let data = convertKeyString(key.pem) else {
+                NSLog("Error retrieving matching JWT verifier")
+                return nil
+            }
+            
+            return JWTVerifier.ps512(publicKey: data)
+        }
+        
+        return Result {
+            let decodedJwt = try decoder.decode(JWT<PayloadResponseTokenReferenceJWT>.self, fromString: jwt)
+            return decodedJwt.claims.referenceCode
         }
     }
     

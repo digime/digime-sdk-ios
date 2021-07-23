@@ -81,6 +81,15 @@ class ConsentManager: NSObject {
     }
     
     func addService(identifier: Int, token: String, completion: @escaping ((Result<Void, Error>) -> Void)) {
+        guard Thread.current.isMainThread else {
+            DispatchQueue.main.async {
+                self.addService(identifier: identifier, token: token, completion: completion)
+            }
+            return
+        }
+        
+        addServiceCompletion = completion
+        CallbackService.shared().setCallbackHandler(self)
         var components = URLComponents(string: "\(APIConfig.baseURLPath)/apps/saas/onboard")!
         
         components.percentEncodedQueryItems = [
