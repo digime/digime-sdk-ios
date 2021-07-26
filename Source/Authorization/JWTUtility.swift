@@ -163,16 +163,7 @@ class JWTUtility: NSObject {
     ///   - keySet: JSON Web Key Set
     /// - Returns: The pre-authorization code if successful or an error if not
     class func preAuthCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, Error> {
-        let decoder = JWTDecoder { kid in
-            guard
-                let key = keySet.keys.first(where: { $0.kid == kid }),
-                let data = convertKeyString(key.pem) else {
-                NSLog("Error retrieving matching JWT verifier")
-                return nil
-            }
-            
-            return JWTVerifier.ps512(publicKey: data)
-        }
+        let decoder = decoder(keySet: keySet)
         
         return Result {
             let decodedJwt = try decoder.decode(JWT<PayloadResponsePreauthJWT>.self, fromString: jwt)
@@ -187,16 +178,7 @@ class JWTUtility: NSObject {
     ///   - keySet: JSON Web Key Set
     /// - Returns: An `OAuthToken` if successful or an error if not
     class func oAuthToken(from jwt: String, keySet: JSONWebKeySet) -> Result<OAuthToken, Error> {
-        let decoder = JWTDecoder { kid in
-            guard
-                let key = keySet.keys.first(where: { $0.kid == kid }),
-                let data = convertKeyString(key.pem) else {
-                NSLog("Error retrieving matching JWT verifier")
-                return nil
-            }
-            
-            return JWTVerifier.ps512(publicKey: data)
-        }
+        let decoder = decoder(keySet: keySet)
         
         return Result {
             let decodedJwt = try decoder.decode(JWT<OAuthToken>.self, fromString: jwt)
@@ -211,16 +193,7 @@ class JWTUtility: NSObject {
     ///   - keySet: JSON Web Key Set
     /// - Returns: The reference code if successful or an error if not
     class func referenceCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, Error> {
-        let decoder = JWTDecoder { kid in
-            guard
-                let key = keySet.keys.first(where: { $0.kid == kid }),
-                let data = convertKeyString(key.pem) else {
-                NSLog("Error retrieving matching JWT verifier")
-                return nil
-            }
-            
-            return JWTVerifier.ps512(publicKey: data)
-        }
+        let decoder = decoder(keySet: keySet)
         
         return Result {
             let decodedJwt = try decoder.decode(JWT<PayloadResponseTokenReferenceJWT>.self, fromString: jwt)
@@ -279,26 +252,32 @@ class JWTUtility: NSObject {
         return createRequestJWT(claims: claims, configuration: configuration)
     }
     
+    private class func decoder(keySet: JSONWebKeySet) -> JWTDecoder {
+        JWTDecoder { kid in
+            guard
+                let key = keySet.keys.first(where: { $0.kid == kid }),
+                let data = try? Crypto.base64EncodedData(from: key.pem) else {
+                NSLog("Error retrieving matching JWT verifier")
+                return nil
+            }
+            
+            return JWTVerifier.ps512(publicKey: data)
+        }
+    }
+    
     // MARK: - Utility functions
     private class func createRequestJWT<T: RequestClaims>(claims: T, configuration: Configuration) -> String? {
-        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
-            print("DigiMeSDK: Error creating RSA key")
-            return nil
-        }
-
-        // signing
+        // Signing
         var jwt = JWT(header: header, claims: claims)
-        let signer = JWTSigner.ps512(privateKey: privateKeyData)
+        let signer = JWTSigner.ps512(privateKey: configuration.privateKeyData)
         guard let signedJwt = try? jwt.sign(using: signer) else {
             print("DigiMeSDK: Error signing our test token")
             return nil
         }
 
-        // validation
-        guard
-            let publicKeyBase64 = configuration.publicKey,
-            let publicKeyData = convertKeyString(publicKeyBase64) else {
-                return signedJwt
+        // Validation
+        guard let publicKeyData = configuration.publicKeyData else {
+            return signedJwt
         }
 
         let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
@@ -327,45 +306,6 @@ class JWTUtility: NSObject {
         }
         
         return bytes
-    }
-    
-    private class func convertKeyString(_ keyString: String) -> Data? {
-        guard let base64String = base64String(for: keyString) else {
-            print("Couldn't read a key string")
-            return nil
-        }
-
-        return convertKeyBase64ToData(base64String)
-    }
-    
-    private class func convertKeyBase64ToData(_ base64KeyString: String) -> Data? {
-        guard let publicKeyData = Data(base64Encoded: base64KeyString, options: [.ignoreUnknownCharacters]) else {
-            print("Couldn't decode base64 key")
-            return nil
-        }
-
-        return publicKeyData
-    }
-    
-    /// Get the Base64 representation of a PEM encoded string after stripping off the PEM markers.
-    ///
-    /// - Parameters:
-    ///   - pemString: `String` containing PEM formatted data.
-    /// - Returns: Base64 encoded `String` containing the data.
-    private class func base64String(for pemString: String) -> String? {
-        // Filter looking for new lines...
-        let lines = pemString
-            .components(separatedBy: "\n")
-            .filter { !$0.hasPrefix("-----BEGIN") && !$0.hasPrefix("-----END") }
-        
-        // No lines, no data...
-        guard !lines.isEmpty else {
-            return nil
-        }
-        
-        return lines
-            .map { $0.replacingOccurrences(of: "\r", with: "") }
-            .joined()
     }
 }
 

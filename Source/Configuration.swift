@@ -17,22 +17,27 @@ public struct Configuration {
     /// Your contract identifier
     let contractId: String
     
-    /// Your PKCS1 private key in PEM format - the bits between "-----BEGIN RSA PRIVATE KEY-----" and "-----END RSA PRIVATE KEY-----"
-    let privateKey: String
+    /// The PKCS1 private key base 64 encoded data
+    let privateKeyData: Data
     
-    /// Your PKCS1 public key in PEM format - the bits between "-----BEGIN RSA PUBLIC KEY-----" and "-----END RSA PUBLIC KEY-----"
-    let publicKey: String?
+    /// The PKCS1 public key base 64 encoded data
+    let publicKeyData: Data?
     
     /// Creates a configuration
     /// - Parameters:
     ///   - appId: Your application identifier
     ///   - contractId: Your contract identifier
-    ///   - privateKey: Your PKCS1 private key in PEM format
-    ///   - publicKey: Your PKCS1 public key in PEM format
-    public init(appId: String, contractId: String, privateKey: String, publicKey: String? = nil) {
+    ///   - privateKey: Your PKCS1 private key in PEM format - either with or without the "-----BEGIN RSA PRIVATE KEY-----"  header and "-----END RSA PRIVATE KEY-----" footer
+    ///   - publicKey: Your PKCS1 public key in PEM format - either with or without the "-----BEGIN RSA PUBLIC KEY-----"  header and "-----END RSA PUBLIC KEY-----" footer. This is optional and is only used to validate signing using the private key
+    public init(appId: String, contractId: String, privateKey: String, publicKey: String? = nil) throws {
         self.appId = appId
         self.contractId = contractId
-        self.privateKey = privateKey
-        self.publicKey = publicKey
+        self.privateKeyData = try Crypto.base64EncodedData(from: privateKey)
+        if let publicKey = publicKey {
+            self.publicKeyData = try Crypto.base64EncodedData(from: publicKey)
+        }
+        else {
+            publicKeyData = nil
+        }
     }
 }

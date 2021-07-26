@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2720C1CA26A95ED400C7B3E3 /* ServicePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720C1C926A95ED300C7B3E3 /* ServicePickerViewController.swift */; };
+		2744D07E26A85626008A0E06 /* ServiceDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D07D26A85626008A0E06 /* ServiceDataViewController.swift */; };
+		2744D08226A8572E008A0E06 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D08126A8572E008A0E06 /* LogViewController.swift */; };
+		2744D08426A85AE0008A0E06 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D08326A85AE0008A0E06 /* AppInfo.swift */; };
 		27D31A24266A4EAB00DB2524 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31A23266A4EAB00DB2524 /* AppDelegate.swift */; };
 		27D31A26266A4EAB00DB2524 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31A25266A4EAB00DB2524 /* SceneDelegate.swift */; };
-		27D31A28266A4EAB00DB2524 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31A27266A4EAB00DB2524 /* ViewController.swift */; };
+		27D31A28266A4EAB00DB2524 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31A27266A4EAB00DB2524 /* HomeViewController.swift */; };
 		27D31A2B266A4EAB00DB2524 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A29266A4EAB00DB2524 /* Main.storyboard */; };
 		27D31A2D266A4EAD00DB2524 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A2C266A4EAD00DB2524 /* Assets.xcassets */; };
 		27D31A30266A4EAD00DB2524 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A2E266A4EAD00DB2524 /* LaunchScreen.storyboard */; };

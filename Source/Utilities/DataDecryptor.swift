@@ -16,7 +16,7 @@ class DataDecryptor {
     // IF WE ONLY PROCESS DATA OBJECTS, WE CAN EITHER CHANGE SIGNATURE OF FUNCTION TO ACCEPT DATA OBJECT ONLY OR REMOVE WHOLE CLASS AS IT IS WRAPPING ONE CRYPTO CALL
     func decrypt(fileContent: Any) throws -> Data {
         if let data = fileContent as? Data {
-            return try Crypto.decrypt(encryptedBase64EncodedData: data, privateKey: configuration.privateKey)
+            return try Crypto.decrypt(encryptedBase64EncodedData: data, privateKeyData: configuration.privateKeyData)
         }
 //        else if let fileContent = fileContent as? String {
 //            if let base64Data = Data(base64Encoded: fileContent) {

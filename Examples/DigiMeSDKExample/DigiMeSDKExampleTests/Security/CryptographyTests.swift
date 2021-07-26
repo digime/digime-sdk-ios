@@ -31,12 +31,14 @@ class CryptographyTests: XCTestCase {
             let assets = testingAssets[#function] as? [AnyHashable: Any],
             let input = assets["input"] as? String,
             let expectedResult = assets["expectedResult"] as? Data,
-            let dataDecryptor = setupDataDecryptor()
+            let privateKey = assets["privateKey"] as? String
             else {
                 return XCTFail("Failed to load required testing assets.")
         }
         
         do {
+            let dataDecryptor = try setupDataDecryptor(privateKey: privateKey)
+            
             let output = try dataDecryptor.decrypt(fileContent: input)
             XCTAssert(expectedResult == output, "Failed to decrypt encrypted data.")
         }
@@ -52,12 +54,14 @@ class CryptographyTests: XCTestCase {
             let sampleArray = assets["testArray"] as? NSArray,
             let expectedResultDictionary = assets["expectedResultDictionary"] as? Data,
             let expectedResultArray = assets["expectedResultArray"] as? Data,
-            let dataDecryptor = setupDataDecryptor()
+            let privateKey = assets["privateKey"] as? String
             else {
                 return XCTFail("Failed to load required testing assets.")
         }
 
         do {
+            let dataDecryptor = try setupDataDecryptor(privateKey: privateKey)
+            
             let resultDictionary = try dataDecryptor.decrypt(fileContent: sampleDictionary)
             XCTAssert(expectedResultDictionary == resultDictionary, "Failed to process test unencrypted dictionary input data.")
             
@@ -157,12 +161,48 @@ class CryptographyTests: XCTestCase {
         }
     }
     
-    private func setupDataDecryptor() -> DataDecryptor? {
-        guard let privateKey = testingAssets["privateKey"] as? String else {
-            return nil
+    func testKeyDataConversion() throws {
+        guard
+            let assets = testingAssets[#function] as? [AnyHashable: Any],
+            let publicKey = assets["publicKey"] as? String,
+            let publicKeyNoBreaks = assets["publicKeyNoBreaks"] as? String,
+            let publicKeyNoHeaderFooter = assets["publicKeyNoHeaderFooter"] as? String,
+            let publicKeyNoHeaderFooterOrBreaks = assets["publicKeyNoHeaderFooterOrBreaks"] as? String,
+            let publicKeyRandomWhitespace = assets["publicKeyRandomWhitespace"] as? String,
+            let privateKey = assets["privateKey"] as? String,
+            let privateKeyNoBreaks = assets["privateKeyNoBreaks"] as? String,
+            let privateKeyNoHeaderFooter = assets["privateKeyNoHeaderFooter"] as? String,
+            let privateKeyNoHeaderFooterOrBreaks = assets["privateKeyNoHeaderFooterOrBreaks"] as? String,
+            let privateKeyRandomWhitespace = assets["privateKeyRandomWhitespace"] as? String
+            else {
+                return XCTFail("Failed to load required testing assets.")
         }
         
-        let config = Configuration(appId: "testAppId", contractId: "testContractId", privateKey: privateKey)
+        let publicKeyData = try Crypto.base64EncodedData(from: publicKey)
+        let publicKeyNoBreaksData = try Crypto.base64EncodedData(from: publicKeyNoBreaks)
+        let publicKeyNoHeaderFooterData = try Crypto.base64EncodedData(from: publicKeyNoHeaderFooter)
+        let publicKeyNoHeaderFooterOrBreaksData = try Crypto.base64EncodedData(from: publicKeyNoHeaderFooterOrBreaks)
+        let publicKeyRandomWhitespaceData = try Crypto.base64EncodedData(from: publicKeyRandomWhitespace)
+        
+        XCTAssertEqual(publicKeyData, publicKeyNoBreaksData)
+        XCTAssertEqual(publicKeyData, publicKeyNoHeaderFooterData)
+        XCTAssertEqual(publicKeyData, publicKeyNoHeaderFooterOrBreaksData)
+        XCTAssertEqual(publicKeyData, publicKeyRandomWhitespaceData)
+        
+        let privateKeyData = try Crypto.base64EncodedData(from: privateKey)
+        let privateKeyNoBreaksData = try Crypto.base64EncodedData(from: privateKeyNoBreaks)
+        let privateKeyNoHeaderFooterData = try Crypto.base64EncodedData(from: privateKeyNoHeaderFooter)
+        let privateKeyNoHeaderFooterOrBreaksData = try Crypto.base64EncodedData(from: privateKeyNoHeaderFooterOrBreaks)
+        let privateKeyRandomWhitespaceData = try Crypto.base64EncodedData(from: privateKeyRandomWhitespace)
+        
+        XCTAssertEqual(privateKeyData, privateKeyNoBreaksData)
+        XCTAssertEqual(privateKeyData, privateKeyNoHeaderFooterData)
+        XCTAssertEqual(privateKeyData, privateKeyNoHeaderFooterOrBreaksData)
+        XCTAssertEqual(privateKeyData, privateKeyRandomWhitespaceData)
+    }
+    
+    private func setupDataDecryptor(privateKey: String) throws -> DataDecryptor {
+        let config = try Configuration(appId: "testAppId", contractId: "testContractId", privateKey: privateKey)
         return DataDecryptor(configuration: config)
     }
 }
