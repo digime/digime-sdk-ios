@@ -309,7 +309,7 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
             switch result {
             case .success(let fileList):
                 var message = "Finished reading files:"
-                fileList.files.forEach { message += "\n\t\($0.name)" }
+                fileList.files?.forEach { message += "\n\t\($0.name)" }
                 self.logger.log(message: message)
                 
             case .failure(let error):

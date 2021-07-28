@@ -155,12 +155,28 @@ class WriteDataViewController: UIViewController {
         do {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            let metadata = Metadata(reference: ["Receipt \(dateFormatter.string(from: Date()))"])
-            let metadataData = try JSONEncoder().encode(metadata)
+            let metadata = RawFileMetadataBuilder(mimeType: .applicationJson, accounts: ["Account1"])
+                .objectTypes([.init(name: "receipt")])
+                .tags(["groceries"])
+                .reference(["Receipt \(dateFormatter.string(from: Date()))"])
+//                .appId(AppInfo.appId)
+//                .contractId(readContract.identifier)
+                .build()
+            
+            /*
+             let accounts = [Account(accountId: "accountId")]
+             let mimeType = "application/json"
+             let objectTypes = [ObjectType(name: "receipt")]
+             let reference: [String]
+             let tags = ["groceries"]
+             */
+            
+//            let metadata = Metadata(reference: ["Receipt \(dateFormatter.string(from: Date()))"])
+//            let metadataData = try JSONEncoder().encode(metadata)
             
             let jsonData = try JSONEncoder().encode(Receipt())
             
-            writeDigiMe.write(data: jsonData, metadata: metadataData) { result in
+            writeDigiMe.write(data: jsonData, metadata: metadata) { result in
                 switch result {
                 case .success:
                     let jsonString: String
@@ -186,13 +202,19 @@ class WriteDataViewController: UIViewController {
     }
     
     @IBAction private func uploadImage() {
-        
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.allowsEditing = false
+            present(imagePicker, animated: true, completion: nil)
+        }
     }
     
     @IBAction private func readJson() {
-//        readDigiMe.readAccounts { result in
-//            self.logger.log(message: "Read accounts: \(result)")
-//        }
+        readDigiMe.readAccounts { result in
+            self.logger.log(message: "Read accounts: \(result)")
+        }
         
         readDigiMe.readFiles(readOptions: nil) { result in
             switch result {
@@ -201,7 +223,7 @@ class WriteDataViewController: UIViewController {
                 switch fileContainer.metadata {
                 case .raw(let metadata):
                     message += "\n\tMime type: \(metadata.mimeType)"
-                    message += "\n\tReference: \(metadata.accounts.map { $0.accountId })"
+                    message += "\n\tAccounts: \(metadata.accounts.map { $0.accountId })"
                     if let reference = metadata.reference { message += "\n\tReference: \(reference)" }
                     if let tags = metadata.tags { message += "\n\tTags: \(tags)" }
                     if let objectTypes = metadata.objectTypes { message += "\n\tObject types: \(objectTypes.map { $0.name })" }
@@ -218,7 +240,7 @@ class WriteDataViewController: UIViewController {
             switch result {
             case .success(let fileList):
                 var message = "Finished reading files:"
-                fileList.files.forEach { message += "\n\t\($0.name)" }
+                fileList.files?.forEach { message += "\n\t\($0.name)" }
                 self.logger.log(message: message)
                 
             case .failure(let error):
@@ -229,12 +251,12 @@ class WriteDataViewController: UIViewController {
     
     @IBAction private func deleteUser() {
         // Could user either digi.me instance here as it disconnects all contracts from library
-        writeDigiMe.deleteUser { error in
+        writeDigiMe.deleteUser { _ in
             self.logger.reset()
             self.updateUI()
         }
         
-        readDigiMe.deleteUser { error in
+        readDigiMe.deleteUser { _ in
             self.logger.reset()
             self.updateUI()
         }
@@ -249,18 +271,16 @@ class WriteDataViewController: UIViewController {
             return
         }
         
-//        UIView.animate(withDuration: 0.3) {
-            let isWriteAuthorized = self.writeDigiMe.isConnected
-            self.authorizeWriteButton.isHidden = isWriteAuthorized
-            self.uploadJsonButton.isHidden = !isWriteAuthorized
-            self.uploadImageButton.isHidden = !isWriteAuthorized
-            
-            let isReadAuthorized = self.readDigiMe.isConnected
-            self.authorizeReadButton.isHidden = isReadAuthorized
-            self.readDataButton.isHidden = !isReadAuthorized
-            
-            self.deleteUserButton.isHidden = !isWriteAuthorized && !isReadAuthorized
-//        }
+        let isWriteAuthorized = self.writeDigiMe.isConnected
+        self.authorizeWriteButton.isHidden = isWriteAuthorized
+        self.uploadJsonButton.isHidden = !isWriteAuthorized
+        self.uploadImageButton.isHidden = !isWriteAuthorized
+        
+        let isReadAuthorized = self.readDigiMe.isConnected
+        self.authorizeReadButton.isHidden = isReadAuthorized
+        self.readDataButton.isHidden = !isReadAuthorized
+        
+        self.deleteUserButton.isHidden = !isWriteAuthorized && !isReadAuthorized
     }
     
 //    @objc func createPostbox() {
@@ -335,21 +355,54 @@ class WriteDataViewController: UIViewController {
 //    }
 }
 
-fileprivate struct Metadata: Encodable {
-    struct Account: Encodable {
-        let accountId: String
-    }
-    
-    struct ObjectType: Encodable {
-        let name: String
-    }
-    
-    let accounts = [Account(accountId: "accountId")]
-    let mimeType = "application/json"
-    let objectTypes = [ObjectType(name: "receipt")]
-    let reference: [String]
-    let tags = ["groceries"]
+extension WriteDataViewController: UINavigationControllerDelegate {
 }
+
+extension WriteDataViewController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        dismiss(animated: true) {
+            guard
+                let image = info[.originalImage] as? UIImage,
+                let data = image.jpegData(compressionQuality: 0.2) else {
+                self.logger.log(message: "Invalid image selected")
+                return
+            }
+                 
+            let fileName = (info[.imageURL] as! URL).lastPathComponent
+            let metadata = RawFileMetadataBuilder(mimeType: .imageJpeg, accounts: ["Account1"])
+                .objectTypes([.init(name: "purchasedItem")])
+                .tags(["groceries"])
+                .reference([fileName])
+                .build()
+            
+            self.writeDigiMe.write(data: data, metadata: metadata) { result in
+                switch result {
+                case .success:
+                    self.logger.log(message: "Uploaded image:\n\(fileName)\n\(image.size) - \(data.count)")
+
+                case .failure(let error):
+                    self.logger.log(message: "Upload Error: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+}
+
+//fileprivate struct Metadata: Encodable {
+//    struct Account: Encodable {
+//        let accountId: String
+//    }
+//
+//    struct ObjectType: Encodable {
+//        let name: String
+//    }
+//
+//    let accounts = [Account(accountId: "accountId")]
+//    let mimeType = "application/json"
+//    let objectTypes = [ObjectType(name: "receipt")]
+//    let reference: [String]
+//    let tags = ["groceries"]
+//}
 
 fileprivate struct Receipt: Encodable {
     struct ReceiptItem: Encodable {

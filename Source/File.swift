@@ -16,7 +16,7 @@ public protocol InitialisableFromRawData {
     init(rawData: Data, mimeType: MimeType) throws
 }
 
-public enum MimeType: String, CaseIterable, Decodable {
+public enum MimeType: String, CaseIterable, Codable {
     case applicationJson = "application/json"
     case applicationOctetStream = "application/octet-stream"
     

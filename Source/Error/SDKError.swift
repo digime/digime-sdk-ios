@@ -17,6 +17,9 @@ public enum SDKError: Error {
     // URL Scheme not set in Info.plist
     case noUrlScheme
     
+    // App identifier is using placeholder value "YOUR_APP_ID"
+    case invalidAppId
+    
     case authenticationRequired
     
     case fileListPollingTimeout

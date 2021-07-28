@@ -33,7 +33,7 @@ public final class DigiMe {
     private var sessionFileList: FileList?
     private var stalePollCount = 0
     
-    private let maxStalePolls = 100
+    private let maxStalePolls = 10
     private let pollInterval = 3
     
     private var isSyncRunning: Bool {
@@ -41,8 +41,26 @@ public final class DigiMe {
         return sessionFileList?.status.state.isRunning ?? true
     }
     
+    private var session: Session? {
+        get {
+            sessionCache.session(for: configuration.contractId)
+        }
+        set {
+            sessionCache.setSession(newValue, for: configuration.contractId)
+        }
+    }
+    
+    private var credentials: Credentials? {
+        get {
+            credentialCache.credentials(for: configuration.contractId)
+        }
+        set {
+            credentialCache.setCredentials(newValue, for: configuration.contractId)
+        }
+    }
+    
     public var isConnected: Bool {
-        credentialCache.credentials(for: configuration.contractId) != nil
+        credentials != nil
     }
     
     /// The scopes for retrieving available services
@@ -66,8 +84,6 @@ public final class DigiMe {
         self.consentManager = ConsentManager(configuration: configuration)
         self.sessionCache = SessionCache()
         self.dataDecryptor = DataDecryptor(configuration: configuration)
-        
-//        credentialCache.setCredentials(nil, for: configuration.contractId)
     }
     
     /// Authorizes the contract configured with this digi.me instance to access to a library.
@@ -116,7 +132,7 @@ public final class DigiMe {
             self.authService.requestReferenceToken(oauthToken: credentials.token) { result in
                 do {
                     let response = try result.get()
-                    self.sessionCache.contents = response.session
+                    self.session = response.session
                     self.consentManager.addService(identifier: identifier, token: response.token) { result in
                         switch result {
                         case .success:
@@ -139,8 +155,7 @@ public final class DigiMe {
     }
     
     public func readAccounts(completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
-        let credentials = credentialCache.credentials(for: configuration.contractId)!
-        refreshSession(credentials: credentials, readOptions: nil) { result in
+        validateOrRefreshSession(readOptions: nil) { result in
             do {
                 let session = try result.get()
                 self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
@@ -172,11 +187,20 @@ public final class DigiMe {
         self.beginFileListPollingIfRequired()
     }
     
-    public func write(data: Data, metadata: Data, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func write(data: Data, metadata: RawFileMetadata, completion: @escaping (Result<Void, Error>) -> Void) {
+        let metadataData: Data
+        do {
+            metadataData = try metadata.encoded()
+            print(String(data: metadataData, encoding: .utf8)!)
+        }
+        catch {
+            return completion(.failure(error))
+        }
+        
         validateOrRefreshCredentials { result in
             switch result {
             case .success(let credentials):
-                self.write(data: data, metadata: metadata, credentials: credentials, completion: completion)
+                self.write(data: data, metadata: metadataData, credentials: credentials, completion: completion)
             
             case .failure(let error):
                 completion(.failure(error))
@@ -189,7 +213,8 @@ public final class DigiMe {
             switch result {
             case .success(let credentials):
                 self.authService.deleteUser(oauthToken: credentials.token) { result in
-                    self.credentialCache.setCredentials(nil, for: self.configuration.contractId)
+                    self.credentials = nil
+                    self.session = nil
                     switch result {
                     case .success:
                         completion(nil)
@@ -235,7 +260,7 @@ public final class DigiMe {
             
             self.apiClient.makeRequest(WriteDataRoute(postboxId: writeAccessInfo.postboxId, payload: payload, jwt: jwt)) { result in
                 if let response = try? result.get() {
-                    self.sessionCache.contents = response.session
+                    self.session = response.session
                 }
                 
                 completion(result.map { _ in Void() })
@@ -248,6 +273,10 @@ public final class DigiMe {
     
     // Auth - needs app to be able to receive response via URL
     private func beginAuth(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String?, completion: @escaping (Error?) -> Void) {
+        
+        // Ensure we don't have any session left over from previous
+        session = nil
+        
         var linkedContractAccessToken: String?
         if let contractLinkId = contractLinkId {
             guard let linkCredentials = credentialCache.credentials(for: contractLinkId) else {
@@ -260,7 +289,7 @@ public final class DigiMe {
         authService.requestPreAuthorizationCode(readOptions: readOptions, accessToken: linkedContractAccessToken) { result in
             do {
                 let response = try result.get()
-                self.sessionCache.contents = response.session
+                self.session = response.session
                 self.performAuth(preAuthResponse: response, serviceId: serviceId) { result in
                     switch result {
                     case .success:
@@ -276,13 +305,26 @@ public final class DigiMe {
         }
     }
     
-    // Refresh read session by triggering source sync
-    private func refreshSession(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Session, Error>) -> Void) {
-        if let session = sessionCache.contents,
+    // Return current valid session or get a fresh one
+    private func validateOrRefreshSession(readOptions: ReadOptions?, completion: @escaping (Result<Session, Error>) -> Void) {
+        if let session = session,
            session.isValid {
             return completion(.success(session))
         }
         
+        validateOrRefreshCredentials { result in
+            switch result {
+            case .success(let credentials):
+                self.refreshSession(credentials: credentials, readOptions: readOptions, completion: completion)
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // Refresh read session by triggering source sync
+    private func refreshSession(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Session, Error>) -> Void) {
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
             return //completion(.failure(<#T##Error#>)) // What error should we return?
         }
@@ -290,7 +332,7 @@ public final class DigiMe {
         apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, readOptions: readOptions)) { result in
             do {
                 let response = try result.get()
-                self.sessionCache.contents = response.session
+                self.session = response.session
                 completion(.success(response.session))
             }
             catch {
@@ -301,7 +343,7 @@ public final class DigiMe {
     
     private func validateOrRefreshCredentials(completion: @escaping (Result<Credentials, Error>) -> Void) {
         // Check we have credentials
-        guard let credentials = credentialCache.credentials(for: configuration.contractId) else {
+        guard let credentials = credentials else {
             return completion(.failure(SDKError.authenticationRequired))
         }
         
@@ -321,7 +363,7 @@ public final class DigiMe {
             do {
                 let response = try result.get()
                 let newCredentials = Credentials(token: response, writeAccessInfo: credentials.writeAccessInfo)
-                self.credentialCache.setCredentials(newCredentials, for: self.configuration.contractId)
+                self.credentials = newCredentials
                 print(response)
                 completion(.success(newCredentials))
             }
@@ -336,7 +378,7 @@ public final class DigiMe {
         authService.requestPreAuthorizationCode(readOptions: nil, accessToken: accessToken.value) { result in
             do {
                 let response = try result.get()
-                self.sessionCache.contents = response.session
+                self.session = response.session
                 self.performAuth(preAuthResponse: response, serviceId: nil, completion: completion)
             }
             catch {
@@ -362,10 +404,10 @@ public final class DigiMe {
         authService.requestTokenExchange(authCode: authResponse.authorizationCode) { result in
             do {
                 let response = try result.get()
-                let credentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo)
-                self.credentialCache.setCredentials(credentials, for: self.configuration.contractId)
+                let newCredentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo)
+                self.credentials = newCredentials
                 print(response)
-                completion(.success(credentials))
+                completion(.success(newCredentials))
             }
             catch {
                 print(error)
@@ -382,6 +424,10 @@ public final class DigiMe {
         let urlSchemes = urlTypes.compactMap { $0["CFBundleURLSchemes"] as? [String] }.flatMap { $0 }
         if !urlSchemes.contains("digime-ca-\(configuration.appId)") {
             return SDKError.noUrlScheme
+        }
+        
+        if configuration.appId == "YOUR_APP_ID" {
+            return SDKError.invalidAppId
         }
         
         return nil
@@ -417,7 +463,7 @@ public final class DigiMe {
                 // If subsequent fetch clears the error (stale one or otherwise) - great, no need to report it back up the chain
                 self.sessionError = nil
                 self.sessionFileList = fileList
-                let newItems = self.fileListCache.newItems(from: fileList.files)
+                let newItems = self.fileListCache.newItems(from: fileList.files ?? [])
                 
                 self.handleNewFileListItems(newItems)
 
@@ -448,8 +494,8 @@ public final class DigiMe {
         guard let sessionContentHandler = sessionContentHandler else {
             return
         }
-        let credentials = credentialCache.credentials(for: configuration.contractId)!
-        refreshSession(credentials: credentials, readOptions: nil) { result in
+        
+        validateOrRefreshSession(readOptions: nil) { result in
             do {
                 let session = try result.get()
                 items.forEach { item in
@@ -464,8 +510,7 @@ public final class DigiMe {
     }
     
     private func readFileList(completion: @escaping (Result<FileList, Error>) -> Void) {
-        let credentials = credentialCache.credentials(for: configuration.contractId)!
-        refreshSession(credentials: credentials, readOptions: nil) { result in
+        validateOrRefreshSession(readOptions: nil) { result in
             do {
                 let session = try result.get()
                 self.apiClient.makeRequest(FileListRoute(sessionKey: session.key), completion: completion)

@@ -8,24 +8,24 @@
 
 import Foundation
 
-class SessionCache: Caching {
+final class SessionCache {
     private let userDefaults = UserDefaults.standard
-    private let key = "me.digi.sdk.session"
+    private let keyPrefix = "me.digi.sdk.session."
     
-    var contents: Session? {
-        get {
-            guard let results = userDefaults.data(forKey: key) else {
-                return nil
-            }
-            
-            return try? results.decoded() as Session
+    func session(for contractId: String) -> Session? {
+        guard let results = userDefaults.data(forKey: key(for: contractId)) else {
+            return nil
         }
         
-        set {
-            let data = try? newValue?.encoded()
-            userDefaults.set(data, forKey: key)
-        }
+        return try? results.decoded() as Session
     }
     
-    var lastUpdate = Date.distantPast
+    func setSession(_ session: Session?, for contractId: String) {
+        let data = try? session?.encoded()
+        userDefaults.set(data, forKey: key(for: contractId))
+    }
+    
+    private func key(for contractId: String) -> String {
+        keyPrefix + contractId
+    }
 }

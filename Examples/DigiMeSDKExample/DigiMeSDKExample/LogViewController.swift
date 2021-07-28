@@ -35,7 +35,7 @@ class Logger {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
             let dateString = formatter.string(from: now)
-            textView.text += "\n" + dateString + " " + message
+            textView.text += "\n" + dateString + " " + message + "\n"
             self.scrollToBottom()
         }
     }
