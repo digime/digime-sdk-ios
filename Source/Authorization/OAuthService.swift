@@ -32,7 +32,7 @@ class OAuthService {
         
     // TokenSessionResponse can be used for raw response from server where `token` is the JWT
     // and as result when `token` is the extracted pre-authrozation code
-    func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String? = nil, completion: @escaping (Result<TokenSessionResponse, Error>) -> Void) {
+    func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String?, completion: @escaping (Result<TokenSessionResponse, Error>) -> Void) {
         guard let jwt = JWTUtility.preAuthorizationRequestJWT(configuration: configuration, accessToken: accessToken) else {
             NSLog("Invalid pre-authorization request JWT")
             completion(.failure(SDKError.invalidPrivateOrPublicKey))

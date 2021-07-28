@@ -16,7 +16,7 @@ public protocol InitialisableFromRawData {
     init(rawData: Data, mimeType: MimeType) throws
 }
 
-public enum MimeType: String, CaseIterable {
+public enum MimeType: String, CaseIterable, Decodable {
     case applicationJson = "application/json"
     case applicationOctetStream = "application/octet-stream"
     
@@ -91,19 +91,21 @@ public class FileContainer<DataType: DataRepresentation> {
     private var file: DataType
     
     public var identifier: String
-    public var metadata: FileMetadata?
+    public var metadata: FileMetadata
     
     public var content: DataType.FileDataType {
         return file.fileContent
     }
     
-    public init(emptyFileWithId id: String, dataType: DataType.Type) throws {
+    init(emptyFileWithId id: String, dataType: DataType.Type, metadata: FileMetadata) throws {
         identifier = id
         file = try dataType.init(rawData: Data(), mimeType: MimeType.applicationOctetStream)
+        self.metadata = metadata
     }
     
-    public init(fileWithId id: String, rawData: Data, mimeType: MimeType, dataType: DataType.Type) throws {
+    init(fileWithId id: String, rawData: Data, mimeType: MimeType, dataType: DataType.Type, metadata: FileMetadata) throws {
         identifier = id
         file = try dataType.init(rawData: rawData, mimeType: mimeType)
+        self.metadata = metadata
     }
 }

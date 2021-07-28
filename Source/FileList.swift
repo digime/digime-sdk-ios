@@ -10,7 +10,7 @@ import Foundation
 
 public struct FileListItem: Decodable, Equatable {
     public let name: String
-    let objectVersion: String
+    let objectVersion: String? // Only available for data from services
     let updatedDate: Date
 }
 
@@ -43,7 +43,7 @@ struct SyncStatus: Decodable {
 }
 
 struct SyncAccount: Decodable {
-    let identifier: String
+    let identifier: String? // Not available for written data
     let state: SyncState
     let error: SyncError? // Only available for 'partial' state
     

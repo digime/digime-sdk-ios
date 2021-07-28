@@ -22,4 +22,6 @@ public enum SDKError: Error {
     case fileListPollingTimeout
     
     case invalidPrivateOrPublicKey
+    
+    case linkedContractNotAuthorized
 }

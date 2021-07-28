@@ -39,12 +39,76 @@ struct ReadDataRoute: Route {
 
 struct FileInfo: Decodable {
     let compression: String?
-    let metadata: FileMetadata?
+    let metadata: FileMetadata
+    
+    enum CodingKeys: String, CodingKey {
+        case compression
+        case metadata
+    }
+        
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        compression = try container.decodeIfPresent(String.self, forKey: .compression)
+
+        if let mappedMetadata = try? container.decode(MappedFileMetadata.self, forKey: .metadata) {
+            metadata = .mapped(mappedMetadata)
+        }
+        else if let rawMetadata = try? container.decode(RawFileMetadata.self, forKey: .metadata) {
+            metadata = .raw(rawMetadata)
+        }
+        else {
+            throw DecodingError.typeMismatch(FileMetadata.self, .init(codingPath: [CodingKeys.metadata], debugDescription: "Unable to decode metadata for either raw file or mapped file."))
+        }
+    }
 }
 
-public struct FileMetadata: Decodable {
+public enum FileMetadata {
+    case mapped(_ metadata: MappedFileMetadata)
+    case raw(_ metadata: RawFileMetadata)
+}
+
+public struct MappedFileMetadata: Decodable {
     public let objectCount: Int
     public let objectType: String
     public let serviceGroup: String
     public let serviceName: String
+}
+
+public struct RawFileMetadata: Decodable {
+    public struct Account: Decodable {
+        public let accountId: String
+        
+        enum CodingKeys: String, CodingKey {
+            case accountId = "accountid"
+        }
+    }
+    
+    public struct ObjectType: Decodable {
+        public let name: String
+        public let references: [String]?
+    }
+    
+    public let mimeType: MimeType
+    public let accounts: [Account]
+    public let reference: [String]?
+    public let tags: [String]?
+    public let contractId: String?
+    public let created: Double?
+    public let appId: String?
+    public let objectTypes: [ObjectType]?
+    public let serviceGroups: [Int]?
+    public let partnerId: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case mimeType = "mimetype"
+        case accounts
+        case reference
+        case tags
+        case contractId = "contractid"
+        case created
+        case appId = "appid"
+        case objectTypes = "objecttypes"
+        case serviceGroups = "servicegroups"
+        case partnerId = "partnerid"
+    }
 }

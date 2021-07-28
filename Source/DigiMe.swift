@@ -70,17 +70,23 @@ public final class DigiMe {
 //        credentialCache.setCredentials(nil, for: configuration.contractId)
     }
     
-    /// Authorizes user and creates a session during which user can retrieve data from added sources
+    /// Authorizes the contract configured with this digi.me instance to access to a library.
     ///
-    /// If the user has not already authorized, will present a view controller in which user consents and optionally chooses a source to add.
+    /// If the user has not already authorized, will present a view controller in which user consents.
+    /// If user has already authorized, refreshes the authorization, if necessary (which may require user consent again).
     ///
-    /// If user has already authorized, refreshes the session, if necessary.
+    /// To authorize this contract to access the same library that another contract has been authorized to access, specify the contract to link to. This is useful when a read contract needs to access the same library that a write contract has written deta to.
+    ///
+    /// Additionally for read contracts:
+    /// - Upon first authorization, can optionally specify a service from which user can log in to and retrieve data.
+    /// - Creates of refreshes a session during which data can be read from library.
     ///
     /// - Parameters:
-    ///   - serviceId: Identifier of initial service to add. Only valid in first authorize where user has not granted consent. Ignored for all subsequent calls.
-    ///   - readOptions: Options to filter which data is read from sources for this session
+    ///   - serviceId: Identifier of initial service to add. Only valid for first authorization of read contracts where user has not previously granted consent. Ignored for all subsequent calls.
+    ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
+    ///   - linkToContractWithId: When specified, connects to same library as another contract.  If other contract has not been authorized, completes with `SDKError.linkedContractNotAuthorized` failure. Does nothing if user has already authorized this contract.
     ///   - completion: Block called upon authorization completion with any errors encountered.
-    public func authorize(serviceId: Int? = nil, readOptions: ReadOptions? = nil, completion: @escaping (Error?) -> Void) {
+    public func authorize(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String? = nil, completion: @escaping (Error?) -> Void) {
         if let validationError = validateClient() {
             return completion(validationError)
         }
@@ -91,7 +97,7 @@ public final class DigiMe {
                 completion(nil)
                 
             case .failure(SDKError.authenticationRequired):
-                self.beginAuth(serviceId: serviceId, readOptions: readOptions, completion: completion)
+                self.beginAuth(serviceId: serviceId, readOptions: readOptions, linkToContractWithId: contractLinkId, completion: completion)
                 
             case .failure(let error):
                 completion(error)
@@ -183,9 +189,9 @@ public final class DigiMe {
             switch result {
             case .success(let credentials):
                 self.authService.deleteUser(oauthToken: credentials.token) { result in
+                    self.credentialCache.setCredentials(nil, for: self.configuration.contractId)
                     switch result {
                     case .success:
-                        self.credentialCache.setCredentials(nil, for: self.configuration.contractId)
                         completion(nil)
                     case .failure(let error):
                         completion(error)
@@ -241,8 +247,17 @@ public final class DigiMe {
     }
     
     // Auth - needs app to be able to receive response via URL
-    private func beginAuth(serviceId: Int? = nil, readOptions: ReadOptions? = nil, completion: @escaping (Error?) -> Void) {
-        authService.requestPreAuthorizationCode(readOptions: readOptions) { result in
+    private func beginAuth(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String?, completion: @escaping (Error?) -> Void) {
+        var linkedContractAccessToken: String?
+        if let contractLinkId = contractLinkId {
+            guard let linkCredentials = credentialCache.credentials(for: contractLinkId) else {
+                return completion(SDKError.linkedContractNotAuthorized)
+            }
+            
+            linkedContractAccessToken = linkCredentials.token.accessToken.value
+        }
+        
+        authService.requestPreAuthorizationCode(readOptions: readOptions, accessToken: linkedContractAccessToken) { result in
             do {
                 let response = try result.get()
                 self.sessionCache.contents = response.session

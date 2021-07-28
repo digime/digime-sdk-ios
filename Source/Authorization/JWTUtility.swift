@@ -120,7 +120,7 @@ class JWTUtility: NSObject {
     /// - Parameters:
     ///   - configuration: this SDK's instance configuration
     ///   - accessToken: An existing access token
-    class func preAuthorizationRequestJWT(configuration: Configuration, accessToken: String? = nil) -> String? {
+    class func preAuthorizationRequestJWT(configuration: Configuration, accessToken: String?) -> String? {
         let randomBytes = secureRandomData(length: 32)
         let codeVerifier = randomBytes.base64URLEncodedString()
         let codeChallenge = Data(SHA256.hash(data: codeVerifier.data(using: .utf8)!)).base64URLEncodedString()
@@ -236,17 +236,17 @@ class JWTUtility: NSObject {
     /// - Parameters:
     ///   - accessToken: OAuth refresh token
     ///   - iv: iv used to encrypt data
-    ///   - metadat: metadata describing data being pushed
-    ///   - symmetricKey: symmetrical key used to encrypt data
+    ///   - metadata: metadata describing data being pushed
+    ///   - symmetricKey: symmetric key used to encrypt data
     ///   - configuration: this SDK's instance configuration
     class func writeRequestJWT(accessToken: String, iv: Data, metadata: String, symmetricKey: String, configuration: Configuration) -> String? {
         let claims = PayloadWriteJWT(
             accessToken: accessToken,
             clientId: configuration.clientId,
             iv: iv.hexString,
-            metadata: metadata,
+            metadata: metadata.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil),
             redirectUri: configuration.redirectUri + "auth",
-            symmetricalKey: symmetricKey
+            symmetricalKey: symmetricKey.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil)
         )
 
         return createRequestJWT(claims: claims, configuration: configuration)

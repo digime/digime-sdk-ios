@@ -36,7 +36,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="qAY-31-4cB">
-                                <rect key="frame" x="20" y="319.5" width="374" height="257"/>
+                                <rect key="frame" x="20" y="364.5" width="374" height="167"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="NMS-lC-o3A">
                                         <rect key="frame" x="6" y="0.0" width="362.5" height="77"/>
@@ -57,38 +57,19 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rED-3p-Xne">
-                                        <rect key="frame" x="9.5" y="90" width="355.5" height="77"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="04y-0q-woD">
-                                                <rect key="frame" x="0.0" y="0.0" width="355.5" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <state key="normal" title="Postbox"/>
-                                                <connections>
-                                                    <segue destination="7Gi-7D-JXR" kind="show" identifier="ShowPostboxExample" id="dQf-Yy-WUa"/>
-                                                </connections>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For one-off or ongoing postbox contracts with interaction with digi.me for every push" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVG-k6-8ud">
-                                                <rect key="frame" x="0.0" y="36" width="355.5" height="41"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="WVk-wt-Odg">
-                                        <rect key="frame" x="18.5" y="180" width="337" height="77"/>
+                                        <rect key="frame" x="5" y="90" width="364" height="77"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cny-iJ-rAu">
-                                                <rect key="frame" x="0.0" y="0.0" width="337" height="36"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="364" height="36"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <state key="normal" title="Ongoing Postbox"/>
+                                                <state key="normal" title="Write and Read Written Data Example"/>
                                                 <connections>
-                                                    <segue destination="y8h-Rd-KqN" kind="show" identifier="ShowOngoingPostboxExample" id="MBt-Je-1hx"/>
+                                                    <segue destination="y8h-Rd-KqN" kind="show" identifier="ShowWriteDataExample" id="MBt-Je-1hx"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For ongoing postbox contracts with minimal interaction with digi.me app" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtf-HD-YsF">
-                                                <rect key="frame" x="0.0" y="36" width="337" height="41"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users can upload data to digi.me and then read that data back." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtf-HD-YsF">
+                                                <rect key="frame" x="0.0" y="36" width="364" height="41"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -118,154 +99,150 @@
             </objects>
             <point key="canvasLocation" x="-94" y="133"/>
         </scene>
-        <!--Ongoing Postbox View Controller-->
+        <!--Write Data View Controller-->
         <scene sceneID="c82-gU-Ypb">
             <objects>
-                <viewController id="y8h-Rd-KqN" customClass="OngoingPostboxViewController" customModule="DigiMeSDKExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="y8h-Rd-KqN" customClass="WriteDataViewController" customModule="DigiMeSDKExample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZrK-jX-93s">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bVy-Zw-3jZ">
-                                <rect key="frame" x="20" y="148" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="bmL-9X-eC4"/>
-                                    <constraint firstAttribute="width" constant="50" id="fGJ-Jx-SpC"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get a copy of your latest shopping receipt to your digi.me library" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p0L-RD-PsB">
-                                <rect key="frame" x="90" y="148" width="294" height="41"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please ensure you have the digi.me application installed." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T5z-4j-IEa">
-                                <rect key="frame" x="90" y="199" width="294" height="41"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="99i-j1-fqh">
-                                <rect key="frame" x="20" y="290" width="364" height="60"/>
-                                <color key="backgroundColor" red="0.3328435421" green="0.37840998170000001" blue="0.82762491699999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="l5c-q1-Y0A"/>
-                                </constraints>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="SEND ME THE RECEIPT"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="30"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9MU-so-mzh">
-                                <rect key="frame" x="20" y="386" width="374" height="61"/>
-                                <string key="text">Now try relaunching the app and sending another receipt - you will see that it doesn't open the digi.me application to check permission.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="s1F-PC-iap">
+                                <rect key="frame" x="5" y="437.5" width="414" height="424.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="wke-Cp-YCd">
+                                <rect key="frame" x="10" y="108" width="394" height="309.5"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="top" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="c4z-sW-sdZ">
+                                        <rect key="frame" x="56" y="0.0" width="282" height="237.5"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="PPt-Q3-EmO">
+                                                <rect key="frame" x="0.0" y="0.0" width="126.5" height="237.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write Contract" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VfX-6b-kEH">
+                                                        <rect key="frame" x="0.0" y="0.0" width="126.5" height="21.5"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="P2R-D3-PaL">
+                                                        <rect key="frame" x="25" y="53.5" width="77" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="vip-9U-GZg"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                        <state key="normal" title="Authorize"/>
+                                                        <connections>
+                                                            <action selector="authorizeWriteContract" destination="y8h-Rd-KqN" eventType="touchUpInside" id="WpH-Ah-XDX"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r0N-d9-o5C">
+                                                        <rect key="frame" x="9" y="125.5" width="109" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="fJX-nu-b2c"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                        <state key="normal" title="Upload JSON"/>
+                                                        <connections>
+                                                            <action selector="uploadJson" destination="y8h-Rd-KqN" eventType="touchUpInside" id="IxI-jg-8Ik"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dme-wz-Ugi">
+                                                        <rect key="frame" x="7.5" y="197.5" width="112" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="pSp-BP-fgE"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                        <state key="normal" title="Upload Image"/>
+                                                        <connections>
+                                                            <action selector="uploadImage" destination="y8h-Rd-KqN" eventType="touchUpInside" id="1mV-zN-qpH"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="TCY-2y-Mvb">
+                                                <rect key="frame" x="158.5" y="0.0" width="123.5" height="165.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Read Contract" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILr-fi-X8h">
+                                                        <rect key="frame" x="0.0" y="0.0" width="123.5" height="21.5"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GcS-iT-CzQ">
+                                                        <rect key="frame" x="23.5" y="53.5" width="77" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="83r-Pa-qjd"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                        <state key="normal" title="Authorize"/>
+                                                        <connections>
+                                                            <action selector="authorizeReadContract" destination="y8h-Rd-KqN" eventType="touchUpInside" id="41u-Bd-JUT"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvX-QH-vo7">
+                                                        <rect key="frame" x="18" y="125.5" width="88" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="4C6-na-HpG"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                        <state key="normal" title="Read Data"/>
+                                                        <connections>
+                                                            <action selector="readJson" destination="y8h-Rd-KqN" eventType="touchUpInside" id="3bH-JN-A2f"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sIr-EF-nKz">
+                                        <rect key="frame" x="149.5" y="269.5" width="95" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="wNB-k8-ZnV"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Delete User">
+                                            <color key="titleColor" systemColor="systemPinkColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="deleteUser" destination="yAL-po-pNQ" eventType="touchUpInside" id="8TX-FT-ReG"/>
+                                            <action selector="deleteUser" destination="y8h-Rd-KqN" eventType="touchUpInside" id="Oye-gF-p8d"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ijt-VF-vGn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="9MU-so-mzh" firstAttribute="leading" secondItem="Ijt-VF-vGn" secondAttribute="leading" constant="20" id="Bnd-U7-x02"/>
-                            <constraint firstItem="T5z-4j-IEa" firstAttribute="top" secondItem="p0L-RD-PsB" secondAttribute="bottom" constant="10" id="Gs2-k6-pRJ"/>
-                            <constraint firstItem="p0L-RD-PsB" firstAttribute="top" secondItem="Ijt-VF-vGn" secondAttribute="top" constant="60" id="Lyn-bh-CTF"/>
-                            <constraint firstItem="T5z-4j-IEa" firstAttribute="trailing" secondItem="p0L-RD-PsB" secondAttribute="trailing" id="P9I-1b-2vY"/>
-                            <constraint firstItem="99i-j1-fqh" firstAttribute="leading" secondItem="bVy-Zw-3jZ" secondAttribute="leading" id="QbY-60-ap7"/>
-                            <constraint firstItem="p0L-RD-PsB" firstAttribute="leading" secondItem="bVy-Zw-3jZ" secondAttribute="trailing" constant="20" id="RkO-5d-AmO"/>
-                            <constraint firstItem="9MU-so-mzh" firstAttribute="top" secondItem="99i-j1-fqh" secondAttribute="bottom" constant="36" id="VVG-sI-WEz"/>
-                            <constraint firstItem="Ijt-VF-vGn" firstAttribute="trailing" secondItem="9MU-so-mzh" secondAttribute="trailing" constant="20" id="XwC-Pv-MH6"/>
-                            <constraint firstItem="bVy-Zw-3jZ" firstAttribute="leading" secondItem="Ijt-VF-vGn" secondAttribute="leading" constant="20" id="e2P-KR-7Kz"/>
-                            <constraint firstItem="99i-j1-fqh" firstAttribute="top" secondItem="T5z-4j-IEa" secondAttribute="bottom" constant="50" id="jv5-X0-Pim"/>
-                            <constraint firstItem="99i-j1-fqh" firstAttribute="trailing" secondItem="T5z-4j-IEa" secondAttribute="trailing" id="sqI-3b-1sh"/>
-                            <constraint firstAttribute="trailing" secondItem="p0L-RD-PsB" secondAttribute="trailing" constant="30" id="sxD-Wo-CKr"/>
-                            <constraint firstItem="bVy-Zw-3jZ" firstAttribute="top" secondItem="Ijt-VF-vGn" secondAttribute="top" constant="60" id="yIk-Ue-116"/>
-                            <constraint firstItem="T5z-4j-IEa" firstAttribute="leading" secondItem="p0L-RD-PsB" secondAttribute="leading" id="yTy-go-xyd"/>
+                            <constraint firstItem="Ijt-VF-vGn" firstAttribute="trailing" secondItem="wke-Cp-YCd" secondAttribute="trailing" constant="10" id="493-SY-n86"/>
+                            <constraint firstItem="wke-Cp-YCd" firstAttribute="top" secondItem="Ijt-VF-vGn" secondAttribute="top" constant="20" id="8oL-PH-BMx"/>
+                            <constraint firstItem="wke-Cp-YCd" firstAttribute="leading" secondItem="Ijt-VF-vGn" secondAttribute="leading" constant="10" id="Crd-29-fy2"/>
+                            <constraint firstItem="s1F-PC-iap" firstAttribute="trailing" secondItem="Ijt-VF-vGn" secondAttribute="trailing" constant="5" id="ZP8-Lh-Dbx"/>
+                            <constraint firstItem="s1F-PC-iap" firstAttribute="leading" secondItem="Ijt-VF-vGn" secondAttribute="leading" constant="5" id="eqc-2G-RVP"/>
+                            <constraint firstItem="s1F-PC-iap" firstAttribute="top" secondItem="wke-Cp-YCd" secondAttribute="bottom" constant="20" id="kCH-YG-nYn"/>
+                            <constraint firstItem="Ijt-VF-vGn" firstAttribute="bottom" secondItem="s1F-PC-iap" secondAttribute="bottom" id="ptd-y2-yGi"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="elv-ZR-UvY"/>
                     <connections>
-                        <outlet property="actionButton" destination="99i-j1-fqh" id="FPr-AX-Cp0"/>
-                        <outlet property="relaunchLabel" destination="9MU-so-mzh" id="Yig-O3-eoI"/>
-                        <outlet property="subtitleLabel" destination="T5z-4j-IEa" id="70s-We-WW9"/>
-                        <outlet property="titleLabel" destination="p0L-RD-PsB" id="mq4-fD-vUL"/>
+                        <outlet property="authorizeReadButton" destination="GcS-iT-CzQ" id="C15-za-p7R"/>
+                        <outlet property="authorizeWriteButton" destination="P2R-D3-PaL" id="vJC-wl-ceV"/>
+                        <outlet property="deleteUserButton" destination="sIr-EF-nKz" id="9E4-9N-Hhq"/>
+                        <outlet property="loggerTextView" destination="s1F-PC-iap" id="gfL-x8-Ukc"/>
+                        <outlet property="readDataButton" destination="rvX-QH-vo7" id="Ocw-hy-LPM"/>
+                        <outlet property="uploadImageButton" destination="dme-wz-Ugi" id="mzT-qE-rpB"/>
+                        <outlet property="uploadJsonButton" destination="r0N-d9-o5C" id="ik9-s7-dpd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VZx-ch-IZe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="234" y="914"/>
-        </scene>
-        <!--Postbox View Controller-->
-        <scene sceneID="kAt-XP-28w">
-            <objects>
-                <viewController storyboardIdentifier="PostboxExampleViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7Gi-7D-JXR" customClass="PostboxViewController" customModule="DigiMeSDKExample" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="vUW-Hb-GZt">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shoppingLogo" translatesAutoresizingMaskIntoConstraints="NO" id="0aY-TV-81l">
-                                <rect key="frame" x="20" y="148" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="7Xu-Vg-356"/>
-                                    <constraint firstAttribute="width" constant="50" id="cTJ-97-y6R"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get a copy of your latest shopping receipt to your digi.me library" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yQc-eo-ldr">
-                                <rect key="frame" x="90" y="148" width="294" height="41"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please ensure you have the digi.me application installed." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0X-j1-600">
-                                <rect key="frame" x="90" y="199" width="294" height="41"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEe-ox-4ll">
-                                <rect key="frame" x="20" y="290" width="364" height="60"/>
-                                <color key="backgroundColor" red="0.3328435421" green="0.37840998170000001" blue="0.82762491699999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="aOg-WS-12M"/>
-                                </constraints>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="SEND ME THE RECEIPT"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="30"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="h7D-HT-YF9"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="h7D-HT-YF9" firstAttribute="trailing" secondItem="yQc-eo-ldr" secondAttribute="trailing" constant="30" id="12j-Wh-Y5v"/>
-                            <constraint firstItem="y0X-j1-600" firstAttribute="top" secondItem="yQc-eo-ldr" secondAttribute="bottom" constant="10" id="7gP-OC-Efo"/>
-                            <constraint firstItem="yQc-eo-ldr" firstAttribute="leading" secondItem="0aY-TV-81l" secondAttribute="trailing" constant="20" id="AyT-1f-LPK"/>
-                            <constraint firstItem="0aY-TV-81l" firstAttribute="leading" secondItem="h7D-HT-YF9" secondAttribute="leading" constant="20" id="CbM-Cf-zCk"/>
-                            <constraint firstItem="dEe-ox-4ll" firstAttribute="top" secondItem="y0X-j1-600" secondAttribute="bottom" constant="50" id="Rur-Sh-0FQ"/>
-                            <constraint firstItem="y0X-j1-600" firstAttribute="trailing" secondItem="yQc-eo-ldr" secondAttribute="trailing" id="Ue1-tk-Jy0"/>
-                            <constraint firstItem="0aY-TV-81l" firstAttribute="top" secondItem="h7D-HT-YF9" secondAttribute="top" constant="60" id="YOL-Aa-t3z"/>
-                            <constraint firstItem="y0X-j1-600" firstAttribute="leading" secondItem="yQc-eo-ldr" secondAttribute="leading" id="aQB-0a-Wzq"/>
-                            <constraint firstItem="dEe-ox-4ll" firstAttribute="trailing" secondItem="y0X-j1-600" secondAttribute="trailing" id="i4b-LT-T23"/>
-                            <constraint firstItem="dEe-ox-4ll" firstAttribute="leading" secondItem="0aY-TV-81l" secondAttribute="leading" id="ruf-dE-WCz"/>
-                            <constraint firstItem="yQc-eo-ldr" firstAttribute="top" secondItem="h7D-HT-YF9" secondAttribute="top" constant="60" id="wgl-1K-0d5"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="ebX-8t-Lq8"/>
-                    <connections>
-                        <outlet property="actionButton" destination="dEe-ox-4ll" id="hLT-hx-JXI"/>
-                        <outlet property="subtitleLabel" destination="y0X-j1-600" id="rQ9-ZL-Kvh"/>
-                        <outlet property="titleLabel" destination="yQc-eo-ldr" id="3sT-w4-wad"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZXK-xG-66g" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1025" y="785"/>
+            <point key="canvasLocation" x="917" y="631"/>
         </scene>
         <!--Service Data View Controller-->
         <scene sceneID="hGE-n6-5r8">
@@ -310,7 +287,7 @@
                                             <action selector="refreshData" destination="yAL-po-pNQ" eventType="touchUpInside" id="lKB-30-RYu"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iY4-ep-GwY">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="iY4-ep-GwY">
                                         <rect key="frame" x="149.5" y="264" width="95" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="Delete User">
@@ -322,8 +299,8 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6aS-zW-Fvz">
-                                <rect key="frame" x="5" y="697" width="404" height="165"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6aS-zW-Fvz">
+                                <rect key="frame" x="5" y="517" width="404" height="345"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -348,7 +325,7 @@
                         <constraints>
                             <constraint firstItem="pVU-bV-LuQ" firstAttribute="top" secondItem="f6q-8A-B9m" secondAttribute="bottom" constant="20" id="It9-RC-H5y"/>
                             <constraint firstItem="6aS-zW-Fvz" firstAttribute="leading" secondItem="8rW-Pm-nK4" secondAttribute="leading" constant="5" id="KA1-gp-4uM"/>
-                            <constraint firstItem="6aS-zW-Fvz" firstAttribute="top" secondItem="v0E-by-0I0" secondAttribute="bottom" constant="200" id="Lcb-iV-p30"/>
+                            <constraint firstItem="6aS-zW-Fvz" firstAttribute="top" secondItem="v0E-by-0I0" secondAttribute="bottom" constant="20" id="Lcb-iV-p30"/>
                             <constraint firstItem="8rW-Pm-nK4" firstAttribute="trailing" secondItem="v0E-by-0I0" secondAttribute="trailing" constant="10" id="N7j-PK-LbX"/>
                             <constraint firstItem="v0E-by-0I0" firstAttribute="top" secondItem="pVU-bV-LuQ" secondAttribute="bottom" constant="20" id="XNP-mH-xxk"/>
                             <constraint firstItem="v0E-by-0I0" firstAttribute="leading" secondItem="8rW-Pm-nK4" secondAttribute="leading" constant="10" id="bFv-cz-uUa"/>
@@ -375,11 +352,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lkQ-nK-Bya" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1743" y="271"/>
+            <point key="canvasLocation" x="917" y="-22"/>
         </scene>
     </scenes>
     <resources>
-        <image name="shoppingLogo" width="128" height="128"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
