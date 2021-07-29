@@ -236,7 +236,14 @@ public final class DigiMe {
     public func availableServices(scope: AvailableServicesScope = .thisContractOnly, completion: @escaping (Result<ServicesInfo, Error>) -> Void) {
         let route = ServicesRoute(contractId: scope == .thisContractOnly ? configuration.contractId : nil)
         apiClient.makeRequest(route) { result in
-            completion(result.map { $0.data })
+            switch result {
+            case .success(let response):
+                let availableServices = response.data.services.filter { $0.isAvailable }
+                let info = ServicesInfo(countries: response.data.countries, serviceGroups: response.data.serviceGroups, services: availableServices)
+                completion(.success(info))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
     }
     

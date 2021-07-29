@@ -211,11 +211,7 @@ class WriteDataViewController: UIViewController {
         }
     }
     
-    @IBAction private func readJson() {
-        readDigiMe.readAccounts { result in
-            self.logger.log(message: "Read accounts: \(result)")
-        }
-        
+    @IBAction private func readData() {
         readDigiMe.readFiles(readOptions: nil) { result in
             switch result {
             case .success(let fileContainer):

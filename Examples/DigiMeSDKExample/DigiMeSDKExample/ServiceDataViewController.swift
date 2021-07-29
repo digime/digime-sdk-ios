@@ -11,7 +11,7 @@ import UIKit
 
 class ServiceDataViewController: UIViewController {
     
-    @IBOutlet private var authInfoLabel: UILabel!
+    @IBOutlet private var contractLabel: UILabel!
     @IBOutlet private var authWithServiceButton: UIButton!
     @IBOutlet private var authWithoutServiceButton: UIButton!
     
@@ -97,20 +97,6 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
         )
     }
     
-    private var authorizedDate: Date? {
-        get {
-            guard let timestamp = UserDefaults.standard.object(forKey: "\(currentContract.identifier).authorizedDate") as? Double else {
-                return nil
-            }
-            
-            return Date(timeIntervalSince1970: timestamp)
-        }
-        
-        set {
-            UserDefaults.standard.setValue(newValue?.timeIntervalSince1970, forKey: "\(currentContract.identifier).authorizedDate")
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -119,28 +105,28 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
         logger = Logger(textView: loggerTextView)
         logger.log(message: "This is where log messages appear.")
         
-        currentContract = Contracts.finSocMus
-        
-        do {
-            let config = try Configuration(appId: AppInfo.appId, contractId: currentContract.identifier, privateKey: currentContract.privateKey)
-            digiMe = DigiMe(configuration: config)
+        setContract(Contracts.finSocMus)
+    }
+    
+    @IBAction private func editContract() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Choose contract", message: "", preferredStyle: .alert)
+            alert.addAction(.init(title: Contracts.finSocMus.name, style: .default) { _ in
+                self.setContract(Contracts.finSocMus)
+            })
             
-            updateUI()
-        }
-        catch {
-            logger.log(message: "Unable to configure digi.me SDK: \(error)")
+            alert.addAction(.init(title: Contracts.fitHealth.name, style: .default) { _ in
+                self.setContract(Contracts.fitHealth)
+            })
+            
+            alert.addAction(.init(title: "Cancel", style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
     @IBAction private func authorizeWithService() {
         selectService { service in
             guard let service = service else {
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "", message: "Please select try again and select a service", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                }
-                
                 return
             }
             
@@ -181,10 +167,27 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
                 return
             }
             
-            self.authorizedDate = nil
             self.accounts = []
             self.logger.reset()
             self.updateUI()
+        }
+    }
+    
+    private func setContract(_ contract: Contract) {
+        if contract.identifier == currentContract?.identifier {
+            return
+        }
+        
+        currentContract = contract
+        accounts = []
+        do {
+            let config = try Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey)
+            digiMe = DigiMe(configuration: config)
+            
+            updateUI()
+        }
+        catch {
+            logger.log(message: "Unable to configure digi.me SDK: \(error)")
         }
     }
     
@@ -197,37 +200,28 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
             return
         }
         
+        contractLabel.text = "Contract: \(currentContract.name ?? currentContract.identifier)"
         if digiMe.isConnected {
-            
-            if let date = authorizedDate {
-                authInfoLabel.text = "Authorized on \(DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .short))"
-            }
-            else {
-                authInfoLabel.text = "Authorized"
-            }
-            
             authWithServiceButton.isHidden = true
             authWithoutServiceButton.isHidden = true
             servicesLabel.isHidden = false
             addServiceButton.isHidden = false
             deleteUserButton.isHidden = false
+            refreshDataButton.isHidden = false
             
             var servicesText = "Services:"
             if accounts.isEmpty {
                 servicesText += "\n\tNone"
-                refreshDataButton.isHidden = true
             }
             else {
                 accounts.forEach { account in
-                    servicesText += "\n\(account.service.name) - \(account.name)"
+                    servicesText += "\n\t\(account.service.name) - \(account.name)"
                 }
-                refreshDataButton.isHidden = false
             }
             
             servicesLabel.text = servicesText
         }
         else {
-            authInfoLabel.text = "You haven't authorized this contract yet."
             authWithoutServiceButton.isHidden = false
             authWithServiceButton.isHidden = false
             servicesLabel.isHidden = true
@@ -244,10 +238,6 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
                 return
             }
             
-            if self.authorizedDate == nil {
-                self.authorizedDate = Date()
-            }
-            
             self.updateUI()
             self.getAccounts()
             self.getServiceData()
@@ -260,7 +250,7 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
             case .success(let servicesInfo):
                 self.selectServiceCompletion = completion
                 DispatchQueue.main.async {
-                    let vc = ServicePickerViewController(services: servicesInfo.services)
+                    let vc = ServicePickerViewController(servicesInfo: servicesInfo)
                     vc.delegate = self
                     let nc = UINavigationController(rootViewController: vc)
                     self.present(nc, animated: true, completion: nil)

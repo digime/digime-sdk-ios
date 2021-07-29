@@ -9,7 +9,7 @@
 import Foundation
 
 struct Contract {
-    let name: String
+    let name: String?
     let identifier: String
     let privateKey: String
 }

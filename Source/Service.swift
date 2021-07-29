@@ -17,15 +17,6 @@ public struct ServicesInfo: Decodable {
 
 /// A data source
 public struct Service: Codable {
-    private struct ServiceGroupReference: Codable {
-        let identifier: Int
-        enum CodingKeys: String, CodingKey {
-            case identifier = "id"
-        }
-    }
-    
-    private let serviceGroups: [ServiceGroupReference]
-    
     /// The service's identifier for authorization
     public let identifier: Int
     
@@ -43,11 +34,42 @@ public struct Service: Codable {
         serviceGroups.map { $0.identifier }
     }
     
+    var isAvailable: Bool {
+        return publishedStatus == "approved" && platform.isAvailable
+    }
+    
+    private let serviceGroups: [ServiceGroupReference]
+    
+    private struct ServiceGroupReference: Codable {
+        let identifier: Int
+        enum CodingKeys: String, CodingKey {
+            case identifier = "id"
+        }
+    }
+    
+    private let publishedStatus: String // approved, blocked, pending, or deprecated
+    
+    private let platform: Platform
+    private struct Platform: Codable {
+        private let windows: PlatformAvailablility
+        
+        private struct PlatformAvailablility: Codable {
+            let availability: String // production, demo, beta, none
+            let currentStatus: String // available, unavailable
+        }
+        
+        var isAvailable: Bool {
+            return windows.availability == "production" && windows.currentStatus == "available"
+        }
+    }
+    
     enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case name
         case serviceGroups
         case serviceIdentifier = "serviceId"
+        case publishedStatus
+        case platform
     }
 }
 

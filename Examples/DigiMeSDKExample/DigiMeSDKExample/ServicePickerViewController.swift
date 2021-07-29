@@ -16,15 +16,35 @@ protocol ServicePickerDelegate: AnyObject {
 
 class ServicePickerViewController: UITableViewController {
     
-    let services: [Service]
+    private let sections: [Section]
     weak var delegate: ServicePickerDelegate?
     
     private enum ReuseIdentifier {
         static let service = "Service"
     }
     
-    init(services: [Service]) {
-        self.services = services
+    private struct Section {
+        let title: String
+        let items: [Service]
+    }
+    
+    init(servicesInfo: ServicesInfo) {
+        let services = servicesInfo.services
+        
+        let serviceGroupIds = Set(services.flatMap { $0.serviceGroupIds })
+        let serviceGroups = servicesInfo.serviceGroups.filter { serviceGroupIds.contains($0.identifier) }
+        
+        var sections = [Section]()
+        serviceGroups.forEach { group in
+            let items = services
+                .filter { $0.serviceGroupIds.contains(group.identifier) }
+                .sorted { $0.name  < $1.name }
+            sections.append(Section(title: group.name, items: items))
+        }
+        
+        sections.sort { $0.title < $1.title }
+        
+        self.sections = sections
         super.init(style: .insetGrouped)
     }
     
@@ -48,17 +68,21 @@ class ServicePickerViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return services.count
+        return sections[section].items.count
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        sections[section].title
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.service, for: indexPath)
 
-        let service = services[indexPath.row]
+        let service = sections[indexPath.section].items[indexPath.row]
         // Configure the cell...
         cell.textLabel?.text = service.name
 
@@ -78,7 +102,7 @@ class ServicePickerViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let service = services[indexPath.row]
+        let service = sections[indexPath.section].items[indexPath.row]
         finish(service: service)
     }
 }
