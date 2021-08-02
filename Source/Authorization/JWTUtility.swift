@@ -271,7 +271,6 @@ class JWTUtility: NSObject {
         var jwt = JWT(header: header, claims: claims)
         let signer = JWTSigner.ps512(privateKey: configuration.privateKeyData)
         guard let signedJwt = try? jwt.sign(using: signer) else {
-            print("DigiMeSDK: Error signing our test token")
             return nil
         }
 

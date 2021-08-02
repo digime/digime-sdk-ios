@@ -65,13 +65,13 @@ class APIClient {
                 }
                 
                 if let errorResponse = errorWrapper?.error {
-                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode), error code: \(errorResponse.code), message: \(errorResponse.message)")
+                    Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode), error code: \(errorResponse.code), message: \(errorResponse.message)")
                 }
                 else if let data = data, let message = String(data: data, encoding: .utf8) {
-                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode) \(message)")
+                    Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode) \(message)")
                 }
                 else {
-                    NSLog("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode)")
+                    Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode)")
                 }
                 
                 completion(.failure(HTTPError.unsuccesfulStatusCode(httpResponse.statusCode, response: errorWrapper?.error)))
@@ -103,6 +103,6 @@ class APIClient {
             return
         }
         
-        NSLog("\n===========================================================\nSDK Status: \(status)\n\(message)\n===========================================================")
+        Logger.info("\n===========================================================\nSDK Status: \(status)\n\(message)\n===========================================================")
     }
 }

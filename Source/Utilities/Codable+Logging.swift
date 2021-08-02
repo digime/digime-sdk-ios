@@ -17,13 +17,13 @@ extension Encodable {
             if let error = (error as? EncodingError) {
                 switch error {
                 case .invalidValue(_, let context):
-                    NSLog("Error encoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: self)): \(context.debugDescription)")
+                    Logger.error("Error encoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: self)): \(context.debugDescription)")
                 default:
-                    NSLog("Error encoding \(String(describing: self)): \(error.localizedDescription)")
+                    Logger.error("Error encoding \(String(describing: self)): \(error.localizedDescription)")
                 }
             }
             else {
-                NSLog("Error encoding \(String(describing: self)): \(error.localizedDescription)")
+                Logger.error("Error encoding \(String(describing: self)): \(error.localizedDescription)")
             }
             
             throw error
@@ -53,19 +53,19 @@ extension Data {
             if let error = (error as? DecodingError) {
                 switch error {
                 case .keyNotFound(_, let context):
-                    NSLog("Error decoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: T.self)): \(context.debugDescription)")
+                    Logger.error("Error decoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: T.self)): \(context.debugDescription)")
                 case .typeMismatch(_, let context):
-                    NSLog("Error decoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: T.self)): \(context.debugDescription)")
+                    Logger.error("Error decoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: T.self)): \(context.debugDescription)")
                 case .valueNotFound(_, let context):
-                    NSLog("Error decoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: T.self)): \(context.debugDescription)")
+                    Logger.error("Error decoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: T.self)): \(context.debugDescription)")
                 case .dataCorrupted(let context):
-                    NSLog("Error decoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: T.self)): \(context.debugDescription)")
+                    Logger.error("Error decoding `\(context.codingPath.compactMap { $0.stringValue }.joined(separator: "."))` in \(String(describing: T.self)): \(context.debugDescription)")
                 default:
-                    NSLog("Error decoding \(String(describing: T.self)): \(error.localizedDescription)")
+                    Logger.error("Error decoding \(String(describing: T.self)): \(error.localizedDescription)")
                 }
             }
             else {
-                NSLog("Error decoding \(String(describing: T.self)): \(error.localizedDescription)")
+                Logger.error("Error decoding \(String(describing: T.self)): \(error.localizedDescription)")
             }
             
             throw error

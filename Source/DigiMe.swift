@@ -59,6 +59,26 @@ public final class DigiMe {
         }
     }
     
+    /// Sets the global levels which will be logged.
+    /// Defaults to `[.info, .warning, .error, .critical]`
+    public class var logLevels: [LogLevel] {
+        get {
+            Logger.logLevels
+        }
+        set {
+            Logger.logLevels = newValue
+        }
+    }
+    
+    /// Sets the cutom lg handler to forwad loggin to a differnet system.
+    /// DigiMeSDK uses `NSLog` by default
+    /// - Parameter handler: The log handler block
+    public class func setLogHandler(_ handler: @escaping LogHandler) {
+        Logger.setLogHandler(handler)
+    }
+    
+    /// Describes whether the contract associated with this instance has been
+    /// successfully consented to by user or not
     public var isConnected: Bool {
         credentials != nil
     }
@@ -191,7 +211,6 @@ public final class DigiMe {
         let metadataData: Data
         do {
             metadataData = try metadata.encoded()
-            print(String(data: metadataData, encoding: .utf8)!)
         }
         catch {
             return completion(.failure(error))
@@ -371,11 +390,9 @@ public final class DigiMe {
                 let response = try result.get()
                 let newCredentials = Credentials(token: response, writeAccessInfo: credentials.writeAccessInfo)
                 self.credentials = newCredentials
-                print(response)
                 completion(.success(newCredentials))
             }
             catch {
-                print(error)
                 completion(.failure(error))
             }
         }
@@ -401,7 +418,6 @@ public final class DigiMe {
                 self.exchangeToken(authResponse: response, completion: completion)
             }
             catch {
-                print(error)
                 completion(.failure(error))
             }
         }
@@ -413,11 +429,9 @@ public final class DigiMe {
                 let response = try result.get()
                 let newCredentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo)
                 self.credentials = newCredentials
-                print(response)
                 completion(.success(newCredentials))
             }
             catch {
-                print(error)
                 completion(.failure(error))
             }
         }
@@ -449,7 +463,7 @@ public final class DigiMe {
         fileListCache.reset()
         isFetchingSessionData = true
         fileService.allDownloadsFinishedHandler = {
-            NSLog("DigiMeSDK: Finished downloading all files")
+            Logger.info("Finished downloading all files")
             self.evaluateSessionDataFetchProgress(schedulePoll: false)
         }
         refreshFileList()
@@ -494,7 +508,7 @@ public final class DigiMe {
             return
         }
         
-        NSLog("DigiMeSDK: Found new files to sync: \(items.count)")
+        Logger.debug("Found new files to sync: \(items.count)")
         fileListCache.add(items: items)
         
         // If contentHandler is not provided, no need to download
@@ -506,7 +520,7 @@ public final class DigiMe {
             do {
                 let session = try result.get()
                 items.forEach { item in
-                    NSLog("DigiMeSDK: Adding file to download queue: \(item.name)")
+                    Logger.debug("Adding file to download queue: \(item.name)")
                     self.fileService.downloadFile(sessionKey: session.key, fileId: item.name, completion: sessionContentHandler)
                 }
             }
@@ -557,11 +571,11 @@ public final class DigiMe {
             return
         }
         
-        NSLog("DigiMeSDK: Sync state - \(sessionFileList != nil ? sessionFileList!.status.state.rawValue : "unknown")")
+        Logger.debug("Sync state - \(sessionFileList != nil ? sessionFileList!.status.state.rawValue : "unknown")")
         
         // If sessionError is not nil, then syncState is irrelevant, as it will be the previous successful fileList call.
         if (sessionError != nil || !isSyncRunning) && !self.fileService.isDownloadingFiles {
-            NSLog("DigiMeSDK: Finished fetching session data.")
+            Logger.info("Finished fetching session data.")
             
             completeSessionDataFetch(error: sessionError)
             return

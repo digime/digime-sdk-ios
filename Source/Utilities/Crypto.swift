@@ -28,7 +28,7 @@ enum Crypto {
         var bytes = [UInt8](repeating: 0, count: length)
         let status = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
         if status != errSecSuccess {
-            NSLog("Error generating secure random bytes. Status: \(status)")
+            Logger.error("Error generating secure random bytes. Status: \(status)")
         }
         
         return bytes

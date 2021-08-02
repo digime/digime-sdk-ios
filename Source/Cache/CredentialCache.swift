@@ -36,7 +36,7 @@ final class CredentialCache {
         }
         
         if status != errSecItemNotFound {
-            NSLog("OAuthToken has been set in the keychain, but could not retrieve. Error: \(status)")
+            Logger.error("OAuthToken has been set in the keychain, but could not retrieve. Error: \(status)")
         }
         
         return nil
@@ -49,7 +49,7 @@ final class CredentialCache {
             // Delete entry
             let status = SecItemDelete(query as CFDictionary)
             if status != errSecSuccess && status != errSecItemNotFound {
-                NSLog("Unable to delete stored OAuthToken in the keychain. Error: \(status)")
+                Logger.error("Unable to delete stored OAuthToken in the keychain. Error: \(status)")
             }
             
             return
@@ -66,7 +66,7 @@ final class CredentialCache {
             status = SecItemUpdate(query as CFDictionary, newAttributes as CFDictionary)
             
             if status != errSecSuccess {
-                NSLog("Unable to update existing OAuthToken in the keychain. Error: \(status)")
+                Logger.error("Unable to update existing OAuthToken in the keychain. Error: \(status)")
             }
         }
         else {
