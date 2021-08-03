@@ -87,7 +87,6 @@ class WriteDataViewController: UIViewController {
         -----END RSA PRIVATE KEY-----
         """
     )
-        
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,12 +95,6 @@ class WriteDataViewController: UIViewController {
         
         logger = Logger(textView: loggerTextView)
         logger.log(message: "This is where log messages appear.")
-        
-//        actionButton.addTarget(self, action: #selector(createPostbox), for: .touchUpInside)
-//        actionButton.setTitle(ongoingPostbox != nil ? "SEND ANOTHER RECEIPT" : "SEND ME A RECEIPT", for: .normal)
-            
-        
-//        relaunchLabel.isHidden = true
         
         do {
             let writeConfig = try Configuration(appId: AppInfo.appId, contractId: writeContract.identifier, privateKey: writeContract.privateKey)
@@ -124,13 +117,7 @@ class WriteDataViewController: UIViewController {
                 return
             }
             
-//            if self.authorizedDate == nil {
-//                self.authorizedDate = Date()
-//            }
-//
             self.updateUI()
-//            self.getAccounts()
-//            self.getServiceData()
         }
     }
     
@@ -141,13 +128,7 @@ class WriteDataViewController: UIViewController {
                 return
             }
             
-//            if self.authorizedDate == nil {
-//                self.authorizedDate = Date()
-//            }
-//
             self.updateUI()
-//            self.getAccounts()
-//            self.getServiceData()
         }
     }
     
@@ -159,20 +140,7 @@ class WriteDataViewController: UIViewController {
                 .objectTypes([.init(name: "receipt")])
                 .tags(["groceries"])
                 .reference(["Receipt \(dateFormatter.string(from: Date()))"])
-//                .appId(AppInfo.appId)
-//                .contractId(readContract.identifier)
                 .build()
-            
-            /*
-             let accounts = [Account(accountId: "accountId")]
-             let mimeType = "application/json"
-             let objectTypes = [ObjectType(name: "receipt")]
-             let reference: [String]
-             let tags = ["groceries"]
-             */
-            
-//            let metadata = Metadata(reference: ["Receipt \(dateFormatter.string(from: Date()))"])
-//            let metadataData = try JSONEncoder().encode(metadata)
             
             let jsonData = try JSONEncoder().encode(Receipt())
             
@@ -278,77 +246,6 @@ class WriteDataViewController: UIViewController {
         
         self.deleteUserButton.isHidden = !isWriteAuthorized && !isReadAuthorized
     }
-    
-//    @objc func createPostbox() {
-//
-//        guard let configuration = DMEPushConfiguration(appId: AppInfo.appId, contractId: Configuration.contractId, p12FileName: Configuration.p12FileName, p12Password: Configuration.p12Password) else {
-//            return
-//        }
-//
-//        dmeClient = DMEPushClient(configuration: configuration)
-//
-//        dmeClient?.authorizeOngoingPostbox(withExisting: ongoingPostbox) { (postbox, error) in
-//
-//            guard let postbox = postbox else {
-//
-//                if let error = error {
-//                    print("Postbox creation failed with Error: \(error.localizedDescription)")
-//                }
-//
-//                return
-//            }
-//
-//            print("Postbox creation succeeded")
-//            self.ongoingPostbox = postbox
-//
-//            DispatchQueue.main.async {
-//                self.actionButton.isEnabled = false
-//                self.actionButton.setTitle("Sending...", for: .normal)
-//            }
-//
-//            self.pushData(to: postbox)
-//        }
-//    }
-    
-//    func pushData(to postbox: DMEOngoingPostbox) {
-//        do {
-//            let dateFormatter = DateFormatter()
-//            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-//            let metadata = Metadata(reference: ["Receipt \(dateFormatter.string(from: Date()))"])
-//            let metadataToPush = try JSONEncoder().encode(metadata)
-//
-//            let dataToPush = try JSONEncoder().encode(Receipt())
-//
-//            dmeClient?.pushData(to: postbox, metadata: metadataToPush, data: dataToPush) { updatedPostbox, error in
-//                if let error = error {
-//                    print("Upload Error: \(error.localizedDescription)")
-//
-//                    DispatchQueue.main.async {
-//                        self.titleLabel.text = "Get a copy of your latest shopping receipt to your digi.me library"
-//                        self.subtitleLabel.text = "Please ensure you have the digi.me application installed."
-//                        self.actionButton.isEnabled = true
-//                        self.actionButton.setTitle("SEND ME A RECEIPT", for: .normal)
-//                    }
-//                }
-//                else {
-//                    print("Pushing data to Postbox succeeded")
-//                    self.ongoingPostbox = updatedPostbox
-//
-//                    DispatchQueue.main.async {
-//                        self.titleLabel.text = "All done!"
-//                        self.subtitleLabel.text = "Your purchase receipt has been sent, please check your digi.me library."
-//                        self.actionButton.isEnabled = true
-//                        self.actionButton.setTitle("SEND ANOTHER RECEIPT", for: .normal)
-//                        self.relaunchLabel.isHidden = false
-//                    }
-//                }
-//
-//
-//            }
-//        } catch {
-//            print("JSON files parsing Error: \(error.localizedDescription)")
-//        }
-//    }
 }
 
 extension WriteDataViewController: UINavigationControllerDelegate {
@@ -383,22 +280,6 @@ extension WriteDataViewController: UIImagePickerControllerDelegate {
         }
     }
 }
-
-//fileprivate struct Metadata: Encodable {
-//    struct Account: Encodable {
-//        let accountId: String
-//    }
-//
-//    struct ObjectType: Encodable {
-//        let name: String
-//    }
-//
-//    let accounts = [Account(accountId: "accountId")]
-//    let mimeType = "application/json"
-//    let objectTypes = [ObjectType(name: "receipt")]
-//    let reference: [String]
-//    let tags = ["groceries"]
-//}
 
 fileprivate struct Receipt: Encodable {
     struct ReceiptItem: Encodable {

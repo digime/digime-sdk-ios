@@ -90,12 +90,6 @@ enum SyncState: String, Decodable, Equatable {
     }
 }
 
-//extension FileList: Equatable {
-//    public static func == (lhs: Self, rhs: Self) -> Bool {
-//        return false
-//    }
-//}
-
 struct DynamicallyKeyedArray<T: Decodable>: Decodable {
 
     typealias ArrayType = [T]

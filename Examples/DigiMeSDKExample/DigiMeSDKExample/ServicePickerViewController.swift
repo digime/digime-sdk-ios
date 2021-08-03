@@ -7,7 +7,6 @@
 //
 
 import DigiMeSDK
-import Kingfisher
 import UIKit
 
 protocol ServicePickerDelegate: AnyObject {
@@ -58,11 +57,6 @@ class ServicePickerViewController: UITableViewController {
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: ReuseIdentifier.service)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -83,7 +77,6 @@ class ServicePickerViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.service, for: indexPath)
 
         let service = sections[indexPath.section].items[indexPath.row]
-        // Configure the cell...
         cell.textLabel?.text = service.name
 
         return cell
