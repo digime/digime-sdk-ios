@@ -8,8 +8,8 @@
 
 import Foundation
 
-class CredentialCache {
-    private let keychainIdPrefix = "me.digi.sdk.credentials"
+final class CredentialCache {
+    private let keychainIdPrefix = "me.digi.sdk.credentials."
         
     // Contains primary key query values
     private func baseQuery(for contractId: String) -> [NSString: AnyObject] {

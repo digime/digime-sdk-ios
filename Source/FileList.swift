@@ -9,13 +9,13 @@
 import Foundation
 
 public struct FileListItem: Decodable, Equatable {
-    let name: String
-    let objectVersion: String
+    public let name: String
+    let objectVersion: String? // Only available for data from services
     let updatedDate: Date
 }
 
-public struct FileList: Decodable {
-    let files: [FileListItem]
+public struct FileList: Decodable, Equatable {
+    public let files: [FileListItem]?
     let status: SyncStatus
     
     enum CodingKeys: String, CodingKey {
@@ -24,7 +24,7 @@ public struct FileList: Decodable {
     }
 }
 
-struct SyncStatus: Decodable {
+struct SyncStatus: Decodable, Equatable {
     let details: [SyncAccount] // Not available in 'pending' state
     let state: SyncState
     
@@ -42,8 +42,8 @@ struct SyncStatus: Decodable {
     }
 }
 
-struct SyncAccount: Decodable {
-    let identifier: String
+struct SyncAccount: Decodable, Equatable {
+    let identifier: String? // Not available for written data
     let state: SyncState
     let error: SyncError? // Only available for 'partial' state
     
@@ -66,13 +66,13 @@ struct SyncAccount: Decodable {
     }
 }
 
-struct SyncError: Decodable {
+struct SyncError: Decodable, Equatable {
     let code: String
     let statusCode: Int
     let message: String
 }
 
-enum SyncState: String, Decodable {
+enum SyncState: String, Decodable, Equatable {
     case running
     case pending
     case partial
@@ -87,12 +87,6 @@ enum SyncState: String, Decodable {
         case .partial, .completed:
             return false
         }
-    }
-}
-
-extension FileList: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        return false
     }
 }
 

@@ -49,10 +49,23 @@ class JWTUtility: NSObject {
     
     // Claims for pre-authorization code response
     private struct PayloadResponsePreauthJWT: Claims {
-        var preAuthCode: String
+        let preAuthCode: String
 
         enum CodingKeys: String, CodingKey {
             case preAuthCode = "preauthorization_code"
+        }
+    }
+    
+    // Claims for pre-authorization code response
+    private struct PayloadResponseTokenReferenceJWT: Claims {
+        let referenceCode: String
+        let tokenType: String
+        let expiry: Date
+
+        enum CodingKeys: String, CodingKey {
+            case referenceCode = "reference_code"
+            case tokenType = "token_type"
+            case expiry = "expires_on"
         }
     }
     
@@ -107,7 +120,7 @@ class JWTUtility: NSObject {
     /// - Parameters:
     ///   - configuration: this SDK's instance configuration
     ///   - accessToken: An existing access token
-    class func preAuthorizationRequestJWT(configuration: Configuration, accessToken: String? = nil) -> String? {
+    class func preAuthorizationRequestJWT(configuration: Configuration, accessToken: String?) -> String? {
         let randomBytes = secureRandomData(length: 32)
         let codeVerifier = randomBytes.base64URLEncodedString()
         let codeChallenge = Data(SHA256.hash(data: codeVerifier.data(using: .utf8)!)).base64URLEncodedString()
@@ -146,19 +159,11 @@ class JWTUtility: NSObject {
     /// Extracts preAuthorization code from JWT
     ///
     /// - Parameters:
-    ///   - keySet: JSON Web Key StoSetre
     ///   - jwt: pre-authorization code wrapped in JWT
+    ///   - keySet: JSON Web Key Set
+    /// - Returns: The pre-authorization code if successful or an error if not
     class func preAuthCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, Error> {
-        let decoder = JWTDecoder { kid in
-            guard
-                let key = keySet.keys.first(where: { $0.kid == kid }),
-                let data = convertKeyString(key.pem) else {
-                NSLog("Error retrieving matching JWT verifier")
-                return nil
-            }
-            
-            return JWTVerifier.ps512(publicKey: data)
-        }
+        let decoder = decoder(keySet: keySet)
         
         return Result {
             let decodedJwt = try decoder.decode(JWT<PayloadResponsePreauthJWT>.self, fromString: jwt)
@@ -168,24 +173,31 @@ class JWTUtility: NSObject {
     
     /// Extracts access and refresh tokens from JWT, and wraps in `OAuthToken`.
     ///
-    /// - Parameters
-    ///  - jwt: JSON Web Token containing access/refresh token pair.
-    ///  - publicKey: public key in base 64 format
+    /// - Parameters:
+    ///   - jwt: JSON Web Token containing access/refresh token pair.
+    ///   - keySet: JSON Web Key Set
+    /// - Returns: An `OAuthToken` if successful or an error if not
     class func oAuthToken(from jwt: String, keySet: JSONWebKeySet) -> Result<OAuthToken, Error> {
-        let decoder = JWTDecoder { kid in
-            guard
-                let key = keySet.keys.first(where: { $0.kid == kid }),
-                let data = convertKeyString(key.pem) else {
-                NSLog("Error retrieving matching JWT verifier")
-                return nil
-            }
-            
-            return JWTVerifier.ps512(publicKey: data)
-        }
+        let decoder = decoder(keySet: keySet)
         
         return Result {
             let decodedJwt = try decoder.decode(JWT<OAuthToken>.self, fromString: jwt)
             return decodedJwt.claims
+        }
+    }
+    
+    /// Extracts reference code from JWT
+    ///
+    /// - Parameters:
+    ///   - jwt: reference code wrapped in JWT
+    ///   - keySet: JSON Web Key Set
+    /// - Returns: The reference code if successful or an error if not
+    class func referenceCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, Error> {
+        let decoder = decoder(keySet: keySet)
+        
+        return Result {
+            let decodedJwt = try decoder.decode(JWT<PayloadResponseTokenReferenceJWT>.self, fromString: jwt)
+            return decodedJwt.claims.referenceCode
         }
     }
     
@@ -224,42 +236,48 @@ class JWTUtility: NSObject {
     /// - Parameters:
     ///   - accessToken: OAuth refresh token
     ///   - iv: iv used to encrypt data
-    ///   - metadat: metadata describing data being pushed
-    ///   - symmetricKey: symmetrical key used to encrypt data
+    ///   - metadata: metadata describing data being pushed
+    ///   - symmetricKey: symmetric key used to encrypt data
     ///   - configuration: this SDK's instance configuration
     class func writeRequestJWT(accessToken: String, iv: Data, metadata: String, symmetricKey: String, configuration: Configuration) -> String? {
         let claims = PayloadWriteJWT(
             accessToken: accessToken,
             clientId: configuration.clientId,
             iv: iv.hexString,
-            metadata: metadata,
+            metadata: metadata.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil),
             redirectUri: configuration.redirectUri + "auth",
-            symmetricalKey: symmetricKey
+            symmetricalKey: symmetricKey.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil)
         )
 
         return createRequestJWT(claims: claims, configuration: configuration)
     }
     
+    private class func decoder(keySet: JSONWebKeySet) -> JWTDecoder {
+        JWTDecoder { kid in
+            guard
+                let key = keySet.keys.first(where: { $0.kid == kid }),
+                let data = try? Crypto.base64EncodedData(from: key.pem) else {
+                NSLog("Error retrieving matching JWT verifier")
+                return nil
+            }
+            
+            return JWTVerifier.ps512(publicKey: data)
+        }
+    }
+    
     // MARK: - Utility functions
     private class func createRequestJWT<T: RequestClaims>(claims: T, configuration: Configuration) -> String? {
-        guard let privateKeyData = convertKeyString(configuration.privateKey) else {
-            print("DigiMeSDK: Error creating RSA key")
-            return nil
-        }
-
-        // signing
+        // Signing
         var jwt = JWT(header: header, claims: claims)
-        let signer = JWTSigner.ps512(privateKey: privateKeyData)
+        let signer = JWTSigner.ps512(privateKey: configuration.privateKeyData)
         guard let signedJwt = try? jwt.sign(using: signer) else {
             print("DigiMeSDK: Error signing our test token")
             return nil
         }
 
-        // validation
-        guard
-            let publicKeyBase64 = configuration.publicKey,
-            let publicKeyData = convertKeyString(publicKeyBase64) else {
-                return signedJwt
+        // Validation
+        guard let publicKeyData = configuration.publicKeyData else {
+            return signedJwt
         }
 
         let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
@@ -288,45 +306,6 @@ class JWTUtility: NSObject {
         }
         
         return bytes
-    }
-    
-    private class func convertKeyString(_ keyString: String) -> Data? {
-        guard let base64String = base64String(for: keyString) else {
-            print("Couldn't read a key string")
-            return nil
-        }
-
-        return convertKeyBase64ToData(base64String)
-    }
-    
-    private class func convertKeyBase64ToData(_ base64KeyString: String) -> Data? {
-        guard let publicKeyData = Data(base64Encoded: base64KeyString, options: [.ignoreUnknownCharacters]) else {
-            print("Couldn't decode base64 key")
-            return nil
-        }
-
-        return publicKeyData
-    }
-    
-    /// Get the Base64 representation of a PEM encoded string after stripping off the PEM markers.
-    ///
-    /// - Parameters:
-    ///   - pemString: `String` containing PEM formatted data.
-    /// - Returns: Base64 encoded `String` containing the data.
-    private class func base64String(for pemString: String) -> String? {
-        // Filter looking for new lines...
-        let lines = pemString
-            .components(separatedBy: "\n")
-            .filter { !$0.hasPrefix("-----BEGIN") && !$0.hasPrefix("-----END") }
-        
-        // No lines, no data...
-        guard !lines.isEmpty else {
-            return nil
-        }
-        
-        return lines
-            .map { $0.replacingOccurrences(of: "\r", with: "") }
-            .joined()
     }
 }
 

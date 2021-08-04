@@ -11,28 +11,25 @@ import Foundation
 import XCTest
 
 class RouterTests: XCTestCase {
-    var sut: NetworkRouter!
     var options: ReadOptions!
     
     override func setUp() {
         super.setUp()
         
-        let accept = ReadAccept.gzipCompression
         let timeRange = TimeRange.last(amount: 10, unit: .day)
         let scope = Scope(timeRanges: [timeRange])
-        options = ReadOptions(accept: accept, limits: nil, scope: scope)
+        options = ReadOptions(limits: nil, scope: scope)
     }
     
     override func tearDown() {
-        sut = nil
         options = nil
         super.tearDown()
     }
     
     func testAuthorizeRequest() throws {
         let jwt = UUID().uuidString
-        let sut = NetworkRouter.authorize(jwt: jwt, agent: nil, readOptions: options)
-        let request = try sut.asURLRequest()
+        let sut = AuthorizeRoute(jwt: jwt, readOptions: options)
+        let request = sut.toUrlRequest()
         
         XCTAssert(request.httpMethod == "POST", "Error testing Authorize request. Http method is incorrect.")
         
@@ -55,7 +52,7 @@ class RouterTests: XCTestCase {
                 return
         }
         
-        XCTAssertNil(dictionary[BodyKey.agent])
+        XCTAssertNotNil(dictionary[BodyKey.agent])
         
         guard
             let actions = dictionary[BodyKey.actions] as? [String: AnyHashable],
@@ -71,8 +68,8 @@ class RouterTests: XCTestCase {
     
     func testTokenExchangeRequest() throws {
         let jwt = UUID().uuidString
-        let sut = NetworkRouter.tokenExchange(jwt: jwt)
-        let request = try sut.asURLRequest()
+        let sut = TokenExchangeRoute(jwt: jwt)
+        let request = sut.toUrlRequest()
         
         XCTAssertEqual(request.httpMethod, "POST", "Error testing Token Exchange request. Http method is incorrect.")
         
@@ -90,8 +87,8 @@ class RouterTests: XCTestCase {
     
     func testFileListRequest() throws {
         let sessionKey = UUID().uuidString
-        let sut = NetworkRouter.read(sessionKey: sessionKey)
-        let request = try sut.asURLRequest()
+        let sut = FileListRoute(sessionKey: sessionKey)
+        let request = sut.toUrlRequest()
         
         XCTAssertEqual(request.httpMethod, "GET", "Error testing File List request. Http method is incorrect.")
         
@@ -110,8 +107,8 @@ class RouterTests: XCTestCase {
     func testFileRequest() throws {
         let fileId = "testFileId"
         let sessionKey = UUID().uuidString
-        let sut = NetworkRouter.read(sessionKey: sessionKey, fileId: fileId)
-        let request = try sut.asURLRequest()
+        let sut = ReadDataRoute(sessionKey: sessionKey, fileId: fileId)
+        let request = sut.toUrlRequest()
         
         XCTAssertEqual(request.httpMethod, "GET", "Error testing File request. Http method is incorrect.")
         
@@ -121,8 +118,9 @@ class RouterTests: XCTestCase {
         XCTAssertTrue(url.absoluteString.contains(fileId), "Error testing File request. File id is incorrect.")
         XCTAssertNil(url.query)
         
-        let headers = try XCTUnwrap(request.allHTTPHeaderFields, "Error testing File List request. Headers are nil.")
-        XCTAssertTrue(headers.isEmpty)
+        let headers = try XCTUnwrap(request.allHTTPHeaderFields, "Error testing File request. Headers are nil.")
+        XCTAssertEqual(headers.count, 1)
+        XCTAssertEqual(headers[HeaderKey.accept], "application/octet-stream")
         
         XCTAssertNil(request.httpBody)
         XCTAssertNil(request.httpBodyStream)
@@ -130,8 +128,8 @@ class RouterTests: XCTestCase {
     
     func testTriggerRequest() throws {
         let jwt = UUID().uuidString
-        let sut = NetworkRouter.trigger(jwt: jwt, agent: Agent(name: "TestApp", version: "v1000"), readOptions: options)
-        let request = try sut.asURLRequest()
+        let sut = TriggerSyncRoute(jwt: jwt, readOptions: options)
+        let request = sut.toUrlRequest()
         
         XCTAssertEqual(request.httpMethod, "POST", "Error testing Trigger request. Http method is incorrect.")
         
@@ -164,9 +162,8 @@ class RouterTests: XCTestCase {
         let postboxId = "testPostboxId"
         let payload = Data()
         let jwt = UUID().uuidString
-        let sut = NetworkRouter.write(postboxId: postboxId, payload: payload, jwt: jwt)
-        let request = try sut.asURLRequest()
-        
+        let sut = WriteDataRoute(postboxId: postboxId, payload: payload, jwt: jwt)
+        let request = sut.toUrlRequest()
 
         XCTAssertEqual(request.httpMethod, "POST", "Error testing Write request. Http method is incorrect.")
         
@@ -192,11 +189,103 @@ class RouterTests: XCTestCase {
         XCTAssertTrue(bodyString.contains("Content-Disposition: form-data; name=\"file\"; filename=\"file\""), "Error testing Write request. Content disposition is missing.")
     }
     
+    func testDeleteUserRoute() throws {
+        let jwt = UUID().uuidString
+        let sut = DeleteUserRoute(jwt: jwt)
+        let request = sut.toUrlRequest()
+        
+        XCTAssertEqual(request.httpMethod, "DELETE", "Error testing Delete User request. Http method is incorrect.")
+        
+        let url = try XCTUnwrap(request.url, "Error testing Delete User request. Url is empty.")
+        XCTAssertTrue(url.absoluteString.contains("user"), "Error testing Delete User request. Endpoint is incorrect.")
+        XCTAssertNil(url.query)
+        
+        let headers = try XCTUnwrap(request.allHTTPHeaderFields, "Error testing Delete User request. Headers are nil.")
+        XCTAssertEqual(headers.count, 1)
+        XCTAssertEqual(headers[HeaderKey.authorization], "Bearer \(jwt)")
+        
+        XCTAssertNil(request.httpBody)
+        XCTAssertNil(request.httpBodyStream)
+    }
+    
+    func testServicesRoute() throws {
+        let sut = ServicesRoute(contractId: nil)
+        let request = sut.toUrlRequest()
+        
+        XCTAssertEqual(request.httpMethod, "GET", "Error testing Services request. Http method is incorrect.")
+        
+        let url = try XCTUnwrap(request.url, "Error testing Services request. Url is empty.")
+        XCTAssertTrue(url.absoluteString.contains("discovery/services"), "Error testing Services request. Endpoint is incorrect.")
+        XCTAssertNil(url.query)
+        
+        let headers = try XCTUnwrap(request.allHTTPHeaderFields, "Error testing Services request. Headers are nil.")
+        XCTAssertTrue(headers.isEmpty)
+        
+        XCTAssertNil(request.httpBody)
+        XCTAssertNil(request.httpBodyStream)
+    }
+    
+    func testServicesRouteWithContractId() throws {
+        let contractId = UUID().uuidString
+        let sut = ServicesRoute(contractId: contractId)
+        let request = sut.toUrlRequest()
+        
+        XCTAssertEqual(request.httpMethod, "GET", "Error testing Services request. Http method is incorrect.")
+        
+        let url = try XCTUnwrap(request.url, "Error testing Services request. Url is empty.")
+        XCTAssertTrue(url.absoluteString.contains("discovery/services"), "Error testing Services request. Endpoint is incorrect.")
+        XCTAssertNil(url.query)
+        
+        let headers = try XCTUnwrap(request.allHTTPHeaderFields, "Error testing Services request. Headers are nil.")
+        XCTAssertEqual(headers.count, 1)
+        XCTAssertEqual(headers[HeaderKey.contractId], contractId)
+        
+        XCTAssertNil(request.httpBody)
+        XCTAssertNil(request.httpBodyStream)
+    }
+    
+    func testTokenReferenceRoute() throws {
+        let jwt = UUID().uuidString
+        let sut = TokenReferenceRoute(jwt: jwt)
+        let request = sut.toUrlRequest()
+        
+        XCTAssertEqual(request.httpMethod, "POST", "Error testing Token Reference request. Http method is incorrect.")
+        
+        let url = try XCTUnwrap(request.url, "Error testing Token Reference request. Url is empty.")
+        XCTAssertTrue(url.absoluteString.contains("oauth/token/reference"), "Error testing Token Reference request. Endpoint is incorrect.")
+        XCTAssertNil(url.query)
+        
+        let headers = try XCTUnwrap(request.allHTTPHeaderFields, "Error testing Token Reference request. Headers are nil.")
+        XCTAssertEqual(headers.count, 1)
+        XCTAssertEqual(headers[HeaderKey.authorization], "Bearer \(jwt)")
+        
+        XCTAssertNil(request.httpBody)
+        XCTAssertNil(request.httpBodyStream)
+    }
+    
+    func testWebKeySetRoute() throws {
+        let sut = WebKeySetRoute()
+        let request = sut.toUrlRequest()
+        
+        XCTAssertEqual(request.httpMethod, "GET", "Error testing JWKS request. Http method is incorrect.")
+        
+        let url = try XCTUnwrap(request.url, "Error testing JWKS request. Url is empty.")
+        XCTAssertTrue(url.absoluteString.contains("jwks/oauth"), "Error testing JWKS request. Endpoint is incorrect.")
+        XCTAssertNil(url.query)
+        
+        let headers = try XCTUnwrap(request.allHTTPHeaderFields, "Error testing JWKS request. Headers are nil.")
+        XCTAssertTrue(headers.isEmpty)
+        
+        XCTAssertNil(request.httpBody)
+        XCTAssertNil(request.httpBodyStream)
+    }
+    
     private enum HeaderKey {
         static let accept = "Accept"
         static let authorization = "Authorization"
         static let contentLength = "Content-Length"
         static let contentType = "Content-Type"
+        static let contractId = "contractId"
     }
     
     private enum BodyKey {

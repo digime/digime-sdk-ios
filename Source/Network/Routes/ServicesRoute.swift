@@ -19,7 +19,7 @@ struct ServicesRoute: Route {
             return ["contractId": contractId]
         }
         
-        return[:]
+        return [:]
     }
         
     let contractId: String?

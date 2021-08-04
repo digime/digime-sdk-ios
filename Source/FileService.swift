@@ -84,8 +84,7 @@ class FileDownloadOperation: RetryingOperation {
                     unpackedData = try DataCompressor.gzip.decompress(data: unpackedData)
                 }
                 
-                let file = try FileContainer(fileWithId: self.fileId, rawData: unpackedData, mimeType: .applicationOctetStream, dataType: RawData.self)
-                file.metadata = fileInfo.metadata
+                let file = try FileContainer(fileWithId: self.fileId, rawData: unpackedData, mimeType: .applicationOctetStream, dataType: RawData.self, metadata: fileInfo.metadata)
                 newResult = .success(file)
             }
             catch let error as HTTPError {

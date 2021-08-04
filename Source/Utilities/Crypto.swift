@@ -34,34 +34,54 @@ enum Crypto {
         return bytes
     }
     
+    static func base64EncodedData(from pem: String) throws -> Data {
+        let strippedKey = pem.filter { !" \n\t\r".contains($0) }
+        let base64EncodedString: String
+        if strippedKey.contains("-----") {
+            let pemComponents = strippedKey.components(separatedBy: "-----")
+            guard pemComponents.count == 5 else {
+                throw SDKError.invalidPrivateOrPublicKey
+            }
+            
+            base64EncodedString = pemComponents[2]
+        }
+        else {
+            base64EncodedString = strippedKey
+        }
+        
+        guard let data = Data(base64Encoded: base64EncodedString) else {
+            throw SDKError.invalidPrivateOrPublicKey
+        }
+        
+        return data
+    }
+    
     static func encrypt(symmetricKey: Data, publicKey: String) throws -> String {
         let encryptedData = try encryptRSA(data: symmetricKey, publicKey: publicKey)
         return encryptedData.base64EncodedString(options: .lineLength64Characters)
     }
     
     static func encryptRSA(data: Data, publicKey: String) throws -> Data {
-        let keyString = publicKey.replacingOccurrences(of: "-----BEGIN PUBLIC KEY-----\n", with: "").replacingOccurrences(of: "\n-----END PUBLIC KEY-----", with: "")
-        guard let keyData = Data(base64Encoded: keyString) else {
-            throw CryptoError.stringToDataConversionFailed
-        }
-        
-        let secKey = try secKey(keyData: keyData, isPublic: true)
-        
-        return try encryptRSA(data: data, publicKey: secKey)
+        let publicKeyData = try base64EncodedData(from: publicKey)
+        return try encryptRSA(data: data, publicKeyData: publicKeyData)
+    }
+    
+    static func encryptRSA(data: Data, publicKeyData: Data) throws -> Data {
+        let secKey = try secKey(keyData: publicKeyData, isPublic: true)
+        return try encryptRSA(data: data, secKey: secKey)
     }
     
     static func decryptRSA(data: Data, privateKey: String) throws -> Data {
-        let keyString = privateKey.replacingOccurrences(of: "-----BEGIN PRIVATE KEY-----\n", with: "").replacingOccurrences(of: "\n-----END PRIVATE KEY-----", with: "").replacingOccurrences(of: "\n", with: "")
-        guard let keyData = Data(base64Encoded: keyString) else {
-            throw CryptoError.stringToDataConversionFailed
-        }
-        
-        let secKey = try secKey(keyData: keyData, isPublic: false)
-        
-        return try decryptRSA(data: data, privateKey: secKey)
+        let privateKeyData = try base64EncodedData(from: privateKey)
+        return try decryptRSA(data: data, privateKeyData: privateKeyData)
     }
     
-    static func decrypt(encryptedBase64EncodedData data: Data, privateKey: String) throws -> Data {
+    static func decryptRSA(data: Data, privateKeyData: Data) throws -> Data {
+        let secKey = try secKey(keyData: privateKeyData, isPublic: false)
+        return try decryptRSA(data: data, secKey: secKey)
+    }
+    
+    static func decrypt(encryptedBase64EncodedData data: Data, privateKeyData: Data) throws -> Data {
         // Split data into components
         let encryptedDskLength = 256
         let divLength = kCCBlockSizeAES128
@@ -74,7 +94,7 @@ enum Crypto {
         let div = data[divRange]
         let encryptedFileData = data[encryptedFileDataRange]
         
-        let dsk = try decryptRSA(data: encryptedDsk, privateKey: privateKey)
+        let dsk = try decryptRSA(data: encryptedDsk, privateKeyData: privateKeyData)
         let aes = try AES256(key: dsk, iv: div)
         let fileDataWithHash = try aes.decrypt(encryptedFileData)
         
@@ -113,8 +133,8 @@ enum Crypto {
         return secKey
     }
     
-    private static func encryptRSA(data: Data, publicKey: SecKey) throws -> Data {
-        let blockSize = SecKeyGetBlockSize(publicKey)
+    private static func encryptRSA(data: Data, secKey: SecKey) throws -> Data {
+        let blockSize = SecKeyGetBlockSize(secKey)
         
         let maxChunkSize = blockSize - 42 // For OAEP padding
         
@@ -131,7 +151,7 @@ enum Crypto {
             var encryptedDataBuffer = [UInt8](repeating: 0, count: blockSize)
             var encryptedDataLength = blockSize
             
-            let status = SecKeyEncrypt(publicKey, .OAEP, chunkData, chunkData.count, &encryptedDataBuffer, &encryptedDataLength)
+            let status = SecKeyEncrypt(secKey, .OAEP, chunkData, chunkData.count, &encryptedDataBuffer, &encryptedDataLength)
             
             guard status == noErr else {
                 throw CryptoError.chunkEncryptFailed(index: index)
@@ -145,8 +165,8 @@ enum Crypto {
        return Data(bytes: encryptedDataBytes, count: encryptedDataBytes.count)
     }
     
-    private static func decryptRSA(data: Data, privateKey: SecKey) throws -> Data {
-        let blockSize = SecKeyGetBlockSize(privateKey)
+    private static func decryptRSA(data: Data, secKey: SecKey) throws -> Data {
+        let blockSize = SecKeyGetBlockSize(secKey)
         var encryptedDataBuffer = [UInt8](repeating: 0, count: data.count)
         (data as NSData).getBytes(&encryptedDataBuffer, length: data.count)
         
@@ -160,7 +180,7 @@ enum Crypto {
             var decryptedDataBuffer = [UInt8](repeating: 0, count: blockSize)
             var decryptedDataLength = blockSize
             
-            let status = SecKeyDecrypt(privateKey, .OAEP, chunkData, indexEnd - index, &decryptedDataBuffer, &decryptedDataLength)
+            let status = SecKeyDecrypt(secKey, .OAEP, chunkData, indexEnd - index, &decryptedDataBuffer, &decryptedDataLength)
             guard status == noErr else {
                 throw CryptoError.chunkDecryptFailed(index: index)
             }
