@@ -124,21 +124,32 @@ public final class DigiMe {
     ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
     ///   - linkToContractWithId: When specified, connects to same library as another contract.  If other contract has not been authorized, completes with `SDKError.linkedContractNotAuthorized` failure. Does nothing if user has already authorized this contract.
     ///   - completion: Block called upon authorization completion with any errors encountered.
-    public func authorize(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String? = nil, completion: @escaping (Error?) -> Void) {
+    public func authorize(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Error?) -> Void) {
         if let validationError = validateClient() {
-            return completion(validationError)
+            resultQueue.async {
+                completion(validationError)
+            }
+            return
         }
         
         validateOrRefreshCredentials { result in
             switch result {
             case .success:
-                completion(nil)
+                resultQueue.async {
+                    completion(nil)
+                }
                 
             case .failure(SDKError.authenticationRequired):
-                self.beginAuth(serviceId: serviceId, readOptions: readOptions, linkToContractWithId: contractLinkId, completion: completion)
+                self.beginAuth(serviceId: serviceId, readOptions: readOptions, linkToContractWithId: contractLinkId) { error in
+                    resultQueue.async {
+                        completion(error)
+                    }
+                }
                 
             case .failure(let error):
-                completion(error)
+                resultQueue.async {
+                    completion(error)
+                }
             }
         }
     }
@@ -147,7 +158,7 @@ public final class DigiMe {
     /// - Parameters:
     ///   - identifier: Identifier of service to add.
     ///   - completion: Block called upon completion with any errors encountered
-    public func addService(identifier: Int, completion: @escaping (Error?) -> Void) {
+    public func addService(identifier: Int, resultQueue: DispatchQueue = .main, completion: @escaping (Error?) -> Void) {
         validateOrRefreshCredentials { result in
             switch result {
             case .success(let credentials):
@@ -156,22 +167,28 @@ public final class DigiMe {
                     let response = try result.get()
                     self.session = response.session
                     self.consentManager.addService(identifier: identifier, token: response.token) { result in
-                        switch result {
-                        case .success:
-                            completion(nil)
-                            
-                        case .failure(let error):
-                            completion(error)
+                        resultQueue.async {
+                            switch result {
+                            case .success:
+                                completion(nil)
+                                
+                            case .failure(let error):
+                                completion(error)
+                            }
                         }
                     }
                 }
                 catch {
-                    completion(error)
+                    resultQueue.async {
+                        completion(error)
+                    }
                 }
             }
                 
             case .failure(let error):
-                completion(error)
+                resultQueue.async {
+                    completion(error)
+                }
             }
         }
     }
@@ -181,7 +198,7 @@ public final class DigiMe {
     /// Note: If this is called on either a write-only contract or a contract which reads non-service data, this will return an error.
     ///
     /// - Parameter completion: Block called upon completion containing either relevant account info, if successful, or an error
-    public func readAccounts(completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
+    public func readAccounts(resultQueue: DispatchQueue = .main, completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
         validateOrRefreshSession(readOptions: nil) { result in
             do {
                 let session = try result.get()
@@ -190,15 +207,21 @@ public final class DigiMe {
                         let (data, fileInfo) = try result.get()
                         let unpackedData = try self.dataDecryptor.decrypt(data: data, fileInfo: fileInfo)
                         let accounts = try unpackedData.decoded() as AccountsInfo
-                        completion(.success(accounts))
+                        resultQueue.async {
+                            completion(.success(accounts))
+                        }
                     }
                     catch {
-                        completion(.failure(error))
+                        resultQueue.async {
+                            completion(.failure(error))
+                        }
                     }
                 }
             }
             catch {
-                completion(.failure(error))
+                resultQueue.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -217,13 +240,24 @@ public final class DigiMe {
     ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
     ///   - downloadHandler: Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
     ///   - completion: Block called when fetching all files has completed. Contains final list of files or an error if reading file list failed
-    public func readFiles(readOptions: ReadOptions?, downloadHandler: @escaping (Result<File, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
+    public func readFiles(readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, downloadHandler: @escaping (Result<File, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
         guard !isFetchingSessionData else {
-            return  completion(.failure(SDKError.fileListPollingTimeout)) // TODO: Update this error to an appropriate error
+            resultQueue.async {
+                completion(.failure(SDKError.fileListPollingTimeout)) // TODO: Update this error to an appropriate error
+            }
+            return
         }
         
-        self.sessionDataCompletion = completion
-        self.sessionContentHandler = downloadHandler
+        self.sessionDataCompletion = { result in
+            resultQueue.async {
+                completion(result)
+            }
+        }
+        self.sessionContentHandler = { result in
+            resultQueue.async {
+                downloadHandler(result)
+            }
+        }
         
         self.beginFileListPollingIfRequired()
     }
@@ -233,22 +267,31 @@ public final class DigiMe {
     ///   - data: The data to be written
     ///   - metadata: The metadata describing the data to be written. See `RawFileMetadataBuilder` for details on building the metadata
     ///   - completion: Block called when writing data has complete with any error ancountered.
-    public func write(data: Data, metadata: RawFileMetadata, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func write(data: Data, metadata: RawFileMetadata, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Void, Error>) -> Void) {
         let metadataData: Data
         do {
             metadataData = try metadata.encoded()
         }
         catch {
-            return completion(.failure(error))
+            resultQueue.async {
+                completion(.failure(error))
+            }
+            return
         }
         
         validateOrRefreshCredentials { result in
             switch result {
             case .success(let credentials):
-                self.write(data: data, metadata: metadataData, credentials: credentials, completion: completion)
+                self.write(data: data, metadata: metadataData, credentials: credentials) { result in
+                    resultQueue.async {
+                        completion(result)
+                    }
+                }
             
             case .failure(let error):
-                completion(.failure(error))
+                resultQueue.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -260,23 +303,27 @@ public final class DigiMe {
     /// any stored credentials, in which case an error may be reported on those calls.
     ///
     /// - Parameter completion: Block called on completion with any error encountered.
-    public func deleteUser(completion: @escaping (Error?) -> Void) {
+    public func deleteUser(resultQueue: DispatchQueue = .main, completion: @escaping (Error?) -> Void) {
         validateOrRefreshCredentials { result in
             switch result {
             case .success(let credentials):
                 self.authService.deleteUser(oauthToken: credentials.token) { result in
                     self.credentials = nil
                     self.session = nil
-                    switch result {
-                    case .success:
-                        completion(nil)
-                    case .failure(let error):
-                        completion(error)
+                    resultQueue.async {
+                        switch result {
+                        case .success:
+                            completion(nil)
+                        case .failure(let error):
+                            completion(error)
+                        }
                     }
                 }
             
             case .failure(let error):
-                completion(error)
+                resultQueue.async {
+                    completion(error)
+                }
             }
         }
     }
@@ -285,16 +332,20 @@ public final class DigiMe {
     /// - Parameters:
     ///   - scope: Scope to limit response
     ///   - completion: Block called upon completion with either the service list or any errors encountered
-    public func availableServices(scope: AvailableServicesScope = .thisContractOnly, completion: @escaping (Result<ServicesInfo, Error>) -> Void) {
+    public func availableServices(scope: AvailableServicesScope = .thisContractOnly, resultQueue: DispatchQueue = .main, completion: @escaping (Result<ServicesInfo, Error>) -> Void) {
         let route = ServicesRoute(contractId: scope == .thisContractOnly ? configuration.contractId : nil)
         apiClient.makeRequest(route) { result in
             switch result {
             case .success(let response):
                 let availableServices = response.data.services.filter { $0.isAvailable }
                 let info = ServicesInfo(countries: response.data.countries, serviceGroups: response.data.serviceGroups, services: availableServices)
-                completion(.success(info))
+                resultQueue.async {
+                    completion(.success(info))
+                }
             case .failure(let error):
-                completion(.failure(error))
+                resultQueue.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
