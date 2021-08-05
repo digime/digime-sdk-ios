@@ -25,7 +25,7 @@ public final class DigiMe {
     }()
     
     private var sessionDataCompletion: ((Result<FileList, Error>) -> Void)?
-    private var sessionContentHandler: ((Result<FileContainer<RawData>, Error>) -> Void)?
+    private var sessionContentHandler: ((Result<File, Error>) -> Void)?
     
     /*@Atomic*/ private var isFetchingSessionData = false
     private var fileListCache = FileListCache()
@@ -108,6 +108,8 @@ public final class DigiMe {
     
     /// Authorizes the contract configured with this digi.me instance to access to a library.
     ///
+    /// Requires `CallbackService.shared().handleCallback(url:)` to be called from appropriate in `AppDelegate` or `SceneDelegate`place so that authorization can complete.
+    ///
     /// If the user has not already authorized, will present a view controller in which user consents.
     /// If user has already authorized, refreshes the authorization, if necessary (which may require user consent again).
     ///
@@ -174,6 +176,11 @@ public final class DigiMe {
         }
     }
     
+    /// Reads the service data source accounts user has added to library related to the configured contract.
+    ///
+    /// Note: If this is called on either a write-only contract or a contract which reads non-service data, this will return an error.
+    ///
+    /// - Parameter completion: Block called upon completion containing either relevant account info, if successful, or an error
     public func readAccounts(completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
         validateOrRefreshSession(readOptions: nil) { result in
             do {
@@ -181,11 +188,7 @@ public final class DigiMe {
                 self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
                     do {
                         let (data, fileInfo) = try result.get()
-                        var unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
-                        if fileInfo.compression == "gzip" {
-                            unpackedData = try DataCompressor.gzip.decompress(data: unpackedData)
-                        }
-                    
+                        let unpackedData = try self.dataDecryptor.decrypt(data: data, fileInfo: fileInfo)
                         let accounts = try unpackedData.decoded() as AccountsInfo
                         completion(.success(accounts))
                     }
@@ -200,13 +203,36 @@ public final class DigiMe {
         }
     }
     
-    public func readFiles(readOptions: ReadOptions?, downloadHandler: @escaping (Result<FileContainer<RawData>, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
+    /// Fetches content for all the files limited by read options.
+    ///
+    /// An attempt is made to fetch each requested file and the result of the attempt is passed back via the download handler.
+    /// As download requests are asynchronous, the download handler may be called concurrently, so the handler implementation should allow for this.
+    ///
+    /// If this function is called while files are being read, an error denoting this will be immediately
+    /// returned in the completion block of this subsequent call and will not affect any current calls.
+    ///
+    /// For service-based data sources, will also attempt to retrieve any new data directly from the services.
+    ///
+    /// - Parameters:
+    ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
+    ///   - downloadHandler: Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
+    ///   - completion: Block called when fetching all files has completed. Contains final list of files or an error if reading file list failed
+    public func readFiles(readOptions: ReadOptions?, downloadHandler: @escaping (Result<File, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
+        guard !isFetchingSessionData else {
+            return  completion(.failure(SDKError.fileListPollingTimeout)) // TODO: Update this error to an appropriate error
+        }
+        
         self.sessionDataCompletion = completion
         self.sessionContentHandler = downloadHandler
         
         self.beginFileListPollingIfRequired()
     }
     
+    /// Writes data to user's library associated with configured contract
+    /// - Parameters:
+    ///   - data: The data to be written
+    ///   - metadata: The metadata describing the data to be written. See `RawFileMetadataBuilder` for details on building the metadata
+    ///   - completion: Block called when writing data has complete with any error ancountered.
     public func write(data: Data, metadata: RawFileMetadata, completion: @escaping (Result<Void, Error>) -> Void) {
         let metadataData: Data
         do {
@@ -227,6 +253,13 @@ public final class DigiMe {
         }
     }
     
+    /// Deletes the user's library associated with the configured contract.
+    ///
+    /// Please note that if multiple contracts are linked to the same library,
+    /// then `deleteUser` will also need to be called on those contracts to remove
+    /// any stored credentials, in which case an error may be reported on those calls.
+    ///
+    /// - Parameter completion: Block called on completion with any error encountered.
     public func deleteUser(completion: @escaping (Error?) -> Void) {
         validateOrRefreshCredentials { result in
             switch result {
@@ -298,7 +331,7 @@ public final class DigiMe {
     }
     
     // Auth - needs app to be able to receive response via URL
-    private func beginAuth(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String?, completion: @escaping (Error?) -> Void) {
+    private func beginAuth(serviceId: Int?, readOptions: ReadOptions?, linkToContractWithId contractLinkId: String?, completion: @escaping (Error?) -> Void) {
         
         // Ensure we don't have any session left over from previous
         session = nil
@@ -456,10 +489,6 @@ public final class DigiMe {
     
     // MARK: - File Contents
     private func beginFileListPollingIfRequired() {
-        guard !isFetchingSessionData else {
-            return
-        }
-        
         fileListCache.reset()
         isFetchingSessionData = true
         fileService.allDownloadsFinishedHandler = {
@@ -489,11 +518,11 @@ public final class DigiMe {
                 self.handleNewFileListItems(newItems)
 
             case .failure(let error):
-            // If the error occurred we don't want to terminate right away
-            // There could still be files downloading. Instead, we will store the sessionError
-            // which will be forwarded in completion once all file have been downloaded
-            
-            // If no files are being downloaded, we can terminate session fetch right away
+                // If the error occurred we don't want to terminate right away
+                // There could still be files downloading. Instead, we will store the sessionError
+                // which will be forwarded in completion once all file have been downloaded
+                
+                // If no files are being downloaded, we can terminate session fetch right away
                 if !self.fileService.isDownloadingFiles {
                     self.completeSessionDataFetch(error: error)
                 }
@@ -589,28 +618,5 @@ public final class DigiMe {
         if isSyncRunning {
             refreshFileList()
         }
-    }
-}
-
-class FileListCache {
-    
-    private var cache = [String: Date]()
-
-    func newItems(from items: [FileListItem]) -> [FileListItem] {
-        items.filter { item in
-            guard let existingItem = cache[item.name] else {
-                return true
-            }
-
-            return existingItem < item.updatedDate
-        }
-    }
-
-    func add(items: [FileListItem]) {
-        items.forEach { cache[$0.name] = $0.updatedDate }
-    }
-    
-    func reset() {
-        cache = [:]
     }
 }
