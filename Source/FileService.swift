@@ -31,7 +31,6 @@ class FileService {
         
         kvoToken = queue.observe(\.operationCount, options: .new) { _, change in
             if change.newValue == 0 {
-                NSLog("[FileService] Queue downloads complete")
                 self.allDownloadsFinishedHandler?()
             }
         }

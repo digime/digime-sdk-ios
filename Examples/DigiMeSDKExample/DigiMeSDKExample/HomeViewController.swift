@@ -13,5 +13,8 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Log all levels, including debug.
+        DigiMe.logLevels = LogLevel.allCases
     }
 }
