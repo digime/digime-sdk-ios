@@ -59,7 +59,7 @@ public final class DigiMe {
         }
     }
     
-    /// Sets the global levels which will be logged.
+    /// The log levels for all `DigiMe` instances which will be included in logs.
     /// Defaults to `[.info, .warning, .error, .critical]`
     public class var logLevels: [LogLevel] {
         get {
@@ -70,8 +70,8 @@ public final class DigiMe {
         }
     }
     
-    /// Sets the cutom lg handler to forwad loggin to a differnet system.
-    /// DigiMeSDK uses `NSLog` by default
+    /// Sets the custom log handler for all `DigiMe` instances to allow logging to a different system.
+    /// DigiMeSDK uses `NSLog` by default.
     /// - Parameter handler: The log handler block
     public class func setLogHandler(_ handler: @escaping LogHandler) {
         Logger.setLogHandler(handler)
