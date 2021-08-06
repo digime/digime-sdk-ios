@@ -27,7 +27,7 @@ public final class DigiMe {
     private var sessionDataCompletion: ((Result<FileList, Error>) -> Void)?
     private var sessionContentHandler: ((Result<File, Error>) -> Void)?
     
-    /*@Atomic*/ private var isFetchingSessionData = false
+    @Atomic private var isFetchingSessionData = false
     private var fileListCache = FileListCache()
     private var sessionError: Error?
     private var sessionFileList: FileList?
