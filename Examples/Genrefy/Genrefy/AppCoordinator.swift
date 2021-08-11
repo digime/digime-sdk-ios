@@ -110,8 +110,13 @@ XTB5irocXRj2XXn1sMpGBJGf4AKRrIhQNIoAhouh7btYBAD7+eT8SlGQ75wKkaDW
 u3W6P+D7xkopNDDFki7IcLyaRzKvXjGf8HeKz0YP+XomHb25Bc3A
 -----END RSA PRIVATE KEY-----
 """
-        
-        let configuration = try! Configuration(appId: appId, contractId: contractId, privateKey: privateKey, publicKey: nil)
+        let configuration: Configuration
+        do {
+            configuration = try Configuration(appId: appId, contractId: contractId, privateKey: privateKey, publicKey: nil)
+        }
+        catch {
+            fatalError("Error creating configuration \(error)")
+        }
         
         return DigiMe(configuration: configuration)
     }
