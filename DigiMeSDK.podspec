@@ -7,7 +7,6 @@ Pod::Spec.new do |s|
     s.license      	= { :type => "MIT", :file => "LICENSE" }
     s.author       	= { "digi.me Ltd." => "ios@digi.me" }
     s.platform     	= :ios, "13.0"
-    s.dependency "Brotli"
     s.dependency "GzipSwift"
     s.dependency "SwiftJWT"
     s.swift_version = "5.0"
@@ -17,8 +16,7 @@ Pod::Spec.new do |s|
         :tag => s.version
     }
     
-    s.source_files            = "Source/**/*.swift"
-#     s.resources            = ["DigiMeSDK/Core/Assets/**/*.*"]
-#     s.frameworks              = "Foundation", "UIKit", "CoreGraphics", "Security", "StoreKit"
+    s.source_files 	= "Source/**/*.swift"
+    s.frameworks 	= "Foundation", "UIKit", "SafariServices", "CryptoKit", "Security"
 
 end

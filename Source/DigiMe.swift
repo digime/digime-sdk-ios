@@ -25,9 +25,9 @@ public final class DigiMe {
     }()
     
     private var sessionDataCompletion: ((Result<FileList, Error>) -> Void)?
-    private var sessionContentHandler: ((Result<FileContainer<RawData>, Error>) -> Void)?
+    private var sessionContentHandler: ((Result<File, Error>) -> Void)?
     
-    /*@Atomic*/ private var isFetchingSessionData = false
+    @Atomic private var isFetchingSessionData = false
     private var fileListCache = FileListCache()
     private var sessionError: Error?
     private var sessionFileList: FileList?
@@ -108,6 +108,8 @@ public final class DigiMe {
     
     /// Authorizes the contract configured with this digi.me instance to access to a library.
     ///
+    /// Requires `CallbackService.shared().handleCallback(url:)` to be called from appropriate in `AppDelegate` or `SceneDelegate`place so that authorization can complete.
+    ///
     /// If the user has not already authorized, will present a view controller in which user consents.
     /// If user has already authorized, refreshes the authorization, if necessary (which may require user consent again).
     ///
@@ -122,21 +124,32 @@ public final class DigiMe {
     ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
     ///   - linkToContractWithId: When specified, connects to same library as another contract.  If other contract has not been authorized, completes with `SDKError.linkedContractNotAuthorized` failure. Does nothing if user has already authorized this contract.
     ///   - completion: Block called upon authorization completion with any errors encountered.
-    public func authorize(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String? = nil, completion: @escaping (Error?) -> Void) {
+    public func authorize(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Error?) -> Void) {
         if let validationError = validateClient() {
-            return completion(validationError)
+            resultQueue.async {
+                completion(validationError)
+            }
+            return
         }
         
         validateOrRefreshCredentials { result in
             switch result {
             case .success:
-                completion(nil)
+                resultQueue.async {
+                    completion(nil)
+                }
                 
             case .failure(SDKError.authenticationRequired):
-                self.beginAuth(serviceId: serviceId, readOptions: readOptions, linkToContractWithId: contractLinkId, completion: completion)
+                self.beginAuth(serviceId: serviceId, readOptions: readOptions, linkToContractWithId: contractLinkId) { error in
+                    resultQueue.async {
+                        completion(error)
+                    }
+                }
                 
             case .failure(let error):
-                completion(error)
+                resultQueue.async {
+                    completion(error)
+                }
             }
         }
     }
@@ -145,7 +158,7 @@ public final class DigiMe {
     /// - Parameters:
     ///   - identifier: Identifier of service to add.
     ///   - completion: Block called upon completion with any errors encountered
-    public func addService(identifier: Int, completion: @escaping (Error?) -> Void) {
+    public func addService(identifier: Int, resultQueue: DispatchQueue = .main, completion: @escaping (Error?) -> Void) {
         validateOrRefreshCredentials { result in
             switch result {
             case .success(let credentials):
@@ -154,96 +167,163 @@ public final class DigiMe {
                     let response = try result.get()
                     self.session = response.session
                     self.consentManager.addService(identifier: identifier, token: response.token) { result in
-                        switch result {
-                        case .success:
-                            completion(nil)
-                            
-                        case .failure(let error):
-                            completion(error)
+                        resultQueue.async {
+                            switch result {
+                            case .success:
+                                completion(nil)
+                                
+                            case .failure(let error):
+                                completion(error)
+                            }
                         }
                     }
                 }
                 catch {
-                    completion(error)
+                    resultQueue.async {
+                        completion(error)
+                    }
                 }
             }
                 
             case .failure(let error):
-                completion(error)
+                resultQueue.async {
+                    completion(error)
+                }
             }
         }
     }
     
-    public func readAccounts(completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
+    /// Reads the service data source accounts user has added to library related to the configured contract.
+    ///
+    /// Note: If this is called on either a write-only contract or a contract which reads non-service data, this will return an error.
+    ///
+    /// - Parameter completion: Block called upon completion containing either relevant account info, if successful, or an error
+    public func readAccounts(resultQueue: DispatchQueue = .main, completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
         validateOrRefreshSession(readOptions: nil) { result in
             do {
                 let session = try result.get()
                 self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
                     do {
                         let (data, fileInfo) = try result.get()
-                        var unpackedData = try self.dataDecryptor.decrypt(fileContent: data)
-                        if fileInfo.compression == "gzip" {
-                            unpackedData = try DataCompressor.gzip.decompress(data: unpackedData)
-                        }
-                    
+                        let unpackedData = try self.dataDecryptor.decrypt(data: data, fileInfo: fileInfo)
                         let accounts = try unpackedData.decoded() as AccountsInfo
-                        completion(.success(accounts))
+                        resultQueue.async {
+                            completion(.success(accounts))
+                        }
                     }
                     catch {
-                        completion(.failure(error))
+                        resultQueue.async {
+                            completion(.failure(error))
+                        }
                     }
                 }
             }
             catch {
-                completion(.failure(error))
+                resultQueue.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
     
-    public func readFiles(readOptions: ReadOptions?, downloadHandler: @escaping (Result<FileContainer<RawData>, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
-        self.sessionDataCompletion = completion
-        self.sessionContentHandler = downloadHandler
+    /// Fetches content for all the files limited by read options.
+    ///
+    /// An attempt is made to fetch each requested file and the result of the attempt is passed back via the download handler.
+    /// As download requests are asynchronous, the download handler may be called concurrently, so the handler implementation should allow for this.
+    ///
+    /// If this function is called while files are being read, an error denoting this will be immediately
+    /// returned in the completion block of this subsequent call and will not affect any current calls.
+    ///
+    /// For service-based data sources, will also attempt to retrieve any new data directly from the services.
+    ///
+    /// - Parameters:
+    ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
+    ///   - downloadHandler: Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
+    ///   - completion: Block called when fetching all files has completed. Contains final list of files or an error if reading file list failed
+    public func readFiles(readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, downloadHandler: @escaping (Result<File, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
+        guard !isFetchingSessionData else {
+            resultQueue.async {
+                completion(.failure(SDKError.fileListPollingTimeout)) // TODO: Update this error to an appropriate error
+            }
+            return
+        }
+        
+        self.sessionDataCompletion = { result in
+            resultQueue.async {
+                completion(result)
+            }
+        }
+        self.sessionContentHandler = { result in
+            resultQueue.async {
+                downloadHandler(result)
+            }
+        }
         
         self.beginFileListPollingIfRequired()
     }
     
-    public func write(data: Data, metadata: RawFileMetadata, completion: @escaping (Result<Void, Error>) -> Void) {
+    /// Writes data to user's library associated with configured contract
+    /// - Parameters:
+    ///   - data: The data to be written
+    ///   - metadata: The metadata describing the data to be written. See `RawFileMetadataBuilder` for details on building the metadata
+    ///   - completion: Block called when writing data has complete with any error ancountered.
+    public func write(data: Data, metadata: RawFileMetadata, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Void, Error>) -> Void) {
         let metadataData: Data
         do {
             metadataData = try metadata.encoded()
         }
         catch {
-            return completion(.failure(error))
+            resultQueue.async {
+                completion(.failure(error))
+            }
+            return
         }
         
         validateOrRefreshCredentials { result in
             switch result {
             case .success(let credentials):
-                self.write(data: data, metadata: metadataData, credentials: credentials, completion: completion)
+                self.write(data: data, metadata: metadataData, credentials: credentials) { result in
+                    resultQueue.async {
+                        completion(result)
+                    }
+                }
             
             case .failure(let error):
-                completion(.failure(error))
+                resultQueue.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
     
-    public func deleteUser(completion: @escaping (Error?) -> Void) {
+    /// Deletes the user's library associated with the configured contract.
+    ///
+    /// Please note that if multiple contracts are linked to the same library,
+    /// then `deleteUser` will also need to be called on those contracts to remove
+    /// any stored credentials, in which case an error may be reported on those calls.
+    ///
+    /// - Parameter completion: Block called on completion with any error encountered.
+    public func deleteUser(resultQueue: DispatchQueue = .main, completion: @escaping (Error?) -> Void) {
         validateOrRefreshCredentials { result in
             switch result {
             case .success(let credentials):
                 self.authService.deleteUser(oauthToken: credentials.token) { result in
                     self.credentials = nil
                     self.session = nil
-                    switch result {
-                    case .success:
-                        completion(nil)
-                    case .failure(let error):
-                        completion(error)
+                    resultQueue.async {
+                        switch result {
+                        case .success:
+                            completion(nil)
+                        case .failure(let error):
+                            completion(error)
+                        }
                     }
                 }
             
             case .failure(let error):
-                completion(error)
+                resultQueue.async {
+                    completion(error)
+                }
             }
         }
     }
@@ -252,16 +332,20 @@ public final class DigiMe {
     /// - Parameters:
     ///   - scope: Scope to limit response
     ///   - completion: Block called upon completion with either the service list or any errors encountered
-    public func availableServices(scope: AvailableServicesScope = .thisContractOnly, completion: @escaping (Result<ServicesInfo, Error>) -> Void) {
+    public func availableServices(scope: AvailableServicesScope = .thisContractOnly, resultQueue: DispatchQueue = .main, completion: @escaping (Result<ServicesInfo, Error>) -> Void) {
         let route = ServicesRoute(contractId: scope == .thisContractOnly ? configuration.contractId : nil)
         apiClient.makeRequest(route) { result in
             switch result {
             case .success(let response):
                 let availableServices = response.data.services.filter { $0.isAvailable }
                 let info = ServicesInfo(countries: response.data.countries, serviceGroups: response.data.serviceGroups, services: availableServices)
-                completion(.success(info))
+                resultQueue.async {
+                    completion(.success(info))
+                }
             case .failure(let error):
-                completion(.failure(error))
+                resultQueue.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -298,7 +382,7 @@ public final class DigiMe {
     }
     
     // Auth - needs app to be able to receive response via URL
-    private func beginAuth(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String?, completion: @escaping (Error?) -> Void) {
+    private func beginAuth(serviceId: Int?, readOptions: ReadOptions?, linkToContractWithId contractLinkId: String?, completion: @escaping (Error?) -> Void) {
         
         // Ensure we don't have any session left over from previous
         session = nil
@@ -456,10 +540,6 @@ public final class DigiMe {
     
     // MARK: - File Contents
     private func beginFileListPollingIfRequired() {
-        guard !isFetchingSessionData else {
-            return
-        }
-        
         fileListCache.reset()
         isFetchingSessionData = true
         fileService.allDownloadsFinishedHandler = {
@@ -489,11 +569,11 @@ public final class DigiMe {
                 self.handleNewFileListItems(newItems)
 
             case .failure(let error):
-            // If the error occurred we don't want to terminate right away
-            // There could still be files downloading. Instead, we will store the sessionError
-            // which will be forwarded in completion once all file have been downloaded
-            
-            // If no files are being downloaded, we can terminate session fetch right away
+                // If the error occurred we don't want to terminate right away
+                // There could still be files downloading. Instead, we will store the sessionError
+                // which will be forwarded in completion once all file have been downloaded
+                
+                // If no files are being downloaded, we can terminate session fetch right away
                 if !self.fileService.isDownloadingFiles {
                     self.completeSessionDataFetch(error: error)
                 }
@@ -589,28 +669,5 @@ public final class DigiMe {
         if isSyncRunning {
             refreshFileList()
         }
-    }
-}
-
-class FileListCache {
-    
-    private var cache = [String: Date]()
-
-    func newItems(from items: [FileListItem]) -> [FileListItem] {
-        items.filter { item in
-            guard let existingItem = cache[item.name] else {
-                return true
-            }
-
-            return existingItem < item.updatedDate
-        }
-    }
-
-    func add(items: [FileListItem]) {
-        items.forEach { cache[$0.name] = $0.updatedDate }
-    }
-    
-    func reset() {
-        cache = [:]
     }
 }
