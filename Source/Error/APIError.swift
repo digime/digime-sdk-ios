@@ -9,12 +9,7 @@
 import Foundation
 
 public struct APIError: Decodable {
-    struct Recovery: Decodable {
-        let validAt: TimeInterval
-    }
-    
     public let code: String
     public let message: String
     public let reference: String?
-    let recovery: Recovery?
 }
