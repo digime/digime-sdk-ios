@@ -162,13 +162,13 @@ enum JWTUtility {
     ///   - jwt: pre-authorization code wrapped in JWT
     ///   - keySet: JSON Web Key Set
     /// - Returns: The pre-authorization code if successful or an error if not
-    static func preAuthCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, Error> {
+    static func preAuthCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, SDKError> {
         let decoder = decoder(keySet: keySet)
         
         return Result {
             let decodedJwt = try decoder.decode(JWT<PayloadResponsePreauthJWT>.self, fromString: jwt)
             return decodedJwt.claims.preAuthCode
-        }
+        }.mapError { _ in SDKError.invalidData }
     }
     
     /// Extracts access and refresh tokens from JWT, and wraps in `OAuthToken`.
@@ -177,13 +177,13 @@ enum JWTUtility {
     ///   - jwt: JSON Web Token containing access/refresh token pair.
     ///   - keySet: JSON Web Key Set
     /// - Returns: An `OAuthToken` if successful or an error if not
-    static func oAuthToken(from jwt: String, keySet: JSONWebKeySet) -> Result<OAuthToken, Error> {
+    static func oAuthToken(from jwt: String, keySet: JSONWebKeySet) -> Result<OAuthToken, SDKError> {
         let decoder = decoder(keySet: keySet)
         
         return Result {
             let decodedJwt = try decoder.decode(JWT<OAuthToken>.self, fromString: jwt)
             return decodedJwt.claims
-        }
+        }.mapError { _ in SDKError.invalidData }
     }
     
     /// Extracts reference code from JWT
@@ -192,13 +192,13 @@ enum JWTUtility {
     ///   - jwt: reference code wrapped in JWT
     ///   - keySet: JSON Web Key Set
     /// - Returns: The reference code if successful or an error if not
-    static func referenceCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, Error> {
+    static func referenceCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, SDKError> {
         let decoder = decoder(keySet: keySet)
         
         return Result {
             let decodedJwt = try decoder.decode(JWT<PayloadResponseTokenReferenceJWT>.self, fromString: jwt)
             return decodedJwt.claims.referenceCode
-        }
+        }.mapError { _ in SDKError.invalidData }
     }
     
     /// Creates request JWT which can be used to trigger data

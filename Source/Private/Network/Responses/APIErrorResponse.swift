@@ -1,5 +1,5 @@
 //
-//  ErrorWrapper.swift
+//  APIErrorResponse.swift
 //  DigiMeSDK
 //
 //  Created on 07/06/2021.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct ErrorWrapper: Decodable {
-    let error: ErrorResponse
+struct APIErrorResponse: Decodable {
+    let error: APIError
 }

@@ -19,6 +19,8 @@ protocol Route {
     var requestBody: RequestBody? { get }
     
     func toUrlRequest() -> URLRequest
+    
+    // Throws SDKError or DecodingError
     func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType
 }
 

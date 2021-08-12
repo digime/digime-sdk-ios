@@ -9,7 +9,7 @@
 import Foundation
 
 struct ReadDataRoute: Route {
-    typealias ResponseType = (Data, FileInfo)
+    typealias ResponseType = FileResponse
     
     static let method = "GET"
     static let path = "permission-access/query"
@@ -24,7 +24,8 @@ struct ReadDataRoute: Route {
     
     let sessionKey: String
     let fileId: String
-
+    
+    // Throws SDKError or DecodingError
     func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType {
         guard
             let metadataBase64 = headers["X-Metadata"] as? String,
@@ -33,6 +34,6 @@ struct ReadDataRoute: Route {
         }
         
         let fileInfo = try metadataData.decoded() as FileInfo
-        return (data, fileInfo)
+        return FileResponse(data: data, info: fileInfo)
     }
 }

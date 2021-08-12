@@ -1,5 +1,5 @@
 //
-//  ErrorResponse.swift
+//  APIError.swift
 //  DigiMeSDK
 //
 //  Created on 07/06/2021.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct ErrorResponse: Decodable {
+public struct APIError: Decodable {
     struct Recovery: Decodable {
         let validAt: TimeInterval
     }
     
-    let code: String
-    let message: String
-    let reference: String?
+    public let code: String
+    public let message: String
+    public let reference: String?
     let recovery: Recovery?
 }

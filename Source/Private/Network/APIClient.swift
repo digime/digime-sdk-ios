@@ -21,30 +21,29 @@ class APIClient {
         return URLSession(configuration: configuration)
     }()
     
-    func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, Error>) -> Void) {
+    func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, SDKError>) -> Void) {
         let request = route.toUrlRequest()
-                
+
         session.dataTask(with: request) { data, response, error in
             if let error = error {
-                completion(.failure(error))
+                Logger.error(error.localizedDescription)
+                completion(.failure(.urlRequestFailed(error: error)))
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(HTTPError.noResponse))
+                Logger.error("Request: \(request.url?.absoluteString ?? "") received no response")
+                completion(.failure(.other))
                 return
             }
             
             self.logStatusMessage(from: httpResponse)
             
             guard (200..<300).contains(httpResponse.statusCode) else {
-                var errorWrapper: ErrorWrapper?
-                if let data = data {
-                    errorWrapper = try? data.decoded()
-                }
+                let errorResponse = try? data?.decoded() as APIErrorResponse?
                 
-                if let errorResponse = errorWrapper?.error {
-                    Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode), error code: \(errorResponse.code), message: \(errorResponse.message)")
+                if let apiError = errorResponse?.error {
+                    Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode), error code: \(apiError.code), message: \(apiError.message)")
                 }
                 else if let data = data, let message = String(data: data, encoding: .utf8) {
                     Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode) \(message)")
@@ -53,12 +52,28 @@ class APIClient {
                     Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode)")
                 }
                 
-                completion(.failure(HTTPError.unsuccesfulStatusCode(httpResponse.statusCode, response: errorWrapper?.error)))
+                let resultError: SDKError = {
+                    guard let errorResponse = errorResponse else {
+                        return .httpResponseError(statusCode: httpResponse.statusCode, apiError: nil)
+                    }
+                    
+                    switch (httpResponse.statusCode, errorResponse.error.code) {
+                    case (403, "SDKVersionInvalid"):
+                        return .invalidSdkVersion
+                    case (400, "ScopeOutOfBounds"):
+                        return .scopeOutOfBounds
+                    default:
+                        return .httpResponseError(statusCode: httpResponse.statusCode, apiError: errorResponse.error)
+                    }
+                }()
+                
+                completion(.failure(resultError))
                 return
             }
             
             guard let data = data else {
-                completion(.failure(HTTPError.noData))
+                Logger.error("Request: \(request.url?.absoluteString ?? "") received no data")
+                completion(.failure(.other))
                 return
             }
             
@@ -68,8 +83,11 @@ class APIClient {
                 let result = try route.parseResponse(data: data, headers: httpHeaders)
                 completion(.success(result))
             }
-            catch {
+            catch let error as SDKError {
                 completion(.failure(error))
+            }
+            catch {
+                completion(.failure(SDKError.invalidData))
             }
         }.resume()
     }
