@@ -352,7 +352,7 @@ public final class DigiMe {
     
     private func write(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Void, SDKError>) -> Void) {
         guard let writeAccessInfo = credentials.writeAccessInfo else {
-            return completion(.failure(.other))
+            return completion(.failure(.incorrectContractType))
         }
         
         let symmetricKey = AES256.generateSymmetricKey()
@@ -471,11 +471,11 @@ public final class DigiMe {
                         case .success(let credentials):
                             self.refreshSession(credentials: credentials, readOptions: readOptions, completion: completion)
                         case .failure(let error):
-                            self.sessionError = error
+                            completion(.failure(error))
                         }
                     }
                 default:
-                    self.sessionError = error
+                    completion(.failure(error))
                 }
             }
         }

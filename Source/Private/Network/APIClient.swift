@@ -40,32 +40,7 @@ class APIClient {
             self.logStatusMessage(from: httpResponse)
             
             guard (200..<300).contains(httpResponse.statusCode) else {
-                let errorResponse = try? data?.decoded() as APIErrorResponse?
-                
-                if let apiError = errorResponse?.error {
-                    Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode), error code: \(apiError.code), message: \(apiError.message)")
-                }
-                else if let data = data, let message = String(data: data, encoding: .utf8) {
-                    Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode) \(message)")
-                }
-                else {
-                    Logger.error("Request: \(request.url?.absoluteString ?? "") failed with status code: \(httpResponse.statusCode)")
-                }
-                
-                let resultError: SDKError = {
-                    guard let errorResponse = errorResponse else {
-                        return .httpResponseError(statusCode: httpResponse.statusCode, apiError: nil)
-                    }
-                    
-                    switch (httpResponse.statusCode, errorResponse.error.code) {
-                    case (403, "SDKVersionInvalid"):
-                        return .invalidSdkVersion
-                    case (400, "ScopeOutOfBounds"):
-                        return .scopeOutOfBounds
-                    default:
-                        return .httpResponseError(statusCode: httpResponse.statusCode, apiError: errorResponse.error)
-                    }
-                }()
+                let resultError = self.parseHttpError(statusCode: httpResponse.statusCode, data: data, urlString: request.url?.absoluteString)
                 
                 completion(.failure(resultError))
                 return
@@ -90,6 +65,38 @@ class APIClient {
                 completion(.failure(SDKError.invalidData))
             }
         }.resume()
+    }
+    
+    private func parseHttpError(statusCode: Int, data: Data?, urlString: String?) -> SDKError {
+        let errorResponse = try? data?.decoded() as APIErrorResponse?
+        
+        var logMessage = "Request: \(urlString ?? "") failed with status code: \(statusCode)"
+        if let apiError = errorResponse?.error {
+            logMessage += ", error code: \(apiError.code), message: \(apiError.message)"
+        }
+        else if let data = data, let message = String(data: data, encoding: .utf8) {
+            logMessage += " \(message)"
+        }
+        
+        Logger.error(logMessage)
+        
+        guard let errorResponse = errorResponse else {
+            return .httpResponseError(statusCode: statusCode, apiError: nil)
+        }
+        
+        switch (statusCode, errorResponse.error.code) {
+        case (403, "SDKVersionInvalid"):
+            return .invalidSdkVersion
+            
+        case (400, "ScopeOutOfBounds"):
+            return .scopeOutOfBounds
+            
+        case (400, "InvalidContractDataRequest"):
+            return .incorrectContractType
+            
+        default:
+            return .httpResponseError(statusCode: statusCode, apiError: errorResponse.error)
+        }
     }
     
     private func logStatusMessage(from response: HTTPURLResponse) {
