@@ -29,7 +29,9 @@ class DigiMeService {
         dmeClient.readAccounts() { result in
             switch result {
             case .success(let accountsInfo):
-                self.repository.process(accountsInfo: accountsInfo)
+                self.serialQueue.sync {
+                    self.repository.process(accountsInfo: accountsInfo)
+                }
                 
             case .failure(let error):
                 print("digi.me failed to retrieve accounts with error: \(error)")
