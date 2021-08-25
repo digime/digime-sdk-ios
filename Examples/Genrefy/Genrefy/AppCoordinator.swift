@@ -82,6 +82,7 @@ extension AppCoordinator {
         let appId = "YOUR_APP_ID"
         let contractId = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
         let privateKey = """
+-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAvup5e4PbVBVNHtRosFXPPvZCO1kNySe9qo2zI+QnHk7jyK2Y
 11MGJiVLkxKp02bGV4NlK5ASptLH22imPSYP/INE1p+XxcSIth1rFZy0b/aWDktM
 SB5KMWhIhcmcjLqTuQ8q6qQFDhRVUfBtgbTz64LQ29IHc5EBSN4XzMYwnybbJ6ye
@@ -107,9 +108,15 @@ rrS5hMEWZT6Pv216Lzkl45GRZbZlpc+xwuAzTnD/l+XmTM87j0kD85CkCc6kFeAP
 kW8UAQKBgFv91+8v1pFlPGgbwT3NFM/z9CIbjTl+5wAzvSPO8q2tGXDBO2dpt+2U
 XTB5irocXRj2XXn1sMpGBJGf4AKRrIhQNIoAhouh7btYBAD7+eT8SlGQ75wKkaDW
 u3W6P+D7xkopNDDFki7IcLyaRzKvXjGf8HeKz0YP+XomHb25Bc3A
+-----END RSA PRIVATE KEY-----
 """
-        
-        let configuration = Configuration(appId: appId, contractId: contractId, privateKey: privateKey, publicKey: nil)
+        let configuration: Configuration
+        do {
+            configuration = try Configuration(appId: appId, contractId: contractId, privateKey: privateKey, publicKey: nil)
+        }
+        catch {
+            fatalError("Error creating configuration \(error)")
+        }
         
         return DigiMe(configuration: configuration)
     }

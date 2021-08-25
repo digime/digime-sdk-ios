@@ -8,104 +8,54 @@
 
 import Foundation
 
-public enum DataParsingError: Error {
-    case couldNotDeserialiseRawData
-}
-
-public protocol InitialisableFromRawData {
-    init(rawData: Data, mimeType: MimeType) throws
-}
-
-public enum MimeType: String, CaseIterable, Codable {
-    case applicationJson = "application/json"
-    case applicationOctetStream = "application/octet-stream"
+/// Represents a file retrieved from library
+public struct File {
     
-    case imageJpeg = "image/jpeg"
-    case imageTiff = "image/tiff"
-    case imagePng = "image/png"
-    case imageGif = "image/gif"
-    case imageBmp = "image/bmp"
+    /// The identifier of the file
+    public let identifier: String
     
-    case textPlain = "text/plain"
-    case textJson = "text/json"
-}
-
-public protocol DataRepresentation: InitialisableFromRawData {
+    /// The file's metadata
+    public let metadata: FileMetadata
     
-    associatedtype FileDataType
+    /// The file's raw data
+    public let data: Data
     
-    static var compatibleMimeTypes: [MimeType] { get }
+    /// The file's MIME type
+    public var mimeType: MimeType {
+        switch metadata {
+        case .mapped:
+            return .applicationOctetStream
+        case .raw(let meta):
+            return meta.mimeType
+        case .none:
+            return .applicationOctetStream
+        }
+    }
     
-    var fileMimeType: MimeType { get }
-    var fileContent: FileDataType { get }
-}
-
-public class JSONData: DataRepresentation {
-    public var fileMimeType: MimeType
-    public var fileContent: [[AnyHashable: Any]]
-    
-    public static let compatibleMimeTypes: [MimeType] = [MimeType.applicationJson]
-    
-    public required init(rawData: Data, mimeType: MimeType) throws {
-        
-        guard let json = (try? JSONSerialization.jsonObject(with: rawData, options: [])) as? [[AnyHashable: Any]] else {
-            throw DataParsingError.couldNotDeserialiseRawData
+    /// Convenience function to return data as JSON object, if possible
+    /// - Returns: JSON object or nil if deserialization unsuccesful
+    public func toJSON() -> Any? {
+        guard mimeType == .applicationJson else {
+            return nil
         }
         
-        self.fileContent = json
-        self.fileMimeType = mimeType
+        return try? JSONSerialization.jsonObject(with: data, options: [])
     }
-}
-
-public class ImageData: DataRepresentation {
-    public var fileMimeType: MimeType
-    public var fileContent: UIImage
     
-    public static let compatibleMimeTypes: [MimeType] = [.imageBmp, .imageGif, .imagePng, .imageJpeg, .imageTiff]
-    
-    public required init(rawData: Data, mimeType: MimeType) throws {
-        
-        guard let image = UIImage(data: rawData) else {
-            throw DataParsingError.couldNotDeserialiseRawData
+    /// Convenience function to return data as UIImage, if possible
+    /// - Returns: UIImage or nil if mime type is not an image type
+    public func toImage() -> UIImage? {
+        let imageMimeTypes: [MimeType] = [.imageBmp, .imageGif, .imagePng, .imageJpeg, .imageTiff]
+        guard imageMimeTypes.contains(mimeType) else {
+            return nil
         }
         
-        self.fileContent = image
-        self.fileMimeType = mimeType
-    }
-}
-
-public class RawData: DataRepresentation {
-    public var fileMimeType: MimeType
-    public var fileContent: Data
-    
-    public static let compatibleMimeTypes: [MimeType] = MimeType.allCases
-    
-    public required init(rawData: Data, mimeType: MimeType) throws {
-        self.fileContent = rawData
-        self.fileMimeType = mimeType
-    }
-}
-
-public class FileContainer<DataType: DataRepresentation> {
-    
-    private var file: DataType
-    
-    public var identifier: String
-    public var metadata: FileMetadata
-    
-    public var content: DataType.FileDataType {
-        return file.fileContent
+        return UIImage(data: data)
     }
     
-    init(emptyFileWithId id: String, dataType: DataType.Type, metadata: FileMetadata) throws {
+    init(fileWithId id: String, rawData: Data, metadata: FileMetadata) {
         identifier = id
-        file = try dataType.init(rawData: Data(), mimeType: MimeType.applicationOctetStream)
-        self.metadata = metadata
-    }
-    
-    init(fileWithId id: String, rawData: Data, mimeType: MimeType, dataType: DataType.Type, metadata: FileMetadata) throws {
-        identifier = id
-        file = try dataType.init(rawData: rawData, mimeType: mimeType)
+        data = rawData
         self.metadata = metadata
     }
 }

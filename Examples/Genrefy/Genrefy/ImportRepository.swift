@@ -32,19 +32,29 @@ class ImportRepository: NSObject {
     var allOrderedGenreSummaries: [GenreSummary] {
         return orderedGenreSummaries(for: genresCounts)
     }
-    var files = [FileContainer<RawData>]()
+    var files = [File]()
     var accounts = [Account]()
     weak var delegate: ImportRepositoryDelegate?
     
-    func process(file: FileContainer<RawData>) {
+    func process(file: File) {
         files.append(file)
-        guard file.metadata?.objectType == "playhistory" else {
+        
+        let metadata: MappedFileMetadata? = {
+            switch file.metadata {
+            case .mapped(let metadata):
+                return metadata
+            default:
+                return nil
+            }
+        }()
+        
+        guard metadata?.objectType == "playhistory" else {
             print("Unexpected file \(file.identifier)")
             return
         }
         
         do {
-            let songArray = try JSONDecoder().decode([Song].self, from: file.content)
+            let songArray = try JSONDecoder().decode([Song].self, from: file.data)
             process(songs: songArray)
             
             DispatchQueue.main.async {

@@ -276,7 +276,7 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
     }
 
     private func getServiceData() {
-        digiMe.readFiles(readOptions: nil) { result in
+        digiMe.readFiles(readOptions: nil, resultQueue: .global()) { result in
             switch result {
             case .success(let fileContainer):
                 var message = "Downloaded file \(fileContainer.identifier)"

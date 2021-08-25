@@ -38,12 +38,12 @@ public class CallbackService {
         }
         
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
-            NSLog("Unable to parse callback url: \(url.absoluteString)")
+            Logger.warning("Unable to parse callback url: \(url.absoluteString)")
             return false
         }
         
         guard let action = urlComponents.host else {
-            NSLog("Unable to extract callback action")
+            Logger.warning("Unable to extract callback action")
             return false
         }
         
