@@ -6,6 +6,7 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
+import AuthenticationServices
 import Foundation
 import SafariServices
 
@@ -14,6 +15,7 @@ final class ConsentManager: NSObject {
     private var userConsentCompletion: ((Result<ConsentResponse, SDKError>) -> Void)?
     private var addServiceCompletion: ((Result<Void, SDKError>) -> Void)?
     private var safariViewController: SFSafariViewController?
+    private var authenticationSession: AnyObject?
     
     private enum ResponseKey: String {
         case state
@@ -55,7 +57,9 @@ final class ConsentManager: NSObject {
         }
         
         components.percentEncodedQueryItems = percentEncodedQueryItems
-        open(url: components.url!)
+        open(url: components.url!) { result in
+            
+        }
     }
     
     func addService(identifier: Int, token: String, completion: @escaping ((Result<Void, SDKError>) -> Void)) {
@@ -76,19 +80,44 @@ final class ConsentManager: NSObject {
             URLQueryItem(name: "service", value: "\(identifier)"),
         ]
         
-        open(url: components.url!)
+        open(url: components.url!) { result in
+            
+        }
     }
     
-    private func open(url: URL) {
+    private func open(url: URL, completion: ((Result<URLComponents, SDKError>) -> Void)) {
         DispatchQueue.main.async {
-            let viewController = SFSafariViewController(url: url)
-            viewController.delegate = self
-            viewController.presentationController?.delegate = self
-            viewController.dismissButtonStyle = .cancel
-            self.safariViewController = viewController
+            let session = ASWebAuthenticationSession(url: url, callbackURLScheme: "digime-ca-\(self.configuration.appId)") { [weak self] callbackUrl, error in
+                guard let callbackUrl = callbackUrl else {
+                    
+                    Logger.error("Auth error: \(error)")
+                    switch error {
+                    case ASWebAuthenticationSessionError.canceledLogin:
+                        completion(.failure(.authorizationCancelled))
+                    }
+                    return
+                }
+                
+                
+                
+                //            self.handleAuthenticationCallback(url: url)
+            }
             
-            UIViewController.topMostViewController()?.present(viewController, animated: true, completion: nil)
+            session.presentationContextProvider = self
+            self.authenticationSession = session
+            session.start()
         }
+        
+        
+//        DispatchQueue.main.async {
+//            let viewController = SFSafariViewController(url: url)
+//            viewController.delegate = self
+//            viewController.presentationController?.delegate = self
+//            viewController.dismissButtonStyle = .cancel
+//            self.safariViewController = viewController
+//
+//            UIViewController.topMostViewController()?.present(viewController, animated: true, completion: nil)
+//        }
     }
     
     private func finishUserConsent(with result: Result<ConsentResponse, Error>) {
@@ -292,5 +321,12 @@ extension ConsentManager: UIAdaptivePresentationControllerDelegate {
         }
         
         userCancelled()
+    }
+}
+
+extension ConsentManager: ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+        return window ?? ASPresentationAnchor()
     }
 }
