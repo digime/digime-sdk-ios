@@ -8,8 +8,10 @@
 
 import Foundation
 
-class APIClient {
+class APIClient: NSObject {
     typealias HTTPHeader = [AnyHashable: Any]
+    
+    private let certificatePinner = CertificatePinner()
     
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
@@ -18,7 +20,7 @@ class APIClient {
             "Accept": "application/json",
         ]
         
-        return URLSession(configuration: configuration)
+        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
     func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, SDKError>) -> Void) {
@@ -108,5 +110,17 @@ class APIClient {
         }
         
         Logger.info("\n===========================================================\nSDK Status: \(status)\n\(message)\n===========================================================")
+    }
+}
+
+extension APIClient: URLSessionDelegate {
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        var challengeDisposition: URLSession.AuthChallengeDisposition = .performDefaultHandling
+        
+        if challenge.protectionSpace.host == URL(string: APIConfig.baseURLPath)!.host {
+            challengeDisposition = certificatePinner.authenticate(challenge: challenge)
+        }
+        
+        completionHandler(challengeDisposition, nil)
     }
 }
