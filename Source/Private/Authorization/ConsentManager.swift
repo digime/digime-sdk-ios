@@ -11,8 +11,8 @@ import SafariServices
 
 final class ConsentManager: NSObject {
     private let configuration: Configuration
-    private var userConsentCompletion: ((Result<ConsentResponse, Error>) -> Void)?
-    private var addServiceCompletion: ((Result<Void, Error>) -> Void)?
+    private var userConsentCompletion: ((Result<ConsentResponse, SDKError>) -> Void)?
+    private var addServiceCompletion: ((Result<Void, SDKError>) -> Void)?
     private var safariViewController: SFSafariViewController?
     
     private enum ResponseKey: String {
@@ -33,7 +33,7 @@ final class ConsentManager: NSObject {
         self.configuration = configuration
     }
     
-    func requestUserConsent(preAuthCode: String, serviceId: Int?, completion: @escaping ((Result<ConsentResponse, Error>) -> Void)) {
+    func requestUserConsent(preAuthCode: String, serviceId: Int?, completion: @escaping ((Result<ConsentResponse, SDKError>) -> Void)) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
                 self.requestUserConsent(preAuthCode: preAuthCode, serviceId: serviceId, completion: completion)
@@ -58,7 +58,7 @@ final class ConsentManager: NSObject {
         open(url: components.url!)
     }
     
-    func addService(identifier: Int, token: String, completion: @escaping ((Result<Void, Error>) -> Void)) {
+    func addService(identifier: Int, token: String, completion: @escaping ((Result<Void, SDKError>) -> Void)) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
                 self.addService(identifier: identifier, token: token, completion: completion)
@@ -101,7 +101,7 @@ final class ConsentManager: NSObject {
         
         reset()
         
-        userConsentCompletion?(result)
+        userConsentCompletion?(mapErrors(result: result))
         userConsentCompletion = nil
         addServiceCompletion = nil
     }
@@ -116,9 +116,26 @@ final class ConsentManager: NSObject {
         
         reset()
         
-        addServiceCompletion?(result)
+        addServiceCompletion?(mapErrors(result: result))
         addServiceCompletion = nil
         userConsentCompletion = nil
+    }
+    
+    private func mapErrors<T>(result: Result<T, Error>) -> Result<T, SDKError> {
+        return result.mapError { error in
+            switch error {
+            case ConsentError.userCancelled:
+                return .authorizationCancelled
+            case ConsentError.serviceOnboardError:
+                return .addingServiceFailed
+            case ConsentError.unexpectedError:
+                return .other
+            case let err as ConsentError:
+                return .authorizationFailed(code: err.rawValue)
+            default:
+                return .other
+            }
+        }
     }
     
     private func userCancelled() {
@@ -131,10 +148,10 @@ final class ConsentManager: NSObject {
         
         reset()
         
-        addServiceCompletion?(.failure(ConsentError.userCancelled))
+        addServiceCompletion?(.failure(.authorizationCancelled))
         addServiceCompletion = nil
         
-        userConsentCompletion?(.failure(ConsentError.userCancelled))
+        userConsentCompletion?(.failure(.authorizationCancelled))
         userConsentCompletion = nil
     }
     

@@ -160,12 +160,12 @@ class WriteDataViewController: UIViewController {
                     self.logger.log(message: "Uploaded JSON:\n\(jsonString)")
                     
                 case .failure(let error):
-                    self.logger.log(message: "Upload Error: \(error.localizedDescription)")
+                    self.logger.log(message: "Upload Error: \(error)")
                 }
             }
         }
         catch {
-            logger.log(message: "JSON files parsing Error: \(error.localizedDescription)")
+            logger.log(message: "JSON files parsing Error: \(error)")
         }
     }
     
@@ -274,7 +274,7 @@ extension WriteDataViewController: UIImagePickerControllerDelegate {
                     self.logger.log(message: "Uploaded image:\n\(fileName)\n\(image.size) - \(data.count)")
 
                 case .failure(let error):
-                    self.logger.log(message: "Upload Error: \(error.localizedDescription)")
+                    self.logger.log(message: "Upload Error: \(error)")
                 }
             }
         }

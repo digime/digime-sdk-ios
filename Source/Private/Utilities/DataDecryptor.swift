@@ -13,12 +13,17 @@ class DataDecryptor {
         self.configuration = configuration
     }
     
-    func decrypt(data: Data, fileInfo: FileInfo) throws -> Data {
-        var unpackedData = try Crypto.decrypt(encryptedBase64EncodedData: data, privateKeyData: configuration.privateKeyData)
-        if fileInfo.compression == "gzip" {
-            unpackedData = try DataCompressor.gzip.decompress(data: unpackedData)
+    func decrypt(response: FileResponse) throws -> Data {
+        do {
+            var unpackedData = try Crypto.decrypt(encryptedBase64EncodedData: response.data, privateKeyData: configuration.privateKeyData)
+            if response.info.compression == "gzip" {
+                unpackedData = try DataCompressor.gzip.decompress(data: unpackedData)
+            }
+            
+            return unpackedData
         }
-        
-        return unpackedData
+        catch {
+            throw SDKError.invalidData
+        }
     }
 }

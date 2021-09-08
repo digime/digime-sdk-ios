@@ -15,7 +15,7 @@ class FileDownloadOperation: RetryingOperation {
     private let sessionKey: String
     private let fileId: String
     
-    var downloadCompletion: ((Result<File, Error>) -> Void)?
+    var downloadCompletion: ((Result<File, SDKError>) -> Void)?
     
     init(sessionKey: String, fileId: String, apiClient: APIClient, dataDecryptor: DataDecryptor) {
         self.apiClient = apiClient
@@ -32,25 +32,20 @@ class FileDownloadOperation: RetryingOperation {
         
         let route = ReadDataRoute(sessionKey: sessionKey, fileId: fileId)
         apiClient.makeRequest(route) { result in
-            let newResult: Result<File, Error>?
+            let newResult: Result<File, SDKError>?
             do {
-                let (data, fileInfo) = try result.get()
-                let unpackedData = try self.dataDecryptor.decrypt(data: data, fileInfo: fileInfo)
-                let file = File(fileWithId: self.fileId, rawData: unpackedData, metadata: fileInfo.metadata)
+                let response = try result.get()
+                let unpackedData = try self.dataDecryptor.decrypt(response: response)
+                let file = File(fileWithId: self.fileId, rawData: unpackedData, metadata: response.info.metadata)
                 newResult = .success(file)
             }
-            catch let error as HTTPError {
-                switch error {
-                case .unsuccesfulStatusCode(404, _) where self.canRetry:
+            catch SDKError.httpResponseError(404, _) where self.canRetry {
                     // Queue a retry, so don't finish or call download handler
                     self.retry()
                     newResult = nil
-                default:
-                    newResult = .failure(error)
-                }
             }
             catch {
-                newResult = .failure(error)
+                newResult = .failure(.other)
             }
             
             if let newResult = newResult {

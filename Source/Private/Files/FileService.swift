@@ -40,7 +40,7 @@ class FileService {
         kvoToken?.invalidate()
     }
     
-    func downloadFile(sessionKey: String, fileId: String, completion: @escaping (Result<File, Error>) -> Void) {
+    func downloadFile(sessionKey: String, fileId: String, completion: @escaping (Result<File, SDKError>) -> Void) {
         let operation = FileDownloadOperation(sessionKey: sessionKey, fileId: fileId, apiClient: apiClient, dataDecryptor: dataDecryptor)
         operation.downloadCompletion = completion
         queue.addOperation(operation)

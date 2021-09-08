@@ -24,12 +24,12 @@ public final class DigiMe {
         FileService(apiClient: apiClient, dataDecryptor: dataDecryptor)
     }()
     
-    private var sessionDataCompletion: ((Result<FileList, Error>) -> Void)?
-    private var sessionContentHandler: ((Result<File, Error>) -> Void)?
+    private var sessionDataCompletion: ((Result<FileList, SDKError>) -> Void)?
+    private var sessionContentHandler: ((Result<File, SDKError>) -> Void)?
     
     @Atomic private var isFetchingSessionData = false
     private var fileListCache = FileListCache()
-    private var sessionError: Error?
+    private var sessionError: SDKError?
     private var sessionFileList: FileList?
     private var stalePollCount = 0
     
@@ -139,7 +139,7 @@ public final class DigiMe {
                     completion(nil)
                 }
                 
-            case .failure(SDKError.authenticationRequired):
+            case .failure(SDKError.authorizationRequired):
                 self.beginAuth(serviceId: serviceId, readOptions: readOptions, linkToContractWithId: contractLinkId) { error in
                     resultQueue.async {
                         completion(error)
@@ -204,8 +204,8 @@ public final class DigiMe {
                 let session = try result.get()
                 self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
                     do {
-                        let (data, fileInfo) = try result.get()
-                        let unpackedData = try self.dataDecryptor.decrypt(data: data, fileInfo: fileInfo)
+                        let response = try result.get()
+                        let unpackedData = try self.dataDecryptor.decrypt(response: response)
                         let accounts = try unpackedData.decoded() as AccountsInfo
                         resultQueue.async {
                             completion(.success(accounts))
@@ -240,7 +240,7 @@ public final class DigiMe {
     ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
     ///   - downloadHandler: Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
     ///   - completion: Block called when fetching all files has completed. Contains final list of files or an error if reading file list failed
-    public func readFiles(readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, downloadHandler: @escaping (Result<File, Error>) -> Void, completion: @escaping (Result<FileList, Error>) -> Void) {
+    public func readFiles(readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, downloadHandler: @escaping (Result<File, SDKError>) -> Void, completion: @escaping (Result<FileList, SDKError>) -> Void) {
         guard !isFetchingSessionData else {
             resultQueue.async {
                 completion(.failure(SDKError.fileListPollingTimeout)) // TODO: Update this error to an appropriate error
@@ -267,14 +267,14 @@ public final class DigiMe {
     ///   - data: The data to be written
     ///   - metadata: The metadata describing the data to be written. See `RawFileMetadataBuilder` for details on building the metadata
     ///   - completion: Block called when writing data has complete with any error ancountered.
-    public func write(data: Data, metadata: RawFileMetadata, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func write(data: Data, metadata: RawFileMetadata, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Void, SDKError>) -> Void) {
         let metadataData: Data
         do {
             metadataData = try metadata.encoded()
         }
         catch {
             resultQueue.async {
-                completion(.failure(error))
+                completion(.failure(.invalidWriteMetadata))
             }
             return
         }
@@ -350,9 +350,9 @@ public final class DigiMe {
         }
     }
     
-    private func write(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func write(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Void, SDKError>) -> Void) {
         guard let writeAccessInfo = credentials.writeAccessInfo else {
-            return// completion(.failure(T##Error)) // What error should we return?
+            return completion(.failure(.incorrectContractType))
         }
         
         let symmetricKey = AES256.generateSymmetricKey()
@@ -365,19 +365,35 @@ public final class DigiMe {
             let payload = try aes.encrypt(data)
             let encryptedSymmetricKey = try Crypto.encrypt(symmetricKey: symmetricKey, publicKey: writeAccessInfo.publicKey)
             guard let jwt = JWTUtility.writeRequestJWT(accessToken: credentials.token.accessToken.value, iv: iv, metadata: encryptedMetadata, symmetricKey: encryptedSymmetricKey, configuration: self.configuration) else {
-                return //completion(.failure(<#T##Error#>)) // What error should we return?
+                throw SDKError.writeRequestFailure
             }
             
             self.apiClient.makeRequest(WriteDataRoute(postboxId: writeAccessInfo.postboxId, payload: payload, jwt: jwt)) { result in
-                if let response = try? result.get() {
+                switch result {
+                case .success(let response):
                     self.session = response.session
+                    completion(.success(Void()))
+                case .failure(let error):
+                    // We should be pre-emptively catching the situation where the access token has expired,
+                    // but just in case we should react to server message
+                    switch error {
+                    case .httpResponseError(statusCode: 401, apiError: let apiError) where apiError?.code == "InvalidToken":
+                        self.refreshTokens(credentials: credentials) { refreshResult in
+                            switch refreshResult {
+                            case .success(let credentials):
+                                self.write(data: data, metadata: metadata, credentials: credentials, completion: completion)
+                            case .failure(let error):
+                                completion(.failure(error))
+                            }
+                        }
+                    default:
+                        completion(.failure(error))
+                    }
                 }
-                
-                completion(result.map { _ in Void() })
             }
         }
         catch {
-            completion(.failure(error))
+            completion(.failure(.writeRequestFailure))
         }
     }
     
@@ -416,7 +432,7 @@ public final class DigiMe {
     }
     
     // Return current valid session or get a fresh one
-    private func validateOrRefreshSession(readOptions: ReadOptions?, completion: @escaping (Result<Session, Error>) -> Void) {
+    private func validateOrRefreshSession(readOptions: ReadOptions?, completion: @escaping (Result<Session, SDKError>) -> Void) {
         if let session = session,
            session.isValid {
             return completion(.success(session))
@@ -434,27 +450,41 @@ public final class DigiMe {
     }
     
     // Refresh read session by triggering source sync
-    private func refreshSession(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Session, Error>) -> Void) {
+    private func refreshSession(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Session, SDKError>) -> Void) {
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-            return //completion(.failure(<#T##Error#>)) // What error should we return?
+            return completion(.failure(.other))
         }
         
         apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, readOptions: readOptions)) { result in
-            do {
-                let response = try result.get()
+            switch result {
+            case .success(let response):
                 self.session = response.session
                 completion(.success(response.session))
-            }
-            catch {
-                completion(.failure(error))
+
+            case .failure(let error):
+                // We should be pre-emptively catching the situation where the access token has expired,
+                // but just in case we should react to server message
+                switch error {
+                case .httpResponseError(statusCode: 401, apiError: let apiError) where apiError?.code == "InvalidToken":
+                    self.refreshTokens(credentials: credentials) { refreshResult in
+                        switch refreshResult {
+                        case .success(let credentials):
+                            self.refreshSession(credentials: credentials, readOptions: readOptions, completion: completion)
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                default:
+                    completion(.failure(error))
+                }
             }
         }
     }
     
-    private func validateOrRefreshCredentials(completion: @escaping (Result<Credentials, Error>) -> Void) {
+    private func validateOrRefreshCredentials(completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         // Check we have credentials
         guard let credentials = credentials else {
-            return completion(.failure(SDKError.authenticationRequired))
+            return completion(.failure(SDKError.authorizationRequired))
         }
         
         guard credentials.token.accessToken.isValid else {
@@ -464,58 +494,58 @@ public final class DigiMe {
         completion(.success(credentials))
     }
     
-    private func refreshTokens(credentials: Credentials, completion: @escaping (Result<Credentials, Error>) -> Void) {
+    private func refreshTokens(credentials: Credentials, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         guard credentials.token.refreshToken.isValid else {
             return reauthorize(accessToken: credentials.token.accessToken, completion: completion)
         }
         
         authService.renewAccessToken(oauthToken: credentials.token) { result in
-            do {
-                let response = try result.get()
+            switch result {
+            case .success(let response):
                 let newCredentials = Credentials(token: response, writeAccessInfo: credentials.writeAccessInfo)
                 self.credentials = newCredentials
                 completion(.success(newCredentials))
-            }
-            catch {
+
+            case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    private func reauthorize(accessToken: OAuthToken.Token, completion: @escaping (Result<Credentials, Error>) -> Void) {
+    private func reauthorize(accessToken: OAuthToken.Token, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         authService.requestPreAuthorizationCode(readOptions: nil, accessToken: accessToken.value) { result in
-            do {
-                let response = try result.get()
+            switch result {
+            case .success(let response):
                 self.session = response.session
                 self.performAuth(preAuthResponse: response, serviceId: nil, completion: completion)
-            }
-            catch {
+
+            case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    private func performAuth(preAuthResponse: TokenSessionResponse, serviceId: Int?, completion: @escaping (Result<Credentials, Error>) -> Void) {
+    private func performAuth(preAuthResponse: TokenSessionResponse, serviceId: Int?, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: serviceId) { result in
-            do {
-                let response = try result.get()
+            switch result {
+            case .success(let response):
                 self.exchangeToken(authResponse: response, completion: completion)
-            }
-            catch {
+
+            case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    private func exchangeToken(authResponse: ConsentResponse, completion: @escaping (Result<Credentials, Error>) -> Void) {
+    private func exchangeToken(authResponse: ConsentResponse, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         authService.requestTokenExchange(authCode: authResponse.authorizationCode) { result in
-            do {
-                let response = try result.get()
+            switch result {
+            case .success(let response):
                 let newCredentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo)
                 self.credentials = newCredentials
                 completion(.success(newCredentials))
-            }
-            catch {
+
+            case .failure(let error):
                 completion(.failure(error))
             }
         }
@@ -597,26 +627,26 @@ public final class DigiMe {
         }
         
         validateOrRefreshSession(readOptions: nil) { result in
-            do {
-                let session = try result.get()
+            switch result {
+            case .success(let session):
                 items.forEach { item in
                     Logger.debug("Adding file to download queue: \(item.name)")
                     self.fileService.downloadFile(sessionKey: session.key, fileId: item.name, completion: sessionContentHandler)
                 }
-            }
-            catch {
+
+            case .failure(let error):
                 self.sessionError = error
             }
         }
     }
     
-    private func readFileList(completion: @escaping (Result<FileList, Error>) -> Void) {
+    private func readFileList(completion: @escaping (Result<FileList, SDKError>) -> Void) {
         validateOrRefreshSession(readOptions: nil) { result in
-            do {
-                let session = try result.get()
+            switch result {
+            case .success(let session):
                 self.apiClient.makeRequest(FileListRoute(sessionKey: session.key), completion: completion)
-            }
-            catch {
+
+            case .failure(let error):
                 completion(.failure(error))
             }
         }
@@ -628,7 +658,7 @@ public final class DigiMe {
         }
     }
     
-    private func completeSessionDataFetch(error: Error?) {
+    private func completeSessionDataFetch(error: SDKError?) {
         sessionDataCompletion?(error != nil ? .failure(error!) : .success(sessionFileList!))
         clearSessionData()
     }
@@ -641,7 +671,6 @@ public final class DigiMe {
         sessionDataCompletion = nil
         sessionContentHandler = nil
         fileService.allDownloadsFinishedHandler = nil
-//        fileService = nil
         sessionError = nil
         stalePollCount = 0
     }
