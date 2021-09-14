@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum SyncState: String, Decodable, Equatable {
+public enum SyncState: String, Decodable, Equatable {
     case running
     case pending
     case partial
@@ -16,7 +16,7 @@ enum SyncState: String, Decodable, Equatable {
     
     case unknown
     
-    var isRunning: Bool {
+    public var isRunning: Bool {
         switch self {
         case .running, .pending, .unknown:
             return true

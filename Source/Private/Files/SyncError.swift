@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct SyncError: Decodable, Equatable {
-    let code: String
-    let statusCode: Int
-    let message: String
+public struct SyncError: Decodable, Equatable {
+    public let code: String
+    public let statusCode: Int
+    public let message: String
 }

@@ -8,7 +8,8 @@
 
 import Foundation
 
-struct Credentials: Codable {
+/// Credentials for accessing user's digi.me library
+public struct Credentials: Codable {
     let token: OAuthToken
     let writeAccessInfo: WriteAccessInfo?
 }

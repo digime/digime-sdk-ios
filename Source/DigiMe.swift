@@ -15,31 +15,19 @@ public final class DigiMe {
     
     private let authService: OAuthService
     private let consentManager: ConsentManager
-    private let credentialCache: CredentialCache
     private let sessionCache: SessionCache
     private let apiClient: APIClient
     private let dataDecryptor: DataDecryptor
     
-    private lazy var fileService: FileService = {
-        FileService(apiClient: apiClient, dataDecryptor: dataDecryptor)
+    private lazy var downloadService: FileDownloadService = {
+        FileDownloadService(apiClient: apiClient, dataDecryptor: dataDecryptor)
     }()
     
-    private var sessionDataCompletion: ((Result<FileList, SDKError>) -> Void)?
-    private var sessionContentHandler: ((Result<File, SDKError>) -> Void)?
+    private lazy var uploadService: FileUploadService = {
+        FileUploadService(apiClient: apiClient, configuration: configuration)
+    }()
     
-    @Atomic private var isFetchingSessionData = false
-    private var fileListCache = FileListCache()
-    private var sessionError: SDKError?
-    private var sessionFileList: FileList?
-    private var stalePollCount = 0
-    
-    private let maxStalePolls = 10
-    private let pollInterval = 3
-    
-    private var isSyncRunning: Bool {
-        // If no session file list, could be because we haven't received response yet, so assume is running
-        return sessionFileList?.status.state.isRunning ?? true
-    }
+    @Atomic private var allFilesReader: AllFilesReader?
     
     private var session: Session? {
         get {
@@ -50,13 +38,13 @@ public final class DigiMe {
         }
     }
     
-    private var credentials: Credentials? {
-        get {
-            credentialCache.credentials(for: configuration.contractId)
+    private var validSession: Session? {
+        guard let session = session,
+           session.isValid else {
+            return nil
         }
-        set {
-            credentialCache.setCredentials(newValue, for: configuration.contractId)
-        }
+        
+        return session
     }
     
     /// The log levels for all `DigiMe` instances which will be included in logs.
@@ -77,28 +65,11 @@ public final class DigiMe {
         Logger.setLogHandler(handler)
     }
     
-    /// Describes whether the contract associated with this instance has been
-    /// successfully consented to by user or not
-    public var isConnected: Bool {
-        credentials != nil
-    }
-    
-    /// The scopes for retrieving available services
-    public enum AvailableServicesScope {
-        
-        /// Limits response to services that this contract can access
-        case thisContractOnly
-        
-        /// Responds with all services
-        case all
-    }
-    
     /// Initialises a new instance of SDK.
     /// A new instance should be created for each contract the app uses
     /// - Parameter configuration: The configuration which defines this instance
     public init(configuration: Configuration) {
         self.configuration = configuration
-        self.credentialCache = CredentialCache()
         self.apiClient = APIClient()
         self.authService = OAuthService(configuration: configuration, apiClient: apiClient)
         self.consentManager = ConsentManager(configuration: configuration)
@@ -113,42 +84,44 @@ public final class DigiMe {
     /// If the user has not already authorized, will present a view controller in which user consents.
     /// If user has already authorized, refreshes the authorization, if necessary (which may require user consent again).
     ///
-    /// To authorize this contract to access the same library that another contract has been authorized to access, specify the contract to link to. This is useful when a read contract needs to access the same library that a write contract has written deta to.
+    /// To authorize this contract to access the same library that another contract has been authorized to access, specify the contract to link to's credentials. This is useful when a read contract needs to access the same library that a write contract has written deta to.
     ///
     /// Additionally for read contracts:
     /// - Upon first authorization, can optionally specify a service from which user can log in to and retrieve data.
     /// - Creates of refreshes a session during which data can be read from library.
     ///
     /// - Parameters:
+    ///   - credentials: The existing credentials for the contract to authorize. If nil, will create credentials on success
     ///   - serviceId: Identifier of initial service to add. Only valid for first authorization of read contracts where user has not previously granted consent. Ignored for all subsequent calls.
     ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
-    ///   - linkToContractWithId: When specified, connects to same library as another contract.  If other contract has not been authorized, completes with `SDKError.linkedContractNotAuthorized` failure. Does nothing if user has already authorized this contract.
-    ///   - completion: Block called upon authorization completion with any errors encountered.
-    public func authorize(serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithId contractLinkId: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Error?) -> Void) {
+    ///   - linkToContractWithCredentials: When specified, connects to same library as another contract.  Does nothing if user has already authorized this contract.
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called upon authorization completion with new or refreshed credentials, or any errors encountered.
+    public func authorize(credentials: Credentials? = nil, serviceId: Int? = nil, readOptions: ReadOptions? = nil, linkToContractWithCredentials linkCredentials: Credentials? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         if let validationError = validateClient() {
             resultQueue.async {
-                completion(validationError)
+                completion(.failure(validationError))
             }
             return
         }
         
-        validateOrRefreshCredentials { result in
+        validateOrRefreshCredentials(credentials) { result in
             switch result {
-            case .success:
+            case .success(let refreshedCredentials):
                 resultQueue.async {
-                    completion(nil)
+                    completion(.success(refreshedCredentials))
                 }
                 
             case .failure(SDKError.authorizationRequired):
-                self.beginAuth(serviceId: serviceId, readOptions: readOptions, linkToContractWithId: contractLinkId) { error in
+                self.beginAuth(serviceId: serviceId, readOptions: readOptions, linkToContractWithCredentials: linkCredentials) { authResult in
                     resultQueue.async {
-                        completion(error)
+                        completion(authResult)
                     }
                 }
                 
             case .failure(let error):
                 resultQueue.async {
-                    completion(error)
+                    completion(.failure(error))
                 }
             }
         }
@@ -157,37 +130,34 @@ public final class DigiMe {
     /// Once a user has granted consent, adds an additional service
     /// - Parameters:
     ///   - identifier: Identifier of service to add.
-    ///   - completion: Block called upon completion with any errors encountered
-    public func addService(identifier: Int, resultQueue: DispatchQueue = .main, completion: @escaping (Error?) -> Void) {
-        validateOrRefreshCredentials { result in
+    ///   - credentials: The existing credentials for the contract.
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called upon completion with new or refreshed credentials, or any errors encountered
+    public func addService(identifier: Int, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+        validateOrRefreshCredentials(credentials) { result in
             switch result {
-            case .success(let credentials):
-            self.authService.requestReferenceToken(oauthToken: credentials.token) { result in
-                do {
-                    let response = try result.get()
+            case .success(let refreshedCredentials):
+            self.authService.requestReferenceToken(oauthToken: refreshedCredentials.token) { result in
+                switch result {
+                case .success(let response):
                     self.session = response.session
                     self.consentManager.addService(identifier: identifier, token: response.token) { result in
+                        let mappedResult = result.map { refreshedCredentials }
                         resultQueue.async {
-                            switch result {
-                            case .success:
-                                completion(nil)
-                                
-                            case .failure(let error):
-                                completion(error)
-                            }
+                            completion(mappedResult)
                         }
                     }
-                }
-                catch {
+                
+                case .failure(let error):
                     resultQueue.async {
-                        completion(error)
+                        completion(.failure(error))
                     }
                 }
             }
                 
             case .failure(let error):
                 resultQueue.async {
-                    completion(error)
+                    completion(.failure(error))
                 }
             }
         }
@@ -197,31 +167,18 @@ public final class DigiMe {
     ///
     /// Note: If this is called on either a write-only contract or a contract which reads non-service data, this will return an error.
     ///
-    /// - Parameter completion: Block called upon completion containing either relevant account info, if successful, or an error
-    public func readAccounts(resultQueue: DispatchQueue = .main, completion: @escaping (Result<AccountsInfo, Error>) -> Void) {
-        validateOrRefreshSession(readOptions: nil) { result in
-            do {
-                let session = try result.get()
-                self.apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
-                    do {
-                        let response = try result.get()
-                        let unpackedData = try self.dataDecryptor.decrypt(response: response)
-                        let accounts = try unpackedData.decoded() as AccountsInfo
-                        resultQueue.async {
-                            completion(.success(accounts))
-                        }
-                    }
-                    catch {
-                        resultQueue.async {
-                            completion(.failure(error))
-                        }
-                    }
-                }
-            }
-            catch {
-                resultQueue.async {
-                    completion(.failure(error))
-                }
+    /// - Parameters:
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called upon completion containing either relevant account info, if successful, or an error
+    public func readAccounts(resultQueue: DispatchQueue = .main, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
+        guard let session = validSession else {
+            completion(.failure(.invalidSession))
+            return
+        }
+        
+        readAccounts(session: session) { result in
+            resultQueue.async {
+                completion(result)
             }
         }
     }
@@ -234,40 +191,141 @@ public final class DigiMe {
     /// If this function is called while files are being read, an error denoting this will be immediately
     /// returned in the completion block of this subsequent call and will not affect any current calls.
     ///
-    /// For service-based data sources, will also attempt to retrieve any new data directly from the services.
+    /// For service-based data sources, will also attempt to retrieve any new data directly from the services, in which case this completion handler will not be called until this synchronization has finished.
+    ///
+    /// Alternatively, caller can manage reading files themselves by using the calls:
+    /// `requestDataQuery()`, `readFileList()` and `readFile()`
     ///
     /// - Parameters:
+    ///   - credentials: The existing credentials for the contract.
     ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
+    ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - downloadHandler: Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
-    ///   - completion: Block called when fetching all files has completed. Contains final list of files or an error if reading file list failed
-    public func readFiles(readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, downloadHandler: @escaping (Result<File, SDKError>) -> Void, completion: @escaping (Result<FileList, SDKError>) -> Void) {
-        guard !isFetchingSessionData else {
+    ///   - completion: Block called when fetching all files has completed. Contains final list of files (along with new or refreshed credentials) or an error if reading file list failed
+    public func readAllFiles(credentials: Credentials, readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, downloadHandler: @escaping (Result<File, SDKError>) -> Void, completion: @escaping (Result<(FileList, Credentials), SDKError>) -> Void) {
+        guard allFilesReader == nil else {
             resultQueue.async {
-                completion(.failure(SDKError.fileListPollingTimeout)) // TODO: Update this error to an appropriate error
+                completion(.failure(SDKError.alreadyReadingAllFiles))
             }
             return
         }
         
-        self.sessionDataCompletion = { result in
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.triggerSourceSync(credentials: refreshedCredentials, readOptions: readOptions) { result in
+                    switch result {
+                    case .success:
+                        self.allFilesReader = AllFilesReader(apiClient: self.apiClient, configuration: self.configuration)
+                        self.allFilesReader?.readAllFiles(readOptions: readOptions, downloadHandler: { result in
+                            resultQueue.async {
+                                downloadHandler(result)
+                            }
+                        }, completion: { result in
+                            resultQueue.async {
+                                self.allFilesReader = nil
+                                completion(result.map { ($0, refreshedCredentials) })
+                            }
+                        })
+                        
+                    case .failure(let error):
+                        resultQueue.async {
+                            completion(.failure(error))
+                        }
+                    }
+                }
+            
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    /// Creates a session during which files can be read. This session is typically valid for 15 minutes.
+    /// Once it has expired, a new session will be required to continue reading data.
+    ///
+    /// For service-based data sources, will also attempt to retrieve any new data directly from the services.
+    ///
+    /// There is no need to call this if using `readAllFiles` as that call implcitly creates and manages its own session.
+    ///
+    /// - Parameters:
+    ///   - credentials: The existing credentials for the contract.
+    ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
+    ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called upon completion with new or refreshed credentials, or any errors encountered.
+    public func requestDataQuery(credentials: Credentials, readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.triggerSourceSync(credentials: refreshedCredentials, readOptions: readOptions) { result in
+                    resultQueue.async {
+                        completion(result.map { refreshedCredentials })
+                    }
+                }
+                
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    /// Retrieves a list of files contained within the user's library.
+    ///
+    /// Requires a valid session to have been created, either implicitly by adding a new service, or explicitly by calling `requestDataQuery(credentials:readOptions:resultQueue:completion)`.
+    ///
+    /// For service-based sources, it can take a while for new data to be added to user's library (following a `requestDataQuery` call).
+    /// Therefore caller should poll this call while data is being added to the library in case new files become available.
+    /// Synchronization is complete when `fileList.status.state.isRunning` becomes `false`.
+    ///
+    /// - Parameters:
+    ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called upon completion with the list of files, or any errors encountered.
+    public func readFileList(resultQueue: DispatchQueue = .main, completion: @escaping (Result<FileList, SDKError>) -> Void) {
+        guard let session = validSession else {
+            completion(.failure(.invalidSession))
+            return
+        }
+        
+        apiClient.makeRequest(FileListRoute(sessionKey: session.key)) { result in
             resultQueue.async {
                 completion(result)
             }
         }
-        self.sessionContentHandler = { result in
-            resultQueue.async {
-                downloadHandler(result)
-            }
+    }
+    
+    /// Retrieves the content of a specified file.
+    ///
+    /// Requires a valid session to have been created, either implicitly by adding a new service, or explicitly by calling `requestDataQuery(credentials:readOptions:resultQueue:completion)`.
+    ///
+    /// - Parameters:
+    ///   - fileId: The file's identifier.
+    ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called upon completion with file, or any errors encountered.
+    public func readFile(fileId: String, resultQueue: DispatchQueue = .main, completion: @escaping (Result<File, SDKError>) -> Void) {
+        guard let session = validSession else {
+            completion(.failure(.invalidSession))
+            return
         }
         
-        self.beginFileListPollingIfRequired()
+        downloadService.downloadFile(sessionKey: session.key, fileId: fileId) { result in
+            resultQueue.async {
+                completion(result)
+            }
+        }
     }
     
     /// Writes data to user's library associated with configured contract
     /// - Parameters:
     ///   - data: The data to be written
     ///   - metadata: The metadata describing the data to be written. See `RawFileMetadataBuilder` for details on building the metadata
-    ///   - completion: Block called when writing data has complete with any error ancountered.
-    public func write(data: Data, metadata: RawFileMetadata, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Void, SDKError>) -> Void) {
+    ///   - credentials: The existing credentials for the contract.
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called when writing data has complete with new or refreshed credentials, or any errors encountered.
+    public func write(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         let metadataData: Data
         do {
             metadataData = try metadata.encoded()
@@ -279,10 +337,10 @@ public final class DigiMe {
             return
         }
         
-        validateOrRefreshCredentials { result in
+        validateOrRefreshCredentials(credentials) { result in
             switch result {
-            case .success(let credentials):
-                self.write(data: data, metadata: metadataData, credentials: credentials) { result in
+            case .success(let refreshedCredentials):
+                self.write(data: data, metadata: metadataData, credentials: refreshedCredentials) { result in
                     resultQueue.async {
                         completion(result)
                     }
@@ -299,16 +357,17 @@ public final class DigiMe {
     /// Deletes the user's library associated with the configured contract.
     ///
     /// Please note that if multiple contracts are linked to the same library,
-    /// then `deleteUser` will also need to be called on those contracts to remove
-    /// any stored credentials, in which case an error may be reported on those calls.
+    /// then `deleteUser` will also invalidate any credentials for those contracts.
     ///
-    /// - Parameter completion: Block called on completion with any error encountered.
-    public func deleteUser(resultQueue: DispatchQueue = .main, completion: @escaping (Error?) -> Void) {
-        validateOrRefreshCredentials { result in
+    /// - Parameters:
+    ///   - credentials: The existing credentials for the contract.
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called on completion with any error encountered.
+    public func deleteUser(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (SDKError?) -> Void) {
+        validateOrRefreshCredentials(credentials) { result in
             switch result {
-            case .success(let credentials):
-                self.authService.deleteUser(oauthToken: credentials.token) { result in
-                    self.credentials = nil
+            case .success(let refreshedCredentials):
+                self.authService.deleteUser(oauthToken: refreshedCredentials.token) { result in
                     self.session = nil
                     resultQueue.async {
                         switch result {
@@ -328,12 +387,15 @@ public final class DigiMe {
         }
     }
     
-    /// Get a list of possible services a user can add to their digi.me
+    /// Get a list of possible services a user can add to their digi.me.
+    /// If contract identifier is specified, then only those services relevant to the contract are retrieved, otherwise all services are retrieved.
+    ///
     /// - Parameters:
-    ///   - scope: Scope to limit response
+    ///   - contractId: The contract identifier for which relevant available services are retrieved. If `nil` then all services are retrieved.
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with either the service list or any errors encountered
-    public func availableServices(scope: AvailableServicesScope = .thisContractOnly, resultQueue: DispatchQueue = .main, completion: @escaping (Result<ServicesInfo, Error>) -> Void) {
-        let route = ServicesRoute(contractId: scope == .thisContractOnly ? configuration.contractId : nil)
+    public func availableServices(contractId: String?, resultQueue: DispatchQueue = .main, completion: @escaping (Result<ServicesInfo, SDKError>) -> Void) {
+        let route = ServicesRoute(contractId: contractId)
         apiClient.makeRequest(route) { result in
             switch result {
             case .success(let response):
@@ -342,6 +404,7 @@ public final class DigiMe {
                 resultQueue.async {
                     completion(.success(info))
                 }
+                
             case .failure(let error):
                 resultQueue.async {
                     completion(.failure(error))
@@ -350,117 +413,33 @@ public final class DigiMe {
         }
     }
     
-    private func write(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Void, SDKError>) -> Void) {
-        guard let writeAccessInfo = credentials.writeAccessInfo else {
-            return completion(.failure(.incorrectContractType))
-        }
-        
-        let symmetricKey = AES256.generateSymmetricKey()
-        let iv = AES256.generateInitializationVector()
-        
-        do {
-            let aes = try AES256(key: symmetricKey, iv: iv)
-            
-            let encryptedMetadata = try aes.encrypt(metadata).base64EncodedString(options: .lineLength64Characters)
-            let payload = try aes.encrypt(data)
-            let encryptedSymmetricKey = try Crypto.encrypt(symmetricKey: symmetricKey, publicKey: writeAccessInfo.publicKey)
-            guard let jwt = JWTUtility.writeRequestJWT(accessToken: credentials.token.accessToken.value, iv: iv, metadata: encryptedMetadata, symmetricKey: encryptedSymmetricKey, configuration: self.configuration) else {
-                throw SDKError.writeRequestFailure
-            }
-            
-            self.apiClient.makeRequest(WriteDataRoute(postboxId: writeAccessInfo.postboxId, payload: payload, jwt: jwt)) { result in
-                switch result {
-                case .success(let response):
-                    self.session = response.session
-                    completion(.success(Void()))
-                case .failure(let error):
-                    // We should be pre-emptively catching the situation where the access token has expired,
-                    // but just in case we should react to server message
-                    switch error {
-                    case .httpResponseError(statusCode: 401, apiError: let apiError) where apiError?.code == "InvalidToken":
-                        self.refreshTokens(credentials: credentials) { refreshResult in
-                            switch refreshResult {
-                            case .success(let credentials):
-                                self.write(data: data, metadata: metadata, credentials: credentials, completion: completion)
-                            case .failure(let error):
-                                completion(.failure(error))
-                            }
-                        }
-                    default:
-                        completion(.failure(error))
-                    }
-                }
-            }
-        }
-        catch {
-            completion(.failure(.writeRequestFailure))
-        }
-    }
-    
-    // Auth - needs app to be able to receive response via URL
-    private func beginAuth(serviceId: Int?, readOptions: ReadOptions?, linkToContractWithId contractLinkId: String?, completion: @escaping (Error?) -> Void) {
-        
-        // Ensure we don't have any session left over from previous
-        session = nil
-        
-        var linkedContractAccessToken: String?
-        if let contractLinkId = contractLinkId {
-            guard let linkCredentials = credentialCache.credentials(for: contractLinkId) else {
-                return completion(SDKError.linkedContractNotAuthorized)
-            }
-            
-            linkedContractAccessToken = linkCredentials.token.accessToken.value
-        }
-        
-        authService.requestPreAuthorizationCode(readOptions: readOptions, accessToken: linkedContractAccessToken) { result in
-            do {
-                let response = try result.get()
-                self.session = response.session
-                self.performAuth(preAuthResponse: response, serviceId: serviceId) { result in
-                    switch result {
-                    case .success:
-                        completion(nil)
-                    case .failure(let error):
-                        completion(error)
-                    }
-                }
-            }
-            catch {
-                completion(error)
-            }
-        }
-    }
-    
-    // Return current valid session or get a fresh one
-    private func validateOrRefreshSession(readOptions: ReadOptions?, completion: @escaping (Result<Session, SDKError>) -> Void) {
-        if let session = session,
-           session.isValid {
-            return completion(.success(session))
-        }
-        
-        validateOrRefreshCredentials { result in
+    private func readAccounts(session: Session, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
+        apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
             switch result {
-            case .success(let credentials):
-                self.refreshSession(credentials: credentials, readOptions: readOptions, completion: completion)
-                
+            case .success(let response):
+                do {
+                    let unpackedData = try self.dataDecryptor.decrypt(response: response)
+                    let accounts = try unpackedData.decoded() as AccountsInfo
+                    completion(.success(accounts))
+                }
+                catch let error as SDKError {
+                    completion(.failure(error))
+                }
+                catch {
+                    completion(.failure(SDKError.invalidData))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    // Refresh read session by triggering source sync
-    private func refreshSession(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Session, SDKError>) -> Void) {
-        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-            return completion(.failure(.other))
-        }
-        
-        apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, readOptions: readOptions)) { result in
+    private func write(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+        uploadService.uploadFile(data: data, metadata: metadata, credentials: credentials) { result in
             switch result {
-            case .success(let response):
-                self.session = response.session
-                completion(.success(response.session))
-
+            case .success(let session):
+                self.session = session
+                completion(.success(credentials))
             case .failure(let error):
                 // We should be pre-emptively catching the situation where the access token has expired,
                 // but just in case we should react to server message
@@ -469,7 +448,7 @@ public final class DigiMe {
                     self.refreshTokens(credentials: credentials) { refreshResult in
                         switch refreshResult {
                         case .success(let credentials):
-                            self.refreshSession(credentials: credentials, readOptions: readOptions, completion: completion)
+                            self.write(data: data, metadata: metadata, credentials: credentials, completion: completion)
                         case .failure(let error):
                             completion(.failure(error))
                         }
@@ -481,7 +460,56 @@ public final class DigiMe {
         }
     }
     
-    private func validateOrRefreshCredentials(completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    // Auth - needs app to be able to receive response via URL
+    private func beginAuth(serviceId: Int?, readOptions: ReadOptions?, linkToContractWithCredentials linkCredentials: Credentials?, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+        
+        // Ensure we don't have any session left over from previous
+        session = nil
+                
+        authService.requestPreAuthorizationCode(readOptions: readOptions, accessToken: linkCredentials?.token.accessToken.value) { result in
+            switch result {
+            case .success(let response):
+                self.session = response.session
+                self.performAuth(preAuthResponse: response, serviceId: serviceId, completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // Request read session by triggering source sync
+    private func triggerSourceSync(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Void, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+            return completion(.failure(.other))
+        }
+        
+        apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, readOptions: readOptions)) { result in
+            switch result {
+            case .success(let response):
+                self.session = response.session
+                completion(.success(Void()))
+
+            case .failure(let error):
+                // We should be pre-emptively catching the situation where the access token has expired,
+                // but just in case we should react to server message
+                switch error {
+                case .httpResponseError(statusCode: 401, apiError: let apiError) where apiError?.code == "InvalidToken":
+                    self.refreshTokens(credentials: credentials) { refreshResult in
+                        switch refreshResult {
+                        case .success(let refreshedCredentials):
+                            self.triggerSourceSync(credentials: refreshedCredentials, readOptions: readOptions, completion: completion)
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                default:
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    private func validateOrRefreshCredentials(_ credentials: Credentials?, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         // Check we have credentials
         guard let credentials = credentials else {
             return completion(.failure(SDKError.authorizationRequired))
@@ -503,7 +531,6 @@ public final class DigiMe {
             switch result {
             case .success(let response):
                 let newCredentials = Credentials(token: response, writeAccessInfo: credentials.writeAccessInfo)
-                self.credentials = newCredentials
                 completion(.success(newCredentials))
 
             case .failure(let error):
@@ -542,7 +569,6 @@ public final class DigiMe {
             switch result {
             case .success(let response):
                 let newCredentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo)
-                self.credentials = newCredentials
                 completion(.success(newCredentials))
 
             case .failure(let error):
@@ -551,7 +577,7 @@ public final class DigiMe {
         }
     }
     
-    private func validateClient() -> Error? {
+    private func validateClient() -> SDKError? {
         guard let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]] else {
             return SDKError.noUrlScheme
         }
@@ -566,137 +592,5 @@ public final class DigiMe {
         }
         
         return nil
-    }
-    
-    // MARK: - File Contents
-    private func beginFileListPollingIfRequired() {
-        fileListCache.reset()
-        isFetchingSessionData = true
-        fileService.allDownloadsFinishedHandler = {
-            Logger.info("Finished downloading all files")
-            self.evaluateSessionDataFetchProgress(schedulePoll: false)
-        }
-        refreshFileList()
-        scheduleNextPoll()
-    }
-    
-    private func refreshFileList() {
-        readFileList { result in
-            switch result {
-            case .success(let fileList):
-                let fileListDidChange = fileList != self.sessionFileList
-                self.stalePollCount += fileListDidChange ? 0 : 1
-                guard self.stalePollCount < self.maxStalePolls else {
-                    self.sessionError = SDKError.fileListPollingTimeout
-                    return
-                }
-                
-                // If subsequent fetch clears the error (stale one or otherwise) - great, no need to report it back up the chain
-                self.sessionError = nil
-                self.sessionFileList = fileList
-                let newItems = self.fileListCache.newItems(from: fileList.files ?? [])
-                
-                self.handleNewFileListItems(newItems)
-
-            case .failure(let error):
-                // If the error occurred we don't want to terminate right away
-                // There could still be files downloading. Instead, we will store the sessionError
-                // which will be forwarded in completion once all file have been downloaded
-                
-                // If no files are being downloaded, we can terminate session fetch right away
-                if !self.fileService.isDownloadingFiles {
-                    self.completeSessionDataFetch(error: error)
-                }
-                
-                self.sessionError = error
-            }
-        }
-    }
-    
-    private func handleNewFileListItems(_ items: [FileListItem]) {
-        guard !items.isEmpty else {
-            return
-        }
-        
-        Logger.debug("Found new files to sync: \(items.count)")
-        fileListCache.add(items: items)
-        
-        // If contentHandler is not provided, no need to download
-        guard let sessionContentHandler = sessionContentHandler else {
-            return
-        }
-        
-        validateOrRefreshSession(readOptions: nil) { result in
-            switch result {
-            case .success(let session):
-                items.forEach { item in
-                    Logger.debug("Adding file to download queue: \(item.name)")
-                    self.fileService.downloadFile(sessionKey: session.key, fileId: item.name, completion: sessionContentHandler)
-                }
-
-            case .failure(let error):
-                self.sessionError = error
-            }
-        }
-    }
-    
-    private func readFileList(completion: @escaping (Result<FileList, SDKError>) -> Void) {
-        validateOrRefreshSession(readOptions: nil) { result in
-            switch result {
-            case .success(let session):
-                self.apiClient.makeRequest(FileListRoute(sessionKey: session.key), completion: completion)
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    private func scheduleNextPoll() {
-        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(pollInterval)) { [weak self] in
-            self?.evaluateSessionDataFetchProgress(schedulePoll: true)
-        }
-    }
-    
-    private func completeSessionDataFetch(error: SDKError?) {
-        sessionDataCompletion?(error != nil ? .failure(error!) : .success(sessionFileList!))
-        clearSessionData()
-    }
-    
-    private func clearSessionData() {
-        isFetchingSessionData = false
-        
-        fileListCache.reset()
-        sessionFileList = nil
-        sessionDataCompletion = nil
-        sessionContentHandler = nil
-        fileService.allDownloadsFinishedHandler = nil
-        sessionError = nil
-        stalePollCount = 0
-    }
-    
-    private func evaluateSessionDataFetchProgress(schedulePoll: Bool) {
-        guard isFetchingSessionData else {
-            return
-        }
-        
-        Logger.debug("Sync state - \(sessionFileList != nil ? sessionFileList!.status.state.rawValue : "unknown")")
-        
-        // If sessionError is not nil, then syncState is irrelevant, as it will be the previous successful fileList call.
-        if (sessionError != nil || !isSyncRunning) && !self.fileService.isDownloadingFiles {
-            Logger.info("Finished fetching session data.")
-            
-            completeSessionDataFetch(error: sessionError)
-            return
-        }
-        else if schedulePoll {
-            scheduleNextPoll()
-        }
-        
-        // Not checking sessionError here on purpose. If we are here, then there are files still being downloaded
-        // so we may as well poll the file list again, just in case the error clears.
-        if isSyncRunning {
-            refreshFileList()
-        }
     }
 }
