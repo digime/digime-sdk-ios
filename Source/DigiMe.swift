@@ -38,15 +38,6 @@ public final class DigiMe {
         }
     }
     
-    private var validSession: Session? {
-        guard let session = session,
-           session.isValid else {
-            return nil
-        }
-        
-        return session
-    }
-    
     /// The log levels for all `DigiMe` instances which will be included in logs.
     /// Defaults to `[.info, .warning, .error, .critical]`
     public class var logLevels: [LogLevel] {
@@ -171,14 +162,19 @@ public final class DigiMe {
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion containing either relevant account info, if successful, or an error
     public func readAccounts(resultQueue: DispatchQueue = .main, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
-        guard let session = validSession else {
-            completion(.failure(.invalidSession))
-            return
-        }
-        
-        readAccounts(session: session) { result in
-            resultQueue.async {
-                completion(result)
+        validateOrRefreshSession { result in
+            switch result {
+            case .success(let session):
+                self.readAccounts(session: session) { result in
+                    resultQueue.async {
+                        completion(result)
+                    }
+                }
+                
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -210,25 +206,26 @@ public final class DigiMe {
             return
         }
         
+        allFilesReader = AllFilesReader(apiClient: self.apiClient, configuration: self.configuration)
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):
                 self.triggerSourceSync(credentials: refreshedCredentials, readOptions: readOptions) { result in
                     switch result {
                     case .success:
-                        self.allFilesReader = AllFilesReader(apiClient: self.apiClient, configuration: self.configuration)
                         self.allFilesReader?.readAllFiles(readOptions: readOptions, downloadHandler: { result in
                             resultQueue.async {
                                 downloadHandler(result)
                             }
                         }, completion: { result in
+                            self.allFilesReader = nil
                             resultQueue.async {
-                                self.allFilesReader = nil
                                 completion(result.map { ($0, refreshedCredentials) })
                             }
                         })
                         
                     case .failure(let error):
+                        self.allFilesReader = nil
                         resultQueue.async {
                             completion(.failure(error))
                         }
@@ -236,6 +233,7 @@ public final class DigiMe {
                 }
             
             case .failure(let error):
+                self.allFilesReader = nil
                 resultQueue.async {
                     completion(.failure(error))
                 }
@@ -285,14 +283,19 @@ public final class DigiMe {
     ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with the list of files, or any errors encountered.
     public func readFileList(resultQueue: DispatchQueue = .main, completion: @escaping (Result<FileList, SDKError>) -> Void) {
-        guard let session = validSession else {
-            completion(.failure(.invalidSession))
-            return
-        }
-        
-        apiClient.makeRequest(FileListRoute(sessionKey: session.key)) { result in
-            resultQueue.async {
-                completion(result)
+        validateOrRefreshSession { result in
+            switch result {
+            case .success(let session):
+                self.apiClient.makeRequest(FileListRoute(sessionKey: session.key)) { result in
+                    resultQueue.async {
+                        completion(result)
+                    }
+                }
+                
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -306,14 +309,19 @@ public final class DigiMe {
     ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with file, or any errors encountered.
     public func readFile(fileId: String, resultQueue: DispatchQueue = .main, completion: @escaping (Result<File, SDKError>) -> Void) {
-        guard let session = validSession else {
-            completion(.failure(.invalidSession))
-            return
-        }
-        
-        downloadService.downloadFile(sessionKey: session.key, fileId: fileId) { result in
-            resultQueue.async {
-                completion(result)
+        validateOrRefreshSession { result in
+            switch result {
+            case .success(let session):
+                self.downloadService.downloadFile(sessionKey: session.key, fileId: fileId) { result in
+                    resultQueue.async {
+                        completion(result)
+                    }
+                }
+                
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -410,6 +418,22 @@ public final class DigiMe {
                     completion(.failure(error))
                 }
             }
+        }
+    }
+    
+    private func validateOrRefreshSession(completion: @escaping (Result<Session, SDKError>) -> Void) {
+        if let session = session,
+           session.isValid {
+            return completion(.success(session))
+        }
+        
+        let route = SessionRoute(appId: configuration.appId, contractId: configuration.contractId)
+        apiClient.makeRequest(route) { result in
+            if case .success(let session) = result {
+                self.session = session
+            }
+
+            completion(result.mapError { _ in .invalidSession })
         }
     }
     

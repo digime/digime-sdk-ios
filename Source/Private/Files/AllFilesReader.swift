@@ -146,7 +146,7 @@ class AllFilesReader {
                 self.session = session
             }
 
-            completion(result)
+            completion(result.mapError { _ in .invalidSession })
         }
     }
     

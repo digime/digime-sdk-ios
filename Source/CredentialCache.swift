@@ -22,6 +22,10 @@ public final class CredentialCache {
         ]
     }
     
+    /// Initializes an instance of credential cache
+    public init() {
+    }
+    
     /// Retrieves the credentials for a specified contract id, if available
     /// - Parameter contractId: The contract identifier relating to the stored credentials
     /// - Returns: The credentials, if found, or nil if not found

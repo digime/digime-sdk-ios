@@ -25,6 +25,7 @@ class WriteDataViewController: UIViewController {
     
     private var writeDigiMe: DigiMe!
     private var readDigiMe: DigiMe!
+    private let credentialCache = CredentialCache()
     
     private let writeContract = Contract(name: "Upload data", identifier: "V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v", privateKey: """
         -----BEGIN RSA PRIVATE KEY-----
@@ -111,28 +112,41 @@ class WriteDataViewController: UIViewController {
     }
     
     @IBAction private func authorizeWriteContract() {
-        writeDigiMe.authorize { error in
-            if let error = error {
+        let writeCredentials = credentialCache.credentials(for: writeContract.identifier)
+        let readCredentials = credentialCache.credentials(for: readContract.identifier)
+        writeDigiMe.authorize(credentials: writeCredentials, linkToContractWithCredentials: readCredentials) { result in
+            switch result {
+            case .success(let newOrRefreshedCredentials):
+                self.credentialCache.setCredentials(newOrRefreshedCredentials, for: self.writeContract.identifier)
+                self.updateUI()
+                
+            case.failure(let error):
                 self.logger.log(message: "Authorization failed: \(error)")
-                return
             }
-            
-            self.updateUI()
         }
     }
     
     @IBAction private func authorizeReadContract() {
-        readDigiMe.authorize(linkToContractWithId: writeContract.identifier) { error in
-            if let error = error {
+        let writeCredentials = credentialCache.credentials(for: writeContract.identifier)
+        let readCredentials = credentialCache.credentials(for: readContract.identifier)
+        readDigiMe.authorize(credentials: readCredentials, linkToContractWithCredentials: writeCredentials) { result in
+            switch result {
+            case .success(let newOrRefreshedCredentials):
+                self.credentialCache.setCredentials(newOrRefreshedCredentials, for: self.readContract.identifier)
+                self.updateUI()
+                
+            case.failure(let error):
                 self.logger.log(message: "Authorization failed: \(error)")
-                return
             }
-            
-            self.updateUI()
         }
     }
     
     @IBAction private func uploadJson() {
+        guard let credentials = credentialCache.credentials(for: writeContract.identifier) else {
+            self.logger.log(message: "Write contract must be authorized first.")
+            return
+        }
+        
         do {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -144,9 +158,10 @@ class WriteDataViewController: UIViewController {
             
             let jsonData = try JSONEncoder().encode(Receipt())
             
-            writeDigiMe.write(data: jsonData, metadata: metadata) { result in
+            writeDigiMe.write(data: jsonData, metadata: metadata, credentials: credentials) { result in
                 switch result {
-                case .success:
+                case .success(let refreshedCredentials):
+                    self.credentialCache.setCredentials(refreshedCredentials, for: self.writeContract.identifier)
                     let jsonString: String
                     if
                         let json = try? JSONSerialization.jsonObject(with: jsonData, options: []),
@@ -180,7 +195,12 @@ class WriteDataViewController: UIViewController {
     }
     
     @IBAction private func readData() {
-        readDigiMe.readFiles(readOptions: nil) { result in
+        guard let credentials = credentialCache.credentials(for: readContract.identifier) else {
+            self.logger.log(message: "Read contract must be authorized first.")
+            return
+        }
+    
+        readDigiMe.readAllFiles(credentials: credentials, readOptions: nil) { result in
             switch result {
             case .success(let fileContainer):
                 var message = "Downloaded file \(fileContainer.identifier)"
@@ -202,7 +222,8 @@ class WriteDataViewController: UIViewController {
             }
         } completion: { result in
             switch result {
-            case .success(let fileList):
+            case .success(let (fileList, refreshedCredentials)):
+                self.credentialCache.setCredentials(refreshedCredentials, for: self.readContract.identifier)
                 var message = "Finished reading files:"
                 fileList.files?.forEach { message += "\n\t\($0.name)" }
                 self.logger.log(message: message)
@@ -214,13 +235,18 @@ class WriteDataViewController: UIViewController {
     }
     
     @IBAction private func deleteUser() {
-        // Could user either digi.me instance here as it disconnects all contracts from library
-        writeDigiMe.deleteUser { _ in
-            self.logger.reset()
-            self.updateUI()
+        // As contracts are linked to the same library, could user either digi.me instance here,
+        // as this call disconnects all contracts from library, but need to nullify credentials for both on completion
+        let writeCredentials = credentialCache.credentials(for: writeContract.identifier)
+        let readCredentials = credentialCache.credentials(for: readContract.identifier)
+        guard let credentials = writeCredentials ?? readCredentials  else {
+            self.logger.log(message: "At least one contract must be authorized first.")
+            return
         }
         
-        readDigiMe.deleteUser { _ in
+        writeDigiMe.deleteUser(credentials: credentials) { _ in
+            self.credentialCache.setCredentials(nil, for: self.writeContract.identifier)
+            self.credentialCache.setCredentials(nil, for: self.readContract.identifier)
             self.logger.reset()
             self.updateUI()
         }
@@ -235,12 +261,12 @@ class WriteDataViewController: UIViewController {
             return
         }
         
-        let isWriteAuthorized = self.writeDigiMe.isConnected
+        let isWriteAuthorized = credentialCache.credentials(for: writeContract.identifier) != nil
         self.authorizeWriteButton.isHidden = isWriteAuthorized
         self.uploadJsonButton.isHidden = !isWriteAuthorized
         self.uploadImageButton.isHidden = !isWriteAuthorized
         
-        let isReadAuthorized = self.readDigiMe.isConnected
+        let isReadAuthorized = credentialCache.credentials(for: readContract.identifier) != nil
         self.authorizeReadButton.isHidden = isReadAuthorized
         self.readDataButton.isHidden = !isReadAuthorized
         
@@ -260,6 +286,11 @@ extension WriteDataViewController: UIImagePickerControllerDelegate {
                 self.logger.log(message: "Invalid image selected")
                 return
             }
+            
+            guard let credentials = self.credentialCache.credentials(for: self.writeContract.identifier) else {
+                self.logger.log(message: "Write contract must be authorized first.")
+                return
+            }
                  
             let fileName = (info[.imageURL] as! URL).lastPathComponent
             let metadata = RawFileMetadataBuilder(mimeType: .imageJpeg, accounts: ["Account1"])
@@ -268,9 +299,10 @@ extension WriteDataViewController: UIImagePickerControllerDelegate {
                 .reference([fileName])
                 .build()
             
-            self.writeDigiMe.write(data: data, metadata: metadata) { result in
+            self.writeDigiMe.write(data: data, metadata: metadata, credentials: credentials) { result in
                 switch result {
-                case .success:
+                case .success(let refreshedCredentials):
+                    self.credentialCache.setCredentials(refreshedCredentials, for: self.writeContract.identifier)
                     self.logger.log(message: "Uploaded image:\n\(fileName)\n\(image.size) - \(data.count)")
 
                 case .failure(let error):
