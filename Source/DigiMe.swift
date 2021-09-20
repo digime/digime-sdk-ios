@@ -118,7 +118,8 @@ public final class DigiMe {
         }
     }
     
-    /// Once a user has granted consent, adds an additional service
+    /// Once a user has granted consent, adds an additional service. Also initiates synchronization of data from this service to user's library.
+    ///
     /// - Parameters:
     ///   - identifier: Identifier of service to add.
     ///   - credentials: The existing credentials for the contract.
@@ -156,25 +157,23 @@ public final class DigiMe {
     
     /// Reads the service data source accounts user has added to library related to the configured contract.
     ///
+    /// Requires a valid session to have been created, either implicitly by adding a new service, or explicitly by calling `requestDataQuery(credentials:readOptions:resultQueue:completion)`.
+    ///
     /// Note: If this is called on either a write-only contract or a contract which reads non-service data, this will return an error.
     ///
     /// - Parameters:
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion containing either relevant account info, if successful, or an error
     public func readAccounts(resultQueue: DispatchQueue = .main, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
-        validateOrRefreshSession { result in
-            switch result {
-            case .success(let session):
-                self.readAccounts(session: session) { result in
-                    resultQueue.async {
-                        completion(result)
-                    }
-                }
-                
-            case .failure(let error):
-                resultQueue.async {
-                    completion(.failure(error))
-                }
+        guard
+            let session = session,
+            session.isValid else {
+            return completion(.failure(.invalidSession))
+        }
+        
+        readAccounts(session: session) { result in
+            resultQueue.async {
+                completion(result)
             }
         }
     }
@@ -186,6 +185,8 @@ public final class DigiMe {
     ///
     /// If this function is called while files are being read, an error denoting this will be immediately
     /// returned in the completion block of this subsequent call and will not affect any current calls.
+    ///
+    /// For reading data written by another contract, it may be necessary for force a new session by calling `requestDataQuery(credentials:readOptions:resultQueue:completion)` first (and waiting for completion).
     ///
     /// For service-based data sources, will also attempt to retrieve any new data directly from the services, in which case this completion handler will not be called until this synchronization has finished.
     ///
@@ -207,13 +208,17 @@ public final class DigiMe {
         }
         
         allFilesReader = AllFilesReader(apiClient: self.apiClient, configuration: self.configuration)
-        validateOrRefreshCredentials(credentials) { result in
-            switch result {
-            case .success(let refreshedCredentials):
-                self.triggerSourceSync(credentials: refreshedCredentials, readOptions: readOptions) { result in
+        
+        allFilesReader?.readAllFiles(downloadHandler: { result in
+            resultQueue.async {
+                downloadHandler(result)
+            }
+        }, completion: { result in
+            if case .failure(.invalidSession) = result {
+                self.requestDataQuery(credentials: credentials, readOptions: readOptions, resultQueue: DispatchQueue.global()) { result in
                     switch result {
-                    case .success:
-                        self.allFilesReader?.readAllFiles(readOptions: readOptions, downloadHandler: { result in
+                    case .success(let refreshedCredentials):
+                        self.allFilesReader?.readAllFiles(downloadHandler: { result in
                             resultQueue.async {
                                 downloadHandler(result)
                             }
@@ -231,22 +236,21 @@ public final class DigiMe {
                         }
                     }
                 }
-            
-            case .failure(let error):
-                self.allFilesReader = nil
-                resultQueue.async {
-                    completion(.failure(error))
-                }
+                
+                return
             }
-        }
+            
+            self.allFilesReader = nil
+            resultQueue.async {
+                completion(result.map { ($0, credentials) })
+            }
+        })
     }
     
     /// Creates a session during which files can be read. This session is typically valid for 15 minutes.
     /// Once it has expired, a new session will be required to continue reading data.
     ///
     /// For service-based data sources, will also attempt to retrieve any new data directly from the services.
-    ///
-    /// There is no need to call this if using `readAllFiles` as that call implcitly creates and manages its own session.
     ///
     /// - Parameters:
     ///   - credentials: The existing credentials for the contract.
@@ -283,19 +287,15 @@ public final class DigiMe {
     ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with the list of files, or any errors encountered.
     public func readFileList(resultQueue: DispatchQueue = .main, completion: @escaping (Result<FileList, SDKError>) -> Void) {
-        validateOrRefreshSession { result in
-            switch result {
-            case .success(let session):
-                self.apiClient.makeRequest(FileListRoute(sessionKey: session.key)) { result in
-                    resultQueue.async {
-                        completion(result)
-                    }
-                }
-                
-            case .failure(let error):
-                resultQueue.async {
-                    completion(.failure(error))
-                }
+        guard
+            let session = session,
+            session.isValid else {
+            return completion(.failure(.invalidSession))
+        }
+        
+        apiClient.makeRequest(FileListRoute(sessionKey: session.key)) { result in
+            resultQueue.async {
+                completion(result)
             }
         }
     }
@@ -309,19 +309,15 @@ public final class DigiMe {
     ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with file, or any errors encountered.
     public func readFile(fileId: String, resultQueue: DispatchQueue = .main, completion: @escaping (Result<File, SDKError>) -> Void) {
-        validateOrRefreshSession { result in
-            switch result {
-            case .success(let session):
-                self.downloadService.downloadFile(sessionKey: session.key, fileId: fileId) { result in
-                    resultQueue.async {
-                        completion(result)
-                    }
-                }
-                
-            case .failure(let error):
-                resultQueue.async {
-                    completion(.failure(error))
-                }
+        guard
+            let session = session,
+            session.isValid else {
+            return completion(.failure(.invalidSession))
+        }
+        
+        downloadService.downloadFile(sessionKey: session.key, fileId: fileId) { result in
+            resultQueue.async {
+                completion(result)
             }
         }
     }
@@ -418,22 +414,6 @@ public final class DigiMe {
                     completion(.failure(error))
                 }
             }
-        }
-    }
-    
-    private func validateOrRefreshSession(completion: @escaping (Result<Session, SDKError>) -> Void) {
-        if let session = session,
-           session.isValid {
-            return completion(.success(session))
-        }
-        
-        let route = SessionRoute(appId: configuration.appId, contractId: configuration.contractId)
-        apiClient.makeRequest(route) { result in
-            if case .success(let session) = result {
-                self.session = session
-            }
-
-            completion(result.mapError { _ in .invalidSession })
         }
     }
     
