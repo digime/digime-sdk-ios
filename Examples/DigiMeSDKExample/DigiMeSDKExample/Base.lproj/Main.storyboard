@@ -308,7 +308,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6q-8A-B9m">
-                                <rect key="frame" x="10" y="118" width="314" height="20.5"/>
+                                <rect key="frame" x="10" y="118" width="304" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -320,13 +320,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XMo-ji-iav">
-                                <rect key="frame" x="334" y="108.5" width="70" height="40"/>
+                                <rect key="frame" x="324" y="108.5" width="80" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Tz9-HU-Lhn"/>
-                                    <constraint firstAttribute="width" constant="70" id="pUw-zw-a2M"/>
+                                    <constraint firstAttribute="width" constant="80" id="pUw-zw-a2M"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Edit"/>
+                                <state key="normal" title="Change"/>
                                 <connections>
                                     <action selector="editContract" destination="yAL-po-pNQ" eventType="touchUpInside" id="RkR-x3-W5a"/>
                                 </connections>

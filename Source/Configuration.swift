@@ -12,16 +12,16 @@ import Foundation
 public struct Configuration {
     
     /// Your application identifier
-    let appId: String
+    public let appId: String
     
     /// Your contract identifier
-    let contractId: String
+    public let contractId: String
     
     /// The PKCS1 private key base 64 encoded data
-    let privateKeyData: Data
+    public  let privateKeyData: Data
     
     /// The PKCS1 public key base 64 encoded data
-    let publicKeyData: Data?
+    public let publicKeyData: Data?
     
     /// Creates a configuration
     /// - Parameters:

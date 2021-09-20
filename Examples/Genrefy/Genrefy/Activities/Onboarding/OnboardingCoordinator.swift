@@ -65,9 +65,7 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
         let scope = digimeService?.lastDayScope()
         let options = ReadOptions(limits: nil, scope: scope)
         
-        let client = digimeService?.dmeClient
-        
-        client?.authorize(serviceId: 16, readOptions: options) { error in
+        digimeService?.authorize(readOptions: options, serviceId: 16) { error in
             if let error = error {
                 print("digi.me authorization failed with error: \(error)")
                 DispatchQueue.main.async {

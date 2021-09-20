@@ -127,7 +127,11 @@ class WriteDataViewController: UIViewController {
     }
     
     @IBAction private func authorizeReadContract() {
-        let writeCredentials = credentialCache.credentials(for: writeContract.identifier)
+        guard let writeCredentials = credentialCache.credentials(for: writeContract.identifier) else {
+            logger.log(message: "Write contract needs to be authorized first")
+            return
+        }
+        
         let readCredentials = credentialCache.credentials(for: readContract.identifier)
         readDigiMe.authorize(credentials: readCredentials, linkToContractWithCredentials: writeCredentials) { result in
             switch result {
@@ -199,7 +203,19 @@ class WriteDataViewController: UIViewController {
             self.logger.log(message: "Read contract must be authorized first.")
             return
         }
+        
+        readDigiMe.requestDataQuery(credentials: credentials, readOptions: nil) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.credentialCache.setCredentials(refreshedCredentials, for: self.readContract.identifier)
+                self.readAllFiles(credentials: refreshedCredentials)
+            case .failure(let error):
+                self.logger.log(message: "Error requesting data query: \(error)")
+            }
+        }
+    }
     
+    private func readAllFiles(credentials: Credentials) {
         readDigiMe.readAllFiles(credentials: credentials, readOptions: nil) { result in
             switch result {
             case .success(let fileContainer):

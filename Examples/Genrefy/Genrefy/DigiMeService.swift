@@ -14,15 +14,38 @@ protocol DigiMeServiceDelegate: AnyObject {
 }
 
 class DigiMeService {
-
-    let dmeClient: DigiMe
+    
     let repository: ImportRepository
+    private let dmeClient: DigiMe
+    private let credentialCache = CredentialCache()
     private let serialQueue = DispatchQueue(label: "ImportSerializationQueue")
     weak var delegate: DigiMeServiceDelegate?
+    
+    private var credentials: Credentials? {
+        get {
+            credentialCache.credentials(for: AppCoordinator.configuration.contractId)
+        }
+        set {
+            credentialCache.setCredentials(newValue, for: AppCoordinator.configuration.contractId)
+        }
+    }
     
     init(client: DigiMe, repository: ImportRepository) {
         dmeClient = client
         self.repository = repository
+    }
+    
+    func authorize(readOptions: ReadOptions?, serviceId: Int? = nil, completion: @escaping (SDKError?) -> Void) {
+        dmeClient.authorize(credentials: credentials, readOptions: readOptions) { result in
+            switch result {
+            case .success(let newOrRefreshedCredentials):
+                self.credentials = newOrRefreshedCredentials
+                completion(nil)
+                
+            case.failure(let error):
+                completion(error)
+            }
+        }
     }
     
     func getAccounts() {
@@ -40,7 +63,12 @@ class DigiMeService {
     }
 
     func getSessionData() {
-        dmeClient.readFiles(readOptions: nil) { result in
+        guard let credentials = credentials else {
+            print("Attempting to read data before authorizing contract")
+            return
+        }
+        
+        dmeClient.readAllFiles(credentials: credentials, readOptions: nil) { result in
             switch result {
             case .success(let file):
                 self.serialQueue.sync {
@@ -52,7 +80,8 @@ class DigiMeService {
             }
         } completion: { result in
             switch result {
-            case .success:
+            case .success(let (_, refreshedCredentials)):
+                self.credentials = refreshedCredentials
                 self.serialQueue.sync {
                     DispatchQueue.main.async {
                         self.delegate?.serviceDidFinishImporting()
@@ -63,6 +92,15 @@ class DigiMeService {
                 print("digi.me failed to complete getting session data with error: \(error)")
             }
         }
+    }
+    
+    func deleteUser(completion: @escaping (SDKError?) -> Void) {
+        guard let credentials = credentials else {
+            print("Attempting to delete user before authorizing contract")
+            return
+        }
+        
+        dmeClient.deleteUser(credentials: credentials, completion: completion)
     }
     
     func lastDayScope() -> Scope {

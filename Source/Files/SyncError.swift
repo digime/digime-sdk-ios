@@ -13,4 +13,10 @@ public struct SyncError: Decodable, Equatable {
     public let code: String
     public let statusCode: Int
     public let message: String
+    
+    enum CodingKeys: String, CodingKey {
+        case code
+        case statusCode = "statuscode"
+        case message
+    }
 }

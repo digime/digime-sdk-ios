@@ -3,6 +3,7 @@
 included:
   - DigiMeSDKExample #local path
   - ../../Source #local path
+  - ../../Source/* #local path
   
   - Examples/DigiMeSDKExample/DigiMeSDKExample #github action path
   - Source #github action path

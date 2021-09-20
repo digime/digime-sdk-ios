@@ -51,7 +51,7 @@ class AllFilesReader {
         return sessionFileList?.status.state.isRunning ?? true
     }
     
-    func readAllFiles(readOptions: ReadOptions?, downloadHandler: @escaping (Result<File, SDKError>) -> Void, completion: @escaping (Result<FileList, SDKError>) -> Void) {
+    func readAllFiles(downloadHandler: @escaping (Result<File, SDKError>) -> Void, completion: @escaping (Result<FileList, SDKError>) -> Void) {
         guard !isFetchingSessionData else {
             completion(.failure(SDKError.alreadyReadingAllFiles))
             return
@@ -64,7 +64,6 @@ class AllFilesReader {
     }
     
     private func beginFileListPollingIfRequired() {
-        fileListCache.reset()
         isFetchingSessionData = true
         downloadService.allDownloadsFinishedHandler = {
             Logger.info("Finished downloading all files")
@@ -75,7 +74,15 @@ class AllFilesReader {
     }
     
     private func refreshFileList() {
-        readFileList { result in
+        guard
+            let session = session,
+            session.isValid else {
+            
+            // Cannot continue without valid session
+            return completeSessionDataFetch(error: .invalidSession)
+        }
+        
+        apiClient.makeRequest(FileListRoute(sessionKey: session.key)) { result in
             switch result {
             case .success(let fileList):
                 let fileListDidChange = fileList != self.sessionFileList
@@ -120,45 +127,17 @@ class AllFilesReader {
             return
         }
         
-        validateOrRefreshSession { result in
-            switch result {
-            case .success(let session):
-                items.forEach { item in
-                    Logger.debug("Adding file to download queue: \(item.name)")
-                    self.downloadService.downloadFile(sessionKey: session.key, fileId: item.name, completion: sessionContentHandler)
-                }
-
-            case .failure(let error):
-                self.sessionError = error
-            }
-        }
-    }
-    
-    private func validateOrRefreshSession(completion: @escaping (Result<Session, SDKError>) -> Void) {
-        if let session = session,
-           session.isValid {
-            return completion(.success(session))
+        guard
+            let session = session,
+            session.isValid else {
+            
+            // Cannot continue without valid session
+            return completeSessionDataFetch(error: .invalidSession)
         }
         
-        let route = SessionRoute(appId: configuration.appId, contractId: configuration.contractId)
-        apiClient.makeRequest(route) { result in
-            if case .success(let session) = result {
-                self.session = session
-            }
-
-            completion(result.mapError { _ in .invalidSession })
-        }
-    }
-    
-    private func readFileList(completion: @escaping (Result<FileList, SDKError>) -> Void) {
-        validateOrRefreshSession { result in
-            switch result {
-            case .success(let session):
-                self.apiClient.makeRequest(FileListRoute(sessionKey: session.key), completion: completion)
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
+        items.forEach { item in
+            Logger.debug("Adding file to download queue: \(item.name)")
+            self.downloadService.downloadFile(sessionKey: session.key, fileId: item.name, completion: sessionContentHandler)
         }
     }
     
@@ -177,7 +156,6 @@ class AllFilesReader {
         isFetchingSessionData = false
         
         fileListCache.reset()
-        sessionFileList = nil
         sessionDataCompletion = nil
         sessionContentHandler = nil
         downloadService.allDownloadsFinishedHandler = nil
