@@ -21,6 +21,10 @@ class DigiMeService {
     private let serialQueue = DispatchQueue(label: "ImportSerializationQueue")
     weak var delegate: DigiMeServiceDelegate?
     
+    var isConnected: Bool {
+        credentials != nil
+    }
+    
     private var credentials: Credentials? {
         get {
             credentialCache.credentials(for: AppCoordinator.configuration.contractId)
@@ -36,7 +40,7 @@ class DigiMeService {
     }
     
     func authorize(readOptions: ReadOptions?, serviceId: Int? = nil, completion: @escaping (SDKError?) -> Void) {
-        dmeClient.authorize(credentials: credentials, readOptions: readOptions) { result in
+        dmeClient.authorize(credentials: credentials, serviceId: serviceId, readOptions: readOptions) { result in
             switch result {
             case .success(let newOrRefreshedCredentials):
                 self.credentials = newOrRefreshedCredentials
@@ -82,14 +86,15 @@ class DigiMeService {
             switch result {
             case .success(let (_, refreshedCredentials)):
                 self.credentials = refreshedCredentials
-                self.serialQueue.sync {
-                    DispatchQueue.main.async {
-                        self.delegate?.serviceDidFinishImporting()
-                    }
-                }
                 
             case .failure(let error):
                 print("digi.me failed to complete getting session data with error: \(error)")
+            }
+            
+            self.serialQueue.sync {
+                DispatchQueue.main.async {
+                    self.delegate?.serviceDidFinishImporting()
+                }
             }
         }
     }
@@ -100,7 +105,10 @@ class DigiMeService {
             return
         }
         
-        dmeClient.deleteUser(credentials: credentials, completion: completion)
+        dmeClient.deleteUser(credentials: credentials) { error in
+            self.credentials = nil
+            completion(error)
+        }
     }
     
     func lastDayScope() -> Scope {

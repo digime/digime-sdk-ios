@@ -81,16 +81,22 @@ u3W6P+D7xkopNDDFki7IcLyaRzKvXjGf8HeKz0YP+XomHb25Bc3A
         
     func begin() {
         
+        // Log all levels, including debug.
+        DigiMe.logLevels = LogLevel.allCases
+        
         digimeService.repository.delegate = self
         digimeService.delegate = self
         
         configureAppearance()
         
         // If have data, go to analysis, otherwise onboard
-        if
-            let songData = PersistentStorage.shared.loadData(for: "songs.json"),
-            let songs = try? JSONDecoder().decode([Song].self, from: songData) {
-            digimeService.repository.process(songs: songs)
+        if digimeService.isConnected {
+            if
+                let songData = PersistentStorage.shared.loadData(for: "songs.json"),
+                let songs = try? JSONDecoder().decode([Song].self, from: songData) {
+                digimeService.repository.process(songs: songs)
+            }
+            
             goToAnalysisCoordinator()
             analysisCoordinator?.repositoryDidFinishProcessing()
         }
