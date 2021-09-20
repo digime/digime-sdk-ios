@@ -27,31 +27,20 @@
 
 Sometimes you may only want to retrieve a subset of data. This is governed at two levels. At the top are any scope limitations dictated by your contract; these can only be changed by digi.me support so please [contact support](https://developers.digi.me/contact-us) if you want to discuss this further.
 
-At a code level, you can restrict the scope of a Private Sharing session by passing in a custom `DMEScope`.
+At a code level, you can restrict the scope of a Private Sharing session by passing in a custom `ReadOptions` object when requesting data.
 
-## Defining `DMEScope`
+## Defining `ReadOptions`
 
-`DMEScope` is comprised of three properties. `timeRanges` is a list of `DMETimeRange` objects (more on this below) to limit the breadth of time for which applicable data will be returned. `serviceGroups` is a list of `DMEServiceGroup` objects, which nests it's own list of `DMEServiceType` objects, nesting `DMEObjectType` objects; this is also detailed below. `context` is set automatically and cannot be overridden.
+`ReadOptions` is comprised of two properties. `limits` governs any limits to the data request that you'd like to impose. For example, you can limit the duration of the request should you prefer to retrieve a subset of all available data quickly, as opposed to waiting for all of the data to be resolved and returned.
+
+The other property on `ReadOptions` is `Scope`. `Scope` defines, you guessed it, the scope of the data you'd like to retrieve. Let's take a deeper look at `Scope`:
+
+Scope has 2 properties, an array of `TimeRange` objects and an array of `ServiceGroupScope` objects.
 
 ### _Scoping by time range_:
 
-`DMETimeRange` has 3 properties. `fromDate`, `toDate` and `last`. These are all optional but **at least one is required.**
-
-We recommend you use one of the convenience methods provided:
-
-```objc
-//  A valid NSDate object representation of the earliest date you want data for.
-+ (DMETimeRange *)from:(NSDate *)from;
-
-// A valid NSDate object representation of the date before which you would like data.
-+ (DMETimeRange *)priorTo:(NSDate *)priorTo;
-
-// A valid NSDate object representation of the start / end periods for which you want data for.
-+ (DMETimeRange *)from:(NSDate *)from to:(NSDate *)to;
-
-// An integer an a unit to describe date period you want the data for. Unit may be days, month or years
-+ (DMETimeRange *)last:(NSUInteger)x unit:(DMETimeRangeUnit)unit;
-```
+`TimeRange` is an enum with 4 states; `after`, `between`, `before` and `last`.
+These are self-explainatory and allow you to define time ranges that returned data must conform to.
 
 ### _Scoping by service group, service type or object type:_
 
@@ -61,58 +50,23 @@ Service Groups, Service Types and Objects are all listed [here](https://develope
 
 Below is an example of a valid scope to retrive only `Playlists` and `Followed Artists` from `Spotify`:
 
-#####Objective-C
-```objc
-DMEServiceObjectType * playlistObjectType = [[DMEServiceObjectType alloc] initWithIdentifier:403]; // 403 is the ID for a Playlist object.
-DMEServiceObjectType * followedArtistObjectType = [[DMEServiceObjectType alloc] initWithIdentifier:407]; // 407 is the ID for a Followed Artist object.
-    
-DMEServiceType *spotifyServiceType = [[DMEServiceType alloc] initWithIdentifier:19 objectTypes:@[playlistObjectType, followedArtistObjectType]]; // 19 is the ID for Spotify.
-    
-DMEServiceGroup * entertainmentServiceGroup = [[DMEServiceGroup alloc] initWithIdentifier:5 serviceTypes:@[spotifyServiceType]]; // 5 is the ID for Entertainment.
-    
-//create scope object
-DMEScope *scope = [DMEScope new]; // This scope is valid, as no restrictions have been imposed.
-scope.serviceGroups = @[entertainmentServiceGroup]; // The scope is still valid, as it conforms to the rules listed above.
-```
-
-#####Swift
 ```swift
-let playlistObjectType = DMEServiceObjectType(identifier: 403) // 403 is the ID for a Playlist object.
-let followedArtistObjectType = DMEServiceObjectType(identifier: 407) // 407 is the ID for a Followed Artist object.
+let playlistObjectType = ServiceObjectType(identifier: 403) // 403 is the ID for a Playlist object.
+let followedArtistObjectType = ServiceObjectType(identifier: 407) // 407 is the ID for a Followed Artist object.
 
-let spotifyServiceType = DMEServiceType(identifier: 19, objectTypes: [playlistObjectType, followedArtistObjectType]) // 19 is the ID for Spotify.
+let spotifyServiceType = ServiceType(identifier: 19, objectTypes: [playlistObjectType, followedArtistObjectType]) // 19 is the ID for Spotify.
 
-let entertainmentServiceGroup = DMEServiceGroup(identifier: 5, serviceTypes: [spotifyServiceType]) // 5 is the ID for Entertainment.
+let entertainmentServiceGroup = ServiceGroup(identifier: 5, serviceTypes: [spotifyServiceType]) // 5 is the ID for Entertainment.
 
-let scope = DMEScope() // This scope is valid, as no restrictions have been imposed.
-scope.serviceGroups = [entertainmentServiceGroup] // The scope is still valid, as it conforms to the rules listed above.
+let scope = Scope(serviceGroups: [entertainmentServiceGroup])
+let readOptions = ReadOptions(scope: scope)
 ```
 
 
-## Providing `DMEScope`
+## Providing `ReadOptions`
 
-When calling `authorize` on your `DMEPullClient`, simply wrap your `DMEScope` object in a `DMESessionOptions` object and pass in:
+When calling `readFiles` on your `DigiMe` object, simply pass your `ReadOptions` object to this method:
 
-#####Objective-C
-```objc
-DMEScope *scope = [DMEScope new];
-scope.timeRanges = @[[DMETimeRange last:6 unit:DMETimeRangeUnitMonth]];
-DMESessionOptions *options = [DMESessionOptions new];
-options.scope = scope;
-[pullClient authorizeWithOptions:options completion:^(DMESession * _Nullable session, NSError * _Nullable error) {
-
-}];
-```
-
-#####Swift
 ```swift
-let scope = DMEScope()
-scope.timeRanges = [DMETimeRange.last(6, unit: .month)]
-let options = DMESessionOptions()
-options.scope = scopes
-pullClient.authorize(options: options, completion: { session, error in
-
-})
+digiMe.readFiles(readOptions: readOptions, ...)
 ```
-
-The data received from any subsequent calls to `getSessionData` will be limited by the scope of the session defined above.
