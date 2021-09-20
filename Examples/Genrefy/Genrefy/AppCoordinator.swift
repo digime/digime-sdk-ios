@@ -22,61 +22,7 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
     
     var analysisCoordinator: AnalysisCoordinator?
     
-    private var digimeService: DigiMeService
-    
-    required init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
-        
-        let dmeClient = AppCoordinator.digiMeClient()
-        
-        let repository = ImportRepository()
-        digimeService = DigiMeService(client: dmeClient, repository: repository)
-    }
-    
-    deinit {
-        navigationController.delegate = nil
-    }
-        
-    func begin() {
-        
-        digimeService.repository.delegate = self
-        digimeService.delegate = self
-        
-        configureAppearance()
-        
-        // If have data, go to analysis, otherwise onboard
-        if
-            let songData = PersistentStorage.shared.loadData(for: "songs.json"),
-            let songs = try? JSONDecoder().decode([Song].self, from: songData) {
-            digimeService.repository.process(songs: songs)
-            goToAnalysisCoordinator()
-            analysisCoordinator?.repositoryDidFinishProcessing()
-        }
-        else {
-            goToOnboardingCoordinator()
-        }
-    }
-    
-    func childDidFinish(child: ActivityCoordinating, result: Any?) {
-        removeChild(child)
-        
-        if child is OnboardingCoordinator {
-            if let analysisCoordinator = analysisCoordinator {
-                analysisCoordinator.repositoryDidFinishProcessing()
-            }
-        }
-        else{
-        
-            // child is results coordinator
-            delegate?.reset()
-        }
-    }
-}
-
-// MARK: - Client Configuration
-extension AppCoordinator {
-    class func digiMeClient() -> DigiMe {
-        
+    static var configuration: Configuration = {
         // Get YOUR_APP_ID here - https://go.digi.me/developers/register
         // Don't forget to replace YOUR_APP_ID part in URLSchemes in Info.plist
         let appId = "YOUR_APP_ID"
@@ -110,14 +56,74 @@ XTB5irocXRj2XXn1sMpGBJGf4AKRrIhQNIoAhouh7btYBAD7+eT8SlGQ75wKkaDW
 u3W6P+D7xkopNDDFki7IcLyaRzKvXjGf8HeKz0YP+XomHb25Bc3A
 -----END RSA PRIVATE KEY-----
 """
-        let configuration: Configuration
         do {
-            configuration = try Configuration(appId: appId, contractId: contractId, privateKey: privateKey, publicKey: nil)
+            return try Configuration(appId: appId, contractId: contractId, privateKey: privateKey, publicKey: nil)
         }
         catch {
             fatalError("Error creating configuration \(error)")
         }
+    }()
+    
+    private var digimeService: DigiMeService
+    
+    required init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
         
+        let dmeClient = AppCoordinator.digiMeClient()
+        
+        let repository = ImportRepository()
+        digimeService = DigiMeService(client: dmeClient, repository: repository)
+    }
+    
+    deinit {
+        navigationController.delegate = nil
+    }
+        
+    func begin() {
+        
+        // Log all levels, including debug.
+        DigiMe.logLevels = LogLevel.allCases
+        
+        digimeService.repository.delegate = self
+        digimeService.delegate = self
+        
+        configureAppearance()
+        
+        // If have data, go to analysis, otherwise onboard
+        if digimeService.isConnected {
+            if
+                let songData = PersistentStorage.shared.loadData(for: "songs.json"),
+                let songs = try? JSONDecoder().decode([Song].self, from: songData) {
+                digimeService.repository.process(songs: songs)
+            }
+            
+            goToAnalysisCoordinator()
+            analysisCoordinator?.repositoryDidFinishProcessing()
+        }
+        else {
+            goToOnboardingCoordinator()
+        }
+    }
+    
+    func childDidFinish(child: ActivityCoordinating, result: Any?) {
+        removeChild(child)
+        
+        if child is OnboardingCoordinator {
+            if let analysisCoordinator = analysisCoordinator {
+                analysisCoordinator.repositoryDidFinishProcessing()
+            }
+        }
+        else{
+        
+            // child is results coordinator
+            delegate?.reset()
+        }
+    }
+}
+
+// MARK: - Client Configuration
+extension AppCoordinator {
+    class func digiMeClient() -> DigiMe {
         return DigiMe(configuration: configuration)
     }
 }

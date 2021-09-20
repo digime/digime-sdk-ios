@@ -1,5 +1,5 @@
 //
-//  FileService.swift
+//  FileDownloadService.swift
 //  DigiMeSDK
 //
 //  Created on 25/06/2021.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FileService {
+class FileDownloadService {
     private let queue: OperationQueue
     private let apiClient: APIClient
     private let dataDecryptor: DataDecryptor
@@ -27,7 +27,7 @@ class FileService {
         
         queue = OperationQueue()
         queue.maxConcurrentOperationCount = 5
-        queue.name = "me.digi.sdk.fileservice"
+        queue.name = "me.digi.sdk.filedownloadservice"
         
         kvoToken = queue.observe(\.operationCount, options: .new) { _, change in
             if change.newValue == 0 {

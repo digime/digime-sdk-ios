@@ -25,6 +25,7 @@ class ServiceDataViewController: UIViewController {
     private var digiMe: DigiMe!
     private var logger: Logger!
     private var currentContract: Contract!
+    private let credentialCache = CredentialCache()
     
     private var accounts = [Account]()
     private var selectServiceCompletion: ((Service?) -> Void)?
@@ -139,19 +140,25 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
     }
     
     @IBAction private func addService() {
+        guard let credentials = credentialCache.credentials(for: currentContract.identifier) else {
+            self.logger.log(message: "Current contract must be authorized first.")
+            return
+        }
+        
         selectService { service in
             guard let service = service else {
                 return
             }
             
-            self.digiMe.addService(identifier: service.identifier) { error in
-                if let error = error {
-                    self.logger.log(message: "Adding \(service.name) failed: " + error.localizedDescription)
-                    return
+            self.digiMe.addService(identifier: service.identifier, credentials: credentials) { result in
+                switch result {
+                case .success(let newOrRefreshedCredentials):
+                    self.credentialCache.setCredentials(newOrRefreshedCredentials, for: self.currentContract.identifier)
+                    self.getData(credentials: newOrRefreshedCredentials)
+                    
+                case.failure(let error):
+                    self.logger.log(message: "Adding \(service.name) failed: \(error)")
                 }
-                
-                self.getAccounts()
-                self.getServiceData()
             }
         }
     }
@@ -161,10 +168,15 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
     }
     
     @IBAction private func deleteUser() {
-        digiMe.deleteUser { error in
+        guard let credentials = credentialCache.credentials(for: currentContract.identifier) else {
+            self.logger.log(message: "Current contract must be authorized first.")
+            return
+        }
+        
+        digiMe.deleteUser(credentials: credentials) { error in
+            self.credentialCache.setCredentials(nil, for: self.currentContract.identifier)
             if let error = error {
-                self.logger.log(message: "Deleting user failed: " + error.localizedDescription)
-                return
+                self.logger.log(message: "Deleting user failed: \(error)")
             }
             
             self.accounts = []
@@ -201,7 +213,7 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
         }
         
         contractLabel.text = "Contract: \(currentContract.name ?? currentContract.identifier)"
-        if digiMe.isConnected {
+        if credentialCache.credentials(for: currentContract.identifier) != nil {
             authWithServiceButton.isHidden = true
             authWithoutServiceButton.isHidden = true
             servicesLabel.isHidden = false
@@ -215,7 +227,10 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
             }
             else {
                 accounts.forEach { account in
-                    servicesText += "\n\t\(account.service.name) - \(account.name)"
+                    servicesText += "\n\t\(account.service.name)"
+                    if let name = account.name {
+                        servicesText += " - \(name)"
+                    }
                 }
             }
             
@@ -232,20 +247,22 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
     }
     
     private func authorizeAndReadData(service: Service?) {
-        digiMe.authorize(serviceId: service?.identifier, readOptions: nil) { error in
-            if let error = error {
+        let credentials = credentialCache.credentials(for: currentContract.identifier)
+        digiMe.authorize(credentials: credentials, serviceId: service?.identifier, readOptions: nil) { result in
+            switch result {
+            case .success(let newOrRefreshedCredentials):
+                self.credentialCache.setCredentials(newOrRefreshedCredentials, for: self.currentContract.identifier)
+                self.updateUI()
+                self.getData(credentials: newOrRefreshedCredentials)
+                
+            case.failure(let error):
                 self.logger.log(message: "Authorization failed: \(error)")
-                return
             }
-            
-            self.updateUI()
-            self.getAccounts()
-            self.getServiceData()
         }
     }
     
     private func selectService(completion: @escaping ((Service?) -> Void)) {
-        digiMe.availableServices(scope: .thisContractOnly) { result in
+        digiMe.availableServices(contractId: currentContract.identifier) { result in
             switch result {
             case .success(let servicesInfo):
                 self.selectServiceCompletion = completion
@@ -263,20 +280,48 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
         }
     }
     
-    private func getAccounts() {
+    private func getData(credentials: Credentials) {
+        getAccounts(credentials: credentials) { updatedCredentials in
+            self.getServiceData(credentials: updatedCredentials)
+        }
+    }
+    
+    private func getAccounts(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
         digiMe.readAccounts { result in
             switch result {
             case .success(let accountsInfo):
                 self.accounts = accountsInfo.accounts
                 self.updateUI()
+                completion(credentials)
             case .failure(let error):
+                if case .failure(.invalidSession) = result {
+                    // Need to create a new session
+                    self.requestDataQuery(credentials: credentials) { refreshedCredentials in
+                        self.getAccounts(credentials: refreshedCredentials, completion: completion)
+                    }
+                    return
+                }
+                
                 self.logger.log(message: "Error retrieving accounts: \(error)")
             }
         }
     }
+    
+    private func requestDataQuery(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
+        digiMe.requestDataQuery(credentials: credentials, readOptions: nil) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.credentialCache.setCredentials(refreshedCredentials, for: self.currentContract.identifier)
+                completion(refreshedCredentials)
+                
+            case.failure(let error):
+                self.logger.log(message: "Authorization failed: \(error)")
+            }
+        }
+    }
 
-    private func getServiceData() {
-        digiMe.readFiles(readOptions: nil, resultQueue: .global()) { result in
+    private func getServiceData(credentials: Credentials) {
+        digiMe.readAllFiles(credentials: credentials, readOptions: nil, resultQueue: .global()) { result in
             switch result {
             case .success(let fileContainer):
                 var message = "Downloaded file \(fileContainer.identifier)"
@@ -297,7 +342,8 @@ wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
             }
         } completion: { result in
             switch result {
-            case .success(let fileList):
+            case .success(let (fileList, refreshedCredentials)):
+                self.credentialCache.setCredentials(refreshedCredentials, for: self.currentContract.identifier)
                 var message = "Finished reading files:"
                 fileList.files?.forEach { message += "\n\t\($0.name)" }
                 self.logger.log(message: message)

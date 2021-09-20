@@ -31,6 +31,9 @@ public enum SDKError: Error {
     /// This is either caused by the contract not having been authorized or the contract's credentials expired requiring user to reauthorize
     case authorizationRequired
     
+    /// The session used to retrieve data is invalid. To refresh the session, please please request another data query.
+    case invalidSession
+    
     /// Server has returned data which cannot be read
     case invalidData
     
@@ -70,6 +73,9 @@ public enum SDKError: Error {
     /// Attempting to read with a write contract or write with a read contract
     case incorrectContractType
     
+    /// Only one call to `readAllFiles` can be in progress at any time for each `DigiMe` instance
+    case alreadyReadingAllFiles
+    
     /// An unexpected error has occurred - please contact support
     case other
 }
@@ -90,6 +96,9 @@ extension SDKError: CustomStringConvertible {
         case .authorizationRequired:
             return "This contract either needs to be authorized for the first time or reauthorized due to expired credentials"
         
+        case .invalidSession:
+            return "The session used to retrieve data is invalid. To refresh the session, please request another data query."
+            
         case .fileListPollingTimeout:
             return "Retrieving files has timed out"
         
@@ -133,6 +142,9 @@ extension SDKError: CustomStringConvertible {
         
         case .incorrectContractType:
             return "Attempting to read with a write contract or write with a read contract."
+            
+        case .alreadyReadingAllFiles:
+            return "Only one call to `readAllFiles` can be in progress at any time for each `DigiMe` instance. Try cancelling existing call if a new call is required."
             
         case .other:
             return "An unexpected error has occurred - please contact digi.me support."

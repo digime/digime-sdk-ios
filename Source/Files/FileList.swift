@@ -14,7 +14,8 @@ public struct FileList: Decodable, Equatable {
     /// The list of available files
     public let files: [FileListItem]?
     
-    let status: SyncStatus
+    /// The overall status of synchronisation between sources and library
+    public let status: SyncStatus
     
     enum CodingKeys: String, CodingKey {
         case files = "fileList"

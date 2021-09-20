@@ -8,15 +8,20 @@
 
 import Foundation
 
-struct SyncStatus: Decodable, Equatable {
-    let details: [SyncAccount] // Not available in 'pending' state
-    let state: SyncState
+/// The status of synchronizing data from a service-based source into user's library
+public struct SyncStatus: Decodable, Equatable {
+    /// The details of the sources being synchronized.
+    /// Not available if overall synchronization state is 'pending'.
+    public let details: [SyncAccount]
+    
+    /// The overall synchronization state
+    public let state: SyncState
     
     enum CodingKeys: String, CodingKey {
         case details, state
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let rawState = try container.decode(String.self, forKey: .state)
         state = SyncState(rawValue: rawState) ?? .unknown

@@ -135,10 +135,9 @@ extension AnalysisCoordinator: HomeViewControllerDelegate {
     func refreshData() {
         digimeService = delegate?.refreshService()
         let scope = digimeService?.lastDayScope()
-        let client = digimeService?.dmeClient
         let options = ReadOptions(limits: nil, scope: scope)
         
-        client?.authorize(readOptions: options) { error in
+        digimeService?.authorize(readOptions: options) { error in
             
             if let error = error {
                 print("digi.me authorization failed with error: \(error)")
@@ -168,7 +167,7 @@ extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
 
 extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
     func reset() {
-        digimeService?.dmeClient.deleteUser { error in
+        digimeService?.deleteUser { error in
             guard error != nil else {
                 self.displayError()
                 return

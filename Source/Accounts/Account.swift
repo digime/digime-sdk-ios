@@ -15,7 +15,7 @@ public struct Account: Codable {
     public let identifier: String
     
     /// The account's name
-    public let name: String
+    public let name: String?
     
     /// The account number
     public let number: String?

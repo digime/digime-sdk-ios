@@ -8,16 +8,24 @@
 
 import Foundation
 
-struct SyncAccount: Decodable, Equatable {
-    let identifier: String? // Not available for written data
-    let state: SyncState
-    let error: SyncError? // Only available for 'partial' state
+/// Details of a source being synchronized
+public struct SyncAccount: Decodable, Equatable {
+    /// The service's account's identifier
+    /// Only available for service-based sources, not for data written by this or another contract.
+    public let identifier: String?
+    
+    /// The synchronization state for this source
+    public let state: SyncState
+    
+    /// An error giving details of the reason synchronization failed.
+    /// Only available for 'partial' synchronization state
+    public let error: SyncError?
     
     enum CodingKeys: String, CodingKey {
         case state, error
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

@@ -8,7 +8,8 @@
 
 import Foundation
 
-final class CredentialCache {
+/// Cache for securely storing credentials in the keychain
+public final class CredentialCache {
     private let keychainIdPrefix = "me.digi.sdk.credentials."
         
     // Contains primary key query values
@@ -21,7 +22,14 @@ final class CredentialCache {
         ]
     }
     
-    func credentials(for contractId: String) -> Credentials? {
+    /// Initializes an instance of credential cache
+    public init() {
+    }
+    
+    /// Retrieves the credentials for a specified contract id, if available
+    /// - Parameter contractId: The contract identifier relating to the stored credentials
+    /// - Returns: The credentials, if found, or nil if not found
+    public func credentials(for contractId: String) -> Credentials? {
         var query = baseQuery(for: contractId)
         query[kSecReturnData] = true as AnyObject
         
@@ -42,7 +50,11 @@ final class CredentialCache {
         return nil
     }
     
-    func setCredentials(_ credentials: Credentials?, for contractId: String) {
+    /// Sets the credentials for the specified contract identifier
+    /// - Parameters:
+    ///   - credentials: The credentials relating to the contract identifier. If nil, removes the entry for the contract.
+    ///   - contractId: The contract identifier
+    public func setCredentials(_ credentials: Credentials?, for contractId: String) {
         var query = baseQuery(for: contractId)
         
         guard let data = try? credentials?.encoded() else {
