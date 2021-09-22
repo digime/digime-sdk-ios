@@ -29,14 +29,8 @@ The digi.me private sharing platform empowers developers to make use of user dat
 
 ## Requirements
 
-### Development
-- XCode 10.3 or newer.
-- [CocoaPods](http://cocoapods.org) 1.7.0 or newer.
-
 ### Deployment
-- iOS version (latest - 1) **\***
-
-**\*** You may be successful in running the SDK on older iOS versions, but only n-1 is officially supported.
+- iOS 13+
 
 
 ## Installation
@@ -48,7 +42,7 @@ The digi.me private sharing platform empowers developers to make use of user dat
 	```ruby
 	use_frameworks!
 	source 'https://github.com/CocoaPods/Specs.git'
-	platform :ios, '12.0'
+	platform :ios, '13.0'
 
 	target 'TargetName' do
 		pod 'DigiMeSDK'
@@ -75,15 +69,7 @@ This example will show you how to configure the SDK, and get you up and running 
 
 To access the digi.me platform, you need to obtain an `AppID` for your application. You can get yours by filling out the registration form [here](https://go.digi.me/developers/register).
 
-In a production environment, you will also be required to obtain your own `Contract ID` and `Private Key` from digi.me support. However, for sandbox purposes, we provide the following example values:
-
-**Example Contract ID:** `fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF `
-<br>
-**Example Private Key:**
-	<br>&nbsp;&nbsp;&nbsp;&nbsp;Download: [P12 Key Store](https://github.com/digime/digime-sdk-ios/blob/master/Examples/SkeletonObjC/fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12?raw=true)
-	<br>&nbsp;&nbsp;&nbsp;&nbsp;Password: `monkey periscope`
-
-You should include the P12 file in your project assets folder.
+In a production environment, you will also be required to obtain your own `Contract ID` and `Private Key` from digi.me support. However, for sandbox purposes, you can use one of the contracts from the example projects (see `/Examples` directory).
 
 ### 2. Configuring Callback Forwarding:
 
@@ -99,16 +85,6 @@ func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>)
 }
 ```
 
-<br>
-Additionally, you need to whitelist Digi.me app scheme in your `Info.plist`:
-
-```xml
-<key>LSApplicationQueriesSchemes</key>
-<array>
-<string>digime-ca-master</string>
-</array>
-```
-<br>
 And register custom URL scheme so that your app can receive the callback from Digi.me app. Still in `Info.plist` add:
 
 ```xml
@@ -131,11 +107,22 @@ where `YOUR_APP_ID` should be replaced with your `AppID`.
 ### 3. Configuring the `DigiMe` object:
 `DigiMe` is the object you will primarily interface with to use the SDK. It is instantiated with a `Configuration` object.
 
-The `Configuration` object is instantiated with your `App ID`, `Contract ID` and `Private Key` in hex format. The below code snippet shows you how to combine all this to get a configured `DigiMe` object:
+The `Configuration` object is instantiated with your `App ID`, `Contract ID` and `Private Key`. The below code snippet shows you how to combine all this to get a configured `DigiMe` object:
 
 ```swift
-let configuration = Configuration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID", privateKeyHex: privateKeyHex!)
-let digiMe = DigiMe(configuration: configuration)
+let privateKey = """
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA...
+-----END RSA PRIVATE KEY-----
+"""
+
+do {
+    let configuration = try Configuration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID", privateKey: privateKey)
+    let digiMe = DigiMe(configuration: configuration)
+}
+catch {
+    ...
+}
 ```
 
 ### 4. Requesting Consent:
@@ -143,11 +130,14 @@ let digiMe = DigiMe(configuration: configuration)
 Before you can access a user's data, you must obtain their consent. This is achieved by calling `authorize` on your client object. You need to provide a service identifier for which you want to request access to; this can be found by referring the the service definitions in the developer docs or my using the [Discovery API](#).:
 
 ```swift
-digiMe.authorize(serviceId: service?.identifier, readOptions: nil) { error in
-    if let error = error {
-        return
+digiMe.authorize(serviceId: service?.identifier, readOptions: nil) { result in
+    switch result {
+    case .success(let credentials):
+        // store credentials and continue on to fetch data.
+    
+    case.failure(let error):
+        // handle failure.
     }
-    // Continue on to fetch data.
 }
 ```
 
@@ -158,35 +148,38 @@ If a user grants consent, a session will be created under the hood; this is used
 Once you have a session, you can request data. We strive to make this as simple as possible, so expose a single method to do so:
 
 ```swift
-digiMe.readFiles(readOptions: nil) { result in
+let credentials = my_stored_credentials
+digiMe.readAllFiles(credentials: credentials, readOptions: nil) { result in
 	switch result {
-   	case .success(let fileContainer):
-        // Access data of metadata of file container.
+   	case .success(let file):
+        // Access data or metadata of file.
         
    case .failure(let error):
        // Handle Error
    }
 } completion: { result in
     switch result {
-    case .success(let fileList):
-        // Handle success.
+    case .success(let (fileList, refreshedCredentials)):
+        // Handle success and update stored credentials as these may have been refreshed.
     case .failure(let error):
         // Handle failure.
     }
 }
 ```
 
-For each file, the first 'file handler' block will be called. If the download was successful, you will receive a `FileContainer` object. If the download fails, an error.
+For each file, the first 'file handler' block will be called. If the download was successful, you will receive a `File` object. If the download fails, an error.
 
 Once all files are downloaded, the second block will be invoked to inform you of this. In the case that the data stream is interrupted, or if the session obtained above isn't valid (it may have expired, for example), you will receive an error in the second block. See [Handling Errors](https://digime.github.io/digime-sdk-ios/error-handling.html).
 
-`FileContainer` exposes the property `content` which attempts to decode the binary file into the type specified within the metadata property, so that you can easily extract the values you need to power your app. Not all files can be represented automatically in this way, see [Raw Data](https://digime.github.io/digime-sdk-ios/raw-data.html) for details.
+`File` exposes the property `data` which contains the file's raw data along with the `mimeType` property. For files with JSON or image mime types, there are convenience methods to decode that raw data into the appropriate format, so that you can easily extract the values you need to power your app. In addition, `metadata` is available describing the file. In this example, as the data comes from external services, the metadata will be a `mapped` type describing the file's contents and details of associated service.
+
+Note that we also expose other methods if you prefer to manage this process yourself.
 
 ## Contributions
 
 digi.me prides itself in offering our SDKs completely open source, under the [Apache 2.0 Licence](LICENCE); we welcome contributions from all developers.
 
-We ask that when contributing, you ensure your changes meet our [Contribution Guidelines]() before submitting a pull request.
+We ask that when contributing, you ensure your changes meet our [Contribution Guidelines](https://digime.github.io/digime-sdk-ios/contributing.html) before submitting a pull request.
 
 ## Further Reading
 

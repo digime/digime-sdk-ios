@@ -31,9 +31,13 @@ At a code level, you can restrict the scope of a Private Sharing session by pass
 
 ## Defining `ReadOptions`
 
-`ReadOptions` is comprised of two properties. `limits` governs any limits to the data request that you'd like to impose. For example, you can limit the duration of the request should you prefer to retrieve a subset of all available data quickly, as opposed to waiting for all of the data to be resolved and returned.
+`ReadOptions` is comprised of two properties.
 
-The other property on `ReadOptions` is `Scope`. `Scope` defines, you guessed it, the scope of the data you'd like to retrieve. Let's take a deeper look at `Scope`:
+* `limits` governs any limits to the data request that you'd like to impose. For example, you can limit the duration of the request should you prefer to retrieve a subset of all available data quickly, as opposed to waiting for all of the data to be resolved and returned.
+
+* `scope` defines the scope of the data you'd like to retrieve.
+
+## Scope
 
 Scope has 2 properties, an array of `TimeRange` objects and an array of `ServiceGroupScope` objects.
 
@@ -46,7 +50,7 @@ These are self-explainatory and allow you to define time ranges that returned da
 
 To restrict scope at an object level, your scope must be 'fully described'; that is to say that a service group must comprise at least one service type, which must comprise at least one object type. Furthermore, a service group may only contain service types belonging to it and said service types may only contain object types belonging to them.
 
-Service Groups, Service Types and Objects are all listed [here](https://developers.digi.me/reference-objects) in the developer documentation. Their relationships are also shown (what belongs to what).
+Service Groups, Service Types and Objects are all listed [here](https://developers.digi.me/docs) in the developer documentation. Their relationships are also shown (what belongs to what).
 
 Below is an example of a valid scope to retrive only `Playlists` and `Followed Artists` from `Spotify`:
 
@@ -65,8 +69,8 @@ let readOptions = ReadOptions(scope: scope)
 
 ## Providing `ReadOptions`
 
-When calling `readFiles` on your `DigiMe` object, simply pass your `ReadOptions` object to this method:
+When calling `readAllFiles` on your `DigiMe` object, simply pass your `ReadOptions` object to this method:
 
 ```swift
-digiMe.readFiles(readOptions: readOptions, ...)
+digiMe.readAllFiles(readOptions: readOptions, ...)
 ```
