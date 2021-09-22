@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DigiMe Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/DigiMe" class="dashAnchor"></a>
+
+    <a title="DigiMe Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+           Docs
+        </a>
+        
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html"> Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      DigiMe Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../contributing.html">Contributing</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../error-handling.html">Error Handling</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../getting-started.html">Getting Started</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../scope.html">Scope</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../writing-and-reading-raw-data.html">Writing And Reading Raw Data</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CallbackService.html">CallbackService</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CredentialCache.html">CredentialCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DigiMe.html">DigiMe</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RawFileMetadataBuilder.html">RawFileMetadataBuilder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/FileMetadata.html">FileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/MimeType.html">MimeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SDKError.html">SDKError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SyncState.html">SyncState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TimeRange.html">TimeRange</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TimeRange/Unit.html">– Unit</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/APIError.html">APIError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Account.html">Account</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AccountServiceDescriptor.html">AccountServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/AccountsInfo.html">AccountsInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Configuration.html">Configuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Duration.html">Duration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/File.html">File</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/FileList.html">FileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/FileListItem.html">FileListItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Limits.html">Limits</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/MappedFileMetadata.html">MappedFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/RawFileMetadata.html">RawFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/RawFileMetadata/Account.html">– Account</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/RawFileMetadata/ObjectType.html">– ObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ReadOptions.html">ReadOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Scope.html">Scope</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Service.html">Service</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ServiceCountry.html">ServiceCountry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ServiceGroup.html">ServiceGroup</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ServiceGroupScope.html">ServiceGroupScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ServiceObjectType.html">ServiceObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ServiceType.html">ServiceType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ServicesInfo.html">ServicesInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SyncAccount.html">SyncAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SyncError.html">SyncError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SyncStatus.html">SyncStatus</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9DigiMeSDK10LogHandlera">LogHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9DigiMeSDK12LogLevelMaska">LogLevelMask</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            <h1>DigiMe</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DigiMe</span></code></pre>
+
+                </div>
+              </div>
+            <p>The entry point to the SDK</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C9logLevelsSayAA8LogLevelOGvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/logLevels" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C9logLevelsSayAA8LogLevelOGvpZ">logLevels</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The log levels for all <code>DigiMe</code> instances which will be included in logs.
+Defaults to <code>[.info, .warning, .error, .critical]</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="k">var</span> <span class="nv">logLevels</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/LogLevel.html">LogLevel</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C13setLogHandleryyyAA0E5LevelO_S3SSutcFZ"></a>
+                    <a name="//apple_ref/swift/Method/setLogHandler(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C13setLogHandleryyyAA0E5LevelO_S3SSutcFZ">setLogHandler(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the custom log handler for all <code>DigiMe</code> instances to allow logging to a different system.
+DigiMeSDK uses <code>NSLog</code> by default.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">setLogHandler</span><span class="p">(</span><span class="n">_</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:9DigiMeSDK10LogHandlera">LogHandler</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The log handler block</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C13configurationAcA13ConfigurationV_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(configuration:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C13configurationAcA13ConfigurationV_tcfc">init(configuration:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialises a new instance of SDK.
+A new instance should be created for each contract the app uses</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="kt"><a href="../Structs/Configuration.html">Configuration</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configuration</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The configuration which defines this instance</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C9authorize11credentials9serviceId11readOptions29linkToContractWithCredentials11resultQueue10completionyAA0N0VSg_SiSgAA04ReadI0VSgAMSo17OS_dispatch_queueCys6ResultOyAlA8SDKErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/authorize(credentials:serviceId:readOptions:linkToContractWithCredentials:resultQueue:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C9authorize11credentials9serviceId11readOptions29linkToContractWithCredentials11resultQueue10completionyAA0N0VSg_SiSgAA04ReadI0VSgAMSo17OS_dispatch_queueCys6ResultOyAlA8SDKErrorOGctF">authorize(credentials:<wbr>serviceId:<wbr>readOptions:<wbr>linkToContractWithCredentials:<wbr>resultQueue:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Authorizes the contract configured with this digi.me instance to access to a library.</p>
+
+<p>Requires <code>CallbackService.shared().handleCallback(url:)</code> to be called from appropriate in <code>AppDelegate</code> or <code>SceneDelegate</code>place so that authorization can complete.</p>
+
+<p>If the user has not already authorized, will present a view controller in which user consents.
+If user has already authorized, refreshes the authorization, if necessary (which may require user consent again).</p>
+
+<p>To authorize this contract to access the same library that another contract has been authorized to access, specify the contract to link to&rsquo;s credentials. This is useful when a read contract needs to access the same library that a write contract has written deta to.</p>
+
+<p>Additionally for read contracts:</p>
+
+<ul>
+<li>Upon first authorization, can optionally specify a service from which user can log in to and retrieve data.</li>
+<li><p>Creates of refreshes a session during which data can be read from library.</p></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">authorize</span><span class="p">(</span><span class="nv">credentials</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">serviceId</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">readOptions</span><span class="p">:</span> <span class="kt"><a href="../Structs/ReadOptions.html">ReadOptions</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">linkToContractWithCredentials</span> <span class="nv">linkCredentials</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>credentials</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The existing credentials for the contract to authorize. If nil, will create credentials on success</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>serviceId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Identifier of initial service to add. Only valid for first authorization of read contracts where user has not previously granted consent. Ignored for all subsequent calls.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>readOptions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Options to filter which data is read from sources for this session. Only used for read contracts.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>linkToContractWithCredentials</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>When specified, connects to same library as another contract.  Does nothing if user has already authorized this contract.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called upon authorization completion with new or refreshed credentials, or any errors encountered.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C10addService10identifier11credentials11resultQueue10completionySi_AA11CredentialsVSo17OS_dispatch_queueCys6ResultOyAjA8SDKErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/addService(identifier:credentials:resultQueue:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C10addService10identifier11credentials11resultQueue10completionySi_AA11CredentialsVSo17OS_dispatch_queueCys6ResultOyAjA8SDKErrorOGctF">addService(identifier:<wbr>credentials:<wbr>resultQueue:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Once a user has granted consent, adds an additional service. Also initiates synchronization of data from this service to user&rsquo;s library.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addService</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">credentials</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">,</span> <span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Identifier of service to add.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>credentials</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The existing credentials for the contract.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called upon completion with new or refreshed credentials, or any errors encountered</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C12readAccounts11resultQueue10completionySo17OS_dispatch_queueC_ys6ResultOyAA0E4InfoVAA8SDKErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/readAccounts(resultQueue:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C12readAccounts11resultQueue10completionySo17OS_dispatch_queueC_ys6ResultOyAA0E4InfoVAA8SDKErrorOGctF">readAccounts(resultQueue:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Reads the service data source accounts user has added to library related to the configured contract.</p>
+
+<p>Requires a valid session to have been created, either implicitly by adding a new service, or explicitly by calling <code>requestDataQuery(credentials:readOptions:resultQueue:completion)</code>.</p>
+
+<p>Note: If this is called on either a write-only contract or a contract which reads non-service data, this will return an error.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">readAccounts</span><span class="p">(</span><span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/AccountsInfo.html">AccountsInfo</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called upon completion containing either relevant account info, if successful, or an error</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C12readAllFiles11credentials0D7Options11resultQueue15downloadHandler10completionyAA11CredentialsV_AA04ReadH0VSgSo17OS_dispatch_queueCys6ResultOyAA4FileVAA8SDKErrorOGcyARyAA0T4ListV_AKtAVGctF"></a>
+                    <a name="//apple_ref/swift/Method/readAllFiles(credentials:readOptions:resultQueue:downloadHandler:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C12readAllFiles11credentials0D7Options11resultQueue15downloadHandler10completionyAA11CredentialsV_AA04ReadH0VSgSo17OS_dispatch_queueCys6ResultOyAA4FileVAA8SDKErrorOGcyARyAA0T4ListV_AKtAVGctF">readAllFiles(credentials:<wbr>readOptions:<wbr>resultQueue:<wbr>downloadHandler:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetches content for all the files limited by read options.</p>
+
+<p>An attempt is made to fetch each requested file and the result of the attempt is passed back via the download handler.
+As download requests are asynchronous, the download handler may be called concurrently, so the handler implementation should allow for this.</p>
+
+<p>If this function is called while files are being read, an error denoting this will be immediately
+returned in the completion block of this subsequent call and will not affect any current calls.</p>
+
+<p>For reading data written by another contract, it may be necessary for force a new session by calling <code>requestDataQuery(credentials:readOptions:resultQueue:completion)</code> first (and waiting for completion).</p>
+
+<p>For service-based data sources, will also attempt to retrieve any new data directly from the services, in which case this completion handler will not be called until this synchronization has finished.</p>
+
+<p>Alternatively, caller can manage reading files themselves by using the calls:
+<code>requestDataQuery()</code>, <code>readFileList()</code> and <code>readFile()</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">readAllFiles</span><span class="p">(</span><span class="nv">credentials</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">,</span> <span class="nv">readOptions</span><span class="p">:</span> <span class="kt"><a href="../Structs/ReadOptions.html">ReadOptions</a></span><span class="p">?,</span> <span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">downloadHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/File.html">File</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="p">(</span><span class="kt"><a href="../Structs/FileList.html">FileList</a></span><span class="p">,</span> <span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">),</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>credentials</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The existing credentials for the contract.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>readOptions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Options to filter which data is read from sources for this session. Only used for read contracts.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>downloadHandler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called when fetching all files has completed. Contains final list of files (along with new or refreshed credentials) or an error if reading file list failed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C16requestDataQuery11credentials11readOptions11resultQueue10completionyAA11CredentialsV_AA04ReadI0VSgSo17OS_dispatch_queueCys6ResultOyAjA8SDKErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/requestDataQuery(credentials:readOptions:resultQueue:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C16requestDataQuery11credentials11readOptions11resultQueue10completionyAA11CredentialsV_AA04ReadI0VSgSo17OS_dispatch_queueCys6ResultOyAjA8SDKErrorOGctF">requestDataQuery(credentials:<wbr>readOptions:<wbr>resultQueue:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a session during which files can be read. This session is typically valid for 15 minutes.
+Once it has expired, a new session will be required to continue reading data.</p>
+
+<p>For service-based data sources, will also attempt to retrieve any new data directly from the services.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">requestDataQuery</span><span class="p">(</span><span class="nv">credentials</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">,</span> <span class="nv">readOptions</span><span class="p">:</span> <span class="kt"><a href="../Structs/ReadOptions.html">ReadOptions</a></span><span class="p">?,</span> <span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>credentials</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The existing credentials for the contract.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>readOptions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Options to filter which data is read from sources for this session. Only used for read contracts.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called upon completion with new or refreshed credentials, or any errors encountered.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C12readFileList11resultQueue10completionySo17OS_dispatch_queueC_ys6ResultOyAA0eF0VAA8SDKErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/readFileList(resultQueue:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C12readFileList11resultQueue10completionySo17OS_dispatch_queueC_ys6ResultOyAA0eF0VAA8SDKErrorOGctF">readFileList(resultQueue:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves a list of files contained within the user&rsquo;s library.</p>
+
+<p>Requires a valid session to have been created, either implicitly by adding a new service, or explicitly by calling <code>requestDataQuery(credentials:readOptions:resultQueue:completion)</code>.</p>
+
+<p>For service-based sources, it can take a while for new data to be added to user&rsquo;s library (following a <code>requestDataQuery</code> call).
+Therefore caller should poll this call while data is being added to the library in case new files become available.
+Synchronization is complete when <code>fileList.status.state.isRunning</code> becomes <code>false</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">readFileList</span><span class="p">(</span><span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/FileList.html">FileList</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called upon completion with the list of files, or any errors encountered.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C8readFile6fileId11resultQueue10completionySS_So17OS_dispatch_queueCys6ResultOyAA0E0VAA8SDKErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/readFile(fileId:resultQueue:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C8readFile6fileId11resultQueue10completionySS_So17OS_dispatch_queueCys6ResultOyAA0E0VAA8SDKErrorOGctF">readFile(fileId:<wbr>resultQueue:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the content of a specified file.</p>
+
+<p>Requires a valid session to have been created, either implicitly by adding a new service, or explicitly by calling <code>requestDataQuery(credentials:readOptions:resultQueue:completion)</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">readFile</span><span class="p">(</span><span class="nv">fileId</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/File.html">File</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fileId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The file&rsquo;s identifier.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called upon completion with file, or any errors encountered.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C5write4data8metadata11credentials11resultQueue10completiony10Foundation4DataV_AA15RawFileMetadataVAA11CredentialsVSo17OS_dispatch_queueCys6ResultOyApA8SDKErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/write(data:metadata:credentials:resultQueue:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C5write4data8metadata11credentials11resultQueue10completiony10Foundation4DataV_AA15RawFileMetadataVAA11CredentialsVSo17OS_dispatch_queueCys6ResultOyApA8SDKErrorOGctF">write(data:<wbr>metadata:<wbr>credentials:<wbr>resultQueue:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Writes data to user&rsquo;s library associated with configured contract</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">write</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="nv">metadata</span><span class="p">:</span> <span class="kt"><a href="../Structs/RawFileMetadata.html">RawFileMetadata</a></span><span class="p">,</span> <span class="nv">credentials</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">,</span> <span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The data to be written</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>metadata</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The metadata describing the data to be written. See <code><a href="../Classes/RawFileMetadataBuilder.html">RawFileMetadataBuilder</a></code> for details on building the metadata</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>credentials</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The existing credentials for the contract.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called when writing data has complete with new or refreshed credentials, or any errors encountered.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C10deleteUser11credentials11resultQueue10completionyAA11CredentialsV_So17OS_dispatch_queueCyAA8SDKErrorOSgctF"></a>
+                    <a name="//apple_ref/swift/Method/deleteUser(credentials:resultQueue:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C10deleteUser11credentials11resultQueue10completionyAA11CredentialsV_So17OS_dispatch_queueCyAA8SDKErrorOSgctF">deleteUser(credentials:<wbr>resultQueue:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Deletes the user&rsquo;s library associated with the configured contract.</p>
+
+<p>Please note that if multiple contracts are linked to the same library,
+then <code>deleteUser</code> will also invalidate any credentials for those contracts.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">deleteUser</span><span class="p">(</span><span class="nv">credentials</span><span class="p">:</span> <span class="kt"><a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a></span><span class="p">,</span> <span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>credentials</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The existing credentials for the contract.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called on completion with any error encountered.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK0aB0C17availableServices10contractId11resultQueue10completionySSSg_So17OS_dispatch_queueCys6ResultOyAA0E4InfoVAA8SDKErrorOGctF"></a>
+                    <a name="//apple_ref/swift/Method/availableServices(contractId:resultQueue:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK0aB0C17availableServices10contractId11resultQueue10completionySSSg_So17OS_dispatch_queueCys6ResultOyAA0E4InfoVAA8SDKErrorOGctF">availableServices(contractId:<wbr>resultQueue:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get a list of possible services a user can add to their digi.me.
+If contract identifier is specified, then only those services relevant to the contract are retrieved, otherwise all services are retrieved.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">availableServices</span><span class="p">(</span><span class="nv">contractId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">resultQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span> <span class="o">=</span> <span class="o">.</span><span class="n">main</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/ServicesInfo.html">ServicesInfo</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/SDKError.html">SDKError</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>contractId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The contract identifier for which relevant available services are retrieved. If <code>nil</code> then all services are retrieved.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>resultQueue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Block called upon completion with either the service list or any errors encountered</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2021 <a class="link" href="https://developer.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-09-22)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
