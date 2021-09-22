@@ -121,8 +121,7 @@ To start working on the SDK, fork, then clone the repo:
 
 ```ruby
 use_frameworks!
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '12.0'
+platform :ios, '13.0'
 
 target 'TargetName' do
   pod 'DigiMeSDK', :path => '../'

@@ -19,7 +19,7 @@ extension String {
             }
             
             regex.matches(in: self, options: [], range: NSRange(location: 0, length: self.count)).forEach {
-                attributedText.addAttribute(NSAttributedStringKey.font, value: font, range: $0.range)
+                attributedText.addAttribute(.font, value: font, range: $0.range)
             }
         }
         

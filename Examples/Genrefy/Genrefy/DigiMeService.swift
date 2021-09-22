@@ -9,92 +9,113 @@
 import DigiMeSDK
 import UIKit
 
-protocol DigiMeServiceDelegate: class {
+protocol DigiMeServiceDelegate: AnyObject {
     func serviceDidFinishImporting()
 }
 
 class DigiMeService {
-
-    let dmeClient: DMEPullClient
+    
     let repository: ImportRepository
+    private let dmeClient: DigiMe
+    private let credentialCache = CredentialCache()
     private let serialQueue = DispatchQueue(label: "ImportSerializationQueue")
     weak var delegate: DigiMeServiceDelegate?
     
-    init(client: DMEPullClient, repository: ImportRepository) {
+    var isConnected: Bool {
+        credentials != nil
+    }
+    
+    private var credentials: Credentials? {
+        get {
+            credentialCache.credentials(for: AppCoordinator.configuration.contractId)
+        }
+        set {
+            credentialCache.setCredentials(newValue, for: AppCoordinator.configuration.contractId)
+        }
+    }
+    
+    init(client: DigiMe, repository: ImportRepository) {
         dmeClient = client
         self.repository = repository
     }
     
-    func getAccounts() {
-        dmeClient.getSessionAccounts(completion: { (accounts, error) in
-            if let accounts = accounts {
-                self.repository.process(accounts: accounts)
+    func authorize(readOptions: ReadOptions?, serviceId: Int? = nil, completion: @escaping (SDKError?) -> Void) {
+        dmeClient.authorize(credentials: credentials, serviceId: serviceId, readOptions: readOptions) { result in
+            switch result {
+            case .success(let newOrRefreshedCredentials):
+                self.credentials = newOrRefreshedCredentials
+                completion(nil)
+                
+            case.failure(let error):
+                completion(error)
             }
-
-            if let error = error {
+        }
+    }
+    
+    func getAccounts() {
+        dmeClient.readAccounts() { result in
+            switch result {
+            case .success(let accountsInfo):
+                self.serialQueue.sync {
+                    self.repository.process(accountsInfo: accountsInfo)
+                }
+                
+            case .failure(let error):
                 print("digi.me failed to retrieve accounts with error: \(error)")
             }
-        })
+        }
     }
 
     func getSessionData() {
-        dmeClient.getSessionData(downloadHandler: { (file, error) in
-            if let file = file {
+        guard let credentials = credentials else {
+            print("Attempting to read data before authorizing contract")
+            return
+        }
+        
+        dmeClient.readAllFiles(credentials: credentials, readOptions: nil) { result in
+            switch result {
+            case .success(let file):
                 self.serialQueue.sync {
                     self.repository.process(file: file)
                 }
-            }
-
-            if let error = error {
+                
+            case .failure(let error):
                 print("digi.me failed to retrieve file with error: \(error)")
             }
-        }, completion: { (fileList, error) in
-            if let error = error {
+        } completion: { result in
+            switch result {
+            case .success(let (_, refreshedCredentials)):
+                self.credentials = refreshedCredentials
+                
+            case .failure(let error):
                 print("digi.me failed to complete getting session data with error: \(error)")
             }
-
+            
             self.serialQueue.sync {
                 DispatchQueue.main.async {
                     self.delegate?.serviceDidFinishImporting()
                 }
             }
-        })
-    }
-    
-    func saveToken(_ token: DMEOAuthToken?) {
-        guard
-            let token = token,
-            let tokenData = try? NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: false) else {
-                print("Could not save OAuthToken")
-                return
         }
-
-        print("OAuth access token: " + (token.accessToken ??  "n/a"))
-        print("OAuth refresh token: " + (token.refreshToken ?? "n/a"))
-        
-        KeychainService.shared.saveEntry(data: tokenData, for: "oAuthToken")
     }
     
-    func loadToken() -> DMEOAuthToken? {
-        guard
-            let tokenData = KeychainService.shared.loadEntry(for: "oAuthToken"),
-            let token = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(tokenData) as? DMEOAuthToken else {
-                print("Could not load OAuthToken")
-                return nil
+    func deleteUser(completion: @escaping (SDKError?) -> Void) {
+        guard let credentials = credentials else {
+            print("Attempting to delete user before authorizing contract")
+            return
         }
         
-        print("OAuth access token: " + (token?.accessToken ?? "n/a"))
-        print("OAuth refresh token: " + (token?.refreshToken ?? "n/a"))
-        return token
+        dmeClient.deleteUser(credentials: credentials) { error in
+            self.credentials = nil
+            completion(error)
+        }
     }
     
-    func lastDayScope() -> DMEScope {
-        let scope = DMEScope()
-        let objects = [DMEServiceObjectType(identifier: 406)]
-        let services = [DMEServiceType(identifier: 19, objectTypes: objects)]
-        let groups = [DMEServiceGroup(identifier: 5, serviceTypes: services)]
-        scope.serviceGroups = groups
-        scope.timeRanges = [DMETimeRange.last(1, unit: .day)]
-        return scope
+    func lastDayScope() -> Scope {
+        let objects = [ServiceObjectType(identifier: 406)]
+        let services = [ServiceType(identifier: 19, objectTypes: objects)]
+        let groups = [ServiceGroupScope(identifier: 5, serviceTypes: services)]
+        let timeRanges = [TimeRange.last(amount: 1, unit: .day)]
+        return Scope(serviceGroups: groups, timeRanges: timeRanges)
     }
 }

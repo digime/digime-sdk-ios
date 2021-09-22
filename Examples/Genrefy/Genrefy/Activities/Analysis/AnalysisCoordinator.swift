@@ -9,7 +9,7 @@
 import DigiMeSDK
 import UIKit
 
-protocol AnalysisCoordinatorDelegate: class {
+protocol AnalysisCoordinatorDelegate: AnyObject {
     func refreshService() -> DigiMeService
 }
 
@@ -38,7 +38,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         
     private let cache = AppStateCache()
     
-    private var filteredAccounts: [DMEAccount] = []
+    private var filteredAccounts: [Account] = []
 
     private lazy var homeViewController: HomeViewController = {
         let homeVC = HomeViewController.instantiate()
@@ -64,11 +64,8 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         if
             accounts.isEmpty,
             let persistedData = PersistentStorage.shared.loadData(for: "accounts.json"),
-            let persistedDict = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(persistedData) as? [AnyHashable: Any],
-            let restoredAccounts = persistedDict,
-            let identifier = restoredAccounts["consentid"] as? String {
-                let deserialized = DMEAccounts(fileId: identifier, json: restoredAccounts)
-                accounts = deserialized.accounts ?? []
+            let loadedAccounts = try? JSONDecoder().decode([Account].self, from: persistedData) {
+                accounts = loadedAccounts
         }
         
         let dataSource = AccountSelectionDataSource(accounts: accounts)
@@ -83,8 +80,8 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         tabBarController.tabBar.barTintColor = UIColor.black
         tabBarController.tabBar.tintColor = Theme.highlightColor
         let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [UITabBarController.self])
-        appearance.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.lightText], for: .normal)
-        appearance.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: Theme.highlightColor], for: .selected)
+        appearance.setTitleTextAttributes([.foregroundColor: UIColor.lightText], for: .normal)
+        appearance.setTitleTextAttributes([.foregroundColor: Theme.highlightColor], for: .selected)
         
         navigationController.pushViewController(tabBarController, animated: true)
     }
@@ -123,25 +120,27 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
 
         navigationController.popViewController(animated: true)
     }
+    
+    private func displayError() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Oops", message: "Something went wrong. Please try again.", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self.tabBarController.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
 extension AnalysisCoordinator: HomeViewControllerDelegate {
     func refreshData() {
         digimeService = delegate?.refreshService()
         let scope = digimeService?.lastDayScope()
-        let token = digimeService?.loadToken()
-        let client = digimeService?.dmeClient
-        let options = DMESessionOptions()
-        options.scope = scope
+        let options = ReadOptions(limits: nil, scope: scope)
         
-        client?.authorizeOngoingAccess(options: options, oAuthToken: token) { (session, oAuthToken, error) in
+        digimeService?.authorize(readOptions: options) { error in
             
-            guard let _ = session else {
-                if let error = error {
-                    print("digi.me authorization failed with error: \(error)")
-                } else {
-                    print("digi.me authorization failed")
-                }
+            if let error = error {
+                print("digi.me authorization failed with error: \(error)")
                 
                 DispatchQueue.main.async {
                     self.repositoryDidFinishProcessing()
@@ -150,16 +149,14 @@ extension AnalysisCoordinator: HomeViewControllerDelegate {
                 return
             }
             
-            self.digimeService?.saveToken(oAuthToken)
             self.digimeService?.getAccounts()
             self.digimeService?.getSessionData()
-            self.cache.setConsentDate(consentDate: Date())
         }
     }
 }
        
 extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
-    func selectedAccountsChanged(selectedAccounts: [DMEAccount]) {
+    func selectedAccountsChanged(selectedAccounts: [Account]) {
         // Filter analysis using selected accounts only
         filteredAccounts = selectedAccounts
         if let repository = repository {
@@ -170,19 +167,18 @@ extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
 
 extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
     func reset() {
-        
-        PersistentStorage.shared.reset(fileName: "songs.json")
-        
-        navigationController.popViewController(animated: true)
-        parentCoordinator.childDidFinish(child: self, result: nil)
-    }
-    
-    func viewReceipt() {
-        
-        do {
-            try digimeService?.dmeClient.viewReceiptInDMEApp()
-        } catch {
-            print("digi.me view receipt failed with error: \(error.localizedDescription)")
+        digimeService?.deleteUser { error in
+            guard error != nil else {
+                self.displayError()
+                return
+            }
+            
+            PersistentStorage.shared.reset(fileName: "songs.json")
+            
+            DispatchQueue.main.async {
+                self.navigationController.popViewController(animated: true)
+                self.parentCoordinator.childDidFinish(child: self, result: nil)
+            }
         }
     }
 }

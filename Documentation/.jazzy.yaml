@@ -3,8 +3,7 @@ readme: ../README.md
 documentation: guides/*md
 output: ../docs
 docset_path: ../docsets/.docset
-exclude: [DMEJWTUtility.swift]
-sourcekitten_sourcefile: [swiftDoc.json,objcDoc.json]
+sourcekitten_sourcefile: [swiftDoc.json]
 clean: true
 hide_documentation_coverage: true
 author: digi.me

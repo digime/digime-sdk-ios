@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc protocol ConsentRequestCoordinatingDelegate: CoordinatingDelegate {
+protocol ConsentRequestCoordinatingDelegate: CoordinatingDelegate {
     
     func goBack()
     func startConsentRequest()

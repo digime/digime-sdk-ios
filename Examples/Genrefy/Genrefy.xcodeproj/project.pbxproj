@@ -13,8 +13,6 @@
 		1E4AEB292199B71800C83328 /* IntroViewControllerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */; };
 		1E4AEB312199FB8000C83328 /* IntroCoordinatingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */; };
 		1E78293C24321E5F0011B5A7 /* PersistentStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */; };
-		1E78293E243347A30011B5A7 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 1E78293D243347A30011B5A7 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 */; };
-		1E782978243488170011B5A7 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E782977243488170011B5A7 /* KeychainService.swift */; };
 		276AF972242BB5E000BC3867 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF971242BB5E000BC3867 /* Song.swift */; };
 		276AF974242CB98900BC3867 /* GenreSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF973242CB98900BC3867 /* GenreSummary.swift */; };
 		277759D1219AEF350025C4A4 /* String+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277759D0219AEF350025C4A4 /* String+Bold.swift */; };
@@ -54,7 +52,6 @@
 		5C194BDB22AE28D60068821C /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C194BDA22AE28D60068821C /* Device.swift */; };
 		5C8C6B7D22A935D20004E7F4 /* SectionTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C6B7C22A935D20004E7F4 /* SectionTitleTableViewCell.swift */; };
 		5C8C6B8122A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C6B8022A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift */; };
-		5C8C6B8322A93B340004E7F4 /* ViewReceiptTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C6B8222A93B340004E7F4 /* ViewReceiptTableViewCell.swift */; };
 		5C9B437B22A1134B0012B933 /* StartOverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9B437A22A1134B0012B933 /* StartOverTableViewCell.swift */; };
 		F2562B3E7E72086184B8DE13 /* Pods_Genrefy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 598805F58775ED253BB62D33 /* Pods_Genrefy.framework */; };
 /* End PBXBuildFile section */
@@ -66,8 +63,6 @@
 		1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewControllerUseCase.swift; sourceTree = "<group>"; };
 		1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinatingDelegate.swift; sourceTree = "<group>"; };
 		1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentStorage.swift; sourceTree = "<group>"; };
-		1E78293D243347A30011B5A7 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12; sourceTree = "<group>"; };
-		1E782977243488170011B5A7 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		276AF971242BB5E000BC3867 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		276AF973242CB98900BC3867 /* GenreSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSummary.swift; sourceTree = "<group>"; };
 		277759D0219AEF350025C4A4 /* String+Bold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Bold.swift"; sourceTree = "<group>"; };
@@ -110,7 +105,6 @@
 		5C194BDA22AE28D60068821C /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		5C8C6B7C22A935D20004E7F4 /* SectionTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleTableViewCell.swift; sourceTree = "<group>"; };
 		5C8C6B8022A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleDetailTableViewCell.swift; sourceTree = "<group>"; };
-		5C8C6B8222A93B340004E7F4 /* ViewReceiptTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReceiptTableViewCell.swift; sourceTree = "<group>"; };
 		5C9B437A22A1134B0012B933 /* StartOverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartOverTableViewCell.swift; sourceTree = "<group>"; };
 		716BB90DAB6907C4E62B398A /* Pods-Genrefy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.release.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.release.xcconfig"; sourceTree = "<group>"; };
 		A6B2D724328E2B6943994BE1 /* Pods-Genrefy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.debug.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.debug.xcconfig"; sourceTree = "<group>"; };
@@ -142,7 +136,6 @@
 				276AF971242BB5E000BC3867 /* Song.swift */,
 				276AF973242CB98900BC3867 /* GenreSummary.swift */,
 				1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */,
-				1E782977243488170011B5A7 /* KeychainService.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -157,14 +150,6 @@
 				27CB3E922422476700425894 /* UIFont+Weight.swift */,
 			);
 			path = Utility;
-			sourceTree = "<group>";
-		};
-		1E2E5C18219D7A4300BA6997 /* p12 */ = {
-			isa = PBXGroup;
-			children = (
-				1E78293D243347A30011B5A7 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 */,
-			);
-			path = p12;
 			sourceTree = "<group>";
 		};
 		27C6759D20FCA04900E6AFBC = {
@@ -201,7 +186,6 @@
 				27C675B220FCA04C00E6AFBC /* Assets.xcassets */,
 				27C675B420FCA04C00E6AFBC /* LaunchScreen.storyboard */,
 				27C675B720FCA04C00E6AFBC /* Info.plist */,
-				1E2E5C18219D7A4300BA6997 /* p12 */,
 			);
 			path = Genrefy;
 			sourceTree = "<group>";
@@ -255,7 +239,6 @@
 				5C9B437A22A1134B0012B933 /* StartOverTableViewCell.swift */,
 				5C8C6B7C22A935D20004E7F4 /* SectionTitleTableViewCell.swift */,
 				5C8C6B8022A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift */,
-				5C8C6B8222A93B340004E7F4 /* ViewReceiptTableViewCell.swift */,
 				27B5A27E2100982B0053D9C4 /* AccountSelectionPresenter.swift */,
 				27B5A2802100985C0053D9C4 /* AccountSelectionDataSource.swift */,
 				27B5A28221009D240053D9C4 /* AccountCell.swift */,
@@ -321,7 +304,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0940;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = digi.me;
 				TargetAttributes = {
 					27C675A520FCA04900E6AFBC = {
@@ -355,7 +338,6 @@
 				27EDC10D20FF9C1E0092E661 /* Analysis.storyboard in Resources */,
 				27C675B620FCA04C00E6AFBC /* LaunchScreen.storyboard in Resources */,
 				27C675B320FCA04C00E6AFBC /* Assets.xcassets in Resources */,
-				1E78293E243347A30011B5A7 /* yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs.p12 in Resources */,
 				27C675C820FCD18900E6AFBC /* Onboarding.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -420,7 +402,6 @@
 				27C675DA20FCF9EE00E6AFBC /* ImportingCoordinator.swift in Sources */,
 				277759D1219AEF350025C4A4 /* String+Bold.swift in Sources */,
 				5C8C6B8122A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift in Sources */,
-				1E782978243488170011B5A7 /* KeychainService.swift in Sources */,
 				27C675CA20FCD23300E6AFBC /* IntroViewController.swift in Sources */,
 				5C8C6B7D22A935D20004E7F4 /* SectionTitleTableViewCell.swift in Sources */,
 				276AF972242BB5E000BC3867 /* Song.swift in Sources */,
@@ -441,7 +422,6 @@
 				27DBCCBD243B23EA006F9551 /* DigiMeService.swift in Sources */,
 				27C675AA20FCA04900E6AFBC /* AppDelegate.swift in Sources */,
 				27B5A2B4210230240053D9C4 /* ApplicationCoordinating.swift in Sources */,
-				5C8C6B8322A93B340004E7F4 /* ViewReceiptTableViewCell.swift in Sources */,
 				27C675D820FCF83400E6AFBC /* ImportRepository.swift in Sources */,
 				27CB3E932422476700425894 /* UIFont+Weight.swift in Sources */,
 				27B5A2B8210230650053D9C4 /* Coordinated.swift in Sources */,
@@ -496,6 +476,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -521,12 +502,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -556,6 +538,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -575,11 +558,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -601,7 +585,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.digi.genrefy;
 				PRODUCT_NAME = genrefy;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -623,7 +607,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.digi.genrefy;
 				PRODUCT_NAME = genrefy;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

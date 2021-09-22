@@ -4,14 +4,14 @@
     <a href="https://developers.digi.me/slack/join">
         <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
     </a>
-    <a href="LICENSE">
+    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
         <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
     </a>
     <a href="#">
     	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
+        <img src="https://img.shields.io/badge/language-swift-orange.svg" alt="Swift">
     </a>
     <a href="https://developers.digi.me">
         <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
@@ -29,14 +29,8 @@ The digi.me private sharing platform empowers developers to make use of user dat
 
 ## Requirements
 
-### Development
-- XCode 10.3 or newer.
-- [CocoaPods](http://cocoapods.org) 1.7.0 or newer.
-
 ### Deployment
-- iOS version (latest - 1) **\***
-
-**\*** The SDK will run on any version of the iOS, but the digi.me app only supports latest - 1.
+- iOS 13+
 
 
 ## Installation
@@ -48,7 +42,7 @@ The digi.me private sharing platform empowers developers to make use of user dat
 	```ruby
 	use_frameworks!
 	source 'https://github.com/CocoaPods/Specs.git'
-	platform :ios, '12.0'
+	platform :ios, '13.0'
 
 	target 'TargetName' do
 		pod 'DigiMeSDK'
@@ -75,45 +69,22 @@ This example will show you how to configure the SDK, and get you up and running 
 
 To access the digi.me platform, you need to obtain an `AppID` for your application. You can get yours by filling out the registration form [here](https://go.digi.me/developers/register).
 
-In a production environment, you will also be required to obtain your own `Contract ID` and `Private Key` from digi.me support. However, for sandbox purposes, we provide the following example values:
-
-**Example Contract ID:** `fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF `
-<br>
-**Example Private Key:**
-	<br>&nbsp;&nbsp;&nbsp;&nbsp;Download: [P12 Key Store](https://github.com/digime/digime-sdk-ios/blob/master/Examples/SkeletonObjC/fJI8P5Z4cIhP3HawlXVvxWBrbyj5QkTF.p12?raw=true)
-	<br>&nbsp;&nbsp;&nbsp;&nbsp;Password: `monkey periscope`
-
-You should include the P12 file in your project assets folder.
+In a production environment, you will also be required to obtain your own `Contract ID` and `Private Key` from digi.me support. However, for sandbox purposes, you can use one of the contracts from the example projects (see `/Examples` directory).
 
 ### 2. Configuring Callback Forwarding:
 
-Because the digi.me Private Sharing SDK opens the digi.me app for authorization, you are required to forward the `openURL` event through to the SDK so that it may process responses. In your application's delegate (typically `AppDelegate`) override `application:openURL:options:` method as below:
+Because the digi.me Private Sharing SDK hooks into your browser to receive callbacks, you are required to forward the `openURL` event through to the SDK so that it may process responses. In your application's delegate (typically `SceneDelegate`) override `scene:openURLContexts:` method as below:
 
-#####Objective-C
-```objc
--(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-{
-	return [[DMEAppCommunicator shared] openURL:url options:options];
-}
-```
-
-#####Swift
 ```swift
-func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-  return DMEAppCommunicator.shared().open(url, options: options)
+func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+   	guard let context = URLContexts.first else {
+		return
+   	}
+   
+   	CallbackService.shared().handleCallback(url: context.url)
 }
 ```
 
-<br>
-Additionally, you need to whitelist Digi.me app scheme in your `Info.plist`:
-
-```xml
-<key>LSApplicationQueriesSchemes</key>
-<array>
-<string>digime-ca-master</string>
-</array>
-```
-<br>
 And register custom URL scheme so that your app can receive the callback from Digi.me app. Still in `Info.plist` add:
 
 ```xml
@@ -133,89 +104,85 @@ And register custom URL scheme so that your app can receive the callback from Di
 ```
 where `YOUR_APP_ID` should be replaced with your `AppID`.
 
-### 3. Configuring the `DMEPullClient` object:
-`DMEPullClient` is the object you will primarily interface with to use the SDK. It is instantiated with a `DMEPullConfiguration` object.
+### 3. Configuring the `DigiMe` object:
+`DigiMe` is the object you will primarily interface with to use the SDK. It is instantiated with a `Configuration` object.
 
-The `DMEPullConfiguration` object is instantiated with your `App ID`, `Contract ID` and `Private Key` in hex format. We provide a convenience method to extract the private key. The below code snippet shows you how to combine all this to get a configured `DMEPullClient`:
+The `Configuration` object is instantiated with your `App ID`, `Contract ID` and `Private Key`. The below code snippet shows you how to combine all this to get a configured `DigiMe` object:
 
-#####Objective-C
-```objc
-NSString *privateKeyHex = [DMECryptoUtilities privateKeyHexFromP12File: p12FileName password: p12Password];
-DMEPullConfiguration *configuration = [[DMEPullConfiguration alloc] initWithAppId:@"YOUR_APP_ID" contractId:@"YOUR_CONTRACT_ID" privateKeyHex: privateKeyHex];
-DMEPullClient *pullClient = [[DMEPullClient alloc] initWithConfiguration:configuration];
-```
-
-#####Swift
 ```swift
-let privateKeyHex = DMECryptoUtilities.privateKeyHex(fromP12File: p12Filename, password: p12Password)
-let configuration = DMEPullConfiguration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID", privateKeyHex: privateKeyHex!)
-let pullClient = DMEPullClient(configuration: configuration)
+let privateKey = """
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA...
+-----END RSA PRIVATE KEY-----
+"""
+
+do {
+    let configuration = try Configuration(appId: "YOUR_APP_ID", contractId: "YOUR_CONTRACT_ID", privateKey: privateKey)
+    let digiMe = DigiMe(configuration: configuration)
+}
+catch {
+    ...
+}
 ```
 
 ### 4. Requesting Consent:
 
-Before you can access a user's data, you must obtain their consent. This is achieved by calling `authorize` on your client object:
+Before you can access a user's data, you must obtain their consent. This is achieved by calling `authorize` on your client object. You need to provide a service identifier for which you want to request access to; this can be found by referring the the service definitions in the developer docs or my using the [Discovery API](#).:
 
-#####Objective-C
-```objc
-[pullClient authorizeWithCompletion:^(DMESession * _Nullable session, NSError * _Nullable error) {
-
-}];
-```
-
-#####Swift
 ```swift
-pullClient.authorize(completion: { session, error in
-
-})
+digiMe.authorize(serviceId: service?.identifier, readOptions: nil) { result in
+    switch result {
+    case .success(let credentials):
+        // store credentials and continue on to fetch data.
+    
+    case.failure(let error):
+        // handle failure.
+    }
+}
 ```
 
-If a user grants consent, a session will be created and returned; this is used by subsequent calls to get data. If the user denies consent, an error stating this is returned. See [Handling Errors](https://digime.github.io/digime-sdk-ios/error-handling.html).
+If a user grants consent, a session will be created under the hood; this is used by subsequent calls to get data. If the user denies consent, an error stating this is returned. See [Handling Errors](https://digime.github.io/digime-sdk-ios/error-handling.html).
 
 ### 5. Fetching Data:
 
 Once you have a session, you can request data. We strive to make this as simple as possible, so expose a single method to do so:
 
-#####Objective-C
-```objc
-[pullClient getSessionDataWithDownloadHandler:^(DMEFile * _Nullable file, NSError * _Nullable error) {
-
-  // Handle each downloaded file here.
-
-} completion:^(NSError * _Nullable error) {
-
-	// Any errors interupting the flow of data will be directed here, or nil once all files are retrieved.
-
-}];
-```
-
-#####Swift
 ```swift
-pullClient.getSessionData(downloadHandler: { file, error in
-
-  // Handle each downloaded file here.
-
-}, completion: { error in
-
-  // Any errors interupting the flow of data will be directed here, or nil once all files are retrieved.
-
-})
+let credentials = my_stored_credentials
+digiMe.readAllFiles(credentials: credentials, readOptions: nil) { result in
+	switch result {
+   	case .success(let file):
+        // Access data or metadata of file.
+        
+   case .failure(let error):
+       // Handle Error
+   }
+} completion: { result in
+    switch result {
+    case .success(let (fileList, refreshedCredentials)):
+        // Handle success and update stored credentials as these may have been refreshed.
+    case .failure(let error):
+        // Handle failure.
+    }
+}
 ```
 
-For each file, the first 'file handler' block will be called. If the download was successful, you will receive a `DMEFile` object. If the download fails, an error.
+For each file, the first 'file handler' block will be called. If the download was successful, you will receive a `File` object. If the download fails, an error.
 
 Once all files are downloaded, the second block will be invoked to inform you of this. In the case that the data stream is interrupted, or if the session obtained above isn't valid (it may have expired, for example), you will receive an error in the second block. See [Handling Errors](https://digime.github.io/digime-sdk-ios/error-handling.html).
 
-`DMEFile` exposes the method `fileContentAsJSON` which attempts to decode the binary file into a JSON map, so that you can easily extract the values you need to power your app. Not all files can be represented as JSON, see [Raw Data](https://digime.github.io/digime-sdk-ios/raw-data.html) for details.
+`File` exposes the property `data` which contains the file's raw data along with the `mimeType` property. For files with JSON or image mime types, there are convenience methods to decode that raw data into the appropriate format, so that you can easily extract the values you need to power your app. In addition, `metadata` is available describing the file. In this example, as the data comes from external services, the metadata will be a `mapped` type describing the file's contents and details of associated service.
+
+Note that we also expose other methods if you prefer to manage this process yourself.
 
 ## Contributions
 
-digi.me prides itself in offering our SDKs completely open source, under the [Apache 2.0 License](LICENSE); we welcome contributions from all developers.
+digi.me prides itself in offering our SDKs completely open source, under the [Apache 2.0 Licence](LICENCE); we welcome contributions from all developers.
 
-We ask that when contributing, you ensure your changes meet our [contribution guidelines](https://digime.github.io/digime-sdk-ios/contributing.html) before submitting a pull request.
+We ask that when contributing, you ensure your changes meet our [Contribution Guidelines](https://digime.github.io/digime-sdk-ios/contributing.html) before submitting a pull request.
 
 ## Further Reading
 
-The topics discussed under [Quick Start](#getting-started---5-simple-steps) are just a small part of the power digi.me Private Sharing gives to data consumers such as yourself. We highly encourage you to explore the [Documentation](https://digime.github.io/digime-sdk-ios/index.html) for more in-depth examples and guides, as well as troubleshooting advice and showcases of the plethora of capabilities on offer.
+The topics discussed under [Quick Start](getting-started---5-simple-steps) are just a small part of the power digi.me Private Sharing gives to data consumers such as yourself. We highly encourage you to explore the [Documentation](https://digime.github.io/digime-sdk-ios/index.html) for more in-depth examples and guides, as well as troubleshooting advice and showcases of the plethora of capabilities on offer.
 
 Additionally, there are a number of example apps built on digi.me in the examples folder. Feel free to have a look at those to get an insight into the power of Private Sharing.
