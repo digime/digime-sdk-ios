@@ -13,5 +13,5 @@ struct JSONWebKey: Decodable {
     let kid: String // Key identifier
     let kty: String // Key type identifies the cryptographic algorithm family used with the key, such as 'RSA' or 'EC'
     let n: String // RSA Modulus
-    let pem: String // PCKS1 public pem encoded publkic key representation
+    let pem: String // PCKS1 public pem encoded public key representation
 }

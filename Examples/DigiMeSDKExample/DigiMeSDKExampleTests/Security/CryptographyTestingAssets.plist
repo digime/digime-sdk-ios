@@ -11,30 +11,6 @@
 		<key>expectedResult</key>
 		<data>eyJhY2NvdW50cyI6W10sImNvbnNlbnRpZCI6Ijg2MTg0ZmZmZjY4ZDJlMWZiZDZhMGEyYmUwMGYxZWU1In0=</data>
 	</dict>
-	<key>testDataDecryptorUnencrypted()</key>
-	<dict>
-		<key>expectedResultDictionary</key>
-		<data>eyJrZXkxIjoidmFsdWUgMSIsImtleTIiOiJ2YWx1ZSAyIn0=</data>
-		<key>expectedResultArray</key>
-		<data>WyJ0ZXN0IHN0cmluZyIseyJrZXkxIjoidmFsdWUgMSIsImtleTIiOiJ2YWx1ZSAyIn1d</data>
-		<key>testDictionary</key>
-		<dict>
-			<key>key2</key>
-			<string>value 2</string>
-			<key>key1</key>
-			<string>value 1</string>
-		</dict>
-		<key>testArray</key>
-		<array>
-			<string>test string</string>
-			<dict>
-				<key>key2</key>
-				<string>value 2</string>
-				<key>key1</key>
-				<string>value 1</string>
-			</dict>
-		</array>
-	</dict>
 	<key>testSHA512Hashing()</key>
 	<dict>
 		<key>input</key>

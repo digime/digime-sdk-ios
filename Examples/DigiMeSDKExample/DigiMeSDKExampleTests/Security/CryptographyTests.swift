@@ -30,43 +30,21 @@ class CryptographyTests: XCTestCase {
         guard
             let assets = testingAssets[#function] as? [AnyHashable: Any],
             let input = assets["input"] as? String,
+            let data = Data(base64Encoded: input),
             let expectedResult = assets["expectedResult"] as? Data,
-            let privateKey = assets["privateKey"] as? String
-            else {
-                return XCTFail("Failed to load required testing assets.")
-        }
-        
-        do {
-            let dataDecryptor = try setupDataDecryptor(privateKey: privateKey)
-            
-            let output = try dataDecryptor.decrypt(fileContent: input)
-            XCTAssert(expectedResult == output, "Failed to decrypt encrypted data.")
-        }
-        catch {
-            XCTFail("Decrypt file content failed.")
-        }
-    }
-    
-    func testDataDecryptorUnencrypted() {
-        guard
-            let assets = testingAssets[#function] as? [AnyHashable: Any],
-            let sampleDictionary = assets["testDictionary"] as? NSDictionary,
-            let sampleArray = assets["testArray"] as? NSArray,
-            let expectedResultDictionary = assets["expectedResultDictionary"] as? Data,
-            let expectedResultArray = assets["expectedResultArray"] as? Data,
-            let privateKey = assets["privateKey"] as? String
+            let privateKey = testingAssets["privateKey"] as? String
             else {
                 return XCTFail("Failed to load required testing assets.")
         }
 
         do {
             let dataDecryptor = try setupDataDecryptor(privateKey: privateKey)
-            
-            let resultDictionary = try dataDecryptor.decrypt(fileContent: sampleDictionary)
-            XCTAssert(expectedResultDictionary == resultDictionary, "Failed to process test unencrypted dictionary input data.")
-            
-            let resultArray = try dataDecryptor.decrypt(fileContent: sampleArray)
-            XCTAssert(expectedResultArray == resultArray, "Failed to process test unencrypted array input data.")
+
+            let fileInfo = try Data(base64URLEncoded: "e30")!.decoded() as FileInfo
+            let response = FileResponse(data: data, info: fileInfo)
+
+            let output = try dataDecryptor.decrypt(response: response)
+            XCTAssert(expectedResult == output, "Failed to decrypt encrypted data.")
         }
         catch {
             XCTFail("Decrypt file content failed.")
