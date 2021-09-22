@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>SDKError Enumeration Reference</title>
+    <title>RawFileMetadata Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Enum/SDKError" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Struct/RawFileMetadata" class="dashAnchor"></a>
 
-    <a title="SDKError Enumeration Reference"></a>
+    <a title="RawFileMetadata Structure Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html"> Reference</a>
       <img class="carat" src="../img/carat.png" />
-      SDKError Enumeration Reference
+      RawFileMetadata Structure Reference
     </p>
 
     <div class="content-wrapper">
@@ -216,16 +216,15 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>SDKError</h1>
+            <h1>RawFileMetadata</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">SDKError</span> <span class="p">:</span> <span class="kt">Error</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">SDKError</span><span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">RawFileMetadata</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
 
                 </div>
               </div>
-            <p>SDK Errors</p>
+            <p>Metadata for a file with raw data (typically one which has been written to library)</p>
 
           </div>
         </section>
@@ -233,22 +232,13 @@
         <section class="section">
           <div class="section-content">
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/SDK%20Setup%20Errors"></a>
-                <a name="//apple_ref/swift/Section/SDK Setup Errors" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/SDK%20Setup%20Errors"></a>
-                  <h3 class="section-name"><p>SDK Setup Errors</p>
-</h3>
-                </div>
-              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO11noUrlSchemeyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/noUrlScheme" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO11noUrlSchemeyA2CmF">noUrlScheme</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV7AccountV"></a>
+                    <a name="//apple_ref/swift/Struct/Account" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV7AccountV">Account</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -256,15 +246,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>URL Scheme not set in Info.plist
-This is an implementation error and can be resolved by setting the CFBundleURLSchemes in Info.plist to include &ldquo;digime-ca-YOUR_APP_ID&rdquo; using your actual app identifier in place of YOUR_APP_ID.</p>
+                        <p>Undocumented</p>
 
+                        <a href="../Structs/RawFileMetadata/Account.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">noUrlScheme</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Account</span> <span class="p">:</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt">ExpressibleByStringLiteral</span></code></pre>
 
                         </div>
                       </div>
@@ -274,9 +264,9 @@ This is an implementation error and can be resolved by setting the CFBundleURLSc
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO12invalidAppIdyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/invalidAppId" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO12invalidAppIdyA2CmF">invalidAppId</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV10ObjectTypeV"></a>
+                    <a name="//apple_ref/swift/Struct/ObjectType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV10ObjectTypeV">ObjectType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -284,15 +274,15 @@ This is an implementation error and can be resolved by setting the CFBundleURLSc
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>App identifier is using placeholder value &ldquo;YOUR_APP_ID&rdquo;
-This is an implementation error and can be resolved by using your actual app identifier in place of YOUR_APP_ID.</p>
+                        <p>Undocumented</p>
 
+                        <a href="../Structs/RawFileMetadata/ObjectType.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidAppId</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ObjectType</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
 
                         </div>
                       </div>
@@ -302,9 +292,9 @@ This is an implementation error and can be resolved by using your actual app ide
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO25invalidPrivateOrPublicKeyyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/invalidPrivateOrPublicKey" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO25invalidPrivateOrPublicKeyyA2CmF">invalidPrivateOrPublicKey</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV8mimeTypeAA04MimeH0Ovp"></a>
+                    <a name="//apple_ref/swift/Property/mimeType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV8mimeTypeAA04MimeH0Ovp">mimeType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -312,56 +302,14 @@ This is an implementation error and can be resolved by using your actual app ide
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The private or public key is invalid
-This is an implementation error and can be resolved by ensuring that you are using keys beginning with &ldquo;&mdash;&ndash;BEGIN RSA {PRIVATE/PUBLIC} KEY&mdash;-&rdquo; as appropriate.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidPrivateOrPublicKey</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Runtime%20Errors"></a>
-                <a name="//apple_ref/swift/Section/Runtime Errors" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Runtime%20Errors"></a>
-                  <h3 class="section-name"><p>Runtime Errors</p>
-</h3>
-                </div>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO21authorizationRequiredyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/authorizationRequired" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO21authorizationRequiredyA2CmF">authorizationRequired</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The contract needs authorizing.
-This is either caused by the contract not having been authorized or the contract&rsquo;s credentials expired requiring user to reauthorize</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">authorizationRequired</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">mimeType</span><span class="p">:</span> <span class="kt"><a href="../Enums/MimeType.html">MimeType</a></span></code></pre>
 
                         </div>
                       </div>
@@ -371,9 +319,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO14invalidSessionyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/invalidSession" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO14invalidSessionyA2CmF">invalidSession</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV8accountsSayAC7AccountVGvp"></a>
+                    <a name="//apple_ref/swift/Property/accounts" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV8accountsSayAC7AccountVGvp">accounts</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -381,14 +329,14 @@ This is either caused by the contract not having been authorized or the contract
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The session used to retrieve data is invalid. To refresh the session, please please request another data query.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidSession</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">accounts</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/RawFileMetadata/Account.html">Account</a></span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -398,9 +346,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO11invalidDatayA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/invalidData" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO11invalidDatayA2CmF">invalidData</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV9referenceSaySSGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/reference" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV9referenceSaySSGSgvp">reference</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -408,14 +356,14 @@ This is either caused by the contract not having been authorized or the contract
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Server has returned data which cannot be read</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidData</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">reference</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]?</span></code></pre>
 
                         </div>
                       </div>
@@ -425,9 +373,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO22fileListPollingTimeoutyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/fileListPollingTimeout" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO22fileListPollingTimeoutyA2CmF">fileListPollingTimeout</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV4tagsSaySSGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/tags" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV4tagsSaySSGSgvp">tags</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -435,14 +383,14 @@ This is either caused by the contract not having been authorized or the contract
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>File list time out reached as there have been no changes.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">fileListPollingTimeout</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">tags</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]?</span></code></pre>
 
                         </div>
                       </div>
@@ -452,9 +400,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO27linkedContractNotAuthorizedyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/linkedContractNotAuthorized" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO27linkedContractNotAuthorizedyA2CmF">linkedContractNotAuthorized</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV10contractIdSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/contractId" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV10contractIdSSSgvp">contractId</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -462,14 +410,14 @@ This is either caused by the contract not having been authorized or the contract
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The contract to link to has not been authorized</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">linkedContractNotAuthorized</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">contractId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -479,9 +427,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO22authorizationCancelledyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/authorizationCancelled" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO22authorizationCancelledyA2CmF">authorizationCancelled</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV7createdSdSgvp"></a>
+                    <a name="//apple_ref/swift/Property/created" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV7createdSdSgvp">created</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -489,14 +437,14 @@ This is either caused by the contract not having been authorized or the contract
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>User cancelled authorization</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">authorizationCancelled</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">created</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -506,9 +454,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO19addingServiceFailedyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/addingServiceFailed" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO19addingServiceFailedyA2CmF">addingServiceFailed</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV5appIdSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/appId" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV5appIdSSSgvp">appId</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -516,14 +464,14 @@ This is either caused by the contract not having been authorized or the contract
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An error occurred when adding a service</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">addingServiceFailed</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">appId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -533,9 +481,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO19authorizationFailedyACSS_tcACmF"></a>
-                    <a name="//apple_ref/swift/Element/authorizationFailed(code:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO19authorizationFailedyACSS_tcACmF">authorizationFailed(code:<wbr>)</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV11objectTypesSayAC10ObjectTypeVGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/objectTypes" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV11objectTypesSayAC10ObjectTypeVGSgvp">objectTypes</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -543,14 +491,14 @@ This is either caused by the contract not having been authorized or the contract
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Authorization failed with the specified code</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">authorizationFailed</span><span class="p">(</span><span class="nv">code</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">objectTypes</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/RawFileMetadata/ObjectType.html">ObjectType</a></span><span class="p">]?</span></code></pre>
 
                         </div>
                       </div>
@@ -560,9 +508,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO16urlRequestFailedyACs5Error_p_tcACmF"></a>
-                    <a name="//apple_ref/swift/Element/urlRequestFailed(error:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO16urlRequestFailedyACs5Error_p_tcACmF">urlRequestFailed(error:<wbr>)</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV13serviceGroupsSaySiGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/serviceGroups" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV13serviceGroupsSaySiGSgvp">serviceGroups</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -570,14 +518,14 @@ This is either caused by the contract not having been authorized or the contract
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An error occurred when communicating with digi.me server. Contains underlying error - typically an instance of URLError</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">urlRequestFailed</span><span class="p">(</span><span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">serviceGroups</span><span class="p">:</span> <span class="p">[</span><span class="kt">Int</span><span class="p">]?</span></code></pre>
 
                         </div>
                       </div>
@@ -587,9 +535,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO17httpResponseErroryACSi_AA8APIErrorVSgtcACmF"></a>
-                    <a name="//apple_ref/swift/Element/httpResponseError(statusCode:apiError:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO17httpResponseErroryACSi_AA8APIErrorVSgtcACmF">httpResponseError(statusCode:<wbr>apiError:<wbr>)</a>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV9partnerIdSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/partnerId" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV9partnerIdSSSgvp">partnerId</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -597,14 +545,14 @@ This is either caused by the contract not having been authorized or the contract
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An unsuccessful HTTP response was returned from digi.me server</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">httpResponseError</span><span class="p">(</span><span class="nv">statusCode</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">apiError</span><span class="p">:</span> <span class="kt"><a href="../Structs/APIError.html">APIError</a></span><span class="p">?)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">partnerId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -614,211 +562,9 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO19writeRequestFailureyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/writeRequestFailure" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO19writeRequestFailureyA2CmF">writeRequestFailure</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An error occurred while encrypting write request</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">writeRequestFailure</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO20invalidWriteMetadatayA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/invalidWriteMetadata" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO20invalidWriteMetadatayA2CmF">invalidWriteMetadata</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Unable to encode the metadata associated with a write request</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidWriteMetadata</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO17invalidSdkVersionyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/invalidSdkVersion" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO17invalidSdkVersionyA2CmF">invalidSdkVersion</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>This SDK version is no longer supported - please update to latest version</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidSdkVersion</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO16scopeOutOfBoundsyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/scopeOutOfBounds" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO16scopeOutOfBoundsyA2CmF">scopeOutOfBounds</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Requested read options are out of bounds with respect to the contract&rsquo;s scope</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">scopeOutOfBounds</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO21incorrectContractTypeyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/incorrectContractType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO21incorrectContractTypeyA2CmF">incorrectContractType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Attempting to read with a write contract or write with a read contract</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">incorrectContractType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO22alreadyReadingAllFilesyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/alreadyReadingAllFiles" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO22alreadyReadingAllFilesyA2CmF">alreadyReadingAllFiles</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Only one call to <code>readAllFiles</code> can be in progress at any time for each <code><a href="../Classes/DigiMe.html">DigiMe</a></code> instance</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">alreadyReadingAllFiles</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK8SDKErrorO5otheryA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/other" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO5otheryA2CmF">other</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>An unexpected error has occurred - please contact support</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">other</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/CustomStringConvertible"></a>
-                <a name="//apple_ref/swift/Section/CustomStringConvertible" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/CustomStringConvertible"></a>
-                  <h3 class="section-name"><p>CustomStringConvertible</p>
-</h3>
-                </div>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:s23CustomStringConvertibleP11descriptionSSvp"></a>
-                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s23CustomStringConvertibleP11descriptionSSvp">description</a>
+                    <a name="/s:Se4fromxs7Decoder_p_tKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Se4fromxs7Decoder_p_tKcfc">init(from:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -832,7 +578,34 @@ This is either caused by the contract not having been authorized or the contract
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">from</span> <span class="nv">decoder</span><span class="p">:</span> <span class="kt">Decoder</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK15RawFileMetadataV7builderAcA0deF7BuilderC_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(builder:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15RawFileMetadataV7builderAcA0deF7BuilderC_tcfc">init(builder:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">builder</span><span class="p">:</span> <span class="kt"><a href="../Classes/RawFileMetadataBuilder.html">RawFileMetadataBuilder</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
