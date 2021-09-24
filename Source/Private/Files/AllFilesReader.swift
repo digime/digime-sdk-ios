@@ -28,7 +28,7 @@ class AllFilesReader {
     }()
     
     private enum Defaults {
-        static let maxStalePolls = 10
+        static let maxStalePolls = 100
         static let pollInterval = 3
     }
     

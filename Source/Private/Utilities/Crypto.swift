@@ -9,6 +9,7 @@
 import CommonCrypto
 import CryptoKit
 import Foundation
+import Security
 
 enum Crypto {
     enum CryptoError: Error {
@@ -32,6 +33,10 @@ enum Crypto {
         }
         
         return bytes
+    }
+    
+    static func sha256Hash(from dataString: String) -> Data {
+        Data(SHA256.hash(data: dataString.data(using: .utf8)!))
     }
     
     static func base64EncodedData(from pem: String) throws -> Data {
@@ -115,13 +120,13 @@ enum Crypto {
         return fileData
     }
     
-    private static func secKey(keyData: Data, isPublic: Bool) throws -> SecKey {
+    static func secKey(keyData: Data, isPublic: Bool) throws -> SecKey {
         let keyClass = isPublic ? kSecAttrKeyClassPublic : kSecAttrKeyClassPrivate
         
         let attributes = [
             kSecAttrKeyType: kSecAttrKeyTypeRSA,
             kSecAttrKeyClass: keyClass,
-            kSecAttrKeySizeInBits: keyData.count * 8,
+            kSecAttrKeySizeInBits: keyData.count * MemoryLayout<UInt8>.size,
             kSecReturnPersistentRef: kCFBooleanTrue as Any,
         ] as CFDictionary
         

@@ -6,32 +6,22 @@
 //  Copyright © 2019 digi.me Limited. All rights reserved.
 //
 
-import CryptoKit
 import Foundation
-import SwiftJWT
 
-extension OAuthToken: Claims {
+extension OAuthToken: JWTClaims {
 }
 
-protocol RequestClaims: Claims {
+protocol RequestClaims: JWTClaims {
 }
 
 extension RequestClaims {
     func encode() throws -> String {
-        let jsonEncoder = JSONEncoder()
-        jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
-        jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
-        let data = try jsonEncoder.encode(self)
-        return JWTEncoder.base64urlEncodedString(data: data)
+        let data = try self.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase)
+        return data.base64URLEncodedString()
     }
 }
 
 enum JWTUtility {
-   
-    // Default JWT header
-    static var header: Header {
-        Header(typ: "JWT")
-    }
 
     // Claims to request a pre-authorization code
     private struct PayloadRequestPreauthJWT: RequestClaims {
@@ -48,7 +38,7 @@ enum JWTUtility {
     }
     
     // Claims for pre-authorization code response
-    private struct PayloadResponsePreauthJWT: Claims {
+    private struct PayloadResponsePreauthJWT: JWTClaims {
         let preAuthCode: String
 
         enum CodingKeys: String, CodingKey {
@@ -57,7 +47,7 @@ enum JWTUtility {
     }
     
     // Claims for pre-authorization code response
-    private struct PayloadResponseTokenReferenceJWT: Claims {
+    private struct PayloadResponseTokenReferenceJWT: JWTClaims {
         let referenceCode: String
         let tokenType: String
         let expiry: Date
@@ -121,9 +111,9 @@ enum JWTUtility {
     ///   - configuration: this SDK's instance configuration
     ///   - accessToken: An existing access token
     static func preAuthorizationRequestJWT(configuration: Configuration, accessToken: String?) -> String? {
-        let randomBytes = secureRandomData(length: 32)
+        let randomBytes = Crypto.secureRandomData(length: 32)
         let codeVerifier = randomBytes.base64URLEncodedString()
-        let codeChallenge = Data(SHA256.hash(data: codeVerifier.data(using: .utf8)!)).base64URLEncodedString()
+        let codeChallenge = Crypto.sha256Hash(from: codeVerifier).base64URLEncodedString()
         saveCodeVerifier(codeVerifier, configuration: configuration)
         
         let claims = PayloadRequestPreauthJWT(
@@ -163,10 +153,8 @@ enum JWTUtility {
     ///   - keySet: JSON Web Key Set
     /// - Returns: The pre-authorization code if successful or an error if not
     static func preAuthCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, SDKError> {
-        let decoder = decoder(keySet: keySet)
-        
         return Result {
-            let decodedJwt = try decoder.decode(JWT<PayloadResponsePreauthJWT>.self, fromString: jwt)
+            let decodedJwt = try JWT<PayloadResponsePreauthJWT>(jwtString: jwt, keySet: keySet)
             return decodedJwt.claims.preAuthCode
         }.mapError { _ in SDKError.invalidData }
     }
@@ -178,10 +166,8 @@ enum JWTUtility {
     ///   - keySet: JSON Web Key Set
     /// - Returns: An `OAuthToken` if successful or an error if not
     static func oAuthToken(from jwt: String, keySet: JSONWebKeySet) -> Result<OAuthToken, SDKError> {
-        let decoder = decoder(keySet: keySet)
-        
         return Result {
-            let decodedJwt = try decoder.decode(JWT<OAuthToken>.self, fromString: jwt)
+            let decodedJwt = try  JWT<OAuthToken>(jwtString: jwt, keySet: keySet)
             return decodedJwt.claims
         }.mapError { _ in SDKError.invalidData }
     }
@@ -193,10 +179,8 @@ enum JWTUtility {
     ///   - keySet: JSON Web Key Set
     /// - Returns: The reference code if successful or an error if not
     static func referenceCode(from jwt: String, keySet: JSONWebKeySet) -> Result<String, SDKError> {
-        let decoder = decoder(keySet: keySet)
-        
         return Result {
-            let decodedJwt = try decoder.decode(JWT<PayloadResponseTokenReferenceJWT>.self, fromString: jwt)
+            let decodedJwt = try JWT<PayloadResponseTokenReferenceJWT>(jwtString: jwt, keySet: keySet)
             return decodedJwt.claims.referenceCode
         }.mapError { _ in SDKError.invalidData }
     }
@@ -252,37 +236,10 @@ enum JWTUtility {
         return createRequestJWT(claims: claims, configuration: configuration)
     }
     
-    private static func decoder(keySet: JSONWebKeySet) -> JWTDecoder {
-        JWTDecoder { kid in
-            guard
-                let key = keySet.keys.first(where: { $0.kid == kid }),
-                let data = try? Crypto.base64EncodedData(from: key.pem) else {
-                Logger.error("Error retrieving matching JWT verifier")
-                return nil
-            }
-            
-            return JWTVerifier.ps512(publicKey: data)
-        }
-    }
-    
     // MARK: - Utility functions
     private static func createRequestJWT<T: RequestClaims>(claims: T, configuration: Configuration) -> String? {
-        // Signing
-        var jwt = JWT(header: header, claims: claims)
-        let signer = JWTSigner.ps512(privateKey: configuration.privateKeyData)
-        guard let signedJwt = try? jwt.sign(using: signer) else {
-            return nil
-        }
-
-        // Validation
-        guard let publicKeyData = configuration.publicKeyData else {
-            return signedJwt
-        }
-
-        let verifier = JWTVerifier.ps512(publicKey: publicKeyData)
-        let isVerified = JWT<PayloadRefreshOAuthJWT>.verify(signedJwt, using: verifier)
-
-        return isVerified ? signedJwt : nil
+        let jwt = JWT(claims: claims)
+        return try? jwt.sign(using: configuration.privateKeyData)
     }
     
     private static func generateNonce() -> String {
@@ -290,21 +247,7 @@ enum JWTUtility {
     }
     
     private static func secureRandomHexString(length: Int) -> String {
-        secureRandomBytes(length: length).hexString
-    }
-    
-    private static func secureRandomData(length: Int) -> Data {
-        Data(secureRandomBytes(length: length))
-    }
-    
-    private static func secureRandomBytes(length: Int) -> [UInt8] {
-        var bytes = [UInt8](repeating: 0, count: length)
-        let status = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
-        if status != errSecSuccess {
-            Logger.error("Error generating secure random bytes. Status: \(status)")
-        }
-        
-        return bytes
+        Crypto.secureRandomBytes(length: length).hexString
     }
 }
 
