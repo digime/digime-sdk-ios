@@ -11,7 +11,7 @@
     	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/language-objectivec/swift-orange.svg" alt="Objective-C/Swift">
+        <img src="https://img.shields.io/badge/language-swift-orange.svg" alt="Swift">
     </a>
     <a href="https://developers.digi.me">
         <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">

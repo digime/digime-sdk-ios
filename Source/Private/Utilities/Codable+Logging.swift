@@ -9,9 +9,18 @@
 import Foundation
 
 extension Encodable {
-    func encoded() throws -> Data {
+    func encoded(dateEncodingStrategy: JSONEncoder.DateEncodingStrategy? = nil, keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy? = nil) throws -> Data {
         do {
-            return try JSONEncoder().encode(self)
+            let encoder = JSONEncoder()
+            if let dateEncodingStrategy = dateEncodingStrategy {
+                encoder.dateEncodingStrategy = dateEncodingStrategy
+            }
+            
+            if let keyEncodingStrategy = keyEncodingStrategy {
+                encoder.keyEncodingStrategy = keyEncodingStrategy
+            }
+            
+            return try encoder.encode(self)
         }
         catch {
             if let error = (error as? EncodingError) {
