@@ -6,6 +6,8 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
+import Foundation
+
 class DataDecryptor {
     private let configuration: Configuration
     

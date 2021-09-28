@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Represents a file retrieved from library
 public struct File {

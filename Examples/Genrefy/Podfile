@@ -2,7 +2,6 @@ platform :ios, '13.0'
 use_frameworks!
 
 target 'Genrefy' do
-    pod 'DigiMeSDK', :path => '../../'
     pod 'Kingfisher'
     pod 'SVProgressHUD'
 end

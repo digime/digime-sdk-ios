@@ -57,7 +57,7 @@ u3W6P+D7xkopNDDFki7IcLyaRzKvXjGf8HeKz0YP+XomHb25Bc3A
 -----END RSA PRIVATE KEY-----
 """
         do {
-            return try Configuration(appId: appId, contractId: contractId, privateKey: privateKey, publicKey: nil)
+            return try Configuration(appId: appId, contractId: contractId, privateKey: privateKey)
         }
         catch {
             fatalError("Error creating configuration \(error)")
