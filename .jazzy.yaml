@@ -1,0 +1,18 @@
+theme: fullwidth
+readme: README.md
+documentation: Documentation/guides/*md
+output: docs
+docset_path: docsets/.docset
+clean: true
+hide_documentation_coverage: true
+author: digi.me
+author_url: https://developers.digi.me
+github_url: https://github.com/digime/digime-sdk-ios
+module: DigiMeSDK
+swift_build_tool: xcodebuild
+build_tool_arguments:
+  - -scheme
+  - DigiMeSDK
+  - -sdk
+  - iphoneos
+  - -destination,platform=iOS Simulator,OS=latest,name=iPhone 12 Pro
