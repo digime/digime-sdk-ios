@@ -7,6 +7,7 @@
 //
 
 import DigiMeSDK
+import Foundation
 
 enum ServiceTypeConverter: String {
     case spotify = "19"

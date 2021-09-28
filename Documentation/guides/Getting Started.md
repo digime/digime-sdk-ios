@@ -34,6 +34,27 @@ The digi.me private sharing platform empowers developers to make use of user dat
 
 
 ## Installation
+### Swift Package Manager
+
+#### Add dependencies
+
+1. Add the `DigiMeSDK` package to the dependencies within your application's `Package.swift` or your Xcode project. Substitute `"x.x.x"` with the latest `DigiMeSDK` [release](https://github.com/digime/digime-sdk-ios/releases).
+
+	```swift
+	.package(name: "DigiMeSDK", url: "https://github.com/digime/digime-sdk-ios.git", from: "x.x.x")
+	```
+
+2. Add `DigiMeSDK` to your target's dependencies:
+
+	```swift
+	.target(name: "example", dependencies: ["DigiMeSDK"]),
+	```
+
+#### Import package
+
+```swift
+import DigiMeSDK
+```
 
 ### Cocoapods
 

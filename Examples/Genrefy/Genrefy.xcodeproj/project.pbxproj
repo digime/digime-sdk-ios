@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		1E4AEB292199B71800C83328 /* IntroViewControllerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */; };
 		1E4AEB312199FB8000C83328 /* IntroCoordinatingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */; };
 		1E78293C24321E5F0011B5A7 /* PersistentStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */; };
+		272BC5B92701FF7B00E73D36 /* DigiMeSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 272BC5B82701FF7B00E73D36 /* DigiMeSDK */; };
 		276AF972242BB5E000BC3867 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF971242BB5E000BC3867 /* Song.swift */; };
 		276AF974242CB98900BC3867 /* GenreSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF973242CB98900BC3867 /* GenreSummary.swift */; };
 		277759D1219AEF350025C4A4 /* String+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277759D0219AEF350025C4A4 /* String+Bold.swift */; };
@@ -63,6 +64,8 @@
 		1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewControllerUseCase.swift; sourceTree = "<group>"; };
 		1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinatingDelegate.swift; sourceTree = "<group>"; };
 		1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentStorage.swift; sourceTree = "<group>"; };
+		272BC5B32701FEB800E73D36 /* digime-sdk-ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "digime-sdk-ios"; path = ../..; sourceTree = "<group>"; };
+		272BC5B72701FF2100E73D36 /* digime-sdk-ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "digime-sdk-ios"; path = ../..; sourceTree = "<group>"; };
 		276AF971242BB5E000BC3867 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		276AF973242CB98900BC3867 /* GenreSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSummary.swift; sourceTree = "<group>"; };
 		277759D0219AEF350025C4A4 /* String+Bold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Bold.swift"; sourceTree = "<group>"; };
@@ -115,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				272BC5B92701FF7B00E73D36 /* DigiMeSDK in Frameworks */,
 				F2562B3E7E72086184B8DE13 /* Pods_Genrefy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -155,6 +159,7 @@
 		27C6759D20FCA04900E6AFBC = {
 			isa = PBXGroup;
 			children = (
+				272BC5B72701FF2100E73D36 /* digime-sdk-ios */,
 				27C675A820FCA04900E6AFBC /* Genrefy */,
 				27C675A720FCA04900E6AFBC /* Products */,
 				FF09095399260500467ACFB6 /* Pods */,
@@ -261,6 +266,7 @@
 		E3C73FC5C04925F4CD3B8112 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				272BC5B32701FEB800E73D36 /* digime-sdk-ios */,
 				598805F58775ED253BB62D33 /* Pods_Genrefy.framework */,
 			);
 			name = Frameworks;
@@ -293,6 +299,9 @@
 			dependencies = (
 			);
 			name = Genrefy;
+			packageProductDependencies = (
+				272BC5B82701FF7B00E73D36 /* DigiMeSDK */,
+			);
 			productName = "Apps Skeleton";
 			productReference = 27C675A620FCA04900E6AFBC /* genrefy.app */;
 			productType = "com.apple.product-type.application";
@@ -634,6 +643,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		272BC5B82701FF7B00E73D36 /* DigiMeSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DigiMeSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 27C6759E20FCA04900E6AFBC /* Project object */;
 }

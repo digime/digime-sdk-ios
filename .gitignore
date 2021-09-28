@@ -38,3 +38,7 @@ docs/docsets/
 docsets/
 Documentation/objcDoc.json
 Documentation/swiftDoc.json
+
+#Swift Package
+Package.resolved
+.build/

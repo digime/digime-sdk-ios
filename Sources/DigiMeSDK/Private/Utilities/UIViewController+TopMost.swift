@@ -6,7 +6,7 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension UIViewController {
     class func topMostViewController() -> UIViewController? {
