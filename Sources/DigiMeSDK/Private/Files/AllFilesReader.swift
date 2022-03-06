@@ -137,7 +137,7 @@ class AllFilesReader {
         
         items.forEach { item in
             Logger.debug("Adding file to download queue: \(item.name)")
-            self.downloadService.downloadFile(sessionKey: session.key, fileId: item.name, completion: sessionContentHandler)
+            self.downloadService.downloadFile(sessionKey: session.key, fileId: item.name, updatedDate: item.updatedDate, completion: sessionContentHandler)
         }
     }
     

@@ -10,8 +10,8 @@ import Foundation
 
 /// Represents a service scope with which data requests can be limited to
 public struct ServiceType: Encodable {
-    let identifier: UInt
-    let serviceObjectTypes: [ServiceObjectType]
+    public let identifier: UInt
+    public let serviceObjectTypes: [ServiceObjectType]
     
     enum CodingKeys: String, CodingKey {
         case identifier = "id"

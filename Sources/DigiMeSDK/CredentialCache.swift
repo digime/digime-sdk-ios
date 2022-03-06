@@ -90,4 +90,20 @@ public final class CredentialCache {
             assert(status == errSecSuccess, "Failed to insert the new OAuthToken in the keychain. Error: \(status)")
         }
     }
+    
+    /// Clear credentials for the specified contract identifier
+    /// - Parameters:
+    ///   - contractId: The contract identifier
+    @discardableResult
+    public func clearCredentials(for contractId: String) -> Bool {
+        let query = baseQuery(for: contractId)
+        let status: OSStatus = SecItemDelete(query as CFDictionary)
+
+        if status == errSecSuccess {
+            return true
+        }
+        else {
+            return false
+        }
+    }
 }

@@ -11,6 +11,10 @@ import Foundation
 /// The entry point to the SDK
 public final class DigiMe {
     
+    public var isDownloadingFiles: Bool {
+        return self.downloadService.isDownloadingFiles
+    }
+    
     private let configuration: Configuration
     
     private let authService: OAuthService

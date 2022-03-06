@@ -23,7 +23,6 @@ class APIClient {
     
     func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, SDKError>) -> Void) {
         let request = route.toUrlRequest()
-
         session.dataTask(with: request) { data, response, error in
             if let error = error {
                 Logger.error(error.localizedDescription)
@@ -69,10 +68,11 @@ class APIClient {
     
     private func parseHttpError(statusCode: Int, data: Data?, urlString: String?) -> SDKError {
         let errorResponse = try? data?.decoded() as APIErrorResponse?
-        
+        var error: APIError?
         var logMessage = "Request: \(urlString ?? "") failed with status code: \(statusCode)"
         if let apiError = errorResponse?.error {
-            logMessage += ", error code: \(apiError.code), message: \(apiError.message)"
+            logMessage += ", error code: \(apiError.code), message: \(apiError.message), reference: \(apiError.reference ?? "n/a")"
+            error = apiError
         }
         else if let data = data, let message = String(data: data, encoding: .utf8) {
             logMessage += " \(message)"
@@ -81,7 +81,7 @@ class APIClient {
         Logger.error(logMessage)
         
         guard let errorResponse = errorResponse else {
-            return .httpResponseError(statusCode: statusCode, apiError: nil)
+            return .httpResponseError(statusCode: statusCode, apiError: error)
         }
         
         switch (statusCode, errorResponse.error.code) {

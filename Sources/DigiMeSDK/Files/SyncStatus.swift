@@ -12,7 +12,7 @@ import Foundation
 public struct SyncStatus: Decodable, Equatable {
     /// The details of the sources being synchronized.
     /// Not available if overall synchronization state is 'pending'.
-    public let details: [SyncAccount]
+    public let details: [SyncAccount]?
     
     /// The overall synchronization state
     public let state: SyncState

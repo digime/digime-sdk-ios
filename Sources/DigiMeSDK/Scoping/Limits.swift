@@ -9,7 +9,7 @@
 import Foundation
 
 public struct Limits: Encodable {
-    let duration: Duration
+    public let duration: Duration
     
     /// Initializes a Limits object with a duration
     ///

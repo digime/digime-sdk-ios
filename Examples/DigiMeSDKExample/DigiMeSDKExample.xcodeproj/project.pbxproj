@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E6844EF27C7D762009162F0 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6844EE27C7D762009162F0 /* Contracts.swift */; };
+		1E6B24F227CC2C7300CB1B3C /* Date+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6B24F127CC2C7300CB1B3C /* Date+Helper.swift */; };
 		2720C1CA26A95ED400C7B3E3 /* ServicePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720C1C926A95ED300C7B3E3 /* ServicePickerViewController.swift */; };
 		2720C1CC26AEC4FA00C7B3E3 /* Contract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2720C1CB26AEC4FA00C7B3E3 /* Contract.swift */; };
 		2744D07E26A85626008A0E06 /* ServiceDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D07D26A85626008A0E06 /* ServiceDataViewController.swift */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E6844EE27C7D762009162F0 /* Contracts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
+		1E6B24F127CC2C7300CB1B3C /* Date+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helper.swift"; sourceTree = "<group>"; };
 		2720C1C926A95ED300C7B3E3 /* ServicePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicePickerViewController.swift; sourceTree = "<group>"; };
 		2720C1CB26AEC4FA00C7B3E3 /* Contract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contract.swift; sourceTree = "<group>"; };
 		2744D07D26A85626008A0E06 /* ServiceDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceDataViewController.swift; sourceTree = "<group>"; };
@@ -112,10 +116,12 @@
 				2744D08126A8572E008A0E06 /* Logger.swift */,
 				2744D07F26A85631008A0E06 /* WriteDataViewController.swift */,
 				2744D07D26A85626008A0E06 /* ServiceDataViewController.swift */,
-				2720C1CB26AEC4FA00C7B3E3 /* Contract.swift */,
 				27D31A25266A4EAB00DB2524 /* SceneDelegate.swift */,
 				2720C1C926A95ED300C7B3E3 /* ServicePickerViewController.swift */,
 				27D31A27266A4EAB00DB2524 /* HomeViewController.swift */,
+				2720C1CB26AEC4FA00C7B3E3 /* Contract.swift */,
+				1E6844EE27C7D762009162F0 /* Contracts.swift */,
+				1E6B24F127CC2C7300CB1B3C /* Date+Helper.swift */,
 				27D31A29266A4EAB00DB2524 /* Main.storyboard */,
 				27D31A2C266A4EAD00DB2524 /* Assets.xcassets */,
 				27D31A2E266A4EAD00DB2524 /* LaunchScreen.storyboard */,
@@ -365,10 +371,12 @@
 				27D31A26266A4EAB00DB2524 /* SceneDelegate.swift in Sources */,
 				2744D08226A8572E008A0E06 /* Logger.swift in Sources */,
 				2744D08026A85631008A0E06 /* WriteDataViewController.swift in Sources */,
+				1E6B24F227CC2C7300CB1B3C /* Date+Helper.swift in Sources */,
 				2744D07E26A85626008A0E06 /* ServiceDataViewController.swift in Sources */,
 				2720C1CC26AEC4FA00C7B3E3 /* Contract.swift in Sources */,
 				2720C1CA26A95ED400C7B3E3 /* ServicePickerViewController.swift in Sources */,
 				2744D08426A85AE0008A0E06 /* AppInfo.swift in Sources */,
+				1E6844EF27C7D762009162F0 /* Contracts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,13 +542,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3W3JN9G3G7;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = 5LDPS9F284;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "me.digi.ios-sdk-example";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdkexample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -554,13 +564,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3W3JN9G3G7;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = 5LDPS9F284;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "me.digi.ios-sdk-example";
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdkexample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

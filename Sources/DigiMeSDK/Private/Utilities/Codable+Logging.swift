@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Encodable {
+public extension Encodable {
     func encoded(dateEncodingStrategy: JSONEncoder.DateEncodingStrategy? = nil, keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy? = nil) throws -> Data {
         do {
             let encoder = JSONEncoder()
@@ -48,7 +48,7 @@ extension Encodable {
     }
 }
 
-extension Data {
+public extension Data {
     func decoded<T: Decodable>(dateDecodingStrategy: JSONDecoder.DateDecodingStrategy? = nil) throws -> T {
         do {
             let decoder = JSONDecoder()
@@ -82,14 +82,14 @@ extension Data {
     }
 }
 
-extension Dictionary {
+public extension Dictionary {
     func decoded<T: Decodable>() throws -> T {
         let data = try JSONSerialization.data(withJSONObject: self, options: [])
         return try data.decoded()
     }
 }
 
-extension Array {
+public extension Array {
     func decoded<T: Decodable>() throws -> T {
         let data = try JSONSerialization.data(withJSONObject: self, options: [])
         return try data.decoded()

@@ -4,5 +4,6 @@ use_frameworks!
 target 'Genrefy' do
     pod 'Kingfisher'
     pod 'SVProgressHUD'
+    pod 'DigiMeSDK'
 end
 

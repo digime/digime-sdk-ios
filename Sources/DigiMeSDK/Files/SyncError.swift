@@ -12,11 +12,21 @@ import Foundation
 public struct SyncError: Decodable, Equatable {
     public let code: String
     public let statusCode: Int
-    public let message: String
+    public let error: ServiceError?
     
     enum CodingKeys: String, CodingKey {
         case code
         case statusCode = "statuscode"
+        case error
+    }
+}
+
+public struct ServiceError: Decodable, Equatable {
+    public let message: String
+    public let retryAfter: Date
+    
+    enum CodingKeys: String, CodingKey {
         case message
+        case retryAfter = "retryafter"
     }
 }

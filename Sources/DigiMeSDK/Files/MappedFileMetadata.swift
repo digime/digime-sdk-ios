@@ -9,7 +9,7 @@
 import Foundation
 
 /// Metadata for a file with mapped service data
-public struct MappedFileMetadata: Decodable {
+public struct MappedFileMetadata: Codable {
     public let objectCount: Int
     public let objectType: String
     public let serviceGroup: String

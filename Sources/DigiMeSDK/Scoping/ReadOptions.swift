@@ -10,8 +10,8 @@ import Foundation
 
 /// Options used to configure session for reading data from service-based data sources
 public struct ReadOptions: Encodable {
-    let limits: Limits?
-    let scope: Scope?
+    public let limits: Limits?
+    public let scope: Scope?
     
     /// Initializes options used to configure a read session.
     /// - Parameters:

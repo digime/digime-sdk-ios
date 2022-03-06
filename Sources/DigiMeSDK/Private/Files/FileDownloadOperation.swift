@@ -14,14 +14,16 @@ class FileDownloadOperation: RetryingOperation {
     private let dataDecryptor: DataDecryptor
     private let sessionKey: String
     private let fileId: String
+    private let updatedDate: Date
     
     var downloadCompletion: ((Result<File, SDKError>) -> Void)?
     
-    init(sessionKey: String, fileId: String, apiClient: APIClient, dataDecryptor: DataDecryptor) {
+    init(sessionKey: String, fileId: String, updatedDate: Date, apiClient: APIClient, dataDecryptor: DataDecryptor) {
         self.apiClient = apiClient
         self.dataDecryptor = dataDecryptor
         self.sessionKey = sessionKey
         self.fileId = fileId
+        self.updatedDate = updatedDate
     }
     
     override func main() {
@@ -36,11 +38,11 @@ class FileDownloadOperation: RetryingOperation {
             do {
                 let response = try result.get()
                 let unpackedData = try self.dataDecryptor.decrypt(response: response)
-                let file = File(fileWithId: self.fileId, rawData: unpackedData, metadata: response.info.metadata)
+                let file = File(fileWithId: self.fileId, rawData: unpackedData, metadata: response.info.metadata, updated: self.updatedDate)
                 newResult = .success(file)
             }
             catch SDKError.httpResponseError(404, _) where self.canRetry {
-                    // Queue a retry, so don't finish or call download handler
+                    Logger.debug("Queue a retry, so don't finish or call download handler")
                     self.retry()
                     newResult = nil
             }

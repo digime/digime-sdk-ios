@@ -32,6 +32,9 @@ public struct Service: Codable {
         countries.map { $0.identifier }
     }
     
+    /// Convenience property to encapsulate read options within the each service
+    public var options: ReadOptions?
+    
     var isAvailable: Bool {
         return publishedStatus == "approved" && platform.isAvailable
     }

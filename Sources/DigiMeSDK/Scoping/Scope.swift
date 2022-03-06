@@ -10,8 +10,8 @@ import Foundation
 
 /// Scope used to limit service-based data retrieval to specified services and a specified time ranges
 public struct Scope: Encodable {
-    let serviceGroups: [ServiceGroupScope]?
-    let timeRanges: [TimeRange]?
+    public let serviceGroups: [ServiceGroupScope]?
+    public let timeRanges: [TimeRange]?
     
     /// Limits data retrieval to specified services or service groups and optionally to specified time range.
     /// If both service groups and time ranges are specified, then response will be limited to data matching both limits
