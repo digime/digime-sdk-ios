@@ -13,7 +13,7 @@ class FileListCache {
     private var cache = [String: Date]()
 
     func newItems(from items: [FileListItem]) -> [FileListItem] {
-        items.filter { item in
+        return items.filter { item in
             guard let existingItem = cache[item.name] else {
                 return true
             }

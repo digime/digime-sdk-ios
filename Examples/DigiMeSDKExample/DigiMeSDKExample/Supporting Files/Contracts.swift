@@ -10,11 +10,12 @@ import DigiMeSDK
 import Foundation
 
 enum Contracts {
-    // This contract allows SDK user to read user's social,
+    // ThisDigimeContract allows SDK user to read user's social,
     // financial and music data from the past 3 months.
-    static let finSocMus = Contract(name: "Social, Music & Financial",
-                                    identifier: "DGLxRJiTjKZJvvtDB6timfzw4DHiQwek",
-                                    privateKey: """
+    
+    static let finSocMus = DigimeContract(name: "Social, Music & Financial",
+                                          identifier: "DGLxRJiTjKZJvvtDB6timfzw4DHiQwek",
+                                          privateKey: """
         -----BEGIN RSA PRIVATE KEY-----
         MIIEowIBAAKCAQEAiM7QAmRiK322Npd0loxxxhIuLZVbc+2JRt7GRgTBG1RoaQ8e
         0DrOVI8xz7XHe6PduoVs+TqZwYPEngGLq1f4+gZuyqeMOpUC5YFGs8QYro9UwJmG
@@ -43,14 +44,14 @@ enum Contracts {
         wpFeXUa88GKAnNy0Rng81omO6kRDW5Bz8ppQbvnjKnUJgu2seSR0
         -----END RSA PRIVATE KEY-----
         """,
-                                    timeRanges: [TimeRange.last(amount: 3, unit: .month)]
+                                          timeRanges: [TimeRange.last(amount: 3, unit: .month)]
     )
     
-    // This contract allows SDK user to read user's medical
+    // ThisDigimeContract allows SDK user to read user's medical
     // and fitness data from the past 3 months.
-    static let fitHealth = Contract(name: "Health & Fitness",
-                                    identifier: "iB6siPdN5j6yVvv0PYMLiSBqSiq8SAG4",
-                                    privateKey: """
+    static let fitHealth = DigimeContract(name: "Health & Fitness",
+                                          identifier: "iB6siPdN5j6yVvv0PYMLiSBqSiq8SAG4",
+                                          privateKey: """
         -----BEGIN RSA PRIVATE KEY-----
         MIIEowIBAAKCAQEAiKbIKoTmPrFWiOaGuuUjJXSBUWj/LOC3fhzSF/M7O0C9GP9+
         TGooxS98o6zLPHHkbRDktT1nh5cEagS6vjeCrcrcwlWPGmMMRb1LVE1fIurnzzSb
@@ -79,12 +80,12 @@ enum Contracts {
         unJYbtDxQhgcarKzuDOfr6lIzdxQFeviTf8+SaCfTAIgEZOX9x2b
         -----END RSA PRIVATE KEY-----
         """,
-                                    timeRanges: [TimeRange.between(from: Date.from(year: 2017, month: 1, day: 1)!, to: Date.from(year: 2018, month: 3, day: 18)!)]
+                                          timeRanges: [TimeRange.between(from: Date.from(year: 2017, month: 1, day: 1, hour: 0, minute: 0, second: 0)!, to: Date.from(year: 2018, month: 3, day: 18, hour: 23, minute: 59, second: 59)!)]
     )
     
-    static let writeContract = Contract(name: "Upload data",
-                                        identifier: "V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v",
-                                        privateKey: """
+    static let writeContract = DigimeContract(name: "Upload data",
+                                              identifier: "V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v",
+                                              privateKey: """
         -----BEGIN RSA PRIVATE KEY-----
         MIIEowIBAAKCAQEAhMYMWNIeMK34g6uUjUyZlOFSfopWiAvpGH/YL3Gh41LR74MP
         3ikGrxS7BSxU7e8GfoJdk1DP1zl7oj0JV7F7P1GFY/R+SCuynp5TmQ9Ll0pCIkNj
@@ -113,12 +114,12 @@ enum Contracts {
         xpt9yk2orvtaK/ZtMxiyhRzxW5EPrZkL9xSlfnIxd+M2f4Rqy/po
         -----END RSA PRIVATE KEY-----
         """,
-                                        timeRanges: nil
+                                              timeRanges: nil
     )
     
-    static let readContract = Contract(name: "Read uploaded data",
-                                       identifier: "slA5X9HyO2TnAxBIcRwf1VfpovcD1aQX",
-                                       privateKey: """
+    static let readContract = DigimeContract(name: "Read uploaded data",
+                                             identifier: "slA5X9HyO2TnAxBIcRwf1VfpovcD1aQX",
+                                             privateKey: """
         -----BEGIN RSA PRIVATE KEY-----
         MIIEowIBAAKCAQEAnHxDWyjjKXizE6Llo6yMI3xtHSjaPwF7hFQwChwSweqyvBpR
         rozDYKA9OX5yW5AsJYX2AJsPRiD16PdsMwgh/6hgDpPAaAWvwaPVc5oUG0V6I6L6
@@ -147,6 +148,40 @@ enum Contracts {
         AFUT+vgwhNxAy5/JN536S0Atg3TCcOzppsFg0i0GCoyhBqY5OWyn
         -----END RSA PRIVATE KEY-----
         """,
-                                       timeRanges: nil
+                                             timeRanges: nil
     )
+    
+    // applicationId: QGgBnPQOJBe6JqEAkgZ3t4y7PulaR66V
+    static let appleHealth = DigimeContract(name: "Apple Health",
+                                            identifier: "MuwUjwbeTo7NYMs9Q8M5u5HHbYboFIOJ",
+                                            privateKey: """
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEAsykpwDc7e+ePh0IrT9VQcULB8jvWD82Q4vD/SZ3xydCpLOnd
+        e9bFmME4L+F5l07WdDE2RbcuYLu5DF5ZQwUFo064ATsBORdd2DiETQzbhm0pzbWI
+        wtF82/DL2YjvXUujZBSD42n2oWGr/1PBNloZACNBp1NvgkMdHGuFjXWueV4pX9wW
+        sJCehP++0uDh2bs/F5upFwUZshGLMDLx3nvj8oax0/ukgZxE97l7KzICw+5Hn0l2
+        7pHNWii6X0boxH1zUcQnc6avYaukQgAqE634ugOAVdS5QH0o6tdtDDFlW+hmse76
+        3zz5Nh+BeCyMvBGt9pHdu9is2idiE+h6G8T7EwIDAQABAoIBAH0E6GF9KUEZIQrd
+        naOj0vJ2ByiloIZ+h/AVA8+3K5YMyUDSIP/dqx0hF7gxuste9D84aArV/ML7u/Fp
+        lRgzVO/UaopRRlU0fQP4zDmIE1gGrPkjCEAKNvqzWUx/Rajwsx+PQUlcFAIhSght
+        xZHL5U43TAUbL+DSPGosjZFc4VdGtuwwhmFhBWIyHf0BpAqm7FPQvrDhV97WgsAQ
+        nkOyRQduv3tf2BQJsz2sj2sn7fJZ4CXtf0o4TSBmPxYXQhlrjZnfXyKIj7f2rAEc
+        bl4pT2lvW6deLL3PGwzjYaEB4G9HIIt45SCig7wwjEfrdieCBg2ue++usl8Ss5YQ
+        k4bpBsECgYEA1tAgqZ6WT3Pod0J0n1s/79lWFF29kCRMTstaicNAF1sbvj/ISm86
+        f6RWhRxpmaP60saYBDjftNMl8IILUVq60cwUQOpBCdkTNfp91BsindH0Jj6y8Htc
+        hSA/mimgSoc1UFv9/uCzj8H44AdfLjg+eP4pKWRkhfznHPNMPKPSHisCgYEA1YMV
+        iWgwDhGyw4zAtsVENdBTC+dWlICL1os0iK8aV61F4KV309vfGV0meeCGqd4k1nOK
+        1rBHfo+Lpa2MbE5YE3xvHeZYWx/QI/xzctGbjr/aHyQhj0ql10qc7/Jgu0IbJAZP
+        SxJmXhBULASWHkHy4cQOGaC5zLqx+w12/pL+irkCgYEAiDMkUoezxCK4pU0khpmj
+        u16w3m7lL0xkeZ0kBa8fpu9kcsccJl3J2H6JQRLXvcuj0BqM7jhlVtB+ALVjmayO
+        QVFFEje1DxpsvM/bEi42T5x8Ufd1G1cMPXhJ+2QjNr3txsrdC8rK7v5M3zatWa/d
+        pHd5/72govfMTaXRk61HH0sCgYBCNBgceBrWcfRtIBqtUXN6ADOP8FZvS4CQsK9E
+        Zo8Tep29L3F9VqLRuYlxpwX6a/AeMsttEFHK03WolKyC9LPort/BdKgW8UFXtzKQ
+        +p9yXtiiaVCinrHXlMIewJfv2GqT/ATgMT9ekU+YKn/lt+s4x9LbbXPPIGCJiL5J
+        54hXuQKBgQCBmGjS+Sxjp9GBg7SZxow0YTaWEm+FrF3AyQZa9kTg2aGW35gvfUTU
+        qkhvhk+xX5EHnXNXvFZ2uiaPHjv5S7PDiznjGvfjcQX6KDcPq4+NptLC8cE3jpXi
+        MReto8gQbA5eMe8fIVT/YsNhtPcIxwo42Vk573lE8wzKQ5jkrD+WBA==
+        -----END RSA PRIVATE KEY-----
+        """,
+                                            timeRanges: [TimeRange.last(amount: 4, unit: .month)])
 }

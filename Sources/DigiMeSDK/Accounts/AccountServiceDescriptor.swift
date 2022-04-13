@@ -16,4 +16,9 @@ public struct AccountServiceDescriptor: Codable {
     
     /// The logo for the service, if available
     public let logo: String?
+    
+    public init(name: String, logo: String? = nil) {
+        self.name = name
+        self.logo = logo
+    }
 }

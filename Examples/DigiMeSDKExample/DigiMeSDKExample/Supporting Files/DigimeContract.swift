@@ -1,5 +1,5 @@
 //
-//  Contract.swift
+//  DigimeContract.swift
 //  DigiMeSDKExample
 //
 //  Created on 26/07/2021.
@@ -9,7 +9,7 @@
 import DigiMeSDK
 import Foundation
 
-struct Contract {
+struct DigimeContract {
     let name: String?
     let identifier: String
     let privateKey: String

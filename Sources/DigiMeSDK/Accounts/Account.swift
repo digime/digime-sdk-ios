@@ -29,4 +29,11 @@ public struct Account: Codable {
         case number
         case service
     }
+    
+    public init(identifier: String, name: String, service: AccountServiceDescriptor, number: String? = nil) {
+        self.identifier = identifier
+        self.name = name
+        self.number = number
+        self.service = service
+    }
 }

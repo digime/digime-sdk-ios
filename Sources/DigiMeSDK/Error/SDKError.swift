@@ -78,6 +78,46 @@ public enum SDKError: Error {
     
     /// An unexpected error has occurred - please contact support
     case other
+    
+    // MARK: - Apple Health
+    
+    /// Returns if HealthKit is not supported on the device.
+    /// HealthKit is not supported on all iOS devices.  Using HKHealthStore APIs on devices which are not supported will result in errors with the HKErrorHealthDataUnavailable code.
+    case healthDataIsNotAvailable
+    
+    /// Returns YES if the Health Records feature is available.
+    /// The Health Records feature is not available in all regions but may be present in unsupported regions if accounts have already been configured. This can change as accounts are modified during device restore or synchronization.
+    case healthDataNotSupportsHealthRecords
+    
+    /// Health data failure with a specific message
+    case healthDataError(message: String)
+    
+    /// Authorization failed with the specified error
+    case healthDataErrorError(error: Error)
+    
+    /// Invalid or missing X509 contract data
+    case certificateParserInvalidData
+    
+    /// An error occured when parsing certificate
+    case certificateParserError(error: Error)
+    
+    /// Error parsing time range in data request
+    case certificateVerifyTimeRangeError
+    
+    /// Certificate type is not supported
+    case certificateTypeIsNotSupported
+    
+    /// An error occured while encoding certificate data
+    case certificateEncodingDataError
+    
+    /// Certificate format is not supported
+    case certificateFormatIsNotSupported
+    
+    /// Health Data Store. Error fetch statistics
+    case healthDataFetchStatistics(error: Error)
+    
+    /// Health Data Store. Unable to create quantity type
+    case healthDataUnableToCreateQuantityType
 }
 
 // MARK: - CustomStringConvertible
@@ -145,6 +185,42 @@ extension SDKError: CustomStringConvertible {
             
         case .alreadyReadingAllFiles:
             return "Only one call to `readAllFiles` can be in progress at any time for each `DigiMe` instance. Try cancelling existing call if a new call is required."
+            
+        case .healthDataIsNotAvailable:
+            return "HealthKit is not supported on the device."
+            
+        case .healthDataNotSupportsHealthRecords:
+            return "The Health Records feature is not available."
+            
+        case .healthDataError(let message):
+            return "Health Data Failure: \(message)"
+            
+        case .healthDataErrorError(let error):
+            return "Health Data. Authorization failed with error: \(error)"
+            
+        case .certificateParserInvalidData:
+            return "Invalid or missing X509 contract data"
+            
+        case .certificateParserError(let error):
+            return "Error parsing X509 certificate: \(error)"
+            
+        case .certificateVerifyTimeRangeError:
+            return "Error parsing time range in data request"
+            
+        case .certificateTypeIsNotSupported:
+            return "Certificate type is not supported"
+            
+        case .certificateEncodingDataError:
+            return "An error occured while encoding certificate data"
+            
+        case .certificateFormatIsNotSupported:
+            return "Certificate format is not supported"
+            
+        case .healthDataFetchStatistics(let error):
+            return "Health Data Store. Error fetch statistics: \(error)"
+            
+        case .healthDataUnableToCreateQuantityType:
+            return "Health Data Store. Unable to create quantity type"
             
         case .other:
             return "An unexpected error has occurred - please contact digi.me support."

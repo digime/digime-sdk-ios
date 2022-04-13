@@ -9,7 +9,7 @@
 import Foundation
 
 public extension Encodable {
-    func encoded(dateEncodingStrategy: JSONEncoder.DateEncodingStrategy? = nil, keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy? = nil) throws -> Data {
+    func encoded(dateEncodingStrategy: JSONEncoder.DateEncodingStrategy? = nil, keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy? = nil, outputFormatting: JSONEncoder.OutputFormatting? = nil) throws -> Data {
         do {
             let encoder = JSONEncoder()
             if let dateEncodingStrategy = dateEncodingStrategy {
@@ -18,6 +18,10 @@ public extension Encodable {
             
             if let keyEncodingStrategy = keyEncodingStrategy {
                 encoder.keyEncodingStrategy = keyEncodingStrategy
+            }
+            
+            if let outputFormatting = outputFormatting {
+                encoder.outputFormatting = outputFormatting
             }
             
             return try encoder.encode(self)
@@ -45,6 +49,18 @@ public extension Encodable {
         }
         
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments))
+    }
+    
+    var json: String {
+        if let dictionary = self.dictionary as? [String: Any] {
+            return dictionary.json()
+        }
+        else if let array = self.dictionary as? [[String: Any]] {
+            return array.json()
+        }
+        else {
+            return "{}"
+        }
     }
 }
 
@@ -93,5 +109,33 @@ public extension Array {
     func decoded<T: Decodable>() throws -> T {
         let data = try JSONSerialization.data(withJSONObject: self, options: [])
         return try data.decoded()
+    }
+}
+
+public extension Encodable where Self: CustomDebugStringConvertible {
+    /// Usage:  (lldb) p print(dictionary)
+    var debugDescription: String {
+         if
+            let data = try? self.encoded(outputFormatting: .prettyPrinted),
+            let string = String(data: data, encoding: .utf8) {
+            return string
+         }
+        
+         return "Error converting to json string"
+     }
+}
+
+extension Collection {
+    /// Convert self to JSON String.
+    /// Returns: the pretty printed JSON string or an empty string if any error occur.
+    func json() -> String {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: self, options: [.prettyPrinted])
+            return String(data: jsonData, encoding: .utf8) ?? "{}"
+        }
+        catch {
+            print("json serialization error: \(error)")
+            return "{}"
+        }
     }
 }

@@ -64,7 +64,7 @@ public class FilePersistentStorage {
         }
 
         if
-            let newData = try? file.encoded(dateEncodingStrategy:  .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase),
+            let newData = try? file.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase),
             let jsonStr = String(data: newData, encoding: .utf8) {
             
             try? jsonStr.write(to: url, atomically: true, encoding: .utf8)

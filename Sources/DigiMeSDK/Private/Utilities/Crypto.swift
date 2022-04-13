@@ -11,7 +11,7 @@ import CryptoKit
 import Foundation
 import Security
 
-enum Crypto {
+public enum Crypto {
     enum CryptoError: Error {
         case stringToDataConversionFailed
         case secKeyCreateFailed(error: CFError)
@@ -39,7 +39,7 @@ enum Crypto {
         Data(SHA256.hash(data: dataString.data(using: .utf8)!))
     }
     
-    static func base64EncodedData(from pem: String) throws -> Data {
+    public static func base64EncodedData(from pem: String) throws -> Data {
         let strippedKey = pem.filter { !" \n\t\r".contains($0) }
         let base64EncodedString: String
         if strippedKey.contains("-----") {

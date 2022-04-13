@@ -17,6 +17,7 @@ class ServiceDataViewController: UIViewController {
     
     @IBOutlet private var servicesLabel: UILabel!
     @IBOutlet private var addServiceButton: UIButton!
+    @IBOutlet private var contractDetailsButton: UIButton!
     @IBOutlet private var refreshDataButton: UIButton!
     @IBOutlet private var deleteUserButton: UIButton!
     
@@ -24,7 +25,7 @@ class ServiceDataViewController: UIViewController {
     
     private var digiMe: DigiMe!
     private var logger: Logger!
-    private var currentContract: Contract!
+    private var currentContract: DigimeContract!
     private let credentialCache = CredentialCache()
     
     private var accounts = [Account]()
@@ -54,6 +55,34 @@ class ServiceDataViewController: UIViewController {
             
             alert.addAction(.init(title: "Cancel", style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction private func showContractDetails() {
+        digiMe.contractDetails { result in
+            switch result {
+            case .success(let certificate):
+                DispatchQueue.main.async {
+                    let startDate = Date.from(year: 2020, month: 1, day: 1, hour: 0, minute: 0, second: 0)!
+                    let endDate = Date.from(year: 2023, month: 12, day: 31, hour: 23, minute: 59, second: 59)!
+                    var message = "Example where the data request will be always limited to the contract's time range."
+                    message += "\n\tRequested dates start: \(startDate) end: \(endDate)"
+                    let timeRange = TimeRange.between(from: startDate, to: endDate)
+                    let scope = Scope(timeRanges: [timeRange])
+                    let readOptions = ReadOptions(limits: nil, scope: scope)
+                    let rangeResult = certificate.verifyTimeRange(readOptions: readOptions)
+                    switch rangeResult {
+                    case .success(let verified):
+                        message += "\n\tVerified start: \(verified.startDate) end: \(verified.endDate)"
+                    case .failure(let error):
+                        message += "\n\tError verifying time range: \(error.description)"
+                    }
+                    message += "\n\tContract's certificate: \(certificate.json)"
+                    self.logger.log(message: message)
+                }
+            case .failure(let error):
+                self.logger.log(message: "\n\tUnable to retrieve contract details: \(error)")
+            }
         }
     }
     
@@ -106,14 +135,16 @@ class ServiceDataViewController: UIViewController {
         }
         
         digiMe.deleteUser(credentials: credentials) { error in
-            self.credentialCache.setCredentials(nil, for: self.currentContract.identifier)
+            
             if let error = error {
                 self.logger.log(message: "Deleting user failed: \(error)")
             }
-            
-            self.accounts = []
-            self.logger.reset()
-            self.updateUI()
+            else {
+                self.credentialCache.setCredentials(nil, for: self.currentContract.identifier)
+                self.accounts = []
+                self.logger.reset()
+                self.updateUI()
+            }
         }
     }
     
@@ -125,7 +156,7 @@ class ServiceDataViewController: UIViewController {
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    private func setContract(_ contract: Contract) {
+    private func setContract(_ contract: DigimeContract) {
         if contract.identifier == currentContract?.identifier {
             return
         }
@@ -158,6 +189,7 @@ class ServiceDataViewController: UIViewController {
             authWithoutServiceButton.isHidden = true
             servicesLabel.isHidden = false
             addServiceButton.isHidden = false
+            contractDetailsButton.isHidden = false
             deleteUserButton.isHidden = false
             refreshDataButton.isHidden = false
             
@@ -181,6 +213,7 @@ class ServiceDataViewController: UIViewController {
             authWithServiceButton.isHidden = false
             servicesLabel.isHidden = true
             addServiceButton.isHidden = true
+            contractDetailsButton.isHidden = true
             refreshDataButton.isHidden = true
             deleteUserButton.isHidden = true
         }
@@ -233,7 +266,7 @@ class ServiceDataViewController: UIViewController {
     }
     
     private func selectService(completion: @escaping ((Service?) -> Void)) {
-        digiMe.availableServices(contractId: currentContract.identifier) { result in
+        digiMe.availableServices(contractId: currentContract.identifier, filterAvailable: false) { result in
             switch result {
             case .success(let servicesInfo):
                 self.selectServiceCompletion = completion

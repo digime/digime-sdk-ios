@@ -17,13 +17,14 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         .package(name: "Gzip", url: "https://github.com/1024jp/GzipSwift.git", from: "5.0.0"),
+        .package(name: "ASN1Decoder", url: "https://github.com/filom/ASN1Decoder.git", from: "1.8.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "DigiMeSDK",
-            dependencies: ["Gzip"]),
+            dependencies: ["Gzip", "ASN1Decoder"]),
         .testTarget(
             name: "DigiMeSDKTests",
             dependencies: ["DigiMeSDK"],
