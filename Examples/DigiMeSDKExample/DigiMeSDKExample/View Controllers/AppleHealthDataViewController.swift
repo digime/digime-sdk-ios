@@ -20,14 +20,14 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     private let credentialCache = CredentialCache()
     private let contract = Contracts.appleHealth
     private lazy var readOptions: ReadOptions? = {
-        // In this version of the SDK the only supported object type is 'Fitness Activity'.
-        // This example is for demonstration purpose only.
+        /// In this version of the SDK, the only supported object type is 'Fitness Activity'.
+        /// This example is for demonstration purposes only.
         let objectType = ServiceObjectType(identifier: 300, name: "Fitness Activity")
         let services = [ServiceType(identifier: 28, objectTypes: [objectType])]
         let groups = [ServiceGroupScope(identifier: 4, serviceTypes: services)]
-        // Time ranges allows you to narrow down the contract's time scope.
-        // For example: if your contract allows you to gather data within one year
-        // then using the scope object you can get data for a month or for one day only, etc.
+        /// Time ranges allow you to narrow down the contract's time scope.
+        /// For example: if your contract allows you to gather data within one year
+        /// then using the scope object you can get data for a month or for one day only, etc.
         let timeRange = TimeRange.last(amount: 112, unit: TimeRange.Unit.day)
         let scope = Scope(serviceGroups: groups, timeRanges: [timeRange])
        return ReadOptions(limits: nil, scope: scope)
@@ -40,6 +40,8 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
         
         SVProgressHUD.setContainerView(self.view)
         configureNavigationBar()
+        
+        /// On load: - initialize client, authorize or fetch data.
         configureClient()
     }
     
@@ -72,13 +74,18 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     
     private func configureClient() {
         do {
+            /// On initialization create a configuration object with digi.me contract details.
             let config = try Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey)
             digiMe = DigiMe(configuration: config)
             
             if credentialCache.credentials(for: contract.identifier) == nil {
+                /// Authorize and fetch data on the first load.
                 authorizeContract()
             }
             else {
+                /// Fetch fitness data. Use read options to narrow down the fetch request.
+                /// Options have to include the date range shorter than your digi.me contract.
+                /// Options are optional parameters. If not present it will return data for the whole date range of the contract.
                 fetchData(readOptions: readOptions)
             }
         }
@@ -91,12 +98,17 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     private func authorizeContract() {
         SVProgressHUD.show(withStatus: "Authorizing...")
         let credentials = credentialCache.credentials(for: contract.identifier)
+        /// Authorise client with credentials. Credentials are optional parameters.
+        /// It will create a new session on the first load or it will validate existing for a valid session to fetch new data in the completion block.
         digiMe.authorize(credentials: credentials) { result in
             SVProgressHUD.dismiss()
             
             switch result {
             case .success(let newOrRefreshedCredentials):
+                /// Store credentials locally.
                 self.credentialCache.setCredentials(newOrRefreshedCredentials, for: self.contract.identifier)
+                /// Fetch fitness data. Use read options to narrow down the fetch request.
+                /// Options have to include the date range shorter than your digi.me contract.
                 self.fetchData(readOptions: self.readOptions)
                 
             case.failure(let error):
@@ -123,8 +135,8 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
             switch result {
             case .success(let healthResult):
                 
-                // For debugging purpose only
-                // Debugging account data
+                /// For debugging purpose only.
+                /// Debugging account data.
                 if
                     let account = healthResult.account,
                     let jsonData = try? account.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase) {
@@ -133,22 +145,25 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
                     FilePersistentStorage(with: .documentDirectory).store(data: jsonData, fileName: "account.json")
                 }
                 
-                self.records = healthResult.data
-                self.updateSections()
-                
+                /// Split data into calendar one week range.
                 let chunked = healthResult.data.chunked(into: 7)
                 self.data.append(contentsOf: chunked)
                 DispatchQueue.main.async { [weak self] in
                     self?.reload()
                 }
                 
-                // For debugging purpose only
-                // Debugging data content
+                /// For debugging purposes only.
+                /// Group data to monthly time shard
+                self.records = healthResult.data
+                self.updateSections()
+                
+                /// Store the data content locally. Use iTunes file sharing to review JFS data saved under the Documents folder.
                 self.saveToJFS()
                 
             case .failure(let error):
                 switch error {
                 case .invalidSession:
+                    /// The session is invalid. Clear local copy and trigger the new authorization routine.
                     self.credentialCache.clearCredentials(for: self.contract.identifier)
                     self.authorizeContract()
                 default:
@@ -179,7 +194,6 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     }
     
     private func saveToJFS() {
-        // Serializing data to the disk for the debugging purpose only
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYYMM"
         for month in self.sections {
@@ -193,6 +207,9 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
         }
     }
     
+    /// Clear all data locally and remotely.
+    /// The current version does not upload Apple health data to digime backend.
+    /// Only remote Session objects will be cleared.
     @objc private func deleteUser() {
         guard let credentials = credentialCache.credentials(for: contract.identifier) else {
             print("No credentials is available to delete user's data")
@@ -224,6 +241,8 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
 
 #if targetEnvironment(simulator)
 extension AppleHealthDataViewController {
+    /// iOS Simulator doesn't have any health data by default.
+    /// Here we create random data for all time for demo purposes.
     @objc private func addTestData() {
         SVProgressHUD.show(withStatus: "Adding test data...")
         DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(1)) { [self] in
@@ -263,7 +282,7 @@ extension AppleHealthDataViewController {
                     
                     let alert = UIAlertController(title: "digi.me SDK", message: message, preferredStyle: .alert)
                     alert.addAction(.init(title: "OK", style: .cancel) { _ in
-                        self.fetchData()
+                        self.fetchData(readOptions: self.readOptions)
                     })
                     self.present(alert, animated: true)
                 }
