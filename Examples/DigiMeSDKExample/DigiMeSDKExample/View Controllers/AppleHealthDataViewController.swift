@@ -13,7 +13,6 @@ import UIKit
 
 class AppleHealthDataViewController: DataTypeCollectionViewController {
         
-    var queries: [HKAnchoredObjectQuery] = []
     private var records = [FitnessActivity]()
     private var sections = [(date: Date, records: [FitnessActivity])]()
     private var digiMe: DigiMe!
@@ -172,11 +171,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
             }
         }
     }
-    
-    private func addPaddingAndChunkData(data: [String: [FitnessActivity]]) -> [[FitnessActivity]] {
-        return []
-    }
-    
+
     private func updateSections() {
         sections = records
             .sorted { $0.endDate > $1.endDate }
