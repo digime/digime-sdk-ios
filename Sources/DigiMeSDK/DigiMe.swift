@@ -540,7 +540,7 @@ public final class DigiMe {
                     completion(.failure(error))
                 }
                 catch {
-                    completion(.failure(SDKError.invalidData))
+                    completion(.failure(SDKError.readAccountsError))
                 }
             case .failure(let error):
                 completion(.failure(error))

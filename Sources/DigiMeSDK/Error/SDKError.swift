@@ -75,7 +75,28 @@ public enum SDKError: Error {
     
     /// Only one call to `readAllFiles` can be in progress at any time for each `DigiMe` instance
     case alreadyReadingAllFiles
+	
+	/// Error reading accounts json
+	case readAccountsError
+	
+	/// Attempting to extract preAuthorization code from JWT
+	case errorDecodedingJwtPreAuthCode
     
+	/// Attempting to extract access and refresh tokens from JWT
+	case errorExtractingTokensFromJWT
+	
+	/// Extracts reference code from JWT
+	case errorExtractingReferenceCodeFromJwt
+	
+	/// Error parsing headers and metadata in the response
+	case errorParsingHeadersMetadataInTheResponse
+	
+	/// Error making request when parsing response
+	case errorMakingRequestWhenParsingResponse
+	
+	/// Error decrypting response
+	case errorDecryptingResponse
+	
     /// An unexpected error has occurred - please contact support
     case other
     
@@ -186,6 +207,27 @@ extension SDKError: CustomStringConvertible {
         case .alreadyReadingAllFiles:
             return "Only one call to `readAllFiles` can be in progress at any time for each `DigiMe` instance. Try cancelling existing call if a new call is required."
             
+		case .readAccountsError:
+			return "Error reading accounts json"
+				
+		case .errorDecodedingJwtPreAuthCode:
+			return "Attempting to extract preAuthorization code from JWT"
+				
+		case .errorExtractingTokensFromJWT:
+			return "Attempting to extract access and refresh tokens from JWT"
+				
+		case .errorExtractingReferenceCodeFromJwt:
+			return "Error attempting to extract reference code from JWT"
+				
+		case .errorParsingHeadersMetadataInTheResponse:
+			return "Error parsing headers and metadata in the response"
+				
+		case .errorMakingRequestWhenParsingResponse:
+			return "Error making request when parsing response"
+			
+		case .errorDecryptingResponse:
+			return "Error decrypting response"
+				
         case .healthDataIsNotAvailable:
             return "HealthKit is not supported on the device."
             

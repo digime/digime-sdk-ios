@@ -156,7 +156,7 @@ enum JWTUtility {
         return Result {
             let decodedJwt = try JWT<PayloadResponsePreauthJWT>(jwtString: jwt, keySet: keySet)
             return decodedJwt.claims.preAuthCode
-        }.mapError { _ in SDKError.invalidData }
+        }.mapError { _ in SDKError.errorDecodedingJwtPreAuthCode }
     }
     
     /// Extracts access and refresh tokens from JWT, and wraps in `OAuthToken`.
@@ -169,7 +169,7 @@ enum JWTUtility {
         return Result {
             let decodedJwt = try  JWT<OAuthToken>(jwtString: jwt, keySet: keySet)
             return decodedJwt.claims
-        }.mapError { _ in SDKError.invalidData }
+        }.mapError { _ in SDKError.errorExtractingTokensFromJWT }
     }
     
     /// Extracts reference code from JWT
@@ -182,7 +182,7 @@ enum JWTUtility {
         return Result {
             let decodedJwt = try JWT<PayloadResponseTokenReferenceJWT>(jwtString: jwt, keySet: keySet)
             return decodedJwt.claims.referenceCode
-        }.mapError { _ in SDKError.invalidData }
+        }.mapError { _ in SDKError.errorExtractingReferenceCodeFromJwt }
     }
     
     /// Creates request JWT which can be used to trigger data

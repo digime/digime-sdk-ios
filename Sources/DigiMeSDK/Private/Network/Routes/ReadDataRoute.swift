@@ -30,7 +30,7 @@ struct ReadDataRoute: Route {
         guard
             let metadataBase64 = headers["X-Metadata"] as? String,
             let metadataData = Data(base64URLEncoded: metadataBase64) else {
-            throw SDKError.invalidData
+            throw SDKError.errorParsingHeadersMetadataInTheResponse
         }
         
         let fileInfo = try metadataData.decoded() as FileInfo
