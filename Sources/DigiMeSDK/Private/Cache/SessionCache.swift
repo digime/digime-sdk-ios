@@ -25,6 +25,10 @@ final class SessionCache {
         userDefaults.set(data, forKey: key(for: contractId))
     }
     
+	func clearSession(for contractId: String) {
+		userDefaults.set(nil, forKey: key(for: contractId))
+	}
+	
     private func key(for contractId: String) -> String {
         keyPrefix + contractId
     }

@@ -462,6 +462,11 @@ public final class DigiMe {
             }
         }
     }
+	
+	public func clearData(for contractId: String) {
+		CredentialCache().clearCredentials(for: contractId)
+		SessionCache().clearSession(for: contractId)
+	}
     
     // MARK: - Apple Health
     
