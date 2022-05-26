@@ -24,8 +24,14 @@ class DataDecryptor {
             
             return unpackedData
         }
+		catch let error as Crypto.CryptoError {
+			throw error
+		}
+		catch let error as SDKError {
+			throw error
+		}
         catch {
-            throw SDKError.invalidData
+            throw SDKError.errorDecryptingResponse
         }
     }
 }

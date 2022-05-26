@@ -76,6 +76,57 @@ public enum SDKError: Error {
     /// Only one call to `readAllFiles` can be in progress at any time for each `DigiMe` instance
     case alreadyReadingAllFiles
     
+    /// Error reading accounts json
+    case readAccountsError
+    
+    /// Attempting to extract preAuthorization code from JWT
+    case errorDecodedingJwtPreAuthCode
+    
+    /// Attempting to extract access and refresh tokens from JWT
+    case errorExtractingTokensFromJwt
+    
+    /// Extracts reference code from JWT
+    case errorExtractingReferenceCodeFromJwt
+    
+    /// Error parsing headers and metadata in the response
+    case errorParsingHeadersMetadataInTheResponse
+    
+    /// Error making request when parsing response
+    case errorMakingRequestWhenParsingResponse
+    
+    /// Error decrypting response
+    case errorDecryptingResponse
+    
+	/// Error parsing server response. Result is unexpected.
+	case unexpectedErrorWhenParsingConsentResponse
+	
+	/// File Download operation error
+	case fileDownloadOperationError
+	
+	/// Error creating request JWT to trigger data
+	case errorCreatingRequestJwtToTriggerData
+	
+	/// Api client making request received no response
+	case errorMakingRequest
+	
+	/// Api client making request, received no response
+	case errorMakingRequestNoResponse
+
+	/// Invalid pre-authorization request JWT
+	case invalidPreAuthorizationRequestJwt
+	
+	/// Invalid authorization request JWT
+	case invalidAuthorizationRequestJwt
+	
+	/// Invalid refresh tokens request JWT
+	case invalidRefreshTokensRequestJwt
+
+	/// Invalid reference token request JWT
+	case invalidReferenceTokenRequestJwt
+	
+	/// Invalid delete user token request JWT
+	case invalidDeleteUserTokenRequestJwt
+	
     /// An unexpected error has occurred - please contact support
     case other
 }
@@ -146,8 +197,59 @@ extension SDKError: CustomStringConvertible {
         case .alreadyReadingAllFiles:
             return "Only one call to `readAllFiles` can be in progress at any time for each `DigiMe` instance. Try cancelling existing call if a new call is required."
             
+        case .readAccountsError:
+            return "Error reading accounts json"
+                
+        case .errorDecodedingJwtPreAuthCode:
+            return "Attempting to extract preAuthorization code from JWT"
+                
+        case .errorExtractingTokensFromJwt:
+            return "Attempting to extract access and refresh tokens from JWT"
+                
+        case .errorExtractingReferenceCodeFromJwt:
+            return "Error attempting to extract reference code from JWT"
+                
+        case .errorParsingHeadersMetadataInTheResponse:
+            return "Error parsing headers and metadata in the response"
+                
+        case .errorMakingRequestWhenParsingResponse:
+            return "Error making request when parsing response"
+            
+        case .errorDecryptingResponse:
+            return "Error decrypting response"
+            
+		case .unexpectedErrorWhenParsingConsentResponse:
+			return "Error parsing server response. Result is unexpected."
+		
+		case .fileDownloadOperationError:
+			return "File Download operation error"
+		
+		case .errorCreatingRequestJwtToTriggerData:
+			return "Error creating request JWT to trigger data"
+				
+		case .errorMakingRequest:
+			return "Api client making request received no response"
+				
+		case .errorMakingRequestNoResponse:
+			return "Api client making request, received no response"
+				
+		case .invalidPreAuthorizationRequestJwt:
+			return "Invalid pre-authorization request JWT"
+		
+		case .invalidRefreshTokensRequestJwt:
+			return "Invalid refresh tokens request JWT"
+			
+		case .invalidReferenceTokenRequestJwt:
+			return "Invalid reference token request JWT"
+		
+		case .invalidAuthorizationRequestJwt:
+			return "Invalid authorization request JWT"
+		
+		case .invalidDeleteUserTokenRequestJwt:
+			return "Invalid delete user token request JWT"
+				
         case .other:
             return "An unexpected error has occurred - please contact digi.me support."
-        }
+		}
     }
 }

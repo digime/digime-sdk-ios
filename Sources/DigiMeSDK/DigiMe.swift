@@ -434,7 +434,7 @@ public final class DigiMe {
                     completion(.failure(error))
                 }
                 catch {
-                    completion(.failure(SDKError.invalidData))
+                    completion(.failure(SDKError.readAccountsError))
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -488,7 +488,7 @@ public final class DigiMe {
     // Request read session by triggering source sync
     private func triggerSourceSync(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Void, SDKError>) -> Void) {
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-            return completion(.failure(.other))
+            return completion(.failure(.errorCreatingRequestJwtToTriggerData))
         }
         
         apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, readOptions: readOptions)) { result in

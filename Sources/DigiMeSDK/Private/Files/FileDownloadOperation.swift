@@ -47,7 +47,7 @@ class FileDownloadOperation: RetryingOperation {
                     newResult = nil
             }
             catch {
-                newResult = .failure(.other)
+                newResult = .failure(.fileDownloadOperationError)
             }
             
             if let newResult = newResult {

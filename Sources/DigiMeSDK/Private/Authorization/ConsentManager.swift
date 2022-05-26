@@ -129,7 +129,7 @@ final class ConsentManager: NSObject {
             case ConsentError.serviceOnboardError:
                 return .addingServiceFailed
             case ConsentError.unexpectedError:
-                return .other
+                return .unexpectedErrorWhenParsingConsentResponse
             case let err as ConsentError:
                 return .authorizationFailed(code: err.rawValue)
             default:
