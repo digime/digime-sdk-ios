@@ -62,6 +62,18 @@ class AllFilesReader {
         
         self.beginFileListPollingIfRequired()
     }
+	
+	func clearSessionData() {
+		isFetchingSessionData = false
+		
+		fileListCache.reset()
+		sessionDataCompletion = nil
+		sessionContentHandler = nil
+		downloadService.cancel()
+		downloadService.allDownloadsFinishedHandler = nil
+		sessionError = nil
+		stalePollCount = 0
+	}
     
     private func beginFileListPollingIfRequired() {
         isFetchingSessionData = true
@@ -150,17 +162,6 @@ class AllFilesReader {
     private func completeSessionDataFetch(error: SDKError?) {
         sessionDataCompletion?(error != nil ? .failure(error!) : .success(sessionFileList!))
         clearSessionData()
-    }
-    
-    private func clearSessionData() {
-        isFetchingSessionData = false
-        
-        fileListCache.reset()
-        sessionDataCompletion = nil
-        sessionContentHandler = nil
-        downloadService.allDownloadsFinishedHandler = nil
-        sessionError = nil
-        stalePollCount = 0
     }
     
     private func evaluateSessionDataFetchProgress(schedulePoll: Bool) {
