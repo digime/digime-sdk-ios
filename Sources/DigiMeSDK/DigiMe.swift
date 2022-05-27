@@ -420,7 +420,17 @@ public final class DigiMe {
             }
         }
     }
+	
+	/// Clear cached data.
+	///
+	/// - Parameters:
+	///   - contractId: The contract identifier for which relevant available service
+	public func clearCachedData(for contractId: String) {
+		CredentialCache().clearCredentials(for: contractId)
+		SessionCache().clearSession(for: contractId)
+	}
     
+	// MARK: - Private
     private func readAccounts(session: Session, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
         apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
             switch result {

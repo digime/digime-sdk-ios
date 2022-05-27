@@ -12,6 +12,10 @@ final class SessionCache {
     private let userDefaults = UserDefaults.standard
     private let keyPrefix = "me.digi.sdk.session."
     
+	/// Initializes an instance of session cache
+	init() {
+	}
+	
     func session(for contractId: String) -> Session? {
         guard let results = userDefaults.data(forKey: key(for: contractId)) else {
             return nil
@@ -25,6 +29,10 @@ final class SessionCache {
         userDefaults.set(data, forKey: key(for: contractId))
     }
     
+	func clearSession(for contractId: String) {
+		userDefaults.set(nil, forKey: key(for: contractId))
+	}
+	
     private func key(for contractId: String) -> String {
         keyPrefix + contractId
     }
