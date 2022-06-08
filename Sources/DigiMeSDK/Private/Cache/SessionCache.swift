@@ -10,10 +10,13 @@ import Foundation
 
 final class SessionCache {
     private let userDefaults = UserDefaults.standard
-    private let keyPrefix = "me.digi.sdk.session."
+	private let domain: String
+	private let keyPrefix: String
     
 	/// Initializes an instance of session cache
 	init() {
+		domain = Bundle.main.bundleIdentifier ?? "me.digi.sdk.session"
+		keyPrefix = "\(domain)."
 	}
 	
     func session(for contractId: String) -> Session? {
@@ -25,7 +28,14 @@ final class SessionCache {
     }
     
     func setSession(_ session: Session?, for contractId: String) {
-        let data = try? session?.encoded()
+		guard
+			let session = session,
+			let data = try? session.encoded() else {
+			
+			clearSession(for: contractId)
+			return
+		}
+
         userDefaults.set(data, forKey: key(for: contractId))
     }
     
