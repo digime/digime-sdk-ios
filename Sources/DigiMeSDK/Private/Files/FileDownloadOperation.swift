@@ -42,7 +42,7 @@ class FileDownloadOperation: RetryingOperation {
                 newResult = .success(file)
             }
             catch SDKError.httpResponseError(404, _) where self.canRetry {
-                    Logger.debug("Queue a retry, so don't finish or call download handler")
+                    Logger.info("Queue a retry, so don't finish or call download handler")
                     self.retry()
                     newResult = nil
             }

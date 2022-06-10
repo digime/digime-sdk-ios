@@ -37,6 +37,7 @@ final class SessionCache {
 		}
 
         userDefaults.set(data, forKey: key(for: contractId))
+		Logger.info("Session: \(session) for contract id: \(contractId)")
     }
     
 	func clearSession(for contractId: String) {
