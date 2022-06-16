@@ -27,7 +27,7 @@ class ServiceDataViewController: UIViewController {
     private var currentContract: Contract!
     private let credentialCache = CredentialCache()
     
-    private var accounts = [Account]()
+    private var accounts = [SourceAccount]()
     private var selectServiceCompletion: ((Service?) -> Void)?
     
     override func viewDidLoad() {

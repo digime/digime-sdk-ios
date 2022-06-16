@@ -10,6 +10,6 @@ import DigiMeSDK
 
 struct AccountSelectionItem {
     let uid: String
-    let account: Account
+    let account: SourceAccount
     let selected: Bool
 }

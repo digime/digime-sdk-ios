@@ -34,7 +34,7 @@ class ImportRepository: NSObject {
         return orderedGenreSummaries(for: genresCounts)
     }
     var files = [File]()
-    var accounts = [Account]()
+    var accounts = [SourceAccount]()
     weak var delegate: ImportRepositoryDelegate?
     
     func process(file: File) {
@@ -75,7 +75,7 @@ class ImportRepository: NSObject {
         }
     }
     
-    func genreSummariesForAccounts(_ filteredAccounts: [Account]) -> [GenreSummary] {
+    func genreSummariesForAccounts(_ filteredAccounts: [SourceAccount]) -> [GenreSummary] {
         if accounts.count == filteredAccounts.count {
             return allOrderedGenreSummaries
         }

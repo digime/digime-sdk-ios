@@ -38,7 +38,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         
     private let cache = AppStateCache()
     
-    private var filteredAccounts: [Account] = []
+    private var filteredAccounts: [SourceAccount] = []
 
     private lazy var homeViewController: HomeViewController = {
         let homeVC = HomeViewController.instantiate()
@@ -64,7 +64,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         if
             accounts.isEmpty,
             let persistedData = PersistentStorage.shared.loadData(for: "accounts.json"),
-            let loadedAccounts = try? JSONDecoder().decode([Account].self, from: persistedData) {
+            let loadedAccounts = try? JSONDecoder().decode([SourceAccount].self, from: persistedData) {
                 accounts = loadedAccounts
         }
         
@@ -156,7 +156,7 @@ extension AnalysisCoordinator: HomeViewControllerDelegate {
 }
        
 extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
-    func selectedAccountsChanged(selectedAccounts: [Account]) {
+    func selectedAccountsChanged(selectedAccounts: [SourceAccount]) {
         // Filter analysis using selected accounts only
         filteredAccounts = selectedAccounts
         if let repository = repository {

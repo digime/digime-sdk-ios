@@ -9,7 +9,7 @@
 import Foundation
 
 /// The account relating to a service data source user has added to digi.me library
-public struct Account: Codable {
+public struct SourceAccount: Codable {
     
     /// The account's identifier
     public let identifier: String

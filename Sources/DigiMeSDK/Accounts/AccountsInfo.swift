@@ -12,7 +12,7 @@ import Foundation
 public struct AccountsInfo: Codable {
     
     /// List of accounts user has added
-    public let accounts: [Account]
+    public let accounts: [SourceAccount]
     
     /// The consent identifier
     public let consentId: String
