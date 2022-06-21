@@ -30,9 +30,6 @@ class DataDecryptor {
 		catch let error as SDKError {
 			throw error
 		}
-		catch let error as Error {
-			throw error
-		}
         catch {
             throw SDKError.errorDecryptingResponse
         }

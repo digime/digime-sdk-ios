@@ -83,7 +83,7 @@ public enum SDKError: Error {
 	case errorDecodedingJwtPreAuthCode
     
 	/// Attempting to extract access and refresh tokens from JWT
-	case errorExtractingTokensFromJWT
+	case errorExtractingTokensFromJwt
 	
 	/// Extracts reference code from JWT
 	case errorExtractingReferenceCodeFromJwt
@@ -96,6 +96,36 @@ public enum SDKError: Error {
 	
 	/// Error decrypting response
 	case errorDecryptingResponse
+    
+	/// Error parsing server response. Result is unexpected.
+	case unexpectedErrorWhenParsingConsentResponse
+	
+	/// File Download operation error
+	case fileDownloadOperationError
+	
+	/// Error creating request JWT to trigger data
+	case errorCreatingRequestJwtToTriggerData
+	
+	/// Api client making request received no response
+	case errorMakingRequest
+	
+	/// Api client making request, received no response
+	case errorMakingRequestNoResponse
+
+	/// Invalid pre-authorization request JWT
+	case invalidPreAuthorizationRequestJwt
+	
+	/// Invalid authorization request JWT
+	case invalidAuthorizationRequestJwt
+	
+	/// Invalid refresh tokens request JWT
+	case invalidRefreshTokensRequestJwt
+
+	/// Invalid reference token request JWT
+	case invalidReferenceTokenRequestJwt
+	
+	/// Invalid delete user token request JWT
+	case invalidDeleteUserTokenRequestJwt
 	
     /// An unexpected error has occurred - please contact support
     case other
@@ -213,7 +243,7 @@ extension SDKError: CustomStringConvertible {
 		case .errorDecodedingJwtPreAuthCode:
 			return "Attempting to extract preAuthorization code from JWT"
 				
-		case .errorExtractingTokensFromJWT:
+		case .errorExtractingTokensFromJwt:
 			return "Attempting to extract access and refresh tokens from JWT"
 				
 		case .errorExtractingReferenceCodeFromJwt:
@@ -227,45 +257,77 @@ extension SDKError: CustomStringConvertible {
 			
 		case .errorDecryptingResponse:
 			return "Error decrypting response"
+            
+		case .unexpectedErrorWhenParsingConsentResponse:
+			return "Error parsing server response. Result is unexpected."
+		
+		case .fileDownloadOperationError:
+			return "File Download operation error"
+		
+		case .errorCreatingRequestJwtToTriggerData:
+			return "Error creating request JWT to trigger data"
 				
-        case .healthDataIsNotAvailable:
-            return "HealthKit is not supported on the device."
-            
-        case .healthDataNotSupportsHealthRecords:
-            return "The Health Records feature is not available."
-            
-        case .healthDataError(let message):
-            return "Health Data Failure: \(message)"
-            
-        case .healthDataErrorError(let error):
-            return "Health Data. Authorization failed with error: \(error)"
-            
-        case .certificateParserInvalidData:
-            return "Invalid or missing X509 contract data"
-            
-        case .certificateParserError(let error):
-            return "Error parsing X509 certificate: \(error)"
-            
-        case .certificateVerifyTimeRangeError:
-            return "Error parsing time range in data request"
-            
-        case .certificateTypeIsNotSupported:
-            return "Certificate type is not supported"
-            
-        case .certificateEncodingDataError:
-            return "An error occured while encoding certificate data"
-            
-        case .certificateFormatIsNotSupported:
-            return "Certificate format is not supported"
-            
-        case .healthDataFetchStatistics(let error):
-            return "Health Data Store. Error fetch statistics: \(error)"
-            
-        case .healthDataUnableToCreateQuantityType:
-            return "Health Data Store. Unable to create quantity type"
-            
+		case .errorMakingRequest:
+			return "Api client making request received no response"
+				
+		case .errorMakingRequestNoResponse:
+			return "Api client making request, received no response"
+				
+		case .invalidPreAuthorizationRequestJwt:
+			return "Invalid pre-authorization request JWT"
+		
+		case .invalidRefreshTokensRequestJwt:
+			return "Invalid refresh tokens request JWT"
+			
+		case .invalidReferenceTokenRequestJwt:
+			return "Invalid reference token request JWT"
+		
+		case .invalidAuthorizationRequestJwt:
+			return "Invalid authorization request JWT"
+		
+		case .invalidDeleteUserTokenRequestJwt:
+			return "Invalid delete user token request JWT"
+		
         case .other:
             return "An unexpected error has occurred - please contact digi.me support."
-        }
+	
+		// MARK: - Apple Health
+			
+		case .healthDataIsNotAvailable:
+			return "HealthKit is not supported on the device."
+			
+		case .healthDataNotSupportsHealthRecords:
+			return "The Health Records feature is not available."
+			
+		case .healthDataError(let message):
+			return "Health Data Failure: \(message)"
+			
+		case .healthDataErrorError(let error):
+			return "Health Data. Authorization failed with error: \(error)"
+			
+		case .certificateParserInvalidData:
+			return "Invalid or missing X509 contract data"
+			
+		case .certificateParserError(let error):
+			return "Error parsing X509 certificate: \(error)"
+			
+		case .certificateVerifyTimeRangeError:
+			return "Error parsing time range in data request"
+			
+		case .certificateTypeIsNotSupported:
+			return "Certificate type is not supported"
+			
+		case .certificateEncodingDataError:
+			return "An error occured while encoding certificate data"
+			
+		case .certificateFormatIsNotSupported:
+			return "Certificate format is not supported"
+			
+		case .healthDataFetchStatistics(let error):
+			return "Health Data Store. Error fetch statistics: \(error)"
+			
+		case .healthDataUnableToCreateQuantityType:
+			return "Health Data Store. Unable to create quantity type"
+		}
     }
 }

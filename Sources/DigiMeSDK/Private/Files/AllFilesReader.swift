@@ -62,6 +62,18 @@ class AllFilesReader {
         
         self.beginFileListPollingIfRequired()
     }
+	
+	func clearSessionData() {
+		isFetchingSessionData = false
+		
+		fileListCache.reset()
+		sessionDataCompletion = nil
+		sessionContentHandler = nil
+		downloadService.cancel()
+		downloadService.allDownloadsFinishedHandler = nil
+		sessionError = nil
+		stalePollCount = 0
+	}
     
     private func beginFileListPollingIfRequired() {
         isFetchingSessionData = true
@@ -119,7 +131,7 @@ class AllFilesReader {
             return
         }
         
-        Logger.debug("Found new files to sync: \(items.count)")
+        Logger.info("Found new files to sync: \(items.count)")
         fileListCache.add(items: items)
         
         // If contentHandler is not provided, no need to download
@@ -136,7 +148,7 @@ class AllFilesReader {
         }
         
         items.forEach { item in
-            Logger.debug("Adding file to download queue: \(item.name)")
+            Logger.info("Adding file to download queue: \(item.name)")
             self.downloadService.downloadFile(sessionKey: session.key, fileId: item.name, updatedDate: item.updatedDate, completion: sessionContentHandler)
         }
     }
@@ -152,23 +164,12 @@ class AllFilesReader {
         clearSessionData()
     }
     
-    private func clearSessionData() {
-        isFetchingSessionData = false
-        
-        fileListCache.reset()
-        sessionDataCompletion = nil
-        sessionContentHandler = nil
-        downloadService.allDownloadsFinishedHandler = nil
-        sessionError = nil
-        stalePollCount = 0
-    }
-    
     private func evaluateSessionDataFetchProgress(schedulePoll: Bool) {
         guard isFetchingSessionData else {
             return
         }
         
-        Logger.debug("Sync state - \(sessionFileList != nil ? sessionFileList!.status.state.rawValue : "unknown")")
+        Logger.info("Sync state - \(sessionFileList != nil ? sessionFileList!.status.state.rawValue : "unknown")")
         
         // If sessionError is not nil, then syncState is irrelevant, as it will be the previous successful fileList call.
         if (sessionError != nil || !isSyncRunning) && !self.downloadService.isDownloadingFiles {

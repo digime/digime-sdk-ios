@@ -25,7 +25,7 @@ class OAuthService {
     func requestPreAuthorizationCode(readOptions: ReadOptions?, accessToken: String?, completion: @escaping (Result<TokenSessionResponse, SDKError>) -> Void) {
         guard let jwt = JWTUtility.preAuthorizationRequestJWT(configuration: configuration, accessToken: accessToken) else {
             Logger.critical("Invalid pre-authorization request JWT")
-            completion(.failure(SDKError.other))
+            completion(.failure(SDKError.invalidPreAuthorizationRequestJwt))
             return
         }
 
@@ -44,7 +44,7 @@ class OAuthService {
     func requestTokenExchange(authCode: String, completion: @escaping (Result<OAuthToken, SDKError>) -> Void) {
         guard let jwt = JWTUtility.authorizationRequestJWT(authCode: authCode, configuration: configuration) else {
             Logger.critical("Invalid authorization request JWT")
-            completion(.failure(SDKError.other))
+            completion(.failure(SDKError.invalidAuthorizationRequestJwt))
             return
         }
         
@@ -63,7 +63,7 @@ class OAuthService {
     func renewAccessToken(oauthToken: OAuthToken, completion: @escaping (Result<OAuthToken, SDKError>) -> Void) {
         guard let jwt = JWTUtility.refreshTokensRequestJWT(refreshToken: oauthToken.refreshToken.value, configuration: configuration) else {
             Logger.critical("Invalid refresh tokens request JWT")
-            completion(.failure(SDKError.other))
+            completion(.failure(SDKError.invalidRefreshTokensRequestJwt))
             return
         }
         
@@ -87,7 +87,7 @@ class OAuthService {
     func requestReferenceToken(oauthToken: OAuthToken, completion: @escaping (Result<TokenSessionResponse, SDKError>) -> Void) {
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
             Logger.critical("Invalid reference token request JWT")
-            completion(.failure(SDKError.other))
+            completion(.failure(SDKError.invalidReferenceTokenRequestJwt))
             return
         }
         
@@ -106,7 +106,7 @@ class OAuthService {
     func deleteUser(oauthToken: OAuthToken, completion: @escaping (Result<Void, SDKError>) -> Void) {
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
             Logger.critical("Invalid delete user token request JWT")
-            completion(.failure(SDKError.other))
+            completion(.failure(SDKError.invalidDeleteUserTokenRequestJwt))
             return
         }
         

@@ -169,7 +169,7 @@ enum JWTUtility {
         return Result {
             let decodedJwt = try  JWT<OAuthToken>(jwtString: jwt, keySet: keySet)
             return decodedJwt.claims
-        }.mapError { _ in SDKError.errorExtractingTokensFromJWT }
+        }.mapError { _ in SDKError.errorExtractingTokensFromJwt }
     }
     
     /// Extracts reference code from JWT

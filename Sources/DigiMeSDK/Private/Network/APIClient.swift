@@ -32,7 +32,7 @@ class APIClient {
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 Logger.error("Request: \(request.url?.absoluteString ?? "") received no response")
-                completion(.failure(.other))
+                completion(.failure(.errorMakingRequestNoResponse))
                 return
             }
             
@@ -47,7 +47,7 @@ class APIClient {
             
             guard let data = data else {
                 Logger.error("Request: \(request.url?.absoluteString ?? "") received no data")
-                completion(.failure(.other))
+                completion(.failure(.errorMakingRequest))
                 return
             }
             
