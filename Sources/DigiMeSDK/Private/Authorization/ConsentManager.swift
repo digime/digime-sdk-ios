@@ -81,6 +81,11 @@ final class ConsentManager: NSObject {
     
     private func open(url: URL) {
         DispatchQueue.main.async {
+			guard !self.configuration.authUsingExternalBrowser else {
+				UIApplication.shared.open(url)
+				return
+			}
+			
             let viewController = SFSafariViewController(url: url)
             viewController.delegate = self
             viewController.presentationController?.delegate = self
@@ -161,12 +166,16 @@ final class ConsentManager: NSObject {
         safariViewController = nil
     }
     
-    private func handleAuthAction(parameters: [String: String?], presentingViewController: UIViewController) {
+    private func handleAuthAction(parameters: [String: String?], presentingViewController: UIViewController?) {
         let result: Result<ConsentResponse, Error>!
         defer {
-            presentingViewController.dismiss(animated: true) {
-                self.finishUserConsent(with: result)
-            }
+			if let vc = presentingViewController {
+				vc.dismiss(animated: true) {
+					self.finishUserConsent(with: result)
+				}
+			}
+			
+			self.finishUserConsent(with: result)
         }
         
         guard let success = parameters[ResponseKey.success.rawValue] else {
@@ -187,12 +196,16 @@ final class ConsentManager: NSObject {
         }
     }
     
-    private func handleServiceAction(parameters: [String: String?], presentingViewController: UIViewController) {
+    private func handleServiceAction(parameters: [String: String?], presentingViewController: UIViewController?) {
         let result: Result<Void, Error>!
         defer {
-            presentingViewController.dismiss(animated: true) {
-                self.finishAddService(with: result)
-            }
+			if let vc = presentingViewController {
+				vc.dismiss(animated: true) {
+					self.finishAddService(with: result)
+				}
+			}
+			
+			self.finishAddService(with: result)
         }
         
         guard let success = parameters[ResponseKey.success.rawValue] else {
@@ -250,6 +263,22 @@ extension ConsentManager: CallbackHandler {
     func handleAction(_ action: String, with parameters: [String: String?]) {
         CallbackService.shared().removeCallbackHandler(self)
         
+		guard !configuration.authUsingExternalBrowser else {
+			guard let actionToHandle = Action(rawValue: action) else {
+				return
+			}
+			
+			switch actionToHandle {
+			case .auth:
+				handleAuthAction(parameters: parameters, presentingViewController: nil)
+			
+			case .service:
+				handleServiceAction(parameters: parameters, presentingViewController: nil)
+			}
+			
+			return
+		}
+		
         // User could have opened in Safari Browser and cancelled/completed authentication in SafariViewController
         // then cancelled/completed authentication again in Browser,
         // in which case we ignore any callback from Browser as app has already handled a callback.

@@ -55,6 +55,8 @@ public extension HKUnit {
                 unit = .count()
             case .distanceWalkingRunning:
                 unit = .meter()
+			case .activeEnergyBurned:
+				unit = .kilocalorie()
             default:
                 break
             }

@@ -20,6 +20,82 @@ public class ConsentAccessTimeRange: Codable {
         self.from = from
         self.to = to
     }
+	
+	public func verifyTimeRange(readOptions: ReadOptions?) -> Result<TimeRangeLimits, SDKError> {
+		let certDefaults = certificateTimeRange()
+		if
+			let readOptions = readOptions,
+			let timeRange = readOptions.scope?.timeRanges?.first,
+			let optionsRange = retrieveLimits(from: timeRange) {
+			return .success(TimeRangeLimits(startDate: max(certDefaults.startDate, optionsRange.startDate), endDate: min(certDefaults.endDate, optionsRange.endDate)))
+		}
+		else {
+			return .success(certDefaults)
+		}
+	}
+
+	private func retrieveLimits(from timeRange: TimeRange) -> TimeRangeLimits? {
+		let range = certificateTimeRange()
+		
+		switch timeRange {
+		case .after(let from):
+			return TimeRangeLimits(startDate: from, endDate: range.endDate)
+		case .between(let from, let to):
+			return TimeRangeLimits(startDate: from, endDate: to)
+		case .before(let to):
+			return TimeRangeLimits(startDate: range.startDate, endDate: to)
+		case .last(let amount, let unit):
+			return rolling(from: amount, unit: unit)
+		}
+	}
+		
+	private func rolling(from amount: Int, unit: TimeRange.Unit) -> TimeRangeLimits? {
+		let calendar = Calendar.utcCalendar
+		let now = Date()
+		var dateComponents = DateComponents()
+		
+		switch unit {
+		case .day:
+			dateComponents.day = -(amount - 1)
+		case .month:
+			dateComponents.month = -amount
+		case .year:
+			dateComponents.year = -amount
+		}
+		
+		guard let from = calendar.date(byAdding: dateComponents, to: now) else {
+			return nil
+		}
+		
+		return TimeRangeLimits(startDate: from, endDate: now)
+	}
+	
+	private func certificateTimeRange() -> TimeRangeLimits {
+		let maxStartDate = Date(timeIntervalSince1970: 0)
+		let maxEndDate = Date().endOfToday
+		let maxRange = TimeRangeLimits(startDate: maxStartDate, endDate: maxEndDate)
+		let range = self
+		
+		switch range.type {
+		case .window:
+			if let from = range.from, let to = range.to {
+				return TimeRangeLimits(startDate: from, endDate: to)
+			}
+		case .rolling,
+				.since:
+			if let startDate = range.from {
+				return TimeRangeLimits(startDate: startDate, endDate: maxEndDate)
+			}
+		case .until:
+			if let endDate = range.to {
+				return TimeRangeLimits(startDate: maxStartDate, endDate: endDate)
+			}
+		case .allTime:
+			return TimeRangeLimits(startDate: maxStartDate, endDate: maxEndDate)
+		}
+		
+		return maxRange
+	}
 }
 
 // MARK: - Class Functions

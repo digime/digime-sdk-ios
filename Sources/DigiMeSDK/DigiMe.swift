@@ -21,6 +21,7 @@ public final class DigiMe {
     private let authService: OAuthService
     private let consentManager: ConsentManager
     private let sessionCache: SessionCache
+	private let contractsCache: ContractsCache
     private let apiClient: APIClient
     private let dataDecryptor: DataDecryptor
     private let healthDataClient: HealthDataClient
@@ -72,6 +73,7 @@ public final class DigiMe {
         self.authService = OAuthService(configuration: configuration, apiClient: apiClient)
         self.consentManager = ConsentManager(configuration: configuration)
         self.sessionCache = SessionCache()
+		self.contractsCache = ContractsCache()
         self.dataDecryptor = DataDecryptor(configuration: configuration)
         self.healthDataClient = HealthDataClient(healthService: HealthDataService(account: HealthDataAccount().account))
         self.certificateParser = CertificateParser()
@@ -431,6 +433,16 @@ public final class DigiMe {
             }
         }
     }
+	
+	/// Clear cached data.
+	///
+	/// - Parameters:
+	///   - contractId: The contract identifier for which relevant available service
+	public func clearCachedData(for contractId: String) {
+		allFilesReader?.clearSessionData()
+		CredentialCache().clearCredentials(for: contractId)
+		SessionCache().clearSession(for: contractId)
+	}
     
     /// Get contract details.
     /// If contract identifier is specified, then only those services relevant to the contract are retrieved, otherwise all services are retrieved.
@@ -466,55 +478,82 @@ public final class DigiMe {
 	public func clearData(for contractId: String) {
 		CredentialCache().clearCredentials(for: contractId)
 		SessionCache().clearSession(for: contractId)
+		ContractsCache().clearTimeRanges(for: contractId)
 	}
     
     // MARK: - Apple Health
     
-    public func retrieveAppleHealth(readOptions: ReadOptions? = nil, credentials: Credentials? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<HealthResult, SDKError>) -> Void) {
+	public func retrieveAppleHealth(for contractId: String, readOptions: ReadOptions? = nil, credentials: Credentials? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<HealthResult, SDKError>) -> Void) {
         
-        validateOrRefreshCredentials(credentials) { validationResult in
-            switch validationResult {
-            case .success(let refreshedCredentials):
-                
-                self.contractDetails(resultQueue: resultQueue) { contractResult in
-                    switch contractResult {
-                    case .success(let certificat):
-                        
-                        let timeRangeResult = certificat.verifyTimeRange(readOptions: readOptions)
-                        switch timeRangeResult {
-                        case .success(let limits):
-                            
-                            self.healthDataClient.retrieveData(from: limits.startDate, to: limits.endDate) { result in
-                                switch result {
-                                case .success(var data):
-                                    data.refreshedCredentials = refreshedCredentials
-                                    resultQueue.async {
-                                        completion(.success(data))
-                                    }
-                                case .failure(let error):
-                                    resultQueue.async {
-                                        completion(.failure(error))
-                                    }
-                                }
-                            }
-                        case .failure(let error):
-                            resultQueue.async {
-                                completion(.failure(error))
-                            }
-                        }
-                        
-                    case .failure(let error):
-                        resultQueue.async {
-                            completion(.failure(error))
-                        }
-                    }
-                }
-            case .failure(let error):
-                resultQueue.async {
-                    completion(.failure(error))
-                }
-            }
-        }
+		guard let contractTimeRange = contractsCache.firstTimeRange(for: contractId) else {
+			
+			validateOrRefreshCredentials(credentials) { validationResult in
+				switch validationResult {
+				case .success(let refreshedCredentials):
+					
+					self.contractDetails(resultQueue: resultQueue) { contractResult in
+						switch contractResult {
+						case .success(let certificat):
+							
+							self.contractsCache.addTimeRanges(ranges: certificat.dataRequest?.timeRanges, for: contractId)
+							let timeRangeResult = certificat.verifyTimeRange(readOptions: readOptions)
+							switch timeRangeResult {
+							case .success(let limits):
+								self.healthDataClient.retrieveData(from: limits.startDate, to: limits.endDate) { result in
+									switch result {
+									case .success(var data):
+										data.refreshedCredentials = refreshedCredentials
+										resultQueue.async {
+											completion(.success(data))
+										}
+									case .failure(let error):
+										resultQueue.async {
+											completion(.failure(error))
+										}
+									}
+								}
+							case .failure(let error):
+								resultQueue.async {
+									completion(.failure(error))
+								}
+							}
+							
+						case .failure(let error):
+							resultQueue.async {
+								completion(.failure(error))
+							}
+						}
+					}
+				case .failure(let error):
+					resultQueue.async {
+						completion(.failure(error))
+					}
+				}
+			}
+			
+			return
+		}
+		
+		let timeRangeResult = contractTimeRange.verifyTimeRange(readOptions: readOptions)
+		switch timeRangeResult {
+		case .success(let limits):
+			self.healthDataClient.retrieveData(from: limits.startDate, to: limits.endDate) { result in
+				switch result {
+				case .success(let data):
+					resultQueue.async {
+						completion(.success(data))
+					}
+				case .failure(let error):
+					resultQueue.async {
+						completion(.failure(error))
+					}
+				}
+			}
+		case .failure(let error):
+			resultQueue.async {
+				completion(.failure(error))
+			}
+		}
     }
     
 #if targetEnvironment(simulator)

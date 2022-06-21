@@ -19,7 +19,8 @@ public struct FitnessActivity: Codable, Dated {
     public var createdDate: Date?          // 1483628400000
     public var startDate: Date             // 1483628400000
     public var endDate: Date               // 1483628400000
-    
+	public var activeEnergyBurned: Double
+	
     enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case entityId = "entityid"
@@ -31,6 +32,7 @@ public struct FitnessActivity: Codable, Dated {
         case createdDate = "createddate"
         case startDate = "startdate"
         case endDate = "enddate"
+		case activeEnergyBurned = "activeenergyburned"
     }
     
     public init(identifier: String?,
@@ -40,6 +42,7 @@ public struct FitnessActivity: Codable, Dated {
                 originalStartDate: Date?,
                 steps: Double,
                 distance: Double,
+				activeEnergyBurned: Double,
                 createdDate: Date?,
                 startDate: Date,
                 endDate: Date) {
@@ -51,6 +54,7 @@ public struct FitnessActivity: Codable, Dated {
         self.originalStartDate = originalStartDate
         self.steps = steps
         self.distance = distance
+		self.activeEnergyBurned = activeEnergyBurned
         self.createdDate = createdDate
         self.startDate = startDate
         self.endDate = endDate
@@ -65,6 +69,7 @@ public struct FitnessActivity: Codable, Dated {
         originalStartDate = try container.decodeIfPresent(Date.self, forKey: .originalStartDate)
         steps = try container.decode(Double.self, forKey: .steps)
         distance = try container.decode(Double.self, forKey: .distance)
+		activeEnergyBurned = try container.decode(Double.self, forKey: .activeEnergyBurned)
         createdDate = try container.decodeIfPresent(Date.self, forKey: .createdDate)
         startDate = try container.decode(Date.self, forKey: .startDate)
         endDate = try container.decode(Date.self, forKey: .endDate)
@@ -75,6 +80,7 @@ public struct FitnessActivity: Codable, Dated {
         self.endDate = endDate
         self.steps = steps
         self.distance = distance
+		self.activeEnergyBurned = activeEnergyBurned
         let id = String.random(length: 11)
         self.identifier = id
         self.createdDate = Date()
@@ -94,6 +100,7 @@ public struct FitnessActivity: Codable, Dated {
         try container.encodeIfPresent(originalStartDate, forKey: .originalStartDate)
         try container.encode(steps, forKey: .steps)
         try container.encode(distance, forKey: .distance)
+		try container.encode(activeEnergyBurned, forKey: .activeEnergyBurned)
         try container.encodeIfPresent(createdDate, forKey: .createdDate)
         try container.encode(startDate, forKey: .startDate)
         try container.encode(endDate, forKey: .endDate)
@@ -128,6 +135,7 @@ extension FitnessActivity {
             originalStartDate: originalStartDate ?? with.originalStartDate,
             steps: steps == 0.0 ? with.steps : steps,
             distance: distance == 0.0 ? with.distance : distance,
+			activeEnergyBurned: activeEnergyBurned == 0.0 ? with.activeEnergyBurned : activeEnergyBurned,
             createdDate: createdDate ?? with.createdDate,
             startDate: startDate,
             endDate: endDate)

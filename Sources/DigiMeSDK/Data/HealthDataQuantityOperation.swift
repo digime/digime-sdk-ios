@@ -51,6 +51,7 @@ class HealthDataQuantityOperation: RetryingOperation {
                     let statisticsQuantity = getStatisticsQuantity(for: statistics, with: statisticsOptions)
                     var steps = 0.0
                     var distance = 0.0
+					var activeEnergyBurned = 0.0
                     
                     if
                         let unit = HKUnit.preferredUnit(for: dataTypeIdentifier),
@@ -61,12 +62,14 @@ class HealthDataQuantityOperation: RetryingOperation {
                             steps = value
                         case .distanceWalkingRunning:
                             distance = value
+						case .activeEnergyBurned:
+							activeEnergyBurned = value
                         default:
                             break
                         }
                     }
                     
-                    let activity = FitnessActivity(startDate: statistics.startDate, endDate: statistics.endDate, steps: steps, distance: distance, account: self.account)
+					let activity = FitnessActivity(startDate: statistics.startDate, endDate: statistics.endDate, steps: steps, distance: distance, activeEnergyBurned: activeEnergyBurned, account: self.account)
                     values.append(activity)
                 }
                 
@@ -102,7 +105,7 @@ class HealthDataQuantityOperation: RetryingOperation {
             let quantityTypeIdentifier = HKQuantityTypeIdentifier(rawValue: dataTypeIdentifier)
     
             switch quantityTypeIdentifier {
-            case .stepCount, .distanceWalkingRunning:
+			case .stepCount, .distanceWalkingRunning, .activeEnergyBurned:
                 options = .cumulativeSum
             default:
                 break
