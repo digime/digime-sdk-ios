@@ -4,6 +4,6 @@ use_frameworks!
 target 'Genrefy' do
     pod 'Kingfisher'
     pod 'SVProgressHUD'
-    pod 'DigiMeSDK'
+    pod 'DigiMeSDK', :path => '../../'
 end
 

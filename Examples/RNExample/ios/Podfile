@@ -5,7 +5,7 @@ platform :ios, '13.0'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'RNExample' do
-  pod 'DigiMeSDK', :git => 'https://github.com/digime/digime-sdk-ios.git',  :branch => 'feature/apple-health'
+  pod 'DigiMeSDK', :path => '../../../'
   config = use_native_modules!
 
   # Flags change depending on the env values.
