@@ -15,14 +15,14 @@ class HealthDataService {
     private let queue: OperationQueue
     private var kvoToken: NSKeyValueObservation?
     
-    private var account: Account
+    private var account: SourceAccount
     
     private var processor = FitnessActivityProcessor()
     private var fitnessActivityResult: [String: [FitnessActivity]] = [:]
     
     // MARK: - Life Cycle
     
-    init(account: Account) {
+    init(account: SourceAccount) {
         self.account = account
         
         queue = OperationQueue()

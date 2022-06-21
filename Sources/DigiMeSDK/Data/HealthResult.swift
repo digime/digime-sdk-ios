@@ -11,6 +11,6 @@ import Foundation
 
 public struct HealthResult: Codable {
     public var refreshedCredentials: Credentials?
-    public var account: Account?
+    public var account: SourceAccount?
     public var data: [FitnessActivity]
 }

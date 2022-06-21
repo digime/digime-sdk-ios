@@ -70,7 +70,7 @@ public struct FitnessActivity: Codable, Dated {
         endDate = try container.decode(Date.self, forKey: .endDate)
     }
     
-    public init(startDate: Date, endDate: Date, steps: Double, distance: Double, account: Account? = nil) {
+	public init(startDate: Date, endDate: Date, steps: Double, distance: Double, activeEnergyBurned: Double, account: SourceAccount? = nil) {
         self.startDate = startDate
         self.endDate = endDate
         self.steps = steps

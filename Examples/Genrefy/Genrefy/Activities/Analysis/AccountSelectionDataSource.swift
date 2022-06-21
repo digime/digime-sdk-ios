@@ -12,10 +12,10 @@ import Foundation
 class AccountSelectionDataSource {
     weak var coordinatingDelegate: AccountSelectionCoordinatingDelegate?
     
-    private var sortedAccounts: [Account]
+    private var sortedAccounts: [SourceAccount]
     var selectedAccountIdentifiers: Set<String>
     
-    init(accounts: [Account]) {
+    init(accounts: [SourceAccount]) {
         sortedAccounts = accounts
             .sorted(by: { account1, account2 in
                 return account1.service.name.compare(account2.service.name, options: .caseInsensitive) == .orderedAscending

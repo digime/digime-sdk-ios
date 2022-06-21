@@ -10,7 +10,7 @@ import HealthKit
 import Foundation
 
 public struct HealthDataOperationResult: Codable {
-    public var account: Account
+    public var account: SourceAccount
     public var data: [String: [FitnessActivity]]
 }
 
@@ -20,9 +20,9 @@ class HealthDataQuantityOperation: RetryingOperation {
     private let startDate: Date
     private let endDate: Date
     private let dataTypeIdentifier: String
-    private let account: Account
+    private let account: SourceAccount
     
-    init(from startDate: Date, to endDate: Date, with dataTypeIdentifier: String, account: Account) {
+    init(from startDate: Date, to endDate: Date, with dataTypeIdentifier: String, account: SourceAccount) {
         self.startDate = startDate
         self.endDate = endDate
         self.dataTypeIdentifier = dataTypeIdentifier
