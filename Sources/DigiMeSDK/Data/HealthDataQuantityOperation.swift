@@ -48,20 +48,21 @@ class HealthDataQuantityOperation: RetryingOperation {
                 
                 var values: [FitnessActivity] = []
                 statisticsCollection.enumerateStatistics(from: self.startDate, to: self.endDate) { [self] statistics, obj in
-                    let statisticsQuantity = getStatisticsQuantity(for: statistics, with: statisticsOptions)
+                    
                     var steps = 0.0
                     var distance = 0.0
 					var activeEnergyBurned = 0.0
-                    
-                    if
-                        let unit = HKUnit.preferredUnit(for: dataTypeIdentifier),
-                        let value = statisticsQuantity?.doubleValue(for: unit) {
-                        
-                        switch HKQuantityTypeIdentifier(rawValue: dataTypeIdentifier) {
-                        case .stepCount:
-                            steps = value
-                        case .distanceWalkingRunning:
-                            distance = value
+					
+					if
+						let unit = HKUnit.preferredUnit(for: dataTypeIdentifier),
+						let statisticsQuantity = getStatisticsQuantity(for: statistics, with: statisticsOptions) {
+						
+						let value = statisticsQuantity.doubleValue(for: unit)
+						switch HKQuantityTypeIdentifier(rawValue: dataTypeIdentifier) {
+						case .stepCount:
+							steps = value
+						case .distanceWalkingRunning:
+							distance = value
 						case .activeEnergyBurned:
 							activeEnergyBurned = value
                         default:

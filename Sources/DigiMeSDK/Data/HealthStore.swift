@@ -92,7 +92,7 @@ enum HealthStore {
                 completion(.success(statsCollection))
             }
             else {
-                completion(.failure(.healthDataError(message: "")))
+                completion(.failure(.healthDataError(message: "HKStatisticsCollectionQuery error.")))
             }
         }
          

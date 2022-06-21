@@ -39,10 +39,6 @@ public extension HKUnit {
         return unit
     }
     
-    static func preferredUnit(for sampleIdentifier: String) -> HKUnit? {
-        return preferredUnit(for: sampleIdentifier, sampleType: nil)
-    }
-    
     static func preferredUnit(for identifier: String, sampleType: HKSampleType? = nil) -> HKUnit? {
         var unit: HKUnit?
         let sampleType = sampleType ?? HKSampleType.getSampleType(for: identifier)

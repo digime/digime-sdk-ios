@@ -47,18 +47,22 @@ class DataTypeCollectionViewCell: UICollectionViewCell {
         
         let steps = statisticalValues.map { CGFloat($0.steps) }
         let distance = statisticalValues.map { CGFloat($0.distance) }
-        
+		let energy = statisticalValues.map { CGFloat($0.activeEnergyBurned) }
+		
         guard
             let unitSteps = HKUnit.preferredUnit(for: "HKQuantityTypeIdentifierStepCount"),
             let unitDistance = HKUnit.preferredUnit(for: "HKQuantityTypeIdentifierDistanceWalkingRunning"),
+			let unitEnergy = HKUnit.preferredUnit(for: "HKQuantityTypeIdentifierActiveEnergyBurned"),
             let unitTitleSteps = getUnitDescription(for: unitSteps),
-            let unitTitleDistance = getUnitDescription(for: unitDistance) else {
+            let unitTitleDistance = getUnitDescription(for: unitDistance),
+			let unitTitleEnergy = getUnitDescription(for: unitEnergy) else {
             return
         }
         
         chartView.graphView.dataSeries = [
-            OCKDataSeries(values: steps, title: unitTitleSteps, color: .systemRed),
-            OCKDataSeries(values: distance, title: unitTitleDistance, color: .systemOrange),
+            OCKDataSeries(values: steps, title: unitTitleSteps, color: .systemBlue),
+            OCKDataSeries(values: distance, title: unitTitleDistance, color: .systemGreen),
+			OCKDataSeries(values: energy, title: unitTitleEnergy, color: .systemRed),
         ]
     }
     
@@ -92,6 +96,8 @@ private extension DataTypeCollectionViewCell {
             return "steps"
         case HKUnit.meter():
             return "meters"
+		case HKUnit.kilocalorie():
+			return "kcal"
         default:
             return nil
         }

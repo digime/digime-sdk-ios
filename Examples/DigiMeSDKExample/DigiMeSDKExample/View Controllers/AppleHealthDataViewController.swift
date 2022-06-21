@@ -34,7 +34,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
 //		let toDate = Date.from(year: 2022, month: 6, day: 21, hour: 23, minute: 59, second: 59)!
 //		let timeRange = TimeRange.between(from: fromDate, to: toDate)
 		
-		let fromDate = Date.from(year: 2022, month: 6, day: 1, hour: 0, minute: 0, second: 0)!
+		let fromDate = Date.from(year: 2022, month: 3, day: 1, hour: 0, minute: 0, second: 0)!
 		let timeRange = TimeRange.after(from: fromDate)
 		
         let scope = Scope(serviceGroups: groups, timeRanges: [timeRange])
@@ -66,7 +66,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     
     private func configureNavigationBar() {
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: nil)
-        title = "Steps & Distance"
+        title = "Result"
         
         var items: [UIBarButtonItem] = []
         
@@ -200,6 +200,11 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
                 
                 /// Store the data content locally. Use iTunes file sharing to review JFS data saved under the Documents folder.
                 self.saveToJFS()
+				
+				let steps = healthResult.data.map({ $0.steps }).reduce(0, +)
+				let distance = healthResult.data.map({ $0.distance }).reduce(0, +)
+				let activeEnergyBurned = healthResult.data.map({ $0.activeEnergyBurned }).reduce(0, +)
+				self.showPopUp(message: "Total steps: \(floor(steps)), total distance: \(floor(distance)), total active energy burned \(activeEnergyBurned)")
                 
             case .failure(let error):
                 switch error {
@@ -304,6 +309,12 @@ extension AppleHealthDataViewController {
                 let distanceQuantity = HKQuantity(unit: .meter(), doubleValue: Double.random(in: 1...3000))
                 let walk = HKQuantitySample(type: distanceType, quantity: distanceQuantity, start: start, end: end)
                 dataToWrite.append(walk)
+				
+				// active energy burned
+				let energyType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+				let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: Double.random(in: 1...1000))
+				let energy = HKQuantitySample(type: energyType, quantity: energyQuantity, start: start, end: end)
+				dataToWrite.append(energy)
                 counter += 1
             }
             
