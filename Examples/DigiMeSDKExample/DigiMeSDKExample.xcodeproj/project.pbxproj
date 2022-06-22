@@ -25,6 +25,7 @@
 		1E49021427D918FC00F13D29 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E49021327D918FC00F13D29 /* HealthKit.framework */; };
 		1E5A31EE27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5A31ED27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift */; };
 		1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E717C2861AA1000E7954E /* UserPreferences.swift */; };
+		1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */; };
 		1EBB4DBB2806144B00F58675 /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1EBB4DBA2806144B00F58675 /* CareKit */; };
 		1EBB4DBD2806144B00F58675 /* CareKitStore in Frameworks */ = {isa = PBXBuildFile; productRef = 1EBB4DBC2806144B00F58675 /* CareKitStore */; };
 		1EBB4DBF2806144B00F58675 /* CareKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1EBB4DBE2806144B00F58675 /* CareKitUI */; };
@@ -71,6 +72,7 @@
 		1E5A31ED27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyFitnessActivity.swift; sourceTree = "<group>"; };
 		1E66044627F49CA800A18292 /* CareKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CareKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E6E717C2861AA1000E7954E /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
+		1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthDetailsView.swift; sourceTree = "<group>"; };
 		1EF5E5312806C33800876156 /* 18_4_18_3_300_D201711_0.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 18_4_18_3_300_D201711_0.json; sourceTree = "<group>"; };
 		27D31A20266A4EAB00DB2524 /* DigiMeSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27D31A23266A4EAB00DB2524 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			children = (
 				1E4901F527D912B400F13D29 /* FeedItemViewController.swift */,
 				1E4901F327D9122200F13D29 /* AppleHealthDataViewController.swift */,
+				1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */,
 				1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */,
 				1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */,
 				1E4901E727D9112B00F13D29 /* WriteDataViewController.swift */,
@@ -486,6 +489,7 @@
 				1E4901F627D912B400F13D29 /* FeedItemViewController.swift in Sources */,
 				1E4901E927D9112B00F13D29 /* ServicePickerViewController.swift in Sources */,
 				1E4901EA27D9112B00F13D29 /* HomeViewController.swift in Sources */,
+				1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */,
 				1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */,
 				1E4901E827D9112B00F13D29 /* ServiceDataViewController.swift in Sources */,
 				1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */,
@@ -655,7 +659,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -678,7 +682,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 5LDPS9F284;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

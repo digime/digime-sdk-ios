@@ -9,6 +9,7 @@
 import DigiMeSDK
 import HealthKit
 import SVProgressHUD
+import SwiftUI
 import UIKit
 
 class AppleHealthDataViewController: DataTypeCollectionViewController {
@@ -18,6 +19,14 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     private var digiMe: DigiMe!
     private let credentialCache = UserPreferences()
     private let contract = Contracts.appleHealth
+	private let fromDate = Date.from(year: 2022, month: 3, day: 1, hour: 0, minute: 0, second: 0)!
+	private let dateFormatter: DateFormatter = {
+		let fm = DateFormatter()
+		fm.timeZone = TimeZone(abbreviation: "UTC")
+		fm.dateStyle = .short
+		fm.timeStyle = .short
+		return fm
+	}()
     private lazy var readOptions: ReadOptions? = {
         /// In this version of the SDK, the only supported object type is 'Fitness Activity'.
         /// This example is for demonstration purposes only.
@@ -28,13 +37,6 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
         /// For example: if your contract allows you to gather data within one year
         /// then using the scope object you can get data for a month or for one day only, etc.
 		///
-//		let timeRange = TimeRange.last(amount: 112, unit: TimeRange.Unit.day)
-		
-//		let fromDate = Date.from(year: 2022, month: 6, day: 21, hour: 0, minute: 0, second: 0)!
-//		let toDate = Date.from(year: 2022, month: 6, day: 21, hour: 23, minute: 59, second: 59)!
-//		let timeRange = TimeRange.between(from: fromDate, to: toDate)
-		
-		let fromDate = Date.from(year: 2022, month: 3, day: 1, hour: 0, minute: 0, second: 0)!
 		let timeRange = TimeRange.after(from: fromDate)
 		
         let scope = Scope(serviceGroups: groups, timeRanges: [timeRange])
@@ -73,6 +75,10 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
         if credentialCache.credentials(for: contract.identifier) != nil {
             items.append(UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteUser)))
         }
+		
+		let infoButton = UIButton(type: .infoLight)
+		infoButton.addTarget(self, action: #selector(showLog), for: .touchUpInside)
+		items.append(UIBarButtonItem(customView: infoButton))
                           
 #if targetEnvironment(simulator)
         items.append(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTestData)))
@@ -204,7 +210,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
 				let steps = healthResult.data.map({ $0.steps }).reduce(0, +)
 				let distance = healthResult.data.map({ $0.distance }).reduce(0, +)
 				let activeEnergyBurned = healthResult.data.map({ $0.activeEnergyBurned }).reduce(0, +)
-				self.showPopUp(message: "Total steps: \(floor(steps)), total distance: \(floor(distance)), total active energy burned \(activeEnergyBurned)")
+				self.showPopUp(message: String(format: "Total steps: %.0f, total distance: %.0f, total active energy burned %.0f. Data since: %@", steps, distance, activeEnergyBurned, self.dateFormatter.string(from: self.fromDate)))
                 
             case .failure(let error):
                 switch error {
@@ -280,6 +286,20 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
             self.showPopUp(message: message)
         }
     }
+	
+	@objc private func showLog() {
+		let contentView = AppleHealthDetailsView(data.reduce([], +))
+		let controller = UIHostingController(rootView: contentView)
+		let navController = UINavigationController(rootViewController: controller)
+		navController.setNavigationBarHidden(false, animated: false)
+		let doneButton = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(self.dismissDetailsView))
+		controller.navigationItem.rightBarButtonItem = doneButton
+		present(navController, animated: true)
+	}
+	
+	@objc func dismissDetailsView() {
+		navigationController?.dismiss(animated: true, completion: nil)
+	}
 }
 
 #if targetEnvironment(simulator)

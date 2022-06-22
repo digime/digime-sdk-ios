@@ -8,7 +8,8 @@
 
 import Foundation
 
-public struct FitnessActivity: Codable, Dated {
+public struct FitnessActivity: Codable, Dated, Identifiable {
+	public var id: UUID?
     public var identifier: String?         // "11018137805"
     public var entityId: String?           // "18_644MGZ_11018137805"
     public var accountEntityId: String?    // "18_644MGZ"
@@ -22,6 +23,7 @@ public struct FitnessActivity: Codable, Dated {
 	public var activeEnergyBurned: Double
 	
     enum CodingKeys: String, CodingKey {
+		case id = "objectIdentifier"
         case identifier = "id"
         case entityId = "entityid"
         case accountEntityId = "accountentityid"
@@ -47,6 +49,7 @@ public struct FitnessActivity: Codable, Dated {
                 startDate: Date,
                 endDate: Date) {
         
+		self.id = UUID()
         self.identifier = identifier
         self.entityId = entityId
         self.accountEntityId = accountEntityId
@@ -62,6 +65,7 @@ public struct FitnessActivity: Codable, Dated {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+		id = try container.decodeIfPresent(UUID.self, forKey: .identifier) ?? UUID()
         identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
         entityId = try container.decodeIfPresent(String.self, forKey: .entityId)
         accountEntityId = try container.decodeIfPresent(String.self, forKey: .accountEntityId)
