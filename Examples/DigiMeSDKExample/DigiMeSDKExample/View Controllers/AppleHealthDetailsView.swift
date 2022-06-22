@@ -11,24 +11,19 @@ import SwiftUI
 
 struct AppleHealthDetailsView: View {
 	var data: [FitnessActivity]
-	
-	let dateFormatter = DateFormatter()
-	
+		
 	init(_ fitnessData: [FitnessActivity]) {
 		data = fitnessData
-		dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-		dateFormatter.dateStyle = .medium
-		dateFormatter.timeStyle = .medium
 	}
 	
 	var body: some View {
 		
 		List(data) { activity in
 			VStack(alignment: .leading, spacing: 8) {
-				Text("Start: \(dateFormatter.string(from: activity.startDate))").font(.system(size: 14, weight: .medium))
-				Text("End: \(dateFormatter.string(from: activity.endDate))").font(.system(size: 14, weight: .medium))
+				Text("Start: \(activity.startDate.description(with: .current))").font(.system(size: 14, weight: .medium))
+				Text("End: \(activity.endDate.description(with: .current))").font(.system(size: 14, weight: .medium))
 				Text("Steps: \(floor(activity.steps))").font(.system(size: 10))
-				Text("Distance: \(floor(activity.distance)) meters").font(.system(size: 10))
+				Text("Distance: \(floor(activity.distance)) \(Locale.current.usesMetricSystem ? "meters" : "miles")").font(.system(size: 10))
 				Text("Active energy burned: \(floor(activity.activeEnergyBurned)) kcal").font(.system(size: 10))
 			}
 		}

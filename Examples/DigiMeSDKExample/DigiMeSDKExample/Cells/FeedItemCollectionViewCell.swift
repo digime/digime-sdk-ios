@@ -95,7 +95,11 @@ private extension DataTypeCollectionViewCell {
         case HKUnit.count():
             return "steps"
         case HKUnit.meter():
-            return "meters"
+            return "meter"
+		case HKUnit.mile():
+			return "mile"
+		case HKUnit.inch():
+			return "inch"
 		case HKUnit.kilocalorie():
 			return "kcal"
         default:

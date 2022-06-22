@@ -22,7 +22,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
 	private let fromDate = Date.from(year: 2022, month: 3, day: 1, hour: 0, minute: 0, second: 0)!
 	private let dateFormatter: DateFormatter = {
 		let fm = DateFormatter()
-		fm.timeZone = TimeZone(abbreviation: "UTC")
+		fm.timeZone = TimeZone(abbreviation: "GMT")
 		fm.dateStyle = .short
 		fm.timeStyle = .short
 		return fm

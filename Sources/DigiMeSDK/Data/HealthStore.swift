@@ -102,13 +102,13 @@ enum HealthStore {
     // MARK: - Helper Functions
 
     private static func createAnchorDate() -> Date {
-        // Set the arbitrary anchor date to Monday at 3:00 a.m.
+        // Set the arbitrary anchor date to Monday at 0:00 a.m.
         let calendar: Calendar = .current
         var anchorComponents = calendar.dateComponents([.day, .month, .year, .weekday], from: Date())
         let offset = (7 + (anchorComponents.weekday ?? 0) - 2) % 7
     
         anchorComponents.day! -= offset
-        anchorComponents.hour = 3
+        anchorComponents.hour = 0
     
         let anchorDate = calendar.date(from: anchorComponents)!
     
