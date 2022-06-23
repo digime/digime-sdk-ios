@@ -19,7 +19,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     private var digiMe: DigiMe!
     private let credentialCache = UserPreferences()
     private let contract = Contracts.appleHealth
-	private let fromDate = Date.from(year: 2022, month: 3, day: 1, hour: 0, minute: 0, second: 0)!
+	private let fromDate = Date.from(year: 2022, month: 6, day: 1, hour: 0, minute: 0, second: 0)!
 	private let dateFormatter: DateFormatter = {
 		let fm = DateFormatter()
 		fm.timeZone = TimeZone(abbreviation: "GMT")
