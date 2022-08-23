@@ -20,7 +20,6 @@ class RNExampleClient: NSObject {
   
   private let eventEmitter = RNExampleEvent.shared
   private var digiMe: DigiMe!
-  private let credentialCache = CredentialCache()
   private let contract = Contracts.appleHealth
   private var readOptions: ReadOptions?
   
@@ -89,37 +88,6 @@ class RNExampleClient: NSObject {
     rejecterCompletion = errorCallback
     configureOptions(timeinterval: from, to: to)
     configureClient()
-  }
-  
-  /// Clear all data locally and remotely.
-  /// The current version does not upload Apple health data to digime backend.
-  /// Only remote Session objects will be cleared.
-  @objc(deleteUser)
-  public func deleteUser() {
-    guard let credentials = credentialCache.credentials(for: contract.identifier) else {
-      eventEmitter?.log(message: "No credentials is available to delete user's data")
-      return
-    }
-    
-    eventEmitter?.log(message: "Deleting credentials...")
-    
-    digiMe.deleteUser(credentials: credentials) { error in
-      
-      var message = String()
-      if let error = error {
-        message += "Error occured deleting user \(error)"
-        self.eventEmitter?.log(message: message)
-      }
-      else {
-        message += "User's credentials and the session are cleared."
-        self.credentialCache.clearCredentials(for: self.contract.identifier)
-        self.records = []
-        self.sections = []
-        UIViewController.topMost()?.navigationController?.popToRootViewController(animated: true)
-      }
-      
-      self.showPopUp(error: SDKError.healthDataError(message: message))
-    }
   }
   
 #if targetEnvironment(simulator)
@@ -196,52 +164,20 @@ class RNExampleClient: NSObject {
       let config = try Configuration(appId: Contracts.appId, contractId: contract.identifier, privateKey: contract.privateKey)
       digiMe = DigiMe(configuration: config)
       
-      if credentialCache.credentials(for: contract.identifier) == nil {
-        /// Authorize and fetch data on the first load.
-        authorizeContract()
-      }
-      else {
-        /// Fetch fitness data. Use read options to narrow down the fetch request.
-        /// Options have to include the date range shorter than your digi.me contract.
-        /// Options are optional parameters. If not present it will return data for the whole date range of the contract.
-        fetchData(readOptions: readOptions)
-      }
+      /// Fetch fitness data. Use read options to narrow down the fetch request.
+      /// Options have to include the date range shorter than your digi.me contract.
+      /// Options are optional parameters. If not present it will return data for the whole date range of the contract.
+      fetchData(readOptions: readOptions)
     }
     catch {
       self.showPopUp(error: error)
     }
   }
   
-  private func authorizeContract() {
-    eventEmitter?.log(message: "Authorizing...")
-    let credentials = credentialCache.credentials(for: contract.identifier)
-    /// Authorise client with credentials. Credentials are optional parameters.
-    /// It will create a new session on the first load or it will validate existing for a valid session to fetch new data in the completion block.
-    digiMe.authorize(credentials: credentials) { result in
-      
-      switch result {
-        case .success(let newOrRefreshedCredentials):
-          /// Store credentials locally.
-          self.credentialCache.setCredentials(newOrRefreshedCredentials, for: self.contract.identifier)
-          /// Fetch fitness data. Use read options to narrow down the fetch request.
-          /// Options have to include the date range shorter than your digi.me contract.
-          self.fetchData(readOptions: self.readOptions)
-          
-        case.failure(let error):
-          self.showPopUp(error: error)
-      }
-    }
-  }
-  
   private func fetchData(readOptions: ReadOptions? = nil) {
-    guard let credentials = credentialCache.credentials(for: contract.identifier) else {
-      authorizeContract()
-      return
-    }
-    
     eventEmitter?.log(message: "Fetching data...")
     
-    digiMe.retrieveAppleHealth(readOptions: readOptions, credentials: credentials) { result in
+    digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions) { result in
       
       switch result {
         case .success(let healthResult):
@@ -285,14 +221,7 @@ class RNExampleClient: NSObject {
           }
           
         case .failure(let error):
-          switch error {
-            case .invalidSession:
-              /// The session is invalid. Clear local copy and trigger the new authorization routine.
-              self.credentialCache.clearCredentials(for: self.contract.identifier)
-              self.authorizeContract()
-            default:
               self.showPopUp(error: error)
-          }
       }
     }
   }
