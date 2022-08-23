@@ -10,6 +10,10 @@ import HealthKit
 import UIKit
 
 class HealthDataClient {
+    static var metadata = LogEventMeta(service: ["applehealth"],
+									   servicegroup: ["health & fitness"],
+									   appname: Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String)
+    
     private var healthService: HealthDataService
     
     // MARK: - Life Cycle
@@ -21,11 +25,17 @@ class HealthDataClient {
     // MARK: - Retrieve Data
     
     func retrieveData(from startDate: Date, to endDate: Date, completion: @escaping (Result<HealthResult, SDKError>) -> Void) {
+        Logger.mixpanel("device-data-source-read-started", metadata: HealthDataClient.metadata)
         HealthStore.requestHealthDataAccessIfNeeded() { result in
             switch result {
             case .success(_):
+                Logger.mixpanel("device-data-source-read-authorised", metadata: HealthDataClient.metadata)
                 self.loadData(from: startDate, to: endDate, completion: completion)
             case .failure(let error):
+                var meta = HealthDataClient.metadata
+				meta.message = error.description
+				meta.code = "\((error as NSError).code)"
+                Logger.mixpanel("device-data-source-read-cancelled", metadata: meta)
                 completion(.failure(error))
             }
         }

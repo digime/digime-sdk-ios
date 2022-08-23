@@ -12,7 +12,7 @@ import Foundation
 public typealias LogLevelMask = [LogLevel]
 
 /// Block signature for custom log handlers
-public typealias LogHandler = ((_ level: LogLevel, _ message: String, _ file: String, _ function: String, _ line: UInt) -> Void)
+public typealias LogHandler = ((_ level: LogLevel, _ message: String, _ file: String, _ function: String, _ line: UInt, _ metadata: Any?) -> Void)
 
 /// Log levels which are available to be logged
 public enum LogLevel: String, CaseIterable {
@@ -21,4 +21,5 @@ public enum LogLevel: String, CaseIterable {
     case warning
     case info
     case debug
+    case mixpanel
 }

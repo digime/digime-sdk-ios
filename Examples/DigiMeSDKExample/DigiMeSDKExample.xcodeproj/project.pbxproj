@@ -659,15 +659,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
-				DEVELOPMENT_TEAM = 5LDPS9F284;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdkexample;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -682,15 +683,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
-				DEVELOPMENT_TEAM = 5LDPS9F284;
+				CURRENT_PROJECT_VERSION = 3;
+				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdkexample;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -213,7 +213,7 @@ class ServiceDataViewController: UIViewController {
             authWithServiceButton.isHidden = false
             servicesLabel.isHidden = true
             addServiceButton.isHidden = true
-            contractDetailsButton.isHidden = true
+            contractDetailsButton.isHidden = false
             refreshDataButton.isHidden = true
             deleteUserButton.isHidden = true
         }

@@ -16,7 +16,7 @@ class CustomLogger: Logging {
         self.handlerBlock = handler
     }
     
-    func log(level: LogLevel, message: String, file: String, function: String, line: UInt) {
-        handlerBlock(level, message, file, function, line)
+    func log(level: LogLevel, message: String, file: String, function: String, line: UInt, metadata: Any? = nil) {
+        handlerBlock(level, message, file, function, line, metadata)
     }
 }

@@ -53,6 +53,10 @@ class HealthDataService {
             let operationCompletion: (Result<HealthDataOperationResult, SDKError>) -> Void = { result in
                 switch result {
                 case .failure(let error):
+                    var meta = HealthDataClient.metadata
+					meta.message = error.description
+					meta.code = "\((error as NSError).code)"
+                    Logger.mixpanel("device-data-source-read-failed", metadata: meta)
                     self.completionHandler?(.failure(error))
                 case .success(let operationResult):
                     self.fitnessActivityResult[dataTypeIdentifier] = operationResult.data[dataTypeIdentifier]
@@ -80,11 +84,17 @@ class HealthDataService {
     
     private func processAndFinish() {
         guard let result = processor.process(data: fitnessActivityResult) else {
-            completionHandler?(.failure(.healthDataError(message: "Health Data Processor returned no result")))
+            let error = SDKError.healthDataError(message: "Health Data Processor returned no result")
+            var meta = HealthDataClient.metadata
+			meta.message = error.description
+			meta.code = "\((error as NSError).code)"
+            Logger.mixpanel("device-data-source-read-failed", metadata: meta)
+            completionHandler?(.failure(error))
             return
         }
         
         let healthResult = HealthResult(account: account, data: result)
+        Logger.mixpanel("device-data-source-read-success", metadata: HealthDataClient.metadata)
         completionHandler?(.success(healthResult))
     }
 }

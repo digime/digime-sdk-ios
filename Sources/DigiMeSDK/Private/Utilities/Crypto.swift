@@ -38,6 +38,10 @@ public enum Crypto {
     static func sha256Hash(from dataString: String) -> Data {
         Data(SHA256.hash(data: dataString.data(using: .utf8)!))
     }
+	
+	static func md5Hash(from dataString: String) -> String {
+		return Insecure.MD5.hash(data: dataString.data(using: .utf8)!).map { String(format: "%02hhx", $0) }.joined()
+	}
     
     public static func base64EncodedData(from pem: String) throws -> Data {
         let strippedKey = pem.filter { !" \n\t\r".contains($0) }

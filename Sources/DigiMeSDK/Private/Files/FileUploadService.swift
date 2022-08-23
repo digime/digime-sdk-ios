@@ -28,6 +28,24 @@ class FileUploadService {
         queue.addOperation(operation)
     }
     
+    func uploadLog(logName: String, metadata: LogEventMeta, completion: @escaping (Result<LogEventsUploadResponse, SDKError>) -> Void) {
+		guard let jwt = JWTUtility.logsUploadRequestJWT(configuration: configuration) else {
+			Logger.critical("Invalid MAF mixpanel log upload request JWT")
+			completion(.failure(SDKError.invalidPreAuthorizationRequestJwt))
+			return
+		}
+		
+		let timestamp = Int(Date().timeIntervalSince1970)
+		let agent = LogEventAgent(sdk: APIConfig.agent)
+		let distinctId = UIDevice.current.identifierForVendor!.uuidString
+		let hashedId = Crypto.md5Hash(from: distinctId)
+		let event = LogEvent(event: logName, timestamp: timestamp, distinctId: hashedId, meta: metadata)
+		let bodyPayload = LogEventPayload(agent: agent, events: [event])
+		let operation = LogEventsUploadOperation(jwt: jwt, payload: bodyPayload, configuration: configuration, apiClient: apiClient)
+        operation.uploadCompletion = completion
+        queue.addOperation(operation)
+    }
+    
     func cancel() {
         queue.cancelAllOperations()
     }

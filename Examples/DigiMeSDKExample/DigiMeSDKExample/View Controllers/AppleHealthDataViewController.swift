@@ -17,7 +17,6 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     private var records = [FitnessActivity]()
     private var sections = [(date: Date, records: [FitnessActivity])]()
     private var digiMe: DigiMe!
-    private let credentialCache = UserPreferences()
     private let contract = Contracts.appleHealth
 	private let fromDate = Date.from(year: 2022, month: 6, day: 1, hour: 0, minute: 0, second: 0)!
 	private let dateFormatter: DateFormatter = {
@@ -71,10 +70,6 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
         title = "Result"
         
         var items: [UIBarButtonItem] = []
-        
-        if credentialCache.credentials(for: contract.identifier) != nil {
-            items.append(UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteUser)))
-        }
 		
 		let infoButton = UIButton(type: .infoLight)
 		infoButton.addTarget(self, action: #selector(showLog), for: .touchUpInside)
@@ -92,16 +87,10 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
             let config = try Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey)
             digiMe = DigiMe(configuration: config)
             
-            if credentialCache.credentials(for: contract.identifier) == nil {
-                /// Authorize and fetch data on the first load.
-                authorizeContract()
-            }
-            else {
-                /// Fetch fitness data. Use read options to narrow down the fetch request.
-                /// Options have to include the date range shorter than your digi.me contract.
-                /// Options are optional parameters. If not present it will return data for the whole date range of the contract.
-                fetchData(readOptions: readOptions)
-            }
+            /// Fetch fitness data. Use read options to narrow down the fetch request.
+            /// Options have to include the date range shorter than your digi.me contract.
+            /// Options are optional parameters. If not present it will return data for the whole date range of the contract.
+            fetchData(readOptions: readOptions)
         }
         catch {
             SVProgressHUD.dismiss()
@@ -109,74 +98,14 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
         }
     }
     
-    private func authorizeContract() {
-        SVProgressHUD.show(withStatus: "Authorizing...")
-        let credentials = credentialCache.credentials(for: contract.identifier)
-        /// Authorise client with credentials. Credentials are optional parameters.
-        /// It will create a new session on the first load or it will validate existing for a valid session to fetch new data in the completion block.
-        digiMe.authorize(credentials: credentials) { result in
-            SVProgressHUD.dismiss()
-            
-            switch result {
-            case .success(let newOrRefreshedCredentials):
-                /// Store credentials locally.
-				self.credentialCache.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.contract.identifier)
-                /// Fetch fitness data. Use read options to narrow down the fetch request.
-                /// Options have to include the date range shorter than your digi.me contract.
-                self.fetchData(readOptions: self.readOptions)
-                
-            case.failure(let error):
-				/// You have to handle errors individually. If OAuth token is invalid you have to refresh credentials.
-				switch error {
-				case .invalidSession:
-					self.refreshCtredentials { success in
-						if success {
-							self.fetchData(readOptions: self.readOptions)
-						}
-					}
-				default:
-					self.showPopUp(message: "Refreshing credentials has failed: \(error.description)")
-				}
-            }
-        }
-    }
-	
-	private func refreshCtredentials(_ completion: @escaping((Bool) -> Void)) {
-		guard let credentials = credentialCache.credentials(for: contract.identifier) else {
-			self.showPopUp(message: "Attempting to read data before authorizing contract")
-			return
-		}
-		
-		SVProgressHUD.show(withStatus: "Refreshing credentials...")
-		
-		digiMe.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
-			SVProgressHUD.dismiss()
-			
-			switch result {
-			case .success(let credentials):
-				self.credentialCache.setCredentials(newCredentials: credentials, for: self.contract.identifier)
-				completion(true)
-				
-			case .failure(let error):
-				self.showPopUp(message: "Refreshing credentials has been failed with error: \(error.description)")
-				completion(false)
-			}
-		}
-	}
-    
     private func backToInitial(sender: AnyObject) {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
     private func fetchData(readOptions: ReadOptions? = nil) {
-        guard let credentials = credentialCache.credentials(for: contract.identifier) else {
-            authorizeContract()
-            return
-        }
-        
         SVProgressHUD.show(withStatus: "Fetching data...")
         
-		digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions, credentials: credentials) { result in
+		digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions) { result in
             SVProgressHUD.dismiss()
 
             switch result {
@@ -213,14 +142,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
 				self.showPopUp(message: String(format: "Total steps: %.0f, total distance: %.0f, total active energy burned %.0f. Data since: %@", steps, distance, activeEnergyBurned, self.dateFormatter.string(from: self.fromDate)))
                 
             case .failure(let error):
-                switch error {
-                case .invalidSession:
-                    /// The session is invalid. Clear local copy and trigger the new authorization routine.
-                    self.credentialCache.clearCredentials(for: self.contract.identifier)
-                    self.authorizeContract()
-                default:
-                    self.showPopUp(message: error.description)
-                }
+                self.showPopUp(message: error.description)
             }
         }
     }
@@ -252,38 +174,6 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
                 let filename = "18_4_28_3_300_D\(formatter.string(from: endDate))_0.json"
                 FilePersistentStorage(with: .documentDirectory).store(data: jsonData, fileName: filename)
             }
-        }
-    }
-    
-    /// Clear all data locally and remotely.
-    /// The current version does not upload Apple health data to digime backend.
-    /// Only remote Session objects will be cleared.
-    @objc private func deleteUser() {
-        guard let credentials = credentialCache.credentials(for: contract.identifier) else {
-            print("No credentials is available to delete user's data")
-            return
-        }
-        
-        SVProgressHUD.show(withStatus: "Deleting credentials...")
-        
-        digiMe.deleteUser(credentials: credentials) { error in
-            SVProgressHUD.dismiss()
-            
-            var message = String()
-            if let error = error {
-                message += "Error occured deleting user \(error)"
-                print(message)
-            }
-            else {
-                message += "User's credentials and the session are cleared."
-				self.digiMe.clearData(for: self.contract.identifier)
-                self.credentialCache.clearCredentials(for: self.contract.identifier)
-                self.records = []
-                self.sections = []
-                self.navigationController?.popToRootViewController(animated: true)
-            }
-            
-            self.showPopUp(message: message)
         }
     }
 	

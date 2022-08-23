@@ -16,7 +16,8 @@ class WriteDataViewController: UIViewController {
     @IBOutlet private var uploadImageButton: UIButton!
     
     @IBOutlet private var authorizeReadButton: UIButton!
-    @IBOutlet private var contractDetailsButton: UIButton!
+    @IBOutlet private var contractDetailsReadButton: UIButton!
+    @IBOutlet private var contractDetailsWriteButton: UIButton!
     @IBOutlet private var readDataButton: UIButton!
     
     @IBOutlet private var deleteUserButton: UIButton!
@@ -154,8 +155,36 @@ class WriteDataViewController: UIViewController {
         }
     }
     
-    @IBAction private func showContractDetails() {
+    @IBAction private func showReadContractDetails() {
         readDigiMe.contractDetails { result in
+            switch result {
+            case .success(let certificate):
+                DispatchQueue.main.async {
+                    let startDate = Date.from(year: 2020, month: 1, day: 1, hour: 0, minute: 0, second: 0)!
+                    let endDate = Date.from(year: 2023, month: 12, day: 31, hour: 23, minute: 59, second: 59)!
+                    var message = "Example where the data request will be always limited to the contract's time range."
+                    message += "\n\tRequested dates start: \(startDate) end: \(endDate)"
+                    let range = TimeRange.between(from: startDate, to: endDate)
+                    let scope = Scope(timeRanges: [range])
+                    let readOptions = ReadOptions(limits: nil, scope: scope)
+                    let rangeResult = certificate.verifyTimeRange(readOptions: readOptions)
+                    switch rangeResult {
+                    case .success(let verified):
+                        message += "\n\tVerified start: \(verified.startDate) end: \(verified.endDate)"
+                    case .failure(let error):
+                        message += "\n\tError verifying time range: \(error.description)"
+                    }
+                    message += "\n\tContract's certificate: \(certificate.json)"
+                    self.logger.log(message: message)
+                }
+            case .failure(let error):
+                self.logger.log(message: "\n\tUnable to retrieve contract details: \(error)")
+            }
+        }
+    }
+    
+    @IBAction private func showWriteContractDetails() {
+        writeDigiMe.contractDetails { result in
             switch result {
             case .success(let certificate):
                 DispatchQueue.main.async {
@@ -252,7 +281,6 @@ class WriteDataViewController: UIViewController {
         let isReadAuthorized = credentialCache.credentials(for: Contracts.readContract.identifier) != nil
         self.authorizeReadButton.isHidden = isReadAuthorized
         self.readDataButton.isHidden = !isReadAuthorized
-        self.contractDetailsButton.isHidden = !isReadAuthorized
         
         self.deleteUserButton.isHidden = !isWriteAuthorized && !isReadAuthorized
     }

@@ -169,6 +169,9 @@ public enum SDKError: Error {
     
     /// Health Data Store. Unable to create quantity type
     case healthDataUnableToCreateQuantityType
+	
+	/// Health Data Store. Unable to upload mixpanel event
+	case healthDataUnableToUploadLogEvent
 }
 
 // MARK: - CustomStringConvertible
@@ -328,6 +331,9 @@ extension SDKError: CustomStringConvertible {
 			
 		case .healthDataUnableToCreateQuantityType:
 			return "Health Data Store. Unable to create quantity type"
+			
+		case .healthDataUnableToUploadLogEvent:
+			return "Health Data Store. Failed to upload mixpanel event"
 		}
     }
 }

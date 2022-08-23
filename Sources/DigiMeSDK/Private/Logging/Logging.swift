@@ -9,5 +9,5 @@
 import Foundation
 
 protocol Logging {
-    func log(level: LogLevel, message: String, file: String, function: String, line: UInt)
+    func log(level: LogLevel, message: String, file: String, function: String, line: UInt, metadata: Any?)
 }

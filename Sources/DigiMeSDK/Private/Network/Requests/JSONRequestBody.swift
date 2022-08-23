@@ -17,6 +17,6 @@ struct JSONRequestBody: RequestBody {
     }
     
     init<T: Encodable>(parameters: T) throws {
-        data = try parameters.encoded()
+		data = try parameters.encoded(dateEncodingStrategy: .millisecondsSince1970)
     }
 }

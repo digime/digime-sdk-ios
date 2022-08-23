@@ -23,10 +23,11 @@ struct ContractRoute: Route {
     }
 
     var pathParameters: [String] {
-        [sessionKey]
+        return [contractId, appId]
     }
     
-    let sessionKey: String
+    let appId: String
+    let contractId: String
     let schemaVersion: String
     
     func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType {

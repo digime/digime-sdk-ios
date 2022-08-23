@@ -23,6 +23,13 @@ extension RequestClaims {
 
 enum JWTUtility {
 
+	// Claims to request a pre-authorization code
+	private struct PayloadRequestLogsUploadJWT: RequestClaims {
+		let clientId: String
+		var nonce = JWTUtility.generateNonce()
+		var timestamp = Date()
+	}
+	
     // Claims to request a pre-authorization code
     private struct PayloadRequestPreauthJWT: RequestClaims {
         let accessToken: String?
@@ -127,6 +134,11 @@ enum JWTUtility {
         
         return createRequestJWT(claims: claims, configuration: configuration)
     }
+	
+	static func logsUploadRequestJWT(configuration: Configuration) -> String? {
+		let claims = PayloadRequestLogsUploadJWT(clientId: configuration.clientId)
+		return createRequestJWT(claims: claims, configuration: configuration)
+	}
     
     /// Creates request JWT which can be used to get an authentication token
     ///

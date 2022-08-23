@@ -9,7 +9,7 @@
 import Foundation
 
 class DefaultLogger: Logging {
-    func log(level: LogLevel, message: String, file: String, function: String, line: UInt) {
+    func log(level: LogLevel, message: String, file: String, function: String, line: UInt, metadata: Any? = nil) {
         NSLog("[DigiMeSDK] [\(level.rawValue.uppercased())] \(message)")
     }
 }
