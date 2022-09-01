@@ -43,7 +43,8 @@ final class ConsentManager: NSObject {
         
         userConsentCompletion = completion
         CallbackService.shared().setCallbackHandler(self)
-        var components = URLComponents(string: "\(APIConfig.baseURLPath)/apps/saas/authorize")!
+		let baseUrl = self.configuration.baseUrl ?? APIConfig.baseUrl
+        var components = URLComponents(string: "\(baseUrl)/apps/saas/authorize")!
         
         var percentEncodedQueryItems = [
             URLQueryItem(name: "code", value: preAuthCode),
@@ -68,7 +69,8 @@ final class ConsentManager: NSObject {
         
         addServiceCompletion = completion
         CallbackService.shared().setCallbackHandler(self)
-        var components = URLComponents(string: "\(APIConfig.baseURLPath)/apps/saas/onboard")!
+		let baseUrl = self.configuration.baseUrl ?? APIConfig.baseUrl
+        var components = URLComponents(string: "\(baseUrl)/apps/saas/onboard")!
         
         components.percentEncodedQueryItems = [
             URLQueryItem(name: "code", value: token),

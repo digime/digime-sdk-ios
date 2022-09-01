@@ -18,7 +18,7 @@ protocol Route {
     var pathParameters: [String] { get }
     var requestBody: RequestBody? { get }
     
-    func toUrlRequest() -> URLRequest
+    func toUrlRequest(with baseUrl: String) -> URLRequest
     
     // Throws SDKError or DecodingError
     func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType
@@ -41,9 +41,9 @@ extension Route {
         nil
     }
     
-    func toUrlRequest() -> URLRequest {
+	func toUrlRequest(with baseUrl: String) -> URLRequest {
         // Add all the parameters
-        var urlComponents = URLComponents(string: APIConfig.baseURLPathWithVersion)!
+		var urlComponents = URLComponents(string: baseUrl)!
         
         if !queryParameters.isEmpty {
             urlComponents.queryItems = queryParameters

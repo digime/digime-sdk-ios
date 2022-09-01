@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x7A-dh-Za3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x7A-dh-Za3">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -253,7 +253,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="v0E-by-0I0">
-                                <rect key="frame" x="10" y="199" width="394" height="250"/>
+                                <rect key="frame" x="10" y="199" width="394" height="196"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BY2-4K-f0z">
                                         <rect key="frame" x="108" y="0.0" width="178" height="34"/>
@@ -263,16 +263,8 @@
                                             <action selector="authorizeWithService" destination="yAL-po-pNQ" eventType="touchUpInside" id="3Wy-dd-gR9"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vvy-3n-c7k">
-                                        <rect key="frame" x="95" y="54" width="204" height="34"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <state key="normal" title="Authorize without service"/>
-                                        <connections>
-                                            <action selector="authorizeWithoutService" destination="yAL-po-pNQ" eventType="touchUpInside" id="7L2-ev-BIE"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oZS-ja-kbt">
-                                        <rect key="frame" x="149.5" y="108" width="95" height="34"/>
+                                        <rect key="frame" x="149.5" y="54" width="95" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="Add service"/>
                                         <connections>
@@ -280,7 +272,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ob-wc-YuE">
-                                        <rect key="frame" x="146" y="162" width="102" height="34"/>
+                                        <rect key="frame" x="146" y="108" width="102" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="Refresh data"/>
                                         <connections>
@@ -288,7 +280,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="iY4-ep-GwY">
-                                        <rect key="frame" x="149.5" y="216" width="95" height="34"/>
+                                        <rect key="frame" x="149.5" y="162" width="95" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="Delete User">
                                             <color key="titleColor" systemColor="systemPinkColor"/>
@@ -300,7 +292,7 @@
                                 </subviews>
                             </stackView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6aS-zW-Fvz">
-                                <rect key="frame" x="0.0" y="469" width="414" height="393"/>
+                                <rect key="frame" x="0.0" y="415" width="414" height="447"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -356,7 +348,6 @@
                     <connections>
                         <outlet property="addServiceButton" destination="oZS-ja-kbt" id="hb5-75-10d"/>
                         <outlet property="authWithServiceButton" destination="BY2-4K-f0z" id="lTF-xA-eOs"/>
-                        <outlet property="authWithoutServiceButton" destination="Vvy-3n-c7k" id="DTI-DZ-oDm"/>
                         <outlet property="contractLabel" destination="f6q-8A-B9m" id="Ltj-Vz-2ei"/>
                         <outlet property="deleteUserButton" destination="iY4-ep-GwY" id="mRQ-W6-Pov"/>
                         <outlet property="loggerTextView" destination="6aS-zW-Fvz" id="Q9W-nc-nTW"/>

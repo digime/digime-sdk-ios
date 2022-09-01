@@ -15,7 +15,7 @@ final class SessionCache {
     
 	/// Initializes an instance of session cache
 	init() {
-		domain = Bundle.main.bundleIdentifier ?? "me.digi.sdk.session"
+		domain = "me.digi.sdk.session"
 		keyPrefix = "\(domain)."
 	}
 	

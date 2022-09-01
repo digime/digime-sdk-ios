@@ -46,9 +46,6 @@ class FileDownloadOperation: RetryingOperation {
                     self.retry()
                     newResult = nil
             }
-			catch let sdkError as SDKError {
-				newResult = .failure(sdkError)
-			}
             catch {
                 newResult = .failure(.fileDownloadOperationError)
             }

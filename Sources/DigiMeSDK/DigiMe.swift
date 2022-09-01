@@ -14,7 +14,7 @@ public final class DigiMe {
     public var isDownloadingFiles: Bool {
         return self.downloadService.isDownloadingFiles
     }
-    
+
     private let configuration: Configuration
     
     private let authService: OAuthService
@@ -65,7 +65,7 @@ public final class DigiMe {
     /// - Parameter configuration: The configuration which defines this instance
     public init(configuration: Configuration) {
         self.configuration = configuration
-        self.apiClient = APIClient()
+		self.apiClient = APIClient(with: configuration.baseUrl)
         self.authService = OAuthService(configuration: configuration, apiClient: apiClient)
         self.consentManager = ConsentManager(configuration: configuration)
         self.sessionCache = SessionCache()
@@ -597,6 +597,7 @@ public final class DigiMe {
     }
     
     private func validateClient() -> SDKError? {
+		#if !DEBUG
         guard let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]] else {
             return SDKError.noUrlScheme
         }
@@ -609,7 +610,7 @@ public final class DigiMe {
         if configuration.appId == "YOUR_APP_ID" {
             return SDKError.invalidAppId
         }
-        
+		#endif
         return nil
     }
 }

@@ -13,7 +13,6 @@ class ServiceDataViewController: UIViewController {
     
     @IBOutlet private var contractLabel: UILabel!
     @IBOutlet private var authWithServiceButton: UIButton!
-    @IBOutlet private var authWithoutServiceButton: UIButton!
     
     @IBOutlet private var servicesLabel: UILabel!
     @IBOutlet private var addServiceButton: UIButton!
@@ -65,10 +64,6 @@ class ServiceDataViewController: UIViewController {
             
             self.authorizeAndReadData(service: service)
         }
-    }
-    
-    @IBAction private func authorizeWithoutService() {
-        authorizeAndReadData(service: nil)
     }
     
     @IBAction private func addService() {
@@ -155,7 +150,6 @@ class ServiceDataViewController: UIViewController {
         contractLabel.text = "Contract: \(currentContract.name ?? currentContract.identifier)"
         if credentialCache.credentials(for: currentContract.identifier) != nil {
             authWithServiceButton.isHidden = true
-            authWithoutServiceButton.isHidden = true
             servicesLabel.isHidden = false
             addServiceButton.isHidden = false
             deleteUserButton.isHidden = false
@@ -177,7 +171,6 @@ class ServiceDataViewController: UIViewController {
             servicesLabel.text = servicesText
         }
         else {
-            authWithoutServiceButton.isHidden = false
             authWithServiceButton.isHidden = false
             servicesLabel.isHidden = true
             addServiceButton.isHidden = true
