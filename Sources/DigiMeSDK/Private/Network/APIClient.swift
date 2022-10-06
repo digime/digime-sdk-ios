@@ -20,9 +20,21 @@ class APIClient {
         
         return URLSession(configuration: configuration)
     }()
+	
+	private var urlPath: String
     
+	init(with baseUrl: String?) {
+		guard let baseUrl = baseUrl else {
+			// if url path is not provided then set from the defaults
+            self.urlPath = APIConfig.baseUrlPathWithVersion
+			return
+		}
+		
+		self.urlPath = baseUrl + APIConfig.version
+	}
+	
     func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, SDKError>) -> Void) {
-        let request = route.toUrlRequest()
+        let request = route.toUrlRequest(with: urlPath)
         session.dataTask(with: request) { data, response, error in
             if let error = error {
                 Logger.error(error.localizedDescription)

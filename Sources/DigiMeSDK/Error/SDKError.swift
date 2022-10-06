@@ -260,6 +260,26 @@ extension SDKError: CustomStringConvertible {
 			
 		case .errorDecryptingResponse:
 			return "Error decrypting response"
+        case .readAccountsError:
+            return "Error reading accounts json"
+                
+        case .errorDecodedingJwtPreAuthCode:
+            return "Attempting to extract preAuthorization code from JWT"
+                
+        case .errorExtractingTokensFromJwt:
+            return "Attempting to extract access and refresh tokens from JWT"
+                
+        case .errorExtractingReferenceCodeFromJwt:
+            return "Error attempting to extract reference code from JWT"
+                
+        case .errorParsingHeadersMetadataInTheResponse:
+            return "Error parsing headers and metadata in the response"
+                
+        case .errorMakingRequestWhenParsingResponse:
+            return "Error making request when parsing response"
+            
+        case .errorDecryptingResponse:
+            return "Error decrypting response"
             
 		case .unexpectedErrorWhenParsingConsentResponse:
 			return "Error parsing server response. Result is unexpected."
@@ -334,6 +354,9 @@ extension SDKError: CustomStringConvertible {
 			
 		case .healthDataUnableToUploadLogEvent:
 			return "Health Data Store. Failed to upload mixpanel event"
+				
+        case .other:
+            return "An unexpected error has occurred - please contact digi.me support."
 		}
     }
 }

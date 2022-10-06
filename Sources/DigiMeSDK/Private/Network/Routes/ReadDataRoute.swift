@@ -28,7 +28,7 @@ struct ReadDataRoute: Route {
     // Throws SDKError or DecodingError
     func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType {
         guard
-			let metadataBase64 = headers["X-Metadata"] as? String ?? headers["x-metadata"] as? String,
+            let metadataBase64 = headers["x-metadata"] as? String,
             let metadataData = Data(base64URLEncoded: metadataBase64) else {
             throw SDKError.errorParsingHeadersMetadataInTheResponse
         }

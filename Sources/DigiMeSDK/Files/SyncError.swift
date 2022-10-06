@@ -23,7 +23,7 @@ public struct SyncError: Decodable, Equatable {
 
 public struct ServiceError: Decodable, Equatable {
     public let message: String
-    public let retryAfter: Date
+    public let retryAfter: Date?
     
     enum CodingKeys: String, CodingKey {
         case message

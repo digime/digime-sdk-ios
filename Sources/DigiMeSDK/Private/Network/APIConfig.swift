@@ -9,11 +9,12 @@
 import Foundation
 
 enum APIConfig {
-    static let baseURLPath = "https://api.digi.me"
-    static let baseURLPathWithVersion = baseURLPath + "/v1.6"
+	static let version = "/v1.6"
+    static let baseUrl = "https://api.digi.me"
+	static let baseUrlPathWithVersion = baseUrl + version
     
     static var agent: Agent = {
-        let version = Bundle(for: APIClient.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
-        return Agent(name: "ios", version: version)
+        let appVersion = Bundle(for: APIClient.self).object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        return Agent(name: "ios", version: appVersion)
     }()
 }
