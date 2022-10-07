@@ -105,9 +105,9 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     private func fetchData(readOptions: ReadOptions? = nil) {
         SVProgressHUD.show(withStatus: "Fetching data...")
         
-		digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions) { result in
+        digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions) { result in
             SVProgressHUD.dismiss()
-
+            
             switch result {
             case .success(let healthResult):
                 
@@ -135,11 +135,11 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
                 
                 /// Store the data content locally. Use iTunes file sharing to review JFS data saved under the Documents folder.
                 self.saveToJFS()
-				
-				let steps = healthResult.data.map({ $0.steps }).reduce(0, +)
-				let distance = healthResult.data.map({ $0.distance }).reduce(0, +)
-				let activeEnergyBurned = healthResult.data.map({ $0.activeEnergyBurned }).reduce(0, +)
-				self.showPopUp(message: String(format: "Total steps: %.0f, total distance: %.0f, total active energy burned %.0f. Data since: %@", steps, distance, activeEnergyBurned, self.dateFormatter.string(from: self.fromDate)))
+                
+                let steps = healthResult.data.map({ $0.steps }).reduce(0, +)
+                let distance = healthResult.data.map({ $0.distance }).reduce(0, +)
+                let activeEnergyBurned = healthResult.data.map({ $0.activeEnergyBurned }).reduce(0, +)
+                self.showPopUp(message: String(format: "Total steps: %.0f, total distance: %.0f, total active energy burned %.0f. Data since: %@", steps, distance, activeEnergyBurned, self.dateFormatter.string(from: self.fromDate)))
                 
             case .failure(let error):
                 self.showPopUp(message: error.description)
@@ -178,7 +178,10 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     }
 	
 	@objc private func showLog() {
-		let contentView = AppleHealthDetailsView(data.reduce([], +))
+        let reduced = data.reduce(into: [FitnessActivity]()) { result, value in
+            result.append(contentsOf: value)
+        }
+		let contentView = AppleHealthDetailsView(reduced)
 		let controller = UIHostingController(rootView: contentView)
 		let navController = UINavigationController(rootViewController: controller)
 		navController.setNavigationBarHidden(false, animated: false)

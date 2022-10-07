@@ -62,7 +62,7 @@ class DataTypeCollectionViewCell: UICollectionViewCell {
         chartView.graphView.dataSeries = [
             OCKDataSeries(values: steps, title: unitTitleSteps, color: .systemBlue),
             OCKDataSeries(values: distance, title: unitTitleDistance, color: .systemGreen),
-			OCKDataSeries(values: energy, title: unitTitleEnergy, color: .systemRed),
+            OCKDataSeries(values: energy, title: unitTitleEnergy, color: .systemRed),
         ]
     }
     
@@ -96,12 +96,12 @@ private extension DataTypeCollectionViewCell {
             return "steps"
         case HKUnit.meter():
             return "meter"
-		case HKUnit.mile():
-			return "mile"
-		case HKUnit.inch():
-			return "inch"
-		case HKUnit.kilocalorie():
-			return "kcal"
+        case HKUnit.mile():
+            return "mile"
+        case HKUnit.inch():
+            return "inch"
+        case HKUnit.kilocalorie():
+            return "kcal"
         default:
             return nil
         }

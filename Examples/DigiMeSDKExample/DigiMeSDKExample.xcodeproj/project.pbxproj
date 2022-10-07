@@ -388,6 +388,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		27D31B64266E181E00DB2524 /* Lint Code */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
