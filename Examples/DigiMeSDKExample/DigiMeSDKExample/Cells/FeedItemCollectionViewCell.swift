@@ -13,7 +13,7 @@ import UIKit
 
 class DataTypeCollectionViewCell: UICollectionViewCell {
         
-    var statisticalValues: [FitnessActivity] = []
+    var statisticalValues: [FitnessActivitySummary] = []
     
     var chartView: OCKCartesianChartView = {
         let chartView = OCKCartesianChartView(type: .bar)
@@ -34,7 +34,7 @@ class DataTypeCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
         
-    func updateChartView(with values: [FitnessActivity]) {
+    func updateChartView(with values: [FitnessActivitySummary]) {
         statisticalValues = values.sorted { $0.startDate < $1.startDate }
         
         // Update headerView
@@ -46,8 +46,8 @@ class DataTypeCollectionViewCell: UICollectionViewCell {
         chartView.graphView.horizontalAxisMarkers = createHorizontalAxisMarkers(total: values.count, lastDate: self.statisticalValues.last?.startDate ?? Date())
         
         let steps = statisticalValues.map { CGFloat($0.steps) }
-        let distance = statisticalValues.map { CGFloat($0.distance) }
-		let energy = statisticalValues.map { CGFloat($0.activeEnergyBurned) }
+        let distance = statisticalValues.map { CGFloat($0.distances.first?.distance ?? 0) }
+		let energy = statisticalValues.map { CGFloat($0.caloriesOut) }
 		
         guard
             let unitSteps = HKUnit.preferredUnit(for: "HKQuantityTypeIdentifierStepCount"),

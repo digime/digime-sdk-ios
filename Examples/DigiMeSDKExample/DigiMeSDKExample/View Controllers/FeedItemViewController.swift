@@ -25,7 +25,7 @@ class DataTypeCollectionViewController: UIViewController {
         return collectionView
     }()
     
-    var data: [[FitnessActivity]] = []
+    var data: [[FitnessActivitySummary]] = []
     
     // MARK: - View Lifecycle
     

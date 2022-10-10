@@ -8,43 +8,43 @@
 
 import Foundation
 
-public struct FitnessActivity: Codable, Dated, Identifiable {
-	public var id: UUID?
-    public var identifier: String?         // "11018137805"
-    public var entityId: String?           // "18_644MGZ_11018137805"
-    public var accountEntityId: String?    // "18_644MGZ"
-    public var activityName: String?       // "Walk"
-    public var originalStartDate: Date?    // 1483628400000
-    public var steps: Double               // 150
-    public var distance: Double            // 100
-    public var createdDate: Date?          // 1483628400000
-    public var startDate: Date             // 1483628400000
-    public var endDate: Date               // 1483628400000
-	public var activeEnergyBurned: Double
-	
+public struct FitnessActivitySummary: Codable, Dated, Identifiable {
+    public struct Distances: Codable {
+        public var activity: String
+        public var distance: Double
+    }
+    
+	public var id = UUID()
+    public var identifier: String?
+    public var entityId: String?
+    public var accountEntityId: String?
+    public var steps: Double
+    public var distances: [Distances]
+    public var createdDate: Date?
+    public var startDate: Date
+    public var endDate: Date
+	public var caloriesOut: Double
+    
     enum CodingKeys: String, CodingKey {
-		case id = "objectIdentifier"
+		case id = "guid"
         case identifier = "id"
         case entityId = "entityid"
         case accountEntityId = "accountentityid"
-        case activityName = "activityname"
         case originalStartDate = "originalstartdate"
         case steps
-        case distance
+        case distances
         case createdDate = "createddate"
         case startDate = "startdate"
         case endDate = "enddate"
-		case activeEnergyBurned = "activeenergyburned"
+		case caloriesOut = "caloriesout"
     }
     
     public init(identifier: String?,
                 entityId: String?,
                 accountEntityId: String?,
-                activityName: String?,
-                originalStartDate: Date?,
                 steps: Double,
-                distance: Double,
-				activeEnergyBurned: Double,
+                distances: [Distances],
+                caloriesOut: Double,
                 createdDate: Date?,
                 startDate: Date,
                 endDate: Date) {
@@ -53,11 +53,9 @@ public struct FitnessActivity: Codable, Dated, Identifiable {
         self.identifier = identifier
         self.entityId = entityId
         self.accountEntityId = accountEntityId
-        self.activityName = activityName
-        self.originalStartDate = originalStartDate
         self.steps = steps
-        self.distance = distance
-		self.activeEnergyBurned = activeEnergyBurned
+        self.distances = distances
+		self.caloriesOut = caloriesOut
         self.createdDate = createdDate
         self.startDate = startDate
         self.endDate = endDate
@@ -69,23 +67,21 @@ public struct FitnessActivity: Codable, Dated, Identifiable {
         identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
         entityId = try container.decodeIfPresent(String.self, forKey: .entityId)
         accountEntityId = try container.decodeIfPresent(String.self, forKey: .accountEntityId)
-        activityName = try container.decodeIfPresent(String.self, forKey: .activityName)
-        originalStartDate = try container.decodeIfPresent(Date.self, forKey: .originalStartDate)
         steps = try container.decode(Double.self, forKey: .steps)
-        distance = try container.decode(Double.self, forKey: .distance)
-		activeEnergyBurned = try container.decode(Double.self, forKey: .activeEnergyBurned)
+        distances = try container.decode([Distances].self, forKey: .distances)
+        caloriesOut = try container.decode(Double.self, forKey: .caloriesOut)
         createdDate = try container.decodeIfPresent(Date.self, forKey: .createdDate)
         startDate = try container.decode(Date.self, forKey: .startDate)
         endDate = try container.decode(Date.self, forKey: .endDate)
     }
     
-	public init(startDate: Date, endDate: Date, steps: Double, distance: Double, activeEnergyBurned: Double, account: SourceAccount? = nil) {
+	public init(startDate: Date, endDate: Date, steps: Double, distances: [Distances], caloriesOut: Double, account: SourceAccount? = nil) {
         self.startDate = startDate
         self.endDate = endDate
         self.steps = steps
-        self.distance = distance
-		self.activeEnergyBurned = activeEnergyBurned
-        let id = String.random(length: 11)
+        self.distances = distances
+		self.caloriesOut = caloriesOut
+        let id = "\(startDate.millisecondsSince1970)"
         self.identifier = id
         self.createdDate = Date()
         
@@ -100,11 +96,9 @@ public struct FitnessActivity: Codable, Dated, Identifiable {
         try container.encodeIfPresent(identifier, forKey: .identifier)
         try container.encodeIfPresent(entityId, forKey: .entityId)
         try container.encodeIfPresent(accountEntityId, forKey: .accountEntityId)
-        try container.encodeIfPresent(activityName, forKey: .activityName)
-        try container.encodeIfPresent(originalStartDate, forKey: .originalStartDate)
         try container.encode(steps, forKey: .steps)
-        try container.encode(distance, forKey: .distance)
-		try container.encode(activeEnergyBurned, forKey: .activeEnergyBurned)
+        try container.encode(distances, forKey: .distances)
+		try container.encode(caloriesOut, forKey: .caloriesOut)
         try container.encodeIfPresent(createdDate, forKey: .createdDate)
         try container.encode(startDate, forKey: .startDate)
         try container.encode(endDate, forKey: .endDate)
@@ -129,17 +123,15 @@ extension Array where Element: Dated {
     }
 }
 
-extension FitnessActivity {
-    func merge(with: FitnessActivity) -> FitnessActivity {
-        let new = FitnessActivity(
+extension FitnessActivitySummary {
+    func merge(with: FitnessActivitySummary) -> FitnessActivitySummary {
+        let new = FitnessActivitySummary(
             identifier: identifier ?? with.identifier,
             entityId: entityId ?? with.entityId,
             accountEntityId: accountEntityId ?? with.accountEntityId,
-            activityName: activityName ?? with.activityName,
-            originalStartDate: originalStartDate ?? with.originalStartDate,
             steps: steps == 0.0 ? with.steps : steps,
-            distance: distance == 0.0 ? with.distance : distance,
-			activeEnergyBurned: activeEnergyBurned == 0.0 ? with.activeEnergyBurned : activeEnergyBurned,
+            distances: (distances.first?.distance ?? 0.0) == 0.0 ? with.distances : distances,
+            caloriesOut: caloriesOut == 0.0 ? with.caloriesOut : caloriesOut,
             createdDate: createdDate ?? with.createdDate,
             startDate: startDate,
             endDate: endDate)

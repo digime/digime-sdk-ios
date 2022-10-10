@@ -11,7 +11,7 @@ import Foundation
 
 public struct HealthDataOperationResult: Codable {
     public var account: SourceAccount
-    public var data: [String: [FitnessActivity]]
+    public var data: [String: [FitnessActivitySummary]]
 }
 
 class HealthDataQuantityOperation: RetryingOperation {
@@ -46,7 +46,7 @@ class HealthDataQuantityOperation: RetryingOperation {
             switch result {
             case .success(let statisticsCollection):
                 
-                var values: [FitnessActivity] = []
+                var values: [FitnessActivitySummary] = []
                 statisticsCollection.enumerateStatistics(from: self.startDate, to: self.endDate) { [self] statistics, obj in
                     
                     var steps = 0.0
@@ -70,7 +70,8 @@ class HealthDataQuantityOperation: RetryingOperation {
                         }
                     }
                     
-					let activity = FitnessActivity(startDate: statistics.startDate, endDate: statistics.endDate, steps: steps, distance: distance, activeEnergyBurned: activeEnergyBurned, account: self.account)
+                    let distances = FitnessActivitySummary.Distances(activity: "total", distance: distance)
+                    let activity = FitnessActivitySummary(startDate: statistics.startDate, endDate: statistics.endDate, steps: steps, distances: [distances], caloriesOut: activeEnergyBurned, account: self.account)
                     values.append(activity)
                 }
                 

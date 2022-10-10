@@ -14,11 +14,11 @@ import UIKit
 
 class AppleHealthDataViewController: DataTypeCollectionViewController {
         
-    private var records = [FitnessActivity]()
-    private var sections = [(date: Date, records: [FitnessActivity])]()
+    private var records = [FitnessActivitySummary]()
+    private var sections = [(date: Date, records: [FitnessActivitySummary])]()
     private var digiMe: DigiMe!
     private let contract = Contracts.appleHealth
-	private let fromDate = Date.from(year: 2022, month: 6, day: 1, hour: 0, minute: 0, second: 0)!
+	private let fromDate = Date.from(year: 2022, month: 10, day: 1, hour: 0, minute: 0, second: 0)!
 	private let dateFormatter: DateFormatter = {
 		let fm = DateFormatter()
 		fm.timeZone = TimeZone(abbreviation: "GMT")
@@ -117,7 +117,6 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
                     let account = healthResult.account,
                     let jsonData = try? account.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase) {
                     
-                    print(account.dictionary.debugDescription)
                     FilePersistentStorage(with: .documentDirectory).store(data: jsonData, fileName: "account.json")
                 }
                 
@@ -137,8 +136,8 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
                 self.saveToJFS()
                 
                 let steps = healthResult.data.map({ $0.steps }).reduce(0, +)
-                let distance = healthResult.data.map({ $0.distance }).reduce(0, +)
-                let activeEnergyBurned = healthResult.data.map({ $0.activeEnergyBurned }).reduce(0, +)
+                let distance = healthResult.data.map({ $0.distances.first?.distance ?? 0 }).reduce(0, +)
+                let activeEnergyBurned = healthResult.data.map({ $0.caloriesOut }).reduce(0, +)
                 self.showPopUp(message: String(format: "Total steps: %.0f, total distance: %.0f, total active energy burned %.0f. Data since: %@", steps, distance, activeEnergyBurned, self.dateFormatter.string(from: self.fromDate)))
                 
             case .failure(let error):
@@ -171,14 +170,14 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
             if
                 let endDate = month.records.last?.endDate,
                 let jsonData = try? month.records.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase) {
-                let filename = "18_4_28_3_300_D\(formatter.string(from: endDate))_0.json"
+                let filename = "18_4_28_0_301_D\(formatter.string(from: endDate))_0.json"
                 FilePersistentStorage(with: .documentDirectory).store(data: jsonData, fileName: filename)
             }
         }
     }
 	
 	@objc private func showLog() {
-        let reduced = data.reduce(into: [FitnessActivity]()) { result, value in
+        let reduced = data.reduce(into: [FitnessActivitySummary]()) { result, value in
             result.append(contentsOf: value)
         }
 		let contentView = AppleHealthDetailsView(reduced)

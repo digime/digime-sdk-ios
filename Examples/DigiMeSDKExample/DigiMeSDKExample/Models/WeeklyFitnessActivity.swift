@@ -13,5 +13,5 @@ struct WeeklyFitnessActivity {
     let typeIdentifier: String
     let startDate: Date
     let endDate: Date
-    let data: [FitnessActivity]
+    let data: [FitnessActivitySummary]
 }

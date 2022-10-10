@@ -18,7 +18,7 @@ class HealthDataService {
     private var account: SourceAccount
     
     private var processor = FitnessActivityProcessor()
-    private var fitnessActivityResult: [String: [FitnessActivity]] = [:]
+    private var fitnessActivityResult: [String: [FitnessActivitySummary]] = [:]
     
     // MARK: - Life Cycle
     
@@ -93,7 +93,38 @@ class HealthDataService {
             return
         }
         
-        let healthResult = HealthResult(account: account, data: result)
+        var files: [File] = []
+        var records = [FitnessActivitySummary]()
+        var data: [[FitnessActivitySummary]] = []
+        var sections = [(date: Date, records: [FitnessActivitySummary])]()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYYMM"
+        
+        let chunked = result.chunked(into: 7)
+        data.append(contentsOf: chunked)
+
+        records = result
+        sections = records
+            .sorted { $0.endDate > $1.endDate }
+            .groupedBy(dateComponents: [.year, .month])
+            .map { ($0, $1) }
+            .sorted { $0.0 > $1.0 }
+        
+        for month in sections {
+            
+            if
+                let endDate = month.records.last?.endDate,
+                let jsonData = try? month.records.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase) {
+                
+                let filename = "18_4_28_0_301_D\(formatter.string(from: endDate))_0.json"
+                let napped = MappedFileMetadata(objectCount: month.records.count, objectType: "dailyactivity", serviceGroup: "health & fitness", serviceName: "applehealth")
+                let meta = FileMetadata.mapped(napped)
+                let jfsFile = File(fileWithId: filename, rawData: jsonData, metadata: meta, updated: Date())
+                files.append(jfsFile)
+            }
+        }
+        
+        let healthResult = HealthResult(account: account, data: result, files: files)
         Logger.mixpanel("device-data-source-read-success", metadata: HealthDataClient.metadata)
         completionHandler?(.success(healthResult))
     }

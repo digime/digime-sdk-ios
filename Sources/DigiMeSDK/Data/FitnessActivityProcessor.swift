@@ -16,7 +16,7 @@ class FitnessActivityProcessor {
 		HKQuantityTypeIdentifier.activeEnergyBurned.rawValue,
     ]
     
-    func process(data: [String: [FitnessActivity]]) -> [FitnessActivity]? {
+    func process(data: [String: [FitnessActivitySummary]]) -> [FitnessActivitySummary]? {
         guard
             let steps = data[HKQuantityTypeIdentifier.stepCount.rawValue],
             let walks = data[HKQuantityTypeIdentifier.distanceWalkingRunning.rawValue],
@@ -25,7 +25,7 @@ class FitnessActivityProcessor {
         }
 		
 		// Merge all independent and separate results into the single one
-        var result: [FitnessActivity] = []
+        var result: [FitnessActivitySummary] = []
 		for activity in steps {
 			if let walk = walks.filter({ $0.startDate == activity.startDate && $0.endDate == activity.endDate }).first {
 				
@@ -48,7 +48,7 @@ class FitnessActivityProcessor {
     
     // MARK: - Private
     
-    private func isEmpty(data: [FitnessActivity]) -> Bool {
-        return !data.contains(where: { $0.steps > 0 || $0.distance > 0 || $0.activeEnergyBurned > 0 })
+    private func isEmpty(data: [FitnessActivitySummary]) -> Bool {
+        return !data.contains(where: { $0.steps > 0 || ($0.distances.first?.distance ?? 0) > 0 || $0.caloriesOut > 0 })
     }
 }
