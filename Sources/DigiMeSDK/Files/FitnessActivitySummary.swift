@@ -83,7 +83,7 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
 		self.caloriesOut = caloriesOut
         let id = "\(startDate.millisecondsSince1970)"
         self.identifier = id
-        self.createdDate = Date()
+        self.createdDate = startDate
         
         if let account = account {
             self.accountEntityId = account.identifier
