@@ -15,7 +15,9 @@ enum HealthDataTypes {
     }
     
     static var shareDataTypes: [HKSampleType] {
-        return dataTypes
+        var typeIdentifiers = [String]()
+        typeIdentifiers.append(contentsOf: FitnessActivityProcessor.dataTypesWrite)
+        return typeIdentifiers.compactMap { HKSampleType.getSampleType(for: $0) }
     }
     
     static var dataTypes: [HKSampleType] {
@@ -24,7 +26,7 @@ enum HealthDataTypes {
     
     private static var allHealthDataTypeIDs: [String] {
         var typeIdentifiers = [String]()
-        typeIdentifiers.append(contentsOf: FitnessActivityProcessor.dataTypes)
+        typeIdentifiers.append(contentsOf: FitnessActivityProcessor.dataTypesRead)
         return typeIdentifiers
     }
 }

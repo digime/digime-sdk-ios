@@ -50,9 +50,11 @@ public extension HKUnit {
             case .stepCount:
                 unit = .count()
             case .distanceWalkingRunning:
-				unit = Locale.current.usesMetricSystem ? HKUnit.meter() : HKUnit.mile()
+				unit = .meter()
 			case .activeEnergyBurned:
 				unit = .kilocalorie()
+            case .appleExerciseTime:
+                unit = .minute()
             default:
                 break
             }

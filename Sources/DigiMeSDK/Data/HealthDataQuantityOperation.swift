@@ -52,26 +52,33 @@ class HealthDataQuantityOperation: RetryingOperation {
                     var steps = 0.0
                     var distance = 0.0
 					var activeEnergyBurned = 0.0
-					
+                    var appleExerciseTime = 0
+                    
 					if
 						let unit = HKUnit.preferredUnit(for: dataTypeIdentifier),
 						let statisticsQuantity = getStatisticsQuantity(for: statistics, with: statisticsOptions) {
-						
+                        
 						let value = statisticsQuantity.doubleValue(for: unit)
 						switch HKQuantityTypeIdentifier(rawValue: dataTypeIdentifier) {
 						case .stepCount:
 							steps = value
 						case .distanceWalkingRunning:
-							distance = value
+							distance = (value / 1_000)
 						case .activeEnergyBurned:
 							activeEnergyBurned = value
+                        case .appleExerciseTime:
+                            appleExerciseTime = Int(value)
                         default:
                             break
                         }
                     }
                     
+                    guard statistics.endDate <= endDate else {
+                        return
+                    }
+
                     let distances = FitnessActivitySummary.Distances(activity: "total", distance: distance)
-                    let activity = FitnessActivitySummary(startDate: statistics.startDate, endDate: statistics.endDate, steps: steps, distances: [distances], caloriesOut: activeEnergyBurned, account: self.account)
+                    let activity = FitnessActivitySummary(startDate: statistics.startDate, endDate: statistics.endDate, steps: steps, distances: [distances], calories: activeEnergyBurned, activity: appleExerciseTime, account: self.account)
                     values.append(activity)
                 }
                 
@@ -109,6 +116,8 @@ class HealthDataQuantityOperation: RetryingOperation {
             switch quantityTypeIdentifier {
 			case .stepCount, .distanceWalkingRunning, .activeEnergyBurned:
                 options = .cumulativeSum
+            case .appleExerciseTime:
+                options = .duration
             default:
                 break
             }
@@ -126,6 +135,8 @@ class HealthDataQuantityOperation: RetryingOperation {
             statisticsQuantity = statistics.sumQuantity()
         case .discreteAverage:
             statisticsQuantity = statistics.averageQuantity()
+        case .duration:
+            statisticsQuantity = statistics.duration()
         default:
             break
         }

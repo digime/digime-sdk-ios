@@ -20,7 +20,7 @@ enum HealthStore {
         let readDataTypes = Set(HealthDataTypes.readDataTypes)
         
 #if targetEnvironment(simulator)
-        let shareDataTypes = readDataTypes
+        let shareDataTypes = Set(HealthDataTypes.shareDataTypes)
 #else
         let shareDataTypes = Set<HKSampleType>()
 #endif
@@ -68,7 +68,7 @@ enum HealthStore {
     
     // MARK: - HKStatisticsCollectionQuery
     
-    static func fetchStatistics(with identifier: HKQuantityTypeIdentifier, options: HKStatisticsOptions, interval: DateComponents, startDate: Date, endDate: Date = Date(), predicate: NSPredicate? = nil, completion: @escaping (Result<HKStatisticsCollection, SDKError>) -> Void) {
+    static func fetchStatistics(with identifier: HKQuantityTypeIdentifier, options: HKStatisticsOptions, interval: DateComponents, startDate: Date, predicate: NSPredicate? = nil, completion: @escaping (Result<HKStatisticsCollection, SDKError>) -> Void) {
         guard let quantityType = HKObjectType.quantityType(forIdentifier: identifier) else {
             completion(.failure(.healthDataUnableToCreateQuantityType))
             return

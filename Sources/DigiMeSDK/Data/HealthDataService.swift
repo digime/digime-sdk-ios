@@ -43,7 +43,7 @@ class HealthDataService {
     // MARK: - Data operations
     
     func queryData(from startDate: Date, to endDate: Date) {
-        let dataTypes: [String] = FitnessActivityProcessor.dataTypes
+        let dataTypes: [String] = FitnessActivityProcessor.dataTypesRead
         var operationsToQueue: [Operation] = []
         var parentOperation: HealthDataQuantityOperation?
         
