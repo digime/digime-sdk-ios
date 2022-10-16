@@ -23,7 +23,8 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
     public var createdDate: Date?
     public var startDate: Date
     public var endDate: Date
-	public var caloriesOut: Double
+    public var calories: Double
+    public var activity: Int
     
     enum CodingKeys: String, CodingKey {
 		case id = "guid"
@@ -36,7 +37,8 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
         case createdDate = "createddate"
         case startDate = "startdate"
         case endDate = "enddate"
-		case caloriesOut = "caloriesout"
+        case calories = "caloriesout"
+        case activity = "veryactiveminutes"
     }
     
     public init(identifier: String?,
@@ -44,18 +46,20 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
                 accountEntityId: String?,
                 steps: Double,
                 distances: [Distances],
-                caloriesOut: Double,
+                calories: Double,
+                activity: Int,
                 createdDate: Date?,
                 startDate: Date,
                 endDate: Date) {
         
-		self.id = UUID()
+        self.id = UUID()
         self.identifier = identifier
         self.entityId = entityId
         self.accountEntityId = accountEntityId
         self.steps = steps
         self.distances = distances
-		self.caloriesOut = caloriesOut
+        self.calories = calories
+        self.activity = activity
         self.createdDate = createdDate
         self.startDate = startDate
         self.endDate = endDate
@@ -63,24 +67,26 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-		id = try container.decodeIfPresent(UUID.self, forKey: .identifier) ?? UUID()
+        id = try container.decodeIfPresent(UUID.self, forKey: .identifier) ?? UUID()
         identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
         entityId = try container.decodeIfPresent(String.self, forKey: .entityId)
         accountEntityId = try container.decodeIfPresent(String.self, forKey: .accountEntityId)
         steps = try container.decode(Double.self, forKey: .steps)
         distances = try container.decode([Distances].self, forKey: .distances)
-        caloriesOut = try container.decode(Double.self, forKey: .caloriesOut)
+        calories = try container.decode(Double.self, forKey: .calories)
+        activity = try container.decode(Int.self, forKey: .activity)
         createdDate = try container.decodeIfPresent(Date.self, forKey: .createdDate)
         startDate = try container.decode(Date.self, forKey: .startDate)
         endDate = try container.decode(Date.self, forKey: .endDate)
     }
     
-	public init(startDate: Date, endDate: Date, steps: Double, distances: [Distances], caloriesOut: Double, account: SourceAccount? = nil) {
+    public init(startDate: Date, endDate: Date, steps: Double, distances: [Distances], calories: Double, activity: Int, account: SourceAccount? = nil) {
         self.startDate = startDate
         self.endDate = endDate
         self.steps = steps
         self.distances = distances
-		self.caloriesOut = caloriesOut
+        self.calories = calories
+        self.activity = activity
         let id = "\(startDate.millisecondsSince1970)"
         self.identifier = id
         self.createdDate = startDate
@@ -98,7 +104,8 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
         try container.encodeIfPresent(accountEntityId, forKey: .accountEntityId)
         try container.encode(steps, forKey: .steps)
         try container.encode(distances, forKey: .distances)
-		try container.encode(caloriesOut, forKey: .caloriesOut)
+        try container.encode(calories, forKey: .calories)
+        try container.encode(activity, forKey: .activity)
         try container.encodeIfPresent(createdDate, forKey: .createdDate)
         try container.encode(startDate, forKey: .startDate)
         try container.encode(endDate, forKey: .endDate)
@@ -131,7 +138,8 @@ extension FitnessActivitySummary {
             accountEntityId: accountEntityId ?? with.accountEntityId,
             steps: steps == 0.0 ? with.steps : steps,
             distances: (distances.first?.distance ?? 0.0) == 0.0 ? with.distances : distances,
-            caloriesOut: caloriesOut == 0.0 ? with.caloriesOut : caloriesOut,
+            calories: calories == 0.0 ? with.calories : calories,
+            activity: activity == 0 ? with.activity : activity,
             createdDate: createdDate ?? with.createdDate,
             startDate: startDate,
             endDate: endDate)

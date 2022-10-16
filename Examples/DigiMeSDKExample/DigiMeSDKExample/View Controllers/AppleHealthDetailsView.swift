@@ -22,9 +22,9 @@ struct AppleHealthDetailsView: View {
 			VStack(alignment: .leading, spacing: 8) {
 				Text("Start: \(activity.startDate.description(with: .current))").font(.system(size: 14, weight: .medium))
 				Text("End: \(activity.endDate.description(with: .current))").font(.system(size: 14, weight: .medium))
-				Text("Steps: \(floor(activity.steps))").font(.system(size: 10))
-                Text("Distance: \(floor(activity.distances.first?.distance ?? 0)) \(Locale.current.usesMetricSystem ? "meters" : "miles")").font(.system(size: 10))
-				Text("Active energy burned: \(floor(activity.caloriesOut)) kcal").font(.system(size: 10))
+                Text("Steps: \(String(format: "%.f", activity.steps))").font(.system(size: 10))
+                Text("Distance: \(DistanceFormatter.stringFormatForDistance(km: activity.distances.first?.distance ?? 0))").font(.system(size: 10))
+                Text("Active energy burned: \(CaloriesFormatter.stringForCaloriesValue(activity.calories))").font(.system(size: 10))
 			}
 		}
 	}

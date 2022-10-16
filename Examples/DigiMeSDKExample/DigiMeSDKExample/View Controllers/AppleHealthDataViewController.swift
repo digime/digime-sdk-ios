@@ -18,7 +18,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     private var sections = [(date: Date, records: [FitnessActivitySummary])]()
     private var digiMe: DigiMe!
     private let contract = Contracts.appleHealth
-	private let fromDate = Date.from(year: 2022, month: 10, day: 1, hour: 0, minute: 0, second: 0)!
+	private let fromDate = Date.from(year: 2022, month: 10, day: 14, hour: 0, minute: 0, second: 0)!
 	private let dateFormatter: DateFormatter = {
 		let fm = DateFormatter()
 		fm.timeZone = TimeZone(abbreviation: "GMT")
@@ -29,7 +29,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     private lazy var readOptions: ReadOptions? = {
         /// In this version of the SDK, the only supported object type is 'Fitness Activity'.
         /// This example is for demonstration purposes only.
-        let objectType = ServiceObjectType(identifier: 300, name: "Fitness Activity")
+        let objectType = ServiceObjectType(identifier: 301, name: "Fitness Activity Summary")
         let services = [ServiceType(identifier: 28, objectTypes: [objectType])]
         let groups = [ServiceGroupScope(identifier: 4, serviceTypes: services)]
         /// Time ranges allow you to narrow down the contract's time scope.
@@ -137,7 +137,7 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
                 
                 let steps = healthResult.data.map({ $0.steps }).reduce(0, +)
                 let distance = healthResult.data.map({ $0.distances.first?.distance ?? 0 }).reduce(0, +)
-                let activeEnergyBurned = healthResult.data.map({ $0.caloriesOut }).reduce(0, +)
+                let activeEnergyBurned = healthResult.data.map({ $0.calories }).reduce(0, +)
                 self.showPopUp(message: String(format: "Total steps: %.0f, total distance: %.0f, total active energy burned %.0f. Data since: %@", steps, distance, activeEnergyBurned, self.dateFormatter.string(from: self.fromDate)))
                 
             case .failure(let error):
@@ -202,7 +202,7 @@ extension AppleHealthDataViewController {
         SVProgressHUD.show(withStatus: "Adding test data...")
         DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(1)) { [self] in
             var dataToWrite: [HKQuantitySample] = []
-            let startDate = Date(timeIntervalSince1970: 0)
+            let startDate = Date.from(year: 2014, month: 6, day: 1, hour: 0, minute: 0, second: 0)!
             let endDate = Date().endOfTomorrow
             let dayDurationInSeconds: TimeInterval = 60 * 60 * 24
             var counter: Int = 0
@@ -212,19 +212,19 @@ extension AppleHealthDataViewController {
                 print("Start: \(start) End: \(end)")
                 // steps data
                 let stepsType = HKObjectType.quantityType(forIdentifier: .stepCount)!
-                let stepsQuantity = HKQuantity(unit: .count(), doubleValue: Double.random(in: 1...5000))
+                let stepsQuantity = HKQuantity(unit: .count(), doubleValue: Double.random(in: 1...10))
                 let steps = HKQuantitySample(type: stepsType, quantity: stepsQuantity, start: start, end: end)
                 dataToWrite.append(steps)
                 
                 // distance walking & running
                 let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
-                let distanceQuantity = HKQuantity(unit: .meter(), doubleValue: Double.random(in: 1...3000))
+                let distanceQuantity = HKQuantity(unit: .mile(), doubleValue: Double.random(in: 1...10))
                 let walk = HKQuantitySample(type: distanceType, quantity: distanceQuantity, start: start, end: end)
                 dataToWrite.append(walk)
 				
 				// active energy burned
 				let energyType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
-				let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: Double.random(in: 1...1000))
+				let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: Double.random(in: 1...10))
 				let energy = HKQuantitySample(type: energyType, quantity: energyQuantity, start: start, end: end)
 				dataToWrite.append(energy)
                 counter += 1

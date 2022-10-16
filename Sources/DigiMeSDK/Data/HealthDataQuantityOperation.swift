@@ -73,7 +73,9 @@ class HealthDataQuantityOperation: RetryingOperation {
                         }
                     }
                     
-                    guard statistics.endDate <= endDate else {
+                    guard
+                        statistics.endDate <= endDate,
+                        !(steps == 0.0 && distance == 0.0 && activeEnergyBurned == 0.0 && appleExerciseTime == 0) else {
                         return
                     }
 

@@ -47,7 +47,7 @@ class DataTypeCollectionViewCell: UICollectionViewCell {
         
         let steps = statisticalValues.map { CGFloat($0.steps) }
         let distance = statisticalValues.map { CGFloat($0.distances.first?.distance ?? 0) }
-		let energy = statisticalValues.map { CGFloat($0.caloriesOut) }
+		let energy = statisticalValues.map { CGFloat($0.calories) }
 		
         guard
             let unitSteps = HKUnit.preferredUnit(for: "HKQuantityTypeIdentifierStepCount"),
