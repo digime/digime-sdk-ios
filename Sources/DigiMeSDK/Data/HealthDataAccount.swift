@@ -12,7 +12,7 @@ import UIKit
 struct HealthDataAccount {
     var account: SourceAccount {
         let service = AccountServiceDescriptor(name: "AppleHealth", logo: "https://digimedownloads.blob.core.windows.net/ios/sdkexample/apple-health-icon.png")
-        let account = SourceAccount(identifier: "28_\(UIDevice.current.identifierForVendor!.uuidString)", name: "Apple Health", service: service, number: NSUserName())
+        let account = SourceAccount(identifier: "28_applehealth", name: "Apple Health", service: service, number: NSUserName())
         return account
     }
 }

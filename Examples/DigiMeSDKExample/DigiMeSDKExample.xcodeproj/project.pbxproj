@@ -79,7 +79,6 @@
 		1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceFormatter.swift; sourceTree = "<group>"; };
 		1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Locale+Helper.swift"; sourceTree = "<group>"; };
 		1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesFormatter.swift; sourceTree = "<group>"; };
-		1EF5E5312806C33800876156 /* 18_4_18_3_300_D201711_0.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 18_4_18_3_300_D201711_0.json; sourceTree = "<group>"; };
 		27D31A20266A4EAB00DB2524 /* DigiMeSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27D31A23266A4EAB00DB2524 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		27D31A25266A4EAB00DB2524 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -231,7 +230,6 @@
 				27D31A29266A4EAB00DB2524 /* Main.storyboard */,
 				27D31A2E266A4EAD00DB2524 /* LaunchScreen.storyboard */,
 				27D31A31266A4EAD00DB2524 /* Info.plist */,
-				1EF5E5312806C33800876156 /* 18_4_18_3_300_D201711_0.json */,
 			);
 			path = DigiMeSDKExample;
 			sourceTree = "<group>";
