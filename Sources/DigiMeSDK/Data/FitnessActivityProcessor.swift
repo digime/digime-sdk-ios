@@ -37,30 +37,44 @@ class FitnessActivityProcessor {
 		for activity in steps {
 			if let walk = walks.filter({ $0.startDate == activity.startDate && $0.endDate == activity.endDate }).first {
 				
-				let binder = activity.merge(with: walk)
+				var binder = activity.merge(with: walk)
 				
 				if let filtered = energy.filter({ $0.startDate == activity.startDate && $0.endDate == activity.endDate }).first {
-					result.append(binder.merge(with: filtered))
-				}
-				else {
-					result.append(binder)
+					binder = binder.merge(with: filtered)
 				}
                 
                 if let filtered = active.filter({ $0.startDate == activity.startDate && $0.endDate == activity.endDate }).first {
-                    result.append(binder.merge(with: filtered))
+                    binder = binder.merge(with: filtered)
+                }
+
+                if !isEmpty(object: binder) {
+                    result.append(binder)
                 }
 			}
 			else {
-				result.append(activity)
+                if !isEmpty(object: activity) {
+                    result.append(activity)
+                }
 			}
 		}
         
-        return isEmpty(data: result) ? nil : result
+        let cross = Dictionary(grouping: result, by: \.startDate).filter { $1.count > 1 }
+        
+        if cross.count > 0 {
+            DispatchQueue.main.async {
+                let alert = UIAlertController(title: "Oooops", message: "Got duplicates from SDK: '\(cross.count)'", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "OK", style: .cancel)
+                alert.addAction(ok)
+                UIViewController.topMostViewController()?.present(alert, animated: true)
+            }
+        }
+        
+        return result
     }
     
     // MARK: - Private
     
-    private func isEmpty(data: [FitnessActivitySummary]) -> Bool {
-        return !data.contains(where: { $0.steps > 0 || ($0.distances.first?.distance ?? 0) > 0 || $0.calories > 0 || $0.activity > 0 })
+    private func isEmpty(object: FitnessActivitySummary) -> Bool {
+        return (object.steps == 0 && (object.distances.first?.distance ?? 0) == 0 && object.calories == 0 && object.activity == 0)
     }
 }
