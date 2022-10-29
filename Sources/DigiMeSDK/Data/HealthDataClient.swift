@@ -24,12 +24,13 @@ class HealthDataClient {
     
     // MARK: - Retrieve Data
     
-    func retrieveData(from startDate: Date, to endDate: Date, completion: @escaping (Result<HealthResult, SDKError>) -> Void) {
+    func retrieveData(from startDate: Date, to endDate: Date, accountHandler: @escaping (SourceAccount) -> Void, completion: @escaping (Result<HealthResult, SDKError>) -> Void) {
         Logger.mixpanel("device-data-source-read-started", metadata: HealthDataClient.metadata)
         HealthStore.requestHealthDataAccessIfNeeded() { result in
             switch result {
             case .success(_):
                 Logger.mixpanel("device-data-source-read-authorised", metadata: HealthDataClient.metadata)
+                accountHandler(HealthDataAccount().account)
                 self.loadData(from: startDate, to: endDate, completion: completion)
             case .failure(let error):
                 var meta = HealthDataClient.metadata

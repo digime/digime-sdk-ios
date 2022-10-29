@@ -481,7 +481,7 @@ public final class DigiMe {
     
     // MARK: - Apple Health
     
-	public func retrieveAppleHealth(for contractId: String, readOptions: ReadOptions? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<HealthResult, SDKError>) -> Void) {
+	public func retrieveAppleHealth(for contractId: String, readOptions: ReadOptions? = nil, resultQueue: DispatchQueue = .main, accountHandler: @escaping (SourceAccount) -> Void, completion: @escaping (Result<HealthResult, SDKError>) -> Void) {
         guard let contractTimeRange = contractsCache.firstTimeRange(for: contractId) else {
             self.contractDetails(resultQueue: resultQueue) { contractResult in
                 switch contractResult {
@@ -490,7 +490,9 @@ public final class DigiMe {
                     let timeRangeResult = certificat.verifyTimeRange(readOptions: readOptions)
                     switch timeRangeResult {
                     case .success(let limits):
-                        self.healthDataClient.retrieveData(from: limits.startDate, to: limits.endDate) { result in
+                        self.healthDataClient.retrieveData(from: limits.startDate, to: limits.endDate) { account in
+                            accountHandler(account)
+                        } completion: { result in
                             switch result {
                             case .success(let data):
                                 resultQueue.async {
@@ -521,7 +523,9 @@ public final class DigiMe {
 		let timeRangeResult = contractTimeRange.verifyTimeRange(readOptions: readOptions)
 		switch timeRangeResult {
 		case .success(let limits):
-			self.healthDataClient.retrieveData(from: limits.startDate, to: limits.endDate) { result in
+            self.healthDataClient.retrieveData(from: limits.startDate, to:  limits.endDate) { account in
+                accountHandler(account)
+            } completion: { result in
 				switch result {
 				case .success(let data):
 					resultQueue.async {
