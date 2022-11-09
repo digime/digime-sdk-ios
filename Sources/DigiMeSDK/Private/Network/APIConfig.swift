@@ -9,7 +9,7 @@
 import Foundation
 
 enum APIConfig {
-	static let version = "/v1.6"
+	static let version = "/v1.7"
     static let baseUrl = "https://api.digi.me"
 	static let baseUrlPathWithVersion = baseUrl + version
     
