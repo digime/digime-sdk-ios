@@ -105,7 +105,9 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
     private func fetchData(readOptions: ReadOptions? = nil) {
         SVProgressHUD.show(withStatus: "Fetching data...")
         
-        digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions) { result in
+		digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions) { account in
+			print("Apple Health account: \(String(describing: account))")
+		} completion: { result in
             SVProgressHUD.dismiss()
             
             switch result {

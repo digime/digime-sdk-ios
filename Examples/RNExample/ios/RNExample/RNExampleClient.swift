@@ -177,7 +177,8 @@ class RNExampleClient: NSObject {
   private func fetchData(readOptions: ReadOptions? = nil) {
     eventEmitter?.log(message: "Fetching data...")
     
-    digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions) { result in
+    digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions) { _ in
+    } completion: { result in
       
       switch result {
         case .success(let healthResult):
