@@ -14,7 +14,7 @@ class Logger {
     }()
         
     var logHandler: Logging = DefaultLogger()
-    var logLevelMask: LogLevelMask = [.critical, .error, .warning, .info]
+	var logLevelMask: LogLevelMask = [.critical, .error, .warning, .info, .mixpanel]
     
     class var logLevels: LogLevelMask {
         get {
