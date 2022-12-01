@@ -29,7 +29,7 @@ class RouterTests: XCTestCase {
     func testAuthorizeRequest() throws {
         let jwt = UUID().uuidString
         let sut = AuthorizeRoute(jwt: jwt, readOptions: options)
-        let request = sut.toUrlRequest()
+		let request = sut.toUrlRequest(with: "path")
         
         XCTAssert(request.httpMethod == "POST", "Error testing Authorize request. Http method is incorrect.")
         
@@ -69,7 +69,7 @@ class RouterTests: XCTestCase {
     func testTokenExchangeRequest() throws {
         let jwt = UUID().uuidString
         let sut = TokenExchangeRoute(jwt: jwt)
-        let request = sut.toUrlRequest()
+		let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "POST", "Error testing Token Exchange request. Http method is incorrect.")
         
@@ -88,7 +88,7 @@ class RouterTests: XCTestCase {
     func testFileListRequest() throws {
         let sessionKey = UUID().uuidString
         let sut = FileListRoute(sessionKey: sessionKey)
-        let request = sut.toUrlRequest()
+		let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "GET", "Error testing File List request. Http method is incorrect.")
         
@@ -108,7 +108,7 @@ class RouterTests: XCTestCase {
         let fileId = "testFileId"
         let sessionKey = UUID().uuidString
         let sut = ReadDataRoute(sessionKey: sessionKey, fileId: fileId)
-        let request = sut.toUrlRequest()
+        let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "GET", "Error testing File request. Http method is incorrect.")
         
@@ -129,7 +129,7 @@ class RouterTests: XCTestCase {
     func testTriggerRequest() throws {
         let jwt = UUID().uuidString
         let sut = TriggerSyncRoute(jwt: jwt, readOptions: options)
-        let request = sut.toUrlRequest()
+        let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "POST", "Error testing Trigger request. Http method is incorrect.")
         
@@ -163,7 +163,7 @@ class RouterTests: XCTestCase {
         let payload = Data()
         let jwt = UUID().uuidString
         let sut = WriteDataRoute(postboxId: postboxId, payload: payload, jwt: jwt)
-        let request = sut.toUrlRequest()
+        let request = sut.toUrlRequest(with: "path")
 
         XCTAssertEqual(request.httpMethod, "POST", "Error testing Write request. Http method is incorrect.")
         
@@ -192,7 +192,7 @@ class RouterTests: XCTestCase {
     func testDeleteUserRoute() throws {
         let jwt = UUID().uuidString
         let sut = DeleteUserRoute(jwt: jwt)
-        let request = sut.toUrlRequest()
+        let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "DELETE", "Error testing Delete User request. Http method is incorrect.")
         
@@ -210,7 +210,7 @@ class RouterTests: XCTestCase {
     
     func testServicesRoute() throws {
         let sut = ServicesRoute(contractId: nil)
-        let request = sut.toUrlRequest()
+        let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "GET", "Error testing Services request. Http method is incorrect.")
         
@@ -228,7 +228,7 @@ class RouterTests: XCTestCase {
     func testServicesRouteWithContractId() throws {
         let contractId = UUID().uuidString
         let sut = ServicesRoute(contractId: contractId)
-        let request = sut.toUrlRequest()
+        let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "GET", "Error testing Services request. Http method is incorrect.")
         
@@ -247,7 +247,7 @@ class RouterTests: XCTestCase {
     func testTokenReferenceRoute() throws {
         let jwt = UUID().uuidString
         let sut = TokenReferenceRoute(jwt: jwt)
-        let request = sut.toUrlRequest()
+        let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "POST", "Error testing Token Reference request. Http method is incorrect.")
         
@@ -265,7 +265,7 @@ class RouterTests: XCTestCase {
     
     func testWebKeySetRoute() throws {
         let sut = WebKeySetRoute()
-        let request = sut.toUrlRequest()
+        let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "GET", "Error testing JWKS request. Http method is incorrect.")
         
