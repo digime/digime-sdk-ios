@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x7A-dh-Za3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x7A-dh-Za3">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,7 +15,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="x7A-dh-Za3" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XFs-KN-o82">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -130,7 +130,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="s1F-PC-iap">
-                                <rect key="frame" x="0.0" y="449.5" width="414" height="412.5"/>
+                                <rect key="frame" x="0.0" y="513.5" width="414" height="348.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -138,13 +138,13 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wke-Cp-YCd">
-                                <rect key="frame" x="10" y="108" width="394" height="321.5"/>
+                                <rect key="frame" x="10" y="112" width="394" height="381.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="top" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="c4z-sW-sdZ">
-                                        <rect key="frame" x="53" y="0.0" width="288" height="261.5"/>
+                                        <rect key="frame" x="53" y="0.0" width="288" height="321.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="PPt-Q3-EmO">
-                                                <rect key="frame" x="0.0" y="0.0" width="128" height="261.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="128" height="321.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write Contract" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VfX-6b-kEH">
                                                         <rect key="frame" x="1" y="0.0" width="126.5" height="21.5"/>
@@ -171,11 +171,22 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                         <state key="normal" title="Upload JSON"/>
                                                         <connections>
-                                                            <action selector="uploadJson" destination="y8h-Rd-KqN" eventType="touchUpInside" id="IxI-jg-8Ik"/>
+                                                            <action selector="uploadJson" destination="y8h-Rd-KqN" eventType="touchUpInside" id="shY-Aa-TFX"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L7t-Cu-GzQ">
+                                                        <rect key="frame" x="16" y="161.5" width="96" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="dh3-wB-tpd"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                        <state key="normal" title="Upload PDF"/>
+                                                        <connections>
+                                                            <action selector="uploadPdf" destination="y8h-Rd-KqN" eventType="touchUpInside" id="YtR-D2-FcO"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dme-wz-Ugi">
-                                                        <rect key="frame" x="8" y="161.5" width="112" height="40"/>
+                                                        <rect key="frame" x="8" y="221.5" width="112" height="40"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="pSp-BP-fgE"/>
                                                         </constraints>
@@ -186,7 +197,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lfY-sv-ytn">
-                                                        <rect key="frame" x="0.0" y="221.5" width="128" height="40"/>
+                                                        <rect key="frame" x="0.0" y="281.5" width="128" height="40"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="5JV-rz-qKo"/>
                                                         </constraints>
@@ -218,19 +229,8 @@
                                                             <action selector="authorizeReadContract" destination="y8h-Rd-KqN" eventType="touchUpInside" id="41u-Bd-JUT"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9E-UN-ctf">
-                                                        <rect key="frame" x="0.0" y="101.5" width="128" height="40"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="40" id="IOV-Kl-cL7"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                        <state key="normal" title="Contract details"/>
-                                                        <connections>
-                                                            <action selector="showReadContractDetails" destination="y8h-Rd-KqN" eventType="touchUpInside" id="IQX-16-ZqB"/>
-                                                        </connections>
-                                                    </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvX-QH-vo7">
-                                                        <rect key="frame" x="20" y="161.5" width="88" height="40"/>
+                                                        <rect key="frame" x="20" y="101.5" width="88" height="40"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="4C6-na-HpG"/>
                                                         </constraints>
@@ -240,12 +240,23 @@
                                                             <action selector="readData" destination="y8h-Rd-KqN" eventType="touchUpInside" id="3bH-JN-A2f"/>
                                                         </connections>
                                                     </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9E-UN-ctf">
+                                                        <rect key="frame" x="0.0" y="161.5" width="128" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="IOV-Kl-cL7"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                        <state key="normal" title="Contract details"/>
+                                                        <connections>
+                                                            <action selector="showReadContractDetails" destination="y8h-Rd-KqN" eventType="touchUpInside" id="IQX-16-ZqB"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="sIr-EF-nKz">
-                                        <rect key="frame" x="149.5" y="281.5" width="95" height="40"/>
+                                        <rect key="frame" x="149.5" y="341.5" width="95" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="wNB-k8-ZnV"/>
                                         </constraints>
@@ -283,7 +294,8 @@
                         <outlet property="loggerTextView" destination="s1F-PC-iap" id="gfL-x8-Ukc"/>
                         <outlet property="readDataButton" destination="rvX-QH-vo7" id="Ocw-hy-LPM"/>
                         <outlet property="uploadImageButton" destination="dme-wz-Ugi" id="mzT-qE-rpB"/>
-                        <outlet property="uploadJsonButton" destination="r0N-d9-o5C" id="ik9-s7-dpd"/>
+                        <outlet property="uploadJSONButton" destination="r0N-d9-o5C" id="0Xv-m5-T69"/>
+                        <outlet property="uploadPDFButton" destination="L7t-Cu-GzQ" id="rcQ-uT-r2Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VZx-ch-IZe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -315,7 +327,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="v0E-by-0I0">
-                                <rect key="frame" x="10" y="199" width="394" height="250"/>
+                                <rect key="frame" x="10" y="203" width="394" height="250"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BY2-4K-f0z">
                                         <rect key="frame" x="108" y="0.0" width="178" height="34"/>
@@ -362,7 +374,7 @@
                                 </subviews>
                             </stackView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6aS-zW-Fvz">
-                                <rect key="frame" x="0.0" y="469" width="414" height="393"/>
+                                <rect key="frame" x="0.0" y="473" width="414" height="389"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -370,19 +382,19 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6q-8A-B9m">
-                                <rect key="frame" x="10" y="118" width="41.5" height="20.5"/>
+                                <rect key="frame" x="10" y="122" width="41.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVU-bV-LuQ">
-                                <rect key="frame" x="10" y="158.5" width="394" height="20.5"/>
+                                <rect key="frame" x="10" y="162.5" width="394" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XMo-ji-iav">
-                                <rect key="frame" x="61.5" y="108.5" width="342.5" height="40"/>
+                                <rect key="frame" x="61.5" y="112.5" width="342.5" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Tz9-HU-Lhn"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="pUw-zw-a2M"/>
@@ -433,7 +445,7 @@
     </scenes>
     <resources>
         <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

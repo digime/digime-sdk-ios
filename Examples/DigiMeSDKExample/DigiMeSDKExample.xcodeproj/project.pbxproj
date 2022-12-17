@@ -26,6 +26,8 @@
 		1E5A31EE27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5A31ED27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift */; };
 		1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E717C2861AA1000E7954E /* UserPreferences.swift */; };
 		1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */; };
+		1E757C372948897D00E373DE /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E757C362948897D00E373DE /* String+Helper.swift */; };
+		1EAF42EB29474EB700E2ADE2 /* uploadExample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 1EAF42EA29474EB700E2ADE2 /* uploadExample.pdf */; };
 		1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */; };
 		1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */; };
 		1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */; };
@@ -76,6 +78,8 @@
 		1E66044627F49CA800A18292 /* CareKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CareKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E6E717C2861AA1000E7954E /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthDetailsView.swift; sourceTree = "<group>"; };
+		1E757C362948897D00E373DE /* String+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helper.swift"; sourceTree = "<group>"; };
+		1EAF42EA29474EB700E2ADE2 /* uploadExample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = uploadExample.pdf; sourceTree = SOURCE_ROOT; };
 		1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceFormatter.swift; sourceTree = "<group>"; };
 		1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Locale+Helper.swift"; sourceTree = "<group>"; };
 		1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesFormatter.swift; sourceTree = "<group>"; };
@@ -132,6 +136,7 @@
 				1E49020027D9143C00F13D29 /* UIApplication+Extension.swift */,
 				1E4901E127D9112200F13D29 /* Logger.swift */,
 				1E6E717C2861AA1000E7954E /* UserPreferences.swift */,
+				1E757C362948897D00E373DE /* String+Helper.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -230,6 +235,7 @@
 				27D31A29266A4EAB00DB2524 /* Main.storyboard */,
 				27D31A2E266A4EAD00DB2524 /* LaunchScreen.storyboard */,
 				27D31A31266A4EAD00DB2524 /* Info.plist */,
+				1EAF42EA29474EB700E2ADE2 /* uploadExample.pdf */,
 			);
 			path = DigiMeSDKExample;
 			sourceTree = "<group>";
@@ -378,6 +384,7 @@
 			files = (
 				27D31A30266A4EAD00DB2524 /* LaunchScreen.storyboard in Resources */,
 				27D31A2D266A4EAD00DB2524 /* Assets.xcassets in Resources */,
+				1EAF42EB29474EB700E2ADE2 /* uploadExample.pdf in Resources */,
 				27D31A2B266A4EAB00DB2524 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -497,6 +504,7 @@
 				1E4901F627D912B400F13D29 /* FeedItemViewController.swift in Sources */,
 				1E4901E927D9112B00F13D29 /* ServicePickerViewController.swift in Sources */,
 				1E4901EA27D9112B00F13D29 /* HomeViewController.swift in Sources */,
+				1E757C372948897D00E373DE /* String+Helper.swift in Sources */,
 				1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */,
 				1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */,
 				1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */,

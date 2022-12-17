@@ -16,7 +16,7 @@ protocol RequestClaims: JWTClaims {
 
 extension RequestClaims {
     func encode() throws -> String {
-        let data = try self.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase)
+		let data = try self.encoded(dateEncodingStrategy: .millisecondsSince1970)
         return data.base64URLEncodedString()
     }
 }
@@ -28,6 +28,12 @@ enum JWTUtility {
 		let clientId: String
 		var nonce = JWTUtility.generateNonce()
 		var timestamp = Date()
+		
+		enum CodingKeys: String, CodingKey {
+			case clientId = "client_id"
+			case nonce
+			case timestamp
+		}
 	}
 	
     // Claims to request a pre-authorization code
@@ -42,6 +48,19 @@ enum JWTUtility {
         var responseType = "code"
         var state = JWTUtility.secureRandomHexString(length: 32)
         var timestamp = Date()
+		
+		enum CodingKeys: String, CodingKey {
+			case accessToken = "access_token"
+			case clientId = "client_id"
+			case codeChallenge = "code_challenge"
+			case codeChallengeMethod = "code_challenge_method"
+			case nonce
+			case redirectUri = "redirect_uri"
+			case responseMode = "response_mode"
+			case responseType = "response_type"
+			case state
+			case timestamp
+		}
     }
     
     // Claims for pre-authorization code response
@@ -71,10 +90,20 @@ enum JWTUtility {
         let clientId: String
         let code: String
         let codeVerifier: String
-        var grantType = "authorization_code"
+		var grantType = "authorization_code"
         var nonce = JWTUtility.generateNonce()
         let redirectUri: String
         var timestamp = Date()
+		
+		enum CodingKeys: String, CodingKey {
+			case clientId = "client_id"
+			case code
+			case codeVerifier = "code_verifier"
+			case grantType = "grant_type"
+			case nonce
+			case redirectUri = "redirect_uri"
+			case timestamp
+		}
     }
     
     // Claims to request data trigger. Also used for requesting reference token and deleting user
@@ -84,16 +113,33 @@ enum JWTUtility {
         var nonce = JWTUtility.generateNonce()
         let redirectUri: String
         var timestamp = Date()
+		
+		enum CodingKeys: String, CodingKey {
+			case accessToken = "access_token"
+			case clientId = "client_id"
+			case nonce
+			case redirectUri = "redirect_uri"
+			case timestamp
+		}
     }
     
     // Claims to request OAuth token renewal
     private struct PayloadRefreshOAuthJWT: RequestClaims {
         let clientId: String
-        var grantType = "refresh_token"
+		var grantType = "refresh_token"
         var nonce = JWTUtility.generateNonce()
         let redirectUri: String
         let refreshToken: String
         var timestamp = Date()
+		
+		enum CodingKeys: String, CodingKey {
+			case clientId = "client_id"
+			case grantType = "grant_type"
+			case nonce
+			case redirectUri = "redirect_uri"
+			case refreshToken = "refresh_token"
+			case timestamp
+		}
     }
     
     // Claims to request writing data
@@ -106,7 +152,38 @@ enum JWTUtility {
         let redirectUri: String
         let symmetricalKey: String
         var timestamp = Date()
+		
+		enum CodingKeys: String, CodingKey {
+			case accessToken = "access_token"
+			case clientId = "client_id"
+			case iv
+			case metadata
+			case nonce
+			case redirectUri = "redirect_uri"
+			case symmetricalKey = "symmetrical_key"
+			case timestamp
+		}
     }
+	
+	// Claims to request uploading data
+	private struct PayloadFileUploadJWT: RequestClaims {
+		let accessToken: String
+		let clientId: String
+		var nonce = JWTUtility.generateNonce()
+		var timestamp = Date()
+		
+		enum CodingKeys: String, CodingKey {
+			case accessToken = "access_token"
+			case clientId = "client_id"
+			case nonce
+			case timestamp
+		}
+	}
+	
+	// Claims to request uploading data file descriptor
+	private struct PayloadFileDescriptorUploadJWT: RequestClaims {
+		let metadata: RawFileMetadata
+	}
 
     /// Creates request JWT which can be used to get a pre-authentication token
     ///
@@ -247,6 +324,33 @@ enum JWTUtility {
 
         return createRequestJWT(claims: claims, configuration: configuration)
     }
+	
+	/// Creates request JWT which can be used to upload file data
+	///
+	/// - Parameters:
+	///   - accessToken: OAuth refresh token
+	///   - configuration: this SDK's instance configuration
+	static func fileUploadRequestJWT(accessToken: String, configuration: Configuration) -> String? {
+		let claims = PayloadFileUploadJWT(
+			accessToken: accessToken,
+			clientId: configuration.clientId
+		)
+		
+		return createRequestJWT(claims: claims, configuration: configuration)
+	}
+	
+	/// Creates request JWT which can be used to upload file data descriptor
+	///
+	/// - Parameters:
+	///   - metadata: metadata describing data being uploaded
+	///   - configuration: this SDK's instance configuration
+	static func fileDescriptorUploadRequestJWT(metadata: RawFileMetadata, configuration: Configuration) -> String? {
+		let claims = PayloadFileDescriptorUploadJWT(
+			metadata: metadata
+		)
+
+		return createRequestJWT(claims: claims, configuration: configuration)
+	}
     
     // MARK: - Utility functions
     private static func createRequestJWT<T: RequestClaims>(claims: T, configuration: Configuration) -> String? {

@@ -33,51 +33,62 @@ class APIClient {
 		self.urlPath = baseUrl + APIConfig.version
 	}
 	
-    func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, SDKError>) -> Void) {
-        let request = route.toUrlRequest(with: urlPath)
-        session.dataTask(with: request) { data, response, error in
-            if let error = error {
-                Logger.error(error.localizedDescription)
-                completion(.failure(.urlRequestFailed(error: error)))
-                return
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                Logger.error("Request: \(request.url?.absoluteString ?? "") received no response")
-                completion(.failure(.errorMakingRequestNoResponse))
-                return
-            }
-            
-            self.logStatusMessage(from: httpResponse)
-            
-            guard (200..<300).contains(httpResponse.statusCode) else {
-                let resultError = self.parseHttpError(statusCode: httpResponse.statusCode, data: data, urlString: request.url?.absoluteString)
-                
-                completion(.failure(resultError))
-                return
-            }
-            
-            guard let data = data else {
-                Logger.error("Request: \(request.url?.absoluteString ?? "") received no data")
-                completion(.failure(.errorMakingRequest))
-                return
-            }
-            
-            let httpHeaders = httpResponse.allHeaderFields
-            
-            do {
-                let result = try route.parseResponse(data: data, headers: httpHeaders)
-                completion(.success(result))
-            }
-            catch let error as SDKError {
-                completion(.failure(error))
-            }
-            catch {
-                completion(.failure(SDKError.invalidData))
-            }
-        }.resume()
-    }
-    
+	func makeRequest<T: Route>(_ route: T, completion: @escaping (Result<T.ResponseType, SDKError>) -> Void) {
+		let request = route.toUrlRequest(with: urlPath)
+		session.dataTask(with: request) { data, response, error in
+			self.handleResponse(route, request: request, data: data, response: response, error: error, completion: completion)
+		}.resume()
+	}
+	
+	func makeRequestFileUpload<T: Route>(_ route: T, uploadData: Data, completion: @escaping (Result<T.ResponseType, SDKError>) -> Void) {
+		let request = route.toUrlRequest(with: urlPath)
+		session.uploadTask(with: request, from: uploadData) { data, response, error in
+			self.handleResponse(route, request: request, data: data, response: response, error: error, completion: completion)
+		}.resume()
+	}
+	
+	private func handleResponse<T: Route>(_ route: T, request: URLRequest, data: Data?, response: URLResponse?, error: Error?, completion: @escaping (Result<T.ResponseType, SDKError>) -> Void) {
+		if let error = error {
+			Logger.error(error.localizedDescription)
+			completion(.failure(.urlRequestFailed(error: error)))
+			return
+		}
+		
+		guard let httpResponse = response as? HTTPURLResponse else {
+			Logger.error("Request: \(request.url?.absoluteString ?? "") received no response")
+			completion(.failure(.errorMakingRequestNoResponse))
+			return
+		}
+		
+		self.logStatusMessage(from: httpResponse)
+		
+		guard (200..<300).contains(httpResponse.statusCode) else {
+			let resultError = self.parseHttpError(statusCode: httpResponse.statusCode, data: data, urlString: request.url?.absoluteString)
+			
+			completion(.failure(resultError))
+			return
+		}
+		
+		guard let data = data else {
+			Logger.error("Request: \(request.url?.absoluteString ?? "") received no data")
+			completion(.failure(.errorMakingRequest))
+			return
+		}
+		
+		let httpHeaders = httpResponse.allHeaderFields
+		
+		do {
+			let result = try route.parseResponse(data: data, headers: httpHeaders)
+			completion(.success(result))
+		}
+		catch let error as SDKError {
+			completion(.failure(error))
+		}
+		catch {
+			completion(.failure(SDKError.invalidData))
+		}
+	}
+	
     private func parseHttpError(statusCode: Int, data: Data?, urlString: String?) -> SDKError {
         let errorResponse = try? data?.decoded() as APIErrorResponse?
         var error: APIError?

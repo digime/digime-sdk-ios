@@ -22,11 +22,17 @@ class FileUploadService {
         queue.name = "me.digi.sdk.fileuploadservice"
     }
     
-    func uploadFile(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Session, SDKError>) -> Void) {
+    func uploadFilePostbox(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Session, SDKError>) -> Void) {
         let operation = FileUploadOperation(data: data, metadata: metadata, credentials: credentials, configuration: configuration, apiClient: apiClient)
         operation.uploadCompletion = completion
         queue.addOperation(operation)
     }
+	
+	func uploadFileDirect(data: Data, metadata: RawFileMetadata, credentials: Credentials, completion: @escaping (Result<Void, SDKError>) -> Void) {
+		let operation = FileUploadUnencryptedOperation(data: data, metadata: metadata, credentials: credentials, configuration: configuration, apiClient: apiClient)
+		operation.uploadCompletion = completion
+		queue.addOperation(operation)
+	}
     
     func uploadLog(logName: String, metadata: LogEventMeta, completion: @escaping (Result<LogEventsUploadResponse, SDKError>) -> Void) {
 		guard let jwt = JWTUtility.logsUploadRequestJWT(configuration: configuration) else {

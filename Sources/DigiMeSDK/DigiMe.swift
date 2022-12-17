@@ -341,7 +341,7 @@ public final class DigiMe {
     ///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called when writing data has complete with new or refreshed credentials, or any errors encountered.
-    public func write(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    public func writePostbox(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         let metadataData: Data
         do {
             metadataData = try metadata.encoded()
@@ -356,7 +356,7 @@ public final class DigiMe {
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):
-                self.write(data: data, metadata: metadataData, credentials: refreshedCredentials) { result in
+                self.writePostbox(data: data, metadata: metadataData, credentials: refreshedCredentials) { result in
                     resultQueue.async {
                         completion(result)
                     }
@@ -369,6 +369,31 @@ public final class DigiMe {
             }
         }
     }
+	
+	/// Writes data directly to user's library associated with configured contract.
+	/// - Parameters:
+	///   - data: The data to be written
+	///   - metadata: The metadata describing the data to be written. See `RawFileMetadataBuilder` for details on building the metadata
+	///   - credentials: The existing credentials for the contract.
+	///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+	///   - completion: Block called when writing data has complete with new or refreshed credentials, or any errors encountered.
+	public func writeDirect(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+		validateOrRefreshCredentials(credentials) { result in
+			switch result {
+			case .success(let refreshedCredentials):
+				self.writeDirect(data: data, metadata: metadata, credentials: refreshedCredentials) { result in
+					resultQueue.async {
+						completion(result)
+					}
+				}
+			
+			case .failure(let error):
+				resultQueue.async {
+					completion(.failure(error))
+				}
+			}
+		}
+	}
     
     /// Deletes the user's library associated with the configured contract.
     ///
@@ -580,8 +605,8 @@ public final class DigiMe {
         }
     }
     
-    private func write(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
-        uploadService.uploadFile(data: data, metadata: metadata, credentials: credentials) { result in
+    private func writePostbox(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+        uploadService.uploadFilePostbox(data: data, metadata: metadata, credentials: credentials) { result in
             switch result {
             case .success(let session):
                 self.session = session
@@ -594,7 +619,7 @@ public final class DigiMe {
                     self.refreshTokens(credentials: credentials) { refreshResult in
                         switch refreshResult {
                         case .success(let credentials):
-                            self.write(data: data, metadata: metadata, credentials: credentials, completion: completion)
+                            self.writePostbox(data: data, metadata: metadata, credentials: credentials, completion: completion)
                         case .failure(let error):
                             completion(.failure(error))
                         }
@@ -605,6 +630,32 @@ public final class DigiMe {
             }
         }
     }
+	
+	private func writeDirect(data: Data, metadata: RawFileMetadata, credentials: Credentials, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+		uploadService.uploadFileDirect(data: data, metadata: metadata, credentials: credentials) { result in
+			switch result {
+			case .success(let response):
+				print(response)
+				completion(.success(credentials))
+			case .failure(let error):
+				// We should be pre-emptively catching the situation where the access token has expired,
+				// but just in case we should react to server message
+				switch error {
+				case .httpResponseError(statusCode: 401, apiError: let apiError) where apiError?.code == "InvalidToken":
+					self.refreshTokens(credentials: credentials) { refreshResult in
+						switch refreshResult {
+						case .success(let credentials):
+							self.writeDirect(data: data, metadata: metadata, credentials: credentials, completion: completion)
+						case .failure(let error):
+							completion(.failure(error))
+						}
+					}
+				default:
+					completion(.failure(error))
+				}
+			}
+		}
+	}
     
     // Auth - needs app to be able to receive response via URL
     private func beginAuth(serviceId: Int?, readOptions: ReadOptions?, linkToContractWithCredentials linkCredentials: Credentials?, completion: @escaping (Result<Credentials, SDKError>) -> Void) {

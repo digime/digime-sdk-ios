@@ -12,9 +12,10 @@ import UIKit
 class WriteDataViewController: UIViewController {
     
     @IBOutlet private var authorizeWriteButton: UIButton!
-    @IBOutlet private var uploadJsonButton: UIButton!
+    @IBOutlet private var uploadPDFButton: UIButton!
     @IBOutlet private var uploadImageButton: UIButton!
-    
+	@IBOutlet private var uploadJSONButton: UIButton!
+	
     @IBOutlet private var authorizeReadButton: UIButton!
     @IBOutlet private var contractDetailsReadButton: UIButton!
     @IBOutlet private var contractDetailsWriteButton: UIButton!
@@ -94,7 +95,7 @@ class WriteDataViewController: UIViewController {
         do {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            let metadata = RawFileMetadataBuilder(mimeType: .applicationJson, accounts: ["Account1"])
+            let metadata = RawFileMetadataBuilder(mimeType: .applicationJson, accounts: [String.random(length: 8)])
                 .objectTypes([.init(name: "receipt")])
                 .tags(["groceries"])
                 .reference(["Receipt \(dateFormatter.string(from: Date()))"])
@@ -102,7 +103,7 @@ class WriteDataViewController: UIViewController {
             
             let jsonData = try JSONEncoder().encode(Receipt())
             
-            writeDigiMe.write(data: jsonData, metadata: metadata, credentials: credentials) { result in
+            writeDigiMe.writeDirect(data: jsonData, metadata: metadata, credentials: credentials) { result in
                 switch result {
                 case .success(let refreshedCredentials):
                     self.credentialCache.setCredentials(refreshedCredentials, for: Contracts.writeContract.identifier)
@@ -119,7 +120,7 @@ class WriteDataViewController: UIViewController {
                     self.logger.log(message: "Uploaded JSON:\n\(jsonString)")
                     
                 case .failure(let error):
-                    self.logger.log(message: "Upload Error: \(error)")
+                    self.logger.log(message: "Upload JSON file error: \(error)")
                 }
             }
         }
@@ -127,6 +128,74 @@ class WriteDataViewController: UIViewController {
             logger.log(message: "JSON files parsing Error: \(error)")
         }
     }
+	
+	@IBAction private func uploadPdf() {
+		guard let credentials = preferences.credentials(for: Contracts.writeContract.identifier) else {
+			self.logger.log(message: "Write contract must be authorized first.")
+			return
+		}
+		
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+		let metadata = RawFileMetadataBuilder(mimeType: .applicationPdf, accounts: [String.random(length: 5)])
+			.objectTypes([.init(name: "receipt")])
+			.tags(["groceries"])
+			.reference(["Receipt \(dateFormatter.string(from: Date()))"])
+			.build()
+		
+		guard
+			let url = Bundle.main.url(forResource: "uploadExample", withExtension: "pdf"),
+			let pdfData = try? Data(contentsOf: url) else {
+			
+			self.logger.log(message: "Error reading PDF resource file.")
+			return
+		}
+				
+		writeDigiMe.writeDirect(data: pdfData, metadata: metadata, credentials: credentials) { result in
+			switch result {
+			case .success(let refreshedCredentials):
+				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.writeContract.identifier)
+				self.logger.log(message: "Uploaded PDF file.")
+				
+			case .failure(let error):
+				self.logger.log(message: "Upload PDF error: \(error)")
+			}
+		}
+	}
+	
+	@IBAction private func uploadPdfToPostbox() {
+		guard let credentials = preferences.credentials(for: Contracts.writeContract.identifier) else {
+			self.logger.log(message: "Write contract must be authorized first.")
+			return
+		}
+		
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+		let metadata = RawFileMetadataBuilder(mimeType: .applicationPdf, accounts: [String.random(length: 5)])
+			.objectTypes([.init(name: "receipt")])
+			.tags(["groceries"])
+			.reference(["Receipt \(dateFormatter.string(from: Date()))"])
+			.build()
+		
+		guard
+			let url = Bundle.main.url(forResource: "uploadExample", withExtension: "pdf"),
+			let pdfData = try? Data(contentsOf: url) else {
+			
+			self.logger.log(message: "Error reading PDF resource file.")
+			return
+		}
+				
+		writeDigiMe.writePostbox(data: pdfData, metadata: metadata, credentials: credentials) { result in
+			switch result {
+			case .success(let refreshedCredentials):
+				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.writeContract.identifier)
+				self.logger.log(message: "Uploaded PDF file.")
+				
+			case .failure(let error):
+				self.logger.log(message: "Upload PDF error: \(error)")
+			}
+		}
+	}
     
     @IBAction private func uploadImage() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
@@ -216,6 +285,7 @@ class WriteDataViewController: UIViewController {
             switch result {
             case .success(let fileContainer):
                 var message = "Downloaded file \(fileContainer.identifier)"
+				message += "\n\tFile size: \(fileContainer.data.count) bytes"
                 switch fileContainer.metadata {
                 case .raw(let metadata):
                     message += "\n\tMime type: \(metadata.mimeType)"
@@ -228,6 +298,10 @@ class WriteDataViewController: UIViewController {
                 }
                 
                 self.logger.log(message: message)
+				
+				if !fileContainer.data.isEmpty {
+					FilePersistentStorage(with: .documentDirectory).store(data: fileContainer.data, fileName: fileContainer.identifier)
+				}
                 
             case .failure(let error):
                 self.logger.log(message: "Error reading file: \(error)")
@@ -249,16 +323,16 @@ class WriteDataViewController: UIViewController {
     @IBAction private func deleteUser() {
         // As contracts are linked to the same library, could user either digi.me instance here,
         // as this call disconnects all contracts from library, but need to nullify credentials for both on completion
-        let writeCredentials = credentialCache.credentials(for: Contracts.writeContract.identifier)
-        let readCredentials = credentialCache.credentials(for: Contracts.readContract.identifier)
+        let writeCredentials = preferences.credentials(for: Contracts.writeContract.identifier)
+        let readCredentials = preferences.credentials(for: Contracts.readContract.identifier)
         guard let credentials = writeCredentials ?? readCredentials  else {
             self.logger.log(message: "At least one contract must be authorized first.")
             return
         }
         
         writeDigiMe.deleteUser(credentials: credentials) { _ in
-            self.credentialCache.setCredentials(nil, for: Contracts.writeContract.identifier)
-            self.credentialCache.setCredentials(nil, for: Contracts.readContract.identifier)
+            self.preferences.clearCredentials(for: Contracts.writeContract.identifier)
+			self.preferences.clearCredentials(for: Contracts.readContract.identifier)
             self.logger.reset()
             self.updateUI()
         }
@@ -273,12 +347,13 @@ class WriteDataViewController: UIViewController {
             return
         }
         
-        let isWriteAuthorized = credentialCache.credentials(for: Contracts.writeContract.identifier) != nil
+        let isWriteAuthorized = preferences.credentials(for: Contracts.writeContract.identifier) != nil
         self.authorizeWriteButton.isHidden = isWriteAuthorized
-        self.uploadJsonButton.isHidden = !isWriteAuthorized
+        self.uploadPDFButton.isHidden = !isWriteAuthorized
         self.uploadImageButton.isHidden = !isWriteAuthorized
+		self.uploadJSONButton.isHidden = !isWriteAuthorized
         
-        let isReadAuthorized = credentialCache.credentials(for: Contracts.readContract.identifier) != nil
+        let isReadAuthorized = preferences.credentials(for: Contracts.readContract.identifier) != nil
         self.authorizeReadButton.isHidden = isReadAuthorized
         self.readDataButton.isHidden = !isReadAuthorized
         
@@ -314,7 +389,7 @@ extension WriteDataViewController: UIImagePickerControllerDelegate {
                 return
             }
             
-            guard let credentials = self.credentialCache.credentials(for: Contracts.writeContract.identifier) else {
+            guard let credentials = self.preferences.credentials(for: Contracts.writeContract.identifier) else {
                 self.logger.log(message: "Write contract must be authorized first.")
                 return
             }
@@ -326,14 +401,14 @@ extension WriteDataViewController: UIImagePickerControllerDelegate {
                 .reference([fileName])
                 .build()
             
-            self.writeDigiMe.write(data: data, metadata: metadata, credentials: credentials) { result in
+            self.writeDigiMe.writeDirect(data: data, metadata: metadata, credentials: credentials) { result in
                 switch result {
                 case .success(let refreshedCredentials):
-                    self.credentialCache.setCredentials(refreshedCredentials, for: Contracts.writeContract.identifier)
+					self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.writeContract.identifier)
                     self.logger.log(message: "Uploaded image:\n\(fileName)\n\(image.size) - \(data.count)")
 
                 case .failure(let error):
-                    self.logger.log(message: "Upload Error: \(error)")
+                    self.logger.log(message: "Upload image error: \(error)")
                 }
             }
         }

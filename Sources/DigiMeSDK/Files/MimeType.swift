@@ -11,7 +11,8 @@ import Foundation
 public enum MimeType: String, CaseIterable, Codable {
     case applicationJson = "application/json"
     case applicationOctetStream = "application/octet-stream"
-    
+	case applicationPdf  = "application/pdf"
+	
     case imageJpeg = "image/jpeg"
     case imageTiff = "image/tiff"
     case imagePng = "image/png"
