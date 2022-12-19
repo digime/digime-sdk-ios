@@ -12,7 +12,7 @@ struct UploadMixpanelEventsRoute: Route {
 	typealias ResponseType = LogEventsUploadResponse
 	
 	static let method = "POST"
-	static let path = "tracking/maf"
+	static let path = "tracking/sdk"
 	
 	var customHeaders: [String: String] {
 		["Authorization": "Bearer " + jwt]
