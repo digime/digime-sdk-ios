@@ -28,8 +28,8 @@ class WriteDataViewController: UIViewController {
     
     private var writeDigiMe: DigiMe!
     private var readDigiMe: DigiMe!
-    private let credentialCache = CredentialCache()
-    
+	private var preferences = UserPreferences.shared()
+	
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,12 +53,12 @@ class WriteDataViewController: UIViewController {
     }
     
     @IBAction private func authorizeWriteContract() {
-        let writeCredentials = credentialCache.credentials(for: Contracts.writeContract.identifier)
-        let readCredentials = credentialCache.credentials(for: Contracts.readContract.identifier)
+        let writeCredentials = preferences.credentials(for: Contracts.writeContract.identifier)
+        let readCredentials = preferences.credentials(for: Contracts.readContract.identifier)
         writeDigiMe.authorize(credentials: writeCredentials, linkToContractWithCredentials: readCredentials) { result in
             switch result {
             case .success(let newOrRefreshedCredentials):
-                self.credentialCache.setCredentials(newOrRefreshedCredentials, for: Contracts.writeContract.identifier)
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: Contracts.writeContract.identifier)
                 self.updateUI()
                 
             case.failure(let error):
@@ -68,16 +68,16 @@ class WriteDataViewController: UIViewController {
     }
     
     @IBAction private func authorizeReadContract() {
-        guard let writeCredentials = credentialCache.credentials(for: Contracts.writeContract.identifier) else {
+        guard let writeCredentials = preferences.credentials(for: Contracts.writeContract.identifier) else {
             logger.log(message: "Write contract needs to be authorized first")
             return
         }
         
-        let readCredentials = credentialCache.credentials(for: Contracts.readContract.identifier)
+        let readCredentials = preferences.credentials(for: Contracts.readContract.identifier)
         readDigiMe.authorize(credentials: readCredentials, linkToContractWithCredentials: writeCredentials) { result in
             switch result {
             case .success(let newOrRefreshedCredentials):
-                self.credentialCache.setCredentials(newOrRefreshedCredentials, for: Contracts.readContract.identifier)
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: Contracts.readContract.identifier)
                 self.updateUI()
                 
             case.failure(let error):
@@ -87,7 +87,7 @@ class WriteDataViewController: UIViewController {
     }
     
     @IBAction private func uploadJson() {
-        guard let credentials = credentialCache.credentials(for: Contracts.writeContract.identifier) else {
+        guard let credentials = preferences.credentials(for: Contracts.writeContract.identifier) else {
             self.logger.log(message: "Write contract must be authorized first.")
             return
         }
@@ -106,7 +106,7 @@ class WriteDataViewController: UIViewController {
             writeDigiMe.writeDirect(data: jsonData, metadata: metadata, credentials: credentials) { result in
                 switch result {
                 case .success(let refreshedCredentials):
-                    self.credentialCache.setCredentials(refreshedCredentials, for: Contracts.writeContract.identifier)
+					self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.writeContract.identifier)
                     let jsonString: String
                     if
                         let json = try? JSONSerialization.jsonObject(with: jsonData, options: []),
@@ -208,7 +208,7 @@ class WriteDataViewController: UIViewController {
     }
     
     @IBAction private func readData() {
-        guard let credentials = credentialCache.credentials(for: Contracts.readContract.identifier) else {
+        guard let credentials = preferences.credentials(for: Contracts.readContract.identifier) else {
             self.logger.log(message: "Read contract must be authorized first.")
             return
         }
@@ -216,7 +216,7 @@ class WriteDataViewController: UIViewController {
         readDigiMe.requestDataQuery(credentials: credentials, readOptions: nil) { result in
             switch result {
             case .success(let refreshedCredentials):
-                self.credentialCache.setCredentials(refreshedCredentials, for: Contracts.readContract.identifier)
+				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.readContract.identifier)
                 self.readAllFiles(credentials: refreshedCredentials)
             case .failure(let error):
                 self.logger.log(message: "Error requesting data query: \(error)")
@@ -309,7 +309,7 @@ class WriteDataViewController: UIViewController {
         } completion: { result in
             switch result {
             case .success(let (fileList, refreshedCredentials)):
-                self.credentialCache.setCredentials(refreshedCredentials, for: Contracts.readContract.identifier)
+				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.readContract.identifier)
                 var message = "Finished reading files:"
                 fileList.files?.forEach { message += "\n\t\($0.name)" }
                 self.logger.log(message: message)

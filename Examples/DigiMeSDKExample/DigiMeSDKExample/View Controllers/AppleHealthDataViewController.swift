@@ -13,7 +13,8 @@ import SwiftUI
 import UIKit
 
 class AppleHealthDataViewController: DataTypeCollectionViewController {
-        
+	
+	private var preferences = UserPreferences.shared()
     private var records = [FitnessActivitySummary]()
     private var sections = [(date: Date, records: [FitnessActivitySummary])]()
     private var digiMe: DigiMe!
@@ -102,51 +103,63 @@ class AppleHealthDataViewController: DataTypeCollectionViewController {
         self.navigationController?.popToRootViewController(animated: true)
     }
     
-    private func fetchData(readOptions: ReadOptions? = nil) {
-        SVProgressHUD.show(withStatus: "Fetching data...")
-        
-		digiMe.retrieveAppleHealth(for: contract.identifier, readOptions: readOptions) { account in
-			print("Apple Health account: \(String(describing: account))")
-		} completion: { result in
-            SVProgressHUD.dismiss()
-            
-            switch result {
-            case .success(let healthResult):
-                
-                /// For debugging purpose only.
-                /// Debugging account data.
-                if
-                    let account = healthResult.account,
-                    let jsonData = try? account.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase) {
-                    
-                    FilePersistentStorage(with: .documentDirectory).store(data: jsonData, fileName: "account.json")
-                }
-                
-                /// Split data into calendar one week range.
-                let chunked = healthResult.data.chunked(into: 7)
-                self.data.append(contentsOf: chunked)
-                DispatchQueue.main.async { [weak self] in
-                    self?.reload()
-                }
-                
-                /// For debugging purposes only.
-                /// Group data to monthly time shard
-                self.records = healthResult.data
-                self.updateSections()
-                
-                /// Store the data content locally. Use iTunes file sharing to review JFS data saved under the Documents folder.
-                self.saveToJFS()
-                
-                let steps = healthResult.data.map({ $0.steps }).reduce(0, +)
-                let distance = healthResult.data.map({ $0.distances.first?.distance ?? 0 }).reduce(0, +)
-                let activeEnergyBurned = healthResult.data.map({ $0.calories }).reduce(0, +)
-                self.showPopUp(message: String(format: "Total steps: %.0f, total distance: %.0f, total active energy burned %.0f. Data since: %@", steps, distance, activeEnergyBurned, self.dateFormatter.string(from: self.fromDate)))
-                
-            case .failure(let error):
-                self.showPopUp(message: error.description)
-            }
-        }
-    }
+	private func fetchData(readOptions: ReadOptions? = nil) {
+		SVProgressHUD.show(withStatus: "Fetching data...")
+		
+		let credentials = preferences.credentials(for: contract.identifier)
+		
+		digiMe.authorize(credentials: credentials, serviceId: 260, readOptions: readOptions) { result in
+			switch result {
+			case .success(let newOrRefreshedCredentials):
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.contract.identifier)
+				
+				self.digiMe.retrieveAppleHealth(for: self.contract.identifier, readOptions: readOptions) { account in
+					print("Apple Health account: \(String(describing: account))")
+				} completion: { result in
+					SVProgressHUD.dismiss()
+					
+					switch result {
+					case .success(let healthResult):
+						
+						/// For debugging purpose only.
+						/// Debugging account data.
+						if
+							let account = healthResult.account,
+							let jsonData = try? account.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase) {
+							
+							FilePersistentStorage(with: .documentDirectory).store(data: jsonData, fileName: "account.json")
+						}
+						
+						/// Split data into calendar one week range.
+						let chunked = healthResult.data.chunked(into: 7)
+						self.data.append(contentsOf: chunked)
+						DispatchQueue.main.async { [weak self] in
+							self?.reload()
+						}
+						
+						/// For debugging purposes only.
+						/// Group data to monthly time shard
+						self.records = healthResult.data
+						self.updateSections()
+						
+						/// Store the data content locally. Use iTunes file sharing to review JFS data saved under the Documents folder.
+						self.saveToJFS()
+						
+						let steps = healthResult.data.map({ $0.steps }).reduce(0, +)
+						let distance = healthResult.data.map({ $0.distances.first?.distance ?? 0 }).reduce(0, +)
+						let activeEnergyBurned = healthResult.data.map({ $0.calories }).reduce(0, +)
+						self.showPopUp(message: String(format: "Total steps: %.0f, total distance: %.0f, total active energy burned %.0f. Data since: %@", steps, distance, activeEnergyBurned, self.dateFormatter.string(from: self.fromDate)))
+						
+					case .failure(let error):
+						self.showPopUp(message: error.description)
+					}
+				}
+				
+			case.failure(let error):
+				self.showPopUp(message: "Authorization failed: \(error)")
+			}
+		}
+	}
 
     private func updateSections() {
         sections = records

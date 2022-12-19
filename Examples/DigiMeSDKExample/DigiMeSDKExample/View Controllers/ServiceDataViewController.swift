@@ -25,8 +25,7 @@ class ServiceDataViewController: UIViewController {
     private var digiMe: DigiMe!
     private var logger: Logger!
     private var currentContract: DigimeContract!
-    private let credentialCache = CredentialCache()
-    
+	private var preferences = UserPreferences.shared()
     private var accounts = [SourceAccount]()
     private var selectServiceCompletion: ((Service?) -> Void)?
     
@@ -96,7 +95,7 @@ class ServiceDataViewController: UIViewController {
     }
     
     @IBAction private func addService() {
-        guard let credentials = credentialCache.credentials(for: currentContract.identifier) else {
+        guard let credentials = preferences.credentials(for: currentContract.identifier) else {
             self.logger.log(message: "Current contract must be authorized first.")
             return
         }
@@ -109,7 +108,7 @@ class ServiceDataViewController: UIViewController {
             self.digiMe.addService(identifier: service.identifier, credentials: credentials) { result in
                 switch result {
                 case .success(let newOrRefreshedCredentials):
-                    self.credentialCache.setCredentials(newOrRefreshedCredentials, for: self.currentContract.identifier)
+					self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
                     self.getData(credentials: newOrRefreshedCredentials)
                     
                 case.failure(let error):
@@ -124,7 +123,7 @@ class ServiceDataViewController: UIViewController {
     }
     
     @IBAction private func deleteUser() {
-        guard let credentials = credentialCache.credentials(for: currentContract.identifier) else {
+        guard let credentials = preferences.credentials(for: currentContract.identifier) else {
             self.logger.log(message: "Current contract must be authorized first.")
             return
         }
@@ -135,7 +134,7 @@ class ServiceDataViewController: UIViewController {
                 self.logger.log(message: "Deleting user failed: \(error)")
             }
             else {
-                self.credentialCache.setCredentials(nil, for: self.currentContract.identifier)
+                self.preferences.clearCredentials(for: self.currentContract.identifier)
                 self.accounts = []
                 self.logger.reset()
                 self.updateUI()
@@ -179,7 +178,7 @@ class ServiceDataViewController: UIViewController {
         }
         
         contractLabel.text = "Contract: \(currentContract.name ?? currentContract.identifier)"
-        if credentialCache.credentials(for: currentContract.identifier) != nil {
+        if preferences.credentials(for: currentContract.identifier) != nil {
             authWithServiceButton.isHidden = true
             servicesLabel.isHidden = false
             addServiceButton.isHidden = false
@@ -213,7 +212,7 @@ class ServiceDataViewController: UIViewController {
     }
     
     private func authorizeAndReadData(service: Service?) {
-        let credentials = credentialCache.credentials(for: currentContract.identifier)
+        let credentials = preferences.credentials(for: currentContract.identifier)
         DispatchQueue.main.async {
             var message = "\n\nScope:"
             if let group = service?.options?.scope?.serviceGroups?.first {
@@ -248,7 +247,7 @@ class ServiceDataViewController: UIViewController {
         digiMe.authorize(credentials: credentials, serviceId: service?.identifier, readOptions: service?.options) { result in
             switch result {
             case .success(let newOrRefreshedCredentials):
-                self.credentialCache.setCredentials(newOrRefreshedCredentials, for: self.currentContract.identifier)
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
                 self.updateUI()
                 self.getData(credentials: newOrRefreshedCredentials)
                 
@@ -308,7 +307,7 @@ class ServiceDataViewController: UIViewController {
         digiMe.requestDataQuery(credentials: credentials, readOptions: nil) { result in
             switch result {
             case .success(let refreshedCredentials):
-                self.credentialCache.setCredentials(refreshedCredentials, for: self.currentContract.identifier)
+				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.currentContract.identifier)
                 completion(refreshedCredentials)
                 
             case.failure(let error):
@@ -350,7 +349,7 @@ class ServiceDataViewController: UIViewController {
         } completion: { result in
             switch result {
             case .success(let (fileList, refreshedCredentials)):
-                self.credentialCache.setCredentials(refreshedCredentials, for: self.currentContract.identifier)
+				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.currentContract.identifier)
                 var message = "Finished reading files:"
                 fileList.files?.forEach { message += "\n\t\($0.name)" }
                 message += "\n\nFiles in the list: \(fileList.files?.count ?? 0)"
