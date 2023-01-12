@@ -12,6 +12,11 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
     public struct Distances: Codable {
         public var activity: String
         public var distance: Double
+		
+		public init(activity: String, distance: Double) {
+			self.activity = activity
+			self.distance = distance
+		}
     }
     
 	public var id = UUID()

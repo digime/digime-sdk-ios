@@ -33,6 +33,15 @@ public class ConsentAccessTimeRange: Codable {
 			return .success(certDefaults)
 		}
 	}
+	
+	public func verifyTimeRange(startDate: Date, endDate: Date) -> TimeRangeLimits {
+		let certDefaults = certificateTimeRange()
+		return TimeRangeLimits(startDate: max(certDefaults.startDate, startDate), endDate: min(certDefaults.endDate, endDate))
+	}
+	
+	public func defaultLimits() -> TimeRangeLimits {
+		return certificateTimeRange()
+	}
 
 	private func retrieveLimits(from timeRange: TimeRange) -> TimeRangeLimits? {
 		let range = certificateTimeRange()

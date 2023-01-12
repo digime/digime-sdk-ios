@@ -103,7 +103,7 @@ class WriteDataViewController: UIViewController {
             
             let jsonData = try JSONEncoder().encode(Receipt())
             
-            writeDigiMe.writeDirect(data: jsonData, metadata: metadata, credentials: credentials) { result in
+            writeDigiMe.write(data: jsonData, metadata: metadata, credentials: credentials) { result in
                 switch result {
                 case .success(let refreshedCredentials):
 					self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.writeContract.identifier)
@@ -151,41 +151,7 @@ class WriteDataViewController: UIViewController {
 			return
 		}
 				
-		writeDigiMe.writeDirect(data: pdfData, metadata: metadata, credentials: credentials) { result in
-			switch result {
-			case .success(let refreshedCredentials):
-				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.writeContract.identifier)
-				self.logger.log(message: "Uploaded PDF file.")
-				
-			case .failure(let error):
-				self.logger.log(message: "Upload PDF error: \(error)")
-			}
-		}
-	}
-	
-	@IBAction private func uploadPdfToPostbox() {
-		guard let credentials = preferences.credentials(for: Contracts.writeContract.identifier) else {
-			self.logger.log(message: "Write contract must be authorized first.")
-			return
-		}
-		
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-		let metadata = RawFileMetadataBuilder(mimeType: .applicationPdf, accounts: [String.random(length: 5)])
-			.objectTypes([.init(name: "receipt")])
-			.tags(["groceries"])
-			.reference(["Receipt \(dateFormatter.string(from: Date()))"])
-			.build()
-		
-		guard
-			let url = Bundle.main.url(forResource: "uploadExample", withExtension: "pdf"),
-			let pdfData = try? Data(contentsOf: url) else {
-			
-			self.logger.log(message: "Error reading PDF resource file.")
-			return
-		}
-				
-		writeDigiMe.writePostbox(data: pdfData, metadata: metadata, credentials: credentials) { result in
+		writeDigiMe.write(data: pdfData, metadata: metadata, credentials: credentials) { result in
 			switch result {
 			case .success(let refreshedCredentials):
 				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.writeContract.identifier)
@@ -401,7 +367,7 @@ extension WriteDataViewController: UIImagePickerControllerDelegate {
                 .reference([fileName])
                 .build()
             
-            self.writeDigiMe.writeDirect(data: data, metadata: metadata, credentials: credentials) { result in
+            self.writeDigiMe.write(data: data, metadata: metadata, credentials: credentials) { result in
                 switch result {
                 case .success(let refreshedCredentials):
 					self.preferences.setCredentials(newCredentials: refreshedCredentials, for: Contracts.writeContract.identifier)

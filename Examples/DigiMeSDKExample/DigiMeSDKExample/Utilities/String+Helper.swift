@@ -13,7 +13,7 @@ extension String {
 		let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 		var randomString = String()
 
-		while randomString.utf8.count < length{
+		while randomString.utf8.count < length {
 			let randomLetter = letters.randomElement()
 			randomString += randomLetter?.description ?? String()
 		}

@@ -81,8 +81,8 @@ public extension Date {
         return Calendar.utcCalendar.date(byAdding: components, to: startOfMonth)!
     }
 
-    var millisecondsSince1970: Int64 {
-        Int64((self.timeIntervalSince1970 * 1000.0).rounded())
+    var millisecondsSince1970: Double {
+        (self.timeIntervalSince1970 * 1000.0).rounded()
     }
     
     init(milliseconds: Int64) {

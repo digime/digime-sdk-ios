@@ -19,7 +19,9 @@ class AllFilesReader {
     
     private let apiClient: APIClient
     private let configuration: Configuration
-    
+	private let healthSerivce: HealthKitService
+	private let certificateParser: CertificateParser
+	private let contractsCache: ContractsCache
     private var sessionDataCompletion: ((Result<FileList, SDKError>) -> Void)?
     private var sessionContentHandler: ((Result<File, SDKError>) -> Void)?
     
@@ -32,8 +34,11 @@ class AllFilesReader {
         static let pollInterval = 3
     }
     
-    init(apiClient: APIClient, configuration: Configuration) {
+	init(apiClient: APIClient, healthSerivce: HealthKitService, certificateParser: CertificateParser, contractsCache: ContractsCache, configuration: Configuration) {
         self.apiClient = apiClient
+		self.healthSerivce = healthSerivce
+		self.certificateParser = certificateParser
+		self.contractsCache = contractsCache
         self.configuration = configuration
     }
     
@@ -60,6 +65,10 @@ class AllFilesReader {
         self.sessionDataCompletion = completion
         self.sessionContentHandler = downloadHandler
         
+		if DeviceCache.shared().deviceDataRequested {
+			self.beginFetchDeviceLocalData()
+		}
+		
         self.beginFileListPollingIfRequired()
     }
 	
@@ -188,4 +197,56 @@ class AllFilesReader {
             refreshFileList()
         }
     }
+	
+	private func beginFetchDeviceLocalData() {
+		let appId = configuration.appId
+		let contractId = configuration.contractId
+		contractTimeRangeLimits(appId: appId, contractId: contractId) { result in
+			switch result {
+			case .success(let limits):
+				
+				let account = HealthKitData().account
+				let filesDataService = HealthKitFilesDataService(account: account)
+				filesDataService.completionHandler = self.sessionContentHandler
+				filesDataService.queryData(from: limits.startDate, to: limits.endDate)
+				
+			case .failure(let error):
+				HealthKitService.reportErrorLog(error: error)
+				self.sessionDataCompletion?(.failure(error))
+			}
+		}
+	}
+	
+	private func contractTimeRangeLimits(appId: String, contractId: String, completion: @escaping (Result<TimeRangeLimits, SDKError>) -> Void) {
+		guard let contractTimeRange = self.contractsCache.firstTimeRange(for: contractId) else {
+			let route = ContractRoute(appId: appId, contractId: contractId, schemaVersion: "5.0.0")
+			apiClient.makeRequest(route) { result in
+				switch result {
+				case .success(let response):
+					self.certificateParser.parse(contractResponse: response) { certificateResult in
+						switch certificateResult {
+						case .success(let certificate):
+							self.contractsCache.addTimeRanges(ranges: certificate.dataRequest?.timeRanges, for: contractId)
+							guard let range = certificate.dataRequest?.timeRanges?.first else {
+								completion(.failure(SDKError.certificateVerifyTimeRangeError))
+								return
+							}
+							
+							let limits = range.defaultLimits()
+							completion(.success(limits))
+							
+						case .failure(let error):
+							completion(.failure(error))
+						}
+					}
+				case .failure(let error):
+					completion(.failure(error))
+				}
+			}
+			return
+		}
+		
+		let limits = contractTimeRange.defaultLimits()
+		completion(.success(limits))
+	}
 }

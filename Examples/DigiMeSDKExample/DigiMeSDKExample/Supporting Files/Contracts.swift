@@ -80,7 +80,7 @@ enum Contracts {
         unJYbtDxQhgcarKzuDOfr6lIzdxQFeviTf8+SaCfTAIgEZOX9x2b
         -----END RSA PRIVATE KEY-----
         """,
-                                          timeRanges: [TimeRange.between(from: Date.from(year: 2017, month: 1, day: 1, hour: 0, minute: 0, second: 0)!, to: Date.from(year: 2018, month: 3, day: 18, hour: 23, minute: 59, second: 59)!)]
+										  timeRanges: [TimeRange.last(amount: 4, unit: .month)]
     )
     
     static let writeContract = DigimeContract(name: "Upload data",

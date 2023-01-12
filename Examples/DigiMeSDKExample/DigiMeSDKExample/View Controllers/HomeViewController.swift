@@ -16,5 +16,6 @@ class HomeViewController: UIViewController {
         
         // Log all levels, including debug.
         DigiMe.logLevels = LogLevel.allCases
+		navigationItem.largeTitleDisplayMode = .never
     }
 }

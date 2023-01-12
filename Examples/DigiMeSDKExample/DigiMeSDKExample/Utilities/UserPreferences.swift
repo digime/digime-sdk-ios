@@ -28,13 +28,7 @@ final class UserPreferences: NSObject {
 	// MARK: - Credentials
 	
 	@CodableUserDefault(key: Key.credentials)
-	private var credentials: [String: Credentials]? {
-		didSet {
-			if let cred = credentials {
-				debugPrint("CREDENTIALS: \(cred as Any)")
-			}
-		}
-	}
+	private var credentials: [String: Credentials]?
 	
 	func credentials(for contractId: String) -> Credentials? {
 		return credentials?[contractId]

@@ -14,7 +14,8 @@ final class ConsentManager: NSObject {
     private var userConsentCompletion: ((Result<ConsentResponse, SDKError>) -> Void)?
     private var addServiceCompletion: ((Result<Void, SDKError>) -> Void)?
     private var safariViewController: SFSafariViewController?
-    
+	private var localServiceRequested = false
+	
     private enum ResponseKey: String {
         case state
         case code
@@ -52,6 +53,9 @@ final class ConsentManager: NSObject {
         ]
         
         if let serviceId = serviceId {
+			if !localServiceRequested {
+				localServiceRequested = serviceId == DeviceOnlyServices.appleHealth.rawValue
+			}
             percentEncodedQueryItems.append(URLQueryItem(name: "service", value: "\(serviceId)"))
         }
         
@@ -72,6 +76,10 @@ final class ConsentManager: NSObject {
 		let baseUrl = self.configuration.baseUrl ?? APIConfig.baseUrl
         var components = URLComponents(string: "\(baseUrl)/apps/saas/onboard")!
         
+		if !localServiceRequested {
+			localServiceRequested = identifier == DeviceOnlyServices.appleHealth.rawValue
+		}
+		
         components.percentEncodedQueryItems = [
             URLQueryItem(name: "code", value: token),
             URLQueryItem(name: "callback", value: "\(self.configuration.redirectUri)\(Action.service.rawValue)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)),
@@ -106,11 +114,22 @@ final class ConsentManager: NSObject {
             return
         }
         
-        reset()
-        
-        userConsentCompletion?(mapErrors(result: result))
-        userConsentCompletion = nil
-        addServiceCompletion = nil
+		guard localServiceRequested else {
+			reset()
+			userConsentCompletion?(mapErrors(result: result))
+			userConsentCompletion = nil
+			addServiceCompletion = nil
+			localServiceRequested = false
+			return
+		}
+		
+		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
+			self.reset()
+			self.userConsentCompletion?(self.mapErrors(result: result))
+			self.userConsentCompletion = nil
+			self.addServiceCompletion = nil
+			self.localServiceRequested = false
+		}
     }
     
     private func finishAddService(with result: Result<Void, Error>) {
@@ -121,11 +140,22 @@ final class ConsentManager: NSObject {
             return
         }
         
-        reset()
-        
-        addServiceCompletion?(mapErrors(result: result))
-        addServiceCompletion = nil
-        userConsentCompletion = nil
+		guard localServiceRequested else {
+			reset()
+			addServiceCompletion?(mapErrors(result: result))
+			addServiceCompletion = nil
+			userConsentCompletion = nil
+			localServiceRequested = false
+			return
+		}
+		
+		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
+			self.reset()
+			self.addServiceCompletion?(self.mapErrors(result: result))
+			self.addServiceCompletion = nil
+			self.userConsentCompletion = nil
+			self.localServiceRequested = false
+		}
     }
     
     private func mapErrors<T>(result: Result<T, Error>) -> Result<T, SDKError> {
@@ -163,9 +193,11 @@ final class ConsentManager: NSObject {
     }
     
     private func reset() {
-        safariViewController?.delegate = nil
-        safariViewController?.presentationController?.delegate = nil
-        safariViewController = nil
+		DispatchQueue.main.async {
+			self.safariViewController?.delegate = nil
+			self.safariViewController?.presentationController?.delegate = nil
+			self.safariViewController = nil
+		}
     }
     
     private func handleAuthAction(parameters: [String: String?], presentingViewController: UIViewController?) {
@@ -242,6 +274,10 @@ final class ConsentManager: NSObject {
             writeAccessInfo = .init(postboxId: postboxId, publicKey: publicKey)
         }
 
+		if localServiceRequested {
+			DeviceCache.shared().deviceDataRequested = true
+		}
+		
         let response = ConsentResponse(code: code, status: status, writeAccessInfo: writeAccessInfo)
         return .success(response)
     }

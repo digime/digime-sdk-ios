@@ -17,7 +17,7 @@ public struct ContractVersion5: Codable {
     public let color: String?
     public let schemaVersion: String?
     public let revision: String?
-    public let metadata: Metadata?
+    public let metadata: ContractMetadata?
     
     public func verifyTimeRange(readOptions: ReadOptions?) -> Result<TimeRangeLimits, SDKError> {
         let certDefaults = certificateTimeRange()
@@ -31,6 +31,11 @@ public struct ContractVersion5: Codable {
             return .success(certDefaults)
         }
     }
+	
+	public func verifyTimeRange(startDate: Date, endDate: Date) -> TimeRangeLimits {
+		let certDefaults = certificateTimeRange()
+		return TimeRangeLimits(startDate: max(certDefaults.startDate, startDate), endDate: min(certDefaults.endDate, endDate))
+	}
 
     private func retrieveLimits(from timeRange: TimeRange) -> TimeRangeLimits? {
         let range = certificateTimeRange()
@@ -259,7 +264,7 @@ public struct Policies: Codable {
     public let currentState: [String: String]?
 }
 
-public struct Metadata: Codable {
+public struct ContractMetadata: Codable {
     public let oAuth: OAuth?
 }
 

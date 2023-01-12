@@ -172,6 +172,27 @@ public enum SDKError: Error {
 	
 	/// Health Data Store. Unable to upload mixpanel event
 	case healthDataUnableToUploadLogEvent
+	
+	/// Health Data Store.  Not available
+	case notAvailable(message: String)
+	
+	/// Health Data Store. Unknown object type for query.
+	case unknown(message: String)
+	
+	/// Health Data Store. Invalid type.
+	case invalidType(message: String)
+	
+	/// Health Data Store. Invalid identifier.
+	case invalidIdentifier(message: String)
+	
+	/// Health Data Store. Invalid value.
+	case invalidValue(message: String)
+	
+	/// Health Data Store. Parsing failed
+	case parsingFailed(message: String)
+	
+	/// Health Data Store. Bad encoding.
+	case badEncoding(message: String)
 }
 
 // MARK: - CustomStringConvertible
@@ -334,6 +355,27 @@ extension SDKError: CustomStringConvertible {
 			
 		case .healthDataUnableToUploadLogEvent:
 			return "Health Data Store. Failed to upload mixpanel event"
+		
+		case .notAvailable(let message):
+			return "Health Data Store. \(message)"
+			
+		case .unknown(let message):
+			return "Health Data Store. Unknown object type for query. \(message)"
+		
+		case .invalidType(let message):
+			return "Health Data Store. Invalid type. \(message)"
+		
+		case .invalidIdentifier(let message):
+			return "Health Data Store. Invalid identifier. \(message)"
+		
+		case .invalidValue(let message):
+			return "Health Data Store. Invalid value. \(message)"
+		
+		case .parsingFailed(let message):
+			return "Health Data Store. Parsing failed. \(message)"
+		
+		case .badEncoding(let message):
+			return "Health Data Store. Bad encoding. \(message)"
 		}
     }
 }

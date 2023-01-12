@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E1038952965D58400B3533E /* AppleHealthSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1038942965D58400B3533E /* AppleHealthSummaryViewController.swift */; };
 		1E4901E227D9112200F13D29 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E127D9112200F13D29 /* Logger.swift */; };
 		1E4901E827D9112B00F13D29 /* ServiceDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */; };
 		1E4901E927D9112B00F13D29 /* ServicePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */; };
@@ -15,15 +16,14 @@
 		1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901ED27D9114B00F13D29 /* AppInfo.swift */; };
 		1E4901F127D9114B00F13D29 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901EE27D9114B00F13D29 /* Contracts.swift */; };
 		1E4901F227D9114B00F13D29 /* DigimeContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901EF27D9114B00F13D29 /* DigimeContract.swift */; };
-		1E4901F427D9122200F13D29 /* AppleHealthDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901F327D9122200F13D29 /* AppleHealthDataViewController.swift */; };
-		1E4901F627D912B400F13D29 /* FeedItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901F527D912B400F13D29 /* FeedItemViewController.swift */; };
+		1E4901F427D9122200F13D29 /* AppleHealthChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901F327D9122200F13D29 /* AppleHealthChartViewController.swift */; };
+		1E4901F627D912B400F13D29 /* DataTypeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901F527D912B400F13D29 /* DataTypeCollectionViewController.swift */; };
 		1E4901F927D9131C00F13D29 /* FeedItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901F827D9131C00F13D29 /* FeedItemCollectionViewCell.swift */; };
 		1E49020427D9143C00F13D29 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020027D9143C00F13D29 /* UIApplication+Extension.swift */; };
 		1E49020727D9149800F13D29 /* ChartViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020627D9149800F13D29 /* ChartViewStyle.swift */; };
 		1E49021027D9155000F13D29 /* HealthDataTypeValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020E27D9155000F13D29 /* HealthDataTypeValue.swift */; };
 		1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020F27D9155000F13D29 /* ServerResponse.swift */; };
 		1E49021427D918FC00F13D29 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E49021327D918FC00F13D29 /* HealthKit.framework */; };
-		1E5A31EE27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5A31ED27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift */; };
 		1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E717C2861AA1000E7954E /* UserPreferences.swift */; };
 		1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */; };
 		1E757C372948897D00E373DE /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E757C362948897D00E373DE /* String+Helper.swift */; };
@@ -57,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E1038942965D58400B3533E /* AppleHealthSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryViewController.swift; sourceTree = "<group>"; };
 		1E4901E127D9112200F13D29 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceDataViewController.swift; sourceTree = "<group>"; };
 		1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicePickerViewController.swift; sourceTree = "<group>"; };
@@ -65,8 +66,8 @@
 		1E4901ED27D9114B00F13D29 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		1E4901EE27D9114B00F13D29 /* Contracts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
 		1E4901EF27D9114B00F13D29 /* DigimeContract.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigimeContract.swift; sourceTree = "<group>"; };
-		1E4901F327D9122200F13D29 /* AppleHealthDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleHealthDataViewController.swift; sourceTree = "<group>"; };
-		1E4901F527D912B400F13D29 /* FeedItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemViewController.swift; sourceTree = "<group>"; };
+		1E4901F327D9122200F13D29 /* AppleHealthChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleHealthChartViewController.swift; sourceTree = "<group>"; };
+		1E4901F527D912B400F13D29 /* DataTypeCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTypeCollectionViewController.swift; sourceTree = "<group>"; };
 		1E4901F827D9131C00F13D29 /* FeedItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		1E49020027D9143C00F13D29 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 		1E49020627D9149800F13D29 /* ChartViewStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewStyle.swift; sourceTree = "<group>"; };
@@ -74,7 +75,6 @@
 		1E49020F27D9155000F13D29 /* ServerResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
 		1E49021227D918FC00F13D29 /* DigiMeSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigiMeSDKExample.entitlements; sourceTree = "<group>"; };
 		1E49021327D918FC00F13D29 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		1E5A31ED27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyFitnessActivity.swift; sourceTree = "<group>"; };
 		1E66044627F49CA800A18292 /* CareKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CareKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E6E717C2861AA1000E7954E /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthDetailsView.swift; sourceTree = "<group>"; };
@@ -144,9 +144,10 @@
 		1E4901E327D9112A00F13D29 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1E4901F527D912B400F13D29 /* FeedItemViewController.swift */,
-				1E4901F327D9122200F13D29 /* AppleHealthDataViewController.swift */,
+				1E4901F327D9122200F13D29 /* AppleHealthChartViewController.swift */,
+				1E4901F527D912B400F13D29 /* DataTypeCollectionViewController.swift */,
 				1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */,
+				1E1038942965D58400B3533E /* AppleHealthSummaryViewController.swift */,
 				1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */,
 				1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */,
 				1E4901E727D9112B00F13D29 /* WriteDataViewController.swift */,
@@ -176,6 +177,7 @@
 		1E49020527D9149800F13D29 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				1E4901F727D9131C00F13D29 /* Cells */,
 				1E49020627D9149800F13D29 /* ChartViewStyle.swift */,
 			);
 			path = Views;
@@ -186,7 +188,6 @@
 			children = (
 				1E49020E27D9155000F13D29 /* HealthDataTypeValue.swift */,
 				1E49020F27D9155000F13D29 /* ServerResponse.swift */,
-				1E5A31ED27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -228,7 +229,6 @@
 				1E49020D27D9155000F13D29 /* Models */,
 				1E4901E327D9112A00F13D29 /* View Controllers */,
 				1E49020527D9149800F13D29 /* Views */,
-				1E4901F727D9131C00F13D29 /* Cells */,
 				1E4901EC27D9114B00F13D29 /* Supporting Files */,
 				1E4901DE27D9105F00F13D29 /* Utilities */,
 				27D31A2C266A4EAD00DB2524 /* Assets.xcassets */,
@@ -493,15 +493,14 @@
 				27D31A26266A4EAB00DB2524 /* SceneDelegate.swift in Sources */,
 				1E49021027D9155000F13D29 /* HealthDataTypeValue.swift in Sources */,
 				1E4901F127D9114B00F13D29 /* Contracts.swift in Sources */,
-				1E5A31EE27E3B3FF00A00C33 /* WeeklyFitnessActivity.swift in Sources */,
 				1E49020427D9143C00F13D29 /* UIApplication+Extension.swift in Sources */,
-				1E4901F427D9122200F13D29 /* AppleHealthDataViewController.swift in Sources */,
+				1E4901F427D9122200F13D29 /* AppleHealthChartViewController.swift in Sources */,
 				1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */,
 				1E4901E227D9112200F13D29 /* Logger.swift in Sources */,
 				1E4901F927D9131C00F13D29 /* FeedItemCollectionViewCell.swift in Sources */,
 				1E4901EB27D9112B00F13D29 /* WriteDataViewController.swift in Sources */,
 				1E4901F227D9114B00F13D29 /* DigimeContract.swift in Sources */,
-				1E4901F627D912B400F13D29 /* FeedItemViewController.swift in Sources */,
+				1E4901F627D912B400F13D29 /* DataTypeCollectionViewController.swift in Sources */,
 				1E4901E927D9112B00F13D29 /* ServicePickerViewController.swift in Sources */,
 				1E4901EA27D9112B00F13D29 /* HomeViewController.swift in Sources */,
 				1E757C372948897D00E373DE /* String+Helper.swift in Sources */,
@@ -509,6 +508,7 @@
 				1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */,
 				1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */,
 				1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */,
+				1E1038952965D58400B3533E /* AppleHealthSummaryViewController.swift in Sources */,
 				1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */,
 				1E4901E827D9112B00F13D29 /* ServiceDataViewController.swift in Sources */,
 				1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */,

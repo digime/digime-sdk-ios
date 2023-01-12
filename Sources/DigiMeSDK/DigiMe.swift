@@ -17,16 +17,15 @@ public final class DigiMe {
     }
 
     private let configuration: Configuration
-    
-    private let authService: OAuthService
+	private let authService: OAuthService
     private let consentManager: ConsentManager
     private let sessionCache: SessionCache
 	private let contractsCache: ContractsCache
     private let apiClient: APIClient
     private let dataDecryptor: DataDecryptor
-    private let healthDataClient: HealthDataClient
     private let certificateParser: CertificateParser
-    
+	private let healthSerivce: HealthKitService
+
     private lazy var downloadService: FileDownloadService = {
         FileDownloadService(apiClient: apiClient, dataDecryptor: dataDecryptor)
     }()
@@ -75,8 +74,9 @@ public final class DigiMe {
         self.sessionCache = SessionCache()
 		self.contractsCache = ContractsCache()
         self.dataDecryptor = DataDecryptor(configuration: configuration)
-        self.healthDataClient = HealthDataClient(healthService: HealthDataService(account: HealthDataAccount().account))
         self.certificateParser = CertificateParser()
+		self.healthSerivce = HealthKitService()
+
         setupLogger()
     }
     
@@ -107,7 +107,7 @@ public final class DigiMe {
             }
             return
         }
-        
+		
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):
@@ -219,7 +219,11 @@ public final class DigiMe {
             return
         }
         
-        allFilesReader = AllFilesReader(apiClient: self.apiClient, configuration: self.configuration)
+		allFilesReader = AllFilesReader(apiClient: self.apiClient,
+										healthSerivce: self.healthSerivce,
+										certificateParser: self.certificateParser,
+										contractsCache: self.contractsCache,
+										configuration: self.configuration)
         
         allFilesReader?.readAllFiles(downloadHandler: { result in
             resultQueue.async {
@@ -333,42 +337,6 @@ public final class DigiMe {
             }
         }
     }
-    
-    /// Writes data to user's library associated with configured contract
-    /// - Parameters:
-    ///   - data: The data to be written
-    ///   - metadata: The metadata describing the data to be written. See `RawFileMetadataBuilder` for details on building the metadata
-    ///   - credentials: The existing credentials for the contract.
-    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
-    ///   - completion: Block called when writing data has complete with new or refreshed credentials, or any errors encountered.
-    public func writePostbox(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
-        let metadataData: Data
-        do {
-            metadataData = try metadata.encoded()
-        }
-        catch {
-            resultQueue.async {
-                completion(.failure(.invalidWriteMetadata))
-            }
-            return
-        }
-        
-        validateOrRefreshCredentials(credentials) { result in
-            switch result {
-            case .success(let refreshedCredentials):
-                self.writePostbox(data: data, metadata: metadataData, credentials: refreshedCredentials) { result in
-                    resultQueue.async {
-                        completion(result)
-                    }
-                }
-            
-            case .failure(let error):
-                resultQueue.async {
-                    completion(.failure(error))
-                }
-            }
-        }
-    }
 	
 	/// Writes data directly to user's library associated with configured contract.
 	/// - Parameters:
@@ -377,7 +345,7 @@ public final class DigiMe {
 	///   - credentials: The existing credentials for the contract.
 	///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
 	///   - completion: Block called when writing data has complete with new or refreshed credentials, or any errors encountered.
-	public func writeDirect(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+	public func write(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
 		validateOrRefreshCredentials(credentials) { result in
 			switch result {
 			case .success(let refreshedCredentials):
@@ -506,72 +474,55 @@ public final class DigiMe {
     
     // MARK: - Apple Health
     
-	public func retrieveAppleHealth(for contractId: String, readOptions: ReadOptions? = nil, resultQueue: DispatchQueue = .main, accountHandler: @escaping (SourceAccount) -> Void, completion: @escaping (Result<HealthResult, SDKError>) -> Void) {
-        guard let contractTimeRange = contractsCache.firstTimeRange(for: contractId) else {
-            self.contractDetails(resultQueue: resultQueue) { contractResult in
-                switch contractResult {
-                case .success(let certificat):
-                    self.contractsCache.addTimeRanges(ranges: certificat.dataRequest?.timeRanges, for: contractId)
-                    let timeRangeResult = certificat.verifyTimeRange(readOptions: readOptions)
-                    switch timeRangeResult {
-                    case .success(let limits):
-                        self.healthDataClient.retrieveData(from: limits.startDate, to: limits.endDate) { account in
-                            accountHandler(account)
-                        } completion: { result in
-                            switch result {
-                            case .success(let data):
-                                resultQueue.async {
-                                    completion(.success(data))
-                                }
-                            case .failure(let error):
-                                resultQueue.async {
-                                    completion(.failure(error))
-                                }
-                            }
-                        }
-                    case .failure(let error):
-                        resultQueue.async {
-                            completion(.failure(error))
-                        }
-                    }
-                    
-                case .failure(let error):
-                    resultQueue.async {
-                        completion(.failure(error))
-                    }
-                }
-            }
-            
-            return
-        }
+	public func appleHealthStatisticsCollectionQuery(for contractId: String, queryConfig: HealthKitConfiguration, resultQueue: DispatchQueue = .main, accountHandler: @escaping (SourceAccount) -> Void, completion: @escaping (StatisticsCompletionHandler)) {
 		
-		let timeRangeResult = contractTimeRange.verifyTimeRange(readOptions: readOptions)
-		switch timeRangeResult {
-		case .success(let limits):
-            self.healthDataClient.retrieveData(from: limits.startDate, to:  limits.endDate) { account in
-                accountHandler(account)
-            } completion: { result in
-				switch result {
-				case .success(let data):
-					resultQueue.async {
-						completion(.success(data))
-					}
-				case .failure(let error):
-					resultQueue.async {
-						completion(.failure(error))
-					}
-				}
+		accountHandler(HealthKitData().account)
+		healthSerivce.requestAuthorization(typesToRead: queryConfig.typesToRead, typesToWrite: queryConfig.typesToWrite) { success, error in
+			if let error = error {
+				completion(nil, error)
 			}
-		case .failure(let error):
-			resultQueue.async {
-				completion(.failure(error))
+			else {
+				guard let contractTimeRange = self.contractsCache.firstTimeRange(for: contractId) else {
+					self.contractDetails(resultQueue: resultQueue) { contractResult in
+						switch contractResult {
+						case .success(let certificat):
+							self.contractsCache.addTimeRanges(ranges: certificat.dataRequest?.timeRanges, for: contractId)
+							let limits = certificat.verifyTimeRange(startDate: queryConfig.startDate, endDate: queryConfig.endDate)
+							self.healthSerivce.readStatisticsCollectionQuery(from: limits.startDate,
+																			 to: limits.endDate,
+																			 anchorDate: queryConfig.anchorDate!,
+																			 intervalComponents: queryConfig.intervalComponents!,
+																			 for: queryConfig.typesToRead,
+																			 mergeResultForSameType: queryConfig.mergeResultForSameType,
+																			 singleCallbackForAllTypes: queryConfig.singleCallbackForAllTypes, completionHandler: completion)
+							
+						case .failure(let error):
+							resultQueue.async {
+								HealthKitService.reportErrorLog(error: error)
+								completion(nil, error)
+							}
+						}
+					}
+					
+					return
+				}
+				
+				let limits = contractTimeRange.verifyTimeRange(startDate: queryConfig.startDate, endDate: queryConfig.endDate)
+				
+				self.healthSerivce.readStatisticsCollectionQuery(from: limits.startDate,
+																 to: limits.endDate,
+																 anchorDate: queryConfig.anchorDate!,
+																 intervalComponents: queryConfig.intervalComponents!,
+																 for: queryConfig.typesToRead,
+																 mergeResultForSameType: queryConfig.mergeResultForSameType,
+																 singleCallbackForAllTypes: queryConfig.singleCallbackForAllTypes, completionHandler: completion)
 			}
 		}
-    }
+	}
     
 #if targetEnvironment(simulator)
     public func saveHealthData(dataToSave: [HKObject], completion: @escaping (Result<Bool, SDKError>) -> Void) {
-        healthDataClient.saveHealthData(dataToSave) { success, error in
+		self.healthSerivce.saveHealthData(dataToSave) { success, error in
             if success {
                 completion(.success(success))
             }
@@ -590,8 +541,16 @@ public final class DigiMe {
             case .success(let response):
                 do {
                     let unpackedData = try self.dataDecryptor.decrypt(response: response)
-                    let accounts = try unpackedData.decoded() as AccountsInfo
-                    completion(.success(accounts))
+					let info = try unpackedData.decoded() as AccountsInfo
+					if DeviceCache.shared().deviceDataRequested {
+						var accounts = info.accounts
+						let consentId = info.consentId
+						accounts.append(HealthKitData().account)
+						completion(.success(AccountsInfo(accounts: accounts, consentId: consentId)))
+					}
+					else {
+						completion(.success(info))
+					}
                 }
                 catch let error as SDKError {
                     completion(.failure(error))
@@ -600,7 +559,14 @@ public final class DigiMe {
                     completion(.failure(SDKError.readAccountsError))
                 }
             case .failure(let error):
-                completion(.failure(error))
+				if DeviceCache.shared().deviceDataRequested {
+					let account = HealthKitData().account
+					let info = AccountsInfo(accounts: [account], consentId: "device-local-data")
+					completion(.success(info))
+				}
+				else {
+					completion(.failure(error))
+				}
             }
         }
     }
