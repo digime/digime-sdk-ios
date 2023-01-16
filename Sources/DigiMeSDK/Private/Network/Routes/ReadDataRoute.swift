@@ -19,9 +19,11 @@ struct ReadDataRoute: Route {
     }
     
     var customHeaders: [String: String] {
-        ["Accept": "application/octet-stream"]
+        ["Accept": "application/octet-stream",
+		 "Authorization": "Bearer " + jwt]
     }
-    
+	
+	let jwt: String
     let sessionKey: String
     let fileId: String
     

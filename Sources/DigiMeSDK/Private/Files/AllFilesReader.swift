@@ -19,6 +19,7 @@ class AllFilesReader {
     
     private let apiClient: APIClient
     private let configuration: Configuration
+	private let credentials: Credentials
 	private let healthSerivce: HealthKitService
 	private let certificateParser: CertificateParser
 	private let contractsCache: ContractsCache
@@ -34,8 +35,9 @@ class AllFilesReader {
         static let pollInterval = 3
     }
     
-	init(apiClient: APIClient, healthSerivce: HealthKitService, certificateParser: CertificateParser, contractsCache: ContractsCache, configuration: Configuration) {
+	init(apiClient: APIClient, credentials: Credentials, healthSerivce: HealthKitService, certificateParser: CertificateParser, contractsCache: ContractsCache, configuration: Configuration) {
         self.apiClient = apiClient
+		self.credentials = credentials
 		self.healthSerivce = healthSerivce
 		self.certificateParser = certificateParser
 		self.contractsCache = contractsCache
@@ -103,7 +105,13 @@ class AllFilesReader {
             return completeSessionDataFetch(error: .invalidSession)
         }
         
-        apiClient.makeRequest(FileListRoute(sessionKey: session.key)) { result in
+		guard let jwt = JWTUtility.fileDownloadRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+			completeSessionDataFetch(error: .errorCreatingRequestJwtToDownloadFile)
+			return
+		}
+		
+		let route = FileListRoute(jwt: jwt, sessionKey: session.key)
+        apiClient.makeRequest(route) { result in
             switch result {
             case .success(let fileList):
                 let fileListDidChange = fileList != self.sessionFileList
@@ -158,7 +166,7 @@ class AllFilesReader {
         
         items.forEach { item in
             Logger.info("Adding file to download queue: \(item.name)")
-            self.downloadService.downloadFile(sessionKey: session.key, fileId: item.name, updatedDate: item.updatedDate, completion: sessionContentHandler)
+			self.downloadService.downloadFile(fileId: item.name, sessionKey: session.key, credentials: credentials, configuration: configuration, updatedDate: item.updatedDate, completion: sessionContentHandler)
         }
     }
     

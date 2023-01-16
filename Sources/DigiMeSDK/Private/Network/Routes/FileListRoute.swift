@@ -18,6 +18,11 @@ struct FileListRoute: Route {
         [sessionKey]
     }
     
+	var customHeaders: [String: String] {
+		["Authorization": "Bearer " + jwt]
+	}
+	
+	let jwt: String
     let sessionKey: String
     
     func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType {

@@ -127,6 +127,9 @@ public enum SDKError: Error {
 	/// Invalid delete user token request JWT
 	case invalidDeleteUserTokenRequestJwt
 	
+	/// Error creating request JWT to download file
+	case errorCreatingRequestJwtToDownloadFile
+	
     /// An unexpected error has occurred - please contact support
     case other
     
@@ -311,6 +314,9 @@ extension SDKError: CustomStringConvertible {
 		
 		case .invalidDeleteUserTokenRequestJwt:
 			return "Invalid delete user token request JWT"
+			
+		case .errorCreatingRequestJwtToDownloadFile:
+			return "Error creating JWT to download file"
 		
         case .other:
             return "An unexpected error has occurred - please contact digi.me support."

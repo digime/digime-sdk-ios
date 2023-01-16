@@ -22,8 +22,6 @@ extension RequestClaims {
 }
 
 enum JWTUtility {
-
-	// Claims to request a pre-authorization code
 	private struct PayloadRequestLogsUploadJWT: RequestClaims {
 		let clientId: String
 		var nonce = JWTUtility.generateNonce()
@@ -92,7 +90,6 @@ enum JWTUtility {
         let codeVerifier: String
 		var grantType = "authorization_code"
         var nonce = JWTUtility.generateNonce()
-        let redirectUri: String
         var timestamp = Date()
 		
 		enum CodingKeys: String, CodingKey {
@@ -101,7 +98,6 @@ enum JWTUtility {
 			case codeVerifier = "code_verifier"
 			case grantType = "grant_type"
 			case nonce
-			case redirectUri = "redirect_uri"
 			case timestamp
 		}
     }
@@ -111,14 +107,12 @@ enum JWTUtility {
         let accessToken: String
         let clientId: String
         var nonce = JWTUtility.generateNonce()
-        let redirectUri: String
         var timestamp = Date()
 		
 		enum CodingKeys: String, CodingKey {
 			case accessToken = "access_token"
 			case clientId = "client_id"
 			case nonce
-			case redirectUri = "redirect_uri"
 			case timestamp
 		}
     }
@@ -128,7 +122,6 @@ enum JWTUtility {
         let clientId: String
 		var grantType = "refresh_token"
         var nonce = JWTUtility.generateNonce()
-        let redirectUri: String
         let refreshToken: String
         var timestamp = Date()
 		
@@ -136,7 +129,6 @@ enum JWTUtility {
 			case clientId = "client_id"
 			case grantType = "grant_type"
 			case nonce
-			case redirectUri = "redirect_uri"
 			case refreshToken = "refresh_token"
 			case timestamp
 		}
@@ -149,7 +141,6 @@ enum JWTUtility {
         let iv: String
         let metadata: String
         var nonce = JWTUtility.generateNonce()
-        let redirectUri: String
         let symmetricalKey: String
         var timestamp = Date()
 		
@@ -159,7 +150,6 @@ enum JWTUtility {
 			case iv
 			case metadata
 			case nonce
-			case redirectUri = "redirect_uri"
 			case symmetricalKey = "symmetrical_key"
 			case timestamp
 		}
@@ -177,6 +167,36 @@ enum JWTUtility {
 			case clientId = "client_id"
 			case nonce
 			case timestamp
+		}
+	}
+	
+	private struct PayloadDataReadJWT: RequestClaims {
+		let accessToken: String
+		let clientId: String
+		var nonce = JWTUtility.generateNonce()
+		var timestamp = Date()
+		
+		enum CodingKeys: String, CodingKey {
+			case accessToken = "access_token"
+			case clientId = "client_id"
+			case nonce
+			case timestamp
+		}
+	}
+	
+	private struct PayloadRequestTokenReferenceJWT: RequestClaims {
+		let accessToken: String
+		let clientId: String
+		var nonce = JWTUtility.generateNonce()
+		var timestamp = Date()
+		let redirectUri: String
+		
+		enum CodingKeys: String, CodingKey {
+			case accessToken = "access_token"
+			case clientId = "client_id"
+			case nonce
+			case timestamp
+			case redirectUri = "redirect_uri"
 		}
 	}
 	
@@ -226,10 +246,7 @@ enum JWTUtility {
         let claims = PayloadRequestAuthJWT(
             clientId: configuration.clientId,
             code: authCode,
-            codeVerifier: retrieveCodeVerifier(configuration: configuration)!,
-            
-            // NB! this redirect schema must exist in the contract definition, otherwise preauth request will fail!
-            redirectUri: configuration.redirectUri + "auth"
+            codeVerifier: retrieveCodeVerifier(configuration: configuration)!
         )
         
         return createRequestJWT(claims: claims, configuration: configuration)
@@ -282,13 +299,41 @@ enum JWTUtility {
     static func dataTriggerRequestJWT(accessToken: String, configuration: Configuration) -> String? {
         let claims = PayloadDataTriggerJWT(
             accessToken: accessToken,
-            clientId: configuration.clientId,
-            redirectUri: configuration.redirectUri + "auth"
+			clientId: configuration.clientId
         )
         
         return createRequestJWT(claims: claims, configuration: configuration)
     }
     
+	/// Creates request JWT which can be used to download file
+	///
+	/// - Parameters:
+	///   - accessToken: OAuth access token
+	///   - configuration: this SDK's instance configuration
+	static func fileDownloadRequestJWT(accessToken: String, configuration: Configuration) -> String? {
+		let claims = PayloadDataReadJWT(
+			accessToken: accessToken,
+			clientId: configuration.clientId
+		)
+		
+		return createRequestJWT(claims: claims, configuration: configuration)
+	}
+	
+	/// Creates request JWT which can be used to download file
+	///
+	/// - Parameters:
+	///   - accessToken: OAuth access token
+	///   - configuration: this SDK's instance configuration
+	static func requestTokenReferenceJWT(accessToken: String, configuration: Configuration) -> String? {
+		let claims = PayloadRequestTokenReferenceJWT(
+			accessToken: accessToken,
+			clientId: configuration.clientId,
+			redirectUri: configuration.redirectUri + "auth"
+		)
+		
+		return createRequestJWT(claims: claims, configuration: configuration)
+	}
+	
     /// Creates request JWT which can be used to refresh oauth tokens
     ///
     /// - Parameters:
@@ -297,7 +342,6 @@ enum JWTUtility {
     static func refreshTokensRequestJWT(refreshToken: String, configuration: Configuration) -> String? {
         let claims = PayloadRefreshOAuthJWT(
             clientId: configuration.clientId,
-            redirectUri: configuration.redirectUri + "auth",
             refreshToken: refreshToken
         )
         
@@ -318,7 +362,6 @@ enum JWTUtility {
             clientId: configuration.clientId,
             iv: iv.hexString,
             metadata: metadata.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil),
-            redirectUri: configuration.redirectUri + "auth",
             symmetricalKey: symmetricKey.replacingOccurrences(of: "[\\n\\r]", with: "", options: .regularExpression, range: nil)
         )
 

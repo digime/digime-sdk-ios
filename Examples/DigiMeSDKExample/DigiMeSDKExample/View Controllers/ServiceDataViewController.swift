@@ -158,7 +158,7 @@ class ServiceDataViewController: UIViewController {
         currentContract = contract
         accounts = []
         do {
-            let config = try Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey)
+            let config = try Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true)
             digiMe = DigiMe(configuration: config)
             
             updateUI()
@@ -282,26 +282,26 @@ class ServiceDataViewController: UIViewController {
         }
     }
     
-    private func getAccounts(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
-        digiMe.readAccounts { result in
-            switch result {
-            case .success(let accountsInfo):
-                self.accounts = accountsInfo.accounts
-                self.updateUI()
-                completion(credentials)
-            case .failure(let error):
-                if case .failure(.invalidSession) = result {
-                    // Need to create a new session
-                    self.requestDataQuery(credentials: credentials) { refreshedCredentials in
-                        self.getAccounts(credentials: refreshedCredentials, completion: completion)
-                    }
-                    return
-                }
-                
-                self.logger.log(message: "Error retrieving accounts: \(error)")
-            }
-        }
-    }
+	private func getAccounts(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
+		digiMe.readAccounts(credentials: credentials) { result in
+			switch result {
+			case .success(let accountsInfo):
+				self.accounts = accountsInfo.accounts
+				self.updateUI()
+				completion(credentials)
+			case .failure(let error):
+				if case .failure(.invalidSession) = result {
+					// Need to create a new session
+					self.requestDataQuery(credentials: credentials) { refreshedCredentials in
+						self.getAccounts(credentials: refreshedCredentials, completion: completion)
+					}
+					return
+				}
+				
+				self.logger.log(message: "Error retrieving accounts: \(error)")
+			}
+		}
+	}
     
     private func requestDataQuery(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
         digiMe.requestDataQuery(credentials: credentials, readOptions: nil) { result in

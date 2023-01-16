@@ -90,7 +90,7 @@ public enum Crypto {
         return try decryptRSA(data: data, secKey: secKey)
     }
     
-    static func decrypt(encryptedBase64EncodedData data: Data, privateKeyData: Data) throws -> Data {
+	static func decrypt(encryptedBase64EncodedData data: Data, privateKeyData: Data, dataIsHashed: Bool) throws -> Data {
         // Split data into components
         let encryptedDskLength = 256
         let divLength = kCCBlockSizeAES128
@@ -105,15 +105,19 @@ public enum Crypto {
         
         let dsk = try decryptRSA(data: encryptedDsk, privateKeyData: privateKeyData)
         let aes = try AES256(key: dsk, iv: div)
-        let fileDataWithHash = try aes.decrypt(encryptedFileData)
+        let decryptedData = try aes.decrypt(encryptedFileData)
         
+		guard dataIsHashed else {
+			return decryptedData
+		}
+		
         // Split decrypted file data into hash and actual data
         let hashLength = SHA512.byteCount
-        let hashRange = fileDataWithHash.startIndex..<fileDataWithHash.startIndex + hashLength
-        let fileDataRange = hashRange.endIndex..<fileDataWithHash.endIndex
+        let hashRange = decryptedData.startIndex..<decryptedData.startIndex + hashLength
+        let fileDataRange = hashRange.endIndex..<decryptedData.endIndex
         
-        let hash = fileDataWithHash[hashRange]
-        let fileData = fileDataWithHash[fileDataRange]
+        let hash = decryptedData[hashRange]
+        let fileData = decryptedData[fileDataRange]
         
         // Check hash
         let calculatedHash = Data(SHA512.hash(data: fileData))

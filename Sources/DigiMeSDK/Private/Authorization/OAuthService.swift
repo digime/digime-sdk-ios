@@ -47,8 +47,8 @@ class OAuthService {
             completion(.failure(SDKError.invalidAuthorizationRequestJwt))
             return
         }
-        
-        apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
+
+		apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.extractOAuthToken(from: response) { result in
@@ -66,8 +66,8 @@ class OAuthService {
             completion(.failure(SDKError.invalidRefreshTokensRequestJwt))
             return
         }
-        
-        apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
+
+		apiClient.makeRequest(TokenExchangeRoute(jwt: jwt)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.extractOAuthToken(from: response) { result in
@@ -85,13 +85,13 @@ class OAuthService {
     }
     
     func requestReferenceToken(oauthToken: OAuthToken, completion: @escaping (Result<TokenSessionResponse, SDKError>) -> Void) {
-        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
+        guard let jwt = JWTUtility.requestTokenReferenceJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
             Logger.critical("Invalid reference token request JWT")
             completion(.failure(SDKError.invalidReferenceTokenRequestJwt))
             return
         }
-        
-        apiClient.makeRequest(TokenReferenceRoute(jwt: jwt)) { [weak self] result in
+
+		apiClient.makeRequest(TokenReferenceRoute(jwt: jwt)) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.extractReferenceCode(from: response) { result in
@@ -104,13 +104,13 @@ class OAuthService {
     }
     
     func deleteUser(oauthToken: OAuthToken, completion: @escaping (Result<Void, SDKError>) -> Void) {
-        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
+        guard let jwt = JWTUtility.fileDownloadRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
             Logger.critical("Invalid delete user token request JWT")
             completion(.failure(SDKError.invalidDeleteUserTokenRequestJwt))
             return
         }
-        
-        apiClient.makeRequest(DeleteUserRoute(jwt: jwt), completion: completion)
+
+		apiClient.makeRequest(DeleteUserRoute(jwt: jwt), completion: completion)
     }
     
     private func extractPreAuthorizationCode(from response: TokenSessionResponse, completion: @escaping (Result<String, SDKError>) -> Void) {

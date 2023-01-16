@@ -174,16 +174,17 @@ public final class DigiMe {
     /// Note: If this is called on either a write-only contract or a contract which reads non-service data, this will return an error.
     ///
     /// - Parameters:
+	///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion containing either relevant account info, if successful, or an error
-    public func readAccounts(resultQueue: DispatchQueue = .main, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
+    public func readAccounts(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
         guard
             let session = session,
             session.isValid else {
             return completion(.failure(.invalidSession))
         }
         
-        readAccounts(session: session) { result in
+		readAccounts(session: session, credentials: credentials) { result in
             resultQueue.async {
                 completion(result)
             }
@@ -220,6 +221,7 @@ public final class DigiMe {
         }
         
 		allFilesReader = AllFilesReader(apiClient: self.apiClient,
+										credentials: credentials,
 										healthSerivce: self.healthSerivce,
 										certificateParser: self.certificateParser,
 										contractsCache: self.contractsCache,
@@ -300,16 +302,22 @@ public final class DigiMe {
     /// Synchronization is complete when `fileList.status.state.isRunning` becomes `false`.
     ///
     /// - Parameters:
+	///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with the list of files, or any errors encountered.
-    public func readFileList(resultQueue: DispatchQueue = .main, completion: @escaping (Result<FileList, SDKError>) -> Void) {
+    public func readFileList(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<FileList, SDKError>) -> Void) {
         guard
             let session = session,
             session.isValid else {
             return completion(.failure(.invalidSession))
         }
         
-        apiClient.makeRequest(FileListRoute(sessionKey: session.key)) { result in
+		guard let jwt = JWTUtility.fileDownloadRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+			return completion(.failure(.errorCreatingRequestJwtToDownloadFile))
+		}
+		
+		let route = FileListRoute(jwt: jwt, sessionKey: session.key)
+        apiClient.makeRequest(route) { result in
             resultQueue.async {
                 completion(result)
             }
@@ -322,16 +330,17 @@ public final class DigiMe {
     ///
     /// - Parameters:
     ///   - fileId: The file's identifier.
+	///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with file, or any errors encountered.
-    public func readFile(fileId: String, resultQueue: DispatchQueue = .main, completion: @escaping (Result<File, SDKError>) -> Void) {
+	public func readFile(fileId: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<File, SDKError>) -> Void) {
         guard
             let session = session,
             session.isValid else {
             return completion(.failure(.invalidSession))
         }
         
-        downloadService.downloadFile(sessionKey: session.key, fileId: fileId) { result in
+		downloadService.downloadFile(fileId: fileId, sessionKey: session.key, credentials: credentials, configuration: configuration) { result in
             resultQueue.async {
                 completion(result)
             }
@@ -535,12 +544,17 @@ public final class DigiMe {
     
     // MARK: - Private
     
-    private func readAccounts(session: Session, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
-        apiClient.makeRequest(ReadDataRoute(sessionKey: session.key, fileId: "accounts.json")) { result in
+    private func readAccounts(session: Session, credentials: Credentials, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
+		guard let jwt = JWTUtility.fileDownloadRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+			return completion(.failure(.errorCreatingRequestJwtToDownloadFile))
+		}
+		
+		let route = ReadDataRoute(jwt: jwt, sessionKey: session.key, fileId: "accounts.json")
+        apiClient.makeRequest(route) { result in
             switch result {
             case .success(let response):
                 do {
-                    let unpackedData = try self.dataDecryptor.decrypt(response: response)
+					let unpackedData = try self.dataDecryptor.decrypt(response: response, dataIsHashed: false)
 					let info = try unpackedData.decoded() as AccountsInfo
 					if DeviceCache.shared().deviceDataRequested {
 						var accounts = info.accounts
@@ -645,8 +659,8 @@ public final class DigiMe {
         guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
             return completion(.failure(.errorCreatingRequestJwtToTriggerData))
         }
-        
-        apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, readOptions: readOptions)) { result in
+
+		apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, readOptions: readOptions)) { result in
             switch result {
             case .success(let response):
                 self.session = response.session

@@ -15,9 +15,9 @@ class DataDecryptor {
         self.configuration = configuration
     }
     
-    func decrypt(response: FileResponse) throws -> Data {
+	func decrypt(response: FileResponse, dataIsHashed: Bool) throws -> Data {
         do {
-            var unpackedData = try Crypto.decrypt(encryptedBase64EncodedData: response.data, privateKeyData: configuration.privateKeyData)
+			var unpackedData = try Crypto.decrypt(encryptedBase64EncodedData: response.data, privateKeyData: configuration.privateKeyData, dataIsHashed: dataIsHashed)
             if response.info.compression == "gzip" {
                 unpackedData = try DataCompressor.gzip.decompress(data: unpackedData)
             }

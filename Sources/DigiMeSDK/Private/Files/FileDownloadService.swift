@@ -40,8 +40,8 @@ class FileDownloadService {
         kvoToken?.invalidate()
     }
     
-    func downloadFile(sessionKey: String, fileId: String, updatedDate: Date? = nil, completion: @escaping (Result<File, SDKError>) -> Void) {
-        let operation = FileDownloadOperation(sessionKey: sessionKey, fileId: fileId, updatedDate: updatedDate ?? Date(timeIntervalSince1970: 0), apiClient: apiClient, dataDecryptor: dataDecryptor)
+	func downloadFile(fileId: String, sessionKey: String, credentials: Credentials, configuration: Configuration, updatedDate: Date? = nil, completion: @escaping (Result<File, SDKError>) -> Void) {
+		let operation = FileDownloadOperation(fileId: fileId, sessionKey: sessionKey, credentials: credentials, configuration: configuration, updatedDate: updatedDate ?? Date(timeIntervalSince1970: 0), apiClient: apiClient, dataDecryptor: dataDecryptor)
         operation.downloadCompletion = completion
         queue.addOperation(operation)
     }
