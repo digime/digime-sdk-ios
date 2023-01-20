@@ -479,6 +479,7 @@ public final class DigiMe {
 		CredentialCache().clearCredentials(for: contractId)
 		SessionCache().clearSession(for: contractId)
 		ContractsCache().clearTimeRanges(for: contractId)
+		LocalDataCache().deviceDataRequested = false
 	}
     
     // MARK: - Apple Health
@@ -554,16 +555,27 @@ public final class DigiMe {
             switch result {
             case .success(let response):
                 do {
+					guard !response.data.isEmpty else {
+						if LocalDataCache().deviceDataRequested {
+							completion(.success(AccountsInfo(accounts: [HealthKitData().account], consentId: String.random(length: 32))))
+						}
+						else {
+							completion(.failure(SDKError.readAccountsError))
+						}
+						return
+					}
+
 					let unpackedData = try self.dataDecryptor.decrypt(response: response, dataIsHashed: false)
-					let info = try unpackedData.decoded() as AccountsInfo
-					if DeviceCache.shared().deviceDataRequested {
-						var accounts = info.accounts
-						let consentId = info.consentId
+					let accountsInfo = try unpackedData.decoded() as AccountsInfo
+					
+					if LocalDataCache().deviceDataRequested {
+						var accounts = accountsInfo.accounts
+						let consentId = accountsInfo.consentId
 						accounts.append(HealthKitData().account)
 						completion(.success(AccountsInfo(accounts: accounts, consentId: consentId)))
 					}
 					else {
-						completion(.success(info))
+						completion(.success(accountsInfo))
 					}
                 }
                 catch let error as SDKError {
@@ -573,9 +585,8 @@ public final class DigiMe {
                     completion(.failure(SDKError.readAccountsError))
                 }
             case .failure(let error):
-				if DeviceCache.shared().deviceDataRequested {
-					let account = HealthKitData().account
-					let info = AccountsInfo(accounts: [account], consentId: "device-local-data")
+				if LocalDataCache().deviceDataRequested {
+					let info = AccountsInfo(accounts: [HealthKitData().account], consentId: String.random(length: 32))
 					completion(.success(info))
 				}
 				else {

@@ -67,7 +67,7 @@ class AllFilesReader {
         self.sessionDataCompletion = completion
         self.sessionContentHandler = downloadHandler
         
-		if DeviceCache.shared().deviceDataRequested {
+		if LocalDataCache().deviceDataRequested {
 			self.beginFetchDeviceLocalData()
 		}
 		
