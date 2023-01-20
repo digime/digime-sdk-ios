@@ -445,6 +445,8 @@ public final class DigiMe {
 		allFilesReader?.clearSessionData()
 		CredentialCache().clearCredentials(for: contractId)
 		SessionCache().clearSession(for: contractId)
+		ContractsCache().clearTimeRanges(for: contractId)
+		LocalDataCache().deviceDataRequested = false
 	}
     
     /// Get contract details.
@@ -474,13 +476,6 @@ public final class DigiMe {
             }
         }
     }
-	
-	public func clearData(for contractId: String) {
-		CredentialCache().clearCredentials(for: contractId)
-		SessionCache().clearSession(for: contractId)
-		ContractsCache().clearTimeRanges(for: contractId)
-		LocalDataCache().deviceDataRequested = false
-	}
     
     // MARK: - Apple Health
     
