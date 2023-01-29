@@ -10,8 +10,6 @@ import Foundation
 import HealthKit
 
 class HealthKitFilesDataService {
-	var completionHandler: ((Result<File, SDKError>) -> Void)?
-	
 	private let queue: OperationQueue
 	private let healthStore: HKHealthStore
 	
@@ -19,7 +17,9 @@ class HealthKitFilesDataService {
     private var account: SourceAccount
     private var processor = FitnessActivityProcessor()
     private var fitnessActivityResult: [String: [FitnessActivitySummary]] = [:]
-    
+	private var fileDownloadHandler: ((Result<File, SDKError>) -> Void)?
+	private var completionHandler: ((Result<[FileListItem], SDKError>) -> Void)?
+	
     // MARK: - Life Cycle
     
 	init(account: SourceAccount) {
@@ -43,7 +43,11 @@ class HealthKitFilesDataService {
     
     // MARK: - Data operations
     
-    func queryData(from startDate: Date, to endDate: Date) {
+	func queryData(from startDate: Date, to endDate: Date, downloadHandler: ((Result<File, SDKError>) -> Void)?, completion: ((Result<[FileListItem], SDKError>) -> Void)?) {
+		
+		self.fileDownloadHandler = downloadHandler
+		self.completionHandler = completion
+		
 		Logger.mixpanel("device-data-source-read-started", metadata: HealthKitData().metadata)
 		
 		let dataTypes = FitnessActivityProcessor.defaultTypesToRead
@@ -57,7 +61,7 @@ class HealthKitFilesDataService {
                 switch result {
                 case .failure(let error):
 					HealthKitService.reportErrorLog(error: error)
-                    self.completionHandler?(.failure(error))
+                    self.fileDownloadHandler?(.failure(error))
                 case .success(let operationResult):
                     self.fitnessActivityResult[dataType.original!.identifier] = operationResult.data[dataType.original!.identifier]
                 }
@@ -86,7 +90,7 @@ class HealthKitFilesDataService {
         guard let result = processor.process(data: fitnessActivityResult) else {
             let error = SDKError.healthDataError(message: "Health Data Processor returned no result")
 			HealthKitService.reportErrorLog(error: error)
-            completionHandler?(.failure(error))
+			completionHandler?(.failure(error))
             return
         }
         
@@ -96,7 +100,9 @@ class HealthKitFilesDataService {
         var sections = [(date: Date, records: [FitnessActivitySummary])]()
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYYMM"
-        
+		var fileListItems: [FileListItem] = []
+		let updated = Date()
+		
         let chunked = result.chunked(into: 7)
         data.append(contentsOf: chunked)
 
@@ -112,16 +118,19 @@ class HealthKitFilesDataService {
             if
                 let endDate = month.records.last?.endDate,
                 let jsonData = try? month.records.encoded(dateEncodingStrategy: .millisecondsSince1970, keyEncodingStrategy: .convertToSnakeCase) {
-                
+				
                 let filename = "18_4_28_0_301_D\(formatter.string(from: endDate))_0.json"
-                let napped = MappedFileMetadata(objectCount: month.records.count, objectType: "dailyactivity", serviceGroup: "health & fitness", serviceName: "applehealth")
-                let meta = FileMetadata.mapped(napped)
-                let jfsFile = File(fileWithId: filename, rawData: jsonData, metadata: meta, updated: Date())
+                let mapped = MappedFileMetadata(objectCount: month.records.count, objectType: "dailyactivity", serviceGroup: "health & fitness", serviceName: "applehealth")
+                let meta = FileMetadata.mapped(mapped)
+                let jfsFile = File(fileWithId: filename, rawData: jsonData, metadata: meta, updated: updated)
+				let fileListItem = FileListItem(name: filename, objectVersion: "1", updatedDate: updated)
                 files.append(jfsFile)
-				completionHandler?(.success(jfsFile))
+				fileListItems.append(fileListItem)
+				fileDownloadHandler?(.success(jfsFile))
             }
         }
         
+		completionHandler?(.success(fileListItems))
         Logger.mixpanel("device-data-source-read-success", metadata: HealthKitData().metadata)
     }
 }

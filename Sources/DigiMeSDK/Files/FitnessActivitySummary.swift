@@ -19,7 +19,7 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
 		}
     }
     
-	public var id = UUID()
+	public var id: String
     public var identifier: String?
     public var entityId: String?
     public var accountEntityId: String?
@@ -57,7 +57,7 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
                 startDate: Date,
                 endDate: Date) {
         
-        self.id = UUID()
+		self.id = UUID().uuidString.lowercased()
         self.identifier = identifier
         self.entityId = entityId
         self.accountEntityId = accountEntityId
@@ -72,7 +72,7 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decodeIfPresent(UUID.self, forKey: .identifier) ?? UUID()
+		id = try container.decodeIfPresent(String.self, forKey: .identifier) ?? UUID().uuidString.lowercased()
         identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
         entityId = try container.decodeIfPresent(String.self, forKey: .entityId)
         accountEntityId = try container.decodeIfPresent(String.self, forKey: .accountEntityId)
@@ -86,13 +86,14 @@ public struct FitnessActivitySummary: Codable, Dated, Identifiable {
     }
     
     public init(startDate: Date, endDate: Date, steps: Double, distances: [Distances], calories: Double, activity: Int, account: SourceAccount? = nil) {
+		self.id = UUID().uuidString.lowercased()
         self.startDate = startDate
         self.endDate = endDate
         self.steps = steps
         self.distances = distances
         self.calories = calories
         self.activity = activity
-        let id = "\(startDate.millisecondsSince1970)"
+        let id = String(Int(startDate.millisecondsSince1970))
         self.identifier = id
         self.createdDate = startDate
         

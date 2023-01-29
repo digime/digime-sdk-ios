@@ -29,15 +29,15 @@ public enum TimeRange: Encodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .after(let from):
-            try container.encode(from.timeIntervalSince1970, forKey: .from)
+            try container.encode(Int(from.timeIntervalSince1970), forKey: .from)
         case let .between(from, to):
             // Allow for cases where user has inadvertently set the `to` date to before the `from` date
             let firstDate = min(from, to)
             let lastDate = max(from, to)
-            try container.encode(firstDate.timeIntervalSince1970, forKey: .from)
-            try container.encode(lastDate.timeIntervalSince1970, forKey: .to)
+            try container.encode(Int(firstDate.timeIntervalSince1970), forKey: .from)
+            try container.encode(Int(lastDate.timeIntervalSince1970), forKey: .to)
         case .before(let to):
-            try container.encode(to.timeIntervalSince1970, forKey: .to)
+            try container.encode(Int(to.timeIntervalSince1970), forKey: .to)
         case let .last(amount, unit):
             try container.encode("\(amount)\(unit.rawValue)", forKey: .last)
         }

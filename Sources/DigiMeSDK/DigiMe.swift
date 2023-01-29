@@ -225,7 +225,8 @@ public final class DigiMe {
 										healthSerivce: self.healthSerivce,
 										certificateParser: self.certificateParser,
 										contractsCache: self.contractsCache,
-										configuration: self.configuration)
+										configuration: self.configuration,
+										readOptions: readOptions)
         
         allFilesReader?.readAllFiles(downloadHandler: { result in
             resultQueue.async {

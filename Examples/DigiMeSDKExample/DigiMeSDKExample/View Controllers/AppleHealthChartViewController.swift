@@ -14,13 +14,26 @@ import UIKit
 
 class AppleHealthChartViewController: DataTypeCollectionViewController {
     private let contract = Contracts.appleHealth
-	private let fromDate = Date.from(year: 1970, month: 1, day: 1, hour: 0, minute: 0, second: 0)!
 
 	private var preferences = UserPreferences.shared()
 	private var records = [FitnessActivitySummary]()
 	private var sections = [(date: Date, records: [FitnessActivitySummary])]()
 	private var digiMe: DigiMe!
 
+	private lazy var readOptions: ReadOptions = {
+		/// Time ranges allow you to narrow down the contract's time scope.
+		/// For example: if your contract allows you to gather data within one year
+		/// then using the scope object you can get data for a month or for one day only, etc.
+		let timeRange = TimeRange.after(from: fromDate)
+		let scope = Scope(timeRanges: [timeRange])
+		return ReadOptions(scope: scope)!
+	}()
+	
+	// In this example, let's limit the query a little bit more than the contract allows.
+	private var fromDate: Date {
+		return Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+	}
+	
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -39,7 +52,6 @@ class AppleHealthChartViewController: DataTypeCollectionViewController {
     }
     
     private func configureNavigationBar() {
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: nil)
         title = "Result"
         
         var items: [UIBarButtonItem] = []
@@ -74,57 +86,109 @@ class AppleHealthChartViewController: DataTypeCollectionViewController {
     private func backToInitial(sender: AnyObject) {
         self.navigationController?.popToRootViewController(animated: true)
     }
-    
+
 	private func fetchData() {
 		SVProgressHUD.show(withStatus: "Fetching data...")
 		let credentials = preferences.credentials(for: contract.identifier)
-		var sourceAccount: SourceAccount?
-		
-		digiMe.authorize(credentials: credentials, serviceId: DeviceOnlyServices.appleHealth.rawValue) { result in
+		var files: [File] = []
+		digiMe.authorize(credentials: credentials, serviceId: DeviceOnlyServices.appleHealth.rawValue) { [self] result in
 			switch result {
 			case .success(let newOrRefreshedCredentials):
 				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.contract.identifier)
-				
-				let types: [QuantityType] = [.stepCount, .activeEnergyBurned, .distanceWalkingRunning]
-				let anchorDate = self.createAnchorDate(from: self.fromDate)
-				let intervalComponents = DateComponents(day: 1)
-				let healthConfiguration = HealthKitConfiguration(typesToRead: types, typesToWrite: [], startDate: self.fromDate, endDate: Date(), anchorDate: anchorDate, mergeResultForSameType: false, singleCallbackForAllTypes: true, intervalComponents: intervalComponents)
-				
-				self.digiMe.appleHealthStatisticsCollectionQuery(for: self.contract.identifier, queryConfig: healthConfiguration) { account in
-					sourceAccount = account
-					print("Apple Health account: \(String(describing: account))")
-				} completion: { stats, error in
-					SVProgressHUD.dismiss()
-					
-					guard
-						error == nil,
-						let account = sourceAccount else {
+				self.digiMe.readAllFiles(credentials: newOrRefreshedCredentials, readOptions: self.readOptions) { result in
+					switch result {
+					case .success(let file):
+						files.append(file)
+						print("[DigiMeSDKExample] JFS file received \(file.identifier)")
+					case .failure(let error):
+						self.handleError(error)
+					}
+				} completion: { result in
+					switch result {
+					case .success(let (fileList, refreshedCredentials)):
+						self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.contract.identifier)
 						
-						self.showPopUp(message: error?.localizedDescription)
-						return
+						if
+							let accountState = fileList.status.details?.first,
+							let date = accountState.error?.error?.retryAfter {
+							
+							print("[DigiMeSDKExample] Next sync date: \(date), sync state: \(fileList.status.state)")
+						}
+						
+						self.process(jfs: files)
+						SVProgressHUD.dismiss()
+						
+					case .failure(let error):
+						self.handleError(error)
 					}
-					
-					let result = self.process(statistics: stats!, for: account)
-					
-					/// Split data into calendar one week range.
-					let chunked = result.chunked(into: 7)
-					self.data.append(contentsOf: chunked)
-					DispatchQueue.main.async { [weak self] in
-						self?.reload()
-					}
-					
-					/// For debugging purposes only.
-					/// Group data to monthly time shard
-					self.records = result
-					self.updateSections()
 				}
 				
 			case.failure(let error):
-				self.showPopUp(message: "Authorization failed: \(error)")
+				self.handleError(error)
 			}
 		}
 	}
-
+	
+	private func handleError(_ error: SDKError) {
+		switch error {
+		case .invalidSession:
+			self.refreshCtredentials { success in
+				if success {
+					self.fetchData()
+				}
+			}
+		default:
+			SVProgressHUD.dismiss()
+			self.showPopUp(message: error.description)
+		}
+	}
+	
+	private func refreshCtredentials(_ completion: @escaping((Bool) -> Void)) {
+		guard let credentials = preferences.credentials(for: contract.identifier) else {
+			self.showPopUp(message: "[DigiMeSDKExample] Attempting to read data before authorizing contract")
+			return
+		}
+		
+		digiMe.requestDataQuery(credentials: credentials, readOptions: nil) { result in
+			switch result {
+			case .success(let credentials):
+				self.preferences.setCredentials(newCredentials: credentials, for: self.contract.identifier)
+				completion(true)
+				
+			case .failure(let error):
+				self.showPopUp(message: "[DigiMeSDKExample] Refresh Credentials failed: \(error)")
+				completion(false)
+			}
+		}
+	}
+	
+	private func process(jfs files: [File]) {
+		var result: [FitnessActivitySummary] = []
+		files.forEach { file in
+			FilePersistentStorage(with: .adminApplicationDirectory).store(data: file.data, fileName: file.identifier)
+			if
+				let activities = try? file.data.decoded(dateDecodingStrategy: .millisecondsSince1970) as [FitnessActivitySummary],
+				!activities.isEmpty {
+				
+				result.append(contentsOf: activities)
+			}
+		}
+		
+		let sorted = result.sorted { (($0.startDate).compare($1.startDate)) == .orderedDescending }
+		
+		/// Split data into calendar one week range.
+		let chunked = sorted.chunked(into: 7)
+		self.data.append(contentsOf: chunked)
+		DispatchQueue.main.async { [weak self] in
+			self?.reload()
+		}
+		
+		/// For debugging purposes only.
+		/// Group data to monthly time shard
+		self.records = sorted
+		self.updateSections()
+	}
+	
     private func updateSections() {
         sections = records
             .sorted { $0.endDate > $1.endDate }

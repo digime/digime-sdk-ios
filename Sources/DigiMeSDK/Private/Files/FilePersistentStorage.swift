@@ -45,6 +45,34 @@ public class FilePersistentStorage {
         
         FileManager.default.createFile(atPath: url.path, contents: data, attributes: nil)
     }
+	
+	public func appendToFile(data: Data, fileName: String) {
+		guard Thread.isMainThread else {
+			DispatchQueue.main.async {
+				self.appendToFile(data: data, fileName: fileName)
+			}
+			
+			return
+		}
+		
+		guard
+			!data.isEmpty,
+			let fileurl = getURL()?.appendingPathComponent(fileName, isDirectory: false) else {
+			
+			return
+		}
+		
+		if FileManager.default.fileExists(atPath: fileurl.path) {
+			if let fileHandle = FileHandle(forWritingAtPath: fileurl.path) {
+				fileHandle.seekToEndOfFile()
+				fileHandle.write(data)
+				fileHandle.closeFile()
+			}
+		}
+		else {
+			try? data.write(to: fileurl, options: .atomic)
+		}
+	}
     
     public func store(file: File) {
         guard Thread.isMainThread else {

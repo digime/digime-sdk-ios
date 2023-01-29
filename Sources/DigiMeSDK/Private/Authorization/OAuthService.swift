@@ -28,8 +28,9 @@ class OAuthService {
             completion(.failure(SDKError.invalidPreAuthorizationRequestJwt))
             return
         }
-
-        apiClient.makeRequest(AuthorizeRoute(jwt: jwt, readOptions: readOptions)) { [weak self] result in
+		
+		let route = AuthorizeRoute(jwt: jwt, readOptions: readOptions)
+        apiClient.makeRequest(route) { [weak self] result in
             switch result {
             case .success(let response):
                 self?.extractPreAuthorizationCode(from: response) { result in

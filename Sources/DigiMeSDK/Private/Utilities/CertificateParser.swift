@@ -23,7 +23,10 @@ struct CertificateParser {
             return
         }
         
-        if let data = Data(base64Encoded: contractResponse.certificate, options: .ignoreUnknownCharacters) {
+		if
+			!contractResponse.certificate.isEmpty,
+			let data = Data(base64Encoded: contractResponse.certificate, options: .ignoreUnknownCharacters) {
+			
             completion(self.parseCertificate(data: data))
         }
         else {

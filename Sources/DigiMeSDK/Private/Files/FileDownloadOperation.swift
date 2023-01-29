@@ -59,7 +59,7 @@ class FileDownloadOperation: RetryingOperation {
 				newResult = .failure(sdkError)
 			}
             catch {
-                newResult = .failure(.fileDownloadOperationError)
+				newResult = .failure(.fileDownloadOperationError(error: error))
             }
             
             if let newResult = newResult {

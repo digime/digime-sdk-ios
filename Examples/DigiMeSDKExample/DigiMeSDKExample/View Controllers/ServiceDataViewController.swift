@@ -28,7 +28,15 @@ class ServiceDataViewController: UIViewController {
 	private var preferences = UserPreferences.shared()
     private var accounts = [SourceAccount]()
     private var selectServiceCompletion: ((Service?) -> Void)?
-    
+	private var fromDate: Date {
+		return Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+	}
+	private lazy var readOptions: ReadOptions? = {
+		let timeRange = TimeRange.after(from: fromDate)
+		let scope = Scope(timeRanges: [timeRange])
+		return ReadOptions(scope: scope)
+	}()
+	
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -142,14 +150,6 @@ class ServiceDataViewController: UIViewController {
         }
     }
     
-    @IBAction private func changeScope() {
-        let stBoard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = stBoard.instantiateViewController(withIdentifier: "scopeTableViewController")
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.backButtonTitle = "Back"
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-    
     private func setContract(_ contract: DigimeContract) {
         if contract.identifier == currentContract?.identifier {
             return
@@ -243,19 +243,19 @@ class ServiceDataViewController: UIViewController {
             
             self.logger.log(message: message)
         }
-        
-        digiMe.authorize(credentials: credentials, serviceId: service?.identifier, readOptions: service?.options) { result in
-            switch result {
-            case .success(let newOrRefreshedCredentials):
+		
+		digiMe.authorize(credentials: credentials, serviceId: service?.identifier, readOptions: readOptions) { result in
+			switch result {
+			case .success(let newOrRefreshedCredentials):
 				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
-                self.updateUI()
-                self.getData(credentials: newOrRefreshedCredentials)
-                
-            case.failure(let error):
-                self.logger.log(message: "Authorization failed: \(error)")
-            }
-        }
-    }
+				self.updateUI()
+				self.getData(credentials: newOrRefreshedCredentials)
+				
+			case.failure(let error):
+				self.logger.log(message: "Authorization failed: \(error)")
+			}
+		}
+	}
     
     private func selectService(completion: @escaping ((Service?) -> Void)) {
         digiMe.availableServices(contractId: currentContract.identifier, filterAvailable: false) { result in
@@ -304,7 +304,7 @@ class ServiceDataViewController: UIViewController {
 	}
     
     private func requestDataQuery(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
-        digiMe.requestDataQuery(credentials: credentials, readOptions: nil) { result in
+        digiMe.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
             switch result {
             case .success(let refreshedCredentials):
 				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.currentContract.identifier)
@@ -317,7 +317,7 @@ class ServiceDataViewController: UIViewController {
     }
 
     private func getServiceData(credentials: Credentials) {
-        digiMe.readAllFiles(credentials: credentials, readOptions: nil, resultQueue: .global()) { result in
+        digiMe.readAllFiles(credentials: credentials, readOptions: readOptions, resultQueue: .global()) { result in
             switch result {
             case .success(let file):
                 

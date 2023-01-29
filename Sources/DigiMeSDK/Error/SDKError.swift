@@ -101,7 +101,7 @@ public enum SDKError: Error {
 	case unexpectedErrorWhenParsingConsentResponse
 	
 	/// File Download operation error
-	case fileDownloadOperationError
+	case fileDownloadOperationError(error: Error)
 	
 	/// Error creating request JWT to trigger data
 	case errorCreatingRequestJwtToTriggerData
@@ -288,8 +288,8 @@ extension SDKError: CustomStringConvertible {
 		case .unexpectedErrorWhenParsingConsentResponse:
 			return "Error parsing server response. Result is unexpected."
 		
-		case .fileDownloadOperationError:
-			return "File Download operation error"
+		case .fileDownloadOperationError(let error):
+			return "File Download operation error: \(error.localizedDescription)"
 		
 		case .errorCreatingRequestJwtToTriggerData:
 			return "Error creating request JWT to trigger data"

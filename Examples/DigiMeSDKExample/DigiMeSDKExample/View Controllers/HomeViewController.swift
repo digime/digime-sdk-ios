@@ -17,5 +17,6 @@ class HomeViewController: UIViewController {
         // Log all levels, including debug.
         DigiMe.logLevels = LogLevel.allCases
 		navigationItem.largeTitleDisplayMode = .never
+		navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: nil)
     }
 }

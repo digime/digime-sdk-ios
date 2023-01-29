@@ -15,6 +15,7 @@ class AllFilesReader {
     private var fileListCache = FileListCache()
     private var sessionError: SDKError?
     private var sessionFileList: FileList?
+	private var deviceDataFiles: [FileListItem]?
     private var stalePollCount = 0
     
     private let apiClient: APIClient
@@ -25,7 +26,8 @@ class AllFilesReader {
 	private let contractsCache: ContractsCache
     private var sessionDataCompletion: ((Result<FileList, SDKError>) -> Void)?
     private var sessionContentHandler: ((Result<File, SDKError>) -> Void)?
-    
+    private var readOptions: ReadOptions?
+	
     private lazy var downloadService: FileDownloadService = {
         FileDownloadService(apiClient: apiClient, dataDecryptor: DataDecryptor(configuration: configuration))
     }()
@@ -35,13 +37,14 @@ class AllFilesReader {
         static let pollInterval = 3
     }
     
-	init(apiClient: APIClient, credentials: Credentials, healthSerivce: HealthKitService, certificateParser: CertificateParser, contractsCache: ContractsCache, configuration: Configuration) {
+	init(apiClient: APIClient, credentials: Credentials, healthSerivce: HealthKitService, certificateParser: CertificateParser, contractsCache: ContractsCache, configuration: Configuration, readOptions: ReadOptions? = nil) {
         self.apiClient = apiClient
 		self.credentials = credentials
 		self.healthSerivce = healthSerivce
 		self.certificateParser = certificateParser
 		self.contractsCache = contractsCache
         self.configuration = configuration
+		self.readOptions = readOptions
     }
     
     private var session: Session? {
@@ -54,6 +57,24 @@ class AllFilesReader {
     }
     
     private var isSyncRunning: Bool {
+		
+		// Check if local data is requested and no results produced yet, we must continue polling
+		if
+			LocalDataCache().deviceDataRequested,
+			deviceDataFiles == nil {
+			
+			return true
+		}
+		
+		// Check if local data already collected and no remote services
+		if
+			LocalDataCache().deviceDataRequested,
+			deviceDataFiles != nil,
+			sessionFileList?.status.state == .pending {
+			
+			return false
+		}
+		
         // If no session file list, could be because we haven't received response yet, so assume is running
         return sessionFileList?.status.state.isRunning ?? true
     }
@@ -84,6 +105,7 @@ class AllFilesReader {
 		downloadService.allDownloadsFinishedHandler = nil
 		sessionError = nil
 		stalePollCount = 0
+		deviceDataFiles = nil
 	}
     
     private func beginFileListPollingIfRequired() {
@@ -177,7 +199,20 @@ class AllFilesReader {
     }
     
     private func completeSessionDataFetch(error: SDKError?) {
-        sessionDataCompletion?(error != nil ? .failure(error!) : .success(sessionFileList!))
+		if let error = error {
+			sessionDataCompletion?(.failure(error))
+		}
+		else if let localFiles = deviceDataFiles {
+			var existing = sessionFileList?.files ?? []
+			existing.append(contentsOf: localFiles)
+			let status = sessionFileList?.status
+			let fileList = FileList(files: existing, status: status!)
+			sessionDataCompletion?(.success(fileList))
+		}
+		else {
+			sessionDataCompletion?(.success(sessionFileList!))
+		}
+								   
         clearSessionData()
     }
     
@@ -215,8 +250,16 @@ class AllFilesReader {
 				
 				let account = HealthKitData().account
 				let filesDataService = HealthKitFilesDataService(account: account)
-				filesDataService.completionHandler = self.sessionContentHandler
-				filesDataService.queryData(from: limits.startDate, to: limits.endDate)
+				let deviceDataCompletion: (Result<[FileListItem], SDKError>) -> Void = { [self] result in
+					switch result {
+					case .success(let files):
+						self.deviceDataFiles = files
+					case .failure(let error):
+						self.sessionDataCompletion?(.failure(error))
+					}
+				}
+				
+				filesDataService.queryData(from: limits.startDate, to: limits.endDate, downloadHandler: self.sessionContentHandler, completion: deviceDataCompletion)
 				
 			case .failure(let error):
 				HealthKitService.reportErrorLog(error: error)
@@ -235,14 +278,13 @@ class AllFilesReader {
 						switch certificateResult {
 						case .success(let certificate):
 							self.contractsCache.addTimeRanges(ranges: certificate.dataRequest?.timeRanges, for: contractId)
-							guard let range = certificate.dataRequest?.timeRanges?.first else {
-								completion(.failure(SDKError.certificateVerifyTimeRangeError))
-								return
+							let timeRangeResult = certificate.verifyTimeRange(readOptions: self.readOptions)
+							switch timeRangeResult {
+							case .success(let limits):
+								completion(.success(limits))
+							case .failure(let error):
+								completion(.failure(error))
 							}
-							
-							let limits = range.defaultLimits()
-							completion(.success(limits))
-							
 						case .failure(let error):
 							completion(.failure(error))
 						}
@@ -254,7 +296,7 @@ class AllFilesReader {
 			return
 		}
 		
-		let limits = contractTimeRange.defaultLimits()
+		let limits = contractTimeRange.verifyTimeRange(readOptions: readOptions)
 		completion(.success(limits))
 	}
 }

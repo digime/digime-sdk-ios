@@ -21,16 +21,20 @@ public class ConsentAccessTimeRange: Codable {
         self.to = to
     }
 	
-	public func verifyTimeRange(readOptions: ReadOptions?) -> Result<TimeRangeLimits, SDKError> {
+	public func verifyTimeRange(readOptions: ReadOptions?) -> TimeRangeLimits {
 		let certDefaults = certificateTimeRange()
 		if
 			let readOptions = readOptions,
 			let timeRange = readOptions.scope?.timeRanges?.first,
 			let optionsRange = retrieveLimits(from: timeRange) {
-			return .success(TimeRangeLimits(startDate: max(certDefaults.startDate, optionsRange.startDate), endDate: min(certDefaults.endDate, optionsRange.endDate)))
+			
+			let startDate = max(certDefaults.startDate, optionsRange.startDate)
+			let endDate = min(certDefaults.endDate, optionsRange.endDate)
+			let limits = TimeRangeLimits(startDate: startDate, endDate: endDate)
+			return limits
 		}
 		else {
-			return .success(certDefaults)
+			return certDefaults
 		}
 	}
 	

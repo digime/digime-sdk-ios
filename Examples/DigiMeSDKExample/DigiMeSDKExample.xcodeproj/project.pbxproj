@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1E1038952965D58400B3533E /* AppleHealthSummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1038942965D58400B3533E /* AppleHealthSummaryViewController.swift */; };
+		1E0225D52980675600892CE8 /* DatePickerWithButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */; };
+		1E02269629817BE000892CE8 /* AppleHealthSummaryHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E02269529817BE000892CE8 /* AppleHealthSummaryHostingController.swift */; };
+		1E02269829817C2C00892CE8 /* AppleHealthSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */; };
+		1E0226AF29828BAF00892CE8 /* Binding+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0226AE29828BAF00892CE8 /* Binding+Helper.swift */; };
 		1E4901E227D9112200F13D29 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E127D9112200F13D29 /* Logger.swift */; };
 		1E4901E827D9112B00F13D29 /* ServiceDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */; };
 		1E4901E927D9112B00F13D29 /* ServicePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */; };
@@ -24,9 +27,12 @@
 		1E49021027D9155000F13D29 /* HealthDataTypeValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020E27D9155000F13D29 /* HealthDataTypeValue.swift */; };
 		1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020F27D9155000F13D29 /* ServerResponse.swift */; };
 		1E49021427D918FC00F13D29 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E49021327D918FC00F13D29 /* HealthKit.framework */; };
+		1E4C939B297EF4D300195E58 /* ScopeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4C939A297EF4D200195E58 /* ScopeView.swift */; };
+		1E4C939E297F17A700195E58 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 1E4C939D297F17A700195E58 /* ProgressHUD */; };
 		1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E717C2861AA1000E7954E /* UserPreferences.swift */; };
 		1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */; };
 		1E757C372948897D00E373DE /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E757C362948897D00E373DE /* String+Helper.swift */; };
+		1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */; };
 		1EAF42EB29474EB700E2ADE2 /* uploadExample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 1EAF42EA29474EB700E2ADE2 /* uploadExample.pdf */; };
 		1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */; };
 		1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */; };
@@ -57,7 +63,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1E1038942965D58400B3533E /* AppleHealthSummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryViewController.swift; sourceTree = "<group>"; };
+		1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerWithButtons.swift; sourceTree = "<group>"; };
+		1E02269529817BE000892CE8 /* AppleHealthSummaryHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryHostingController.swift; sourceTree = "<group>"; };
+		1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryView.swift; sourceTree = "<group>"; };
+		1E0226AE29828BAF00892CE8 /* Binding+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Helper.swift"; sourceTree = "<group>"; };
 		1E4901E127D9112200F13D29 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceDataViewController.swift; sourceTree = "<group>"; };
 		1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicePickerViewController.swift; sourceTree = "<group>"; };
@@ -75,10 +84,12 @@
 		1E49020F27D9155000F13D29 /* ServerResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
 		1E49021227D918FC00F13D29 /* DigiMeSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigiMeSDKExample.entitlements; sourceTree = "<group>"; };
 		1E49021327D918FC00F13D29 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		1E4C939A297EF4D200195E58 /* ScopeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeView.swift; sourceTree = "<group>"; };
 		1E66044627F49CA800A18292 /* CareKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CareKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E6E717C2861AA1000E7954E /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthDetailsView.swift; sourceTree = "<group>"; };
 		1E757C362948897D00E373DE /* String+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helper.swift"; sourceTree = "<group>"; };
+		1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryViewModel.swift; sourceTree = "<group>"; };
 		1EAF42EA29474EB700E2ADE2 /* uploadExample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = uploadExample.pdf; sourceTree = SOURCE_ROOT; };
 		1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceFormatter.swift; sourceTree = "<group>"; };
 		1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Locale+Helper.swift"; sourceTree = "<group>"; };
@@ -111,6 +122,7 @@
 				1EBB4DBD2806144B00F58675 /* CareKitStore in Frameworks */,
 				1EBB4DBB2806144B00F58675 /* CareKit in Frameworks */,
 				1EBB4DBF2806144B00F58675 /* CareKitUI in Frameworks */,
+				1E4C939E297F17A700195E58 /* ProgressHUD in Frameworks */,
 				1E49021427D918FC00F13D29 /* HealthKit.framework in Frameworks */,
 				6E8814346F575E5423DDFEAB /* Pods_DigiMeSDKExample.framework in Frameworks */,
 			);
@@ -137,6 +149,7 @@
 				1E4901E127D9112200F13D29 /* Logger.swift */,
 				1E6E717C2861AA1000E7954E /* UserPreferences.swift */,
 				1E757C362948897D00E373DE /* String+Helper.swift */,
+				1E0226AE29828BAF00892CE8 /* Binding+Helper.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -147,7 +160,7 @@
 				1E4901F327D9122200F13D29 /* AppleHealthChartViewController.swift */,
 				1E4901F527D912B400F13D29 /* DataTypeCollectionViewController.swift */,
 				1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */,
-				1E1038942965D58400B3533E /* AppleHealthSummaryViewController.swift */,
+				1E02269529817BE000892CE8 /* AppleHealthSummaryHostingController.swift */,
 				1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */,
 				1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */,
 				1E4901E727D9112B00F13D29 /* WriteDataViewController.swift */,
@@ -179,6 +192,9 @@
 			children = (
 				1E4901F727D9131C00F13D29 /* Cells */,
 				1E49020627D9149800F13D29 /* ChartViewStyle.swift */,
+				1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */,
+				1E4C939A297EF4D200195E58 /* ScopeView.swift */,
+				1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -197,6 +213,14 @@
 			children = (
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		1EA52CA12986726200A61213 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		27D31A17266A4EAB00DB2524 = {
@@ -226,6 +250,7 @@
 				1E49021227D918FC00F13D29 /* DigiMeSDKExample.entitlements */,
 				27D31A23266A4EAB00DB2524 /* AppDelegate.swift */,
 				27D31A25266A4EAB00DB2524 /* SceneDelegate.swift */,
+				1EA52CA12986726200A61213 /* ViewModels */,
 				1E49020D27D9155000F13D29 /* Models */,
 				1E4901E327D9112A00F13D29 /* View Controllers */,
 				1E49020527D9149800F13D29 /* Views */,
@@ -312,6 +337,7 @@
 				1EBB4DBA2806144B00F58675 /* CareKit */,
 				1EBB4DBC2806144B00F58675 /* CareKitStore */,
 				1EBB4DBE2806144B00F58675 /* CareKitUI */,
+				1E4C939D297F17A700195E58 /* ProgressHUD */,
 			);
 			productName = DigiMeSDKExample;
 			productReference = 27D31A20266A4EAB00DB2524 /* DigiMeSDKExample.app */;
@@ -366,6 +392,7 @@
 			mainGroup = 27D31A17266A4EAB00DB2524;
 			packageReferences = (
 				1EBB4DB92806144B00F58675 /* XCRemoteSwiftPackageReference "CareKit" */,
+				1E4C939C297F17A700195E58 /* XCRemoteSwiftPackageReference "progress-hud" */,
 			);
 			productRefGroup = 27D31A21266A4EAB00DB2524 /* Products */;
 			projectDirPath = "";
@@ -494,7 +521,10 @@
 				1E49021027D9155000F13D29 /* HealthDataTypeValue.swift in Sources */,
 				1E4901F127D9114B00F13D29 /* Contracts.swift in Sources */,
 				1E49020427D9143C00F13D29 /* UIApplication+Extension.swift in Sources */,
+				1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */,
+				1E02269629817BE000892CE8 /* AppleHealthSummaryHostingController.swift in Sources */,
 				1E4901F427D9122200F13D29 /* AppleHealthChartViewController.swift in Sources */,
+				1E02269829817C2C00892CE8 /* AppleHealthSummaryView.swift in Sources */,
 				1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */,
 				1E4901E227D9112200F13D29 /* Logger.swift in Sources */,
 				1E4901F927D9131C00F13D29 /* FeedItemCollectionViewCell.swift in Sources */,
@@ -508,10 +538,12 @@
 				1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */,
 				1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */,
 				1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */,
-				1E1038952965D58400B3533E /* AppleHealthSummaryViewController.swift in Sources */,
+				1E0226AF29828BAF00892CE8 /* Binding+Helper.swift in Sources */,
 				1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */,
 				1E4901E827D9112B00F13D29 /* ServiceDataViewController.swift in Sources */,
+				1E0225D52980675600892CE8 /* DatePickerWithButtons.swift in Sources */,
 				1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */,
+				1E4C939B297EF4D300195E58 /* ScopeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -682,6 +714,7 @@
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -706,6 +739,7 @@
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -797,6 +831,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1E4C939C297F17A700195E58 /* XCRemoteSwiftPackageReference "progress-hud" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ShogoTakeuchi/progress-hud.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		1EBB4DB92806144B00F58675 /* XCRemoteSwiftPackageReference "CareKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/carekit-apple/CareKit";
@@ -808,6 +850,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1E4C939D297F17A700195E58 /* ProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E4C939C297F17A700195E58 /* XCRemoteSwiftPackageReference "progress-hud" */;
+			productName = ProgressHUD;
+		};
 		1EBB4DBA2806144B00F58675 /* CareKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1EBB4DB92806144B00F58675 /* XCRemoteSwiftPackageReference "CareKit" */;
