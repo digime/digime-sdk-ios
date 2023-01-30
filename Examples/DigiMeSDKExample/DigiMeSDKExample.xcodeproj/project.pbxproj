@@ -14,7 +14,6 @@
 		1E4901E227D9112200F13D29 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E127D9112200F13D29 /* Logger.swift */; };
 		1E4901E827D9112B00F13D29 /* ServiceDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */; };
 		1E4901E927D9112B00F13D29 /* ServicePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */; };
-		1E4901EA27D9112B00F13D29 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E627D9112A00F13D29 /* HomeViewController.swift */; };
 		1E4901EB27D9112B00F13D29 /* WriteDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E727D9112B00F13D29 /* WriteDataViewController.swift */; };
 		1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901ED27D9114B00F13D29 /* AppInfo.swift */; };
 		1E4901F127D9114B00F13D29 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901EE27D9114B00F13D29 /* Contracts.swift */; };
@@ -33,6 +32,8 @@
 		1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */; };
 		1E757C372948897D00E373DE /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E757C362948897D00E373DE /* String+Helper.swift */; };
 		1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */; };
+		1EA52DAF2987A42E00A61213 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52DAE2987A42E00A61213 /* HomeView.swift */; };
+		1EA52DB12987B19E00A61213 /* HomeHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52DB02987B19E00A61213 /* HomeHostingController.swift */; };
 		1EAF42EB29474EB700E2ADE2 /* uploadExample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 1EAF42EA29474EB700E2ADE2 /* uploadExample.pdf */; };
 		1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */; };
 		1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */; };
@@ -70,7 +71,6 @@
 		1E4901E127D9112200F13D29 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceDataViewController.swift; sourceTree = "<group>"; };
 		1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicePickerViewController.swift; sourceTree = "<group>"; };
-		1E4901E627D9112A00F13D29 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		1E4901E727D9112B00F13D29 /* WriteDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WriteDataViewController.swift; sourceTree = "<group>"; };
 		1E4901ED27D9114B00F13D29 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		1E4901EE27D9114B00F13D29 /* Contracts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
@@ -90,6 +90,8 @@
 		1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthDetailsView.swift; sourceTree = "<group>"; };
 		1E757C362948897D00E373DE /* String+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helper.swift"; sourceTree = "<group>"; };
 		1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryViewModel.swift; sourceTree = "<group>"; };
+		1EA52DAE2987A42E00A61213 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		1EA52DB02987B19E00A61213 /* HomeHostingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeHostingController.swift; sourceTree = "<group>"; };
 		1EAF42EA29474EB700E2ADE2 /* uploadExample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = uploadExample.pdf; sourceTree = SOURCE_ROOT; };
 		1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceFormatter.swift; sourceTree = "<group>"; };
 		1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Locale+Helper.swift"; sourceTree = "<group>"; };
@@ -159,12 +161,11 @@
 			children = (
 				1E4901F327D9122200F13D29 /* AppleHealthChartViewController.swift */,
 				1E4901F527D912B400F13D29 /* DataTypeCollectionViewController.swift */,
-				1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */,
 				1E02269529817BE000892CE8 /* AppleHealthSummaryHostingController.swift */,
 				1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */,
 				1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */,
 				1E4901E727D9112B00F13D29 /* WriteDataViewController.swift */,
-				1E4901E627D9112A00F13D29 /* HomeViewController.swift */,
+				1EA52DB02987B19E00A61213 /* HomeHostingController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -190,11 +191,13 @@
 		1E49020527D9149800F13D29 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1E4901F727D9131C00F13D29 /* Cells */,
+				1EA52DAE2987A42E00A61213 /* HomeView.swift */,
 				1E49020627D9149800F13D29 /* ChartViewStyle.swift */,
+				1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */,
 				1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */,
 				1E4C939A297EF4D200195E58 /* ScopeView.swift */,
 				1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */,
+				1E4901F727D9131C00F13D29 /* Cells */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				1E49020727D9149800F13D29 /* ChartViewStyle.swift in Sources */,
 				27D31A24266A4EAB00DB2524 /* AppDelegate.swift in Sources */,
 				27D31A26266A4EAB00DB2524 /* SceneDelegate.swift in Sources */,
+				1EA52DAF2987A42E00A61213 /* HomeView.swift in Sources */,
 				1E49021027D9155000F13D29 /* HealthDataTypeValue.swift in Sources */,
 				1E4901F127D9114B00F13D29 /* Contracts.swift in Sources */,
 				1E49020427D9143C00F13D29 /* UIApplication+Extension.swift in Sources */,
@@ -532,7 +536,6 @@
 				1E4901F227D9114B00F13D29 /* DigimeContract.swift in Sources */,
 				1E4901F627D912B400F13D29 /* DataTypeCollectionViewController.swift in Sources */,
 				1E4901E927D9112B00F13D29 /* ServicePickerViewController.swift in Sources */,
-				1E4901EA27D9112B00F13D29 /* HomeViewController.swift in Sources */,
 				1E757C372948897D00E373DE /* String+Helper.swift in Sources */,
 				1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */,
 				1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */,
@@ -541,6 +544,7 @@
 				1E0226AF29828BAF00892CE8 /* Binding+Helper.swift in Sources */,
 				1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */,
 				1E4901E827D9112B00F13D29 /* ServiceDataViewController.swift in Sources */,
+				1EA52DB12987B19E00A61213 /* HomeHostingController.swift in Sources */,
 				1E0225D52980675600892CE8 /* DatePickerWithButtons.swift in Sources */,
 				1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */,
 				1E4C939B297EF4D300195E58 /* ScopeView.swift in Sources */,
@@ -710,7 +714,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
@@ -735,7 +739,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";

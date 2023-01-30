@@ -39,110 +39,105 @@ struct AppleHealthSummaryView: View {
 		let scopeFooterText = !allowScoping ? Text("Turn on the toggle to set the scope of mapped data using time ranges and narrow down the results.") : Text("To revert to the default contract's time range, turn off the scoping option and execute the query again.")
 		let footerText = !allowScoping ? Text("You can try turning the Scoping option On to narrow down your next request.") : Text("")
 		ZStack {
-			Color(.blue)
-				.edgesIgnoringSafeArea(.all)
-			NavigationView {
-				List {
-					Section(header: Text("Scope"), footer: scopeFooterText) {
-						HStack {
-							Image(systemName: "scope")
-								.frame(width: 30, height: 30, alignment: .center)
-							Text("Scope")
-							Spacer()
-							Toggle("", isOn: $allowScoping)
-								.onChange(of: allowScoping) { value in
-									self.showModal = value
-								}
-						}
-						if allowScoping {
-							Button {
-								self.showModal = true
-							} label: {
-								HStack(spacing: 40) {
-									VStack(alignment: .leading, spacing: 10) {
-										Text( "Scope time range:")
-											.foregroundColor(.black)
-											.font(.footnote)
-											
-										Text("\(scopeStartDateString) - \(scopeEndDateString)")
-											.foregroundColor(.gray)
-											.font(.footnote)
-									}
-									.padding(.vertical, 10)
-								}
+			List {
+				Section(header: Text("Scope"), footer: scopeFooterText) {
+					HStack {
+						Image(systemName: "scope")
+							.frame(width: 30, height: 30, alignment: .center)
+						Text("Scope")
+						Spacer()
+						Toggle("", isOn: $allowScoping)
+							.onChange(of: allowScoping) { value in
+								self.showModal = value
 							}
-						}
 					}
-					Section(header: Text("Access Your Records"), footer: Text("When you query for the first time, you will be prompted for Apple Health permissions.\n\nIf you blocked or ignored the permission request, you may need to open the iOS Settings and manually allow access to approve sharing data with the SDK Example App.")) {
+					if allowScoping {
 						Button {
-							 queryData()
+							self.showModal = true
 						} label: {
-							HStack {
-								Text("Read Apple Health Data")
-								Spacer()
-								if viewModel.isLoading {
-									ProgressView()
+							HStack(spacing: 40) {
+								VStack(alignment: .leading, spacing: 10) {
+									Text( "Scope time range:")
+										.foregroundColor(.black)
+										.font(.footnote)
+									
+									Text("\(scopeStartDateString) - \(scopeEndDateString)")
+										.foregroundColor(.gray)
+										.font(.footnote)
 								}
+								.padding(.vertical, 10)
 							}
 						}
-					}
-					
-					if viewModel.dataFetched && viewModel.errorMessage == nil {
-						Section(header: Text("Result"), footer: footerText) {
-							HStack {
-								Image(systemName: "calendar.badge.clock")
-									.rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("Start:")
-								Spacer()
-								Text(viewModel.startDateString)
-									.foregroundColor(.gray)
-							}
-							HStack {
-								Image(systemName: "calendar.badge.clock")
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("End:")
-								Spacer()
-								Text(viewModel.endDateString)
-									.foregroundColor(.gray)
-							}
-							HStack {
-								Image(systemName: "figure.walk")
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("Steps:")
-								Spacer()
-								Text(viewModel.steps)
-									.foregroundColor(.gray)
-							}
-							HStack {
-								Image(systemName: "figure.walk.motion")
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("Distance:")
-								Spacer()
-								Text(viewModel.distance)
-									.foregroundColor(.gray)
-							}
-							HStack {
-								Image(systemName: "bolt.ring.closed")
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("Energy:")
-								Spacer()
-								Text(viewModel.calories)
-									.foregroundColor(.gray)
-							}
-						}
-					}
-					else if viewModel.errorMessage != nil {
-						errorBanner
 					}
 				}
-				.navigationBarTitle("Apple Health", displayMode: .inline)
-				.listStyle(InsetGroupedListStyle())
-				.sheet(isPresented: $showModal) {
-					ScopeView(showModal: self.$showModal, startDate: $scopeStartDate, endDate: $scopeEndDate)
+				Section(header: Text("Access Your Records"), footer: Text("When you query for the first time, you will be prompted for Apple Health permissions.\n\nIf you blocked or ignored the permission request, you may need to open the iOS Settings and manually allow access to approve sharing data with the SDK Example App.")) {
+					Button {
+						queryData()
+					} label: {
+						HStack {
+							Text("Read Apple Health Data")
+							Spacer()
+							if viewModel.isLoading {
+								ProgressView()
+							}
+						}
+					}
+				}
+				
+				if viewModel.dataFetched && viewModel.errorMessage == nil {
+					Section(header: Text("Result"), footer: footerText) {
+						HStack {
+							Image(systemName: "calendar.badge.clock")
+								.rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+								.frame(width: 30, height: 30, alignment: .center)
+							Text("Start:")
+							Spacer()
+							Text(viewModel.startDateString)
+								.foregroundColor(.gray)
+						}
+						HStack {
+							Image(systemName: "calendar.badge.clock")
+								.frame(width: 30, height: 30, alignment: .center)
+							Text("End:")
+							Spacer()
+							Text(viewModel.endDateString)
+								.foregroundColor(.gray)
+						}
+						HStack {
+							Image(systemName: "figure.walk")
+								.frame(width: 30, height: 30, alignment: .center)
+							Text("Steps:")
+							Spacer()
+							Text(viewModel.steps)
+								.foregroundColor(.gray)
+						}
+						HStack {
+							Image(systemName: "figure.walk.motion")
+								.frame(width: 30, height: 30, alignment: .center)
+							Text("Distance:")
+							Spacer()
+							Text(viewModel.distance)
+								.foregroundColor(.gray)
+						}
+						HStack {
+							Image(systemName: "bolt.ring.closed")
+								.frame(width: 30, height: 30, alignment: .center)
+							Text("Energy:")
+							Spacer()
+							Text(viewModel.calories)
+								.foregroundColor(.gray)
+						}
+					}
+				}
+				else if viewModel.errorMessage != nil {
+					errorBanner
 				}
 			}
-			.navigationViewStyle(StackNavigationViewStyle())
+			.navigationBarTitle("Apple Health", displayMode: .inline)
+			.listStyle(InsetGroupedListStyle())
+			.sheet(isPresented: $showModal) {
+				ScopeView(showModal: self.$showModal, startDate: $scopeStartDate, endDate: $scopeEndDate)
+			}
 		}
 	}
 	

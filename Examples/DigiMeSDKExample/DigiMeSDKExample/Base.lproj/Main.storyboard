@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x7A-dh-Za3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vlv-aI-Uys">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -9,163 +9,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="B1v-mu-VQF">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="x7A-dh-Za3" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="XFs-KN-o82">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <navigationBarAppearance key="standardAppearance"/>
-                        <navigationBarAppearance key="compactAppearance"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="z4N-jV-Xe6">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="4V4-pX-RQV" kind="relationship" relationship="rootViewController" id="AhO-3f-USd"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FuE-sm-Sn3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1010" y="133"/>
-        </scene>
-        <!--digi.me SDK Examples-->
-        <scene sceneID="AQ5-O4-8e9">
-            <objects>
-                <viewController storyboardIdentifier="HomeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="4V4-pX-RQV" customClass="HomeViewController" customModule="DigiMeSDKExample" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5Nt-M9-ypV">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="qAY-31-4cB">
-                                <rect key="frame" x="20" y="40.5" width="335" height="586"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="NMS-lC-o3A">
-                                        <rect key="frame" x="25" y="0.0" width="285.5" height="86"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8P9-Zd-7R7">
-                                                <rect key="frame" x="0.0" y="0.0" width="285.5" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <state key="normal" title="Service Data Example"/>
-                                                <connections>
-                                                    <segue destination="yAL-po-pNQ" kind="show" identifier="ShowServiceDataExample" id="B7p-Ud-Y9Y"/>
-                                                </connections>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User can add services to digi.me and read data." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9d-Y1-7Ii">
-                                                <rect key="frame" x="0.0" y="45" width="285.5" height="41"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="WVk-wt-Odg">
-                                        <rect key="frame" x="3.5" y="136" width="328" height="86"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cny-iJ-rAu">
-                                                <rect key="frame" x="0.0" y="0.0" width="328" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <state key="normal" title="Write and Read Written Data Example"/>
-                                                <connections>
-                                                    <segue destination="y8h-Rd-KqN" kind="show" identifier="ShowWriteDataExample" id="MBt-Je-1hx"/>
-                                                </connections>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Users can upload data to digi.me and then read that data back." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dtf-HD-YsF">
-                                                <rect key="frame" x="0.0" y="45" width="328" height="41"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="zus-Lb-v6N">
-                                        <rect key="frame" x="0.0" y="272" width="335" height="167"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="itf-tA-MhB">
-                                                <rect key="frame" x="0.0" y="0.0" width="335" height="2"/>
-                                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="2" id="zVZ-61-JyF"/>
-                                                </constraints>
-                                            </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apple Health" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XBS-CO-e1J">
-                                                <rect key="frame" x="0.0" y="11" width="335" height="20.5"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="20.5" id="OVh-yt-hXu"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.4823529412" green="0.4823529412" blue="0.4823529412" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2vu-0J-3It">
-                                                <rect key="frame" x="0.0" y="40.5" width="335" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <state key="normal" title="Show Daily Data in a Weekly Chart"/>
-                                                <connections>
-                                                    <segue destination="tEE-tV-lVw" kind="show" id="Fw0-vG-n9D"/>
-                                                </connections>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="748" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l8q-79-OCs">
-                                                <rect key="frame" x="0.0" y="85.5" width="335" height="81.5"/>
-                                                <string key="text">Presenting Apple Health statistics collection query in a daily interval for the entire period of the digi.me contract time range. Check the details view for the exact daily numbers. </string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="78k-zR-4hS">
-                                        <rect key="frame" x="0.0" y="489" width="335" height="97"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONv-sm-EYk">
-                                                <rect key="frame" x="0.0" y="0.0" width="335" height="36"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <state key="normal" title="Show Totals"/>
-                                                <connections>
-                                                    <segue destination="GVI-j7-HXi" kind="show" id="dw2-Id-gVR"/>
-                                                </connections>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Presenting Apple Health statistics collection query result as totals only within the digi.me contract time range" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TJ8-Se-VGL">
-                                                <rect key="frame" x="0.0" y="36" width="335" height="61"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="mT5-G7-TLs"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="qAY-31-4cB" firstAttribute="centerX" secondItem="5Nt-M9-ypV" secondAttribute="centerX" id="L3o-a6-Z8k"/>
-                            <constraint firstItem="qAY-31-4cB" firstAttribute="centerY" secondItem="5Nt-M9-ypV" secondAttribute="centerY" id="fsJ-Ps-d3c"/>
-                            <constraint firstItem="mT5-G7-TLs" firstAttribute="trailing" secondItem="qAY-31-4cB" secondAttribute="trailing" constant="20" id="ukq-uh-gm8"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="digi.me SDK Examples" largeTitleDisplayMode="never" id="vUl-K2-ZeH"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SsI-A2-19q" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationItem title="Title" largeTitleDisplayMode="never" id="Dyc-PN-lMd">
-                    <barButtonItem key="backBarButtonItem" title=" " id="MBS-bU-cAX"/>
-                </navigationItem>
-            </objects>
-            <point key="canvasLocation" x="-94" y="133"/>
-        </scene>
         <!--Write Data View Controller-->
         <scene sceneID="c82-gU-Ypb">
             <objects>
-                <viewController id="y8h-Rd-KqN" customClass="WriteDataViewController" customModule="DigiMeSDKExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WriteDataViewController" id="y8h-Rd-KqN" customClass="WriteDataViewController" customModule="DigiMeSDKExample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZrK-jX-93s">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="s1F-PC-iap">
-                                <rect key="frame" x="0.0" y="465.5" width="375" height="201.5"/>
+                                <rect key="frame" x="0.0" y="421.5" width="375" height="245.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -173,7 +26,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wke-Cp-YCd">
-                                <rect key="frame" x="10" y="64" width="355" height="381.5"/>
+                                <rect key="frame" x="10" y="20" width="355" height="381.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="top" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="c4z-sW-sdZ">
                                         <rect key="frame" x="33.5" y="0.0" width="288" height="321.5"/>
@@ -337,31 +190,15 @@
             </objects>
             <point key="canvasLocation" x="870" y="151"/>
         </scene>
-        <!--Apple Health Summary Hosting Controller-->
-        <scene sceneID="xps-dt-uGg">
+        <!--Home Hosting Controller-->
+        <scene sceneID="lcq-z4-f8u">
             <objects>
-                <hostingController id="GVI-j7-HXi" customClass="AppleHealthSummaryHostingController" customModule="DigiMeSDKExample" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="eWd-5n-qb2"/>
+                <hostingController id="vlv-aI-Uys" customClass="HomeHostingController" customModule="DigiMeSDKExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Xfk-Nb-rC7"/>
                 </hostingController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ga0-NF-ah5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KuV-ni-2eF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1594" y="870"/>
-        </scene>
-        <!--Apple Health Chart View Controller-->
-        <scene sceneID="CdZ-eK-dbb">
-            <objects>
-                <viewController id="tEE-tV-lVw" customClass="AppleHealthChartViewController" customModule="DigiMeSDKExample" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="47B-7b-II5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="lvG-Mi-0Hx"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="N0g-MK-dfk"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Jrc-Sk-XP6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="870" y="871"/>
+            <point key="canvasLocation" x="66" y="-145"/>
         </scene>
         <!--Service Data View Controller-->
         <scene sceneID="hGE-n6-5r8">
@@ -372,7 +209,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="v0E-by-0I0">
-                                <rect key="frame" x="10" y="155" width="355" height="250"/>
+                                <rect key="frame" x="10" y="111" width="355" height="250"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BY2-4K-f0z">
                                         <rect key="frame" x="88.5" y="0.0" width="178" height="34"/>
@@ -419,7 +256,7 @@
                                 </subviews>
                             </stackView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6aS-zW-Fvz">
-                                <rect key="frame" x="0.0" y="425" width="375" height="242"/>
+                                <rect key="frame" x="0.0" y="381" width="375" height="286"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -427,19 +264,19 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6q-8A-B9m">
-                                <rect key="frame" x="10" y="74" width="41.5" height="20.5"/>
+                                <rect key="frame" x="10" y="30" width="41.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVU-bV-LuQ">
-                                <rect key="frame" x="10" y="114.5" width="355" height="20.5"/>
+                                <rect key="frame" x="10" y="70.5" width="355" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XMo-ji-iav">
-                                <rect key="frame" x="61.5" y="64.5" width="303.5" height="40"/>
+                                <rect key="frame" x="61.5" y="20.5" width="303.5" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Tz9-HU-Lhn"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="pUw-zw-a2M"/>
@@ -491,9 +328,6 @@
     <resources>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="opaqueSeparatorColor">
-            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
