@@ -794,7 +794,7 @@ public final class DigiMe {
             argonLogger.uploadLog(logName: message, metadata: meta) { result in
                 switch result {
                 case .failure(let sdkerror):
-                    print("[DigiMeSDK] error uploading logs: \(sdkerror)")
+					NSLog("[DigiMeSDK] error uploading logs: \(sdkerror)")
                 default:
                     break
                 }

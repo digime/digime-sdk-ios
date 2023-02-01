@@ -46,6 +46,13 @@ class FileDownloadOperation: RetryingOperation {
             let newResult: Result<File, SDKError>?
             do {
                 let response = try result.get()
+				guard !response.data.isEmpty else {
+					Logger.info("Download file response has empty data.")
+					self.retry()
+					newResult = nil
+					return
+				}
+
 				let unpackedData = try self.dataDecryptor.decrypt(response: response, dataIsHashed: false)
                 let file = File(fileWithId: self.fileId, rawData: unpackedData, metadata: response.info.metadata, updated: self.updatedDate)
                 newResult = .success(file)

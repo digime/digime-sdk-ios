@@ -57,15 +57,6 @@ class AllFilesReader {
     }
     
     private var isSyncRunning: Bool {
-		
-		// Check if local data is requested and no results produced yet, we must continue polling
-		if
-			LocalDataCache().deviceDataRequested,
-			deviceDataFiles == nil {
-			
-			return true
-		}
-		
 		// Check if local data already collected and no remote services
 		if
 			LocalDataCache().deviceDataRequested,
@@ -203,14 +194,20 @@ class AllFilesReader {
 			sessionDataCompletion?(.failure(error))
 		}
 		else if let localFiles = deviceDataFiles {
+			// local data already collected
 			var existing = sessionFileList?.files ?? []
 			existing.append(contentsOf: localFiles)
 			let status = sessionFileList?.status
 			let fileList = FileList(files: existing, status: status!)
 			sessionDataCompletion?(.success(fileList))
 		}
-		else {
-			sessionDataCompletion?(.success(sessionFileList!))
+		else if LocalDataCache().deviceDataRequested, deviceDataFiles?.isEmpty ?? true {
+			// local data is not yet collected
+			beginFetchDeviceLocalData()
+			return
+		}
+		else if let list = sessionFileList {
+			sessionDataCompletion?(.success(list))
 		}
 								   
         clearSessionData()
@@ -250,12 +247,13 @@ class AllFilesReader {
 				
 				let account = HealthKitData().account
 				let filesDataService = HealthKitFilesDataService(account: account)
-				let deviceDataCompletion: (Result<[FileListItem], SDKError>) -> Void = { [self] result in
+				let deviceDataCompletion: (Result<[FileListItem], SDKError>) -> Void = { [weak self] result in
 					switch result {
 					case .success(let files):
-						self.deviceDataFiles = files
+						self?.deviceDataFiles = files
+						self?.evaluateSessionDataFetchProgress(schedulePoll: false)
 					case .failure(let error):
-						self.sessionDataCompletion?(.failure(error))
+						self?.sessionDataCompletion?(.failure(error))
 					}
 				}
 				
