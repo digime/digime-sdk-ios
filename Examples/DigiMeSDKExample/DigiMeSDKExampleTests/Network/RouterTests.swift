@@ -86,8 +86,9 @@ class RouterTests: XCTestCase {
     }
     
     func testFileListRequest() throws {
+		let jwt = UUID().uuidString
         let sessionKey = UUID().uuidString
-        let sut = FileListRoute(sessionKey: sessionKey)
+		let sut = FileListRoute(jwt: jwt, sessionKey: sessionKey)
         let request = sut.toUrlRequest(with: APIConfig.baseUrlPathWithVersion)
 
         XCTAssertEqual(request.httpMethod, "GET", "Error testing File List request. Http method is incorrect.")
@@ -98,16 +99,18 @@ class RouterTests: XCTestCase {
         XCTAssertNil(url.query)
         
         let headers = try XCTUnwrap(request.allHTTPHeaderFields, "Error testing File List request. Headers are nil.")
-        XCTAssertTrue(headers.isEmpty)
+		XCTAssertEqual(headers.count, 1)
+		XCTAssertEqual(headers[HeaderKey.authorization], "Bearer \(jwt)")
         
         XCTAssertNil(request.httpBody)
         XCTAssertNil(request.httpBodyStream)
     }
     
     func testFileRequest() throws {
+		let jwt = UUID().uuidString
         let fileId = "testFileId"
         let sessionKey = UUID().uuidString
-        let sut = ReadDataRoute(sessionKey: sessionKey, fileId: fileId)
+		let sut = ReadDataRoute(jwt: jwt, sessionKey: sessionKey, fileId: fileId)
         let request = sut.toUrlRequest(with: APIConfig.baseUrlPathWithVersion)
 
         XCTAssertEqual(request.httpMethod, "GET", "Error testing File request. Http method is incorrect.")
@@ -119,8 +122,9 @@ class RouterTests: XCTestCase {
         XCTAssertNil(url.query)
         
         let headers = try XCTUnwrap(request.allHTTPHeaderFields, "Error testing File request. Headers are nil.")
-        XCTAssertEqual(headers.count, 1)
+        XCTAssertEqual(headers.count, 2)
         XCTAssertEqual(headers[HeaderKey.accept], "application/octet-stream")
+		XCTAssertEqual(headers[HeaderKey.authorization], "Bearer \(jwt)")
         
         XCTAssertNil(request.httpBody)
         XCTAssertNil(request.httpBodyStream)

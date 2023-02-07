@@ -23,6 +23,9 @@ struct HomeView: View {
 							self.showAddServices = true
 						} label: {
 							HStack {
+								Image(systemName: "arrow.down.circle")
+									.foregroundColor(.blue)
+									.frame(width: 30, height: 30, alignment: .center)
 								Text("Service Data Example")
 									.foregroundColor(.blue)
 								Spacer()
@@ -40,7 +43,10 @@ struct HomeView: View {
 							self.showWriteRead = true
 						} label: {
 							HStack {
-								Text("Write & Read Written Data Example")
+								Image(systemName: "arrow.up.arrow.down.circle")
+									.foregroundColor(.blue)
+									.frame(width: 30, height: 30, alignment: .center)
+								Text("Write & Read Written Data")
 									.foregroundColor(.blue)
 								Spacer()
 							}
@@ -52,20 +58,31 @@ struct HomeView: View {
 						}
 					}
 
-					Section(header: Text("Apple Health"), footer: Text("Presenting Apple Health statistics collection query in a daily interval for the entire period of the digi.me contract time range. Check the details view for the exact daily numbers.")) {
-						Button {
-							self.showAppleHealthCharts = true
+					Section(header: Text("Apple Health"), footer: Text("Presenting Apple Health statistics collection query in a daily interval for the entire period of the digi.me contract time range. Check the Statement view for the exact daily numbers.")) {
+						NavigationLink {
+							AppleHealthBarChartView()
 						} label: {
 							HStack {
-								Text("Daily Data in a Weekly Chart Example")
+								Image(systemName: "chart.bar")
+									.foregroundColor(.blue)
+									.frame(width: 30, height: 30, alignment: .center)
+								Text("Activity Bar Chart")
 									.foregroundColor(.blue)
 								Spacer()
 							}
 						}
-						.sheet(isPresented: $showAppleHealthCharts) {
-							self.showAppleHealthCharts = false
-						} content: {
-							AppleHealthChartViewControllerWrapper()
+			
+						NavigationLink {
+							LocationsDetails()
+						} label: {
+							HStack {
+								Image(systemName: "chart.xyaxis.line")
+									.foregroundColor(.blue)
+									.frame(width: 30, height: 30, alignment: .center)
+								Text("Activity Line Chart")
+									.foregroundColor(.blue)
+								Spacer()
+							}
 						}
 					}
 					
@@ -75,7 +92,10 @@ struct HomeView: View {
 							AppleHealthSummaryView()
 						} label: {
 							HStack {
-								Text("Activity Summary Example")
+								Image(systemName: "sum")
+									.foregroundColor(.blue)
+									.frame(width: 30, height: 30, alignment: .center)
+								Text("Activity Summary")
 									.foregroundColor(.blue)
 								Spacer()
 							}

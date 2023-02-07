@@ -10,18 +10,13 @@ import SwiftUI
 
 struct ScopeView: View {
 	@Binding var showModal: Bool
+	@Binding var showTime: Bool
 	@Binding var startDate: Date?
 	@Binding var endDate: Date?
+	@Binding var formatter: DateFormatter
 	
 	@State private var showStartDatePicker = false
 	@State private var showEndDatePicker = false
-	
-	var dateFormatter: DateFormatter = {
-		var formatter = DateFormatter()
-		formatter.dateStyle = .medium
-		formatter.timeStyle = .short
-		return formatter
-	}()
 	
 	var body: some View {
 		ZStack {
@@ -37,7 +32,7 @@ struct ScopeView: View {
 								Text("Start")
 								Spacer()
 								if let date = startDate {
-									Text(dateFormatter.string(from: date))
+									Text(formatter.string(from: date))
 										.foregroundColor(.gray)
 								}
 								else {
@@ -48,7 +43,7 @@ struct ScopeView: View {
 									.foregroundColor(.gray)
 							}
 						}
-						.foregroundColor(.black)
+						.foregroundColor(.primary)
 						Button {
 							self.showEndDatePicker.toggle()
 						} label: {
@@ -57,7 +52,7 @@ struct ScopeView: View {
 								Text("End")
 								Spacer()
 								if let date = endDate {
-									Text(dateFormatter.string(from: date))
+									Text(formatter.string(from: date))
 										.foregroundColor(.gray)
 								}
 								else {
@@ -68,7 +63,7 @@ struct ScopeView: View {
 									.foregroundColor(.gray)
 							}
 						}
-						.foregroundColor(.black)
+						.foregroundColor(.primary)
 					}
 				}
 				.listStyle(InsetGroupedListStyle())
@@ -79,14 +74,14 @@ struct ScopeView: View {
 			
 			if showStartDatePicker {
 				withAnimation(.easeOut) {
-					DatePickerWithButtons(showDatePicker: $showStartDatePicker, date: $startDate.toUnwrapped(defaultValue: Date()))
+					DatePickerWithButtons(showDatePicker: $showStartDatePicker, showTime: $showTime, date: $startDate.toUnwrapped(defaultValue: Date()))
 						.transition(.opacity)
 				}
 			}
 			
 			if showEndDatePicker {
 				withAnimation(.easeOut) {
-					DatePickerWithButtons(showDatePicker: $showEndDatePicker, date: $endDate.toUnwrapped(defaultValue: Date()))
+					DatePickerWithButtons(showDatePicker: $showEndDatePicker, showTime: $showTime, date: $endDate.toUnwrapped(defaultValue: Date()))
 						.transition(.opacity)
 				}
 			}
@@ -118,8 +113,14 @@ struct ScopeView: View {
 
 struct ScopeView_Previews: PreviewProvider {
 	@State static var date: Date?
+	@State static var formatter: DateFormatter = {
+		let fm = DateFormatter()
+		fm.dateStyle = .medium
+		fm.timeStyle = .short
+		return fm
+	}()
 	
     static var previews: some View {
-		ScopeView(showModal: .constant(true), startDate: $date, endDate: $date)
+		ScopeView(showModal: .constant(true), showTime: .constant(true), startDate: $date, endDate: $date, formatter: $formatter)
     }
 }

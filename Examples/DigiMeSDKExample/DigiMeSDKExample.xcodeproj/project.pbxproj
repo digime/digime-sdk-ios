@@ -8,9 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		1E0225D52980675600892CE8 /* DatePickerWithButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */; };
-		1E02269629817BE000892CE8 /* AppleHealthSummaryHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E02269529817BE000892CE8 /* AppleHealthSummaryHostingController.swift */; };
 		1E02269829817C2C00892CE8 /* AppleHealthSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */; };
 		1E0226AF29828BAF00892CE8 /* Binding+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0226AE29828BAF00892CE8 /* Binding+Helper.swift */; };
+		1E0E1320298BE0BB00F1A813 /* AppleHealthChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E131F298BE0BB00F1A813 /* AppleHealthChartViewModel.swift */; };
+		1E0E1326298C134100F1A813 /* AppleHealthBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E1325298C134100F1A813 /* AppleHealthBarChartView.swift */; };
+		1E47A0E5298D25EF0081A2C5 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */; };
+		1E47A0E9298D420E0081A2C5 /* ChartTimeRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0E8298D420E0081A2C5 /* ChartTimeRangePicker.swift */; };
+		1E47A0EB298FCE060081A2C5 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0EA298FCE060081A2C5 /* SampleData.swift */; };
+		1E47A0ED298FE5D40081A2C5 /* MonthlyActivityChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0EC298FE5D40081A2C5 /* MonthlyActivityChart.swift */; };
+		1E47A0EF298FE6A60081A2C5 /* DailyActivityChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0EE298FE6A60081A2C5 /* DailyActivityChart.swift */; };
+		1E47A0F1298FEC0D0081A2C5 /* AppleHealthLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0F0298FEC0D0081A2C5 /* AppleHealthLineChartView.swift */; };
+		1E47A0F3299176100081A2C5 /* Square.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0F2299176100081A2C5 /* Square.swift */; };
 		1E4901E227D9112200F13D29 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E127D9112200F13D29 /* Logger.swift */; };
 		1E4901E827D9112B00F13D29 /* ServiceDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */; };
 		1E4901E927D9112B00F13D29 /* ServicePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */; };
@@ -18,18 +26,13 @@
 		1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901ED27D9114B00F13D29 /* AppInfo.swift */; };
 		1E4901F127D9114B00F13D29 /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901EE27D9114B00F13D29 /* Contracts.swift */; };
 		1E4901F227D9114B00F13D29 /* DigimeContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901EF27D9114B00F13D29 /* DigimeContract.swift */; };
-		1E4901F427D9122200F13D29 /* AppleHealthChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901F327D9122200F13D29 /* AppleHealthChartViewController.swift */; };
-		1E4901F627D912B400F13D29 /* DataTypeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901F527D912B400F13D29 /* DataTypeCollectionViewController.swift */; };
-		1E4901F927D9131C00F13D29 /* FeedItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4901F827D9131C00F13D29 /* FeedItemCollectionViewCell.swift */; };
 		1E49020427D9143C00F13D29 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020027D9143C00F13D29 /* UIApplication+Extension.swift */; };
-		1E49020727D9149800F13D29 /* ChartViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020627D9149800F13D29 /* ChartViewStyle.swift */; };
 		1E49021027D9155000F13D29 /* HealthDataTypeValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020E27D9155000F13D29 /* HealthDataTypeValue.swift */; };
 		1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020F27D9155000F13D29 /* ServerResponse.swift */; };
 		1E49021427D918FC00F13D29 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E49021327D918FC00F13D29 /* HealthKit.framework */; };
 		1E4C939B297EF4D300195E58 /* ScopeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4C939A297EF4D200195E58 /* ScopeView.swift */; };
-		1E4C939E297F17A700195E58 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 1E4C939D297F17A700195E58 /* ProgressHUD */; };
 		1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E717C2861AA1000E7954E /* UserPreferences.swift */; };
-		1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */; };
+		1E6E71B22862FE8600E7954E /* ChartStatementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E71B12862FE8600E7954E /* ChartStatementView.swift */; };
 		1E757C372948897D00E373DE /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E757C362948897D00E373DE /* String+Helper.swift */; };
 		1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */; };
 		1EA52DAF2987A42E00A61213 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52DAE2987A42E00A61213 /* HomeView.swift */; };
@@ -38,9 +41,6 @@
 		1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */; };
 		1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */; };
 		1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */; };
-		1EBB4DBB2806144B00F58675 /* CareKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1EBB4DBA2806144B00F58675 /* CareKit */; };
-		1EBB4DBD2806144B00F58675 /* CareKitStore in Frameworks */ = {isa = PBXBuildFile; productRef = 1EBB4DBC2806144B00F58675 /* CareKitStore */; };
-		1EBB4DBF2806144B00F58675 /* CareKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1EBB4DBE2806144B00F58675 /* CareKitUI */; };
 		27D31A24266A4EAB00DB2524 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31A23266A4EAB00DB2524 /* AppDelegate.swift */; };
 		27D31A26266A4EAB00DB2524 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31A25266A4EAB00DB2524 /* SceneDelegate.swift */; };
 		27D31A2B266A4EAB00DB2524 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A29266A4EAB00DB2524 /* Main.storyboard */; };
@@ -65,9 +65,17 @@
 
 /* Begin PBXFileReference section */
 		1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerWithButtons.swift; sourceTree = "<group>"; };
-		1E02269529817BE000892CE8 /* AppleHealthSummaryHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryHostingController.swift; sourceTree = "<group>"; };
 		1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryView.swift; sourceTree = "<group>"; };
 		1E0226AE29828BAF00892CE8 /* Binding+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Helper.swift"; sourceTree = "<group>"; };
+		1E0E131F298BE0BB00F1A813 /* AppleHealthChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthChartViewModel.swift; sourceTree = "<group>"; };
+		1E0E1325298C134100F1A813 /* AppleHealthBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthBarChartView.swift; sourceTree = "<group>"; };
+		1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		1E47A0E8298D420E0081A2C5 /* ChartTimeRangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTimeRangePicker.swift; sourceTree = "<group>"; };
+		1E47A0EA298FCE060081A2C5 /* SampleData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
+		1E47A0EC298FE5D40081A2C5 /* MonthlyActivityChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyActivityChart.swift; sourceTree = "<group>"; };
+		1E47A0EE298FE6A60081A2C5 /* DailyActivityChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyActivityChart.swift; sourceTree = "<group>"; };
+		1E47A0F0298FEC0D0081A2C5 /* AppleHealthLineChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleHealthLineChartView.swift; sourceTree = "<group>"; };
+		1E47A0F2299176100081A2C5 /* Square.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Square.swift; sourceTree = "<group>"; };
 		1E4901E127D9112200F13D29 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceDataViewController.swift; sourceTree = "<group>"; };
 		1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicePickerViewController.swift; sourceTree = "<group>"; };
@@ -75,11 +83,7 @@
 		1E4901ED27D9114B00F13D29 /* AppInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		1E4901EE27D9114B00F13D29 /* Contracts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
 		1E4901EF27D9114B00F13D29 /* DigimeContract.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigimeContract.swift; sourceTree = "<group>"; };
-		1E4901F327D9122200F13D29 /* AppleHealthChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleHealthChartViewController.swift; sourceTree = "<group>"; };
-		1E4901F527D912B400F13D29 /* DataTypeCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTypeCollectionViewController.swift; sourceTree = "<group>"; };
-		1E4901F827D9131C00F13D29 /* FeedItemCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedItemCollectionViewCell.swift; sourceTree = "<group>"; };
 		1E49020027D9143C00F13D29 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
-		1E49020627D9149800F13D29 /* ChartViewStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartViewStyle.swift; sourceTree = "<group>"; };
 		1E49020E27D9155000F13D29 /* HealthDataTypeValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataTypeValue.swift; sourceTree = "<group>"; };
 		1E49020F27D9155000F13D29 /* ServerResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
 		1E49021227D918FC00F13D29 /* DigiMeSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigiMeSDKExample.entitlements; sourceTree = "<group>"; };
@@ -87,7 +91,7 @@
 		1E4C939A297EF4D200195E58 /* ScopeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeView.swift; sourceTree = "<group>"; };
 		1E66044627F49CA800A18292 /* CareKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CareKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E6E717C2861AA1000E7954E /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
-		1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthDetailsView.swift; sourceTree = "<group>"; };
+		1E6E71B12862FE8600E7954E /* ChartStatementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStatementView.swift; sourceTree = "<group>"; };
 		1E757C362948897D00E373DE /* String+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helper.swift"; sourceTree = "<group>"; };
 		1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryViewModel.swift; sourceTree = "<group>"; };
 		1EA52DAE2987A42E00A61213 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -121,10 +125,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EBB4DBD2806144B00F58675 /* CareKitStore in Frameworks */,
-				1EBB4DBB2806144B00F58675 /* CareKit in Frameworks */,
-				1EBB4DBF2806144B00F58675 /* CareKitUI in Frameworks */,
-				1E4C939E297F17A700195E58 /* ProgressHUD in Frameworks */,
 				1E49021427D918FC00F13D29 /* HealthKit.framework in Frameworks */,
 				6E8814346F575E5423DDFEAB /* Pods_DigiMeSDKExample.framework in Frameworks */,
 			);
@@ -141,6 +141,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E0E136E298D19F300F1A813 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				1E0E1325298C134100F1A813 /* AppleHealthBarChartView.swift */,
+				1E47A0F0298FEC0D0081A2C5 /* AppleHealthLineChartView.swift */,
+				1E47A0EE298FE6A60081A2C5 /* DailyActivityChart.swift */,
+				1E47A0EC298FE5D40081A2C5 /* MonthlyActivityChart.swift */,
+				1E6E71B12862FE8600E7954E /* ChartStatementView.swift */,
+				1E47A0E8298D420E0081A2C5 /* ChartTimeRangePicker.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
+		1E0E136F298D1A0D00F1A813 /* Scope */ = {
+			isa = PBXGroup;
+			children = (
+				1E4C939A297EF4D200195E58 /* ScopeView.swift */,
+				1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */,
+			);
+			path = Scope;
+			sourceTree = "<group>";
+		};
+		1E0E1370298D1A4600F1A813 /* Summary */ = {
+			isa = PBXGroup;
+			children = (
+				1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */,
+			);
+			path = Summary;
+			sourceTree = "<group>";
+		};
+		1E47A0E3298D25CE0081A2C5 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1E47A0EA298FCE060081A2C5 /* SampleData.swift */,
+				1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */,
+				1E47A0F2299176100081A2C5 /* Square.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		1E4901DE27D9105F00F13D29 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,9 +199,6 @@
 		1E4901E327D9112A00F13D29 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1E4901F327D9122200F13D29 /* AppleHealthChartViewController.swift */,
-				1E4901F527D912B400F13D29 /* DataTypeCollectionViewController.swift */,
-				1E02269529817BE000892CE8 /* AppleHealthSummaryHostingController.swift */,
 				1E4901E427D9112A00F13D29 /* ServiceDataViewController.swift */,
 				1E4901E527D9112A00F13D29 /* ServicePickerViewController.swift */,
 				1E4901E727D9112B00F13D29 /* WriteDataViewController.swift */,
@@ -180,24 +217,14 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		1E4901F727D9131C00F13D29 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				1E4901F827D9131C00F13D29 /* FeedItemCollectionViewCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		1E49020527D9149800F13D29 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				1EA52DAE2987A42E00A61213 /* HomeView.swift */,
-				1E49020627D9149800F13D29 /* ChartViewStyle.swift */,
-				1E6E71B12862FE8600E7954E /* AppleHealthDetailsView.swift */,
-				1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */,
-				1E4C939A297EF4D200195E58 /* ScopeView.swift */,
-				1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */,
-				1E4901F727D9131C00F13D29 /* Cells */,
+				1E47A0E3298D25CE0081A2C5 /* Utils */,
+				1E0E136E298D19F300F1A813 /* Chart */,
+				1E0E1370298D1A4600F1A813 /* Summary */,
+				1E0E136F298D1A0D00F1A813 /* Scope */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -222,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */,
+				1E0E131F298BE0BB00F1A813 /* AppleHealthChartViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -337,10 +365,6 @@
 			);
 			name = DigiMeSDKExample;
 			packageProductDependencies = (
-				1EBB4DBA2806144B00F58675 /* CareKit */,
-				1EBB4DBC2806144B00F58675 /* CareKitStore */,
-				1EBB4DBE2806144B00F58675 /* CareKitUI */,
-				1E4C939D297F17A700195E58 /* ProgressHUD */,
 			);
 			productName = DigiMeSDKExample;
 			productReference = 27D31A20266A4EAB00DB2524 /* DigiMeSDKExample.app */;
@@ -394,8 +418,6 @@
 			);
 			mainGroup = 27D31A17266A4EAB00DB2524;
 			packageReferences = (
-				1EBB4DB92806144B00F58675 /* XCRemoteSwiftPackageReference "CareKit" */,
-				1E4C939C297F17A700195E58 /* XCRemoteSwiftPackageReference "progress-hud" */,
 			);
 			productRefGroup = 27D31A21266A4EAB00DB2524 /* Products */;
 			projectDirPath = "";
@@ -518,27 +540,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E49020727D9149800F13D29 /* ChartViewStyle.swift in Sources */,
 				27D31A24266A4EAB00DB2524 /* AppDelegate.swift in Sources */,
 				27D31A26266A4EAB00DB2524 /* SceneDelegate.swift in Sources */,
 				1EA52DAF2987A42E00A61213 /* HomeView.swift in Sources */,
 				1E49021027D9155000F13D29 /* HealthDataTypeValue.swift in Sources */,
+				1E47A0E9298D420E0081A2C5 /* ChartTimeRangePicker.swift in Sources */,
+				1E47A0EB298FCE060081A2C5 /* SampleData.swift in Sources */,
 				1E4901F127D9114B00F13D29 /* Contracts.swift in Sources */,
 				1E49020427D9143C00F13D29 /* UIApplication+Extension.swift in Sources */,
+				1E47A0EF298FE6A60081A2C5 /* DailyActivityChart.swift in Sources */,
 				1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */,
-				1E02269629817BE000892CE8 /* AppleHealthSummaryHostingController.swift in Sources */,
-				1E4901F427D9122200F13D29 /* AppleHealthChartViewController.swift in Sources */,
+				1E47A0F3299176100081A2C5 /* Square.swift in Sources */,
+				1E0E1326298C134100F1A813 /* AppleHealthBarChartView.swift in Sources */,
 				1E02269829817C2C00892CE8 /* AppleHealthSummaryView.swift in Sources */,
 				1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */,
 				1E4901E227D9112200F13D29 /* Logger.swift in Sources */,
-				1E4901F927D9131C00F13D29 /* FeedItemCollectionViewCell.swift in Sources */,
 				1E4901EB27D9112B00F13D29 /* WriteDataViewController.swift in Sources */,
+				1E47A0E5298D25EF0081A2C5 /* ActivityIndicator.swift in Sources */,
 				1E4901F227D9114B00F13D29 /* DigimeContract.swift in Sources */,
-				1E4901F627D912B400F13D29 /* DataTypeCollectionViewController.swift in Sources */,
+				1E0E1320298BE0BB00F1A813 /* AppleHealthChartViewModel.swift in Sources */,
 				1E4901E927D9112B00F13D29 /* ServicePickerViewController.swift in Sources */,
 				1E757C372948897D00E373DE /* String+Helper.swift in Sources */,
 				1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */,
-				1E6E71B22862FE8600E7954E /* AppleHealthDetailsView.swift in Sources */,
+				1E6E71B22862FE8600E7954E /* ChartStatementView.swift in Sources */,
 				1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */,
 				1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */,
 				1E0226AF29828BAF00892CE8 /* Binding+Helper.swift in Sources */,
@@ -547,6 +571,8 @@
 				1EA52DB12987B19E00A61213 /* HomeHostingController.swift in Sources */,
 				1E0225D52980675600892CE8 /* DatePickerWithButtons.swift in Sources */,
 				1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */,
+				1E47A0F1298FEC0D0081A2C5 /* AppleHealthLineChartView.swift in Sources */,
+				1E47A0ED298FE5D40081A2C5 /* MonthlyActivityChart.swift in Sources */,
 				1E4C939B297EF4D300195E58 /* ScopeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -718,7 +744,7 @@
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -743,7 +769,7 @@
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -763,7 +789,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3W3JN9G3G7;
+				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -786,7 +812,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3W3JN9G3G7;
+				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -833,48 +859,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		1E4C939C297F17A700195E58 /* XCRemoteSwiftPackageReference "progress-hud" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ShogoTakeuchi/progress-hud.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		1EBB4DB92806144B00F58675 /* XCRemoteSwiftPackageReference "CareKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/carekit-apple/CareKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		1E4C939D297F17A700195E58 /* ProgressHUD */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1E4C939C297F17A700195E58 /* XCRemoteSwiftPackageReference "progress-hud" */;
-			productName = ProgressHUD;
-		};
-		1EBB4DBA2806144B00F58675 /* CareKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1EBB4DB92806144B00F58675 /* XCRemoteSwiftPackageReference "CareKit" */;
-			productName = CareKit;
-		};
-		1EBB4DBC2806144B00F58675 /* CareKitStore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1EBB4DB92806144B00F58675 /* XCRemoteSwiftPackageReference "CareKit" */;
-			productName = CareKitStore;
-		};
-		1EBB4DBE2806144B00F58675 /* CareKitUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1EBB4DB92806144B00F58675 /* XCRemoteSwiftPackageReference "CareKit" */;
-			productName = CareKitUI;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 27D31A18266A4EAB00DB2524 /* Project object */;
 }

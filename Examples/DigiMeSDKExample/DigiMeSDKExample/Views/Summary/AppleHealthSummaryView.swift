@@ -13,9 +13,16 @@ struct AppleHealthSummaryView: View {
 	@ObservedObject var viewModel = AppleHealthSummaryViewModel()
 	@State private var allowScoping = false
 	@State private var showModal = false
+	@State private var showTime = false
 	@State private var scopeStartDate: Date?
 	@State private var scopeEndDate: Date?
 	@State private var readOptions: ReadOptions?
+	@State private var formatter: DateFormatter = {
+		let formatter = DateFormatter()
+		formatter.dateStyle = .medium
+		formatter.timeStyle = .none
+		return formatter
+	}()
 	
 	static let datePlaceholder = "__ . __ . ____"
 	private let contract = Contracts.appleHealth
@@ -27,12 +34,6 @@ struct AppleHealthSummaryView: View {
 	}
 	private var fromDate: Date {
 		return Calendar.current.date(byAdding: .month, value: -1, to: Date())!
-	}
-	private var formatter: DateFormatter {
-		let formatter = DateFormatter()
-		formatter.dateStyle = .medium
-		formatter.timeStyle = .short
-		return formatter
 	}
 
 	var body: some View {
@@ -51,6 +52,7 @@ struct AppleHealthSummaryView: View {
 								self.showModal = value
 							}
 					}
+					
 					if allowScoping {
 						Button {
 							self.showModal = true
@@ -58,7 +60,7 @@ struct AppleHealthSummaryView: View {
 							HStack(spacing: 40) {
 								VStack(alignment: .leading, spacing: 10) {
 									Text( "Scope time range:")
-										.foregroundColor(.black)
+										.foregroundColor(.primary)
 										.font(.footnote)
 									
 									Text("\(scopeStartDateString) - \(scopeEndDateString)")
@@ -70,6 +72,7 @@ struct AppleHealthSummaryView: View {
 						}
 					}
 				}
+				
 				Section(header: Text("Access Your Records"), footer: Text("When you query for the first time, you will be prompted for Apple Health permissions.\n\nIf you blocked or ignored the permission request, you may need to open the iOS Settings and manually allow access to approve sharing data with the SDK Example App.")) {
 					Button {
 						queryData()
@@ -78,7 +81,9 @@ struct AppleHealthSummaryView: View {
 							Text("Read Apple Health Data")
 							Spacer()
 							if viewModel.isLoading {
-								ProgressView()
+								ActivityIndicator()
+									.frame(width: 20, height: 20)
+									.foregroundColor(.gray)
 							}
 						}
 					}
@@ -132,11 +137,23 @@ struct AppleHealthSummaryView: View {
 				else if viewModel.errorMessage != nil {
 					errorBanner
 				}
+				else if viewModel.infoMessage != nil {
+					infoBanner
+				}
 			}
 			.navigationBarTitle("Apple Health", displayMode: .inline)
 			.listStyle(InsetGroupedListStyle())
+			.toolbar {
+#if targetEnvironment(simulator)
+				Button {
+					viewModel.addTestData()
+				} label: {
+					Image(systemName: "plus.square.on.square")
+				}
+#endif
+			}
 			.sheet(isPresented: $showModal) {
-				ScopeView(showModal: self.$showModal, startDate: $scopeStartDate, endDate: $scopeEndDate)
+				ScopeView(showModal: $showModal, showTime: $showTime, startDate: $scopeStartDate, endDate: $scopeEndDate, formatter: $formatter)
 			}
 		}
 	}
@@ -149,6 +166,15 @@ struct AppleHealthSummaryView: View {
 				.font(.callout)
 		}
 		.foregroundColor(Color.red)
+	}
+	
+	private var infoBanner: some View {
+		VStack(alignment: .leading, spacing: 2) {
+			Text("Info")
+				.font(.headline)
+			Text(viewModel.infoMessage ?? "Info...")
+				.font(.callout)
+		}
 	}
 	
 	private func queryData() {

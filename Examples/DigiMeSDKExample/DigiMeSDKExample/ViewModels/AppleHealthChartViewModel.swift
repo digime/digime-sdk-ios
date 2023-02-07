@@ -1,25 +1,31 @@
 //
-//  AppleHealthSummaryViewModel.swift
+//  AppleHealthChartViewModel.swift
 //  DigiMeSDKExample
 //
-//  Created on 28/01/2023.
+//  Created on 02/02/2023.
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
 import DigiMeSDK
 import Foundation
-import HealthKit
 
-class AppleHealthSummaryViewModel: ObservableObject {
+struct ChartSeries: Identifiable {
+	let name: String
+	let data: [(date: Date, value: Double)]
+	var id: String { name }
+}
+
+class AppleHealthChartViewModel: ObservableObject {
+	@Published var result: [FitnessActivitySummary] = []
+	@Published var result30days: [FitnessActivitySummary] = []
+	@Published var data30InSeries: [ChartSeries] = []
+	@Published var dataMonthsInSeries: [ChartSeries] = []
+
 	@Published var isLoading = false
 	@Published var dataFetched = false
-	@Published var steps: String = "0"
-	@Published var distance: String = "0"
-	@Published var calories: String = "0"
-	@Published var startDateString = AppleHealthSummaryView.datePlaceholder
-	@Published var endDateString = AppleHealthSummaryView.datePlaceholder
 	@Published var errorMessage: String?
-	@Published var infoMessage: String?
+	@Published var minStartDate: Date?
+	@Published var maxEndDate: Date?
 	
 	private let contract = Contracts.appleHealth
 	private let preferences = UserPreferences.shared()
@@ -30,6 +36,13 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		formatter.dateStyle = .medium
 		formatter.timeStyle = .short
 		return formatter
+	}
+
+	private let endDate = Date()
+	private let startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+
+	private var last30Days: [FitnessActivitySummary] {
+		result.filter { $0.startDate >= startDate && $0.endDate <= endDate }
 	}
 
 	init() {
@@ -85,40 +98,82 @@ class AppleHealthSummaryViewModel: ObservableObject {
 	}
 	
 	private func process(jfs files: [File]) {
-		var stepsCounter = 0.0
-		var distanceCounter = 0.0
-		var activeEnergyBurned = 0.0
-		var responseStartDate = Date()
+		let refDate = Date()
+		var binder: [FitnessActivitySummary] = []
+		var responseStartDate = refDate
 		var responseEndDate = Date(timeIntervalSince1970: 0)
 
 		files.forEach { file in
 			FilePersistentStorage(with: .documentDirectory).store(data: file.data, fileName: file.identifier)
 			let activities = try? file.data.decoded(dateDecodingStrategy: .millisecondsSince1970) as [FitnessActivitySummary]
 			activities?.forEach { activity in
-				stepsCounter += activity.steps
-				activeEnergyBurned += activity.calories
+				var distanceCounter = 0.0
 				activity.distances.forEach { activityDistance in
 					distanceCounter += activityDistance.distance
 				}
 
 				responseStartDate = responseStartDate < activity.startDate ? responseStartDate : activity.startDate
 				responseEndDate = responseEndDate > activity.endDate ? responseEndDate : activity.endDate
-				print("[DigiMeSDKExample] Start: \(responseStartDate) End: \(responseEndDate)")
+				
+				if
+					activity.steps.isZero,
+					distanceCounter.isZero,
+					activity.calories.isZero,
+					activity.activity == 0 {
+					return
+				}
+				
+				let distance = FitnessActivitySummary.Distances(activity: "", distance: distanceCounter)
+				let activity = FitnessActivitySummary(startDate: activity.startDate, endDate: activity.endDate, steps: activity.steps, distances: [distance], calories: activity.calories, activity: activity.activity)
+				binder.append(activity)
 			}
 		}
-
-		steps = String(format: "%.f", stepsCounter)
-		distance = DistanceFormatter.stringFormatForDistance(km: distanceCounter)
-		calories = CaloriesFormatter.stringForCaloriesValue(activeEnergyBurned)
-		if stepsCounter.isZero, distanceCounter.isZero, activeEnergyBurned.isZero {
-			startDateString = AppleHealthSummaryView.datePlaceholder
-			endDateString = AppleHealthSummaryView.datePlaceholder
-		}
-		else {
-			startDateString = self.formatter.string(from: responseStartDate)
-			endDateString = self.formatter.string(from: responseEndDate)
-		}
+		
+		minStartDate = responseStartDate != refDate ? responseStartDate : nil
+		maxEndDate = responseEndDate != Date(timeIntervalSince1970: 0) ? responseEndDate : nil
+		result = binder
+		
+		result30days = last30Days
+		let steps30 = last30Days.map { ($0.startDate, $0.steps) }
+		let calories30 = last30Days.map { ($0.startDate, $0.calories) }
+		let grouped = groupByMonth(activities: result)
+		let stepsMonths = reduceByMonth(data: grouped, by: "steps")
+		let caloriesMonths = reduceByMonth(data: grouped, by: "calories")
+		data30InSeries = [
+			ChartSeries(name: "Steps", data: steps30),
+			ChartSeries(name: "Calories", data: calories30),
+		]
+		
+		dataMonthsInSeries = [
+			ChartSeries(name: "Steps", data: stepsMonths),
+			ChartSeries(name: "Calories", data: caloriesMonths),
+		]
 		dataFetched = true
+	}
+	
+	private func groupByMonth(activities: [FitnessActivitySummary]) -> [(date: Date, records: [FitnessActivitySummary])] {
+		return activities
+			.sorted { $0.endDate > $1.endDate }
+			.groupedBy(dateComponents: [.year, .month], shiftDateToMiddle: true)
+			.map { ($0, $1) }
+			.sorted { $0.0 > $1.0 }
+	}
+	
+	private func reduceByMonth(data: [(date: Date, records: [FitnessActivitySummary])], by property: String) -> [(date: Date, value: Double)] {
+		let getValue: (FitnessActivitySummary) -> Double = {
+			switch property {
+			case "steps":
+				return $0.steps
+			case "calories":
+				return $0.calories
+			default:
+				return 0
+			}
+		}
+		
+		return data.map { date, records in
+			(date, records.reduce(0) { $0 + getValue($1) })
+		}
 	}
 	
 	private func createAnchorDate(from: Date) -> Date {
@@ -165,57 +220,3 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		}
 	}
 }
-
-#if targetEnvironment(simulator)
-extension AppleHealthSummaryViewModel {
-	/// iOS Simulator doesn't have any health data by default.
-	/// Here we create some random data.
-	func addTestData() {
-		isLoading = true
-		DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(1)) { [self] in
-			var dataToWrite: [HKQuantitySample] = []
-			let startDate = Date.from(year: 2014, month: 6, day: 1, hour: 0, minute: 0, second: 0)!
-			let endDate = Date().endOfTomorrow
-			let dayDurationInSeconds: TimeInterval = 60 * 60 * 24
-			var counter: Int = 0
-			for date in stride(from: startDate, to: endDate, by: dayDurationInSeconds) {
-				let end = Calendar.utcCalendar.date(byAdding: .day, value: -1, to: date)!.endOfDay
-				let start = Calendar.utcCalendar.startOfDay(for: end)
-				print("Start: \(start) End: \(end)")
-				// steps data
-				let stepsType = HKObjectType.quantityType(forIdentifier: .stepCount)!
-				let stepsQuantity = HKQuantity(unit: .count(), doubleValue: Double.random(in: 1...10))
-				let steps = HKQuantitySample(type: stepsType, quantity: stepsQuantity, start: start, end: end)
-				dataToWrite.append(steps)
-				
-				// distance walking & running
-				let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
-				let distanceQuantity = HKQuantity(unit: .mile(), doubleValue: Double.random(in: 1...10))
-				let walk = HKQuantitySample(type: distanceType, quantity: distanceQuantity, start: start, end: end)
-				dataToWrite.append(walk)
-				
-				// active energy burned
-				let energyType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
-				let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: Double.random(in: 1...10))
-				let energy = HKQuantitySample(type: energyType, quantity: energyQuantity, start: start, end: end)
-				dataToWrite.append(energy)
-				counter += 1
-			}
-			
-			digiMe?.saveHealthData(dataToSave: dataToWrite) { result in
-				DispatchQueue.main.async { [weak self] in
-					self?.isLoading = false
-					switch result {
-					case .success(let success):
-						self?.infoMessage = "Data is \(success ? "saved" : "NOT saved"), \(counter) samples added."
-					case .failure(let error):
-						self?.errorMessage = "An error occured saving test data: \(error)"
-					}
-
-					self?.fetchData()
-				}
-			}
-		}
-	}
-}
-#endif

@@ -10,14 +10,14 @@ import SwiftUI
 
 struct DatePickerWithButtons: View {
 	@Binding var showDatePicker: Bool
+	@Binding var showTime: Bool
 	@Binding var date: Date
 	
 	var body: some View {
 		ZStack {
-			Color.black.opacity(0.3)
-				.edgesIgnoringSafeArea(.all)
 			VStack {
-				let picker = DatePicker("Test", selection: $date, displayedComponents: [.date, .hourAndMinute])
+				let components: DatePickerComponents = showTime ? [.date, .hourAndMinute] : [.date]
+				let picker = DatePicker("Pick Date", selection: $date, displayedComponents: components)
 				
 				if #available(iOS 14.0, *) {
 					picker.datePickerStyle(GraphicalDatePickerStyle())
@@ -45,11 +45,13 @@ struct DatePickerWithButtons: View {
 				.padding(.bottom, 20)
 			}
 			.padding(.horizontal)
+			.foregroundColor(.primary)
 			.background(
-				Color.white
+				Color.secondary.colorInvert()
 					.cornerRadius(30)
 			)
 			.padding(.horizontal, 20)
+			.cornerRadius(30)
 		}
 	}
 }
@@ -57,6 +59,6 @@ struct DatePickerWithButtons: View {
 struct DatePickerWithButtons_Previews: PreviewProvider {
 	@State static var date = Date()
 	static var previews: some View {
-		DatePickerWithButtons(showDatePicker: .constant(true), date: $date)
+		DatePickerWithButtons(showDatePicker: .constant(true), showTime: .constant(true), date: $date)
 	}
 }

@@ -28,14 +28,6 @@ class ServiceDataViewController: UIViewController {
 	private var preferences = UserPreferences.shared()
     private var accounts = [SourceAccount]()
     private var selectServiceCompletion: ((Service?) -> Void)?
-	private var fromDate: Date {
-		return Calendar.current.date(byAdding: .month, value: -1, to: Date())!
-	}
-	private lazy var readOptions: ReadOptions? = {
-		let timeRange = TimeRange.after(from: fromDate)
-		let scope = Scope(timeRanges: [timeRange])
-		return ReadOptions(scope: scope)
-	}()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,7 +109,7 @@ class ServiceDataViewController: UIViewController {
                 switch result {
                 case .success(let newOrRefreshedCredentials):
 					self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
-                    self.getData(credentials: newOrRefreshedCredentials)
+					self.getData(credentials: newOrRefreshedCredentials, readOptions: service.options)
                     
                 case.failure(let error):
                     self.logger.log(message: "Adding \(service.name) failed: \(error)")
@@ -126,9 +118,16 @@ class ServiceDataViewController: UIViewController {
         }
     }
     
-    @IBAction private func refreshData() {
-        authorizeAndReadData(service: nil)
-    }
+	@IBAction private func refreshData() {
+		guard let credentials = preferences.credentials(for: currentContract.identifier) else {
+			self.logger.log(message: "Current contract must be authorized first.")
+			return
+		}
+		
+		requestDataQuery(credentials: credentials) { [weak self] refreshedCredentials in
+			self?.getServiceData(credentials: refreshedCredentials)
+		}
+	}
     
     @IBAction private func deleteUser() {
         guard let credentials = preferences.credentials(for: currentContract.identifier) else {
@@ -244,12 +243,12 @@ class ServiceDataViewController: UIViewController {
             self.logger.log(message: message)
         }
 		
-		digiMe.authorize(credentials: credentials, serviceId: service?.identifier, readOptions: readOptions) { result in
+		digiMe.authorize(credentials: credentials, serviceId: service?.identifier, readOptions: service?.options) { result in
 			switch result {
 			case .success(let newOrRefreshedCredentials):
 				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
 				self.updateUI()
-				self.getData(credentials: newOrRefreshedCredentials)
+				self.getData(credentials: newOrRefreshedCredentials, readOptions: service?.options)
 				
 			case.failure(let error):
 				self.logger.log(message: "Authorization failed: \(error)")
@@ -276,9 +275,9 @@ class ServiceDataViewController: UIViewController {
         }
     }
     
-    private func getData(credentials: Credentials) {
+	private func getData(credentials: Credentials, readOptions: ReadOptions? = nil) {
         getAccounts(credentials: credentials) { updatedCredentials in
-            self.getServiceData(credentials: updatedCredentials)
+            self.getServiceData(credentials: updatedCredentials, readOptions: readOptions)
         }
     }
     
@@ -304,7 +303,7 @@ class ServiceDataViewController: UIViewController {
 	}
     
     private func requestDataQuery(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
-        digiMe.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
+		digiMe.requestDataQuery(credentials: credentials, readOptions: nil) { result in
             switch result {
             case .success(let refreshedCredentials):
 				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.currentContract.identifier)
@@ -313,11 +312,11 @@ class ServiceDataViewController: UIViewController {
             case.failure(let error):
                 self.logger.log(message: "Authorization failed: \(error)")
             }
-        }
+		}
     }
 
-    private func getServiceData(credentials: Credentials) {
-        digiMe.readAllFiles(credentials: credentials, readOptions: readOptions, resultQueue: .global()) { result in
+	private func getServiceData(credentials: Credentials, readOptions: ReadOptions? = nil) {
+        digiMe.readAllFiles(credentials: credentials, readOptions: nil, resultQueue: .global()) { result in
             switch result {
             case .success(let file):
                 

@@ -123,11 +123,16 @@ public protocol Dated {
 }
 
 extension Array where Element: Dated {
-    public func groupedBy(dateComponents: Set<Calendar.Component>) -> [Date: [Element]] {
+	public func groupedBy(dateComponents: Set<Calendar.Component>, shiftDateToMiddle: Bool = false) -> [Date: [Element]] {
         let initial: [Date: [Element]] = [:]
         let groupedByDateComponents = reduce(into: initial) { acc, cur in
-            let components = Calendar.current.dateComponents(dateComponents, from: cur.endDate)
-            let date = Calendar.current.date(from: components)!
+            var components = Calendar.current.dateComponents(dateComponents, from: cur.endDate)
+			
+			if shiftDateToMiddle {
+				components.day = 15
+			}
+			
+			let date = Calendar.current.date(from: components)!
             let existing = acc[date] ?? []
             acc[date] = existing + [cur]
         }

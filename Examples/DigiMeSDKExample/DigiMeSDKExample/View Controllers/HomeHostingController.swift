@@ -15,15 +15,6 @@ class HomeHostingController: UIHostingController<HomeView> {
 	}
 }
 
-struct AppleHealthChartViewControllerWrapper: UIViewControllerRepresentable {
-	func makeUIViewController(context: Context) -> UIViewController {
-		return UINavigationController(rootViewController: AppleHealthChartViewController())
-	}
-	
-	func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-	}
-}
-
 struct ServiceDataViewControllerWrapper: UIViewControllerRepresentable {
 	func makeUIViewController(context: Context) -> UIViewController {
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)

@@ -60,10 +60,11 @@ class HealthKitDataQuantityOperation: RetryingOperation {
                     
 					if
 						let unit = preferredUnit(for: quantityType),
-						let statisticsQuantity = getStatisticsQuantity(for: statistics, with: statisticsOptions) {
+						let statisticsQuantity = getStatisticsQuantity(for: statistics, with: statisticsOptions),
+						let typeIdentifier = dataType.original?.identifier {
                         
 						let value = statisticsQuantity.doubleValue(for: unit)
-						switch HKQuantityTypeIdentifier(rawValue: dataType.original!.identifier) {
+						switch HKQuantityTypeIdentifier(rawValue: typeIdentifier) {
 						case .stepCount:
 							steps = value
 						case .distanceWalkingRunning:

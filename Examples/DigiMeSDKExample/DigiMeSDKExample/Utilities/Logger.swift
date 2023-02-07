@@ -6,6 +6,7 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 class Logger {
@@ -26,18 +27,24 @@ class Logger {
     }
     
     func log(message: String) {
-        DispatchQueue.main.async {
-            guard !message.isEmpty, let textView = self.textView else {
-                return
-            }
-            
-            let now = Date()
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-            let dateString = formatter.string(from: now)
-            textView.text += "\n" + dateString + " " + message + "\n"
-            self.scrollToBottom()
-        }
+		guard Thread.isMainThread else {
+			DispatchQueue.main.async {
+				self.log(message: message)
+			}
+			
+			return
+		}
+		
+		guard !message.isEmpty, let textView = self.textView else {
+			return
+		}
+		
+		let now = Date()
+		let formatter = DateFormatter()
+		formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+		let dateString = formatter.string(from: now)
+		textView.text += "\n" + dateString + " " + message + "\n"
+		self.scrollToBottom()
     }
     
     func reset() {
