@@ -14,6 +14,17 @@ public enum TimeRange: Encodable {
         case day = "d"
         case month = "m"
         case year = "y"
+		
+		public var calendarUnit: Calendar.Component {
+			switch self {
+			case .month:
+				return Calendar.Component.month
+			case .year:
+				return Calendar.Component.year
+			default:
+				return Calendar.Component.day
+			}
+		}
     }
     
     case after(from: Date)

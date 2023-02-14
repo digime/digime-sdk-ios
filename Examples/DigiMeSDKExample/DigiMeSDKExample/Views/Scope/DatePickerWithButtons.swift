@@ -47,7 +47,7 @@ struct DatePickerWithButtons: View {
 			.padding(.horizontal)
 			.foregroundColor(.primary)
 			.background(
-				Color.secondary.colorInvert()
+				Color(UIColor.tertiarySystemBackground)
 					.cornerRadius(30)
 			)
 			.padding(.horizontal, 20)
@@ -59,6 +59,11 @@ struct DatePickerWithButtons: View {
 struct DatePickerWithButtons_Previews: PreviewProvider {
 	@State static var date = Date()
 	static var previews: some View {
-		DatePickerWithButtons(showDatePicker: .constant(true), showTime: .constant(true), date: $date)
+		Group {
+			DatePickerWithButtons(showDatePicker: .constant(true), showTime: .constant(true), date: $date)
+				.preferredColorScheme(.light)
+			DatePickerWithButtons(showDatePicker: .constant(true), showTime: .constant(true), date: $date)
+				.preferredColorScheme(.dark)
+		}
 	}
 }

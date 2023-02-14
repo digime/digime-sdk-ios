@@ -16,8 +16,8 @@ class AppleHealthSummaryViewModel: ObservableObject {
 	@Published var steps: String = "0"
 	@Published var distance: String = "0"
 	@Published var calories: String = "0"
-	@Published var startDateString = AppleHealthSummaryView.datePlaceholder
-	@Published var endDateString = AppleHealthSummaryView.datePlaceholder
+	@Published var startDateString = ScopeView.datePlaceholder
+	@Published var endDateString = ScopeView.datePlaceholder
 	@Published var errorMessage: String?
 	@Published var infoMessage: String?
 	
@@ -111,8 +111,8 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		distance = DistanceFormatter.stringFormatForDistance(km: distanceCounter)
 		calories = CaloriesFormatter.stringForCaloriesValue(activeEnergyBurned)
 		if stepsCounter.isZero, distanceCounter.isZero, activeEnergyBurned.isZero {
-			startDateString = AppleHealthSummaryView.datePlaceholder
-			endDateString = AppleHealthSummaryView.datePlaceholder
+			startDateString = ScopeView.datePlaceholder
+			endDateString = ScopeView.datePlaceholder
 		}
 		else {
 			startDateString = self.formatter.string(from: responseStartDate)

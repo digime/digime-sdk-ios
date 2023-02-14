@@ -14,24 +14,21 @@ struct AppleHealthSummaryView: View {
 	@State private var allowScoping = false
 	@State private var showModal = false
 	@State private var showTime = false
+	@State private var selectedScopeIndex = 0
+	@State private var scopeStartDateString = ScopeView.datePlaceholder
+	@State private var scopeEndDateString = ScopeView.datePlaceholder
 	@State private var scopeStartDate: Date?
 	@State private var scopeEndDate: Date?
 	@State private var readOptions: ReadOptions?
 	@State private var formatter: DateFormatter = {
 		let formatter = DateFormatter()
 		formatter.dateStyle = .medium
-		formatter.timeStyle = .none
+		formatter.timeStyle = .short
 		return formatter
 	}()
 	
-	static let datePlaceholder = "__ . __ . ____"
+	private let scopeTemplates: [ScopeTemplate] = ScopingTemplates.defaultScopes
 	private let contract = Contracts.appleHealth
-	private var scopeStartDateString: String {
-		scopeStartDate == nil ? AppleHealthSummaryView.datePlaceholder : formatter.string(from: scopeStartDate!)
-	}
-	private var scopeEndDateString: String {
-		scopeEndDate == nil ? AppleHealthSummaryView.datePlaceholder : formatter.string(from: scopeEndDate!)
-	}
 	private var fromDate: Date {
 		return Calendar.current.date(byAdding: .month, value: -1, to: Date())!
 	}
@@ -45,11 +42,13 @@ struct AppleHealthSummaryView: View {
 					HStack {
 						Image(systemName: "scope")
 							.frame(width: 30, height: 30, alignment: .center)
-						Text("Scope")
+						Text("Limit your query")
 						Spacer()
 						Toggle("", isOn: $allowScoping)
 							.onChange(of: allowScoping) { value in
-								self.showModal = value
+								if !value {
+									self.reset()
+								}
 							}
 					}
 					
@@ -59,13 +58,22 @@ struct AppleHealthSummaryView: View {
 						} label: {
 							HStack(spacing: 40) {
 								VStack(alignment: .leading, spacing: 10) {
-									Text( "Scope time range:")
+									Text("Your Scope time range. ")
 										.foregroundColor(.primary)
+										.font(.footnote) +
+									Text("Tap to change:")
+										.foregroundColor(.blue)
 										.font(.footnote)
 									
 									Text("\(scopeStartDateString) - \(scopeEndDateString)")
 										.foregroundColor(.gray)
 										.font(.footnote)
+										.onChange(of: scopeStartDate) { newValue in
+											scopeStartDateString = newValue == nil ? ScopeView.datePlaceholder : formatter.string(from: newValue!)
+										}
+										.onChange(of: scopeEndDate) { newValue in
+											scopeEndDateString = newValue == nil ? ScopeView.datePlaceholder : formatter.string(from: newValue!)
+										}
 								}
 								.padding(.vertical, 10)
 							}
@@ -153,7 +161,7 @@ struct AppleHealthSummaryView: View {
 #endif
 			}
 			.sheet(isPresented: $showModal) {
-				ScopeView(showModal: $showModal, showTime: $showTime, startDate: $scopeStartDate, endDate: $scopeEndDate, formatter: $formatter)
+				ScopeView(scopeTemplates: .constant(scopeTemplates), showModalDateSelector: $showModal, showTimeOption: $showTime, startDate: $scopeStartDate, endDate: $scopeEndDate, formatter: $formatter, selectedScopeIndex: $selectedScopeIndex, startDateString: $scopeStartDateString, endDateString: $scopeEndDateString)
 			}
 		}
 	}
@@ -178,6 +186,8 @@ struct AppleHealthSummaryView: View {
 	}
 	
 	private func queryData() {
+		viewModel.errorMessage = nil
+		viewModel.infoMessage = nil
 		viewModel.isLoading = true
 		configureReadOptions()
 		viewModel.fetchData(readOptions: readOptions)
@@ -206,6 +216,15 @@ struct AppleHealthSummaryView: View {
 		
 		let scope = Scope(timeRanges: [timeRange])
 		readOptions = ReadOptions(scope: scope)
+	}
+	
+	private func reset() {
+		readOptions = nil
+		scopeStartDateString = ScopeView.datePlaceholder
+		scopeEndDateString = ScopeView.datePlaceholder
+		selectedScopeIndex = 0
+		scopeStartDate = nil
+		scopeEndDate = nil
 	}
 }
 

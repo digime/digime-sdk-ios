@@ -13,6 +13,53 @@ func date(year: Int, month: Int, day: Int = 1) -> Date {
 	Calendar.current.date(from: DateComponents(year: year, month: month, day: day)) ?? Date()
 }
 
+enum ScopingTemplates {
+	static let date = Date()
+
+	// "Today"
+	static let startOfToday = Calendar.current.startOfDay(for: date)
+	static let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: startOfToday)!
+
+	// "Yesterday"
+	static let startOfYesterday = Calendar.current.date(byAdding: .day, value: -1, to: startOfToday)!
+	static let endOfYesterday = Calendar.current.date(byAdding: .day, value: 1, to: startOfYesterday)!
+
+	// "This Week"
+	static let startOfWeek = Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date))!
+	static let endOfWeek = Calendar.current.date(byAdding: .day, value: 1, to: startOfWeek.addingTimeInterval(7*24*60*60))!
+
+	// "Last Week"
+	static let startOfLastWeek = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: startOfWeek)!
+	static let endOfLastWeek = startOfWeek
+
+	// "This Month"
+	static let startOfMonth = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: date))!
+	static let endOfMonth = date
+
+	// "Last Month"
+	static let startOfLastMonth = Calendar.current.date(byAdding: .month, value: -1, to: startOfMonth)!
+	static let endOfLastMonth = Calendar.current.date(byAdding: .month, value: 1, to: startOfLastMonth)!
+
+	// "This Year"
+	static let startOfYear = Calendar.current.date(from: Calendar.current.dateComponents([.year], from: date))!
+	static let endOfYear = date
+
+	// "Last Year"
+	static let startOfLastYear = Calendar.current.date(byAdding: .year, value: -1, to: startOfYear)!
+	static let endOfLastYear = Calendar.current.date(byAdding: .day, value: -1, to: startOfYear)!
+	static let defaultScopes: [ScopeTemplate] = [
+		ScopeTemplate(name: "Today", scope: Scope(timeRanges: [TimeRange.between(from: startOfToday, to: endOfToday)])),
+		ScopeTemplate(name: "Yesterday", scope: Scope(timeRanges: [TimeRange.between(from: startOfYesterday, to: endOfYesterday)])),
+		ScopeTemplate(name: "This Week", scope: Scope(timeRanges: [TimeRange.between(from: startOfWeek, to: endOfWeek)])),
+		ScopeTemplate(name: "Last Week", scope: Scope(timeRanges: [TimeRange.between(from: startOfLastWeek, to: endOfLastWeek)])),
+		ScopeTemplate(name: "This Month", scope: Scope(timeRanges: [TimeRange.between(from: startOfMonth, to: endOfMonth)])),
+		ScopeTemplate(name: "Last Month", scope: Scope(timeRanges: [TimeRange.between(from: startOfLastMonth, to: endOfLastMonth)])),
+		ScopeTemplate(name: "This Year", scope: Scope(timeRanges: [TimeRange.between(from: startOfYear, to: endOfYear)])),
+		ScopeTemplate(name: "Last Year", scope: Scope(timeRanges: [TimeRange.between(from: startOfLastYear, to: endOfLastYear)])),
+		ScopeTemplate(name: "Custom ...", scope: Scope(timeRanges: [])),
+	]
+}
+
 enum DailyActivityTestData {
 	static let last30Days: [FitnessActivitySummary] = [
 		FitnessActivitySummary(startDate: date(year: 2022, month: 5, day: 8), endDate: date(year: 2021, month: 7), steps: Double.random(in: 1...999), distances: [FitnessActivitySummary.Distances(activity: "", distance: Double.random(in: 1...999))], calories: Double.random(in: 1...999), activity: Int(Double.random(in: 1...999))),
