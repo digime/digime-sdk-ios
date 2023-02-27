@@ -10,7 +10,7 @@ import DigiMeSDK
 import SwiftUI
 
 struct AppleHealthSummaryView: View {
-	@ObservedObject var viewModel = AppleHealthSummaryViewModel()
+	@ObservedObject var viewModel: AppleHealthSummaryViewModel
 	@State private var allowScoping = false
 	@State private var showModal = false
 	@State private var showTime = false
@@ -27,12 +27,20 @@ struct AppleHealthSummaryView: View {
 		return formatter
 	}()
 	
-	private let scopeTemplates: [ScopeTemplate] = ScopingTemplates.defaultScopes
+	private let scopeTemplates: [ScopeTemplate] = TestScopingTemplates.defaultScopes
 	private let contract = Contracts.appleHealth
 	private var fromDate: Date {
 		return Calendar.current.date(byAdding: .month, value: -1, to: Date())!
 	}
 
+	init?() {
+		guard let config = try? Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true) else {
+			return nil
+		}
+		
+		viewModel = AppleHealthSummaryViewModel(config: config)
+	}
+	
 	var body: some View {
 		let scopeFooterText = !allowScoping ? Text("Turn on the toggle to set the scope of mapped data using time ranges and narrow down the results.") : Text("To revert to the default contract's time range, turn off the scoping option and execute the query again.")
 		let footerText = !allowScoping ? Text("You can try turning the Scoping option On to narrow down your next request.") : Text("")

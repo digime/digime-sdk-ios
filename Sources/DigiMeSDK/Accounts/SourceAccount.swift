@@ -9,8 +9,10 @@
 import Foundation
 
 /// The account relating to a service data source user has added to digi.me library
-public struct SourceAccount: Codable {
-    
+public struct SourceAccount: Codable, Identifiable {
+	/// The unique identifier
+	public let id = UUID()
+
     /// The account's identifier
     public let identifier: String
     
@@ -24,6 +26,7 @@ public struct SourceAccount: Codable {
     public let service: AccountServiceDescriptor
 
     enum CodingKeys: String, CodingKey {
+		case id = "uuid"
         case identifier = "id"
         case name
         case number

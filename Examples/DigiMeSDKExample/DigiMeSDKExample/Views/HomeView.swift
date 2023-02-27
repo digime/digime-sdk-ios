@@ -19,42 +19,32 @@ struct HomeView: View {
 			NavigationView {
 				List {
 					Section(header: Text("Services"), footer: Text("User can add services to digi.me and read data.")) {
-						Button {
-							self.showAddServices = true
+						NavigationLink {
+							ServicesView()
 						} label: {
 							HStack {
 								Image(systemName: "arrow.down.circle")
-									.foregroundColor(.blue)
+									.foregroundColor(.purple)
 									.frame(width: 30, height: 30, alignment: .center)
 								Text("Service Data Example")
 									.foregroundColor(.blue)
 								Spacer()
 							}
 						}
-						.sheet(isPresented: $showAddServices) {
-							self.showAddServices = false
-						} content: {
-							ServiceDataViewControllerWrapper()
-						}
 					}
 					
 					Section(header: Text("Push data"), footer: Text("Users can upload data to digi.me and then read that data back.")) {
-						Button {
-							self.showWriteRead = true
+						NavigationLink {
+							WriteDataView()
 						} label: {
 							HStack {
 								Image(systemName: "arrow.up.arrow.down.circle")
-									.foregroundColor(.blue)
+									.foregroundColor(.green)
 									.frame(width: 30, height: 30, alignment: .center)
 								Text("Write & Read Written Data")
 									.foregroundColor(.blue)
 								Spacer()
 							}
-						}
-						.sheet(isPresented: $showWriteRead) {
-							self.showWriteRead = false
-						} content: {
-							WriteDataViewControllerWrapper()
 						}
 					}
 
@@ -64,7 +54,7 @@ struct HomeView: View {
 						} label: {
 							HStack {
 								Image(systemName: "chart.bar")
-									.foregroundColor(.blue)
+									.foregroundColor(.orange)
 									.frame(width: 30, height: 30, alignment: .center)
 								Text("Activity Bar Chart")
 									.foregroundColor(.blue)
@@ -73,11 +63,11 @@ struct HomeView: View {
 						}
 			
 						NavigationLink {
-							LocationsDetails()
+							AppleHealthLineChartView()
 						} label: {
 							HStack {
 								Image(systemName: "chart.xyaxis.line")
-									.foregroundColor(.blue)
+									.foregroundColor(.red)
 									.frame(width: 30, height: 30, alignment: .center)
 								Text("Activity Line Chart")
 									.foregroundColor(.blue)
@@ -87,13 +77,12 @@ struct HomeView: View {
 					}
 					
 					Section(footer: Text("Presenting Apple Health statistics collection query result as totals within the digi.me contract time range. You can limit your query by turning on Scoping.")) {
-						
 						NavigationLink {
 							AppleHealthSummaryView()
 						} label: {
 							HStack {
 								Image(systemName: "sum")
-									.foregroundColor(.blue)
+									.foregroundColor(.brown)
 									.frame(width: 30, height: 30, alignment: .center)
 								Text("Activity Summary")
 									.foregroundColor(.blue)

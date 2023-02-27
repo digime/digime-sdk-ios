@@ -9,7 +9,9 @@
 import Foundation
 
 /// Information about a service data source
-public struct Service: Codable {
+public struct Service: Codable, Identifiable {
+	public let id = UUID()
+	
     /// The service's identifier for authorization
     public let identifier: Int
     
@@ -34,7 +36,7 @@ public struct Service: Codable {
     
     /// Convenience property to encapsulate read options within the each service
     public var options: ReadOptions?
-    
+	public var resources: [DiscoveryResource]
     var isAvailable: Bool {
         return publishedStatus == "approved" && platform.isAvailable
     }
@@ -66,6 +68,7 @@ public struct Service: Codable {
     }
     
     enum CodingKeys: String, CodingKey {
+		case id = "uuid"
         case identifier = "id"
         case name
         case serviceGroups
@@ -73,5 +76,6 @@ public struct Service: Codable {
         case publishedStatus
         case platform
         case countries
+		case resources
     }
 }

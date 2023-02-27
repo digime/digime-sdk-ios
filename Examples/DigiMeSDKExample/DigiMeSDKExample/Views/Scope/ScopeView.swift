@@ -61,7 +61,7 @@ struct ScopeView: View {
 							}
 							.frame(maxWidth: .infinity, maxHeight: 130, alignment: .center)
 							.pickerStyle(WheelPickerStyle())
-							.onAppear() {
+							.onAppear {
 								self.updateValues()
 							}
 							.onChange(of: selectedScopeIndex) { _ in
@@ -104,6 +104,7 @@ struct ScopeView: View {
 								}
 							}
 							.foregroundColor(.primary)
+							
 							Button {
 								self.showEndDatePicker.toggle()
 							} label: {
@@ -223,6 +224,6 @@ struct ScopeView_Previews: PreviewProvider {
 	}()
 	
     static var previews: some View {
-		ScopeView(scopeTemplates: .constant(ScopingTemplates.defaultScopes), showModalDateSelector: .constant(true), showTimeOption: .constant(false), startDate: $date, endDate: $date, formatter: $formatter, selectedScopeIndex: .constant(0), startDateString: .constant(ScopeView.datePlaceholder), endDateString: .constant(ScopeView.datePlaceholder))
+		ScopeView(scopeTemplates: .constant(TestScopingTemplates.defaultScopes), showModalDateSelector: .constant(true), showTimeOption: .constant(false), startDate: $date, endDate: $date, formatter: $formatter, selectedScopeIndex: .constant(0), startDateString: .constant(ScopeView.datePlaceholder), endDateString: .constant(ScopeView.datePlaceholder))
     }
 }

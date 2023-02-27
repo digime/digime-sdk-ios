@@ -14,6 +14,8 @@ final class UserPreferences: NSObject {
 	private let userDefaults = UserDefaults.standard
 	private enum Key: String, CaseIterable {
 		case credentials = "kCredentials"
+		case accounts = "kAccounts"
+		case services = "kServices"
 	}
 	
 	@discardableResult
@@ -44,7 +46,53 @@ final class UserPreferences: NSObject {
 		credentials?[contractId] = nil
 	}
 	
+	// MARK: - Accounts
+		
+	@CodableUserDefault(key: Key.accounts)
+	private var accounts: [String: [SourceAccount]]?
+	
+	func accounts(for contractId: String) -> [SourceAccount]? {
+		return accounts?[contractId]
+	}
+	
+	func setAccounts(newAccounts: [SourceAccount], for contractId: String) {
+		var cachedAccounts = accounts ?? [:]
+		cachedAccounts[contractId] = newAccounts
+		accounts = cachedAccounts
+	}
+	
+	func clearAccounts(for contractId: String) {
+		accounts?[contractId] = nil
+	}
+	
+	// MARK: - Services
+		
+	@CodableUserDefault(key: Key.services)
+	private var services: [String: [Service]]?
+	
+	func services(for contractId: String) -> [Service] {
+		return services?[contractId] ?? []
+	}
+	
+	func setServices(newServices: [Service], for contractId: String) {
+		var cachedServices = services ?? [:]
+		cachedServices[contractId] = newServices
+		services = cachedServices
+	}
+	
+	func addService(newService: Service, for contractId: String) {
+		var cachedServicesDictionary = services ?? [:]
+		cachedServicesDictionary[contractId]?.append(newService)
+		services = cachedServicesDictionary
+	}
+	
+	func clearServices(for contractId: String) {
+		services?[contractId] = nil
+	}
+	
 	func reset() {
 		credentials = nil
+		accounts = nil
+		services = nil
 	}
 }

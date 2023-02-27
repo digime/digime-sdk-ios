@@ -9,12 +9,6 @@
 import DigiMeSDK
 import Foundation
 
-struct ChartSeries: Identifiable {
-	let name: String
-	let data: [(date: Date, value: Double)]
-	var id: String { name }
-}
-
 class AppleHealthChartViewModel: ObservableObject {
 	@Published var result: [FitnessActivitySummary] = []
 	@Published var result30days: [FitnessActivitySummary] = []
@@ -27,9 +21,12 @@ class AppleHealthChartViewModel: ObservableObject {
 	@Published var minStartDate: Date?
 	@Published var maxEndDate: Date?
 	
-	private let contract = Contracts.appleHealth
 	private let preferences = UserPreferences.shared()
+	private let endDate = Date()
+	private let startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+	
 	private var digiMe: DigiMe?
+	private var config: Configuration
 	private var readOptions: ReadOptions?
 	private var formatter: DateFormatter {
 		let formatter = DateFormatter()
@@ -38,31 +35,25 @@ class AppleHealthChartViewModel: ObservableObject {
 		return formatter
 	}
 
-	private let endDate = Date()
-	private let startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
-
 	private var last30Days: [FitnessActivitySummary] {
 		result.filter { $0.startDate >= startDate && $0.endDate <= endDate }
 	}
 
-	init() {
-		guard let config = try? Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true) else {
-			return
-		}
-		
-		digiMe = DigiMe(configuration: config)
+	init(config: Configuration) {
+		self.config = config
+		self.digiMe = DigiMe(configuration: config)
 	}
 	
 	func fetchData(readOptions: ReadOptions? = nil) {
 		self.readOptions = readOptions
 		dataFetched = false
 		isLoading = true
-		let credentials = preferences.credentials(for: contract.identifier)
+		let credentials = preferences.credentials(for: config.contractId)
 		var files: [File] = []
 		digiMe?.authorize(credentials: credentials, serviceId: DeviceOnlyServices.appleHealth.rawValue) { result in
 			switch result {
 			case .success(let newOrRefreshedCredentials):
-				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.contract.identifier)
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.config.contractId)
 				self.digiMe?.readAllFiles(credentials: newOrRefreshedCredentials, readOptions: readOptions) { result in
 					switch result {
 					case .success(let file):
@@ -74,7 +65,7 @@ class AppleHealthChartViewModel: ObservableObject {
 				} completion: { result in
 					switch result {
 					case .success(let (fileList, refreshedCredentials)):
-						self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.contract.identifier)
+						self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.config.contractId)
 						
 						if
 							let accountState = fileList.status.details?.first,
@@ -96,6 +87,8 @@ class AppleHealthChartViewModel: ObservableObject {
 			}
 		}
 	}
+	
+	// MARK: - Private
 	
 	private func process(jfs files: [File]) {
 		let refDate = Date()
@@ -202,7 +195,7 @@ class AppleHealthChartViewModel: ObservableObject {
 	}
 	
 	private func refreshCtredentials(_ completion: @escaping((Bool) -> Void)) {
-		guard let credentials = preferences.credentials(for: contract.identifier) else {
+		guard let credentials = preferences.credentials(for: config.contractId) else {
 			errorMessage = "[DigiMeSDKExample] Attempting to read data before authorizing contract"
 			return
 		}
@@ -210,7 +203,7 @@ class AppleHealthChartViewModel: ObservableObject {
 		digiMe?.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
 			switch result {
 			case .success(let credentials):
-				self.preferences.setCredentials(newCredentials: credentials, for: self.contract.identifier)
+				self.preferences.setCredentials(newCredentials: credentials, for: self.config.contractId)
 				completion(true)
 				
 			case .failure(let error):

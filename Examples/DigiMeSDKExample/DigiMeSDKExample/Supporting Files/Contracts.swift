@@ -13,7 +13,7 @@ enum Contracts {
     // ThisDigimeContract allows SDK user to read user's social,
     // financial and music data from the past 3 months.
     
-    static let finSocMus = DigimeContract(name: "Social, Music & Financial",
+    static let finSocMus = DigimeContract(name: "Social, Music, Financial",
                                           identifier: "DGLxRJiTjKZJvvtDB6timfzw4DHiQwek",
                                           privateKey: """
         -----BEGIN RSA PRIVATE KEY-----

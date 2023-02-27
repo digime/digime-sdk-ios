@@ -32,11 +32,7 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		return formatter
 	}
 
-	init() {
-		guard let config = try? Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true) else {
-			return
-		}
-		
+	init(config: Configuration) {
 		digiMe = DigiMe(configuration: config)
 	}
 	
@@ -83,6 +79,8 @@ class AppleHealthSummaryViewModel: ObservableObject {
 			}
 		}
 	}
+	
+	// MARK: - Private
 	
 	private func process(jfs files: [File]) {
 		var stepsCounter = 0.0
