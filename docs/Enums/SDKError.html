@@ -21,20 +21,20 @@
     <header class="header">
       <p class="header-col header-col--primary">
         <a class="header-link" href="../index.html">
-          DigiMeSDK 5.0.2 Docs
+          DigiMeSDK 5.0.5 Docs
         </a>
         
       </p>
     
-      <p class="header-col--secondary">
+      <div class="header-col--secondary">
         <form role="search" action="../search.json">
           <input type="text" placeholder="Search documentation" data-typeahead>
         </form>
-      </p>
+      </div>
     
         <p class="header-col header-col--secondary">
           <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
-            <img class="header-icon" src="../img/gh.png"/>
+            <img class="header-icon" src="../img/gh.png" alt="GitHub"/>
             View on GitHub
           </a>
         </p>
@@ -43,7 +43,7 @@
 
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">DigiMeSDK Reference</a>
-      <img class="carat" src="../img/carat.png" />
+      <img class="carat" src="../img/carat.png" alt=""/>
       SDKError Enumeration Reference
     </p>
 
@@ -83,6 +83,9 @@
                 <a class="nav-group-task-link" href="../Classes/DigiMe.html">DigiMe</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/FilePersistentStorage.html">FilePersistentStorage</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/RawFileMetadataBuilder.html">RawFileMetadataBuilder</a>
               </li>
             </ul>
@@ -114,13 +117,27 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Encodable.html">Encodable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/APIError.html">APIError</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/Account.html">Account</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/AccountServiceDescriptor.html">AccountServiceDescriptor</a>
@@ -174,6 +191,9 @@
                 <a class="nav-group-task-link" href="../Structs/ServiceCountry.html">ServiceCountry</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ServiceError.html">ServiceError</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ServiceGroup.html">ServiceGroup</a>
               </li>
               <li class="nav-group-task">
@@ -187,6 +207,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ServicesInfo.html">ServicesInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SourceAccount.html">SourceAccount</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/SyncAccount.html">SyncAccount</a>
@@ -238,7 +261,7 @@
                 <a name="//apple_ref/swift/Section/SDK Setup Errors" class="dashAnchor"></a>
                 <div class="section-name-container">
                   <a class="section-name-link" href="#/SDK%20Setup%20Errors"></a>
-                  <h3 class="section-name"><p>SDK Setup Errors</p>
+                  <h3 class="section-name"><span>SDK Setup Errors</span>
 </h3>
                 </div>
               </div>
@@ -335,7 +358,7 @@ This is an implementation error and can be resolved by ensuring that you are usi
                 <a name="//apple_ref/swift/Section/Runtime Errors" class="dashAnchor"></a>
                 <div class="section-name-container">
                   <a class="section-name-link" href="#/Runtime%20Errors"></a>
-                  <h3 class="section-name"><p>Runtime Errors</p>
+                  <h3 class="section-name"><span>Runtime Errors</span>
 </h3>
                 </div>
               </div>
@@ -776,6 +799,465 @@ This is either caused by the contract not having been authorized or the contract
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO17readAccountsErroryA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/readAccountsError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO17readAccountsErroryA2CmF">readAccountsError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Error reading accounts json</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">readAccountsError</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO29errorDecodedingJwtPreAuthCodeyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/errorDecodedingJwtPreAuthCode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO29errorDecodedingJwtPreAuthCodeyA2CmF">errorDecodedingJwtPreAuthCode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Attempting to extract preAuthorization code from JWT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">errorDecodedingJwtPreAuthCode</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO28errorExtractingTokensFromJwtyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/errorExtractingTokensFromJwt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO28errorExtractingTokensFromJwtyA2CmF">errorExtractingTokensFromJwt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Attempting to extract access and refresh tokens from JWT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">errorExtractingTokensFromJwt</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO35errorExtractingReferenceCodeFromJwtyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/errorExtractingReferenceCodeFromJwt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO35errorExtractingReferenceCodeFromJwtyA2CmF">errorExtractingReferenceCodeFromJwt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Extracts reference code from JWT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">errorExtractingReferenceCodeFromJwt</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO40errorParsingHeadersMetadataInTheResponseyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/errorParsingHeadersMetadataInTheResponse" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO40errorParsingHeadersMetadataInTheResponseyA2CmF">errorParsingHeadersMetadataInTheResponse</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Error parsing headers and metadata in the response</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">errorParsingHeadersMetadataInTheResponse</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO37errorMakingRequestWhenParsingResponseyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/errorMakingRequestWhenParsingResponse" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO37errorMakingRequestWhenParsingResponseyA2CmF">errorMakingRequestWhenParsingResponse</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Error making request when parsing response</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">errorMakingRequestWhenParsingResponse</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO23errorDecryptingResponseyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/errorDecryptingResponse" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO23errorDecryptingResponseyA2CmF">errorDecryptingResponse</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Error decrypting response</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">errorDecryptingResponse</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO41unexpectedErrorWhenParsingConsentResponseyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/unexpectedErrorWhenParsingConsentResponse" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO41unexpectedErrorWhenParsingConsentResponseyA2CmF">unexpectedErrorWhenParsingConsentResponse</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Error parsing server response. Result is unexpected.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">unexpectedErrorWhenParsingConsentResponse</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO26fileDownloadOperationErroryA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/fileDownloadOperationError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO26fileDownloadOperationErroryA2CmF">fileDownloadOperationError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>File Download operation error</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">fileDownloadOperationError</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO36errorCreatingRequestJwtToTriggerDatayA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/errorCreatingRequestJwtToTriggerData" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO36errorCreatingRequestJwtToTriggerDatayA2CmF">errorCreatingRequestJwtToTriggerData</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Error creating request JWT to trigger data</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">errorCreatingRequestJwtToTriggerData</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO18errorMakingRequestyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/errorMakingRequest" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO18errorMakingRequestyA2CmF">errorMakingRequest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Api client making request received no response</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">errorMakingRequest</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO28errorMakingRequestNoResponseyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/errorMakingRequestNoResponse" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO28errorMakingRequestNoResponseyA2CmF">errorMakingRequestNoResponse</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Api client making request, received no response</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">errorMakingRequestNoResponse</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO33invalidPreAuthorizationRequestJwtyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidPreAuthorizationRequestJwt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO33invalidPreAuthorizationRequestJwtyA2CmF">invalidPreAuthorizationRequestJwt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Invalid pre-authorization request JWT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidPreAuthorizationRequestJwt</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO30invalidAuthorizationRequestJwtyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidAuthorizationRequestJwt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO30invalidAuthorizationRequestJwtyA2CmF">invalidAuthorizationRequestJwt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Invalid authorization request JWT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidAuthorizationRequestJwt</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO30invalidRefreshTokensRequestJwtyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidRefreshTokensRequestJwt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO30invalidRefreshTokensRequestJwtyA2CmF">invalidRefreshTokensRequestJwt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Invalid refresh tokens request JWT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidRefreshTokensRequestJwt</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO31invalidReferenceTokenRequestJwtyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidReferenceTokenRequestJwt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO31invalidReferenceTokenRequestJwtyA2CmF">invalidReferenceTokenRequestJwt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Invalid reference token request JWT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidReferenceTokenRequestJwt</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8SDKErrorO32invalidDeleteUserTokenRequestJwtyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/invalidDeleteUserTokenRequestJwt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8SDKErrorO32invalidDeleteUserTokenRequestJwtyA2CmF">invalidDeleteUserTokenRequestJwt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Invalid delete user token request JWT</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">invalidDeleteUserTokenRequestJwt</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9DigiMeSDK8SDKErrorO5otheryA2CmF"></a>
                     <a name="//apple_ref/swift/Element/other" class="dashAnchor"></a>
                     <a class="token" href="#/s:9DigiMeSDK8SDKErrorO5otheryA2CmF">other</a>
@@ -808,7 +1290,7 @@ This is either caused by the contract not having been authorized or the contract
                 <a name="//apple_ref/swift/Section/CustomStringConvertible" class="dashAnchor"></a>
                 <div class="section-name-container">
                   <a class="section-name-link" href="#/CustomStringConvertible"></a>
-                  <h3 class="section-name"><p>CustomStringConvertible</p>
+                  <h3 class="section-name"><span>CustomStringConvertible</span>
 </h3>
                 </div>
               </div>
@@ -847,9 +1329,8 @@ This is either caused by the contract not having been authorized or the contract
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://developers.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-09-28)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2023 <a class="link" href="https://developers.digi.me" target="_blank" rel="external noopener">digi.me</a>. All rights reserved. (Last updated: 2023-02-28)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
-</div>
 </html>

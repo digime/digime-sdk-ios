@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Account Structure Reference</title>
+    <title>Encodable Extension Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,27 +14,27 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Struct/Account" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Extension/Encodable" class="dashAnchor"></a>
 
-    <a title="Account Structure Reference"></a>
+    <a title="Encodable Extension Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
         <a class="header-link" href="../index.html">
-          DigiMeSDK 5.0.2 Docs
+          DigiMeSDK 5.0.5 Docs
         </a>
         
       </p>
     
-      <p class="header-col--secondary">
+      <div class="header-col--secondary">
         <form role="search" action="../search.json">
           <input type="text" placeholder="Search documentation" data-typeahead>
         </form>
-      </p>
+      </div>
     
         <p class="header-col header-col--secondary">
           <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
-            <img class="header-icon" src="../img/gh.png"/>
+            <img class="header-icon" src="../img/gh.png" alt="GitHub"/>
             View on GitHub
           </a>
         </p>
@@ -43,8 +43,8 @@
 
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">DigiMeSDK Reference</a>
-      <img class="carat" src="../img/carat.png" />
-      Account Structure Reference
+      <img class="carat" src="../img/carat.png" alt=""/>
+      Encodable Extension Reference
     </p>
 
     <div class="content-wrapper">
@@ -83,6 +83,9 @@
                 <a class="nav-group-task-link" href="../Classes/DigiMe.html">DigiMe</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/FilePersistentStorage.html">FilePersistentStorage</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/RawFileMetadataBuilder.html">RawFileMetadataBuilder</a>
               </li>
             </ul>
@@ -114,13 +117,27 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Encodable.html">Encodable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/APIError.html">APIError</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/Account.html">Account</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/AccountServiceDescriptor.html">AccountServiceDescriptor</a>
@@ -174,6 +191,9 @@
                 <a class="nav-group-task-link" href="../Structs/ServiceCountry.html">ServiceCountry</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ServiceError.html">ServiceError</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ServiceGroup.html">ServiceGroup</a>
               </li>
               <li class="nav-group-task">
@@ -187,6 +207,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ServicesInfo.html">ServicesInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/SourceAccount.html">SourceAccount</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/SyncAccount.html">SyncAccount</a>
@@ -216,16 +239,15 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>Account</h1>
+            <h1>Encodable</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Account</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">Encodable</span></code></pre>
 
                 </div>
               </div>
-            <p>The account relating to a service data source user has added to digi.me library</p>
-
+            
           </div>
         </section>
 
@@ -236,9 +258,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK7AccountV10identifierSSvp"></a>
-                    <a name="//apple_ref/swift/Property/identifier" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK7AccountV10identifierSSvp">identifier</a>
+                    <a name="/s:SE9DigiMeSDKE7encoded20dateEncodingStrategy03keyfG010Foundation4DataVAE11JSONEncoderC04DatefG0OSg_AI03KeyfG0OSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/encoded(dateEncodingStrategy:keyEncodingStrategy:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SE9DigiMeSDKE7encoded20dateEncodingStrategy03keyfG010Foundation4DataVAE11JSONEncoderC04DatefG0OSg_AI03KeyfG0OSgtKF">encoded(dateEncodingStrategy:<wbr>keyEncodingStrategy:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -246,14 +268,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The account&rsquo;s identifier</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">encoded</span><span class="p">(</span><span class="nv">dateEncodingStrategy</span><span class="p">:</span> <span class="kt">JSONEncoder</span><span class="o">.</span><span class="kt">DateEncodingStrategy</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">keyEncodingStrategy</span><span class="p">:</span> <span class="kt">JSONEncoder</span><span class="o">.</span><span class="kt">KeyEncodingStrategy</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Data</span></code></pre>
 
                         </div>
                       </div>
@@ -263,9 +285,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9DigiMeSDK7AccountV4nameSSSgvp"></a>
-                    <a name="//apple_ref/swift/Property/name" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK7AccountV4nameSSSgvp">name</a>
+                    <a name="/s:SE9DigiMeSDKE10dictionaryypSgvp"></a>
+                    <a name="//apple_ref/swift/Property/dictionary" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SE9DigiMeSDKE10dictionaryypSgvp">dictionary</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -273,68 +295,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The account&rsquo;s name</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK7AccountV6numberSSSgvp"></a>
-                    <a name="//apple_ref/swift/Property/number" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK7AccountV6numberSSSgvp">number</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The account number</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">number</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK7AccountV7serviceAA0D17ServiceDescriptorVvp"></a>
-                    <a name="//apple_ref/swift/Property/service" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK7AccountV7serviceAA0D17ServiceDescriptorVvp">service</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The description of service account realtes to</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">service</span><span class="p">:</span> <span class="kt"><a href="../Structs/AccountServiceDescriptor.html">AccountServiceDescriptor</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">dictionary</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -349,9 +317,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://developers.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-09-28)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2023 <a class="link" href="https://developers.digi.me" target="_blank" rel="external noopener">digi.me</a>. All rights reserved. (Last updated: 2023-02-28)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
-</div>
 </html>

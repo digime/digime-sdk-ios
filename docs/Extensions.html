@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Writing And Reading Raw Data  Reference</title>
+    <title>Extensions  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -14,8 +14,9 @@
   </head>
   <body>
 
+    <a name="//apple_ref/swift/Section/Extensions" class="dashAnchor"></a>
 
-    <a title="Writing And Reading Raw Data  Reference"></a>
+    <a title="Extensions  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -43,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">DigiMeSDK Reference</a>
       <img class="carat" src="img/carat.png" alt=""/>
-      Writing And Reading Raw Data  Reference
+      Extensions  Reference
     </p>
 
     <div class="content-wrapper">
@@ -238,116 +239,128 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            
-            <p><img src="https://securedownloads.digi.me/partners/digime/SDKReadmeBanner.png" alt=""></p>
-
-<p align="center">
-    <a href="https://developers.digi.me/slack/join">
-        <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
-    </a>
-    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
-        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
-    </a>
-    <a href="#">
-        <img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
-    </a>
-    <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/language-swift-orange.svg" alt="Swift">
-    </a>
-    <a href="https://developers.digi.me">
-        <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
-    </a>
-    <a href="https://digime.freshdesk.com/support/solutions/9000115894">
-        <img src="https://img.shields.io/badge/support-freshdesk-721744.svg" alt="Support">
-    </a>
-</p>
-
-<p><br></p>
-<h1 id='raw-data' class='heading'>Raw Data</h1>
-<h2 id='introduction' class='heading'>Introduction</h2>
-
-<p>digi.me prides itself in normalizing data from a huge array of sources into common ontologies, however, as a data portability facilitator, we support the flow of data in both directions - from the user to you, and from you back to the user.</p>
-
-<p>To differentiate these types of data, we refer to these as follows:</p>
-
-<ul>
-<li>Data sources from external services, which is then normalized into differnet ontologies is referred to as <strong>mapped</strong> data.</li>
-<li>Data written to a user&rsquo;s digi.me via this SDK is referred to as <strong>raw data</strong>.</li>
-</ul>
-
-<p>The digi.me Private Sharing SDK makes it easy to write data to a user&rsquo;s digi.me and read it back again.</p>
-<h2 id='writing-raw-data' class='heading'>Writing Raw Data</h2>
-
-<p>Before data can be written, you should already have credentials for this user.  If you don&rsquo;t have any, you will need to authorize the user first. Make sure the contract used is a <strong>WRITE</strong> contract.</p>
-
-<p>To write the data, you need to build a <code>metadata</code> object that describes what data your pushing along with the <code>Data</code> representation of your data itself.</p>
-<pre class="highlight swift"><code><span class="c1">// Obtain the data you wish to post.</span>
-<span class="k">let</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span> <span class="o">=</span> <span class="o">...</span>
-
-<span class="c1">// All push submissions must be pushed with appropriate metadata. The following is taken from one of the example apps.</span>
-<span class="k">let</span> <span class="nv">metadata</span> <span class="o">=</span> <span class="kt">RawFileMetadataBuilder</span><span class="p">(</span><span class="nv">mimeType</span><span class="p">:</span> <span class="o">.</span><span class="n">applicationJson</span><span class="p">,</span> <span class="nv">accounts</span><span class="p">:</span> <span class="p">[</span><span class="s">"Account1"</span><span class="p">])</span>
-                <span class="o">.</span><span class="nf">objectTypes</span><span class="p">([</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"receipt"</span><span class="p">)])</span>
-                <span class="o">.</span><span class="nf">tags</span><span class="p">([</span><span class="s">"groceries"</span><span class="p">])</span>
-                <span class="o">.</span><span class="nf">reference</span><span class="p">([</span><span class="s">"Receipt </span><span class="se">\(</span><span class="n">dateFormatter</span><span class="o">.</span><span class="nf">string</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt">Date</span><span class="p">())</span><span class="se">)</span><span class="s">"</span><span class="p">])</span>
-                <span class="o">.</span><span class="nf">build</span><span class="p">()</span>
-
-<span class="k">let</span> <span class="nv">credentials</span> <span class="o">=</span> <span class="n">my_stored_credentials</span>
-<span class="n">digiMe</span><span class="o">.</span><span class="nf">write</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span> <span class="nv">metadata</span><span class="p">:</span> <span class="n">metadata</span><span class="p">,</span> <span class="nv">credentials</span><span class="p">:</span> <span class="n">credentials</span><span class="p">)</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
-  <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">refreshedCredentials</span><span class="p">):</span>
-        <span class="c1">// Update your stored credentials as these may have changed</span>
-
-    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-        <span class="c1">// Handle failure</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre>
-<h2 id='reading-raw-data' class='heading'>Reading Raw Data</h2>
-
-<p>In order to read data which you have written to user&rsquo;s digi.me you will need a separate <strong>READ</strong> contract configured to read raw data. Please <a href="https://developers.digi.me/contact-us">contact support</a> to discuss this.</p>
-
-<p>Reading raw data is similar to reading mapped data, in that you will need to authorize the user with this contract.  The only difference is that to access the same data space that your write contract has written to, you will also need to pass the credentials for you write contract.  This is because, by default, authorizing a contract creates a new data space - only by linking another contract will those contracts access the same data space.</p>
-
-<p>You will also need to create a separate digi.me instance configured with your read contract.</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">writeCredentials</span> <span class="o">=</span> <span class="n">my_write_credentials</span>
-
-<span class="n">readDigiMe</span><span class="o">.</span><span class="nf">authorize</span><span class="p">(</span><span class="nv">linkToContractWithCredentials</span><span class="p">:</span> <span class="n">writeCredentials</span><span class="p">)</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
-    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">credentials</span><span class="p">):</span>
-        <span class="c1">// Store these credentials for your read contract</span>
-
-    <span class="k">case</span><span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-        <span class="c1">// Handle failure    }</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>Now you are ready to read the data you have written:</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">credentials</span> <span class="o">=</span> <span class="n">my_stored_read_credentials</span>
-<span class="n">readDigiMe</span><span class="o">.</span><span class="nf">readAllFiles</span><span class="p">(</span><span class="nv">credentials</span><span class="p">:</span> <span class="n">credentials</span><span class="p">,</span> <span class="nv">readOptions</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
-    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">file</span><span class="p">):</span>
-        <span class="c1">// Access data or metadata of file.</span>
-
-   <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-       <span class="c1">// Handle Error</span>
-   <span class="p">}</span>
-<span class="p">}</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
-    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="p">(</span><span class="nv">fileList</span><span class="p">,</span> <span class="nv">refreshedCredentials</span><span class="p">)):</span>
-        <span class="c1">// Handle success and update stored credentials as these may have been refreshed.</span>
-    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
-        <span class="c1">// Handle failure.</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>The returned file&rsquo;s <code>metadata</code> will be a <code>raw</code> type containing the actual metadata accompanying the data when it was written.</p>
-
-<p><em>NB: Please refer to our Read/Write example in the <a href="https://github.com/digime/digime-sdk-ios/tree/master/Examples/DigiMeSDKExample">Example App</a> for a working example of this.</em></p>
+            <h1>Extensions</h1>
+            <p>The following extensions are available globally.</p>
 
           </div>
         </section>
 
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:SE"></a>
+                    <a name="//apple_ref/swift/Extension/Encodable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SE">Encodable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Extensions/Encodable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">Encodable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10Foundation4DataV"></a>
+                    <a name="//apple_ref/swift/Extension/Data" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10Foundation4DataV">Data</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Extensions/Data.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">Data</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:SD"></a>
+                    <a name="//apple_ref/swift/Extension/Dictionary" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SD">Dictionary</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Extensions/Dictionary.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">Dictionary</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:Sa"></a>
+                    <a name="//apple_ref/swift/Extension/Array" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Sa">Array</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Extensions/Array.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">Array</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
       </article>
     </div>
