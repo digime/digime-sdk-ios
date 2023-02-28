@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 @objcMembers
 public class DiscoveryResource: Codable {

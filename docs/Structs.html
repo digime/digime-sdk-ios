@@ -4,7 +4,7 @@
     <title>Structures  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <script src="js/jquery.min.js" defer></script>
     <script src="js/jazzy.js" defer></script>
     
@@ -13,247 +13,703 @@
     <script src="js/jazzy.search.js" defer></script>
   </head>
   <body>
-
     <a name="//apple_ref/swift/Section/Structures" class="dashAnchor"></a>
-
     <a title="Structures  Reference"></a>
-
-    <header class="header">
-      <p class="header-col header-col--primary">
-        <a class="header-link" href="index.html">
-          DigiMeSDK 5.0.2 Docs
-        </a>
-        
-      </p>
-    
-      <p class="header-col--secondary">
-        <form role="search" action="search.json">
-          <input type="text" placeholder="Search documentation" data-typeahead>
-        </form>
-      </p>
-    
-        <p class="header-col header-col--secondary">
-          <a class="header-link" href="https://github.com/digime/digime-sdk-ios">
-            <img class="header-icon" src="img/gh.png"/>
-            View on GitHub
-          </a>
-        </p>
-    
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">DigiMeSDK 5.0.5 Docs</a></p>
+        <p class="header-right"><a href="https://github.com/digime/digime-sdk-ios"><img src="img/gh.png" alt="GitHub"/>View on GitHub</a></p>
+        <div class="header-right">
+          <form role="search" action="search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </div>
+      </div>
     </header>
-
-    <p class="breadcrumbs">
-      <a class="breadcrumb" href="index.html">DigiMeSDK Reference</a>
-      <img class="carat" src="img/carat.png" />
-      Structures  Reference
-    </p>
-
     <div class="content-wrapper">
-      <nav class="navigation">
+      <p id="breadcrumbs">
+        <a href="index.html">DigiMeSDK Reference</a>
+        <img id="carat" src="img/carat.png" alt=""/>
+        Structures  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
         <ul class="nav-groups">
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Guides.html">Guides</a>
+            <a href="Guides.html">Guides</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="contributing.html">Contributing</a>
+                <a href="contributing.html">Contributing</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="error-handling.html">Error Handling</a>
+                <a href="error-handling.html">Error Handling</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="getting-started.html">Getting Started</a>
+                <a href="getting-started.html">Getting Started</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="scope.html">Scope</a>
+                <a href="scope.html">Scope</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="writing-and-reading-raw-data.html">Writing And Reading Raw Data</a>
+                <a href="writing-and-reading-raw-data.html">Writing And Reading Raw Data</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Classes.html">Classes</a>
+            <a href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/CallbackService.html">CallbackService</a>
+                <a href="Classes/CallbackService.html">CallbackService</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/CredentialCache.html">CredentialCache</a>
+                <a href="Classes/ConsentAccessTimeRange.html">ConsentAccessTimeRange</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/DigiMe.html">DigiMe</a>
+                <a href="Classes/CredentialCache.html">CredentialCache</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/RawFileMetadataBuilder.html">RawFileMetadataBuilder</a>
+                <a href="Classes/DigiMe.html">DigiMe</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/DiscoveryResource.html">DiscoveryResource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/FilePersistentStorage.html">FilePersistentStorage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/HealthKitManager.html">HealthKitManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/HealthKitObserver.html">HealthKitObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/HealthKitReader.html">HealthKitReader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/HealthKitService.html">HealthKitService</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/HealthKitWriter.html">HealthKitWriter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/RawFileMetadataBuilder.html">RawFileMetadataBuilder</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Enums.html">Enumerations</a>
+            <a href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/FileMetadata.html">FileMetadata</a>
+                <a href="Enums/ActivitySummaryType.html">ActivitySummaryType</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/LogLevel.html">LogLevel</a>
+                <a href="Enums/CategoryType.html">CategoryType</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/MimeType.html">MimeType</a>
+                <a href="Enums/CharacteristicType.html">CharacteristicType</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/SDKError.html">SDKError</a>
+                <a href="Enums/ContractTimeRangeType.html">ContractTimeRangeType</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/SyncState.html">SyncState</a>
+                <a href="Enums/CorrelationType.html">CorrelationType</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/TimeRange.html">TimeRange</a>
+                <a href="Enums/Crypto.html">Crypto</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/TimeRange/Unit.html">– Unit</a>
+                <a href="Enums/DeviceOnlyServices.html">DeviceOnlyServices</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/DocumentType.html">DocumentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/ElectrocardiogramType.html">ElectrocardiogramType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/FileMetadata.html">FileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/Metadata.html">Metadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/MimeType.html">MimeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/QuantityType.html">QuantityType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SDKError.html">SDKError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SeriesType.html">SeriesType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/SyncState.html">SyncState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/TimeRange.html">TimeRange</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/TimeRange/Unit.html">– Unit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/UpdateFrequency.html">UpdateFrequency</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/VisionPrescriptionType.html">VisionPrescriptionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/WorkoutType.html">WorkoutType</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Structs.html">Structures</a>
+            <a href="Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/APIError.html">APIError</a>
+                <a href="Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/Account.html">Account</a>
+                <a href="Extensions.html#/s:Sb">Bool</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/AccountServiceDescriptor.html">AccountServiceDescriptor</a>
+                <a href="Extensions.html#/s:14CoreFoundation7CGFloatV">CGFloat</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/AccountsInfo.html">AccountsInfo</a>
+                <a href="Extensions/Calendar.html">Calendar</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/Configuration.html">Configuration</a>
+                <a href="Extensions/Data.html">Data</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a>
+                <a href="Extensions/Date.html">Date</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/Duration.html">Duration</a>
+                <a href="Extensions/DateComponents.html">DateComponents</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/File.html">File</a>
+                <a href="Extensions/Dictionary.html">Dictionary</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/FileList.html">FileList</a>
+                <a href="Extensions/Double.html">Double</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/FileListItem.html">FileListItem</a>
+                <a href="Extensions/Encodable.html">Encodable</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/Limits.html">Limits</a>
+                <a href="Extensions/HKActivityMoveMode.html">HKActivityMoveMode</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/MappedFileMetadata.html">MappedFileMetadata</a>
+                <a href="Extensions/HKBiologicalSex.html">HKBiologicalSex</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/RawFileMetadata.html">RawFileMetadata</a>
+                <a href="Extensions/HKBloodType.html">HKBloodType</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/RawFileMetadata/Account.html">– Account</a>
+                <a href="Extensions/HKCategoryValue.html">HKCategoryValue</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/RawFileMetadata/ObjectType.html">– ObjectType</a>
+                <a href="Extensions/HKCategoryValueAppetiteChanges.html">HKCategoryValueAppetiteChanges</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ReadOptions.html">ReadOptions</a>
+                <a href="Extensions/HKCategoryValueAppleStandHour.html">HKCategoryValueAppleStandHour</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/Scope.html">Scope</a>
+                <a href="Extensions/HKCategoryValueAppleWalkingSteadinessEvent.html">HKCategoryValueAppleWalkingSteadinessEvent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/Service.html">Service</a>
+                <a href="Extensions/HKCategoryValueAudioExposureEvent.html">HKCategoryValueAudioExposureEvent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ServiceCountry.html">ServiceCountry</a>
+                <a href="Extensions/HKCategoryValueCervicalMucusQuality.html">HKCategoryValueCervicalMucusQuality</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ServiceGroup.html">ServiceGroup</a>
+                <a href="Extensions/HKCategoryValueContraceptive.html">HKCategoryValueContraceptive</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ServiceGroupScope.html">ServiceGroupScope</a>
+                <a href="Extensions/HKCategoryValueEnvironmentalAudioExposureEvent.html">HKCategoryValueEnvironmentalAudioExposureEvent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ServiceObjectType.html">ServiceObjectType</a>
+                <a href="Extensions/HKCategoryValueHeadphoneAudioExposureEvent.html">HKCategoryValueHeadphoneAudioExposureEvent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ServiceType.html">ServiceType</a>
+                <a href="Extensions/HKCategoryValueLowCardioFitnessEvent.html">HKCategoryValueLowCardioFitnessEvent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ServicesInfo.html">ServicesInfo</a>
+                <a href="Extensions/HKCategoryValueMenstrualFlow.html">HKCategoryValueMenstrualFlow</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/SyncAccount.html">SyncAccount</a>
+                <a href="Extensions/HKCategoryValueOvulationTestResult.html">HKCategoryValueOvulationTestResult</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/SyncError.html">SyncError</a>
+                <a href="Extensions/HKCategoryValuePregnancyTestResult.html">HKCategoryValuePregnancyTestResult</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/SyncStatus.html">SyncStatus</a>
+                <a href="Extensions/HKCategoryValuePresence.html">HKCategoryValuePresence</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKCategoryValueProgesteroneTestResult.html">HKCategoryValueProgesteroneTestResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKCategoryValueSeverity.html">HKCategoryValueSeverity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKCategoryValueSleepAnalysis.html">HKCategoryValueSleepAnalysis</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKElectrocardiogram.html">HKElectrocardiogram</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKElectrocardiogram/Classification.html">– Classification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKElectrocardiogram/SymptomsStatus.html">– SymptomsStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKFitzpatrickSkinType.html">HKFitzpatrickSkinType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKVisionPrescriptionType.html">HKVisionPrescriptionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKWorkoutActivityType.html">HKWorkoutActivityType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/HKWorkoutEventType.html">HKWorkoutEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:Si">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/NSPredicate.html">NSPredicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:Sq">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/String.html">String</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Typealiases.html">Type Aliases</a>
+            <a href="Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Typealiases.html#/s:9DigiMeSDK10LogHandlera">LogHandler</a>
+                <a href="Protocols/Dated.html">Dated</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Typealiases.html#/s:9DigiMeSDK12LogLevelMaska">LogLevelMask</a>
+                <a href="Protocols/ObjectType.html">ObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Payload.html">Payload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Sample.html">Sample</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/SampleType.html">SampleType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/UnitConvertable.html">UnitConvertable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols.html#/s:9DigiMeSDK19UserDefaultStorableP">UserDefaultStorable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/APIError.html">APIError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/AccountServiceDescriptor.html">AccountServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/AccountsInfo.html">AccountsInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ActivitySummary.html">ActivitySummary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ActivitySummary/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Application.html">Application</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Category.html">Category</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Category/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Characteristic.html">Characteristic</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/CodableUserDefault.html">CodableUserDefault</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Configuration.html">Configuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ConsentPolicy.html">ConsentPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ContractMetadata.html">ContractMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ContractResponse.html">ContractResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ContractVersion5.html">ContractVersion5</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Correlation.html">Correlation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Correlation/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs.html#/s:9DigiMeSDK8CriteriaV">Criteria</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/DataImporter.html">DataImporter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/DataPush.html">DataPush</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/DataRequest.html">DataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/DataRetentionPolicy.html">DataRetentionPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/DataTransportPolicy.html">DataTransportPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/DeletedObject.html">DeletedObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/DeliveryMode.html">DeliveryMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Device.html">Device</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Duration.html">Duration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Electrocardiogram.html">Electrocardiogram</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Electrocardiogram/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Electrocardiogram/VoltageMeasurement.html">– VoltageMeasurement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ExternalSharePolicy.html">ExternalSharePolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/File.html">File</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/FileList.html">FileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/FileListItem.html">FileListItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/FitnessActivitySummary.html">FitnessActivitySummary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/FitnessActivitySummary/Distances.html">– Distances</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/GDPR.html">GDPR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/HealthDataOperationResult.html">HealthDataOperationResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/HealthKitConfiguration.html">HealthKitConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/HeartbeatSeries.html">HeartbeatSeries</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/HeartbeatSeries/Measurement.html">– Measurement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/HeartbeatSeries/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Limits.html">Limits</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/MappedFileMetadata.html">MappedFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OAuth.html">OAuth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Partner.html">Partner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Policies.html">Policies</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PreferredUnit.html">PreferredUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Quantity.html">Quantity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Quantity/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/RawFileMetadata.html">RawFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/RawFileMetadata/Account.html">– Account</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/RawFileMetadata/ObjectType.html">– ObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ReadOptions.html">ReadOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Resources.html">Resources</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Scope.html">Scope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Service.html">Service</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServiceCountry.html">ServiceCountry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServiceError.html">ServiceError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServiceGroup.html">ServiceGroup</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServiceGroupCodable.html">ServiceGroupCodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServiceGroupScope.html">ServiceGroupScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServiceObjectType.html">ServiceObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServiceObjectTypeCodable.html">ServiceObjectTypeCodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServiceType.html">ServiceType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServiceTypeCodable.html">ServiceTypeCodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ServicesInfo.html">ServicesInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Source.html">Source</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SourceAccount.html">SourceAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SourceRevision.html">SourceRevision</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SourceRevision/OperatingSystem.html">– OperatingSystem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Statistics.html">Statistics</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Statistics/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SyncAccount.html">SyncAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SyncError.html">SyncError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SyncStatus.html">SyncStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TimeRangeCodable.html">TimeRangeCodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TimeRangeLimits.html">TimeRangeLimits</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/UserDefault.html">UserDefault</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/VisionPrescription.html">VisionPrescription</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/VisionPrescription/PrescriptionType.html">– PrescriptionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/VisionPrescription/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Workout.html">Workout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Workout/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WorkoutConfiguration.html">WorkoutConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WorkoutConfiguration/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WorkoutEvent.html">WorkoutEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WorkoutEvent/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WorkoutRoute.html">WorkoutRoute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WorkoutRoute/Route.html">– Route</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WorkoutRoute/Location.html">– Location</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WorkoutRoute/Harmonized.html">– Harmonized</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK32ActivitySummaryCompletionHandlera">ActivitySummaryCompletionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK20ActivitySummaryQuerya">ActivitySummaryQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK6Anchora">Anchor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK19AnchoredObjectQuerya">AnchoredObjectQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK22AnchoredResultsHandlera">AnchoredResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK22CategoryResultsHandlera">CategoryResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK28CorrelationCompletionHandlera">CorrelationCompletionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK16CorrelationQuerya">CorrelationQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK25CorrelationResultsHandlera">CorrelationResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK23DeletionCompletionBlocka">DeletionCompletionBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK31ElectrocardiogramResultsHandlera">ElectrocardiogramResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK33HeartbeatSeriesResultsDataHandlera">HeartbeatSeriesResultsDataHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK10LogHandlera">LogHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK12LogLevelMaska">LogLevelMask</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK13ObserverQuerya">ObserverQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK21ObserverUpdateHandlera">ObserverUpdateHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK24PreferredUnitsCompeltiona">PreferredUnitsCompeltion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK22QuantityResultsHandlera">QuantityResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK5Querya">Query</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK11SampleQuerya">SampleQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK20SampleResultsHandlera">SampleResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK23SourceCompletionHandlera">SourceCompletionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK11SourceQuerya">SourceQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK25StatisticsCollectionQuerya">StatisticsCollectionQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK27StatisticsCompletionHandlera">StatisticsCompletionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK15StatisticsQuerya">StatisticsQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK21StatusCompletionBlocka">StatusCompletionBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK21WorkoutResultsHandlera">WorkoutResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9DigiMeSDK30WorkoutRouteResultsDataHandlera">WorkoutRouteResultsDataHandler</a>
               </li>
             </ul>
           </li>
         </ul>
       </nav>
       <article class="main-content">
-
-        <section class="section">
-          <div class="section-content top-matter">
+        <section>
+          <section class="section">
             <h1>Structures</h1>
             <p>The following structures are available globally.</p>
 
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="section-content">
+          </section>
+          <section class="section task-group-section">
             <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9DigiMeSDK7AccountV"></a>
-                    <a name="//apple_ref/swift/Struct/Account" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9DigiMeSDK7AccountV">Account</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The account relating to a service data source user has added to digi.me library</p>
-
-                        <a href="Structs/Account.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Account</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -313,6 +769,34 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9DigiMeSDK13SourceAccountV"></a>
+                    <a name="//apple_ref/swift/Struct/SourceAccount" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK13SourceAccountV">SourceAccount</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The account relating to a service data source user has added to digi.me library</p>
+
+                        <a href="Structs/SourceAccount.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SourceAccount</span> <span class="p">:</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt">Identifiable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9DigiMeSDK13ConfigurationV"></a>
                     <a name="//apple_ref/swift/Struct/Configuration" class="dashAnchor"></a>
                     <a class="token" href="#/s:9DigiMeSDK13ConfigurationV">Configuration</a>
@@ -332,6 +816,621 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Configuration</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK16ContractVersion5V"></a>
+                    <a name="//apple_ref/swift/Struct/ContractVersion5" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK16ContractVersion5V">ContractVersion5</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ContractVersion5.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ContractVersion5</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK11DataRequestV"></a>
+                    <a name="//apple_ref/swift/Struct/DataRequest" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK11DataRequestV">DataRequest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/DataRequest.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DataRequest</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK15TimeRangeLimitsV"></a>
+                    <a name="//apple_ref/swift/Struct/TimeRangeLimits" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15TimeRangeLimitsV">TimeRangeLimits</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/TimeRangeLimits.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TimeRangeLimits</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8DataPushV"></a>
+                    <a name="//apple_ref/swift/Struct/DataPush" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8DataPushV">DataPush</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/DataPush.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DataPush</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK24ServiceObjectTypeCodableV"></a>
+                    <a name="//apple_ref/swift/Struct/ServiceObjectTypeCodable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK24ServiceObjectTypeCodableV">ServiceObjectTypeCodable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ServiceObjectTypeCodable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ServiceObjectTypeCodable</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK18ServiceTypeCodableV"></a>
+                    <a name="//apple_ref/swift/Struct/ServiceTypeCodable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK18ServiceTypeCodableV">ServiceTypeCodable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ServiceTypeCodable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ServiceTypeCodable</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK19ServiceGroupCodableV"></a>
+                    <a name="//apple_ref/swift/Struct/ServiceGroupCodable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK19ServiceGroupCodableV">ServiceGroupCodable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ServiceGroupCodable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ServiceGroupCodable</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK16TimeRangeCodableV"></a>
+                    <a name="//apple_ref/swift/Struct/TimeRangeCodable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK16TimeRangeCodableV">TimeRangeCodable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/TimeRangeCodable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TimeRangeCodable</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK4GDPRV"></a>
+                    <a name="//apple_ref/swift/Struct/GDPR" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK4GDPRV">GDPR</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/GDPR.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GDPR</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK19ExternalSharePolicyV"></a>
+                    <a name="//apple_ref/swift/Struct/ExternalSharePolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK19ExternalSharePolicyV">ExternalSharePolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ExternalSharePolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ExternalSharePolicy</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK19DataTransportPolicyV"></a>
+                    <a name="//apple_ref/swift/Struct/DataTransportPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK19DataTransportPolicyV">DataTransportPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/DataTransportPolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DataTransportPolicy</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK19DataRetentionPolicyV"></a>
+                    <a name="//apple_ref/swift/Struct/DataRetentionPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK19DataRetentionPolicyV">DataRetentionPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/DataRetentionPolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DataRetentionPolicy</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK12DataImporterV"></a>
+                    <a name="//apple_ref/swift/Struct/DataImporter" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK12DataImporterV">DataImporter</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/DataImporter.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DataImporter</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK13ConsentPolicyV"></a>
+                    <a name="//apple_ref/swift/Struct/ConsentPolicy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK13ConsentPolicyV">ConsentPolicy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ConsentPolicy.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ConsentPolicy</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK9ResourcesV"></a>
+                    <a name="//apple_ref/swift/Struct/Resources" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK9ResourcesV">Resources</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Resources.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Resources</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK11ApplicationV"></a>
+                    <a name="//apple_ref/swift/Struct/Application" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK11ApplicationV">Application</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Application.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Application</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK7PartnerV"></a>
+                    <a name="//apple_ref/swift/Struct/Partner" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK7PartnerV">Partner</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Partner.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Partner</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8CriteriaV"></a>
+                    <a name="//apple_ref/swift/Struct/Criteria" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8CriteriaV">Criteria</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Criteria</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8PoliciesV"></a>
+                    <a name="//apple_ref/swift/Struct/Policies" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8PoliciesV">Policies</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Policies.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Policies</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK16ContractMetadataV"></a>
+                    <a name="//apple_ref/swift/Struct/ContractMetadata" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK16ContractMetadataV">ContractMetadata</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ContractMetadata.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ContractMetadata</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK5OAuthV"></a>
+                    <a name="//apple_ref/swift/Struct/OAuth" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK5OAuthV">OAuth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/OAuth.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">OAuth</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK12DeliveryModeV"></a>
+                    <a name="//apple_ref/swift/Struct/DeliveryMode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK12DeliveryModeV">DeliveryMode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/DeliveryMode.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DeliveryMode</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
 
                         </div>
                       </div>
@@ -386,7 +1485,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Service</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Service</span> <span class="p">:</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt">Identifiable</span></code></pre>
 
                         </div>
                       </div>
@@ -526,7 +1625,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">File</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">File</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
 
                         </div>
                       </div>
@@ -592,6 +1691,34 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9DigiMeSDK22FitnessActivitySummaryV"></a>
+                    <a name="//apple_ref/swift/Struct/FitnessActivitySummary" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK22FitnessActivitySummaryV">FitnessActivitySummary</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/FitnessActivitySummary.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">FitnessActivitySummary</span> <span class="p">:</span> <span class="kt">Codable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Dated.html">Dated</a></span><span class="p">,</span> <span class="kt">Identifiable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9DigiMeSDK18MappedFileMetadataV"></a>
                     <a name="//apple_ref/swift/Struct/MappedFileMetadata" class="dashAnchor"></a>
                     <a class="token" href="#/s:9DigiMeSDK18MappedFileMetadataV">MappedFileMetadata</a>
@@ -610,7 +1737,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MappedFileMetadata</span> <span class="p">:</span> <span class="kt">Decodable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MappedFileMetadata</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
 
                         </div>
                       </div>
@@ -704,6 +1831,34 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9DigiMeSDK12ServiceErrorV"></a>
+                    <a name="//apple_ref/swift/Struct/ServiceError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK12ServiceErrorV">ServiceError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ServiceError.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ServiceError</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Equatable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9DigiMeSDK10SyncStatusV"></a>
                     <a name="//apple_ref/swift/Struct/SyncStatus" class="dashAnchor"></a>
                     <a class="token" href="#/s:9DigiMeSDK10SyncStatusV">SyncStatus</a>
@@ -723,6 +1878,667 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SyncStatus</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Equatable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK22HealthKitConfigurationV"></a>
+                    <a name="//apple_ref/swift/Struct/HealthKitConfiguration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK22HealthKitConfigurationV">HealthKitConfiguration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/HealthKitConfiguration.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">HealthKitConfiguration</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK15ActivitySummaryV"></a>
+                    <a name="//apple_ref/swift/Struct/ActivitySummary" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15ActivitySummaryV">ActivitySummary</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ActivitySummary.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ActivitySummary</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8CategoryV"></a>
+                    <a name="//apple_ref/swift/Struct/Category" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8CategoryV">Category</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Category.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Category</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Category</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK14CharacteristicV"></a>
+                    <a name="//apple_ref/swift/Struct/Characteristic" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK14CharacteristicV">Characteristic</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Characteristic.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Characteristic</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK11CorrelationV"></a>
+                    <a name="//apple_ref/swift/Struct/Correlation" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK11CorrelationV">Correlation</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Correlation.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Correlation</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Correlation</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK13DeletedObjectV"></a>
+                    <a name="//apple_ref/swift/Struct/DeletedObject" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK13DeletedObjectV">DeletedObject</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/DeletedObject.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DeletedObject</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK6DeviceV"></a>
+                    <a name="//apple_ref/swift/Struct/Device" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK6DeviceV">Device</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Device.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Device</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Device</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK17ElectrocardiogramV"></a>
+                    <a name="//apple_ref/swift/Struct/Electrocardiogram" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK17ElectrocardiogramV">Electrocardiogram</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Electrocardiogram.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Electrocardiogram</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Electrocardiogram</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK15HeartbeatSeriesV"></a>
+                    <a name="//apple_ref/swift/Struct/HeartbeatSeries" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK15HeartbeatSeriesV">HeartbeatSeries</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/HeartbeatSeries.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">HeartbeatSeries</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">HeartbeatSeries</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK8QuantityV"></a>
+                    <a name="//apple_ref/swift/Struct/Quantity" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK8QuantityV">Quantity</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Quantity.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Quantity</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Quantity</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Quantity</span><span class="p">:</span> <span class="kt"><a href="Protocols/UnitConvertable.html">UnitConvertable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK6SourceV"></a>
+                    <a name="//apple_ref/swift/Struct/Source" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK6SourceV">Source</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Source.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Source</span> <span class="p">:</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">Codable</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Source</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK14SourceRevisionV"></a>
+                    <a name="//apple_ref/swift/Struct/SourceRevision" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK14SourceRevisionV">SourceRevision</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/SourceRevision.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SourceRevision</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">SourceRevision</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK10StatisticsV"></a>
+                    <a name="//apple_ref/swift/Struct/Statistics" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK10StatisticsV">Statistics</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Statistics.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Statistics</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Statistics</span><span class="p">:</span> <span class="kt"><a href="Protocols/UnitConvertable.html">UnitConvertable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK18VisionPrescriptionV"></a>
+                    <a name="//apple_ref/swift/Struct/VisionPrescription" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK18VisionPrescriptionV">VisionPrescription</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/VisionPrescription.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">VisionPrescription</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">VisionPrescription</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK7WorkoutV"></a>
+                    <a name="//apple_ref/swift/Struct/Workout" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK7WorkoutV">Workout</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/Workout.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Workout</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Workout</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK20WorkoutConfigurationV"></a>
+                    <a name="//apple_ref/swift/Struct/WorkoutConfiguration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK20WorkoutConfigurationV">WorkoutConfiguration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/WorkoutConfiguration.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">WorkoutConfiguration</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK12WorkoutEventV"></a>
+                    <a name="//apple_ref/swift/Struct/WorkoutEvent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK12WorkoutEventV">WorkoutEvent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/WorkoutEvent.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">WorkoutEvent</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">WorkoutEvent</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK12WorkoutRouteV"></a>
+                    <a name="//apple_ref/swift/Struct/WorkoutRoute" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK12WorkoutRouteV">WorkoutRoute</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/WorkoutRoute.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">WorkoutRoute</span> <span class="p">:</span> <span class="kt">PayloadIdentifiable</span><span class="p">,</span> <span class="kt"><a href="Protocols/Sample.html">Sample</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">WorkoutRoute</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK13PreferredUnitV"></a>
+                    <a name="//apple_ref/swift/Struct/PreferredUnit" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK13PreferredUnitV">PreferredUnit</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/PreferredUnit.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">PreferredUnit</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PreferredUnit</span><span class="p">:</span> <span class="kt"><a href="Protocols/Payload.html">Payload</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK25HealthDataOperationResultV"></a>
+                    <a name="//apple_ref/swift/Struct/HealthDataOperationResult" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK25HealthDataOperationResultV">HealthDataOperationResult</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/HealthDataOperationResult.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">HealthDataOperationResult</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK16ContractResponseV"></a>
+                    <a name="//apple_ref/swift/Struct/ContractResponse" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK16ContractResponseV">ContractResponse</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/ContractResponse.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ContractResponse</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK18CodableUserDefaultV"></a>
+                    <a name="//apple_ref/swift/Struct/CodableUserDefault" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK18CodableUserDefaultV">CodableUserDefault</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/CodableUserDefault.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@propertyWrapper</span>
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">CodableUserDefault</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK11UserDefaultV"></a>
+                    <a name="//apple_ref/swift/Struct/UserDefault" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK11UserDefaultV">UserDefault</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Structs/UserDefault.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@propertyWrapper</span>
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">UserDefault</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:9DigiMeSDK19UserDefaultStorableP">UserDefaultStorable</a></span></code></pre>
 
                         </div>
                       </div>
@@ -930,15 +2746,13 @@ Defaults to unlimited duration.</p>
                 </li>
               </ul>
             </div>
-          </div>
+          </section>
         </section>
-
+        <section id="footer">
+          <p>&copy; 2023 <a class="link" href="https://developers.digi.me" target="_blank" rel="external noopener">digi.me</a>. All rights reserved. (Last updated: 2023-02-28)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
       </article>
     </div>
-    <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://developers.digi.me" target="_blank" rel="external">digi.me</a>. All rights reserved. (Last updated: 2021-09-28)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
-    </section>
   </body>
-</div>
 </html>

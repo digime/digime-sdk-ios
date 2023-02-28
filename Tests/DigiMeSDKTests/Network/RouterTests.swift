@@ -86,8 +86,9 @@ class RouterTests: XCTestCase {
     }
     
     func testFileListRequest() throws {
+		let jwt = UUID().uuidString
         let sessionKey = UUID().uuidString
-        let sut = FileListRoute(sessionKey: sessionKey)
+		let sut = FileListRoute(jwt: jwt, sessionKey: sessionKey)
 		let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "GET", "Error testing File List request. Http method is incorrect.")
@@ -105,9 +106,10 @@ class RouterTests: XCTestCase {
     }
     
     func testFileRequest() throws {
+		let jwt = UUID().uuidString
         let fileId = "testFileId"
         let sessionKey = UUID().uuidString
-        let sut = ReadDataRoute(sessionKey: sessionKey, fileId: fileId)
+		let sut = ReadDataRoute(jwt: jwt, sessionKey: sessionKey, fileId: fileId)
         let request = sut.toUrlRequest(with: "path")
         
         XCTAssertEqual(request.httpMethod, "GET", "Error testing File request. Http method is incorrect.")

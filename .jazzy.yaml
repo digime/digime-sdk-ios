@@ -1,4 +1,4 @@
-theme: fullwidth
+theme: apple
 readme: README.md
 documentation: Documentation/guides/*md
 output: docs
@@ -15,4 +15,5 @@ build_tool_arguments:
   - DigiMeSDK
   - -sdk
   - iphoneos
-  - -destination,platform=iOS Simulator,OS=latest,name=iPhone 12 Pro
+  - -destination
+  - 'platform=iOS Simulator,name=iPhone 14 Pro'

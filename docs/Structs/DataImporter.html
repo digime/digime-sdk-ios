@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DataImporter Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/DataImporter" class="dashAnchor"></a>
+    <a title="DataImporter Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">DigiMeSDK 5.0.5 Docs</a></p>
+        <p class="header-right"><a href="https://github.com/digime/digime-sdk-ios"><img src="../img/gh.png" alt="GitHub"/>View on GitHub</a></p>
+        <div class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </div>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">DigiMeSDK Reference</a>
+        <img id="carat" src="../img/carat.png" alt=""/>
+        DataImporter Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../contributing.html">Contributing</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../error-handling.html">Error Handling</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../getting-started.html">Getting Started</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../scope.html">Scope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../writing-and-reading-raw-data.html">Writing And Reading Raw Data</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/CallbackService.html">CallbackService</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ConsentAccessTimeRange.html">ConsentAccessTimeRange</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CredentialCache.html">CredentialCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DigiMe.html">DigiMe</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DiscoveryResource.html">DiscoveryResource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FilePersistentStorage.html">FilePersistentStorage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HealthKitManager.html">HealthKitManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HealthKitObserver.html">HealthKitObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HealthKitReader.html">HealthKitReader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HealthKitService.html">HealthKitService</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HealthKitWriter.html">HealthKitWriter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RawFileMetadataBuilder.html">RawFileMetadataBuilder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ActivitySummaryType.html">ActivitySummaryType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/CategoryType.html">CategoryType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/CharacteristicType.html">CharacteristicType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ContractTimeRangeType.html">ContractTimeRangeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/CorrelationType.html">CorrelationType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Crypto.html">Crypto</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DeviceOnlyServices.html">DeviceOnlyServices</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DocumentType.html">DocumentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ElectrocardiogramType.html">ElectrocardiogramType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FileMetadata.html">FileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Metadata.html">Metadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MimeType.html">MimeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/QuantityType.html">QuantityType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SDKError.html">SDKError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SeriesType.html">SeriesType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SyncState.html">SyncState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TimeRange.html">TimeRange</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TimeRange/Unit.html">– Unit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/UpdateFrequency.html">UpdateFrequency</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/VisionPrescriptionType.html">VisionPrescriptionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/WorkoutType.html">WorkoutType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:Sb">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:14CoreFoundation7CGFloatV">CGFloat</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Calendar.html">Calendar</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/DateComponents.html">DateComponents</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Encodable.html">Encodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKActivityMoveMode.html">HKActivityMoveMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKBiologicalSex.html">HKBiologicalSex</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKBloodType.html">HKBloodType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValue.html">HKCategoryValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueAppetiteChanges.html">HKCategoryValueAppetiteChanges</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueAppleStandHour.html">HKCategoryValueAppleStandHour</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueAppleWalkingSteadinessEvent.html">HKCategoryValueAppleWalkingSteadinessEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueAudioExposureEvent.html">HKCategoryValueAudioExposureEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueCervicalMucusQuality.html">HKCategoryValueCervicalMucusQuality</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueContraceptive.html">HKCategoryValueContraceptive</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueEnvironmentalAudioExposureEvent.html">HKCategoryValueEnvironmentalAudioExposureEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueHeadphoneAudioExposureEvent.html">HKCategoryValueHeadphoneAudioExposureEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueLowCardioFitnessEvent.html">HKCategoryValueLowCardioFitnessEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueMenstrualFlow.html">HKCategoryValueMenstrualFlow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueOvulationTestResult.html">HKCategoryValueOvulationTestResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValuePregnancyTestResult.html">HKCategoryValuePregnancyTestResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValuePresence.html">HKCategoryValuePresence</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueProgesteroneTestResult.html">HKCategoryValueProgesteroneTestResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueSeverity.html">HKCategoryValueSeverity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKCategoryValueSleepAnalysis.html">HKCategoryValueSleepAnalysis</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKElectrocardiogram.html">HKElectrocardiogram</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKElectrocardiogram/Classification.html">– Classification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKElectrocardiogram/SymptomsStatus.html">– SymptomsStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKFitzpatrickSkinType.html">HKFitzpatrickSkinType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKVisionPrescriptionType.html">HKVisionPrescriptionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKWorkoutActivityType.html">HKWorkoutActivityType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/HKWorkoutEventType.html">HKWorkoutEventType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:Si">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSPredicate.html">NSPredicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:Sq">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Dated.html">Dated</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ObjectType.html">ObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Payload.html">Payload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Sample.html">Sample</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SampleType.html">SampleType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/UnitConvertable.html">UnitConvertable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:9DigiMeSDK19UserDefaultStorableP">UserDefaultStorable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/APIError.html">APIError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AccountServiceDescriptor.html">AccountServiceDescriptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AccountsInfo.html">AccountsInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ActivitySummary.html">ActivitySummary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ActivitySummary/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Application.html">Application</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Category.html">Category</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Category/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Characteristic.html">Characteristic</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/CodableUserDefault.html">CodableUserDefault</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Configuration.html">Configuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ConsentPolicy.html">ConsentPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ContractMetadata.html">ContractMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ContractResponse.html">ContractResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ContractVersion5.html">ContractVersion5</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Correlation.html">Correlation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Correlation/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:9DigiMeSDK11CredentialsV">Credentials</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:9DigiMeSDK8CriteriaV">Criteria</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DataImporter.html">DataImporter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DataPush.html">DataPush</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DataRequest.html">DataRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DataRetentionPolicy.html">DataRetentionPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DataTransportPolicy.html">DataTransportPolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DeletedObject.html">DeletedObject</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DeliveryMode.html">DeliveryMode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Device.html">Device</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Duration.html">Duration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Electrocardiogram.html">Electrocardiogram</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Electrocardiogram/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Electrocardiogram/VoltageMeasurement.html">– VoltageMeasurement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ExternalSharePolicy.html">ExternalSharePolicy</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/File.html">File</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FileList.html">FileList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FileListItem.html">FileListItem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FitnessActivitySummary.html">FitnessActivitySummary</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FitnessActivitySummary/Distances.html">– Distances</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GDPR.html">GDPR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HealthDataOperationResult.html">HealthDataOperationResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HealthKitConfiguration.html">HealthKitConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HeartbeatSeries.html">HeartbeatSeries</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HeartbeatSeries/Measurement.html">– Measurement</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HeartbeatSeries/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Limits.html">Limits</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MappedFileMetadata.html">MappedFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OAuth.html">OAuth</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Partner.html">Partner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Policies.html">Policies</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PreferredUnit.html">PreferredUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Quantity.html">Quantity</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Quantity/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/RawFileMetadata.html">RawFileMetadata</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/RawFileMetadata/Account.html">– Account</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/RawFileMetadata/ObjectType.html">– ObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ReadOptions.html">ReadOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Resources.html">Resources</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Scope.html">Scope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Service.html">Service</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceCountry.html">ServiceCountry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceError.html">ServiceError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceGroup.html">ServiceGroup</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceGroupCodable.html">ServiceGroupCodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceGroupScope.html">ServiceGroupScope</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceObjectType.html">ServiceObjectType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceObjectTypeCodable.html">ServiceObjectTypeCodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceType.html">ServiceType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServiceTypeCodable.html">ServiceTypeCodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServicesInfo.html">ServicesInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Source.html">Source</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SourceAccount.html">SourceAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SourceRevision.html">SourceRevision</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SourceRevision/OperatingSystem.html">– OperatingSystem</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Statistics.html">Statistics</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Statistics/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SyncAccount.html">SyncAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SyncError.html">SyncError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SyncStatus.html">SyncStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TimeRangeCodable.html">TimeRangeCodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TimeRangeLimits.html">TimeRangeLimits</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UserDefault.html">UserDefault</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/VisionPrescription.html">VisionPrescription</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/VisionPrescription/PrescriptionType.html">– PrescriptionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/VisionPrescription/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Workout.html">Workout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Workout/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WorkoutConfiguration.html">WorkoutConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WorkoutConfiguration/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WorkoutEvent.html">WorkoutEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WorkoutEvent/Harmonized.html">– Harmonized</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WorkoutRoute.html">WorkoutRoute</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WorkoutRoute/Route.html">– Route</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WorkoutRoute/Location.html">– Location</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WorkoutRoute/Harmonized.html">– Harmonized</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK32ActivitySummaryCompletionHandlera">ActivitySummaryCompletionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK20ActivitySummaryQuerya">ActivitySummaryQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK6Anchora">Anchor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK19AnchoredObjectQuerya">AnchoredObjectQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK22AnchoredResultsHandlera">AnchoredResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK22CategoryResultsHandlera">CategoryResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK28CorrelationCompletionHandlera">CorrelationCompletionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK16CorrelationQuerya">CorrelationQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK25CorrelationResultsHandlera">CorrelationResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK23DeletionCompletionBlocka">DeletionCompletionBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK31ElectrocardiogramResultsHandlera">ElectrocardiogramResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK33HeartbeatSeriesResultsDataHandlera">HeartbeatSeriesResultsDataHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK10LogHandlera">LogHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK12LogLevelMaska">LogLevelMask</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK13ObserverQuerya">ObserverQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK21ObserverUpdateHandlera">ObserverUpdateHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK24PreferredUnitsCompeltiona">PreferredUnitsCompeltion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK22QuantityResultsHandlera">QuantityResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK5Querya">Query</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK11SampleQuerya">SampleQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK20SampleResultsHandlera">SampleResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK23SourceCompletionHandlera">SourceCompletionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK11SourceQuerya">SourceQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK25StatisticsCollectionQuerya">StatisticsCollectionQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK27StatisticsCompletionHandlera">StatisticsCompletionHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK15StatisticsQuerya">StatisticsQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK21StatusCompletionBlocka">StatusCompletionBlock</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK21WorkoutResultsHandlera">WorkoutResultsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9DigiMeSDK30WorkoutRouteResultsDataHandlera">WorkoutRouteResultsDataHandler</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>DataImporter</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DataImporter</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK12DataImporterV4nameSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/name" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK12DataImporterV4nameSSSgvp">name</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9DigiMeSDK12DataImporterV9resourcesAA9ResourcesVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/resources" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9DigiMeSDK12DataImporterV9resourcesAA9ResourcesVSgvp">resources</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">resources</span><span class="p">:</span> <span class="kt"><a href="../Structs/Resources.html">Resources</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2023 <a class="link" href="https://developers.digi.me" target="_blank" rel="external noopener">digi.me</a>. All rights reserved. (Last updated: 2023-02-28)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>
