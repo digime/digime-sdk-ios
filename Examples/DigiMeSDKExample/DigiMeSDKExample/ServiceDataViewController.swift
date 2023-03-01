@@ -13,19 +13,17 @@ class ServiceDataViewController: UIViewController {
     
     @IBOutlet private var contractLabel: UILabel!
     @IBOutlet private var authWithServiceButton: UIButton!
-    
     @IBOutlet private var servicesLabel: UILabel!
     @IBOutlet private var addServiceButton: UIButton!
     @IBOutlet private var refreshDataButton: UIButton!
     @IBOutlet private var deleteUserButton: UIButton!
-    
     @IBOutlet private var loggerTextView: UITextView!
     
+	private let credentialCache = CredentialCache()
+	
     private var digiMe: DigiMe!
     private var logger: Logger!
     private var currentContract: Contract!
-    private let credentialCache = CredentialCache()
-    
     private var accounts = [SourceAccount]()
     private var selectServiceCompletion: ((Service?) -> Void)?
     

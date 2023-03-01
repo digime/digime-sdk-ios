@@ -14,11 +14,11 @@ protocol ServicePickerDelegate: AnyObject {
 }
 
 class ServicePickerViewController: UITableViewController {
-    
-    private let sections: [Section]
-    
+
     weak var delegate: ServicePickerDelegate?
     
+	private let sections: [Section]
+	
     private enum ReuseIdentifier {
         static let service = "Services"
         static let scopeSwitch = "ScopeSwitch"
@@ -45,26 +45,57 @@ class ServicePickerViewController: UITableViewController {
     private var selectedObjectTypes: [ServiceObjectType] = []
     private var scopeActiveSwitch = UISwitch()
     private var groupObjectTypes: [GroupObjectType] {
-        return [
-            GroupObjectType(serviceGroupId: 1, items: [
-                ServiceObjectType(identifier: 1, name: "Media"),
-                ServiceObjectType(identifier: 2, name: "Post"),
-                ServiceObjectType(identifier: 7, name: "Comment"),
-                ServiceObjectType(identifier: 10, name: "Like"),
-                ServiceObjectType(identifier: 12, name: "Media Album"),
-                ServiceObjectType(identifier: 15, name: "Social Network User"),
-                ServiceObjectType(identifier: 19, name: "Profile"),
-            ]),
-            GroupObjectType(serviceGroupId: 3, items: [
-                ServiceObjectType(identifier: 201, name: "Transaction"),
-            ]),
-            GroupObjectType(serviceGroupId: 5, items: [
-                ServiceObjectType(identifier: 403, name: "Playlist"),
-                ServiceObjectType(identifier: 404, name: "Saved Album"),
-                ServiceObjectType(identifier: 405, name: "Saved Track"),
-                ServiceObjectType(identifier: 406, name: "Play History"),
-            ]),
-        ]
+		return [
+			GroupObjectType(serviceGroupId: 1, items: [
+				ServiceObjectType(identifier: 1, name: "Media"),
+				ServiceObjectType(identifier: 2, name: "Post"),
+				ServiceObjectType(identifier: 7, name: "Comment"),
+				ServiceObjectType(identifier: 10, name: "Like"),
+				ServiceObjectType(identifier: 12, name: "Media Album"),
+				ServiceObjectType(identifier: 15, name: "Social Network User"),
+				ServiceObjectType(identifier: 19, name: "Profile"),
+			]),
+			GroupObjectType(serviceGroupId: 2, items: [
+				ServiceObjectType(identifier: 100, name: "Admission"),
+				ServiceObjectType(identifier: 101, name: "Arrival Ambulatory"),
+				ServiceObjectType(identifier: 102, name: "Arrival Primary Health"),
+				ServiceObjectType(identifier: 103, name: "Prescription"),
+				ServiceObjectType(identifier: 104, name: "Medication"),
+				ServiceObjectType(identifier: 105, name: "Diagnosis"),
+				ServiceObjectType(identifier: 106, name: "Vaccination"),
+				ServiceObjectType(identifier: 107, name: "Allergy"),
+				ServiceObjectType(identifier: 108, name: "Arrival Emergency"),
+				ServiceObjectType(identifier: 109, name: "Prescribed Item"),
+				ServiceObjectType(identifier: 111, name: "Measurement"),
+				ServiceObjectType(identifier: 127, name: "Allergy Intolerance"),
+				ServiceObjectType(identifier: 128, name: "Condition"),
+				ServiceObjectType(identifier: 129, name: "Immunization"),
+				ServiceObjectType(identifier: 130, name: "Medication Request"),
+				ServiceObjectType(identifier: 131, name: "Family Member History"),
+				ServiceObjectType(identifier: 132, name: "Observation"),
+				ServiceObjectType(identifier: 133, name: "Procedure"),
+				ServiceObjectType(identifier: 134, name: "Diagnostic Report"),
+				ServiceObjectType(identifier: 135, name: "Device"),
+				ServiceObjectType(identifier: 136, name: "Encounter"),
+				ServiceObjectType(identifier: 137, name: "Medication Dispense"),
+				ServiceObjectType(identifier: 138, name: "Medication Statement"),
+			]),
+			GroupObjectType(serviceGroupId: 3, items: [
+				ServiceObjectType(identifier: 201, name: "Transaction"),
+			]),
+			GroupObjectType(serviceGroupId: 4, items: [
+				ServiceObjectType(identifier: 300, name: "Fitness Activity"),
+				ServiceObjectType(identifier: 301, name: "Fitness Activity Summary"),
+				ServiceObjectType(identifier: 302, name: "Achievemen"),
+				ServiceObjectType(identifier: 303, name: "Sleep"),
+			]),
+			GroupObjectType(serviceGroupId: 5, items: [
+				ServiceObjectType(identifier: 403, name: "Playlist"),
+				ServiceObjectType(identifier: 404, name: "Saved Album"),
+				ServiceObjectType(identifier: 405, name: "Saved Track"),
+				ServiceObjectType(identifier: 406, name: "Play History"),
+			]),
+		]
     }
     
     init(servicesInfo: ServicesInfo) {

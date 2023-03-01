@@ -14,19 +14,17 @@ class WriteDataViewController: UIViewController {
     @IBOutlet private var authorizeWriteButton: UIButton!
     @IBOutlet private var uploadJsonButton: UIButton!
     @IBOutlet private var uploadImageButton: UIButton!
-    
     @IBOutlet private var authorizeReadButton: UIButton!
     @IBOutlet private var readDataButton: UIButton!
-    
     @IBOutlet private var deleteUserButton: UIButton!
     @IBOutlet private var loggerTextView: UITextView!
     
+	private let credentialCache = CredentialCache()
+	
     private var logger: Logger!
-    
     private var writeDigiMe: DigiMe!
     private var readDigiMe: DigiMe!
-    private let credentialCache = CredentialCache()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
