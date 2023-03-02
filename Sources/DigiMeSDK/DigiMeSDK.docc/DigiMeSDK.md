@@ -1,27 +1,6 @@
-![](https://securedownloads.digi.me/partners/digime/SDKReadmeBanner.png)
+# ``DigiMeSDK``
 
-<p align="center">
-    <a href="https://developers.digi.me/slack/join">
-        <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
-    </a>
-    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
-        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
-    </a>
-    <a href="#">
-    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
-    </a>
-    <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/language-swift-orange.svg" alt="Swift">
-    </a>
-    <a href="https://developers.digi.me">
-        <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
-    </a>
-    <a href="https://digime.freshdesk.com/support/solutions/9000115894">
-        <img src="https://img.shields.io/badge/support-freshdesk-721744.svg" alt="Support">
-    </a>
-</p>
-
-<br>
+Digi.me - The Private Sharing Platform 
 
 ## Introduction
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Scope  Reference</title>
+    <title>DigiMeSDK  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,10 +13,10 @@
     <script src="js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a title="Scope  Reference"></a>
+    <a title="DigiMeSDK  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">DigiMeSDK 5.0.5 Docs</a></p>
+        <p><a href="index.html">DigiMeSDK 5.1.0 Docs</a></p>
         <p class="header-right"><a href="https://github.com/digime/digime-sdk-ios"><img src="img/gh.png" alt="GitHub"/>View on GitHub</a></p>
         <div class="header-right">
           <form role="search" action="search.json">
@@ -29,7 +29,7 @@
       <p id="breadcrumbs">
         <a href="index.html">DigiMeSDK Reference</a>
         <img id="carat" src="img/carat.png" alt=""/>
-        Scope  Reference
+        DigiMeSDK  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -42,13 +42,13 @@
                 <a href="contributing.html">Contributing</a>
               </li>
               <li class="nav-group-task">
+                <a href="digimesdk.html">DigiMeSDK</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="error-handling.html">Error Handling</a>
               </li>
               <li class="nav-group-task">
-                <a href="getting-started.html">Getting Started</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="scope.html">Scope</a>
+                <a href="scoping.html">Scoping</a>
               </li>
               <li class="nav-group-task">
                 <a href="writing-and-reading-raw-data.html">Writing And Reading Raw Data</a>
@@ -703,77 +703,173 @@
         <section>
           <section class="section">
             
-            <p><img src="https://securedownloads.digi.me/partners/digime/SDKReadmeBanner.png" alt=""></p>
+            <h1 id='code-digimesdk-code' class='heading'><code>DigiMeSDK</code></h1>
 
-<p align="center">
-    <a href="https://developers.digi.me/slack/join">
-        <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
-    </a>
-    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
-        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
-    </a>
-    <a href="#">
-        <img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
-    </a>
-    <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/language-swift-orange.svg" alt="Swift">
-    </a>
-    <a href="https://developers.digi.me">
-        <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
-    </a>
-    <a href="https://digime.freshdesk.com/support/solutions/9000115894">
-        <img src="https://img.shields.io/badge/support-freshdesk-721744.svg" alt="Support">
-    </a>
-</p>
+<p>Digi.me - The Private Sharing Platform </p>
+<h2 id='introduction' class='heading'>Introduction</h2>
 
-<p><br></p>
-<h1 id='limiting-scope' class='heading'>Limiting Scope</h1>
-
-<p>Sometimes you may only want to retrieve a subset of data. This is governed at two levels. At the top are any scope limitations dictated by your contract; these can only be changed by digi.me support so please <a href="https://developers.digi.me/contact-us">contact support</a> if you want to discuss this further.</p>
-
-<p>At a code level, you can restrict the scope of a Private Sharing session by passing in a custom <code><a href="Structs/ReadOptions.html">ReadOptions</a></code> object when requesting data.</p>
-<h2 id='defining-code-readoptions-code' class='heading'>Defining <code><a href="Structs/ReadOptions.html">ReadOptions</a></code></h2>
-
-<p><code><a href="Structs/ReadOptions.html">ReadOptions</a></code> is comprised of two properties.</p>
+<p>The digi.me private sharing platform empowers developers to make use of user data from thousands of sources in a way that fully respects a user&rsquo;s privacy, and whilst conforming to GDPR. Our consent driven solution allows you to define exactly what terms you want data by, and the user to see these completely transparently, allowing them to make an informed choice as to whether to grant consent or not.</p>
+<h2 id='requirements' class='heading'>Requirements</h2>
+<h3 id='deployment' class='heading'>Deployment</h3>
 
 <ul>
-<li><p><code>limits</code> governs any limits to the data request that you&rsquo;d like to impose. For example, you can limit the duration of the request should you prefer to retrieve a subset of all available data quickly, as opposed to waiting for all of the data to be resolved and returned.</p></li>
-<li><p><code>scope</code> defines the scope of the data you&rsquo;d like to retrieve.</p></li>
+<li>iOS 13+</li>
 </ul>
-<h2 id='scope' class='heading'>Scope</h2>
+<h2 id='installation' class='heading'>Installation</h2>
+<h3 id='swift-package-manager' class='heading'>Swift Package Manager</h3>
+<h4 id='add-dependencies' class='heading'>Add dependencies</h4>
 
-<p>Scope has 2 properties, an array of <code><a href="Enums/TimeRange.html">TimeRange</a></code> objects and an array of <code><a href="Structs/ServiceGroupScope.html">ServiceGroupScope</a></code> objects.</p>
-<h3 id='em-scoping-by-time-range-em' class='heading'><em>Scoping by time range</em>:</h3>
-
-<p><code><a href="Enums/TimeRange.html">TimeRange</a></code> is an enum with 4 states; <code>after</code>, <code>between</code>, <code>before</code> and <code>last</code>.
-These are self-explainatory and allow you to define time ranges that returned data must conform to.</p>
-<h3 id='em-scoping-by-service-group-service-type-or-object-type-em' class='heading'><em>Scoping by service group, service type or object type:</em></h3>
-
-<p>To restrict scope at an object level, your scope must be &lsquo;fully described&rsquo;; that is to say that a service group must comprise at least one service type, which must comprise at least one object type. Furthermore, a service group may only contain service types belonging to it and said service types may only contain object types belonging to them.</p>
-
-<p>Service Groups, Service Types and Objects are all listed <a href="https://developers.digi.me/docs">here</a> in the developer documentation. Their relationships are also shown (what belongs to what).</p>
-
-<p>Below is an example of a valid scope to retrive only <code>Playlists</code> and <code>Followed Artists</code> from <code>Spotify</code>:</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">playlistObjectType</span> <span class="o">=</span> <span class="kt">ServiceObjectType</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="mi">403</span><span class="p">)</span> <span class="c1">// 403 is the ID for a Playlist object.</span>
-<span class="k">let</span> <span class="nv">followedArtistObjectType</span> <span class="o">=</span> <span class="kt">ServiceObjectType</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="mi">407</span><span class="p">)</span> <span class="c1">// 407 is the ID for a Followed Artist object.</span>
-
-<span class="k">let</span> <span class="nv">spotifyServiceType</span> <span class="o">=</span> <span class="kt">ServiceType</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span> <span class="nv">objectTypes</span><span class="p">:</span> <span class="p">[</span><span class="n">playlistObjectType</span><span class="p">,</span> <span class="n">followedArtistObjectType</span><span class="p">])</span> <span class="c1">// 19 is the ID for Spotify.</span>
-
-<span class="k">let</span> <span class="nv">entertainmentServiceGroup</span> <span class="o">=</span> <span class="kt">ServiceGroup</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">serviceTypes</span><span class="p">:</span> <span class="p">[</span><span class="n">spotifyServiceType</span><span class="p">])</span> <span class="c1">// 5 is the ID for Entertainment.</span>
-
-<span class="k">let</span> <span class="nv">scope</span> <span class="o">=</span> <span class="kt">Scope</span><span class="p">(</span><span class="nv">serviceGroups</span><span class="p">:</span> <span class="p">[</span><span class="n">entertainmentServiceGroup</span><span class="p">])</span>
-<span class="k">let</span> <span class="nv">readOptions</span> <span class="o">=</span> <span class="kt">ReadOptions</span><span class="p">(</span><span class="nv">scope</span><span class="p">:</span> <span class="n">scope</span><span class="p">)</span>
+<ol>
+<li><p>Add the <code>DigiMeSDK</code> package to the dependencies within your application&rsquo;s <code>Package.swift</code> or your Xcode project. Substitute <code>&quot;x.x.x&quot;</code> with the latest <code>DigiMeSDK</code> <a href="https://github.com/digime/digime-sdk-ios/releases">release</a>.</p>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"DigiMeSDK"</span><span class="p">,</span> <span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/digime/digime-sdk-ios.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"x.x.x"</span><span class="p">)</span>
+</code></pre></li>
+<li><p>Add <code>DigiMeSDK</code> to your target&rsquo;s dependencies:</p>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">target</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"example"</span><span class="p">,</span> <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"DigiMeSDK"</span><span class="p">]),</span>
+</code></pre></li>
+</ol>
+<h4 id='import-package' class='heading'>Import package</h4>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">DigiMeSDK</span>
 </code></pre>
-<h2 id='providing-code-readoptions-code' class='heading'>Providing <code><a href="Structs/ReadOptions.html">ReadOptions</a></code></h2>
+<h3 id='cocoapods' class='heading'>Cocoapods</h3>
 
-<p>When calling <code>readAllFiles</code> on your <code><a href="Classes/DigiMe.html">DigiMe</a></code> object, simply pass your <code><a href="Structs/ReadOptions.html">ReadOptions</a></code> object to this method:</p>
-<pre class="highlight swift"><code><span class="n">digiMe</span><span class="o">.</span><span class="nf">readAllFiles</span><span class="p">(</span><span class="nv">readOptions</span><span class="p">:</span> <span class="n">readOptions</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<ol>
+<li><p>Add <code>DigiMeSDK</code> to your <code>Podfile</code>:</p>
+<pre class="highlight ruby"><code><span class="n">use_frameworks!</span>
+<span class="n">source</span> <span class="s1">'https://github.com/CocoaPods/Specs.git'</span>
+<span class="n">platform</span> <span class="ss">:ios</span><span class="p">,</span> <span class="s1">'13.0'</span>
+
+<span class="n">target</span> <span class="s1">'TargetName'</span> <span class="k">do</span>
+    <span class="n">pod</span> <span class="s1">'DigiMeSDK'</span>
+<span class="k">end</span>
 </code></pre>
+
+<blockquote>
+<p>NOTE
+We do not currently support linking DigiMeSDK as a Static Library.</p>
+
+<p><strong>use_frameworks!</strong> flag must be set in the Podfile</p>
+</blockquote></li>
+<li><p>Navigate to the directory of your <code>Podfile</code> and run the following command:</p>
+<pre class="highlight shell"><code><span class="nv">$ </span>pod <span class="nb">install</span> <span class="nt">--repo-update</span>
+</code></pre></li>
+</ol>
+<h2 id='getting-started-5-simple-steps' class='heading'>Getting Started - 5 Simple Steps!</h2>
+
+<p>We have taken the most common use case for the digi.me Private Sharing SDK and compiled a quick start guide, which you can find below. Nonetheless, we implore you to <a href="https://digime.github.io/digime-sdk-ios/index.html">explore the documentation further</a>.</p>
+
+<p>This example will show you how to configure the SDK, and get you up and running with <strong>retrieving user data</strong>.</p>
+<h3 id='1-obtaining-your-contract-id-application-id-amp-private-key' class='heading'>1. Obtaining your Contract ID, Application ID &amp; Private Key:</h3>
+
+<p>To access the digi.me platform, you need to obtain an <code>AppID</code> for your application. You can get yours by filling out the registration form <a href="https://go.digi.me/developers/register">here</a>.</p>
+
+<p>In a production environment, you will also be required to obtain your own <code>Contract ID</code> and <code>Private Key</code> from digi.me support. However, for sandbox purposes, you can use one of the contracts from the example projects (see <code>/Examples</code> directory).</p>
+<h3 id='2-configuring-callback-forwarding' class='heading'>2. Configuring Callback Forwarding:</h3>
+
+<p>Because the digi.me Private Sharing SDK hooks into your browser to receive callbacks, you are required to forward the <code>openURL</code> event through to the SDK so that it may process responses. In your application&rsquo;s delegate (typically <code>SceneDelegate</code>) override <code>scene:openURLContexts:</code> method as below:</p>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">scene</span><span class="p">(</span><span class="n">_</span> <span class="nv">scene</span><span class="p">:</span> <span class="kt">UIScene</span><span class="p">,</span> <span class="n">openURLContexts</span> <span class="kt">URLContexts</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">UIOpenURLContext</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">guard</span> <span class="k">let</span> <span class="nv">context</span> <span class="o">=</span> <span class="kt">URLContexts</span><span class="o">.</span><span class="n">first</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="kt">CallbackService</span><span class="o">.</span><span class="nf">shared</span><span class="p">()</span><span class="o">.</span><span class="nf">handleCallback</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>And register custom URL scheme so that your app can receive the callback from Digi.me app. Still in <code>Info.plist</code> add:</p>
+<pre class="highlight xml"><code><span class="nt">&lt;key&gt;</span>CFBundleURLTypes<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;array&gt;</span>
+<span class="nt">&lt;dict&gt;</span>
+<span class="nt">&lt;key&gt;</span>CFBundleTypeRole<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;string&gt;</span>Editor<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;key&gt;</span>CFBundleURLName<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;string&gt;</span>Consent Access<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;key&gt;</span>CFBundleURLSchemes<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;array&gt;</span>
+<span class="nt">&lt;string&gt;</span>digime-ca-YOUR_APP_ID<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;/array&gt;</span>
+<span class="nt">&lt;/dict&gt;</span>
+<span class="nt">&lt;/array&gt;</span>
+</code></pre>
+
+<p>where <code>YOUR_APP_ID</code> should be replaced with your <code>AppID</code>.</p>
+<h3 id='3-configuring-the-code-digime-code-object' class='heading'>3. Configuring the <code><a href="Classes/DigiMe.html">DigiMe</a></code> object:</h3>
+
+<p><code><a href="Classes/DigiMe.html">DigiMe</a></code> is the object you will primarily interface with to use the SDK. It is instantiated with a <code><a href="Structs/Configuration.html">Configuration</a></code> object.</p>
+
+<p>The <code><a href="Structs/Configuration.html">Configuration</a></code> object is instantiated with your <code>App ID</code>, <code>Contract ID</code> and <code>Private Key</code>. The below code snippet shows you how to combine all this to get a configured <code><a href="Classes/DigiMe.html">DigiMe</a></code> object:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">privateKey</span> <span class="o">=</span> <span class="s">"""
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA...
+-----END RSA PRIVATE KEY-----
+"""</span>
+
+<span class="k">do</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">Configuration</span><span class="p">(</span><span class="nv">appId</span><span class="p">:</span> <span class="s">"YOUR_APP_ID"</span><span class="p">,</span> <span class="nv">contractId</span><span class="p">:</span> <span class="s">"YOUR_CONTRACT_ID"</span><span class="p">,</span> <span class="nv">privateKey</span><span class="p">:</span> <span class="n">privateKey</span><span class="p">)</span>
+    <span class="k">let</span> <span class="nv">digiMe</span> <span class="o">=</span> <span class="kt">DigiMe</span><span class="p">(</span><span class="nv">configuration</span><span class="p">:</span> <span class="n">configuration</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre>
+<h3 id='4-requesting-consent' class='heading'>4. Requesting Consent:</h3>
+
+<p>Before you can access a user&rsquo;s data, you must obtain their consent. This is achieved by calling <code>authorize</code> on your client object. You need to provide a service identifier for which you want to request access to; this can be found by referring the the service definitions in the developer docs or my using the <a href="#">Discovery API</a>.:</p>
+<pre class="highlight swift"><code><span class="n">digiMe</span><span class="o">.</span><span class="nf">authorize</span><span class="p">(</span><span class="nv">serviceId</span><span class="p">:</span> <span class="n">service</span><span class="p">?</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="nv">readOptions</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
+    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">credentials</span><span class="p">):</span>
+        <span class="c1">// store credentials and continue on to fetch data.</span>
+
+    <span class="k">case</span><span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+        <span class="c1">// handle failure.</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>If a user grants consent, a session will be created under the hood; this is used by subsequent calls to get data. If the user denies consent, an error stating this is returned. See <a href="https://digime.github.io/digime-sdk-ios/error-handling.html">Handling Errors</a>.</p>
+<h3 id='5-fetching-data' class='heading'>5. Fetching Data:</h3>
+
+<p>Once you have a session, you can request data. We strive to make this as simple as possible, so expose a single method to do so:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">credentials</span> <span class="o">=</span> <span class="n">my_stored_credentials</span>
+<span class="n">digiMe</span><span class="o">.</span><span class="nf">readAllFiles</span><span class="p">(</span><span class="nv">credentials</span><span class="p">:</span> <span class="n">credentials</span><span class="p">,</span> <span class="nv">readOptions</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
+    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">file</span><span class="p">):</span>
+        <span class="c1">// Access data or metadata of file.</span>
+
+   <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+       <span class="c1">// Handle Error</span>
+   <span class="p">}</span>
+<span class="p">}</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
+    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="p">(</span><span class="nv">fileList</span><span class="p">,</span> <span class="nv">refreshedCredentials</span><span class="p">)):</span>
+        <span class="c1">// Handle success and update stored credentials as these may have been refreshed.</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+        <span class="c1">// Handle failure.</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>For each file, the first &lsquo;file handler&rsquo; block will be called. If the download was successful, you will receive a <code><a href="Structs/File.html">File</a></code> object. If the download fails, an error.</p>
+
+<p>Once all files are downloaded, the second block will be invoked to inform you of this. In the case that the data stream is interrupted, or if the session obtained above isn&rsquo;t valid (it may have expired, for example), you will receive an error in the second block. See <a href="https://digime.github.io/digime-sdk-ios/error-handling.html">Handling Errors</a>.</p>
+
+<p><code><a href="Structs/File.html">File</a></code> exposes the property <code>data</code> which contains the file&rsquo;s raw data along with the <code>mimeType</code> property. For files with JSON or image mime types, there are convenience methods to decode that raw data into the appropriate format, so that you can easily extract the values you need to power your app. In addition, <code>metadata</code> is available describing the file. In this example, as the data comes from external services, the metadata will be a <code>mapped</code> type describing the file&rsquo;s contents and details of associated service.</p>
+
+<p>Note that we also expose other methods if you prefer to manage this process yourself.</p>
+<h2 id='contributions' class='heading'>Contributions</h2>
+
+<p>digi.me prides itself in offering our SDKs completely open source, under the <a href="LICENCE">Apache 2.0 Licence</a>; we welcome contributions from all developers.</p>
+
+<p>We ask that when contributing, you ensure your changes meet our <a href="https://digime.github.io/digime-sdk-ios/contributing.html">Contribution Guidelines</a> before submitting a pull request.</p>
+<h2 id='further-reading' class='heading'>Further Reading</h2>
+
+<p>The topics discussed under <a href="getting-started---5-simple-steps">Quick Start</a> are just a small part of the power digi.me Private Sharing gives to data consumers such as yourself. We highly encourage you to explore the <a href="https://digime.github.io/digime-sdk-ios/index.html">Documentation</a> for more in-depth examples and guides, as well as troubleshooting advice and showcases of the plethora of capabilities on offer.</p>
+
+<p>Additionally, there are a number of example apps built on digi.me in the examples folder. Feel free to have a look at those to get an insight into the power of Private Sharing.</p>
 
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2023 <a class="link" href="https://developers.digi.me" target="_blank" rel="external noopener">digi.me</a>. All rights reserved. (Last updated: 2023-02-28)</p>
+          <p>&copy; 2023 <a class="link" href="https://developers.digi.me" target="_blank" rel="external noopener">digi.me</a>. All rights reserved. (Last updated: 2023-03-02)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
         </section>
       </article>

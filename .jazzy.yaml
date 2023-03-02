@@ -1,6 +1,6 @@
 theme: apple
 readme: README.md
-documentation: Documentation/guides/*md
+documentation: Sources/DigiMeSDK/DigiMeSDK.docc/*md
 output: docs
 docset_path: docsets/.docset
 clean: true

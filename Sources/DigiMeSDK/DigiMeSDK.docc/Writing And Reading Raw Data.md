@@ -1,31 +1,4 @@
-![](https://securedownloads.digi.me/partners/digime/SDKReadmeBanner.png)
-
-<p align="center">
-    <a href="https://developers.digi.me/slack/join">
-        <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
-    </a>
-    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
-        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
-    </a>
-    <a href="#">
-    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
-    </a>
-    <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/language-swift-orange.svg" alt="Swift">
-    </a>
-    <a href="https://developers.digi.me">
-        <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
-    </a>
-    <a href="https://digime.freshdesk.com/support/solutions/9000115894">
-        <img src="https://img.shields.io/badge/support-freshdesk-721744.svg" alt="Support">
-    </a>
-</p>
-
-<br>
-
-# Raw Data
-
-## Introduction
+# Writing And Reading Raw Data
 
 digi.me prides itself in normalizing data from a huge array of sources into common ontologies, however, as a data portability facilitator, we support the flow of data in both directions - from the user to you, and from you back to the user.
 

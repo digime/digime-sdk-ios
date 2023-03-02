@@ -1,32 +1,9 @@
-![](https://securedownloads.digi.me/partners/digime/SDKReadmeBanner.png)
+# Contributing
 
-<p align="center">
-    <a href="https://developers.digi.me/slack/join">
-        <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
-    </a>
-    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
-        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
-    </a>
-    <a href="#">
-    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
-    </a>
-    <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/language-swift-orange.svg" alt="Swift">
-    </a>
-    <a href="https://developers.digi.me">
-        <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
-    </a>
-    <a href="https://digime.freshdesk.com/support/solutions/9000115894">
-        <img src="https://img.shields.io/badge/support-freshdesk-721744.svg" alt="Support">
-    </a>
-</p>
-
-<br>
-
-## Contributing
 We are open to, and grateful for, any contributions made by the community. When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
 
 ## Code of Conduct
+
 We have adopted the [Contributor Covenant](https://www.contributor-covenant.org/) as our Code of Conduct, and we expect project participants to adhere to it.
 Please read the full text so that you can understand what actions will and will not be tolerated.
 
