@@ -14,8 +14,9 @@ final class UserPreferences: NSObject {
 	private let userDefaults = UserDefaults.standard
 	private enum Key: String, CaseIterable {
 		case credentials = "kCredentials"
-		case accounts = "kAccounts"
-		case services = "kServices"
+//		case accounts = "kAccounts"
+//		case services = "kServices"
+		case connectedAccounts = "kConnectedAccounts"
 	}
 	
 	@discardableResult
@@ -46,53 +47,33 @@ final class UserPreferences: NSObject {
 		credentials?[contractId] = nil
 	}
 	
-	// MARK: - Accounts
+	// MARK: - Connected Accounts
 		
-	@CodableUserDefault(key: Key.accounts)
-	private var accounts: [String: [SourceAccount]]?
+	@CodableUserDefault(key: Key.connectedAccounts)
+	private var connectedAccounts: [String: [ConnectedAccount]]?
 	
-	func accounts(for contractId: String) -> [SourceAccount]? {
-		return accounts?[contractId]
+	func connectedAccounts(for contractId: String) -> [ConnectedAccount] {
+		return connectedAccounts?[contractId] ?? []
 	}
 	
-	func setAccounts(newAccounts: [SourceAccount], for contractId: String) {
-		var cachedAccounts = accounts ?? [:]
-		cachedAccounts[contractId] = newAccounts
-		accounts = cachedAccounts
+	func setConnectedAccounts(newAccounts: [ConnectedAccount], for contractId: String) {
+		var cached = connectedAccounts ?? [:]
+		cached[contractId] = newAccounts
+		connectedAccounts = cached
 	}
 	
-	func clearAccounts(for contractId: String) {
-		accounts?[contractId] = nil
+	func addConnectedAccount(newAccount: ConnectedAccount, for contractId: String) {
+		var cached = connectedAccounts ?? [:]
+		cached[contractId]?.append(newAccount)
+		connectedAccounts = cached
 	}
 	
-	// MARK: - Services
-		
-	@CodableUserDefault(key: Key.services)
-	private var services: [String: [Service]]?
-	
-	func services(for contractId: String) -> [Service] {
-		return services?[contractId] ?? []
-	}
-	
-	func setServices(newServices: [Service], for contractId: String) {
-		var cachedServices = services ?? [:]
-		cachedServices[contractId] = newServices
-		services = cachedServices
-	}
-	
-	func addService(newService: Service, for contractId: String) {
-		var cachedServicesDictionary = services ?? [:]
-		cachedServicesDictionary[contractId]?.append(newService)
-		services = cachedServicesDictionary
-	}
-	
-	func clearServices(for contractId: String) {
-		services?[contractId] = nil
+	func clearConnectedAccounts(for contractId: String) {
+		connectedAccounts?[contractId] = nil
 	}
 	
 	func reset() {
 		credentials = nil
-		accounts = nil
-		services = nil
+		connectedAccounts = nil
 	}
 }

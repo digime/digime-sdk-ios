@@ -129,7 +129,53 @@ public final class DigiMe {
             }
         }
     }
-    
+	
+	/// In cases where access to a service's data is revoked and you receive an error message of `511 Service Authorization Required` you can initiate the reauthentication process by requesting the re-authentication URL and directing the user to it.
+	/// - Parameters:
+	///   - accountId: Service account entity identifier.
+	///   - credentials: The existing credentials for the contract.
+	///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+	///   - completion: Block called upon completion with new or refreshed credentials, or any errors encountered.
+	public func reauthorizeAccount(accountId: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+		validateOrRefreshCredentials(credentials) { credResult in
+			switch credResult {
+			case .success(let refreshedCredentials):
+				self.authService.requestReferenceToken(oauthToken: refreshedCredentials.token) { refTokenResult in
+					switch refTokenResult {
+					case .success(let response):
+						self.session = response.session
+						self.authService.requestAccountReference(accountId: accountId) { refAccountResult in
+							switch refAccountResult {
+							case .success(let accountRef):
+								self.consentManager.reauthService(accountRef: accountRef.id, token: response.token) { result in
+									let mappedResult = result.map { _ in refreshedCredentials }
+									resultQueue.async {
+										completion(mappedResult)
+									}
+								}
+								
+							case .failure(let error):
+								resultQueue.async {
+									completion(.failure(error))
+								}
+							}
+						}
+						
+					case .failure(let error):
+						resultQueue.async {
+							completion(.failure(error))
+						}
+					}
+				}
+				
+			case .failure(let error):
+				resultQueue.async {
+					completion(.failure(error))
+				}
+			}
+		}
+	}
+	
     /// Once a user has granted consent, adds an additional service. Also initiates synchronization of data from this service to user's library.
     ///
     /// - Parameters:

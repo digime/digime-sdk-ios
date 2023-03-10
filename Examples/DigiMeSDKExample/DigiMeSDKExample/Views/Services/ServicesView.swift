@@ -38,19 +38,31 @@ struct ServicesView: View {
 							}
 						}
 						
-						if !viewModel.services.isEmpty {
+						if !viewModel.connectedAccounts.isEmpty {
 							Section("Connected Accounts") {
-								ForEach(viewModel.services) { service in
-									HStack {
-										if let resource = service.resources.optimalResource(for: CGSize(width: 20, height: 20)) {
-											SourceImage(url: resource.url)
+								ForEach(viewModel.connectedAccounts) { account in
+									Button {
+										if account.requiredReauth {
+											viewModel.reauthorize(connectedAccount: account)
 										}
-										else {
-											Image(systemName: "photo.circle.fill")
-												.frame(width: 20, height: 20)
-												.foregroundColor(.gray)
+									} label: {
+										HStack {
+											if let resource = account.service.resources.optimalResource(for: CGSize(width: 20, height: 20)) {
+												SourceImage(url: resource.url)
+											}
+											else {
+												Image(systemName: "photo.circle.fill")
+													.frame(width: 20, height: 20)
+													.foregroundColor(.gray)
+											}
+											
+											Text(account.service.name)
+											Spacer()
+											if account.requiredReauth {
+												Text("Reauthorize")
+													.foregroundColor(.red)
+											}
 										}
-										Text(service.name)
 									}
 								}
 							}

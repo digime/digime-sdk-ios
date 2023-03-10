@@ -48,6 +48,7 @@
 		1E811D95299FEECC00EC80B0 /* WriteDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E811D94299FEECC00EC80B0 /* WriteDataViewModel.swift */; };
 		1E811D9929A017E700EC80B0 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E811D9829A017E700EC80B0 /* LineChartView.swift */; };
 		1E811D9C29A0233F00EC80B0 /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E811D9B29A0233F00EC80B0 /* LogEntry.swift */; };
+		1E864C2029BA5631005BA921 /* ConnectedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E864C1F29BA5631005BA921 /* ConnectedAccount.swift */; };
 		1E87223929A5633E00418DE1 /* ContractDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E87223829A5633E00418DE1 /* ContractDetailsView.swift */; };
 		1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */; };
 		1EA52DAF2987A42E00A61213 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52DAE2987A42E00A61213 /* HomeView.swift */; };
@@ -121,6 +122,7 @@
 		1E811D94299FEECC00EC80B0 /* WriteDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteDataViewModel.swift; sourceTree = "<group>"; };
 		1E811D9829A017E700EC80B0 /* LineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
 		1E811D9B29A0233F00EC80B0 /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
+		1E864C1F29BA5631005BA921 /* ConnectedAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedAccount.swift; sourceTree = "<group>"; };
 		1E87223829A5633E00418DE1 /* ContractDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractDetailsView.swift; sourceTree = "<group>"; };
 		1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryViewModel.swift; sourceTree = "<group>"; };
 		1EA52DAE2987A42E00A61213 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				1E1DC11929ABA61900B827E3 /* ChartSeries.swift */,
 				1E1DC11B29ABA6B300B827E3 /* Section.swift */,
 				1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */,
+				1E864C1F29BA5631005BA921 /* ConnectedAccount.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -550,7 +553,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint lint\n";
-			showEnvVarsInLog = 0;
 		};
 		4B1E69CACA2502299A6B3BC6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -655,6 +657,7 @@
 				1E87223929A5633E00418DE1 /* ContractDetailsView.swift in Sources */,
 				1E6E71B22862FE8600E7954E /* ChartStatementView.swift in Sources */,
 				1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */,
+				1E864C2029BA5631005BA921 /* ConnectedAccount.swift in Sources */,
 				1E7B415029A3925D00F7B5B4 /* JSONCell.swift in Sources */,
 				1E811D93299FD15800EC80B0 /* Modifiers.swift in Sources */,
 				1E811D95299FEECC00EC80B0 /* WriteDataViewModel.swift in Sources */,
@@ -828,7 +831,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
@@ -853,7 +856,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";

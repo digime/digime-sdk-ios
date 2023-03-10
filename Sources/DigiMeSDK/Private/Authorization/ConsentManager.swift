@@ -49,7 +49,6 @@ final class ConsentManager: NSObject {
         
         var percentEncodedQueryItems = [
             URLQueryItem(name: "code", value: preAuthCode),
-            URLQueryItem(name: "callback", value: "\(self.configuration.redirectUri)\(Action.auth.rawValue)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)),
         ]
         
         if let serviceId = serviceId {
@@ -82,13 +81,33 @@ final class ConsentManager: NSObject {
 		
         components.percentEncodedQueryItems = [
             URLQueryItem(name: "code", value: token),
-            URLQueryItem(name: "callback", value: "\(self.configuration.redirectUri)\(Action.service.rawValue)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)),
             URLQueryItem(name: "service", value: "\(identifier)"),
         ]
         
         open(url: components.url!)
     }
     
+	func reauthService(accountRef: String, token: String, completion: @escaping ((Result<Void, SDKError>) -> Void)) {
+		guard Thread.current.isMainThread else {
+			DispatchQueue.main.async {
+				self.reauthService(accountRef: accountRef, token: token, completion: completion)
+			}
+			return
+		}
+		
+		addServiceCompletion = completion
+		CallbackService.shared().setCallbackHandler(self)
+		let baseUrl = self.configuration.baseUrl ?? APIConfig.baseUrl
+		var components = URLComponents(string: "\(baseUrl)/apps/saas/reauthorize")!
+		
+		components.percentEncodedQueryItems = [
+			URLQueryItem(name: "code", value: token),
+			URLQueryItem(name: "accountRef", value: accountRef),
+		]
+		
+		open(url: components.url!)
+	}
+	
     private func open(url: URL) {
         DispatchQueue.main.async {
 			guard !self.configuration.authUsingExternalBrowser else {

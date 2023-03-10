@@ -36,7 +36,7 @@ class FileUploadService {
 	}
     
     func uploadLog(logName: String, metadata: LogEventMeta, completion: @escaping (Result<LogEventsUploadResponse, SDKError>) -> Void) {
-		guard let jwt = JWTUtility.logsUploadRequestJWT(configuration: configuration) else {
+		guard let jwt = JWTUtility.basicRequestJWT(configuration: configuration) else {
 			Logger.critical("Invalid MAF mixpanel log upload request JWT")
 			completion(.failure(SDKError.invalidPreAuthorizationRequestJwt))
 			return

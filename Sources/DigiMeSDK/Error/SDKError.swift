@@ -118,6 +118,9 @@ public enum SDKError: Error {
 	/// Invalid authorization request JWT
 	case invalidAuthorizationRequestJwt
 	
+	/// Invalid account reference request JWT
+	case invalidAccountReferenceRequestJwt
+	
 	/// Invalid refresh tokens request JWT
 	case invalidRefreshTokensRequestJwt
 
@@ -303,6 +306,9 @@ extension SDKError: CustomStringConvertible {
 		case .invalidPreAuthorizationRequestJwt:
 			return "Invalid pre-authorization request JWT"
 		
+		case .invalidAccountReferenceRequestJwt:
+			return "Invalid account reference request JWT"
+			
 		case .invalidRefreshTokensRequestJwt:
 			return "Invalid refresh tokens request JWT"
 			

@@ -21,9 +21,9 @@ class ServicesViewModel: ObservableObject {
 			setContract(currentContract)
 		}
 	}
-	@Published var services = [Service]() {
+	@Published var connectedAccounts = [ConnectedAccount]() {
 		didSet {
-			preferences.setServices(newServices: services, for: currentContract.identifier)
+			preferences.setConnectedAccounts(newAccounts: connectedAccounts, for: currentContract.identifier)
 		}
 	}
 	@Published var logs: [LogEntry] = [] {
@@ -52,7 +52,7 @@ class ServicesViewModel: ObservableObject {
 				log(message: "This is where log messages appear")
 			}
 			
-			services = preferences.services(for: currentContract.identifier)
+			connectedAccounts = preferences.connectedAccounts(for: currentContract.identifier)
 			
 			let config = try Configuration(appId: AppInfo.appId, contractId: currentContract.identifier, privateKey: currentContract.privateKey, authUsingExternalBrowser: true)
 			digiMe = DigiMe(configuration: config)
@@ -75,15 +75,48 @@ class ServicesViewModel: ObservableObject {
 			self.authorizeAndReadData(service: service)
 		}
 	}
-
+	
+	func reauthorize(connectedAccount: ConnectedAccount) {
+		guard !isLoading else {
+			return
+		}
+		
+		guard let credentials = preferences.credentials(for: currentContract.identifier) else {
+			isLoading = false
+			logWarning(message: "Current contract must be authorized first.")
+			return
+		}
+		
+		guard let accountId = connectedAccount.sourceAccount?.identifier else {
+			isLoading = false
+			logWarning(message: "Error extracting account id.")
+			return
+		}
+		
+		isLoading = true
+		digiMe?.reauthorizeAccount(accountId: accountId, credentials: credentials) { result in
+			switch result {
+			case .success(let newOrRefreshedCredentials):
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
+				self.getData(credentials: newOrRefreshedCredentials)
+				if let index = self.connectedAccounts.firstIndex(where: { $0 == connectedAccount }) {
+					self.connectedAccounts[index].requiredReauth = false
+				}
+			case .failure(let error):
+				self.isLoading = false
+				self.logError(message: "Reauthorizing \(connectedAccount.service.name) failed: \(error)")
+			}
+		}
+	}
+	
 	func addService() {
 		guard !isLoading else {
 			return
 		}
 		
 		guard let credentials = preferences.credentials(for: currentContract.identifier) else {
-			self.isLoading = false
-			self.logWarning(message: "Current contract must be authorized first.")
+			isLoading = false
+			logWarning(message: "Current contract must be authorized first.")
 			return
 		}
 		
@@ -96,7 +129,7 @@ class ServicesViewModel: ObservableObject {
 			self.digiMe?.addService(identifier: service.identifier, credentials: credentials) { result in
 				switch result {
 				case .success(let newOrRefreshedCredentials):
-					self.services.append(service)
+					self.connectedAccounts.append(ConnectedAccount(service: service))
 					self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
 					self.getData(credentials: newOrRefreshedCredentials, readOptions: service.options)
 					
@@ -114,8 +147,8 @@ class ServicesViewModel: ObservableObject {
 		}
 		
 		guard let credentials = preferences.credentials(for: currentContract.identifier) else {
-			self.isLoading = false
-			self.logWarning(message: "Current contract must be authorized first.")
+			isLoading = false
+			logWarning(message: "Current contract must be authorized first.")
 			return
 		}
 		
@@ -159,7 +192,7 @@ class ServicesViewModel: ObservableObject {
 				self.preferences.clearCredentials(for: self.currentContract.identifier)
 				DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
 					self.logs = []
-					self.services = []
+					self.connectedAccounts = []
 					self.preferences.reset()
 					self.log(message: "Your user entry and the library deleted successfully")
 				}
@@ -196,7 +229,7 @@ class ServicesViewModel: ObservableObject {
 	// MARK: - Private
 
 	private func setContract(_ contract: DigimeContract) {
-		services = preferences.services(for: contract.identifier)
+		connectedAccounts = preferences.connectedAccounts(for: contract.identifier)
 		
 		do {
 			let config = try Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true)
@@ -215,7 +248,7 @@ class ServicesViewModel: ObservableObject {
 			switch result {
 			case .success(let newOrRefreshedCredentials):
 				self.log(message: "Contract authorised successfully for service id: \(service.identifier)")
-				self.services.append(service)
+				self.connectedAccounts.append(ConnectedAccount(service: service))
 				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
 				self.getData(credentials: newOrRefreshedCredentials, readOptions: service.options)
 				
@@ -274,7 +307,7 @@ class ServicesViewModel: ObservableObject {
 			switch result {
 			case .success(let accountsInfo):
 				self.log(message: "Accounts info retrieved successfully")
-				self.preferences.setAccounts(newAccounts: accountsInfo.accounts, for: self.currentContract.identifier)
+				self.addAccountInfo(accounts: accountsInfo.accounts)
 				completion(credentials)
 			case .failure(let error):
 				if case .failure(.invalidSession) = result {
@@ -332,11 +365,37 @@ class ServicesViewModel: ObservableObject {
 			}
 			switch result {
 			case .success(let (fileList, refreshedCredentials)):
+				if
+					let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }),
+					!reauthAccounts.isEmpty {
+					
+					self.updateReauthStatus(reauthAccounts: reauthAccounts)
+				}
 				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.currentContract.identifier)
 				self.log(message: "Finished reading files. Total files \(fileList.files?.count ?? 0)")
 
 			case .failure(let error):
 				self.logError(message: "Error reading files: \(error)")
+			}
+		}
+	}
+	
+	private func addAccountInfo(accounts: [SourceAccount]) {
+		DispatchQueue.main.async {
+			accounts.forEach { newAccount in
+				if let index = self.connectedAccounts.firstIndex(where: { $0.service.name == newAccount.service.name && $0.sourceAccount == nil }) {
+					self.connectedAccounts[index].sourceAccount = newAccount
+				}
+			}
+		}
+	}
+	
+	private func updateReauthStatus(reauthAccounts: [SyncAccount]) {
+		DispatchQueue.main.async {
+			reauthAccounts.forEach { reauth in
+				if let index = self.connectedAccounts.firstIndex(where: { ($0.sourceAccount?.identifier ?? "") == reauth.identifier && !$0.requiredReauth }) {
+					self.connectedAccounts[index].requiredReauth = true
+				}
 			}
 		}
 	}

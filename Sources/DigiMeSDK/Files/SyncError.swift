@@ -24,9 +24,11 @@ public struct SyncError: Decodable, Equatable {
 public struct ServiceError: Decodable, Equatable {
     public let message: String
     public let retryAfter: Date?
+	public let reauth: Bool?
     
     enum CodingKeys: String, CodingKey {
         case message
         case retryAfter = "retryafter"
+		case reauth
     }
 }

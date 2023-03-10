@@ -36,6 +36,6 @@ public struct SyncAccount: Decodable, Equatable {
         error = try container.decodeIfPresent(SyncError.self, forKey: .error)
         
         // Extract identifier from coding path
-        identifier = container.codingPath.first!.stringValue
+		identifier = container.codingPath.first(where: { $0 is DynamicallyKeyedArray<SyncAccount>.DynamicCodingKey })?.stringValue
     }
 }

@@ -8,29 +8,29 @@
 
 import Foundation
 
-struct DynamicallyKeyedArray<T: Decodable>: Decodable {
+public struct DynamicallyKeyedArray<T: Decodable>: Decodable {
 
-    typealias ArrayType = [T]
+    public typealias ArrayType = [T]
 
     private var array: ArrayType
 
-    private struct DynamicCodingKey: CodingKey {
+	public struct DynamicCodingKey: CodingKey {
 
         // Use for string-keyed dictionary
-        var stringValue: String
-        init?(stringValue: String) {
+        public var stringValue: String
+        public init?(stringValue: String) {
             self.stringValue = stringValue
         }
 
         // Use for integer-keyed dictionary
-        var intValue: Int?
-        init?(intValue: Int) {
+        public var intValue: Int?
+        public init?(intValue: Int) {
             // We are not using this, thus just return nil
             return nil
         }
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicCodingKey.self)
 
         var tempArray = ArrayType()
@@ -47,25 +47,25 @@ struct DynamicallyKeyedArray<T: Decodable>: Decodable {
 extension DynamicallyKeyedArray: Collection {
 
     // Required nested types, that tell Swift what our collection contains
-    typealias Index = ArrayType.Index
-    typealias Element = ArrayType.Element
+	public typealias Index = ArrayType.Index
+	public typealias Element = ArrayType.Element
 
     // The upper and lower bounds of the collection, used in iterations
-    var startIndex: Index {
+	public var startIndex: Index {
         array.startIndex
     }
     
-    var endIndex: Index {
+	public var endIndex: Index {
         array.endIndex
     }
 
     // Required subscript, based on a dictionary index
-    subscript(index: Index) -> Iterator.Element {
+	public subscript(index: Index) -> Iterator.Element {
         array[index]
     }
 
     // Method that returns the next index when iterating
-    func index(after i: Index) -> Index {
+	public func index(after i: Index) -> Index {
         array.index(after: i)
     }
 }

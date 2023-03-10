@@ -15,8 +15,7 @@ enum DataCompressor {
     func decompress(data: Data) throws -> Data {
         switch self {
         case .gzip:
-//            return try data.gunzipped()
-			return try (data as NSData).decompressed(using: .lzma) as Data
+            return try data.gunzipped()
         }
     }
 }

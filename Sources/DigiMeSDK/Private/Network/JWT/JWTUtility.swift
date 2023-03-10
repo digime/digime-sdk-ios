@@ -22,7 +22,13 @@ extension RequestClaims {
 }
 
 enum JWTUtility {
-	private struct PayloadRequestLogsUploadJWT: RequestClaims {
+	private enum Action: String {
+		case auth
+		case service
+		case reauth
+	}
+	
+	private struct PayloadRequestBasicJWT: RequestClaims {
 		let clientId: String
 		var nonce = JWTUtility.generateNonce()
 		var timestamp = Date()
@@ -226,14 +232,14 @@ enum JWTUtility {
             codeChallenge: codeChallenge,
             
             // NB! this redirect schema must exist in the contract definition, otherwise preauth request will fail!
-            redirectUri: configuration.redirectUri + "auth"
+			redirectUri: configuration.redirectUri + Action.auth.rawValue
         )
         
         return createRequestJWT(claims: claims, configuration: configuration)
     }
 	
-	static func logsUploadRequestJWT(configuration: Configuration) -> String? {
-		let claims = PayloadRequestLogsUploadJWT(clientId: configuration.clientId)
+	static func basicRequestJWT(configuration: Configuration) -> String? {
+		let claims = PayloadRequestBasicJWT(clientId: configuration.clientId)
 		return createRequestJWT(claims: claims, configuration: configuration)
 	}
     
@@ -328,7 +334,7 @@ enum JWTUtility {
 		let claims = PayloadRequestTokenReferenceJWT(
 			accessToken: accessToken,
 			clientId: configuration.clientId,
-			redirectUri: configuration.redirectUri + "auth"
+			redirectUri: configuration.redirectUri + Action.service.rawValue
 		)
 		
 		return createRequestJWT(claims: claims, configuration: configuration)
