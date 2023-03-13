@@ -15,7 +15,7 @@ class WriteDataViewModel: ObservableObject {
 	@Published var logs: [LogEntry] = [] {
 		didSet {
 			if let data = try? JSONEncoder().encode(logs) {
-				FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "logs")
+				FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "logs_write")
 			}
 		}
 	}
@@ -48,7 +48,7 @@ class WriteDataViewModel: ObservableObject {
 	init() {
 		do {
 			if
-				let data = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs"),
+				let data = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs_write"),
 				let logHistory = try? data.decoded() as [LogEntry] {
 				logs = logHistory
 			}

@@ -6,15 +6,22 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
+import Combine
 import DigiMeSDK
 import Foundation
 import SwiftUI
 
+@MainActor
 class ServicesViewModel: ObservableObject {
 	
 	@Published var sections: [ServiceSection] = []
 	@Published var isLoading = false
 	@Published var presentSourceSelector = false
+	@Published var showCancelOption = false {
+		willSet {
+			objectWillChange.send()
+		}
+	}
 	@Published var selectServiceCompletion: ((Service) -> Void)?
 	@Published var currentContract: DigimeContract = Contracts.finSocMus {
 		didSet {
@@ -29,7 +36,7 @@ class ServicesViewModel: ObservableObject {
 	@Published var logs: [LogEntry] = [] {
 		didSet {
 			if let data = try? JSONEncoder().encode(logs) {
-				FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "logs")
+				FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "logs_services")
 			}
 		}
 	}
@@ -38,13 +45,13 @@ class ServicesViewModel: ObservableObject {
 		return preferences.credentials(for: currentContract.identifier) != nil
 	}
 	
-	private var digiMe: DigiMe?
 	private let preferences = UserPreferences.shared()
+	private var digiMe: DigiMe?
 
 	init() {
 		do {
 			if
-				let data = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs"),
+				let data = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs_services"),
 				let logHistory = try? data.decoded() as [LogEntry] {
 				logs = logHistory
 			}
@@ -94,7 +101,9 @@ class ServicesViewModel: ObservableObject {
 		}
 		
 		isLoading = true
+		showCancelOption = true
 		digiMe?.reauthorizeAccount(accountId: accountId, credentials: credentials) { result in
+			self.showCancelOption = false
 			switch result {
 			case .success(let newOrRefreshedCredentials):
 				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
@@ -126,7 +135,9 @@ class ServicesViewModel: ObservableObject {
 				return
 			}
 			
+			self.showCancelOption = true
 			self.digiMe?.addService(identifier: service.identifier, credentials: credentials) { result in
+				self.showCancelOption = false
 				switch result {
 				case .success(let newOrRefreshedCredentials):
 					self.connectedAccounts.append(ConnectedAccount(service: service))
@@ -200,6 +211,12 @@ class ServicesViewModel: ObservableObject {
 		}
 	}
 	
+	func cancel() {
+		isLoading = false
+		showCancelOption = false
+		logWarning(message: "Data retrieval was cancelled by the user.")
+	}
+	
 	// MARK: - Logs
 	
 	func log(message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
@@ -244,7 +261,11 @@ class ServicesViewModel: ObservableObject {
 		let credentials = preferences.credentials(for: currentContract.identifier)
 		
 		isLoading = true
+		showCancelOption = true
+		
 		digiMe?.authorize(credentials: credentials, serviceId: service.identifier, readOptions: service.options) { result in
+			self.showCancelOption = false
+			
 			switch result {
 			case .success(let newOrRefreshedCredentials):
 				self.log(message: "Contract authorised successfully for service id: \(service.identifier)")

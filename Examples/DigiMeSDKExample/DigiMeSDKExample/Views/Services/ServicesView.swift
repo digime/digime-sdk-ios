@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ServicesView: View {
 	@ObservedObject private var viewModel = ServicesViewModel()
+	@State private var settingsDetent = PresentationDetent.height(200)
 	
     var body: some View {
 		ZStack {
@@ -151,6 +152,36 @@ struct ServicesView: View {
 			withAnimation(.easeOut) {
 				ServicePickerView(sections: $viewModel.sections, showView: $viewModel.presentSourceSelector, selectServiceCompletion: $viewModel.selectServiceCompletion)
 					.transition(.slide)
+			}
+		}
+		.sheet(isPresented: $viewModel.showCancelOption) {
+			withAnimation {
+				VStack(alignment: .center) {
+					Text("Waiting callback from your browser...")
+						.padding(.top, 20)
+					Spacer()
+					if settingsDetent == .height(200) {
+						BallScaleRippleMultiple()
+							.frame(width: 75, height: 75)
+							.foregroundColor(.blue)
+							.padding(.trailing, 10)
+						Spacer()
+					}
+					Button {
+						self.viewModel.cancel()
+					} label: {
+						Text("Cancel Request")
+							.frame(minWidth: 0, maxWidth: .infinity)
+							.foregroundColor(.primary)
+							.padding(10)
+							.background(
+								RoundedRectangle(cornerRadius: 10, style: .continuous)
+									.fill(Color(UIColor.systemGray4))
+									.padding([.leading, .trailing], 20)
+							)
+					}
+				}
+				.presentationDetents( [.height(100), .height(200)], selection: $settingsDetent)
 			}
 		}
     }

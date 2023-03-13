@@ -14,8 +14,6 @@ final class UserPreferences: NSObject {
 	private let userDefaults = UserDefaults.standard
 	private enum Key: String, CaseIterable {
 		case credentials = "kCredentials"
-//		case accounts = "kAccounts"
-//		case services = "kServices"
 		case connectedAccounts = "kConnectedAccounts"
 	}
 	
