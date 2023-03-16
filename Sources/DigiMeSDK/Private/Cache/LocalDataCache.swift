@@ -10,14 +10,31 @@ import Foundation
 final class LocalDataCache: NSObject {
 	private let userDefaults = UserDefaults.standard
 	private enum Key: String, CaseIterable {
-		case deviceDataRequested = "kDeviceDataRequested"
+		case contracts = "kContracts"
 	}
 	
-	@UserDefault(key: Key.deviceDataRequested, defaultValue: false)
-	var deviceDataRequested: Bool
+	func requestLocalData(for contractId: String) {
+		var contracts: [String] = userDefaults.stringArray(forKey: Key.contracts.rawValue) ?? []
+		contracts.append(contractId)
+		userDefaults.set(contracts, forKey: Key.contracts.rawValue)
+	}
+	
+	func removeRequestOfLocalData(for contractId: String) {
+		var contracts: [String] = userDefaults.stringArray(forKey: Key.contracts.rawValue) ?? []
+		contracts.remove(object: contractId)
+		userDefaults.set(contracts, forKey: Key.contracts.rawValue)
+	}
+	
+	func isDeviceDataRequested(for contractId: String) -> Bool {
+		guard let contracts: [String] = userDefaults.stringArray(forKey: Key.contracts.rawValue) else {
+			return false
+		}
+		
+		return contracts.contains(contractId)
+	}
 	
 	func reset() {
-		userDefaults.removeObject(forKey: Key.deviceDataRequested.rawValue)
+		userDefaults.removeObject(forKey: Key.contracts.rawValue)
 		userDefaults.synchronize()
 	}
 }

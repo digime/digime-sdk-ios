@@ -142,7 +142,7 @@ final class ConsentManager: NSObject {
 			return
 		}
 		
-		LocalDataCache().deviceDataRequested = true
+		LocalDataCache().requestLocalData(for: configuration.contractId)
 		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
 			self.reset()
 			self.userConsentCompletion?(self.mapErrors(result: result))
@@ -169,7 +169,7 @@ final class ConsentManager: NSObject {
 			return
 		}
 		
-		LocalDataCache().deviceDataRequested = true
+		LocalDataCache().requestLocalData(for: configuration.contractId)
 		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
 			self.reset()
 			self.addServiceCompletion?(self.mapErrors(result: result))
@@ -296,7 +296,7 @@ final class ConsentManager: NSObject {
         }
 
 		if localServiceRequested {
-			LocalDataCache().deviceDataRequested = true
+			LocalDataCache().requestLocalData(for: configuration.contractId)
 		}
 		
         let response = ConsentResponse(code: code, status: status, writeAccessInfo: writeAccessInfo)

@@ -59,7 +59,7 @@ class AllFilesReader {
     private var isSyncRunning: Bool {
 		// Check if local data already collected and no remote services
 		if
-			LocalDataCache().deviceDataRequested,
+			LocalDataCache().isDeviceDataRequested(for: configuration.contractId),
 			deviceDataFiles != nil,
 			sessionFileList?.status.state == .pending {
 			
@@ -79,7 +79,7 @@ class AllFilesReader {
         self.sessionDataCompletion = completion
         self.sessionContentHandler = downloadHandler
         
-		if LocalDataCache().deviceDataRequested {
+		if LocalDataCache().isDeviceDataRequested(for: configuration.contractId) {
 			self.beginFetchDeviceLocalData()
 		}
 		
@@ -201,7 +201,7 @@ class AllFilesReader {
 			let fileList = FileList(files: existing, status: status!)
 			sessionDataCompletion?(.success(fileList))
 		}
-		else if LocalDataCache().deviceDataRequested, deviceDataFiles?.isEmpty ?? true {
+		else if LocalDataCache().isDeviceDataRequested(for: configuration.contractId), deviceDataFiles?.isEmpty ?? true {
 			// local data is not yet collected
 			beginFetchDeviceLocalData()
 			return

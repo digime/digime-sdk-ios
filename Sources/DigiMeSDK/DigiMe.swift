@@ -493,7 +493,7 @@ public final class DigiMe {
 		CredentialCache().clearCredentials(for: contractId)
 		SessionCache().clearSession(for: contractId)
 		ContractsCache().clearTimeRanges(for: contractId)
-		LocalDataCache().deviceDataRequested = false
+		LocalDataCache().removeRequestOfLocalData(for: contractId)
 	}
     
     /// Get contract details.
@@ -598,7 +598,7 @@ public final class DigiMe {
             case .success(let response):
                 do {
 					guard !response.data.isEmpty else {
-						if LocalDataCache().deviceDataRequested {
+						if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
 							completion(.success(AccountsInfo(accounts: [HealthKitData().account], consentId: String.random(length: 32))))
 						}
 						else {
@@ -610,7 +610,7 @@ public final class DigiMe {
 					let unpackedData = try self.dataDecryptor.decrypt(response: response, dataIsHashed: false)
 					let accountsInfo = try unpackedData.decoded() as AccountsInfo
 					
-					if LocalDataCache().deviceDataRequested {
+					if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
 						var accounts = accountsInfo.accounts
 						let consentId = accountsInfo.consentId
 						accounts.append(HealthKitData().account)
@@ -627,7 +627,7 @@ public final class DigiMe {
                     completion(.failure(SDKError.readAccountsError))
                 }
             case .failure(let error):
-				if LocalDataCache().deviceDataRequested {
+				if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
 					let info = AccountsInfo(accounts: [HealthKitData().account], consentId: String.random(length: 32))
 					completion(.success(info))
 				}
