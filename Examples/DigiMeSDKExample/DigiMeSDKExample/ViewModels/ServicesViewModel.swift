@@ -6,7 +6,6 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
-import Combine
 import DigiMeSDK
 import Foundation
 import SwiftUI

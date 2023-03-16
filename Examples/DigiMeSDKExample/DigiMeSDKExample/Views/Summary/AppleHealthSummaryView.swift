@@ -20,6 +20,7 @@ struct AppleHealthSummaryView: View {
 	@State private var scopeStartDate: Date?
 	@State private var scopeEndDate: Date?
 	@State private var readOptions: ReadOptions?
+	@State private var dialogDetent = PresentationDetent.height(200)
 	@State private var formatter: DateFormatter = {
 		let formatter = DateFormatter()
 		formatter.dateStyle = .medium
@@ -170,6 +171,13 @@ struct AppleHealthSummaryView: View {
 			}
 			.sheet(isPresented: $showModal) {
 				ScopeView(scopeTemplates: .constant(scopeTemplates), showModalDateSelector: $showModal, showTimeOption: $showTime, startDate: $scopeStartDate, endDate: $scopeEndDate, formatter: $formatter, selectedScopeIndex: $selectedScopeIndex, startDateString: $scopeStartDateString, endDateString: $scopeEndDateString)
+			}
+		}
+		.sheet(isPresented: $viewModel.showCancelOption) {
+			withAnimation {
+				ActionView(title: "Waiting callback from your browser...", actionTitle: "Cancel Request", dialogDetent: dialogDetent) {
+					self.viewModel.cancel()
+				}
 			}
 		}
 	}

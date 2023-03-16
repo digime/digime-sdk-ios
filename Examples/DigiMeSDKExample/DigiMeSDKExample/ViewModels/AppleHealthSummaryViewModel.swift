@@ -10,6 +10,7 @@ import DigiMeSDK
 import Foundation
 import HealthKit
 
+@MainActor
 class AppleHealthSummaryViewModel: ObservableObject {
 	@Published var isLoading = false
 	@Published var dataFetched = false
@@ -20,6 +21,11 @@ class AppleHealthSummaryViewModel: ObservableObject {
 	@Published var endDateString = ScopeView.datePlaceholder
 	@Published var errorMessage: String?
 	@Published var infoMessage: String?
+	@Published var showCancelOption = false {
+		willSet {
+			objectWillChange.send()
+		}
+	}
 	
 	private let contract = Contracts.appleHealth
 	private let preferences = UserPreferences.shared()
@@ -40,47 +46,63 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		self.readOptions = readOptions
 		dataFetched = false
 		isLoading = true
-		let credentials = preferences.credentials(for: contract.identifier)
+		
+		guard let credentials = preferences.credentials(for: contract.identifier) else {
+			showCancelOption = true
+			digiMe?.authorize(serviceId: DeviceOnlyServices.appleHealth.rawValue) { result in
+				self.showCancelOption = false
+				switch result {
+				case .success(let newOrRefreshedCredentials):
+					self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.contract.identifier)
+					self.getData(with: newOrRefreshedCredentials)
+					
+				case.failure(let error):
+					self.handleError(error)
+				}
+			}
+			return
+		}
+		
+		self.getData(with: credentials)
+	}
+	
+	func cancel() {
+		isLoading = false
+		showCancelOption = false
+	}
+	
+	// MARK: - Private
+	
+	private func getData(with credentials: Credentials) {
 		var files: [File] = []
-		digiMe?.authorize(credentials: credentials, serviceId: DeviceOnlyServices.appleHealth.rawValue) { result in
+		self.digiMe?.readAllFiles(credentials: credentials, readOptions: readOptions) { result in
 			switch result {
-			case .success(let newOrRefreshedCredentials):
-				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.contract.identifier)
-				self.digiMe?.readAllFiles(credentials: newOrRefreshedCredentials, readOptions: readOptions) { result in
-					switch result {
-					case .success(let file):
-						files.append(file)
-						print("[DigiMeSDKExample] JFS file received \(file.identifier)")
-					case .failure(let error):
-						self.handleError(error)
-					}
-				} completion: { result in
-					switch result {
-					case .success(let (fileList, refreshedCredentials)):
-						self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.contract.identifier)
-						
-						if
-							let accountState = fileList.status.details?.first,
-							let date = accountState.error?.error?.retryAfter {
-							
-							print("[DigiMeSDKExample] Next sync date: \(date), sync state: \(fileList.status.state)")
-						}
-						
-						self.process(jfs: files)
-						self.isLoading = false
-						
-					case .failure(let error):
-						self.handleError(error)
-					}
+			case .success(let file):
+				files.append(file)
+				print("[DigiMeSDKExample] JFS file received \(file.identifier)")
+			case .failure(let error):
+				self.handleError(error)
+			}
+		} completion: { result in
+			switch result {
+			case .success(let (fileList, refreshedCredentials)):
+				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.contract.identifier)
+				
+				if
+					let accountState = fileList.status.details?.first,
+					let date = accountState.error?.error?.retryAfter {
+					
+					print("[DigiMeSDKExample] Next sync date: \(date), sync state: \(fileList.status.state)")
 				}
 				
-			case.failure(let error):
+				self.process(jfs: files)
+				self.isLoading = false
+				
+			case .failure(let error):
 				self.handleError(error)
 			}
 		}
 	}
-	
-	// MARK: - Private
 	
 	private func process(jfs files: [File]) {
 		var stepsCounter = 0.0
