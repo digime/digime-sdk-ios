@@ -488,7 +488,13 @@ public final class DigiMe {
 	///
 	/// - Parameters:
 	///   - contractId: The contract identifier for which relevant available service
-	public func clearCachedData(for contractId: String) {
+	public func clearCachedData(for contractId: String? = nil) {
+		guard let contractId = contractId else {
+			ContractsCache().reset()
+			LocalDataCache().reset()
+			return
+		}
+		
 		allFilesReader?.clearSessionData()
 		CredentialCache().clearCredentials(for: contractId)
 		SessionCache().clearSession(for: contractId)

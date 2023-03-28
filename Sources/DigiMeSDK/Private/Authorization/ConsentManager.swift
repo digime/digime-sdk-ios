@@ -134,21 +134,22 @@ final class ConsentManager: NSObject {
         }
         
 		guard localServiceRequested else {
+			localServiceRequested = false
 			reset()
 			userConsentCompletion?(mapErrors(result: result))
 			userConsentCompletion = nil
 			addServiceCompletion = nil
-			localServiceRequested = false
+
 			return
 		}
 		
 		LocalDataCache().requestLocalData(for: configuration.contractId)
 		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
+			self.localServiceRequested = false
 			self.reset()
 			self.userConsentCompletion?(self.mapErrors(result: result))
 			self.userConsentCompletion = nil
 			self.addServiceCompletion = nil
-			self.localServiceRequested = false
 		}
     }
     
@@ -161,21 +162,21 @@ final class ConsentManager: NSObject {
         }
         
 		guard localServiceRequested else {
+			localServiceRequested = false
 			reset()
 			addServiceCompletion?(mapErrors(result: result))
 			addServiceCompletion = nil
 			userConsentCompletion = nil
-			localServiceRequested = false
 			return
 		}
 		
 		LocalDataCache().requestLocalData(for: configuration.contractId)
 		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
+			self.localServiceRequested = false
 			self.reset()
 			self.addServiceCompletion?(self.mapErrors(result: result))
 			self.addServiceCompletion = nil
 			self.userConsentCompletion = nil
-			self.localServiceRequested = false
 		}
     }
     
