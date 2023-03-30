@@ -57,6 +57,9 @@
 		1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */; };
 		1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */; };
 		1EC8C14329A7F8C200E34338 /* ServicePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC8C14229A7F8C200E34338 /* ServicePickerView.swift */; };
+		1ED4CA2729D3783400C9874B /* ReportDateManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */; };
+		1ED4CA2F29D4356C00C9874B /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4CA2E29D4356C00C9874B /* BlurView.swift */; };
+		1EE0FA3F29D04B900084F5ED /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */; };
 		1EED5A2E29BF9C3600B3F544 /* ActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED5A2D29BF9C3600B3F544 /* ActionView.swift */; };
 		1EEE0EC629BE5267004FA4D0 /* BallScaleRippleMultiple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEE0EC529BE5267004FA4D0 /* BallScaleRippleMultiple.swift */; };
 		1EEE0EC829BE54A1004FA4D0 /* KeyframeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEE0EC729BE54A1004FA4D0 /* KeyframeAnimation.swift */; };
@@ -135,6 +138,9 @@
 		1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Locale+Helper.swift"; sourceTree = "<group>"; };
 		1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesFormatter.swift; sourceTree = "<group>"; };
 		1EC8C14229A7F8C200E34338 /* ServicePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePickerView.swift; sourceTree = "<group>"; };
+		1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDateManagerView.swift; sourceTree = "<group>"; };
+		1ED4CA2E29D4356C00C9874B /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
 		1EED5A2D29BF9C3600B3F544 /* ActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionView.swift; sourceTree = "<group>"; };
 		1EEE0EC529BE5267004FA4D0 /* BallScaleRippleMultiple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallScaleRippleMultiple.swift; sourceTree = "<group>"; };
 		1EEE0EC729BE54A1004FA4D0 /* KeyframeAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyframeAnimation.swift; sourceTree = "<group>"; };
@@ -219,10 +225,12 @@
 		1E47A0E3298D25CE0081A2C5 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				1E7B414A29A3925C00F7B5B4 /* JSONPreview */,
+				1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */,
+				1ED4CA2E29D4356C00C9874B /* BlurView.swift */,
 				1E4901E127D9112200F13D29 /* Logger.swift */,
 				1EEE0EC529BE5267004FA4D0 /* BallScaleRippleMultiple.swift */,
 				1EEE0EC929BE5503004FA4D0 /* Ring.swift */,
-				1E7B414A29A3925C00F7B5B4 /* JSONPreview */,
 				1E811D8E299F860200EC80B0 /* SplitView.swift */,
 				1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */,
 				1E47A0F2299176100081A2C5 /* Square.swift */,
@@ -232,6 +240,7 @@
 				1E02535629A94B4200702D90 /* SourceImage.swift */,
 				1EEE0EC729BE54A1004FA4D0 /* KeyframeAnimation.swift */,
 				1EED5A2D29BF9C3600B3F544 /* ActionView.swift */,
+				1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -638,6 +647,7 @@
 				1E811D8C299E5C4500EC80B0 /* WriteDataView.swift in Sources */,
 				1EEE0EC829BE54A1004FA4D0 /* KeyframeAnimation.swift in Sources */,
 				27D31A24266A4EAB00DB2524 /* AppDelegate.swift in Sources */,
+				1ED4CA2729D3783400C9874B /* ReportDateManagerView.swift in Sources */,
 				27D31A26266A4EAB00DB2524 /* SceneDelegate.swift in Sources */,
 				1EEE0EC629BE5267004FA4D0 /* BallScaleRippleMultiple.swift in Sources */,
 				1EA52DAF2987A42E00A61213 /* HomeView.swift in Sources */,
@@ -671,6 +681,7 @@
 				1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */,
 				1E87223929A5633E00418DE1 /* ContractDetailsView.swift in Sources */,
 				1E6E71B22862FE8600E7954E /* ChartStatementView.swift in Sources */,
+				1EE0FA3F29D04B900084F5ED /* ShareSheetView.swift in Sources */,
 				1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */,
 				1E864C2029BA5631005BA921 /* ConnectedAccount.swift in Sources */,
 				1E7B415029A3925D00F7B5B4 /* JSONCell.swift in Sources */,
@@ -678,6 +689,7 @@
 				1E811D95299FEECC00EC80B0 /* WriteDataViewModel.swift in Sources */,
 				1EEE0ECA29BE5503004FA4D0 /* Ring.swift in Sources */,
 				1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */,
+				1ED4CA2F29D4356C00C9874B /* BlurView.swift in Sources */,
 				1E811D91299F912900EC80B0 /* LogOutputView.swift in Sources */,
 				1E0226AF29828BAF00892CE8 /* Binding+Helper.swift in Sources */,
 				1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */,
@@ -847,7 +859,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
@@ -872,7 +884,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";

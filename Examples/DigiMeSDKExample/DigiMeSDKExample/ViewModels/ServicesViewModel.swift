@@ -16,6 +16,7 @@ class ServicesViewModel: ObservableObject {
 	@Published var sections: [ServiceSection] = []
 	@Published var isLoading = false
 	@Published var presentSourceSelector = false
+    @Published var showShareSheet = false
 	@Published var showCancelOption = false {
 		willSet {
 			objectWillChange.send()
@@ -39,7 +40,8 @@ class ServicesViewModel: ObservableObject {
 			}
 		}
 	}
-	
+    @Published var xmlReportUrl: URL?
+    
 	var isAuthorised: Bool {
 		return preferences.credentials(for: currentContract.identifier) != nil
 	}
@@ -209,6 +211,35 @@ class ServicesViewModel: ObservableObject {
 			}
 		}
 	}
+    
+    func loadReport(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval) {
+        guard let credentials = preferences.credentials(for: currentContract.identifier) else {
+            self.isLoading = false
+            self.logWarning(message: "Contract must be authorized first.")
+            return
+        }
+
+        isLoading = true
+        digiMe?.exportData(for: serviceTypeName, format: format, from: from, to: to, credentials: credentials) { result in
+            self.isLoading = false
+            switch result {
+            case .success(let data):
+                let fileName = "Report_\(serviceTypeName)_\(Date().description).\(format)"
+                FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: fileName) { url in
+                    guard let url = url else {
+                        self.logError(message: "An error occured storing '\(fileName)' file")
+                        return
+                    }
+                    self.xmlReportUrl = url
+                    self.log(message: "Report successfully shared.")
+                    self.showShareSheet = true
+                }
+
+            case .failure(let error):
+                self.logError(message: "Error requesting data export: \(error)")
+            }
+        }
+    }
 	
 	func cancel() {
 		isLoading = false

@@ -86,7 +86,8 @@ struct AppleHealthBarChartView: View {
 					}
 					.listRowSeparator(.hidden)
 					.frame(minWidth: 0, maxWidth: .infinity)
-					.font(.headline).foregroundColor(.white)
+					.font(.headline)
+                    .foregroundColor(.white)
 					.padding(10)
 					.background(
 						RoundedRectangle(cornerRadius: 10, style: .continuous)

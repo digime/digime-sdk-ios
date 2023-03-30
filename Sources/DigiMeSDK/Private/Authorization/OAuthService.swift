@@ -123,7 +123,7 @@ class OAuthService {
     }
     
     func deleteUser(oauthToken: OAuthToken, completion: @escaping (Result<Void, SDKError>) -> Void) {
-        guard let jwt = JWTUtility.fileDownloadRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
+        guard let jwt = JWTUtility.dataRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
             Logger.critical("Invalid delete user token request JWT")
             completion(.failure(SDKError.invalidDeleteUserTokenRequestJwt))
             return

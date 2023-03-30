@@ -11,7 +11,12 @@ import SwiftUI
 struct ServicesView: View {
 	@ObservedObject private var viewModel = ServicesViewModel()
 	@State private var dialogDetent = PresentationDetent.height(200)
-	
+	@State private var showAccountOptions = false
+    @State private var activeAccountName: String?
+    @State private var presentPortabilityDateManager = false
+    @State private var reportStartDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+    @State private var reportEndDate = Date()
+        
     var body: some View {
 		ZStack {
 			SplitView(top: {
@@ -43,9 +48,13 @@ struct ServicesView: View {
 							Section("Connected Accounts") {
 								ForEach(viewModel.connectedAccounts) { account in
 									Button {
-										if account.requiredReauth {
-											viewModel.reauthorize(connectedAccount: account)
-										}
+                                        if account.requiredReauth {
+                                            viewModel.reauthorize(connectedAccount: account)
+                                        }
+                                        else {
+                                            activeAccountName = account.service.name.lowercased()
+                                            showAccountOptions = true
+                                        }
 									} label: {
 										HStack {
 											if let resource = account.service.resources.optimalResource(for: CGSize(width: 20, height: 20)) {
@@ -69,7 +78,7 @@ struct ServicesView: View {
 							}
 						}
 						
-						Section("Read data") {
+						Section("Manage") {
 							if !viewModel.isAuthorised {
 								Button {
 									viewModel.authorizeWithService()
@@ -161,6 +170,29 @@ struct ServicesView: View {
 				}
 			}
 		}
+        .actionSheet(isPresented: $showAccountOptions) {
+            ActionSheet(title: Text(activeAccountName?.uppercased() ?? "EXPORT"),
+                        message: Text("Choose an option"),
+                        buttons: [
+                            .cancel(),
+                            .destructive(Text("Export Portability Report")) {
+                                presentPortabilityDateManager = true
+                            },
+                        ])
+        }
+        .sheet(isPresented: $viewModel.showShareSheet) {
+            ShareSheetView(shareItems: [viewModel.xmlReportUrl as Any])
+                .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $presentPortabilityDateManager) {
+            ReportDateManagerView(presentViewModally: $presentPortabilityDateManager, startDate: $reportStartDate, endDate: $reportEndDate) {
+                self.loadReport()
+            }
+        }
+    }
+    
+    private func loadReport() {
+        viewModel.loadReport(for: "medmij", format: "xml", from: reportStartDate.timeIntervalSince1970, to: reportEndDate.timeIntervalSince1970)
     }
 }
 

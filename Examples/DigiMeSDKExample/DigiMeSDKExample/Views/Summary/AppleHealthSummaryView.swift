@@ -170,7 +170,7 @@ struct AppleHealthSummaryView: View {
 #endif
 			}
 			.sheet(isPresented: $showModal) {
-				ScopeView(scopeTemplates: .constant(scopeTemplates), showModalDateSelector: $showModal, showTimeOption: $showTime, startDate: $scopeStartDate, endDate: $scopeEndDate, formatter: $formatter, selectedScopeIndex: $selectedScopeIndex, startDateString: $scopeStartDateString, endDateString: $scopeEndDateString)
+				ScopeView(scopeTemplates: .constant(scopeTemplates), presentScopeView: $showModal, showTimeOption: $showTime, startDate: $scopeStartDate, endDate: $scopeEndDate, formatter: $formatter, selectedScopeIndex: $selectedScopeIndex, startDateString: $scopeStartDateString, endDateString: $scopeEndDateString)
 			}
 		}
 		.sheet(isPresented: $viewModel.showCancelOption) {

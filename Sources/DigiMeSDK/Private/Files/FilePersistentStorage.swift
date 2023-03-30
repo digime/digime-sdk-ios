@@ -24,10 +24,10 @@ public class FilePersistentStorage {
         return url
     }
 
-    public func store(data: Data, fileName: String) {
+    public func store(data: Data, fileName: String, completion: ((URL?) -> Void)? = nil) {
         guard Thread.isMainThread else {
             DispatchQueue.main.async {
-                self.store(data: data, fileName: fileName)
+                self.store(data: data, fileName: fileName, completion: completion)
             }
             
             return
@@ -36,6 +36,7 @@ public class FilePersistentStorage {
         guard
             !data.isEmpty,
             let url = getURL()?.appendingPathComponent(fileName, isDirectory: false) else {
+                completion?(nil)
                 return
         }
         
@@ -44,6 +45,7 @@ public class FilePersistentStorage {
         }
         
         FileManager.default.createFile(atPath: url.path, contents: data, attributes: nil)
+        completion?(url)
     }
 	
 	public func appendToFile(data: Data, fileName: String) {

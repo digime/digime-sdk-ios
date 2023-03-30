@@ -108,8 +108,8 @@ enum JWTUtility {
 		}
     }
     
-    // Claims to request data trigger. Also used for requesting reference token and deleting user
-    private struct PayloadDataTriggerJWT: RequestClaims {
+    // Claims to with access token.
+    private struct PayloadWithAccessTokenJWT: RequestClaims {
         let accessToken: String
         let clientId: String
         var nonce = JWTUtility.generateNonce()
@@ -160,35 +160,6 @@ enum JWTUtility {
 			case timestamp
 		}
     }
-	
-	// Claims to request uploading data
-	private struct PayloadFileUploadJWT: RequestClaims {
-		let accessToken: String
-		let clientId: String
-		var nonce = JWTUtility.generateNonce()
-		var timestamp = Date()
-		
-		enum CodingKeys: String, CodingKey {
-			case accessToken = "access_token"
-			case clientId = "client_id"
-			case nonce
-			case timestamp
-		}
-	}
-	
-	private struct PayloadDataReadJWT: RequestClaims {
-		let accessToken: String
-		let clientId: String
-		var nonce = JWTUtility.generateNonce()
-		var timestamp = Date()
-		
-		enum CodingKeys: String, CodingKey {
-			case accessToken = "access_token"
-			case clientId = "client_id"
-			case nonce
-			case timestamp
-		}
-	}
 	
 	private struct PayloadRequestTokenReferenceJWT: RequestClaims {
 		let accessToken: String
@@ -297,33 +268,19 @@ enum JWTUtility {
         }.mapError { _ in SDKError.errorExtractingReferenceCodeFromJwt }
     }
     
-    /// Creates request JWT which can be used to trigger data
+    /// Creates request JWT with access token, client id, nonce and time stamp.
     ///
     /// - Parameters:
     ///   - accessToken: OAuth access token
     ///   - configuration: this SDK's instance configuration
-    static func dataTriggerRequestJWT(accessToken: String, configuration: Configuration) -> String? {
-        let claims = PayloadDataTriggerJWT(
+    static func dataRequestJWT(accessToken: String, configuration: Configuration) -> String? {
+        let claims = PayloadWithAccessTokenJWT(
             accessToken: accessToken,
 			clientId: configuration.clientId
         )
         
         return createRequestJWT(claims: claims, configuration: configuration)
     }
-    
-	/// Creates request JWT which can be used to download file
-	///
-	/// - Parameters:
-	///   - accessToken: OAuth access token
-	///   - configuration: this SDK's instance configuration
-	static func fileDownloadRequestJWT(accessToken: String, configuration: Configuration) -> String? {
-		let claims = PayloadDataReadJWT(
-			accessToken: accessToken,
-			clientId: configuration.clientId
-		)
-		
-		return createRequestJWT(claims: claims, configuration: configuration)
-	}
 	
 	/// Creates request JWT which can be used to download file
 	///
@@ -373,20 +330,6 @@ enum JWTUtility {
 
         return createRequestJWT(claims: claims, configuration: configuration)
     }
-	
-	/// Creates request JWT which can be used to upload file data
-	///
-	/// - Parameters:
-	///   - accessToken: OAuth refresh token
-	///   - configuration: this SDK's instance configuration
-	static func fileUploadRequestJWT(accessToken: String, configuration: Configuration) -> String? {
-		let claims = PayloadFileUploadJWT(
-			accessToken: accessToken,
-			clientId: configuration.clientId
-		)
-		
-		return createRequestJWT(claims: claims, configuration: configuration)
-	}
 	
 	/// Creates request JWT which can be used to upload file data descriptor
 	///

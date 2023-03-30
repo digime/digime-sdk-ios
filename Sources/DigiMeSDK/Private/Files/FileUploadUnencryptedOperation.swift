@@ -34,7 +34,7 @@ class FileUploadUnencryptedOperation: RetryingOperation {
 
 		do {
 			guard
-				let jwt = JWTUtility.fileUploadRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration),
+				let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration),
 				let fileDescriptor = JWTUtility.fileDescriptorUploadRequestJWT(metadata: metadata, configuration: configuration) else {
 				
 				throw SDKError.writeRequestFailure

@@ -36,7 +36,7 @@ class FileDownloadOperation: RetryingOperation {
             return
         }
 		
-		guard let jwt = JWTUtility.fileDownloadRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+		guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
 			downloadCompletion?(.failure(.errorCreatingRequestJwtToDownloadFile))
 			return
 		}

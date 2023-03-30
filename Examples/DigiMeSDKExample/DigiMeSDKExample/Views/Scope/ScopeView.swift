@@ -19,7 +19,7 @@ struct ScopeView: View {
 	static let datePlaceholder = "__ . __ . ____"
 	
 	@Binding var scopeTemplates: [ScopeTemplate]
-	@Binding var showModalDateSelector: Bool
+	@Binding var presentScopeView: Bool
 	@Binding var showTimeOption: Bool
 	@Binding var startDate: Date?
 	@Binding var endDate: Date?
@@ -134,18 +134,23 @@ struct ScopeView: View {
 				.navigationBarItems(leading: resetButton, trailing: doneButton)
 			}
 			.navigationViewStyle(StackNavigationViewStyle())
-			
+            .overlay((showStartDatePicker || showEndDatePicker) ? .black.opacity(0.4) : .clear)
+            .blur(radius: (showStartDatePicker || showEndDatePicker) ? 3 : 0)
+            .padding(-5)
+            
 			if showStartDatePicker {
 				withAnimation(.easeOut) {
 					DatePickerWithButtons(showDatePicker: $showStartDatePicker, showTime: $showTimeOption, date: $startDate.toUnwrapped(defaultValue: Date()))
-						.transition(.opacity)
+                        .shadow(radius: 20)
+                        .transition(.move(edge: .bottom))
 				}
 			}
 			
 			if showEndDatePicker {
 				withAnimation(.easeOut) {
 					DatePickerWithButtons(showDatePicker: $showEndDatePicker, showTime: $showTimeOption, date: $endDate.toUnwrapped(defaultValue: Date()))
-						.transition(.opacity)
+                        .shadow(radius: 20)
+                        .transition(.move(edge: .bottom))
 				}
 			}
 		}
@@ -210,7 +215,7 @@ struct ScopeView: View {
 			}
 		}
 		
-		self.showModalDateSelector = false
+		self.presentScopeView = false
 	}
 }
 
@@ -224,6 +229,6 @@ struct ScopeView_Previews: PreviewProvider {
 	}()
 	
     static var previews: some View {
-		ScopeView(scopeTemplates: .constant(TestScopingTemplates.defaultScopes), showModalDateSelector: .constant(true), showTimeOption: .constant(false), startDate: $date, endDate: $date, formatter: $formatter, selectedScopeIndex: .constant(0), startDateString: .constant(ScopeView.datePlaceholder), endDateString: .constant(ScopeView.datePlaceholder))
+		ScopeView(scopeTemplates: .constant(TestScopingTemplates.defaultScopes), presentScopeView: .constant(true), showTimeOption: .constant(false), startDate: $date, endDate: $date, formatter: $formatter, selectedScopeIndex: .constant(0), startDateString: .constant(ScopeView.datePlaceholder), endDateString: .constant(ScopeView.datePlaceholder))
     }
 }

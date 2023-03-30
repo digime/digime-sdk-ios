@@ -359,7 +359,7 @@ public final class DigiMe {
             return completion(.failure(.invalidSession))
         }
         
-		guard let jwt = JWTUtility.fileDownloadRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+		guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
 			return completion(.failure(.errorCreatingRequestJwtToDownloadFile))
 		}
 		
@@ -376,10 +376,10 @@ public final class DigiMe {
     /// Requires a valid session to have been created, either implicitly by adding a new service, or explicitly by calling `requestDataQuery(credentials:readOptions:resultQueue:completion)`.
     ///
     /// - Parameters:
-    ///   - fileId: The file's identifier.
-	///   - credentials: The existing credentials for the contract.
-    ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
-    ///   - completion: Block called upon completion with file, or any errors encountered.
+    ///  - fileId: The file's identifier.
+	///  - credentials: The existing credentials for the contract.
+    ///  - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
+    ///  - completion: Block called upon completion with file, or any errors encountered.
 	public func readFile(fileId: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<File, SDKError>) -> Void) {
         guard
             let session = session,
@@ -530,6 +530,35 @@ public final class DigiMe {
         }
     }
     
+    
+    /// The Portability Report is a report through which an individual is informed by their Individual's Service Provider about the health information that the individual has collected from providers in the digi.me application. This allows the individual to supplement another or a new personal health environment (PHE) with the same collection actions.
+    /// - Parameters:
+    ///   - serviceTypeName: Service type name, such as 'medmij'
+    ///   - format: File format, such as 'xml'
+    ///   - from: Start date in the format of a timestamp in seconds.
+    ///   - to: End date in the format of a timestamp in seconds.
+    ///   - credentials: The existing credentials for the contract.
+    ///   - resultQueue: The dispatch queue on which the completion block will be called. Defaults to the main dispatch queue.
+    ///   - completion: Block called upon completion with either the report data or any errors encountered.
+    public func exportData(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Data, SDKError>) -> Void) {
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.exportData(for: serviceTypeName, format: format, from: from, to: to, credentials: refreshedCredentials) { result in
+                    self.session = nil
+                    resultQueue.async {
+                        completion(result)
+                    }
+                }
+                
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
     // MARK: - Apple Health
     
 	public func appleHealthStatisticsCollectionQuery(for contractId: String, queryConfig: HealthKitConfiguration, resultQueue: DispatchQueue = .main, accountHandler: @escaping (SourceAccount) -> Void, completion: @escaping (StatisticsCompletionHandler)) {
@@ -594,7 +623,7 @@ public final class DigiMe {
     // MARK: - Private
     
     private func readAccounts(session: Session, credentials: Credentials, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
-		guard let jwt = JWTUtility.fileDownloadRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+		guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
 			return completion(.failure(.errorCreatingRequestJwtToDownloadFile))
 		}
 		
@@ -715,7 +744,7 @@ public final class DigiMe {
     
     // Request read session by triggering source sync
     private func triggerSourceSync(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Void, SDKError>) -> Void) {
-        guard let jwt = JWTUtility.dataTriggerRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+        guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
             return completion(.failure(.errorCreatingRequestJwtToTriggerData))
         }
 
@@ -745,6 +774,17 @@ public final class DigiMe {
         }
     }
     
+    private func exportData(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval, credentials: Credentials, completion: @escaping (Result<Data, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+            return completion(.failure(.errorCreatingRequestJwtToExportReport))
+        }
+        
+        let route = ExportReportDataRoute(jwt: jwt, serviceTypeName: serviceTypeName, format: format, from: from, to: to)
+        apiClient.makeRequest(route) { result in
+            completion(result)
+        }
+    }
+        
     private func validateOrRefreshCredentials(_ credentials: Credentials?, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         // Check we have credentials
         guard let credentials = credentials else {
