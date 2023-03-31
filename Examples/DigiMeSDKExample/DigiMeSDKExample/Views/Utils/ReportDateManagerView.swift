@@ -106,7 +106,7 @@ struct ReportDateManagerView: View {
                         VStack {
                             Button {
                                 withAnimation {
-                                    showStartDatePicker = true
+                                    showStartDatePicker.toggle()
                                 }
                             } label: {
                                 HStack {
@@ -181,19 +181,12 @@ struct ReportDateManagerView: View {
                     .navigationBarTitle("Portability Report", displayMode: .inline)
                     .navigationBarItems(trailing: cancelButton)
                     .padding(20)
-                    .toolbar {
-//                        if viewModel.isLoading {
-//                            ActivityIndicator()
-//                                .frame(width: 20, height: 20)
-//                                .foregroundColor(.gray)
-//                                .padding(.trailing, 10)
-//                        }
-                    }
                 }
             }
             .overlay((showStartDatePicker || showEndDatePicker) ? .black.opacity(0.4) : .clear)
             .blur(radius: (showStartDatePicker || showEndDatePicker) ? 3 : 0)
             .padding(-5)
+			.navigationViewStyle(StackNavigationViewStyle())
             
             if showStartDatePicker {
                 withAnimation(.spring()) {
