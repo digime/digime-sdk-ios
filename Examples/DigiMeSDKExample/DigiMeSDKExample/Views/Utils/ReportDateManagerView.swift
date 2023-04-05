@@ -25,6 +25,7 @@ struct ReportDateManagerView: View {
         fm.timeStyle = .none
         return fm
     }
+    
     var body: some View {
         ZStack {
             NavigationView {
@@ -80,13 +81,13 @@ struct ReportDateManagerView: View {
                         }
                         
                         Button {
-                            startDate = Date.date(year: 1970, month: 1, day: 1)
+                            startDate = Calendar.current.date(byAdding: .year, value: -5, to: Date())!
                             endDate = Date()
                             presentViewModally.toggle()
                             onSuccess?()
                         } label: {
                             HStack {
-                                Text("All Time")
+                                Text("Last 5 Years")
                                 Spacer()
                                 Image(systemName: "chevron.right")
                             }
