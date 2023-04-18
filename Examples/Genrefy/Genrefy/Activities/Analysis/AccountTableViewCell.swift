@@ -6,7 +6,6 @@
 //  Copyright © 2018 digi.me. All rights reserved.
 //
 
-import Kingfisher
 import UIKit
 
 class AccountTableViewCell: UITableViewCell {
@@ -61,9 +60,18 @@ extension AccountTableViewCell: AccountCell {
                 logoImageView.image = nil
                 return
         }
-        
-        logoImageView.kf.indicatorType = .activity
-        logoImageView.kf.setImage(with: url)
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard
+                let imageData = try? Data(contentsOf: url),
+                let image = UIImage(data: imageData) else {
+                return
+            }
+
+            DispatchQueue.main.async {
+                self.logoImageView.image = image
+            }
+        }
     }
     
     func display(toggleable: Bool, selected: Bool, animated: Bool) {
@@ -74,6 +82,4 @@ extension AccountTableViewCell: AccountCell {
     func display(icon: UIImage?) {
         logoImageView.image = icon
     }
-    
-    
 }

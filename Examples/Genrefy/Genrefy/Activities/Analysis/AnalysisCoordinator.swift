@@ -39,7 +39,8 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     private let cache = AppStateCache()
     
     private var filteredAccounts: [SourceAccount] = []
-
+    private var accountsViewController: AccountsViewController?
+    
     private lazy var homeViewController: HomeViewController = {
         let homeVC = HomeViewController.instantiate()
         homeVC.coordinatingDelegate = self
@@ -75,6 +76,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         accountsVC.coordinatingDelegate = self
         accountsVC.tabBarItem = UITabBarItem(title: NSLocalizedString("Settings", comment: ""), image: #imageLiteral(resourceName: "settingsIcon"), tag: BarItemTags.settings.rawValue)
         
+        accountsViewController = accountsVC
         let controllers = [homeViewController, accountsVC]
         tabBarController.viewControllers = controllers
         tabBarController.tabBar.barTintColor = UIColor.black
@@ -167,7 +169,11 @@ extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
 
 extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
     func reset() {
+        accountsViewController?.startActivityIndicator()
+        
         digimeService?.deleteUser { error in
+            self.accountsViewController?.hideActivityIndicator()
+            
             guard error != nil else {
                 self.displayError()
                 return

@@ -17,21 +17,12 @@ class DigiMeService {
     
     let repository: ImportRepository
     private let dmeClient: DigiMe
-    private let credentialCache = CredentialCache()
+    private let preferences = UserPreferences.shared()
     private let serialQueue = DispatchQueue(label: "ImportSerializationQueue")
     weak var delegate: DigiMeServiceDelegate?
     
     var isConnected: Bool {
-        credentials != nil
-    }
-    
-    private var credentials: Credentials? {
-        get {
-            credentialCache.credentials(for: AppCoordinator.configuration.contractId)
-        }
-        set {
-            credentialCache.setCredentials(newValue, for: AppCoordinator.configuration.contractId)
-        }
+        (preferences.credentials(for: AppCoordinator.configuration.contractId) != nil)
     }
     
     init(client: DigiMe, repository: ImportRepository) {
@@ -40,10 +31,12 @@ class DigiMeService {
     }
     
     func authorize(readOptions: ReadOptions?, serviceId: Int? = nil, completion: @escaping (SDKError?) -> Void) {
+        let credentials = preferences.credentials(for: AppCoordinator.configuration.contractId)
+        
         dmeClient.authorize(credentials: credentials, serviceId: serviceId, readOptions: readOptions) { result in
             switch result {
             case .success(let newOrRefreshedCredentials):
-                self.credentials = newOrRefreshedCredentials
+                self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: AppCoordinator.configuration.contractId)
                 completion(nil)
                 
             case.failure(let error):
@@ -53,7 +46,12 @@ class DigiMeService {
     }
     
     func getAccounts() {
-        dmeClient.readAccounts() { result in
+        guard let credentials = preferences.credentials(for: AppCoordinator.configuration.contractId) else {
+            print("Attempting to read data before authorizing contract")
+            return
+        }
+        
+        dmeClient.readAccounts(credentials: credentials) { result in
             switch result {
             case .success(let accountsInfo):
                 self.serialQueue.sync {
@@ -67,7 +65,7 @@ class DigiMeService {
     }
 
     func getSessionData() {
-        guard let credentials = credentials else {
+        guard let credentials = preferences.credentials(for: AppCoordinator.configuration.contractId) else {
             print("Attempting to read data before authorizing contract")
             return
         }
@@ -84,8 +82,8 @@ class DigiMeService {
             }
         } completion: { result in
             switch result {
-            case .success(let (_, refreshedCredentials)):
-                self.credentials = refreshedCredentials
+            case .success(let (_, newOrRefreshedCredentials)):
+                self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: AppCoordinator.configuration.contractId)
                 
             case .failure(let error):
                 print("digi.me failed to complete getting session data with error: \(error)")
@@ -100,13 +98,13 @@ class DigiMeService {
     }
     
     func deleteUser(completion: @escaping (SDKError?) -> Void) {
-        guard let credentials = credentials else {
+        guard let credentials = preferences.credentials(for: AppCoordinator.configuration.contractId) else {
             print("Attempting to delete user before authorizing contract")
             return
         }
         
         dmeClient.deleteUser(credentials: credentials) { error in
-            self.credentials = nil
+            self.preferences.clearCredentials(for: AppCoordinator.configuration.contractId)
             completion(error)
         }
     }

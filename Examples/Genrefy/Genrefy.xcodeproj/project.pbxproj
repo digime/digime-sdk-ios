@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		1E4AEB292199B71800C83328 /* IntroViewControllerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */; };
 		1E4AEB312199FB8000C83328 /* IntroCoordinatingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */; };
 		1E78293C24321E5F0011B5A7 /* PersistentStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */; };
+		1EEB8AB029EE8D8000E2BE37 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEB8AAF29EE8D8000E2BE37 /* UserPreferences.swift */; };
 		276AF972242BB5E000BC3867 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF971242BB5E000BC3867 /* Song.swift */; };
 		276AF974242CB98900BC3867 /* GenreSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF973242CB98900BC3867 /* GenreSummary.swift */; };
 		277759D1219AEF350025C4A4 /* String+Bold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277759D0219AEF350025C4A4 /* String+Bold.swift */; };
@@ -53,16 +54,18 @@
 		5C8C6B7D22A935D20004E7F4 /* SectionTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C6B7C22A935D20004E7F4 /* SectionTitleTableViewCell.swift */; };
 		5C8C6B8122A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C6B8022A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift */; };
 		5C9B437B22A1134B0012B933 /* StartOverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9B437A22A1134B0012B933 /* StartOverTableViewCell.swift */; };
-		F2562B3E7E72086184B8DE13 /* Pods_Genrefy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 598805F58775ED253BB62D33 /* Pods_Genrefy.framework */; };
+		A24EF2AB810DC618423FA6D4 /* Pods_Genrefy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 118FED7CB4B796027B11250E /* Pods_Genrefy.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0610E8D1212C42170089D3B2 /* GenreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreCell.swift; sourceTree = "<group>"; };
 		0686EFEB214671DF005C425D /* AppStateCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateCache.swift; sourceTree = "<group>"; };
+		118FED7CB4B796027B11250E /* Pods_Genrefy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Genrefy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E49BDA524223D80003119F2 /* ReceiptsLinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsLinkTableViewCell.swift; sourceTree = "<group>"; };
 		1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewControllerUseCase.swift; sourceTree = "<group>"; };
 		1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinatingDelegate.swift; sourceTree = "<group>"; };
 		1E78293B24321E5F0011B5A7 /* PersistentStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentStorage.swift; sourceTree = "<group>"; };
+		1EEB8AAF29EE8D8000E2BE37 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		272BC5B32701FEB800E73D36 /* digime-sdk-ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "digime-sdk-ios"; path = ../..; sourceTree = "<group>"; };
 		276AF971242BB5E000BC3867 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		276AF973242CB98900BC3867 /* GenreSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSummary.swift; sourceTree = "<group>"; };
@@ -102,13 +105,12 @@
 		27EDC10C20FF9C1E0092E661 /* Analysis.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Analysis.storyboard; sourceTree = "<group>"; };
 		27EDC10E20FF9CC50092E661 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		27EDC11020FF9CD90092E661 /* AccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
-		598805F58775ED253BB62D33 /* Pods_Genrefy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Genrefy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C194BDA22AE28D60068821C /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		5C8C6B7C22A935D20004E7F4 /* SectionTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleTableViewCell.swift; sourceTree = "<group>"; };
 		5C8C6B8022A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleDetailTableViewCell.swift; sourceTree = "<group>"; };
 		5C9B437A22A1134B0012B933 /* StartOverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartOverTableViewCell.swift; sourceTree = "<group>"; };
-		716BB90DAB6907C4E62B398A /* Pods-Genrefy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.release.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.release.xcconfig"; sourceTree = "<group>"; };
-		A6B2D724328E2B6943994BE1 /* Pods-Genrefy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.debug.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.debug.xcconfig"; sourceTree = "<group>"; };
+		8BDE9FBD23B2610ED5208FE3 /* Pods-Genrefy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.release.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.release.xcconfig"; sourceTree = "<group>"; };
+		C00E27F475EB91466A258E4C /* Pods-Genrefy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.debug.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2562B3E7E72086184B8DE13 /* Pods_Genrefy.framework in Frameworks */,
+				A24EF2AB810DC618423FA6D4 /* Pods_Genrefy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +151,7 @@
 				27CB3E8E2422434100425894 /* String+Attributed.swift */,
 				5C194BDA22AE28D60068821C /* Device.swift */,
 				27CB3E922422476700425894 /* UIFont+Weight.swift */,
+				1EEB8AAF29EE8D8000E2BE37 /* UserPreferences.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -263,7 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				272BC5B32701FEB800E73D36 /* digime-sdk-ios */,
-				598805F58775ED253BB62D33 /* Pods_Genrefy.framework */,
+				118FED7CB4B796027B11250E /* Pods_Genrefy.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -271,8 +274,8 @@
 		FF09095399260500467ACFB6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A6B2D724328E2B6943994BE1 /* Pods-Genrefy.debug.xcconfig */,
-				716BB90DAB6907C4E62B398A /* Pods-Genrefy.release.xcconfig */,
+				C00E27F475EB91466A258E4C /* Pods-Genrefy.debug.xcconfig */,
+				8BDE9FBD23B2610ED5208FE3 /* Pods-Genrefy.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -284,19 +287,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27C675BA20FCA04C00E6AFBC /* Build configuration list for PBXNativeTarget "Genrefy" */;
 			buildPhases = (
-				CB033515C11CFDB8807BF4DF /* [CP] Check Pods Manifest.lock */,
+				BB8F8050946C89A6E5AD216A /* [CP] Check Pods Manifest.lock */,
 				27C675A220FCA04900E6AFBC /* Sources */,
 				27C675A320FCA04900E6AFBC /* Frameworks */,
 				27C675A420FCA04900E6AFBC /* Resources */,
-				0C3904416E9B720DDA8F633A /* [CP] Embed Pods Frameworks */,
+				4385377A189F4702118BCE70 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Genrefy;
-			packageProductDependencies = (
-			);
 			productName = "Apps Skeleton";
 			productReference = 27C675A620FCA04900E6AFBC /* genrefy.app */;
 			productType = "com.apple.product-type.application";
@@ -307,8 +308,9 @@
 		27C6759E20FCA04900E6AFBC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0940;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = digi.me;
 				TargetAttributes = {
 					27C675A520FCA04900E6AFBC = {
@@ -349,7 +351,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C3904416E9B720DDA8F633A /* [CP] Embed Pods Frameworks */ = {
+		4385377A189F4702118BCE70 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -366,7 +368,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Genrefy/Pods-Genrefy-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CB033515C11CFDB8807BF4DF /* [CP] Check Pods Manifest.lock */ = {
+		BB8F8050946C89A6E5AD216A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -395,6 +397,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EEB8AB029EE8D8000E2BE37 /* UserPreferences.swift in Sources */,
 				27B5A27F2100982B0053D9C4 /* AccountSelectionPresenter.swift in Sources */,
 				1E49BDA624223D80003119F2 /* ReceiptsLinkTableViewCell.swift in Sources */,
 				27B5A2B6210230480053D9C4 /* ActivityCoordinating.swift in Sources */,
@@ -574,20 +577,21 @@
 		};
 		27C675BB20FCA04C00E6AFBC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A6B2D724328E2B6943994BE1 /* Pods-Genrefy.debug.xcconfig */;
+			baseConfigurationReference = C00E27F475EB91466A258E4C /* Pods-Genrefy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5LDPS9F284;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = "$(SRCROOT)/Genrefy/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.digi.digime.alexh;
+				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdk.example.genrefy;
 				PRODUCT_NAME = genrefy;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -596,21 +600,24 @@
 		};
 		27C675BC20FCA04C00E6AFBC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 716BB90DAB6907C4E62B398A /* Pods-Genrefy.release.xcconfig */;
+			baseConfigurationReference = 8BDE9FBD23B2610ED5208FE3 /* Pods-Genrefy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5LDPS9F284;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = "$(SRCROOT)/Genrefy/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.digi.digime.alexh;
+				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdk.example.genrefy;
 				PRODUCT_NAME = genrefy;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
