@@ -17,21 +17,25 @@ struct ServicePickerView: View {
 	
 	@State private var selectedService: Service?
 	@State private var flags: [Bool] = []
-	
+    @State private var searchText: String = ""
+
     var body: some View {
 		ZStack {
 			NavigationView {
 				List {
+                    
+                    searchBar
+                    
 					ForEach(Array(sections.enumerated()), id: \.1.id) { i, section in
 						Section {
 							DisclosureGroup(isExpanded: $flags[i]) {
-								ForEach(section.items) { service in
-									Button {
-										self.selectedService = service
-									} label: {
-										makeServiceRow(service: service)
-									}
-								}
+                                ForEach(searchText.isEmpty ? section.items : section.items.filter { $0.name.lowercased().contains(searchText.lowercased()) }) { service in
+                                    Button {
+                                        self.selectedService = service
+                                    } label: {
+                                        makeServiceRow(service: service)
+                                    }
+                                }
 							} label: {
 								HStack {
 									Image(section.iconName)
@@ -42,13 +46,15 @@ struct ServicePickerView: View {
 									Text(section.title)
 								}
 							}
-//							.disclosureGroupStyle(CustomDisclosureGroupStyle(arrowImage: Image(systemName: "arrowtriangle.right.fill")))
 						}
 					}
 				}
 				.listStyle(InsetGroupedListStyle())
 				.navigationBarTitle("Add a Source", displayMode: .inline)
 				.navigationBarItems(leading: cancelButton, trailing: addServiceButton)
+                .onChange(of: searchText) { newValue in
+                    flags = Array(repeating: !newValue.isEmpty, count: sections.count)
+                }
 			}
 			.navigationViewStyle(StackNavigationViewStyle())
 			.onAppear {
@@ -80,6 +86,25 @@ struct ServicePickerView: View {
 		}
 	}
 	
+    private var searchBar: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.secondary)
+            
+            TextField("Search ...", text: $searchText)
+                .padding(3)
+            
+            if !searchText.isEmpty {
+                Image(systemName: "xmark.circle.fill")
+                    .imageScale(.medium)
+                    .foregroundColor(Color(.systemGray3))
+                    .onTapGesture {
+                        self.searchText = ""
+                    }
+            }
+        }
+    }
+    
 	private var cancelButton: some View {
 		Button {
 			showView = false
@@ -101,4 +126,10 @@ struct ServicePickerView: View {
 				.foregroundColor(selectedService == nil ? .gray : .accentColor)
 		}
 	}
+}
+
+struct ServicePickerView_Previews: PreviewProvider {
+    static var previews: some View {
+        ServicePickerView(sections: .constant([]), showView: .constant(true), selectServiceCompletion: .constant(nil))
+    }
 }
