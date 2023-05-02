@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class FileUploadService {
     private let queue: OperationQueue
