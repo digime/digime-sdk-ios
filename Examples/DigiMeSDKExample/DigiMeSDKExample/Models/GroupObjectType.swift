@@ -9,12 +9,12 @@
 import DigiMeSDK
 import Foundation
 
-struct GroupObjectType {
-	let serviceGroupId: Int
+struct GroupObjectType: Identifiable {
+	let id: UInt
 	let items: [ServiceObjectType]
 	
-	init(serviceGroupId: Int, items: [ServiceObjectType]) {
-		self.serviceGroupId = serviceGroupId
+	init(identifier: UInt, items: [ServiceObjectType]) {
+		self.id = identifier
 		self.items = items
 	}
 }

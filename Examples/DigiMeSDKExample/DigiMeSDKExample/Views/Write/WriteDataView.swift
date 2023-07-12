@@ -21,7 +21,7 @@ struct WriteDataView: View {
 					VStack {
 						List {
 							Section("Upload Example Data") {
-								if viewModel.writeCredentials != nil {
+								if viewModel.credentialsForWrite != nil {
 									Button {
 										presentImporter = true
 										fileType = .json
@@ -49,19 +49,19 @@ struct WriteDataView: View {
 											guard
 												url.startAccessingSecurityScopedResource(),
 												let data = try? Data(contentsOf: url) else {
-												self.viewModel.logError(message: "Error reading pdf file")
+												self.viewModel.logErrorMessage("Error reading pdf file")
 												return
 											}
 											url.stopAccessingSecurityScopedResource()
 											switch fileType {
 											case .pdf:
-												viewModel.uploadPdf(data: data, fileName: url.lastPathComponent)
+												viewModel.submitPdfData(data: data, fileName: url.lastPathComponent)
 											default:
-												viewModel.uploadJson(data: data, fileName: url.lastPathComponent)
+												viewModel.submitJsonData(data: data, fileName: url.lastPathComponent)
 											}
 											
 										case .failure(let error):
-											self.viewModel.logError(message: "Error reading file: \(error)")
+											self.viewModel.logErrorMessage("Error reading file: \(error)")
 										}
 									}
 									
@@ -76,7 +76,7 @@ struct WriteDataView: View {
 										Task {
 											if
 												let data = try? await newItem?.loadTransferable(type: Data.self) {
-												viewModel.uploadImage(data: data, fileName: "identifier")
+												viewModel.submitImageData(data: data, fileName: "identifier")
 											}
 										}
 									}
@@ -94,7 +94,7 @@ struct WriteDataView: View {
 								}
 								
 								Button {
-									viewModel.showContractDetails()
+									viewModel.displayContractDetails()
 								} label: {
 									HStack {
 										Image("certIcon")
@@ -105,9 +105,9 @@ struct WriteDataView: View {
 							}
 							
 							Section("Read Uploaded Data") {
-								if viewModel.readCredentials != nil {
+								if viewModel.credentialsForRead != nil {
 									Button {
-										viewModel.readData()
+										viewModel.retrieveData()
 									} label: {
 										HStack {
 											Image(systemName: "arrow.down.doc")
@@ -129,7 +129,7 @@ struct WriteDataView: View {
 								}
 								
 								Button {
-									viewModel.showContractDetails()
+									viewModel.displayContractDetails()
 								} label: {
 									HStack {
 										Image("certIcon")
@@ -139,10 +139,10 @@ struct WriteDataView: View {
 								}
 							}
 							
-							if viewModel.writeCredentials != nil || viewModel.readCredentials != nil {
+							if viewModel.credentialsForWrite != nil || viewModel.credentialsForRead != nil {
 								Section("Delete Your Data") {
 									Button {
-										viewModel.deleteUser()
+										viewModel.removeUser()
 									} label: {
 										HStack {
 											Image("deleteIcon")
@@ -157,18 +157,18 @@ struct WriteDataView: View {
 					}
 					.navigationBarTitle("Write", displayMode: .inline)
 					.toolbar {
-						if viewModel.isLoading {
+						if viewModel.loadingInProgress {
 							ActivityIndicator()
 								.frame(width: 20, height: 20)
 								.foregroundColor(.gray)
 								.padding(.trailing, 10)
 						}
 						else {
-							ShareLink(item: viewModel.logs.json)
+							ShareLink(item: viewModel.logEntries.json)
 						}
 					}
 		}, bottom: {
-			LogOutputView(logs: $viewModel.logs)
+			LogOutputView(logs: $viewModel.logEntries)
 		})
 	}
 }

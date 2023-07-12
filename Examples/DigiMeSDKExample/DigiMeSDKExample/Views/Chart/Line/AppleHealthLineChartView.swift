@@ -13,9 +13,10 @@ import SwiftUI
 struct AppleHealthLineChartView: View {
 	@ObservedObject var viewModel: AppleHealthChartViewModel
     @State private var timeRange: ChartTimeRange = .last30Days
-
+    private let contract = Contracts.prodAppleHealth
+    
 	init?() {
-		guard let config = try? Configuration(appId: AppInfo.appId, contractId: Contracts.appleHealth.identifier, privateKey: Contracts.appleHealth.privateKey) else {
+		guard let config = try? Configuration(appId: contract.appId, contractId: contract.identifier, privateKey: contract.privateKey) else {
 			return nil
 		}
 		
@@ -55,7 +56,7 @@ struct AppleHealthLineChartView: View {
 				} label: {
 					HStack(alignment: .center, spacing: 20) {
 						Text("Request New Data")
-						if viewModel.isLoading {
+						if viewModel.isLoadingData {
 							ActivityIndicator()
 								.frame(width: 20, height: 20)
 								.foregroundColor(.white)
@@ -111,7 +112,7 @@ struct AppleHealthLineChartView: View {
 	}
 	
 	private func queryData() {
-		viewModel.isLoading = true
+		viewModel.isLoadingData = true
 		viewModel.fetchData(readOptions: nil)
 	}
 }

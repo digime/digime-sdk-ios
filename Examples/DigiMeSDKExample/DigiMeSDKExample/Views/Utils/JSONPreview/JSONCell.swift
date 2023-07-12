@@ -56,9 +56,36 @@ struct JSONCell: View {
 		case let dictionary as JSON: // NSDictionary
 			return AnyView(keyValueView(treeView: JSONTreeView(dictionary, prefix: key)))
 		case let number as NSNumber: // NSNumber
-			return AnyView(leafView(number.stringValue))
+            if key.lowercased().contains("date") {
+                let date = Date(timeIntervalSince1970: number.doubleValue / 1000)
+                let formatter = DateFormatter()
+                formatter.dateStyle = .long
+                formatter.timeStyle = .short
+                let dateString = formatter.string(from: date)
+                return AnyView(leafView(dateString))
+            }
+            else {
+                return AnyView(leafView(number.stringValue))
+            }
 		case let string as String: // NSString
-			return AnyView(leafView(string))
+            if let data = Data(base64Encoded: string) {
+                if let decodedString = String(data: data, encoding: .utf8) {
+                    return AnyView(leafView(decodedString))
+                }
+                else if PDFKitView.isPDF(data: data) {
+                    return AnyView(PDFKitView(data: data)
+                        .frame(height: 300))
+                }
+                else if let image = UIImage(data: data) {
+                    return AnyView(Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .edgesIgnoringSafeArea(.all))
+                }
+            }
+ 
+            return AnyView(leafView(string))
+
 		case is NSNull: // NSNull
 			return AnyView(leafView("null"))
 		default:

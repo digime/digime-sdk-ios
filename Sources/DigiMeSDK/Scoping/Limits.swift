@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Limits: Encodable {
+public struct Limits: Codable {
     public let duration: Duration
     
     /// Initializes a Limits object with a duration

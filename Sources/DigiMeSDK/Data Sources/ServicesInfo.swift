@@ -9,7 +9,7 @@
 import Foundation
 
 /// Info for services and related groups
-public struct ServicesInfo: Decodable {
+public struct ServicesInfo: Codable {
     public let countries: [ServiceCountry]
     public let serviceGroups: [ServiceGroup]
     public let services: [Service]

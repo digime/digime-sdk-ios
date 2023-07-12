@@ -15,20 +15,20 @@ class AppleHealthChartViewModel: ObservableObject {
 	@Published var data30InSeries: [ChartSeries] = []
 	@Published var dataMonthsInSeries: [ChartSeries] = []
 
-	@Published var isLoading = false
+	@Published var isLoadingData = false
 	@Published var dataFetched = false
 	@Published var errorMessage: String?
 	@Published var minStartDate: Date?
 	@Published var maxEndDate: Date?
 	
-	private let preferences = UserPreferences.shared()
+	private let userPreferences = UserPreferences.shared()
 	private let endDate = Date()
 	private let startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
 	
-	private var digiMe: DigiMe?
-	private var config: Configuration
+	private var digiMeService: DigiMe?
+	private var digiMeConfig: Configuration
 	private var readOptions: ReadOptions?
-	private var formatter: DateFormatter {
+	private var dateFormatter: DateFormatter {
 		let formatter = DateFormatter()
 		formatter.dateStyle = .medium
 		formatter.timeStyle = .short
@@ -40,21 +40,21 @@ class AppleHealthChartViewModel: ObservableObject {
 	}
 
 	init(config: Configuration) {
-		self.config = config
-		self.digiMe = DigiMe(configuration: config)
+		self.digiMeConfig = config
+		self.digiMeService = DigiMe(configuration: config)
 	}
 	
 	func fetchData(readOptions: ReadOptions? = nil) {
 		self.readOptions = readOptions
 		dataFetched = false
-		isLoading = true
-		let credentials = preferences.credentials(for: config.contractId)
+		isLoadingData = true
+		let credentials = userPreferences.getCredentials(for: digiMeConfig.contractId)
 		var files: [File] = []
-		digiMe?.authorize(credentials: credentials, serviceId: DeviceOnlyServices.appleHealth.rawValue) { result in
+		digiMeService?.authorize(credentials: credentials, serviceId: DeviceOnlyServices.appleHealth.rawValue) { result in
 			switch result {
 			case .success(let newOrRefreshedCredentials):
-				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.config.contractId)
-				self.digiMe?.readAllFiles(credentials: newOrRefreshedCredentials, readOptions: readOptions) { result in
+				self.userPreferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.digiMeConfig.contractId)
+				self.digiMeService?.readAllFiles(credentials: newOrRefreshedCredentials, readOptions: readOptions) { result in
 					switch result {
 					case .success(let file):
 						files.append(file)
@@ -65,7 +65,7 @@ class AppleHealthChartViewModel: ObservableObject {
 				} completion: { result in
 					switch result {
 					case .success(let (fileList, refreshedCredentials)):
-						self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.config.contractId)
+						self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.digiMeConfig.contractId)
 						
 						if
 							let accountState = fileList.status.details?.first,
@@ -75,7 +75,7 @@ class AppleHealthChartViewModel: ObservableObject {
 						}
 						
 						self.process(jfs: files)
-						self.isLoading = false
+						self.isLoadingData = false
 						
 					case .failure(let error):
 						self.handleError(error)
@@ -189,21 +189,21 @@ class AppleHealthChartViewModel: ObservableObject {
 				}
 			}
 		default:
-			isLoading = false
+			isLoadingData = false
 			errorMessage = error.description
 		}
 	}
 	
 	private func refreshCtredentials(_ completion: @escaping((Bool) -> Void)) {
-		guard let credentials = preferences.credentials(for: config.contractId) else {
+		guard let credentials = userPreferences.getCredentials(for: digiMeConfig.contractId) else {
 			errorMessage = "[DigiMeSDKExample] Attempting to read data before authorizing contract"
 			return
 		}
 		
-		digiMe?.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
+		digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
 			switch result {
 			case .success(let credentials):
-				self.preferences.setCredentials(newCredentials: credentials, for: self.config.contractId)
+				self.userPreferences.setCredentials(newCredentials: credentials, for: self.digiMeConfig.contractId)
 				completion(true)
 				
 			case .failure(let error):

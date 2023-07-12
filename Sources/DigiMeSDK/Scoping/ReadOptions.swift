@@ -9,7 +9,7 @@
 import Foundation
 
 /// Options used to configure session for reading data from service-based data sources
-public struct ReadOptions: Encodable {
+public struct ReadOptions: Codable {
     public let limits: Limits?
     public let scope: Scope?
     

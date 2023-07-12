@@ -540,7 +540,7 @@ public final class DigiMe {
     ///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue on which the completion block will be called. Defaults to the main dispatch queue.
     ///   - completion: Block called upon completion with either the report data or any errors encountered.
-    public func exportData(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Data, SDKError>) -> Void) {
+    public func exportPortabilityReport(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Data, SDKError>) -> Void) {
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):

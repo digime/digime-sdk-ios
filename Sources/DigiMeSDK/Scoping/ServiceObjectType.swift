@@ -9,13 +9,12 @@
 import Foundation
 
 /// Represents an object scope with which data requests can be limited to
-public struct ServiceObjectType: Encodable {
-    public let identifier: UInt
-    /// convenience property
+public struct ServiceObjectType: Codable, Identifiable {
+    public let id: Int
     public let name: String?
     
     enum CodingKeys: String, CodingKey {
-        case identifier = "id"
+        case id
         case name
     }
     
@@ -25,20 +24,14 @@ public struct ServiceObjectType: Encodable {
     /// See https://developers.digi.me/reference-objects#objects for a list of object identifiers.
     ///
     /// - Parameter identifier: The object identifier
-    /// - Parameter name: The object name
-    public init(identifier: UInt, name: String? = nil) {
-        self.identifier = identifier
+    /// - Parameter name: The object name. Convinience property.
+    public init(identifier: Int, name: String? = nil) {
+        self.id = identifier
         self.name = name
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        identifier = try container.decode(UInt.self, forKey: .identifier)
-        name = try container.decode(String.self, forKey: .name)
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(identifier, forKey: .identifier)
+        try container.encode(id, forKey: .id)
     }
 }

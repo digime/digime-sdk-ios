@@ -44,7 +44,7 @@ public extension Encodable {
     }
     
     var dictionary: Any? {
-        guard let data = try? encoded() else {
+        guard let data = try? encoded(dateEncodingStrategy: .millisecondsSince1970) else {
             return nil
         }
         

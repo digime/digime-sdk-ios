@@ -9,13 +9,15 @@
 import Foundation
 
 /// Represents a service scope with which data requests can be limited to
-public struct ServiceType: Encodable {
-    public let identifier: UInt
+public struct ServiceType: Codable, Identifiable {
+    public let id: Int
     public let serviceObjectTypes: [ServiceObjectType]
+    public let name: String?
     
     enum CodingKeys: String, CodingKey {
-        case identifier = "id"
+        case id
         case serviceObjectTypes
+        case name
     }
     
     /// Limits service-based data response to include this service and associated objects.
@@ -26,8 +28,16 @@ public struct ServiceType: Encodable {
     /// - Parameters:
     ///   - identifier: The service identifier
     ///   - objectTypes: Objects which can further limit the data request scope for this service. If empty, all objects associated with this service wil be included
-    public init(identifier: UInt, objectTypes: [ServiceObjectType]) {
-        self.identifier = identifier
+    ///   - name: The object name. Convenience property.
+    public init(identifier: Int, objectTypes: [ServiceObjectType], name: String? = nil) {
+        self.id = identifier
         self.serviceObjectTypes = objectTypes
+        self.name = name
+    }
+     
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(serviceObjectTypes, forKey: .serviceObjectTypes)
     }
 }

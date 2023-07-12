@@ -15,6 +15,8 @@ final class UserPreferences: NSObject {
 	private enum Key: String, CaseIterable {
 		case credentials = "kCredentials"
 		case connectedAccounts = "kConnectedAccounts"
+        case servicesInfo = "kServicesInfo"
+        case readOptions = "kReadOptions"
 	}
 	
 	@discardableResult
@@ -31,7 +33,7 @@ final class UserPreferences: NSObject {
 	@CodableUserDefault(key: Key.credentials)
 	private var credentials: [String: Credentials]?
 	
-	func credentials(for contractId: String) -> Credentials? {
+	func getCredentials(for contractId: String) -> Credentials? {
 		return credentials?[contractId]
 	}
 	
@@ -48,30 +50,71 @@ final class UserPreferences: NSObject {
 	// MARK: - Connected Accounts
 		
 	@CodableUserDefault(key: Key.connectedAccounts)
-	private var connectedAccounts: [String: [ConnectedAccount]]?
+	private var linkedAccounts: [String: [LinkedAccount]]?
 	
-	func connectedAccounts(for contractId: String) -> [ConnectedAccount] {
-		return connectedAccounts?[contractId] ?? []
+	func getLinkedAccounts(for contractId: String) -> [LinkedAccount] {
+		return linkedAccounts?[contractId] ?? []
 	}
 	
-	func setConnectedAccounts(newAccounts: [ConnectedAccount], for contractId: String) {
-		var cached = connectedAccounts ?? [:]
+	func setLinkedAccounts(newAccounts: [LinkedAccount], for contractId: String) {
+		var cached = linkedAccounts ?? [:]
 		cached[contractId] = newAccounts
-		connectedAccounts = cached
+		linkedAccounts = cached
 	}
 	
-	func addConnectedAccount(newAccount: ConnectedAccount, for contractId: String) {
-		var cached = connectedAccounts ?? [:]
+	func addLinkedAccount(newAccount: LinkedAccount, for contractId: String) {
+		var cached = linkedAccounts ?? [:]
 		cached[contractId]?.append(newAccount)
-		connectedAccounts = cached
+		linkedAccounts = cached
 	}
 	
-	func clearConnectedAccounts(for contractId: String) {
-		connectedAccounts?[contractId] = nil
+	func clearLinkedAccounts(for contractId: String) {
+		linkedAccounts?[contractId] = nil
 	}
+    
+    func refreshLinkedAccount(for connectedAccountId: UUID, objectTypeId: Int, selected: Bool, contractId: String) {
+        if
+            let index = getLinkedAccounts(for: contractId).firstIndex(where: { $0.id == connectedAccountId }),
+            var linkedAccount = linkedAccounts?[contractId]?[index] {
+
+            if selected {
+                linkedAccount.selectedObjectTypeIds.insert(objectTypeId)
+            }
+            else {
+                linkedAccount.selectedObjectTypeIds.remove(objectTypeId)
+            }
+
+            linkedAccounts?[contractId]?[index] = linkedAccount
+        }
+    }
 	
+    // MARK: - Credentials
+    
+    @CodableUserDefault(key: Key.servicesInfo)
+    var servicesInfo: ServicesInfo?
+    
+    // MARK: - Credentials
+    
+    @CodableUserDefault(key: Key.readOptions)
+    private var readOptions: [String: ReadOptions]?
+    
+    func readOptions(for contractId: String) -> ReadOptions? {
+        return readOptions?[contractId]
+    }
+    
+    func setReadOptions(newReadOptions: ReadOptions?, for contractId: String) {
+        var cached = readOptions ?? [:]
+        cached[contractId] = newReadOptions
+        readOptions = cached
+    }
+    
+    func clearReadOptions(for contractId: String) {
+        readOptions?[contractId] = nil
+    }
+    
 	func reset() {
 		credentials = nil
-		connectedAccounts = nil
+		linkedAccounts = nil
+        servicesInfo = nil
 	}
 }

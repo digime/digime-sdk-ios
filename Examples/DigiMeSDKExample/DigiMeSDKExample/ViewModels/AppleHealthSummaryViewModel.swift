@@ -12,13 +12,13 @@ import HealthKit
 
 @MainActor
 class AppleHealthSummaryViewModel: ObservableObject {
-	@Published var isLoading = false
-	@Published var dataFetched = false
+	@Published var isDataLoading = false
+	@Published var isDataFetched = false
 	@Published var steps: String = "0"
 	@Published var distance: String = "0"
 	@Published var calories: String = "0"
-	@Published var startDateString = ScopeView.datePlaceholder
-	@Published var endDateString = ScopeView.datePlaceholder
+	@Published var startDateFormattedString = ScopeAddView.datePlaceholder
+	@Published var endDateFormattedString = ScopeAddView.datePlaceholder
 	@Published var errorMessage: String?
 	@Published var infoMessage: String?
 	@Published var showCancelOption = false {
@@ -27,11 +27,11 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		}
 	}
 	
-	private let contract = Contracts.appleHealth
+    private let activeContractId = Contracts.prodAppleHealth.identifier
 	private let preferences = UserPreferences.shared()
-	private var digiMe: DigiMe?
+	private var digiMeService: DigiMe?
 	private var readOptions: ReadOptions?
-	private var formatter: DateFormatter {
+	private var dateFormatter: DateFormatter {
 		let formatter = DateFormatter()
 		formatter.dateStyle = .medium
 		formatter.timeStyle = .short
@@ -39,22 +39,22 @@ class AppleHealthSummaryViewModel: ObservableObject {
 	}
 
 	init(config: Configuration) {
-		digiMe = DigiMe(configuration: config)
+		digiMeService = DigiMe(configuration: config)
 	}
 	
-	func fetchData(readOptions: ReadOptions? = nil) {
+	func authorize(readOptions: ReadOptions? = nil) {
 		self.readOptions = readOptions
-		dataFetched = false
-		isLoading = true
+		isDataFetched = false
+		isDataLoading = true
 		
-		guard let credentials = preferences.credentials(for: contract.identifier) else {
+		guard let credentials = preferences.getCredentials(for: activeContractId) else {
 			showCancelOption = true
-			digiMe?.authorize(serviceId: DeviceOnlyServices.appleHealth.rawValue) { result in
+			digiMeService?.authorize(serviceId: DeviceOnlyServices.appleHealth.rawValue) { result in
 				self.showCancelOption = false
 				switch result {
 				case .success(let newOrRefreshedCredentials):
-					self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.contract.identifier)
-					self.getData(with: newOrRefreshedCredentials)
+					self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContractId)
+					self.fetchData(with: newOrRefreshedCredentials)
 					
 				case.failure(let error):
 					self.handleError(error)
@@ -63,19 +63,19 @@ class AppleHealthSummaryViewModel: ObservableObject {
 			return
 		}
 		
-		self.getData(with: credentials)
+		self.fetchData(with: credentials)
 	}
 	
 	func cancel() {
-		isLoading = false
+		isDataLoading = false
 		showCancelOption = false
 	}
 	
 	// MARK: - Private
 	
-	private func getData(with credentials: Credentials) {
+	private func fetchData(with credentials: Credentials) {
 		var files: [File] = []
-		self.digiMe?.readAllFiles(credentials: credentials, readOptions: readOptions) { result in
+		self.digiMeService?.readAllFiles(credentials: credentials, readOptions: readOptions) { result in
 			switch result {
 			case .success(let file):
 				files.append(file)
@@ -86,7 +86,7 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		} completion: { result in
 			switch result {
 			case .success(let (fileList, refreshedCredentials)):
-				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.contract.identifier)
+				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContractId)
 				
 				if
 					let accountState = fileList.status.details?.first,
@@ -96,7 +96,7 @@ class AppleHealthSummaryViewModel: ObservableObject {
 				}
 				
 				self.process(jfs: files)
-				self.isLoading = false
+				self.isDataLoading = false
 				
 			case .failure(let error):
 				self.handleError(error)
@@ -131,14 +131,14 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		distance = DistanceFormatter.stringFormatForDistance(km: distanceCounter)
 		calories = CaloriesFormatter.stringForCaloriesValue(activeEnergyBurned)
 		if stepsCounter.isZero, distanceCounter.isZero, activeEnergyBurned.isZero {
-			startDateString = ScopeView.datePlaceholder
-			endDateString = ScopeView.datePlaceholder
+			startDateFormattedString = ScopeAddView.datePlaceholder
+			endDateFormattedString = ScopeAddView.datePlaceholder
 		}
 		else {
-			startDateString = self.formatter.string(from: responseStartDate)
-			endDateString = self.formatter.string(from: responseEndDate)
+			startDateFormattedString = self.dateFormatter.string(from: responseStartDate)
+			endDateFormattedString = self.dateFormatter.string(from: responseEndDate)
 		}
-		dataFetched = true
+		isDataFetched = true
 	}
 	
 	private func createAnchorDate(from: Date) -> Date {
@@ -157,25 +157,25 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		case .invalidSession:
 			refreshCtredentials { success in
 				if success {
-					self.fetchData(readOptions: self.readOptions)
+					self.authorize(readOptions: self.readOptions)
 				}
 			}
 		default:
-			isLoading = false
+			isDataLoading = false
 			errorMessage = error.description
 		}
 	}
 	
 	private func refreshCtredentials(_ completion: @escaping((Bool) -> Void)) {
-		guard let credentials = preferences.credentials(for: contract.identifier) else {
+		guard let credentials = preferences.getCredentials(for: activeContractId) else {
 			errorMessage = "[DigiMeSDKExample] Attempting to read data before authorizing contract"
 			return
 		}
 		
-		digiMe?.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
+		digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
 			switch result {
 			case .success(let credentials):
-				self.preferences.setCredentials(newCredentials: credentials, for: self.contract.identifier)
+				self.preferences.setCredentials(newCredentials: credentials, for: self.activeContractId)
 				completion(true)
 				
 			case .failure(let error):
@@ -191,7 +191,7 @@ extension AppleHealthSummaryViewModel {
 	/// iOS Simulator doesn't have any health data by default.
 	/// Here we create some random data.
 	func addTestData() {
-		isLoading = true
+		isDataLoading = true
 		DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(1)) { [self] in
 			var dataToWrite: [HKQuantitySample] = []
 			let startDate = Date.from(year: 2014, month: 6, day: 1, hour: 0, minute: 0, second: 0)!
@@ -222,9 +222,9 @@ extension AppleHealthSummaryViewModel {
 				counter += 1
 			}
 			
-			digiMe?.saveHealthData(dataToSave: dataToWrite) { result in
+			digiMeService?.saveHealthData(dataToSave: dataToWrite) { result in
 				DispatchQueue.main.async { [weak self] in
-					self?.isLoading = false
+					self?.isDataLoading = false
 					switch result {
 					case .success(let success):
 						self?.infoMessage = "Data is \(success ? "saved" : "NOT saved"), \(counter) samples added."
@@ -232,7 +232,7 @@ extension AppleHealthSummaryViewModel {
 						self?.errorMessage = "An error occured saving test data: \(error)"
 					}
 
-					self?.fetchData()
+					self?.authorize()
 				}
 			}
 		}

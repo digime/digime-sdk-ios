@@ -10,12 +10,13 @@ import SwiftUI
 
 struct ContractDetailsView: View {
 	@Binding var selectedContract: DigimeContract
-
-	init(contract: Binding<DigimeContract>) {
-		_selectedContract = contract
+    var contracts: [DigimeContract]
+    
+    init(selectedContract: Binding<DigimeContract>, contracts: [DigimeContract]) {
+        _selectedContract = selectedContract
+        self.contracts = contracts
 	}
-	
-	private var contracts = [Contracts.finSocMus, Contracts.fitHealth]
+    
 	var body: some View {
 		VStack {
 			List {
@@ -40,8 +41,10 @@ struct ContractDetailsView: View {
 
 struct ContractDetailsView_Previews: PreviewProvider {
 	static var previews: some View {
+        let selectedContract = Contracts.prodFinSocMus
+        let contracts = [Contracts.prodFinSocMus, Contracts.prodFitHealth]
 		NavigationView {
-			ContractDetailsView(contract: .constant(Contracts.finSocMus))
+            ContractDetailsView(selectedContract: .constant(selectedContract), contracts: contracts)
 		}
 	}
 }

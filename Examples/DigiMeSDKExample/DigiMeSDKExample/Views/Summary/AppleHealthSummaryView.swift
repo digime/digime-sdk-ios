@@ -11,40 +11,29 @@ import SwiftUI
 
 struct AppleHealthSummaryView: View {
 	@ObservedObject var viewModel: AppleHealthSummaryViewModel
-	@State private var allowScoping = false
-	@State private var showModal = false
-	@State private var showTime = false
-	@State private var selectedScopeIndex = 0
-	@State private var scopeStartDateString = ScopeView.datePlaceholder
-	@State private var scopeEndDateString = ScopeView.datePlaceholder
-	@State private var scopeStartDate: Date?
-	@State private var scopeEndDate: Date?
-	@State private var readOptions: ReadOptions?
+    @ObservedObject var scopeViewModel = ScopeViewModel()
+    
 	@State private var dialogDetent = PresentationDetent.height(200)
-	@State private var formatter: DateFormatter = {
-		let formatter = DateFormatter()
-		formatter.dateStyle = .medium
-		formatter.timeStyle = .short
-		return formatter
-	}()
-	
-	private let scopeTemplates: [ScopeTemplate] = TestScopingTemplates.defaultScopes
-	private let contract = Contracts.appleHealth
+
+	private let contract = Contracts.prodAppleHealth
 	private var fromDate: Date {
 		return Calendar.current.date(byAdding: .month, value: -1, to: Date())!
 	}
 
 	init?() {
-		guard let config = try? Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true) else {
+		guard let config = try? Configuration(appId: contract.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true) else {
 			return nil
 		}
 		
 		viewModel = AppleHealthSummaryViewModel(config: config)
+        scopeViewModel.objectTypes = [ServiceObjectType(identifier: 301, name: "Fitness Activity Summary")]
+        scopeViewModel.selectedObjectTypes = [301]
+        scopeViewModel.isObjectTypeEditingAllowed = false
 	}
 	
 	var body: some View {
-		let scopeFooterText = !allowScoping ? Text("Turn on the toggle to set the scope of mapped data using time ranges and narrow down the results.") : Text("To revert to the default contract's time range, turn off the scoping option and execute the query again.")
-		let footerText = !allowScoping ? Text("You can try turning the Scoping option On to narrow down your next request.") : Text("")
+        let scopeFooterText = !scopeViewModel.isScopeModificationAllowed ? Text("Turn on the toggle to set the scope of mapped data using time ranges and narrow down the results.") : Text("To revert to the default contract's time range, turn off the scoping option and execute the query again.")
+        let footerText = !scopeViewModel.isScopeModificationAllowed ? Text("You can try turning the Scoping option On to narrow down your next request.") : Text("")
 		ZStack {
 			List {
 				Section(header: Text("Scope"), footer: scopeFooterText) {
@@ -53,17 +42,17 @@ struct AppleHealthSummaryView: View {
 							.frame(width: 30, height: 30, alignment: .center)
 						Text("Limit your query")
 						Spacer()
-						Toggle("", isOn: $allowScoping)
-							.onChange(of: allowScoping) { value in
-								if !value {
-									self.reset()
-								}
-							}
+                        Toggle("", isOn: $scopeViewModel.isScopeModificationAllowed)
+                            .onChange(of: scopeViewModel.isScopeModificationAllowed) { value in
+                                if !value {
+                                    self.reset()
+                                }
+                            }
 					}
 					
-					if allowScoping {
+                    if scopeViewModel.isScopeModificationAllowed {
 						Button {
-							self.showModal = true
+                            self.scopeViewModel.shouldDisplayModal = true
 						} label: {
 							HStack(spacing: 40) {
 								VStack(alignment: .leading, spacing: 10) {
@@ -74,15 +63,17 @@ struct AppleHealthSummaryView: View {
 										.foregroundColor(.blue)
 										.font(.footnote)
 									
-									Text("\(scopeStartDateString) - \(scopeEndDateString)")
-										.foregroundColor(.gray)
-										.font(.footnote)
-										.onChange(of: scopeStartDate) { newValue in
-											scopeStartDateString = newValue == nil ? ScopeView.datePlaceholder : formatter.string(from: newValue!)
-										}
-										.onChange(of: scopeEndDate) { newValue in
-											scopeEndDateString = newValue == nil ? ScopeView.datePlaceholder : formatter.string(from: newValue!)
-										}
+                                    Text("\(scopeViewModel.startDateFormatString) - \(scopeViewModel.endDateFormatString)")
+                                        .foregroundColor(.gray)
+                                        .font(.footnote)
+                                        .onChange(of: scopeViewModel.startDate) { newValue in
+                                            scopeViewModel.startDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
+                                        }
+                                        .onChange(of: scopeViewModel.endDate) { newValue in
+                                            scopeViewModel.endDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
+                                        }
+                                    
+                                    ScopeObjectTypeIconView(name: "Fitness Activity Summary", size: 30)
 								}
 								.padding(.vertical, 10)
 							}
@@ -97,7 +88,7 @@ struct AppleHealthSummaryView: View {
 						HStack {
 							Text("Read Apple Health Data")
 							Spacer()
-							if viewModel.isLoading {
+							if viewModel.isDataLoading {
 								ActivityIndicator()
 									.frame(width: 20, height: 20)
 									.foregroundColor(.gray)
@@ -106,7 +97,7 @@ struct AppleHealthSummaryView: View {
 					}
 				}
 				
-				if viewModel.dataFetched && viewModel.errorMessage == nil {
+				if viewModel.isDataFetched && viewModel.errorMessage == nil {
 					Section(header: Text("Result"), footer: footerText) {
 						HStack {
 							Image(systemName: "calendar.badge.clock")
@@ -114,7 +105,7 @@ struct AppleHealthSummaryView: View {
 								.frame(width: 30, height: 30, alignment: .center)
 							Text("Start:")
 							Spacer()
-							Text(viewModel.startDateString)
+							Text(viewModel.startDateFormattedString)
 								.foregroundColor(.gray)
 						}
 						HStack {
@@ -122,7 +113,7 @@ struct AppleHealthSummaryView: View {
 								.frame(width: 30, height: 30, alignment: .center)
 							Text("End:")
 							Spacer()
-							Text(viewModel.endDateString)
+							Text(viewModel.endDateFormattedString)
 								.foregroundColor(.gray)
 						}
 						HStack {
@@ -169,9 +160,9 @@ struct AppleHealthSummaryView: View {
 				}
 #endif
 			}
-			.sheet(isPresented: $showModal) {
-				ScopeView(scopeTemplates: .constant(scopeTemplates), presentScopeView: $showModal, showTimeOption: $showTime, startDate: $scopeStartDate, endDate: $scopeEndDate, formatter: $formatter, selectedScopeIndex: $selectedScopeIndex, startDateString: $scopeStartDateString, endDateString: $scopeEndDateString)
-			}
+            .sheet(isPresented: $scopeViewModel.shouldDisplayModal) {
+                ScopeAddView(viewModel: scopeViewModel)
+            }
 		}
 		.sheet(isPresented: $viewModel.showCancelOption) {
 			withAnimation {
@@ -204,43 +195,12 @@ struct AppleHealthSummaryView: View {
 	private func queryData() {
 		viewModel.errorMessage = nil
 		viewModel.infoMessage = nil
-		viewModel.isLoading = true
-		configureReadOptions()
-		viewModel.fetchData(readOptions: readOptions)
-	}
-	
-	private func configureReadOptions() {
-		guard allowScoping else {
-			readOptions = nil
-			return
-		}
-		
-		var timeRange: TimeRange!
-		if let start = scopeStartDate, let end = scopeEndDate {
-			timeRange = TimeRange.between(from: start, to: end)
-		}
-		else if let start = scopeStartDate {
-			timeRange = TimeRange.after(from: start)
-		}
-		else if let end = scopeEndDate {
-			timeRange = TimeRange.before(to: end)
-		}
-		else {
-			readOptions = nil
-			return
-		}
-		
-		let scope = Scope(timeRanges: [timeRange])
-		readOptions = ReadOptions(scope: scope)
+		viewModel.isDataLoading = true
+        viewModel.authorize(readOptions: scopeViewModel.readOptions)
 	}
 	
 	private func reset() {
-		readOptions = nil
-		scopeStartDateString = ScopeView.datePlaceholder
-		scopeEndDateString = ScopeView.datePlaceholder
-		selectedScopeIndex = 0
-		scopeStartDate = nil
-		scopeEndDate = nil
+        scopeViewModel.resetSettings()
 	}
 }
 

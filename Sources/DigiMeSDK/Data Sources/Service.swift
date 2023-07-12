@@ -79,3 +79,9 @@ public struct Service: Codable, Identifiable {
 		case resources
     }
 }
+
+extension Service: Equatable {
+    public static func == (lhs: Service, rhs: Service) -> Bool {
+        return lhs.id == rhs.id
+    }
+}

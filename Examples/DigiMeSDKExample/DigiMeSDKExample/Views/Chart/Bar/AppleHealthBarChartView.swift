@@ -17,10 +17,10 @@ struct AppleHealthBarChartView: View {
 	@State private var readOptions: ReadOptions?
 	@State private var showModal = false
 	
-	private let contract = Contracts.appleHealth
+	private let contract = Contracts.prodAppleHealth
 	
 	init?() {
-		guard let config = try? Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true) else {
+		guard let config = try? Configuration(appId: contract.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true) else {
 			return nil
 		}
 		
@@ -78,7 +78,7 @@ struct AppleHealthBarChartView: View {
 				} label: {
 					HStack(alignment: .center, spacing: 20) {
 						Text("Request New Data")
-						if viewModel.isLoading {
+						if viewModel.isLoadingData {
 							ActivityIndicator()
 								.frame(width: 20, height: 20)
 								.foregroundColor(.white)
@@ -214,7 +214,7 @@ struct AppleHealthBarChartView: View {
 		
 	// MARK: - Actions
 	private func queryData() {
-		viewModel.isLoading = true
+		viewModel.isLoadingData = true
 		viewModel.fetchData(readOptions: readOptions)
 	}
 }

@@ -12,442 +12,457 @@ import SwiftUI
 
 @MainActor
 class ServicesViewModel: ObservableObject {
-	
-	@Published var sections: [ServiceSection] = []
-	@Published var isLoading = false
-	@Published var presentSourceSelector = false
-    @Published var showShareSheet = false
-	@Published var showCancelOption = false {
-		willSet {
-			objectWillChange.send()
-		}
-	}
-	@Published var selectServiceCompletion: ((Service) -> Void)?
-	@Published var currentContract: DigimeContract = Contracts.finSocMus {
-		didSet {
-			setContract(currentContract)
-		}
-	}
-	@Published var connectedAccounts = [ConnectedAccount]() {
-		didSet {
-			preferences.setConnectedAccounts(newAccounts: connectedAccounts, for: currentContract.identifier)
-		}
-	}
-	@Published var logs: [LogEntry] = [] {
-		didSet {
-			if let data = try? JSONEncoder().encode(logs) {
-				FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "logs_services")
-			}
-		}
-	}
-    @Published var xmlReportUrl: URL?
-    
-	var isAuthorised: Bool {
-		return preferences.credentials(for: currentContract.identifier) != nil
-	}
-	
-	private let preferences = UserPreferences.shared()
-	private var digiMe: DigiMe?
+    @AppStorage("ActiveServiceContractId") private var activeContractId: String = Contracts.development.identifier
 
-	init() {
-		do {
-			if
-				let data = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs_services"),
-				let logHistory = try? data.decoded() as [LogEntry] {
-				logs = logHistory
-			}
-			else {
-				log(message: "This is where log messages appear")
-			}
-			
-			connectedAccounts = preferences.connectedAccounts(for: currentContract.identifier)
-			
-			let config = try Configuration(appId: AppInfo.appId, contractId: currentContract.identifier, privateKey: currentContract.privateKey, authUsingExternalBrowser: true)
-			digiMe = DigiMe(configuration: config)
-		}
-		catch {
-			logError(message: "Unable to configure digi.me SDK: \(error)")
-		}
-	}
-	
-	func authorizeWithService() {
-		guard !isLoading else {
-			return
-		}
-		
-		selectService { service in
-			guard let service = service else {
-				return
-			}
-			
-			self.authorizeAndReadData(service: service)
-		}
-	}
-	
-	func reauthorize(connectedAccount: ConnectedAccount) {
-		guard !isLoading else {
-			return
-		}
-		
-		guard let credentials = preferences.credentials(for: currentContract.identifier) else {
-			isLoading = false
-			logWarning(message: "Current contract must be authorized first.")
-			return
-		}
-		
-		guard let accountId = connectedAccount.sourceAccount?.identifier else {
-			isLoading = false
-			logWarning(message: "Error extracting account id.")
-			return
-		}
-		
-		isLoading = true
-		showCancelOption = true
-		digiMe?.reauthorizeAccount(accountId: accountId, credentials: credentials) { result in
-			self.showCancelOption = false
-			switch result {
-			case .success(let newOrRefreshedCredentials):
-				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
-				self.getData(credentials: newOrRefreshedCredentials)
-				if let index = self.connectedAccounts.firstIndex(where: { $0 == connectedAccount }) {
-					self.connectedAccounts[index].requiredReauth = false
-				}
-			case .failure(let error):
-				self.isLoading = false
-				self.logError(message: "Reauthorizing \(connectedAccount.service.name) failed: \(error)")
-			}
-		}
-	}
-	
-	func addService() {
-		guard !isLoading else {
-			return
-		}
-		
-		guard let credentials = preferences.credentials(for: currentContract.identifier) else {
-			isLoading = false
-			logWarning(message: "Current contract must be authorized first.")
-			return
-		}
-		
-		isLoading = true
-		selectService { service in
-			guard let service = service else {
-				return
-			}
-			
-			self.showCancelOption = true
-			self.digiMe?.addService(identifier: service.identifier, credentials: credentials) { result in
-				self.showCancelOption = false
-				switch result {
-				case .success(let newOrRefreshedCredentials):
-					self.connectedAccounts.append(ConnectedAccount(service: service))
-					self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
-					self.getData(credentials: newOrRefreshedCredentials, readOptions: service.options)
-					
-				case.failure(let error):
-					self.isLoading = false
-					self.logError(message: "Adding \(service.name) failed: \(error)")
-				}
-			}
-		}
-	}
-	
-	func refreshData() {
-		guard !isLoading else {
-			return
-		}
-		
-		guard let credentials = preferences.credentials(for: currentContract.identifier) else {
-			isLoading = false
-			logWarning(message: "Current contract must be authorized first.")
-			return
-		}
-		
-		isLoading = true
-		requestDataQuery(credentials: credentials) { [weak self] refreshedCredentials in
-			self?.getServiceData(credentials: refreshedCredentials)
-		}
-	}
+    @Published var activeContract: DigimeContract = Contracts.development {
+        didSet {
+            updateContract(activeContract)
+        }
+    }
+    @Published var serviceSections: [ServiceSection] = []
+    @Published var linkedAccounts = [LinkedAccount]() {
+        didSet {
+            userPreferences.setLinkedAccounts(newAccounts: linkedAccounts, for: activeContract.identifier)
+        }
+    }
+    @Published var logEntries: [LogEntry] = [] {
+        didSet {
+            if let data = try? logEntries.encoded(dateEncodingStrategy: .millisecondsSince1970) {
+                FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "logs_services")
+            }
+        }
+    }
+    @Published var xmlReportURL: URL?
+    @Published var isLoadingData = false
+    @Published var shouldDisplaySourceSelector = false
+    @Published var shouldDisplayScopeFilterView = false
+    @Published var shouldDisplayShareSheet = false
+    @Published var shouldDisplayCancelButton = false {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+    @Published var serviceSelectionCompletionHandler: ((Service) -> Void)?
 
-	func showContractDetails() {
-		guard !isLoading else {
-			return
-		}
-		
-		isLoading = true
-		digiMe?.contractDetails { result in
-			self.isLoading = false
-			switch result {
-			case .success(let certificate):
-				self.log(message: "Contract details:", attachmentType: LogEntry.AttachmentType.json, attachment: try? certificate.encoded())
-			case .failure(let error):
-				self.logError(message: "Unable to retrieve contract details: \(error)")
-			}
-		}
-	}
-	
-	func deleteUser() {
-		guard let credentials = preferences.credentials(for: currentContract.identifier) else {
-			self.isLoading = false
-			self.logWarning(message: "Contract must be authorized first.")
-			return
-		}
-		
-		isLoading = true
-		digiMe?.deleteUser(credentials: credentials) { error in
-			self.isLoading = false
-			if let error = error {
-				self.logError(message: error.description)
-			}
-			else {
-				self.preferences.clearCredentials(for: self.currentContract.identifier)
-				DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-					self.logs = []
-					self.connectedAccounts = []
-					self.preferences.reset()
-					self.log(message: "Your user entry and the library deleted successfully")
-				}
-			}
-		}
-	}
+    var isAuthorized: Bool {
+        return userPreferences.getCredentials(for: activeContract.identifier) != nil
+    }
+
+    var contracts = [
+        Contracts.prodFinSocMus,
+        Contracts.prodFitHealth,
+        Contracts.development,
+        Contracts.integration,
+        Contracts.staging,
+        Contracts.test05,
+        Contracts.test08,
+    ]
+
+    private let userPreferences = UserPreferences.shared()
     
-    func loadReport(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval) {
-        guard let credentials = preferences.credentials(for: currentContract.identifier) else {
-            self.isLoading = false
-            self.logWarning(message: "Contract must be authorized first.")
+    private var digiMeService: DigiMe?
+    
+    init() {
+        do {
+            if
+                let logData = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs_services"),
+                let savedLogEntries = try? logData.decoded(dateDecodingStrategy: .millisecondsSince1970) as [LogEntry] {
+                logEntries = savedLogEntries
+            }
+            else {
+                logMessage("This is where log messages appear")
+            }
+            
+            linkedAccounts = userPreferences.getLinkedAccounts(for: activeContract.identifier)
+            
+            let sdkConfig = try Configuration(appId: activeContract.appId, contractId: activeContract.identifier, privateKey: activeContract.privateKey, authUsingExternalBrowser: true, baseUrl: activeContract.baseURL)
+            digiMeService = DigiMe(configuration: sdkConfig)
+        }
+        catch {
+            logErrorMessage("Unable to configure digi.me SDK: \(error)")
+        }
+    }
+
+    func authorizeSelectedService() {
+        guard !isLoadingData else {
+            return
+        }
+        
+        chooseService { selectedService in
+            guard let selectedService = selectedService else {
+                return
+            }
+            
+            self.authenticateAndFetchData(service: selectedService)
+        }
+    }
+
+    func reauthorizeAccount(connectedAccount: LinkedAccount) {
+        guard !isLoadingData else {
+            return
+        }
+        
+        guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
+            isLoadingData = false
+            logWarningMessage("Current contract must be authorized first.")
+            return
+        }
+        
+        guard let accountId = connectedAccount.sourceAccount?.identifier else {
+            isLoadingData = false
+            logWarningMessage("Error extracting account id.")
+            return
+        }
+        
+        isLoadingData = true
+        shouldDisplayCancelButton = true
+        digiMeService?.reauthorizeAccount(accountId: accountId, credentials: accountCredentials) { reauthResult in
+            self.shouldDisplayCancelButton = false
+            switch reauthResult {
+            case .success(let refreshedCredentials):
+                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+                self.fetchData(credentials: refreshedCredentials)
+                if let index = self.linkedAccounts.firstIndex(where: { $0 == connectedAccount }) {
+                    self.linkedAccounts[index].requiredReauth = false
+                }
+            case .failure(let error):
+                self.isLoadingData = false
+                self.logErrorMessage("Reauthorizing \(connectedAccount.service.name) failed: \(error)")
+            }
+        }
+    }
+
+    func addNewService() {
+        guard !isLoadingData else {
+            return
+        }
+        
+        guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
+            isLoadingData = false
+            logWarningMessage("Current contract must be authorized first.")
+            return
+        }
+        
+        isLoadingData = true
+        chooseService { selectedService in
+            guard let selectedService = selectedService else {
+                return
+            }
+            
+            self.shouldDisplayCancelButton = true
+            self.digiMeService?.addService(identifier: selectedService.identifier, credentials: accountCredentials) { addServiceResult in
+                self.shouldDisplayCancelButton = false
+                switch addServiceResult {
+                case .success(let refreshedCredentials):
+                    self.linkedAccounts.append(LinkedAccount(service: selectedService))
+                    self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+                    self.fetchData(credentials: refreshedCredentials, readOptions: selectedService.options)
+                    
+                case.failure(let error):
+                    self.isLoadingData = false
+                    self.logErrorMessage("Adding \(selectedService.name) failed: \(error)")
+                }
+            }
+        }
+    }
+    
+    func reloadServiceData(readOptions: ReadOptions? = nil) {
+        guard !isLoadingData else {
+            return
+        }
+        
+        guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
+            isLoadingData = false
+            logWarningMessage("Current contract must be authorized first.")
+            return
+        }
+        
+        isLoadingData = true
+        requestDataFetch(credentials: accountCredentials, readOptions: readOptions) { [weak self] refreshedCredentials in
+            self?.fetchServiceData(credentials: refreshedCredentials, readOptions: readOptions)
+        }
+    }
+
+    func displayContractDetails() {
+        guard !isLoadingData else {
+            return
+        }
+        
+        isLoadingData = true
+        digiMeService?.contractDetails { result in
+            self.isLoadingData = false
+            switch result {
+            case .success(let certificate):
+                self.logMessage("Contract details:", attachmentType: LogEntry.AttachmentType.json, attachment: try? certificate.encoded())
+            case .failure(let error):
+                self.logErrorMessage("Unable to retrieve contract details: \(error)")
+            }
+        }
+    }
+
+    func removeUser() {
+        guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
+            self.isLoadingData = false
+            self.logWarningMessage("Contract must be authorized first.")
+            return
+        }
+        
+        isLoadingData = true
+        digiMeService?.deleteUser(credentials: accountCredentials) { error in
+            self.isLoadingData = false
+            if let error = error {
+                self.logErrorMessage(error.description)
+            }
+            else {
+                self.userPreferences.clearCredentials(for: self.activeContract.identifier)
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                    self.logEntries = []
+                    self.linkedAccounts = []
+                    self.userPreferences.reset()
+                    self.logMessage("Your user entry and the library deleted successfully")
+                }
+            }
+        }
+    }
+
+    func fetchReport(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval) {
+        guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
+            self.isLoadingData = false
+            self.logWarningMessage("Contract must be authorized first.")
             return
         }
 
-        isLoading = true
-        digiMe?.exportData(for: serviceTypeName, format: format, from: from, to: to, credentials: credentials) { result in
-            self.isLoading = false
+        isLoadingData = true
+        digiMeService?.exportPortabilityReport(for: serviceTypeName, format: format, from: from, to: to, credentials: accountCredentials) { result in
+            self.isLoadingData = false
             switch result {
             case .success(let data):
                 let fileName = "Report_\(serviceTypeName)_\(Date().description).\(format)"
                 FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: fileName) { url in
                     guard let url = url else {
-                        self.logError(message: "An error occured storing '\(fileName)' file")
+                        self.logErrorMessage("An error occured storing '\(fileName)' file")
                         return
                     }
-                    self.xmlReportUrl = url
-                    self.log(message: "Report successfully shared.")
-                    self.showShareSheet = true
+                    self.xmlReportURL = url
+                    self.logMessage("Report successfully shared.")
+                    self.shouldDisplayShareSheet = true
                 }
 
             case .failure(let error):
-                self.logError(message: "Error requesting data export: \(error)")
+                self.logErrorMessage("Error requesting data export: \(error)")
             }
         }
     }
-	
-	func cancel() {
-		isLoading = false
-		showCancelOption = false
-		logWarning(message: "Data retrieval was cancelled by the user.")
-	}
-	
-	// MARK: - Logs
-	
-	func log(message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
-		DispatchQueue.main.async {
-			withAnimation {
-				self.logs.append(LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped))
-			}
-		}
-	}
-	
-	func logWarning(message: String) {
-		DispatchQueue.main.async {
-			withAnimation {
-				self.logs.append(LogEntry(state: .warning, message: message))
-			}
-		}
-	}
-	
-	func logError(message: String) {
-		DispatchQueue.main.async {
-			withAnimation {
-				self.logs.append(LogEntry(state: .error, message: message))
-			}
-		}
-	}
-	
-	// MARK: - Private
 
-	private func setContract(_ contract: DigimeContract) {
-		connectedAccounts = preferences.connectedAccounts(for: contract.identifier)
-		
-		do {
-			let config = try Configuration(appId: AppInfo.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true)
-			digiMe = DigiMe(configuration: config)
-		}
-		catch {
-			logError(message: "Unable to configure digi.me SDK: \(error)")
-		}
-	}
+    func stopFetchingData() {
+        isLoadingData = false
+        shouldDisplayCancelButton = false
+        logWarningMessage("Data retrieval was cancelled by the user.")
+    }
 	
-	private func authorizeAndReadData(service: Service) {
-		let credentials = preferences.credentials(for: currentContract.identifier)
-		
-		isLoading = true
-		showCancelOption = true
-		
-		digiMe?.authorize(credentials: credentials, serviceId: service.identifier, readOptions: service.options) { result in
-			self.showCancelOption = false
-			
-			switch result {
-			case .success(let newOrRefreshedCredentials):
-				self.log(message: "Contract authorised successfully for service id: \(service.identifier)")
-				self.connectedAccounts.append(ConnectedAccount(service: service))
-				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.currentContract.identifier)
-				self.getData(credentials: newOrRefreshedCredentials, readOptions: service.options)
-				
-			case.failure(let error):
-				self.isLoading = false
-				self.logError(message: "Authorization failed: \(error)")
-			}
-		}
-	}
-	
-	private func selectService(completion: @escaping ((Service?) -> Void)) {
-		isLoading = true
-		digiMe?.availableServices(contractId: currentContract.identifier, filterAvailable: false) { result in
-			self.isLoading = false
-			switch result {
-			case .success(let servicesInfo):
-				self.selectServiceCompletion = completion
-				self.fillSections(servicesInfo: servicesInfo)
-				self.presentSourceSelector = true
-				return
-			case .failure(let error):
-				self.logError(message: "Unable to retrieve services: \(error)")
-			}
-		}
-	}
-	
-	private func fillSections(servicesInfo: ServicesInfo) {
-		let services = servicesInfo.services
-		
-		let serviceGroupIds = Set(services.flatMap { $0.serviceGroupIds })
-		let serviceGroups = servicesInfo.serviceGroups.filter { serviceGroupIds.contains($0.identifier) }
-		
-		var sections = [ServiceSection]()
-		serviceGroups.forEach { group in
-			let items = services
-				.filter { $0.serviceGroupIds.contains(group.identifier) }
-				.sorted { $0.name < $1.name }
-			sections.append(ServiceSection(serviceGroupId: group.identifier, title: group.name, items: items))
-		}
-		
-		sections.sort { $0.serviceGroupId < $1.serviceGroupId }
-		self.sections = sections
-	}
-	
-	private func getData(credentials: Credentials, readOptions: ReadOptions? = nil) {
-		isLoading = true
-		getAccounts(credentials: credentials) { updatedCredentials in
-			self.getServiceData(credentials: updatedCredentials, readOptions: readOptions)
-			self.isLoading = false
-		}
-	}
-	
-	private func getAccounts(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
-		isLoading = true
-		digiMe?.readAccounts(credentials: credentials) { result in
-			switch result {
-			case .success(let accountsInfo):
-				self.log(message: "Accounts info retrieved successfully")
-				self.addAccountInfo(accounts: accountsInfo.accounts)
-				completion(credentials)
-			case .failure(let error):
-				if case .failure(.invalidSession) = result {
-					// Need to create a new session
-					self.requestDataQuery(credentials: credentials) { refreshedCredentials in
-						self.getAccounts(credentials: refreshedCredentials, completion: completion)
-					}
-					return
-				}
-				
-				self.logError(message: "Error retrieving accounts: \(error)")
-			}
-		}
-	}
-	
-	private func requestDataQuery(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
-		digiMe?.requestDataQuery(credentials: credentials, readOptions: nil) { result in
-			switch result {
-			case .success(let refreshedCredentials):
-				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.currentContract.identifier)
-				completion(refreshedCredentials)
-				
-			case.failure(let error):
-				self.isLoading = false
-				self.logError(message: "Authorization failed: \(error)")
-			}
-		}
-	}
+    // MARK: - Logs
 
-	private func getServiceData(credentials: Credentials, readOptions: ReadOptions? = nil) {
-		isLoading = true
-		digiMe?.readAllFiles(credentials: credentials, readOptions: nil, resultQueue: .global()) { result in
-			switch result {
-			case .success(let fileContainer):
+    func logMessage(_ message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
+        DispatchQueue.main.async {
+            withAnimation {
+                let entry = LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped)
+                self.logEntries.append(entry)
+            }
+        }
+    }
 
-				switch fileContainer.metadata {
-				case .mapped(let metadata):
-					self.log(message: "Downloaded mapped file \(fileContainer.identifier).", attachmentType: .jfs, attachment: fileContainer.data, metadataMapped: try? metadata.encoded())
-				case .raw(let metadata):
-					self.log(message: "Downloaded unmapped file \(fileContainer.identifier). File size: \(fileContainer.data.count) bytes.", attachmentType: LogEntry.mapped(mimeType: metadata.mimeType), attachment: fileContainer.data, metadataRaw: try? metadata.encoded())
-				default:
-					self.logError(message: "Error reading file 'Unexpected metadata'")
-				}
-								
-				if !fileContainer.data.isEmpty {
-					FilePersistentStorage(with: .documentDirectory).store(data: fileContainer.data, fileName: fileContainer.identifier)
-				}
-				
-			case .failure(let error):
-				self.logError(message: "Error reading file: \(error)")
-			}
-		} completion: { result in
-			DispatchQueue.main.async {
-				self.isLoading = false
-			}
-			switch result {
-			case .success(let (fileList, refreshedCredentials)):
-				if
-					let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }),
-					!reauthAccounts.isEmpty {
-					
-					self.updateReauthStatus(reauthAccounts: reauthAccounts)
-				}
-				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.currentContract.identifier)
-				self.log(message: "Finished reading files. Total files \(fileList.files?.count ?? 0)")
+    func logWarningMessage(_ message: String) {
+        DispatchQueue.main.async {
+            withAnimation {
+                self.logEntries.append(LogEntry(state: .warning, message: message))
+            }
+        }
+    }
 
-			case .failure(let error):
-				self.logError(message: "Error reading files: \(error)")
-			}
-		}
-	}
-	
-	private func addAccountInfo(accounts: [SourceAccount]) {
-		DispatchQueue.main.async {
-			accounts.forEach { newAccount in
-				if let index = self.connectedAccounts.firstIndex(where: { $0.service.name == newAccount.service.name && $0.sourceAccount == nil }) {
-					self.connectedAccounts[index].sourceAccount = newAccount
-				}
-			}
-		}
-	}
-	
-	private func updateReauthStatus(reauthAccounts: [SyncAccount]) {
-		DispatchQueue.main.async {
-			reauthAccounts.forEach { reauth in
-				if let index = self.connectedAccounts.firstIndex(where: { ($0.sourceAccount?.identifier ?? "") == reauth.identifier && !$0.requiredReauth }) {
-					self.connectedAccounts[index].requiredReauth = true
-				}
-			}
-		}
-	}
+    func logErrorMessage(_ message: String) {
+        DispatchQueue.main.async {
+            withAnimation {
+                self.logEntries.append(LogEntry(state: .error, message: message))
+            }
+        }
+    }
+
+    // MARK: - Private
+
+    private func updateContract(_ contract: DigimeContract) {
+        linkedAccounts = userPreferences.getLinkedAccounts(for: contract.identifier)
+        activeContractId = contract.identifier
+        do {
+            let config = try Configuration(appId: contract.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true, baseUrl: contract.baseURL)
+            digiMeService = DigiMe(configuration: config)
+        }
+        catch {
+            logErrorMessage("Unable to configure digi.me SDK: \(error)")
+        }
+    }
+
+    private func authenticateAndFetchData(service: Service) {
+        let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier)
+        
+        isLoadingData = true
+        shouldDisplayCancelButton = true
+        
+        digiMeService?.authorize(credentials: accountCredentials, serviceId: service.identifier, readOptions: service.options) { result in
+            self.shouldDisplayCancelButton = false
+            
+            switch result {
+            case .success(let newOrRefreshedCredentials):
+                self.logMessage("Contract authorised successfully for service id: \(service.identifier)")
+                self.linkedAccounts.append(LinkedAccount(service: service))
+                self.userPreferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContract.identifier)
+                self.fetchData(credentials: newOrRefreshedCredentials, readOptions: service.options)
+                
+            case.failure(let error):
+                self.isLoadingData = false
+                self.logErrorMessage("Authorization failed: \(error)")
+            }
+        }
+    }
+
+    private func chooseService(completion: @escaping ((Service?) -> Void)) {
+        isLoadingData = true
+        digiMeService?.availableServices(contractId: activeContract.identifier, filterAvailable: false) { result in
+            self.isLoadingData = false
+            switch result {
+            case .success(let serviceInfo):
+                self.serviceSelectionCompletionHandler = completion
+                self.populateSections(serviceInfo: serviceInfo)
+                self.shouldDisplaySourceSelector = true
+                return
+            case .failure(let error):
+                self.logErrorMessage("Unable to retrieve services: \(error)")
+            }
+        }
+    }
+
+    private func populateSections(serviceInfo: ServicesInfo) {
+        let services = serviceInfo.services
+        
+        let serviceGroupIds = Set(services.flatMap { $0.serviceGroupIds })
+        let serviceGroups = serviceInfo.serviceGroups.filter { serviceGroupIds.contains($0.identifier) }
+        
+        var sections = [ServiceSection]()
+        serviceGroups.forEach { group in
+            let items = services
+                .filter { $0.serviceGroupIds.contains(group.identifier) }
+                .sorted { $0.name < $1.name }
+            sections.append(ServiceSection(serviceGroupId: group.identifier, title: group.name, items: items))
+        }
+        
+        sections.sort { $0.serviceGroupId < $1.serviceGroupId }
+        self.serviceSections = sections
+        userPreferences.servicesInfo = serviceInfo
+    }
+
+    private func fetchData(credentials: Credentials, readOptions: ReadOptions? = nil) {
+        isLoadingData = true
+        fetchAccounts(credentials: credentials) { updatedCredentials in
+            self.fetchServiceData(credentials: updatedCredentials, readOptions: readOptions)
+            self.isLoadingData = false
+        }
+    }
+
+    private func fetchAccounts(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
+        isLoadingData = true
+        digiMeService?.readAccounts(credentials: credentials) { result in
+            switch result {
+            case .success(let accountDetails):
+                self.logMessage("Accounts info retrieved successfully")
+                self.addAccountDetails(accounts: accountDetails.accounts)
+                completion(credentials)
+            case .failure(let error):
+                if case .failure(.invalidSession) = result {
+                    // Need to create a new session
+                    self.requestDataFetch(credentials: credentials) { refreshedCredentials in
+                        self.fetchAccounts(credentials: refreshedCredentials, completion: completion)
+                    }
+                    return
+                }
+                
+                self.logErrorMessage("Error retrieving accounts: \(error)")
+            }
+        }
+    }
+
+    private func requestDataFetch(credentials: Credentials, readOptions: ReadOptions? = nil, completion: @escaping (Credentials) -> Void) {
+        digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+                completion(refreshedCredentials)
+                
+            case.failure(let error):
+                self.isLoadingData = false
+                self.logErrorMessage("Authorization failed: \(error)")
+            }
+        }
+    }
+
+    private func fetchServiceData(credentials: Credentials, readOptions: ReadOptions? = nil) {
+        isLoadingData = true
+        digiMeService?.readAllFiles(credentials: credentials, readOptions: readOptions, resultQueue: .global()) { result in
+            switch result {
+            case .success(let fileContainer):
+
+                switch fileContainer.metadata {
+                case .mapped(let metadata):
+                    self.logMessage("Downloaded mapped file \(fileContainer.identifier).", attachmentType: .jfs, attachment: fileContainer.data, metadataMapped: try? metadata.encoded())
+                case .raw(let metadata):
+                    self.logMessage("Downloaded unmapped file \(fileContainer.identifier). File size: \(fileContainer.data.count) bytes.", attachmentType: LogEntry.mapped(mimeType: metadata.mimeType), attachment: fileContainer.data, metadataRaw: try? metadata.encoded())
+                default:
+                    self.logErrorMessage("Error reading file 'Unexpected metadata'")
+                }
+                                
+                if !fileContainer.data.isEmpty {
+                    FilePersistentStorage(with: .documentDirectory).store(data: fileContainer.data, fileName: fileContainer.identifier)
+                }
+                
+            case .failure(let error):
+                self.logErrorMessage("Error reading file: \(error)")
+            }
+        } completion: { result in
+            DispatchQueue.main.async {
+                self.isLoadingData = false
+            }
+            switch result {
+            case .success(let (fileList, refreshedCredentials)):
+                if
+                    let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }),
+                    !reauthAccounts.isEmpty {
+                    
+                    self.updateReauthenticationStatus(reauthAccounts: reauthAccounts)
+                }
+                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+                self.logMessage("Finished reading files. Total files \(fileList.files?.count ?? 0)")
+
+            case .failure(let error):
+                self.logErrorMessage("Error reading files: \(error)")
+            }
+        }
+    }
+
+    private func addAccountDetails(accounts: [SourceAccount]) {
+        DispatchQueue.main.async {
+            accounts.forEach { newAccount in
+                if let index = self.linkedAccounts.firstIndex(where: { $0.service.name == newAccount.service.name && $0.sourceAccount == nil }) {
+                    self.linkedAccounts[index].sourceAccount = newAccount
+                }
+            }
+        }
+    }
+
+    private func updateReauthenticationStatus(reauthAccounts: [SyncAccount]) {
+        DispatchQueue.main.async {
+            reauthAccounts.forEach { reauth in
+                if let index = self.linkedAccounts.firstIndex(where: { ($0.sourceAccount?.identifier ?? "") == reauth.identifier && !$0.requiredReauth }) {
+                    self.linkedAccounts[index].requiredReauth = true
+                }
+            }
+        }
+    }
 }

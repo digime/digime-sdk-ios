@@ -21,6 +21,7 @@
 		1E1DC11C29ABA6B300B827E3 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11B29ABA6B300B827E3 /* Section.swift */; };
 		1E1DC11E29ABA6E700B827E3 /* GroupObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */; };
 		1E32B96729A4E3590013B1C1 /* ServicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */; };
+		1E3653B42A1D23D000F0FFA5 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3653B32A1D23D000F0FFA5 /* PDFKitView.swift */; };
 		1E47A0E5298D25EF0081A2C5 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */; };
 		1E47A0E9298D420E0081A2C5 /* ChartTimeRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0E8298D420E0081A2C5 /* ChartTimeRangePicker.swift */; };
 		1E47A0EB298FCE060081A2C5 /* TestDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0EA298FCE060081A2C5 /* TestDataSet.swift */; };
@@ -35,8 +36,12 @@
 		1E49021027D9155000F13D29 /* HealthDataTypeValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020E27D9155000F13D29 /* HealthDataTypeValue.swift */; };
 		1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49020F27D9155000F13D29 /* ServerResponse.swift */; };
 		1E49021427D918FC00F13D29 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E49021327D918FC00F13D29 /* HealthKit.framework */; };
-		1E4C939B297EF4D300195E58 /* ScopeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4C939A297EF4D200195E58 /* ScopeView.swift */; };
+		1E4C939B297EF4D300195E58 /* ScopeAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4C939A297EF4D200195E58 /* ScopeAddView.swift */; };
 		1E56030729A3759A007AC2FF /* LogDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E56030629A3759A007AC2FF /* LogDetailsView.swift */; };
+		1E61E83E2A0BB6B300EDD3D7 /* ScopeTimeRangeTemplatesRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E61E83D2A0BB6B300EDD3D7 /* ScopeTimeRangeTemplatesRow.swift */; };
+		1E61E88F2A0D0E9C00EDD3D7 /* ScopeDateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E61E88E2A0D0E9C00EDD3D7 /* ScopeDateButton.swift */; };
+		1E61E8912A0D0F2A00EDD3D7 /* ScopeServiceObjectTypesRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E61E8902A0D0F2A00EDD3D7 /* ScopeServiceObjectTypesRow.swift */; };
+		1E61E8932A0D10DF00EDD3D7 /* ScopeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E61E8922A0D10DF00EDD3D7 /* ScopeEditView.swift */; };
 		1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E717C2861AA1000E7954E /* UserPreferences.swift */; };
 		1E6E71B22862FE8600E7954E /* ChartStatementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E71B12862FE8600E7954E /* ChartStatementView.swift */; };
 		1E7B414E29A3925D00F7B5B4 /* JSONTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7B414B29A3925C00F7B5B4 /* JSONTreeView.swift */; };
@@ -48,8 +53,12 @@
 		1E811D95299FEECC00EC80B0 /* WriteDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E811D94299FEECC00EC80B0 /* WriteDataViewModel.swift */; };
 		1E811D9929A017E700EC80B0 /* LineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E811D9829A017E700EC80B0 /* LineChartView.swift */; };
 		1E811D9C29A0233F00EC80B0 /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E811D9B29A0233F00EC80B0 /* LogEntry.swift */; };
-		1E864C2029BA5631005BA921 /* ConnectedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E864C1F29BA5631005BA921 /* ConnectedAccount.swift */; };
+		1E864C2029BA5631005BA921 /* LinkedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E864C1F29BA5631005BA921 /* LinkedAccount.swift */; };
 		1E87223929A5633E00418DE1 /* ContractDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E87223829A5633E00418DE1 /* ContractDetailsView.swift */; };
+		1E8B62A12A0D6C2B00FC0FC6 /* ScopeObjectTypesGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8B62A02A0D6C2B00FC0FC6 /* ScopeObjectTypesGridView.swift */; };
+		1EA4CFEC2A0280F100A2493A /* TimeRangeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4CFEB2A0280F100A2493A /* TimeRangeTemplate.swift */; };
+		1EA4CFEE2A0281B300A2493A /* ScopeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4CFED2A0281B300A2493A /* ScopeViewModel.swift */; };
+		1EA4CFF02A04CAD900A2493A /* ScopeObjectTypeIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4CFEF2A04CAD900A2493A /* ScopeObjectTypeIconView.swift */; };
 		1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */; };
 		1EA52DAF2987A42E00A61213 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52DAE2987A42E00A61213 /* HomeView.swift */; };
 		1EA5A1A929A3DD8100A9DB5A /* HighlightedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA5A1A829A3DD8100A9DB5A /* HighlightedTextView.swift */; };
@@ -60,6 +69,7 @@
 		1ED4CA2729D3783400C9874B /* ReportDateManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */; };
 		1ED4CA2F29D4356C00C9874B /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4CA2E29D4356C00C9874B /* BlurView.swift */; };
 		1EE0FA3F29D04B900084F5ED /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */; };
+		1EE6FAF22A13F7A900796505 /* ScopeLimitsDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE6FAF12A13F7A900796505 /* ScopeLimitsDetailsView.swift */; };
 		1EED5A2E29BF9C3600B3F544 /* ActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED5A2D29BF9C3600B3F544 /* ActionView.swift */; };
 		1EEE0EC629BE5267004FA4D0 /* BallScaleRippleMultiple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEE0EC529BE5267004FA4D0 /* BallScaleRippleMultiple.swift */; };
 		1EEE0EC829BE54A1004FA4D0 /* KeyframeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEE0EC729BE54A1004FA4D0 /* KeyframeAnimation.swift */; };
@@ -100,6 +110,7 @@
 		1E1DC11B29ABA6B300B827E3 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupObjectType.swift; sourceTree = "<group>"; };
 		1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesViewModel.swift; sourceTree = "<group>"; };
+		1E3653B32A1D23D000F0FFA5 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
 		1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		1E47A0E8298D420E0081A2C5 /* ChartTimeRangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTimeRangePicker.swift; sourceTree = "<group>"; };
 		1E47A0EA298FCE060081A2C5 /* TestDataSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestDataSet.swift; sourceTree = "<group>"; };
@@ -115,8 +126,12 @@
 		1E49020F27D9155000F13D29 /* ServerResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
 		1E49021227D918FC00F13D29 /* DigiMeSDKExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigiMeSDKExample.entitlements; sourceTree = "<group>"; };
 		1E49021327D918FC00F13D29 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		1E4C939A297EF4D200195E58 /* ScopeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeView.swift; sourceTree = "<group>"; };
+		1E4C939A297EF4D200195E58 /* ScopeAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeAddView.swift; sourceTree = "<group>"; };
 		1E56030629A3759A007AC2FF /* LogDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogDetailsView.swift; sourceTree = "<group>"; };
+		1E61E83D2A0BB6B300EDD3D7 /* ScopeTimeRangeTemplatesRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeTimeRangeTemplatesRow.swift; sourceTree = "<group>"; };
+		1E61E88E2A0D0E9C00EDD3D7 /* ScopeDateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeDateButton.swift; sourceTree = "<group>"; };
+		1E61E8902A0D0F2A00EDD3D7 /* ScopeServiceObjectTypesRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeServiceObjectTypesRow.swift; sourceTree = "<group>"; };
+		1E61E8922A0D10DF00EDD3D7 /* ScopeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeEditView.swift; sourceTree = "<group>"; };
 		1E66044627F49CA800A18292 /* CareKitUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CareKitUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E6E717C2861AA1000E7954E /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		1E6E71B12862FE8600E7954E /* ChartStatementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStatementView.swift; sourceTree = "<group>"; };
@@ -129,8 +144,12 @@
 		1E811D94299FEECC00EC80B0 /* WriteDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteDataViewModel.swift; sourceTree = "<group>"; };
 		1E811D9829A017E700EC80B0 /* LineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChartView.swift; sourceTree = "<group>"; };
 		1E811D9B29A0233F00EC80B0 /* LogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
-		1E864C1F29BA5631005BA921 /* ConnectedAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectedAccount.swift; sourceTree = "<group>"; };
+		1E864C1F29BA5631005BA921 /* LinkedAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedAccount.swift; sourceTree = "<group>"; };
 		1E87223829A5633E00418DE1 /* ContractDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractDetailsView.swift; sourceTree = "<group>"; };
+		1E8B62A02A0D6C2B00FC0FC6 /* ScopeObjectTypesGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeObjectTypesGridView.swift; sourceTree = "<group>"; };
+		1EA4CFEB2A0280F100A2493A /* TimeRangeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangeTemplate.swift; sourceTree = "<group>"; };
+		1EA4CFED2A0281B300A2493A /* ScopeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeViewModel.swift; sourceTree = "<group>"; };
+		1EA4CFEF2A04CAD900A2493A /* ScopeObjectTypeIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeObjectTypeIconView.swift; sourceTree = "<group>"; };
 		1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryViewModel.swift; sourceTree = "<group>"; };
 		1EA52DAE2987A42E00A61213 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		1EA5A1A829A3DD8100A9DB5A /* HighlightedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightedTextView.swift; sourceTree = "<group>"; };
@@ -141,6 +160,7 @@
 		1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDateManagerView.swift; sourceTree = "<group>"; };
 		1ED4CA2E29D4356C00C9874B /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
+		1EE6FAF12A13F7A900796505 /* ScopeLimitsDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeLimitsDetailsView.swift; sourceTree = "<group>"; };
 		1EED5A2D29BF9C3600B3F544 /* ActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionView.swift; sourceTree = "<group>"; };
 		1EEE0EC529BE5267004FA4D0 /* BallScaleRippleMultiple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallScaleRippleMultiple.swift; sourceTree = "<group>"; };
 		1EEE0EC729BE54A1004FA4D0 /* KeyframeAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyframeAnimation.swift; sourceTree = "<group>"; };
@@ -208,8 +228,14 @@
 		1E0E136F298D1A0D00F1A813 /* Scope */ = {
 			isa = PBXGroup;
 			children = (
-				1E4C939A297EF4D200195E58 /* ScopeView.swift */,
-				1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */,
+				1E4C939A297EF4D200195E58 /* ScopeAddView.swift */,
+				1E61E8922A0D10DF00EDD3D7 /* ScopeEditView.swift */,
+				1EE6FAF12A13F7A900796505 /* ScopeLimitsDetailsView.swift */,
+				1E61E88E2A0D0E9C00EDD3D7 /* ScopeDateButton.swift */,
+				1EA4CFEF2A04CAD900A2493A /* ScopeObjectTypeIconView.swift */,
+				1E61E8902A0D0F2A00EDD3D7 /* ScopeServiceObjectTypesRow.swift */,
+				1E61E83D2A0BB6B300EDD3D7 /* ScopeTimeRangeTemplatesRow.swift */,
+				1E8B62A02A0D6C2B00FC0FC6 /* ScopeObjectTypesGridView.swift */,
 			);
 			path = Scope;
 			sourceTree = "<group>";
@@ -227,6 +253,7 @@
 			children = (
 				1E7B414A29A3925C00F7B5B4 /* JSONPreview */,
 				1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */,
+				1E3653B32A1D23D000F0FFA5 /* PDFKitView.swift */,
 				1ED4CA2E29D4356C00C9874B /* BlurView.swift */,
 				1E4901E127D9112200F13D29 /* Logger.swift */,
 				1EEE0EC529BE5267004FA4D0 /* BallScaleRippleMultiple.swift */,
@@ -248,6 +275,7 @@
 		1E4901DE27D9105F00F13D29 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */,
 				1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */,
 				1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */,
 				1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */,
@@ -292,16 +320,10 @@
 				1E1DC11929ABA61900B827E3 /* ChartSeries.swift */,
 				1E1DC11B29ABA6B300B827E3 /* Section.swift */,
 				1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */,
-				1E864C1F29BA5631005BA921 /* ConnectedAccount.swift */,
+				1E864C1F29BA5631005BA921 /* LinkedAccount.swift */,
+				1EA4CFEB2A0280F100A2493A /* TimeRangeTemplate.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		1E66044C27F4A2C400A18292 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 		1E7B414A29A3925C00F7B5B4 /* JSONPreview */ = {
@@ -357,6 +379,7 @@
 				1E0E131F298BE0BB00F1A813 /* AppleHealthChartViewModel.swift */,
 				1E811D94299FEECC00EC80B0 /* WriteDataViewModel.swift */,
 				1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */,
+				1EA4CFED2A0281B300A2493A /* ScopeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -364,7 +387,6 @@
 		27D31A17266A4EAB00DB2524 = {
 			isa = PBXGroup;
 			children = (
-				1E66044C27F4A2C400A18292 /* Packages */,
 				27D31A22266A4EAB00DB2524 /* DigiMeSDKExample */,
 				27D31A39266A4EAD00DB2524 /* DigiMeSDKExampleTests */,
 				27D31A21266A4EAB00DB2524 /* Products */,
@@ -501,8 +523,9 @@
 		27D31A18266A4EAB00DB2524 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "digi.me Limited";
 				TargetAttributes = {
 					27D31A1F266A4EAB00DB2524 = {
@@ -643,6 +666,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E61E88F2A0D0E9C00EDD3D7 /* ScopeDateButton.swift in Sources */,
 				1E1DC11C29ABA6B300B827E3 /* Section.swift in Sources */,
 				1E811D8C299E5C4500EC80B0 /* WriteDataView.swift in Sources */,
 				1EEE0EC829BE54A1004FA4D0 /* KeyframeAnimation.swift in Sources */,
@@ -652,23 +676,28 @@
 				1EEE0EC629BE5267004FA4D0 /* BallScaleRippleMultiple.swift in Sources */,
 				1EA52DAF2987A42E00A61213 /* HomeView.swift in Sources */,
 				1E49021027D9155000F13D29 /* HealthDataTypeValue.swift in Sources */,
+				1E8B62A12A0D6C2B00FC0FC6 /* ScopeObjectTypesGridView.swift in Sources */,
 				1E811D8F299F860200EC80B0 /* SplitView.swift in Sources */,
 				1E47A0E9298D420E0081A2C5 /* ChartTimeRangePicker.swift in Sources */,
 				1E1DC11A29ABA61900B827E3 /* ChartSeries.swift in Sources */,
 				1E47A0EB298FCE060081A2C5 /* TestDataSet.swift in Sources */,
 				1E4901F127D9114B00F13D29 /* Contracts.swift in Sources */,
+				1EE6FAF22A13F7A900796505 /* ScopeLimitsDetailsView.swift in Sources */,
 				1EA5A1A929A3DD8100A9DB5A /* HighlightedTextView.swift in Sources */,
 				1E02535929AA883800702D90 /* ContentView.swift in Sources */,
 				1E47A0EF298FE6A60081A2C5 /* DailyActivityChart.swift in Sources */,
 				1E32B96729A4E3590013B1C1 /* ServicesViewModel.swift in Sources */,
 				1E07621529A0C41800CED8E9 /* Date+Helper.swift in Sources */,
+				1E61E8912A0D0F2A00EDD3D7 /* ScopeServiceObjectTypesRow.swift in Sources */,
 				1E811D9929A017E700EC80B0 /* LineChartView.swift in Sources */,
 				1E1DC11829ABA19700B827E3 /* DigiMeSDKExampleApp.swift in Sources */,
 				1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */,
 				1E47A0F3299176100081A2C5 /* Square.swift in Sources */,
 				1E0E1326298C134100F1A813 /* AppleHealthBarChartView.swift in Sources */,
 				1E02269829817C2C00892CE8 /* AppleHealthSummaryView.swift in Sources */,
+				1EA4CFF02A04CAD900A2493A /* ScopeObjectTypeIconView.swift in Sources */,
 				1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */,
+				1E61E8932A0D10DF00EDD3D7 /* ScopeEditView.swift in Sources */,
 				1EED5A2E29BF9C3600B3F544 /* ActionView.swift in Sources */,
 				1E4901E227D9112200F13D29 /* Logger.swift in Sources */,
 				1E02535729A94B4200702D90 /* SourceImage.swift in Sources */,
@@ -681,26 +710,30 @@
 				1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */,
 				1E87223929A5633E00418DE1 /* ContractDetailsView.swift in Sources */,
 				1E6E71B22862FE8600E7954E /* ChartStatementView.swift in Sources */,
+				1E3653B42A1D23D000F0FFA5 /* PDFKitView.swift in Sources */,
 				1EE0FA3F29D04B900084F5ED /* ShareSheetView.swift in Sources */,
 				1E49021127D9155000F13D29 /* ServerResponse.swift in Sources */,
-				1E864C2029BA5631005BA921 /* ConnectedAccount.swift in Sources */,
+				1E864C2029BA5631005BA921 /* LinkedAccount.swift in Sources */,
 				1E7B415029A3925D00F7B5B4 /* JSONCell.swift in Sources */,
 				1E811D93299FD15800EC80B0 /* Modifiers.swift in Sources */,
 				1E811D95299FEECC00EC80B0 /* WriteDataViewModel.swift in Sources */,
 				1EEE0ECA29BE5503004FA4D0 /* Ring.swift in Sources */,
 				1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */,
 				1ED4CA2F29D4356C00C9874B /* BlurView.swift in Sources */,
+				1E61E83E2A0BB6B300EDD3D7 /* ScopeTimeRangeTemplatesRow.swift in Sources */,
 				1E811D91299F912900EC80B0 /* LogOutputView.swift in Sources */,
 				1E0226AF29828BAF00892CE8 /* Binding+Helper.swift in Sources */,
+				1EA4CFEE2A0281B300A2493A /* ScopeViewModel.swift in Sources */,
 				1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */,
 				1E0225D52980675600892CE8 /* DatePickerWithButtons.swift in Sources */,
 				1E56030729A3759A007AC2FF /* LogDetailsView.swift in Sources */,
+				1EA4CFEC2A0280F100A2493A /* TimeRangeTemplate.swift in Sources */,
 				1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */,
 				1E811D9C29A0233F00EC80B0 /* LogEntry.swift in Sources */,
 				1E06B22B29A4E11A00809D13 /* ServicesView.swift in Sources */,
 				1E47A0F1298FEC0D0081A2C5 /* AppleHealthLineChartView.swift in Sources */,
 				1E47A0ED298FE5D40081A2C5 /* MonthlyActivityChart.swift in Sources */,
-				1E4C939B297EF4D300195E58 /* ScopeView.swift in Sources */,
+				1E4C939B297EF4D300195E58 /* ScopeAddView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -859,7 +892,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
@@ -884,7 +917,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";

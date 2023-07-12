@@ -12,139 +12,140 @@ import PhotosUI
 import SwiftUI
 
 class WriteDataViewModel: ObservableObject {
-	@Published var logs: [LogEntry] = [] {
+	@Published var logEntries: [LogEntry] = [] {
 		didSet {
-			if let data = try? JSONEncoder().encode(logs) {
+            if let data = try? logEntries.encoded(dateEncodingStrategy: .millisecondsSince1970) {
 				FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "logs_write")
 			}
 		}
 	}
-	@Published var readCredentials: Credentials? {
+	@Published var credentialsForRead: Credentials? {
 		didSet {
-			if let credentials = readCredentials {
-				self.preferences.setCredentials(newCredentials: credentials, for: Contracts.readContract.identifier)
+			if let credentials = credentialsForRead {
+				self.userPreferences.setCredentials(newCredentials: credentials, for: Contracts.prodReadContract.identifier)
 			}
 			else {
-				self.preferences.clearCredentials(for: Contracts.readContract.identifier)
+				self.userPreferences.clearCredentials(for: Contracts.prodReadContract.identifier)
 			}
 		}
 	}
-	@Published var writeCredentials: Credentials? {
+	@Published var credentialsForWrite: Credentials? {
 		didSet {
-			if let credentials = writeCredentials {
-				self.preferences.setCredentials(newCredentials: credentials, for: Contracts.writeContract.identifier)
+			if let credentials = credentialsForWrite {
+				self.userPreferences.setCredentials(newCredentials: credentials, for: Contracts.prodWriteContract.identifier)
 			}
 			else {
-				self.preferences.clearCredentials(for: Contracts.writeContract.identifier)
+				self.userPreferences.clearCredentials(for: Contracts.prodWriteContract.identifier)
 			}
 		}
 	}
-	@Published var isLoading = false
+	@Published var loadingInProgress = false
 	
-	private var readDigiMe: DigiMe?
-	private var writeDigiMe: DigiMe?
-	private let preferences = UserPreferences.shared()
+	private var digiMeReadService: DigiMe?
+	private var digiMeWriteService: DigiMe?
+	private let userPreferences = UserPreferences.shared()
 	
 	init() {
 		do {
 			if
 				let data = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs_write"),
-				let logHistory = try? data.decoded() as [LogEntry] {
-				logs = logHistory
+                let logHistory = try? data.decoded(dateDecodingStrategy: .millisecondsSince1970) as [LogEntry] {
+				logEntries = logHistory
 			}
 			else {
-				log(message: "This is where log messages appear")
+				logMessage("This is where log messages appear")
 			}
 			
-			writeCredentials = preferences.credentials(for: Contracts.writeContract.identifier)
-			readCredentials = preferences.credentials(for: Contracts.readContract.identifier)
+			credentialsForWrite = userPreferences.getCredentials(for: Contracts.prodWriteContract.identifier)
+			credentialsForRead = userPreferences.getCredentials(for: Contracts.prodReadContract.identifier)
 
-			let writeConfig = try Configuration(appId: AppInfo.appId, contractId: Contracts.writeContract.identifier, privateKey: Contracts.writeContract.privateKey)
-			writeDigiMe = DigiMe(configuration: writeConfig)
+			let writeConfig = try Configuration(appId: Contracts.prodWriteContract.appId, contractId: Contracts.prodWriteContract.identifier, privateKey: Contracts.prodWriteContract.privateKey)
+			digiMeWriteService = DigiMe(configuration: writeConfig)
 			
-			let readConfig = try Configuration(appId: AppInfo.appId, contractId: Contracts.readContract.identifier, privateKey: Contracts.readContract.privateKey)
-			readDigiMe = DigiMe(configuration: readConfig)
+			let readConfig = try Configuration(appId: Contracts.prodReadContract.appId, contractId: Contracts.prodReadContract.identifier, privateKey: Contracts.prodReadContract.privateKey)
+			digiMeReadService = DigiMe(configuration: readConfig)
 		}
 		catch {
-			logError(message: "Unable to configure digi.me SDK: \(error)")
+			logErrorMessage("Unable to configure digi.me SDK: \(error)")
 		}
 	}
 	
 	func authorizeWriteContract() {
-		isLoading = true
-		writeDigiMe?.authorize(credentials: writeCredentials, linkToContractWithCredentials: readCredentials) { result in
-			self.isLoading = false
+		loadingInProgress = true
+		digiMeWriteService?.authorize(credentials: credentialsForWrite, linkToContractWithCredentials: credentialsForRead) { result in
+			self.loadingInProgress = false
 			switch result {
 			case .success(let newOrRefreshedCredentials):
-				self.log(message: "Write contract authorised successfully")
-				self.writeCredentials = newOrRefreshedCredentials
+				self.logMessage("Write contract authorised successfully")
+				self.credentialsForWrite = newOrRefreshedCredentials
 				
 			case.failure(let error):
-				self.logError(message: "Authorization failed: \(error)")
+				self.logErrorMessage("Authorization failed: \(error)")
 			}
 		}
 	}
 	
 	func authorizeReadContract() {
-		guard let credentials = writeCredentials else {
-			self.isLoading = false
-			logWarning(message: "Write contract needs to be authorized first")
+		guard let credentials = credentialsForWrite else {
+			self.loadingInProgress = false
+			logWarningMessage("Write contract needs to be authorized first")
 			return
 		}
-		isLoading = true
-		readDigiMe?.authorize(credentials: readCredentials, linkToContractWithCredentials: credentials) { result in
-			self.isLoading = false
+        
+		loadingInProgress = true
+		digiMeReadService?.authorize(credentials: credentialsForRead, linkToContractWithCredentials: credentials) { result in
+			self.loadingInProgress = false
 			switch result {
 			case .success(let newOrRefreshedCredentials):
-				self.log(message: "Read contract authorised successfully")
-				self.readCredentials = newOrRefreshedCredentials
+				self.logMessage("Read contract authorised successfully")
+				self.credentialsForRead = newOrRefreshedCredentials
 			case.failure(let error):
-				self.logError(message: "Authorization failed: \(error)")
+				self.logErrorMessage("Authorization failed: \(error)")
 			}
 		}
 	}
 	
-	func showContractDetails() {
-		isLoading = true
-		readDigiMe?.contractDetails { result in
-			self.isLoading = false
+	func displayContractDetails() {
+		loadingInProgress = true
+		digiMeReadService?.contractDetails { result in
+			self.loadingInProgress = false
 			switch result {
 			case .success(let certificate):
-				self.log(message: "Contract details:", attachmentType: LogEntry.AttachmentType.json, attachment: try? certificate.encoded())
+				self.logMessage("Contract details:", attachmentType: LogEntry.AttachmentType.json, attachment: try? certificate.encoded())
 			case .failure(let error):
-				self.logError(message: "Unable to retrieve contract details: \(error)")
+				self.logErrorMessage("Unable to retrieve contract details: \(error)")
 			}
 		}
 	}
 	
-	func deleteUser() {
-		isLoading = true
-		guard let credentials = writeCredentials ?? readCredentials  else {
-			self.isLoading = false
-			self.logWarning(message: "At least one contract must be authorized firs.")
+	func removeUser() {
+		loadingInProgress = true
+		guard let credentials = credentialsForWrite ?? credentialsForRead else {
+			self.loadingInProgress = false
+			self.logWarningMessage("At least one contract must be authorized firs.")
 			return
 		}
 		
-		writeDigiMe?.deleteUser(credentials: credentials) { error in
-			self.isLoading = false
+		digiMeWriteService?.deleteUser(credentials: credentials) { error in
+			self.loadingInProgress = false
 			if let error = error {
-				self.logError(message: error.description)
+				self.logErrorMessage(error.description)
 			}
 			else {
-				self.writeCredentials = nil
-				self.readCredentials = nil
+				self.credentialsForWrite = nil
+				self.credentialsForRead = nil
 				DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-					self.logs = []
-					self.log(message: "Your user entry and the library deleted successfully")
+					self.logEntries = []
+					self.logMessage("Your user entry and the library deleted successfully")
 				}
 			}
 		}
 	}
 	
-	func uploadJson(data: Data, fileName: String) {
-		guard let credentials = preferences.credentials(for: Contracts.writeContract.identifier) else {
-			self.isLoading = false
-			logWarning(message: "Write contract must be authorized first")
+	func submitJsonData(data: Data, fileName: String) {
+		guard let credentials = userPreferences.getCredentials(for: Contracts.prodWriteContract.identifier) else {
+			self.loadingInProgress = false
+			logWarningMessage("Write contract must be authorized first")
 			return
 		}
 		
@@ -156,22 +157,22 @@ class WriteDataViewModel: ObservableObject {
 			.reference(["Receipt \(dateFormatter.string(from: Date()))"])
 			.build()
 		
-		isLoading = true
-		writeDigiMe?.write(data: data, metadata: metadata, credentials: credentials) { result in
-			self.isLoading = false
+		loadingInProgress = true
+		digiMeWriteService?.write(data: data, metadata: metadata, credentials: credentials) { result in
+			self.loadingInProgress = false
 			switch result {
 			case .success(let refreshedCredentials):
-				self.writeCredentials = refreshedCredentials
-				self.log(message: "JSON file uploaded successfully", attachmentType: .json, attachment: data, metadataRaw: try? metadata.encoded())
+				self.credentialsForWrite = refreshedCredentials
+				self.logMessage("JSON file uploaded successfully", attachmentType: .json, attachment: data, metadataRaw: try? metadata.encoded())
 			case .failure(let error):
-				self.logError(message: "Upload JSON file error: \(error)")
+				self.logErrorMessage("Upload JSON file error: \(error)")
 			}
 		}
 	}
 	
-	func uploadPdf(data: Data, fileName: String) {
-		guard let credentials = preferences.credentials(for: Contracts.writeContract.identifier) else {
-			logWarning(message: "Write contract must be authorized first.")
+	func submitPdfData(data: Data, fileName: String) {
+		guard let credentials = userPreferences.getCredentials(for: Contracts.prodWriteContract.identifier) else {
+			logWarningMessage("Write contract must be authorized first.")
 			return
 		}
 		
@@ -183,24 +184,24 @@ class WriteDataViewModel: ObservableObject {
 			.reference(["Receipt \(dateFormatter.string(from: Date()))"])
 			.build()
 	
-		isLoading = true
-		writeDigiMe?.write(data: data, metadata: metadata, credentials: credentials) { result in
-			self.isLoading = false
+		loadingInProgress = true
+		digiMeWriteService?.write(data: data, metadata: metadata, credentials: credentials) { result in
+			self.loadingInProgress = false
 			switch result {
 			case .success(let refreshedCredentials):
-				self.writeCredentials = refreshedCredentials
-				self.log(message: "PDF file uploaded successfully", attachmentType: .pdf, attachment: data, metadataRaw: try? metadata.encoded())
+				self.credentialsForWrite = refreshedCredentials
+				self.logMessage("PDF file uploaded successfully", attachmentType: .pdf, attachment: data, metadataRaw: try? metadata.encoded())
 				
 			case .failure(let error):
-				self.logError(message: "Upload PDF error: \(error)")
+				self.logErrorMessage("Upload PDF error: \(error)")
 			}
 		}
 	}
 	
-	func uploadImage(data: Data, fileName: String) {
-		guard let credentials = self.preferences.credentials(for: Contracts.writeContract.identifier) else {
-			self.isLoading = false
-			self.logWarning(message: "Write contract must be authorized first")
+	func submitImageData(data: Data, fileName: String) {
+		guard let credentials = self.userPreferences.getCredentials(for: Contracts.prodWriteContract.identifier) else {
+			self.loadingInProgress = false
+			self.logWarningMessage("Write contract must be authorized first")
 			return
 		}
 		
@@ -210,73 +211,73 @@ class WriteDataViewModel: ObservableObject {
 			.reference([fileName])
 			.build()
 		
-		isLoading = true
-		writeDigiMe?.write(data: data, metadata: metadata, credentials: credentials) { result in
-			self.isLoading = false
+		loadingInProgress = true
+		digiMeWriteService?.write(data: data, metadata: metadata, credentials: credentials) { result in
+			self.loadingInProgress = false
 			switch result {
 			case .success(let refreshedCredentials):
-				self.writeCredentials = refreshedCredentials
-				self.log(message: "Image file uploaded successfully", attachmentType: .image, attachment: data, metadataRaw: try? metadata.encoded())
+				self.credentialsForWrite = refreshedCredentials
+				self.logMessage("Image file uploaded successfully", attachmentType: .image, attachment: data, metadataRaw: try? metadata.encoded())
 			case .failure(let error):
-				self.logError(message: "Upload image error: \(error)")
+				self.logErrorMessage("Upload image error: \(error)")
 			}
 		}
 	}
 	
-	func readData() {
-		guard let credentials = preferences.credentials(for: Contracts.readContract.identifier) else {
-			self.isLoading = false
-			self.logWarning(message: "Read contract must be authorized first.")
+	func retrieveData() {
+		guard let credentials = userPreferences.getCredentials(for: Contracts.prodReadContract.identifier) else {
+			self.loadingInProgress = false
+			self.logWarningMessage("Read contract must be authorized first.")
 			return
 		}
 		
-		isLoading = true
-		readDigiMe?.requestDataQuery(credentials: credentials, readOptions: nil) { result in
+		loadingInProgress = true
+		digiMeReadService?.requestDataQuery(credentials: credentials, readOptions: nil) { result in
 			switch result {
 			case .success(let refreshedCredentials):
-				self.readCredentials = refreshedCredentials
-				self.readAllFiles(credentials: refreshedCredentials)
+				self.credentialsForRead = refreshedCredentials
+				self.fetchAllFiles(credentials: refreshedCredentials)
 			case .failure(let error):
-				self.isLoading = false
-				self.logError(message: "Error requesting data query: \(error)")
+				self.loadingInProgress = false
+				self.logErrorMessage("Error requesting data query: \(error)")
 			}
 		}
 	}
 	
 	// MARK: - Logs
 	
-	func log(message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
+	func logMessage(_ message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
 		withAnimation {
-			logs.append(LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped))
+			logEntries.append(LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped))
 		}
 	}
 	
-	func logWarning(message: String) {
+	func logWarningMessage(_ message: String) {
 		withAnimation {
-			logs.append(LogEntry(state: .warning, message: message))
+			logEntries.append(LogEntry(state: .warning, message: message))
 		}
 	}
 	
-	func logError(message: String) {
+	func logErrorMessage(_ message: String) {
 		withAnimation {
-			logs.append(LogEntry(state: .error, message: message))
+			logEntries.append(LogEntry(state: .error, message: message))
 		}
 	}
 	
 	// MARK: - Private
 	
-	private func readAllFiles(credentials: Credentials) {
-		readDigiMe?.readAllFiles(credentials: credentials, readOptions: nil) { result in
+	private func fetchAllFiles(credentials: Credentials) {
+		digiMeReadService?.readAllFiles(credentials: credentials, readOptions: nil) { result in
 			switch result {
 			case .success(let fileContainer):
 
 				switch fileContainer.metadata {
 				case .mapped(let metadata):
-					self.log(message: "Downloaded mapped file \(fileContainer.identifier).", attachmentType: .jfs, attachment: fileContainer.data, metadataMapped: try? metadata.encoded())
+					self.logMessage("Downloaded mapped file \(fileContainer.identifier).", attachmentType: .jfs, attachment: fileContainer.data, metadataMapped: try? metadata.encoded())
 				case .raw(let metadata):
-					self.log(message: "Downloaded unmapped file \(fileContainer.identifier). File size: \(fileContainer.data.count) bytes.", attachmentType: LogEntry.mapped(mimeType: metadata.mimeType), attachment: fileContainer.data, metadataRaw: try? metadata.encoded())
+					self.logMessage("Downloaded unmapped file \(fileContainer.identifier). File size: \(fileContainer.data.count) bytes.", attachmentType: LogEntry.mapped(mimeType: metadata.mimeType), attachment: fileContainer.data, metadataRaw: try? metadata.encoded())
 				default:
-					self.logError(message: "Error reading file 'Unexpected metadata'")
+					self.logErrorMessage("Error reading file 'Unexpected metadata'")
 				}
 								
 				if !fileContainer.data.isEmpty {
@@ -284,17 +285,17 @@ class WriteDataViewModel: ObservableObject {
 				}
 				
 			case .failure(let error):
-				self.logError(message: "Error reading file: \(error)")
+				self.logErrorMessage("Error reading file: \(error)")
 			}
 		} completion: { result in
-			self.isLoading = false
+			self.loadingInProgress = false
 			switch result {
 			case .success(let (fileList, refreshedCredentials)):
-				self.readCredentials = refreshedCredentials
-				self.log(message: "Finished reading files. Total files \(fileList.files?.count ?? 0)")
+				self.credentialsForRead = refreshedCredentials
+				self.logMessage("Finished reading files. Total files \(fileList.files?.count ?? 0)")
 
 			case .failure(let error):
-				self.logError(message: "Error reading files: \(error)")
+				self.logErrorMessage("Error reading files: \(error)")
 			}
 		}
 	}

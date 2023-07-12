@@ -12,7 +12,9 @@ import Foundation
 struct DigimeContract: Identifiable {
 	var id = UUID()
     let name: String
+    let appId: String
     let identifier: String
     let privateKey: String
-    let timeRanges: [TimeRange]?
+    var timeRanges: [TimeRange]?
+    var baseURL: String?
 }
