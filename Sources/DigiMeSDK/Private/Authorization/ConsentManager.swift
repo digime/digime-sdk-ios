@@ -23,6 +23,7 @@ final class ConsentManager: NSObject {
         case publicKey
         case success
         case errorCode
+        case accountReference
     }
     
     private enum Action: String {
@@ -34,10 +35,10 @@ final class ConsentManager: NSObject {
         self.configuration = configuration
     }
     
-    func requestUserConsent(preAuthCode: String, serviceId: Int?, completion: @escaping ((Result<ConsentResponse, SDKError>) -> Void)) {
+    func requestUserConsent(preAuthCode: String, serviceId: Int?, onlyPushServices: Bool = false, completion: @escaping ((Result<ConsentResponse, SDKError>) -> Void)) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
-                self.requestUserConsent(preAuthCode: preAuthCode, serviceId: serviceId, completion: completion)
+                self.requestUserConsent(preAuthCode: preAuthCode, serviceId: serviceId, onlyPushServices: onlyPushServices, completion: completion)
             }
             return
         }
@@ -56,6 +57,10 @@ final class ConsentManager: NSObject {
 				localServiceRequested = serviceId == DeviceOnlyServices.appleHealth.rawValue
 			}
             percentEncodedQueryItems.append(URLQueryItem(name: "service", value: "\(serviceId)"))
+        }
+        
+        if onlyPushServices {
+            percentEncodedQueryItems.append(URLQueryItem(name: "sourceType", value: "push"))
         }
         
         components.percentEncodedQueryItems = percentEncodedQueryItems
@@ -300,7 +305,8 @@ final class ConsentManager: NSObject {
 			LocalDataCache().requestLocalData(for: configuration.contractId)
 		}
 		
-        let response = ConsentResponse(code: code, status: status, writeAccessInfo: writeAccessInfo)
+        let accountReference = parameters[ResponseKey.accountReference.rawValue] as? String
+        let response = ConsentResponse(code: code, status: status, accountReference: accountReference, writeAccessInfo: writeAccessInfo)
         return .success(response)
     }
     

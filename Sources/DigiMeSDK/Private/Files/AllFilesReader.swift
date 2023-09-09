@@ -245,7 +245,7 @@ class AllFilesReader {
 			switch result {
 			case .success(let limits):
 				
-				let account = HealthKitData().account
+				let account = HealthKitAccountData().sourceAccount
 				let filesDataService = HealthKitFilesDataService(account: account)
 				let deviceDataCompletion: (Result<[FileListItem], SDKError>) -> Void = { [weak self] result in
 					switch result {

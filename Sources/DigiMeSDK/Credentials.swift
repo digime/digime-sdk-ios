@@ -10,6 +10,14 @@ import Foundation
 
 /// Credentials for accessing user's digi.me library
 public struct Credentials: Codable {
+    public let accountReference: String?
+    
     let token: OAuthToken
     let writeAccessInfo: WriteAccessInfo?
+    
+    init(token: OAuthToken, writeAccessInfo: WriteAccessInfo? = nil, accountReference: String? = nil) {
+        self.token = token
+        self.writeAccessInfo = writeAccessInfo
+        self.accountReference = accountReference
+    }
 }

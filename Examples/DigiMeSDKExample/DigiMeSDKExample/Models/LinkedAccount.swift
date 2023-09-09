@@ -12,7 +12,7 @@ import Foundation
 struct LinkedAccount: Codable, Identifiable {
 	var id = UUID()
 	var service: Service
-	var sourceAccount: SourceAccount?
+	var sourceAccount: SourceAccountData?
 	var requiredReauth = false
     var selectedObjectTypeIds = Set<Int>()
     var defaultObjectTypes: [ServiceObjectType] {

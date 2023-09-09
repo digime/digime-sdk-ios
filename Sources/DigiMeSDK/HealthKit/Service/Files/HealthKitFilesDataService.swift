@@ -48,15 +48,15 @@ class HealthKitFilesDataService {
 		self.fileDownloadHandler = downloadHandler
 		self.completionHandler = completion
 		
-		Logger.mixpanel("device-data-source-read-started", metadata: HealthKitData().metadata)
-		
+        Logger.mixpanel("device-data-source-read-started", metadata: HealthKitAccountData().metadata)
+
 		let dataTypes = FitnessActivityProcessor.defaultTypesToRead
         var operationsToQueue: [Operation] = []
-        var parentOperation: HealthKitDataQuantityOperation?
-        
+        var parentOperation: HealthKitAccountDataQuantityOperation?
+
         for dataType in dataTypes {
-            let operation = HealthKitDataQuantityOperation(from: startDate, to: endDate, with: dataType, healthStore: healthStore, account: account)
-            
+            let operation = HealthKitAccountDataQuantityOperation(from: startDate, to: endDate, with: dataType, healthStore: healthStore, account: account)
+
             let operationCompletion: (Result<HealthDataOperationResult, SDKError>) -> Void = { result in
                 switch result {
                 case .failure(let error):
@@ -131,6 +131,6 @@ class HealthKitFilesDataService {
         }
         
 		completionHandler?(.success(fileListItems))
-        Logger.mixpanel("device-data-source-read-success", metadata: HealthKitData().metadata)
+        Logger.mixpanel("device-data-source-read-success", metadata: HealthKitAccountData().metadata)
     }
 }

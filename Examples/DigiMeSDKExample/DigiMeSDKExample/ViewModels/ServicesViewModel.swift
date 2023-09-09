@@ -108,7 +108,7 @@ class ServicesViewModel: ObservableObject {
             return
         }
         
-        guard let accountId = connectedAccount.sourceAccount?.identifier else {
+        guard let accountId = connectedAccount.sourceAccount?.id else {
             isLoadingData = false
             logWarningMessage("Error extracting account id.")
             return
@@ -373,7 +373,7 @@ class ServicesViewModel: ObservableObject {
             switch result {
             case .success(let accountDetails):
                 self.logMessage("Accounts info retrieved successfully")
-                self.addAccountDetails(accounts: accountDetails.accounts)
+                self.addAccountDetails(accounts: accountDetails)
                 completion(credentials)
             case .failure(let error):
                 if case .failure(.invalidSession) = result {
@@ -446,10 +446,10 @@ class ServicesViewModel: ObservableObject {
         }
     }
 
-    private func addAccountDetails(accounts: [SourceAccount]) {
+    private func addAccountDetails(accounts: [SourceAccountData]) {
         DispatchQueue.main.async {
             accounts.forEach { newAccount in
-                if let index = self.linkedAccounts.firstIndex(where: { $0.service.name == newAccount.service.name && $0.sourceAccount == nil }) {
+                if let index = self.linkedAccounts.firstIndex(where: { $0.service.name == newAccount.serviceTypeName && $0.sourceAccount == nil }) {
                     self.linkedAccounts[index].sourceAccount = newAccount
                 }
             }
@@ -459,7 +459,7 @@ class ServicesViewModel: ObservableObject {
     private func updateReauthenticationStatus(reauthAccounts: [SyncAccount]) {
         DispatchQueue.main.async {
             reauthAccounts.forEach { reauth in
-                if let index = self.linkedAccounts.firstIndex(where: { ($0.sourceAccount?.identifier ?? "") == reauth.identifier && !$0.requiredReauth }) {
+                if let index = self.linkedAccounts.firstIndex(where: { ($0.sourceAccount?.id ?? "") == reauth.identifier && !$0.requiredReauth }) {
                     self.linkedAccounts[index].requiredReauth = true
                 }
             }

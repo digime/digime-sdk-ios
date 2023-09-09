@@ -18,6 +18,7 @@ class APIClient {
             "Accept": "application/json",
         ]
         
+        configuration.timeoutIntervalForRequest = 90.0
         return URLSession(configuration: configuration)
     }()
 	

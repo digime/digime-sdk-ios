@@ -176,6 +176,37 @@ public final class DigiMe {
 		}
 	}
 	
+    /// Authorizes the contract to support the storing of user entered data in a digime library with store, edit and delete functionality.
+    /// - Parameters:
+    ///   - credentials: The existing credentials for the contract.
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called upon completion with new or refreshed credentials, or any errors encountered.
+    public func authorizeServiceToPushData(credentials: Credentials? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+        
+        if let validationError = validateClient() {
+            resultQueue.async {
+                completion(.failure(validationError))
+            }
+            return
+        }
+        
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success, .failure(SDKError.authorizationRequired):
+                self.beginAuth(serviceId: nil, readOptions: nil, linkToContractWithCredentials: nil, onlyPushServices: true) { authResult in
+                    resultQueue.async {
+                        completion(authResult)
+                    }
+                }
+                
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
     /// Once a user has granted consent, adds an additional service. Also initiates synchronization of data from this service to user's library.
     ///
     /// - Parameters:
@@ -223,14 +254,14 @@ public final class DigiMe {
 	///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion containing either relevant account info, if successful, or an error
-    public func readAccounts(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
+    public func readAccounts(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<[SourceAccountData], SDKError>) -> Void) {
         guard
             let session = session,
             session.isValid else {
             return completion(.failure(.invalidSession))
         }
         
-		readAccounts(session: session, credentials: credentials) { result in
+        readAccounts(credentials: credentials) { result in
             resultQueue.async {
                 completion(result)
             }
@@ -401,7 +432,7 @@ public final class DigiMe {
 	///   - credentials: The existing credentials for the contract.
 	///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
 	///   - completion: Block called when writing data has complete with new or refreshed credentials, or any errors encountered.
-	public func write(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    public func pushDataToLibrary(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
 		validateOrRefreshCredentials(credentials) { result in
 			switch result {
 			case .success(let refreshedCredentials):
@@ -419,6 +450,34 @@ public final class DigiMe {
 		}
 	}
     
+    /// Writes data to the authorized provider.
+    /// - Parameters:
+    ///   - payload: The data to be pushed to the provider.
+    ///   - accountId: A unique reference to a selected account for PUSH, retrieved via the authorization endpoint.
+    ///   - standard: The FHIR standard being used.
+    ///   - version: The version of the FHIR standard, such as 'stu3' or '3.0.2'.
+    ///   - credentials: The existing credentials for the contract.
+    ///   - resultQueue: The dispatch queue on which the completion block will be called. Defaults to the main dispatch queue.
+    ///   - completion: A block called upon completion with either the successful result or any errors encountered.
+    public func pushDataToProvider(payload: Data, accountId: String, standard: String, version: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Data, SDKError>) -> Void) {
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.pushDataToProvider(payload: payload, accountId: accountId, standard: standard, version: version, credentials: refreshedCredentials) { result in
+                    self.session = nil
+                    resultQueue.async {
+                        completion(result)
+                    }
+                }
+                
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+   
     /// Deletes the user's library associated with the configured contract.
     ///
     /// Please note that if multiple contracts are linked to the same library,
@@ -563,7 +622,7 @@ public final class DigiMe {
     
 	public func appleHealthStatisticsCollectionQuery(for contractId: String, queryConfig: HealthKitConfiguration, resultQueue: DispatchQueue = .main, accountHandler: @escaping (SourceAccount) -> Void, completion: @escaping (StatisticsCompletionHandler)) {
 		
-		accountHandler(HealthKitData().account)
+        accountHandler(HealthKitAccountData().sourceAccount)
 		healthSerivce.requestAuthorization(typesToRead: queryConfig.typesToRead, typesToWrite: queryConfig.typesToWrite) { success, error in
 			if let error = error {
 				completion(nil, error)
@@ -622,7 +681,7 @@ public final class DigiMe {
     
     // MARK: - Private
     
-    private func readAccounts(session: Session, credentials: Credentials, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
+    private func readAccountsFile(session: Session, credentials: Credentials, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
 		guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
 			return completion(.failure(.errorCreatingRequestJwtToDownloadFile))
 		}
@@ -634,7 +693,7 @@ public final class DigiMe {
                 do {
 					guard !response.data.isEmpty else {
 						if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
-							completion(.success(AccountsInfo(accounts: [HealthKitData().account], consentId: String.random(length: 32))))
+                            completion(.success(AccountsInfo(accounts: [HealthKitAccountData().sourceAccount], consentId: String.random(length: 32))))
 						}
 						else {
 							completion(.failure(SDKError.readAccountsError))
@@ -648,7 +707,7 @@ public final class DigiMe {
 					if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
 						var accounts = accountsInfo.accounts
 						let consentId = accountsInfo.consentId
-						accounts.append(HealthKitData().account)
+                        accounts.append(HealthKitAccountData().sourceAccount)
 						completion(.success(AccountsInfo(accounts: accounts, consentId: consentId)))
 					}
 					else {
@@ -663,7 +722,7 @@ public final class DigiMe {
                 }
             case .failure(let error):
 				if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
-					let info = AccountsInfo(accounts: [HealthKitData().account], consentId: String.random(length: 32))
+                    let info = AccountsInfo(accounts: [HealthKitAccountData().sourceAccount], consentId: String.random(length: 32))
 					completion(.success(info))
 				}
 				else {
@@ -673,26 +732,27 @@ public final class DigiMe {
         }
     }
     
-    private func writePostbox(data: Data, metadata: Data, credentials: Credentials, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
-        uploadService.uploadFilePostbox(data: data, metadata: metadata, credentials: credentials) { result in
+    private func readAccounts(credentials: Credentials, completion: @escaping (Result<[SourceAccountData], SDKError>) -> Void) {
+        guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+            return completion(.failure(.other))
+        }
+        
+        let route = ConnectedAccountsRoute(jwt: jwt)
+        apiClient.makeRequest(route) { result in
             switch result {
-            case .success(let session):
-                self.session = session
-                completion(.success(credentials))
+            case .success(var accounts):
+                if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
+                    accounts.append(HealthKitAccountData().sourceAccountData)
+                    completion(.success(accounts))
+                }
+                else {
+                    completion(.success(accounts))
+                }
             case .failure(let error):
-                // We should be pre-emptively catching the situation where the access token has expired,
-                // but just in case we should react to server message
-                switch error {
-                case .httpResponseError(statusCode: 401, apiError: let apiError) where apiError?.code == "InvalidToken":
-                    self.refreshTokens(credentials: credentials) { refreshResult in
-                        switch refreshResult {
-                        case .success(let credentials):
-                            self.writePostbox(data: data, metadata: metadata, credentials: credentials, completion: completion)
-                        case .failure(let error):
-                            completion(.failure(error))
-                        }
-                    }
-                default:
+                if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
+                    completion(.success([HealthKitAccountData().sourceAccountData]))
+                }
+                else {
                     completion(.failure(error))
                 }
             }
@@ -726,8 +786,8 @@ public final class DigiMe {
 	}
     
     // Auth - needs app to be able to receive response via URL
-    private func beginAuth(serviceId: Int?, readOptions: ReadOptions?, linkToContractWithCredentials linkCredentials: Credentials?, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
-        
+    private func beginAuth(serviceId: Int?, readOptions: ReadOptions?, linkToContractWithCredentials linkCredentials: Credentials?, onlyPushServices: Bool = false, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+
         // Ensure we don't have any session left over from previous
         session = nil
                 
@@ -735,7 +795,7 @@ public final class DigiMe {
             switch result {
             case .success(let response):
                 self.session = response.session
-                self.performAuth(preAuthResponse: response, serviceId: serviceId, completion: completion)
+                self.performAuth(preAuthResponse: response, serviceId: serviceId, onlyPushServices: onlyPushServices, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -828,8 +888,8 @@ public final class DigiMe {
         }
     }
     
-    private func performAuth(preAuthResponse: TokenSessionResponse, serviceId: Int?, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
-        consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: serviceId) { result in
+    private func performAuth(preAuthResponse: TokenSessionResponse, serviceId: Int?, onlyPushServices: Bool = false, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+        consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: serviceId, onlyPushServices: onlyPushServices) { result in
             switch result {
             case .success(let response):
                 self.exchangeToken(authResponse: response, completion: completion)
@@ -844,12 +904,23 @@ public final class DigiMe {
         authService.requestTokenExchange(authCode: authResponse.authorizationCode) { result in
             switch result {
             case .success(let response):
-                let newCredentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo)
+                let newCredentials = Credentials(token: response, writeAccessInfo: authResponse.writeAccessInfo, accountReference: authResponse.accountReference)
                 completion(.success(newCredentials))
 
             case .failure(let error):
                 completion(.failure(error))
             }
+        }
+    }
+    
+    private func pushDataToProvider(payload: Data, accountId: String, standard: String, version: String, credentials: Credentials, completion: @escaping (Result<Data, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+            return completion(.failure(.other))
+        }
+
+        let route = PushDataToProviderRoute(jwt: jwt, accountId: accountId, standard: standard, version: version, payload: payload)
+        apiClient.makeRequest(route) { result in
+            completion(result)
         }
     }
     

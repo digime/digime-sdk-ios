@@ -14,7 +14,7 @@ public struct HealthDataOperationResult: Codable {
     public var data: [String: [FitnessActivitySummary]]
 }
 
-class HealthKitDataQuantityOperation: RetryingOperation {
+class HealthKitAccountDataQuantityOperation: RetryingOperation {
     var operationCompletion: ((Result<HealthDataOperationResult, SDKError>) -> Void)?
     
     private let startDate: Date

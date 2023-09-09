@@ -182,11 +182,11 @@ public class HealthKitService {
     }
 	
 	func requestAuthorization(typesToRead: [ObjectType], typesToWrite: [SampleType], completion: @escaping StatusCompletionBlock) {
-		Logger.mixpanel("device-data-source-auth-started", metadata: HealthKitData().metadata)
+		Logger.mixpanel("device-data-source-auth-started", metadata: HealthKitAccountData().metadata)
 		
 		guard HKHealthStore.isHealthDataAvailable() else {
 			let error = SDKError.healthDataIsNotAvailable
-			Logger.mixpanel("device-data-source-auth-failed", metadata: HealthKitData().metadata)
+			Logger.mixpanel("device-data-source-auth-failed", metadata: HealthKitAccountData().metadata)
 			HealthKitService.reportErrorLog(error: error)
 			completion(false, error)
 			return
@@ -194,18 +194,18 @@ public class HealthKitService {
 		
 		manager.requestAuthorization(toRead: typesToRead, toWrite: typesToWrite) { success, error in
 			if let error = error {
-				Logger.mixpanel("device-data-source-auth-failed", metadata: HealthKitData().metadata)
+				Logger.mixpanel("device-data-source-auth-failed", metadata: HealthKitAccountData().metadata)
 				HealthKitService.reportErrorLog(error: error)
 				completion(success, error)
 			}
 			
 			if success {
-				Logger.mixpanel("device-data-source-auth-success", metadata: HealthKitData().metadata)
+				Logger.mixpanel("device-data-source-auth-success", metadata: HealthKitAccountData().metadata)
 				Logger.info("HealthKit authorization request was successful.")
 				completion(success, nil)
 			}
 			else {
-				Logger.mixpanel("device-data-source-auth-unsuccessful", metadata: HealthKitData().metadata)
+				Logger.mixpanel("device-data-source-auth-unsuccessful", metadata: HealthKitAccountData().metadata)
 				let error = SDKError.healthDataError(message: "HealthKit authorization was NOT successful.")
 				HealthKitService.reportErrorLog(error: error)
 				completion(success, error)
@@ -286,7 +286,7 @@ public class HealthKitService {
 			return
 		}
 		
-		var meta = HealthKitData().metadata
+		var meta = HealthKitAccountData().metadata
 		if let sdk = error as? SDKError {
 			meta.message = sdk.description
 		}

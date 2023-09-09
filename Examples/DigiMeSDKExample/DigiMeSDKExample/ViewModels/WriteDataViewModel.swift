@@ -158,7 +158,7 @@ class WriteDataViewModel: ObservableObject {
 			.build()
 		
 		loadingInProgress = true
-		digiMeWriteService?.write(data: data, metadata: metadata, credentials: credentials) { result in
+		digiMeWriteService?.pushDataToLibrary(data: data, metadata: metadata, credentials: credentials) { result in
 			self.loadingInProgress = false
 			switch result {
 			case .success(let refreshedCredentials):
@@ -185,7 +185,7 @@ class WriteDataViewModel: ObservableObject {
 			.build()
 	
 		loadingInProgress = true
-		digiMeWriteService?.write(data: data, metadata: metadata, credentials: credentials) { result in
+		digiMeWriteService?.pushDataToLibrary(data: data, metadata: metadata, credentials: credentials) { result in
 			self.loadingInProgress = false
 			switch result {
 			case .success(let refreshedCredentials):
@@ -212,7 +212,7 @@ class WriteDataViewModel: ObservableObject {
 			.build()
 		
 		loadingInProgress = true
-		digiMeWriteService?.write(data: data, metadata: metadata, credentials: credentials) { result in
+		digiMeWriteService?.pushDataToLibrary(data: data, metadata: metadata, credentials: credentials) { result in
 			self.loadingInProgress = false
 			switch result {
 			case .success(let refreshedCredentials):
