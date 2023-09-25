@@ -62,10 +62,10 @@ class AppleHealthChartViewModel: ObservableObject {
 					case .failure(let error):
 						self.handleError(error)
 					}
-				} completion: { result in
+				} completion: { updatedCredentials, result in
 					switch result {
-					case .success(let (fileList, refreshedCredentials)):
-						self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.digiMeConfig.contractId)
+					case .success(let fileList):
+						self.userPreferences.setCredentials(newCredentials: updatedCredentials, for: self.digiMeConfig.contractId)
 						
 						if
 							let accountState = fileList.status.details?.first,
@@ -200,10 +200,11 @@ class AppleHealthChartViewModel: ObservableObject {
 			return
 		}
 		
-		digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
+		digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { updatedCredentials, result in
+            self.userPreferences.setCredentials(newCredentials: updatedCredentials, for: self.digiMeConfig.contractId)
+
 			switch result {
-			case .success(let credentials):
-				self.userPreferences.setCredentials(newCredentials: credentials, for: self.digiMeConfig.contractId)
+			case .success:
 				completion(true)
 				
 			case .failure(let error):

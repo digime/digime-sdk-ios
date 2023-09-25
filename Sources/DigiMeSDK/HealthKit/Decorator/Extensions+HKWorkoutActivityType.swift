@@ -174,9 +174,12 @@ extension HKWorkoutActivityType: CustomStringConvertible {
             return "Swim Bike Run"
         case .transition:
             return "Transition"
+        case .underwaterDiving:
+            return "Underwater Diving"
         case .other:
             return "Other"
-        @unknown default: return "Unknown Workout"
+        @unknown default:
+            return "Unknown Workout"
         }
     }
 }

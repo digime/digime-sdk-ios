@@ -54,7 +54,12 @@ enum TimingFunction {
 }
 
 class KeyframeIterator: IteratorProtocol {
-	typealias Element = (Int, Animation, Animation?, Bool)
+    struct Element {
+        var keyframe: Int
+        var keyframeTracker: Animation
+        var animation: Animation?
+        var isLast: Bool
+    }
 	
 	private let beginTime: Double
 	private let duration: Double
@@ -90,8 +95,8 @@ class KeyframeIterator: IteratorProtocol {
 		let keyframeTracker = Animation.linear(duration: durations[keyframe]).delay(delay)
 		let animation = isLast ? nil : animations[keyframe].delay(delay)
 		let nextKeyframe = isLast ? 0 : keyframe + 1
-		let element: Element = (nextKeyframe, keyframeTracker, animation, isLast)
-		
+        let element = Element(keyframe: nextKeyframe, keyframeTracker: keyframeTracker, animation: animation, isLast: isLast)
+        
 		if isLast {
 			isRepeating = true
 		}
@@ -141,7 +146,9 @@ struct KeyframeAnimationController<T: View>: View {
 				return
 			}
 			
-			let (keyframe, keyframeTracker, animation, _) = data
+            let keyframe = data.keyframe
+            let keyframeTracker = data.keyframeTracker
+            let animation = data.animation
 
 			self.animation = animation
 			withAnimation(keyframeTracker) {

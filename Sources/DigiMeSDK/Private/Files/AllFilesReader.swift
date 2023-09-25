@@ -119,7 +119,7 @@ class AllFilesReader {
         }
         
 		guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-			completeSessionDataFetch(error: .errorCreatingRequestJwtToDownloadFile)
+			completeSessionDataFetch(error: .errorCreatingDataRequestJwt)
 			return
 		}
 		

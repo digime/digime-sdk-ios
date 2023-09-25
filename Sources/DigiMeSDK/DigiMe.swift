@@ -136,7 +136,7 @@ public final class DigiMe {
 	///   - credentials: The existing credentials for the contract.
 	///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
 	///   - completion: Block called upon completion with new or refreshed credentials, or any errors encountered.
-	public func reauthorizeAccount(accountId: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+	public func reauthorizeAccount(accountId: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
 		validateOrRefreshCredentials(credentials) { credResult in
 			switch credResult {
 			case .success(let refreshedCredentials):
@@ -147,30 +147,34 @@ public final class DigiMe {
 						self.authService.requestAccountReference(accountId: accountId) { refAccountResult in
 							switch refAccountResult {
 							case .success(let accountRef):
-								self.consentManager.reauthService(accountRef: accountRef.id, token: response.token) { result in
-									let mappedResult = result.map { _ in refreshedCredentials }
-									resultQueue.async {
-										completion(mappedResult)
-									}
+                                self.consentManager.reauthService(accountRef: accountRef.id, token: response.token) { result in
+                                    resultQueue.async {
+                                        switch result {
+                                        case .success:
+                                            completion(refreshedCredentials, .success(()))
+                                        case .failure(let error):
+                                            completion(refreshedCredentials, .failure(error))
+                                        }
+                                    }
 								}
 								
 							case .failure(let error):
 								resultQueue.async {
-									completion(.failure(error))
+									completion(refreshedCredentials, .failure(error))
 								}
 							}
 						}
 						
 					case .failure(let error):
 						resultQueue.async {
-							completion(.failure(error))
+							completion(refreshedCredentials, .failure(error))
 						}
 					}
 				}
 				
 			case .failure(let error):
 				resultQueue.async {
-					completion(.failure(error))
+					completion(credentials, .failure(error))
 				}
 			}
 		}
@@ -214,7 +218,7 @@ public final class DigiMe {
     ///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with new or refreshed credentials, or any errors encountered
-    public func addService(identifier: Int, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    public func addService(identifier: Int, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):
@@ -223,22 +227,28 @@ public final class DigiMe {
                 case .success(let response):
                     self.session = response.session
                     self.consentManager.addService(identifier: identifier, token: response.token) { result in
-                        let mappedResult = result.map { refreshedCredentials }
-                        resultQueue.async {
-                            completion(mappedResult)
+                        switch result {
+                        case .success:
+                            resultQueue.async {
+                                completion(refreshedCredentials, .success(()))
+                            }
+                        case .failure(let error):
+                            resultQueue.async {
+                                completion(refreshedCredentials, .failure(error))
+                            }
                         }
                     }
                 
                 case .failure(let error):
                     resultQueue.async {
-                        completion(.failure(error))
+                        completion(refreshedCredentials, .failure(error))
                     }
                 }
             }
                 
             case .failure(let error):
                 resultQueue.async {
-                    completion(.failure(error))
+                    completion(credentials, .failure(error))
                 }
             }
         }
@@ -254,16 +264,25 @@ public final class DigiMe {
 	///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion containing either relevant account info, if successful, or an error
-    public func readAccounts(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<[SourceAccountData], SDKError>) -> Void) {
+    public func readAccounts(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<[SourceAccountData], SDKError>) -> Void) {
         guard
             let session = session,
             session.isValid else {
-            return completion(.failure(.invalidSession))
+            return completion(credentials, .failure(.invalidSession))
         }
         
-        readAccounts(credentials: credentials) { result in
-            resultQueue.async {
-                completion(result)
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.readAccounts(credentials: refreshedCredentials) { result in
+                    resultQueue.async {
+                        completion(refreshedCredentials, result)
+                    }
+                }
+            case .failure(let error):
+                resultQueue.async {
+                    completion(credentials, .failure(error))
+                }
             }
         }
     }
@@ -289,10 +308,10 @@ public final class DigiMe {
     ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - downloadHandler: Handler called after every file fetch attempt finishes. Either contains the file or an error if fetch failed
     ///   - completion: Block called when fetching all files has completed. Contains final list of files (along with new or refreshed credentials) or an error if reading file list failed
-    public func readAllFiles(credentials: Credentials, readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, downloadHandler: @escaping (Result<File, SDKError>) -> Void, completion: @escaping (Result<(FileList, Credentials), SDKError>) -> Void) {
+    public func readAllFiles(credentials: Credentials, readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, downloadHandler: @escaping (Result<File, SDKError>) -> Void, completion: @escaping (Credentials, Result<FileList, SDKError>) -> Void) {
         guard allFilesReader == nil else {
             resultQueue.async {
-                completion(.failure(SDKError.alreadyReadingAllFiles))
+                completion(credentials, .failure(SDKError.alreadyReadingAllFiles))
             }
             return
         }
@@ -311,9 +330,9 @@ public final class DigiMe {
             }
         }, completion: { result in
             if case .failure(.invalidSession) = result {
-                self.requestDataQuery(credentials: credentials, readOptions: readOptions, resultQueue: DispatchQueue.global()) { result in
+                self.requestDataQuery(credentials: credentials, readOptions: readOptions, resultQueue: DispatchQueue.global()) { refreshedCredentials, result in
                     switch result {
-                    case .success(let refreshedCredentials):
+                    case .success:
                         self.allFilesReader?.readAllFiles(downloadHandler: { result in
                             resultQueue.async {
                                 downloadHandler(result)
@@ -321,14 +340,14 @@ public final class DigiMe {
                         }, completion: { result in
                             self.allFilesReader = nil
                             resultQueue.async {
-                                completion(result.map { ($0, refreshedCredentials) })
+                                completion(refreshedCredentials, result)
                             }
                         })
                         
                     case .failure(let error):
                         self.allFilesReader = nil
                         resultQueue.async {
-                            completion(.failure(error))
+                            completion(refreshedCredentials, .failure(error))
                         }
                     }
                 }
@@ -338,7 +357,7 @@ public final class DigiMe {
             
             self.allFilesReader = nil
             resultQueue.async {
-                completion(result.map { ($0, credentials) })
+                completion(credentials, result)
             }
         })
     }
@@ -353,19 +372,15 @@ public final class DigiMe {
     ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
     ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with new or refreshed credentials, or any errors encountered.
-    public func requestDataQuery(credentials: Credentials, readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    public func requestDataQuery(credentials: Credentials, readOptions: ReadOptions?, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):
-                self.triggerSourceSync(credentials: refreshedCredentials, readOptions: readOptions) { result in
-                    resultQueue.async {
-                        completion(result.map { refreshedCredentials })
-                    }
-                }
+                self.triggerSourceSync(credentials: refreshedCredentials, readOptions: readOptions, completion: completion)
                 
             case .failure(let error):
                 resultQueue.async {
-                    completion(.failure(error))
+                    completion(credentials, .failure(error))
                 }
             }
         }
@@ -383,21 +398,30 @@ public final class DigiMe {
 	///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with the list of files, or any errors encountered.
-    public func readFileList(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<FileList, SDKError>) -> Void) {
+    public func readFileList(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<FileList, SDKError>) -> Void) {
         guard
             let session = session,
             session.isValid else {
-            return completion(.failure(.invalidSession))
+            return completion(credentials, .failure(.invalidSession))
         }
         
-		guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-			return completion(.failure(.errorCreatingRequestJwtToDownloadFile))
-		}
-		
-		let route = FileListRoute(jwt: jwt, sessionKey: session.key)
-        apiClient.makeRequest(route) { result in
-            resultQueue.async {
-                completion(result)
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                guard let jwt = JWTUtility.dataRequestJWT(accessToken: refreshedCredentials.token.accessToken.value, configuration: self.configuration) else {
+                    return completion(refreshedCredentials, .failure(.errorCreatingDataRequestJwt))
+                }
+                
+                let route = FileListRoute(jwt: jwt, sessionKey: session.key)
+                self.apiClient.makeRequest(route) { result in
+                    resultQueue.async {
+                        completion(refreshedCredentials, result)
+                    }
+                }
+            case .failure(let error):
+                resultQueue.async {
+                    completion(credentials, .failure(error))
+                }
             }
         }
     }
@@ -411,16 +435,25 @@ public final class DigiMe {
 	///  - credentials: The existing credentials for the contract.
     ///  - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
     ///  - completion: Block called upon completion with file, or any errors encountered.
-	public func readFile(fileId: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<File, SDKError>) -> Void) {
+    public func readFile(fileId: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<File, SDKError>) -> Void) {
         guard
             let session = session,
             session.isValid else {
-            return completion(.failure(.invalidSession))
+            return completion(credentials, .failure(.invalidSession))
         }
         
-		downloadService.downloadFile(fileId: fileId, sessionKey: session.key, credentials: credentials, configuration: configuration) { result in
-            resultQueue.async {
-                completion(result)
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.downloadService.downloadFile(fileId: fileId, sessionKey: session.key, credentials: refreshedCredentials, configuration: self.configuration) { result in
+                    resultQueue.async {
+                        completion(refreshedCredentials, result)
+                    }
+                }
+            case .failure(let error):
+                resultQueue.async {
+                    completion(credentials, .failure(error))
+                }
             }
         }
     }
@@ -432,19 +465,15 @@ public final class DigiMe {
 	///   - credentials: The existing credentials for the contract.
 	///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
 	///   - completion: Block called when writing data has complete with new or refreshed credentials, or any errors encountered.
-    public func pushDataToLibrary(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    public func pushDataToLibrary(data: Data, metadata: RawFileMetadata, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
 		validateOrRefreshCredentials(credentials) { result in
 			switch result {
 			case .success(let refreshedCredentials):
-				self.writeDirect(data: data, metadata: metadata, credentials: refreshedCredentials) { result in
-					resultQueue.async {
-						completion(result)
-					}
-				}
+				self.writeDirect(data: data, metadata: metadata, credentials: refreshedCredentials, completion: completion)
 			
 			case .failure(let error):
 				resultQueue.async {
-					completion(.failure(error))
+					completion(credentials, .failure(error))
 				}
 			}
 		}
@@ -459,20 +488,15 @@ public final class DigiMe {
     ///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue on which the completion block will be called. Defaults to the main dispatch queue.
     ///   - completion: A block called upon completion with either the successful result or any errors encountered.
-    public func pushDataToProvider(payload: Data, accountId: String, standard: String, version: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Data, SDKError>) -> Void) {
+    public func pushDataToProvider(payload: Data, accountId: String, standard: String, version: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Data, SDKError>) -> Void) {
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):
-                self.pushDataToProvider(payload: payload, accountId: accountId, standard: standard, version: version, credentials: refreshedCredentials) { result in
-                    self.session = nil
-                    resultQueue.async {
-                        completion(result)
-                    }
-                }
+                self.pushDataToProvider(payload: payload, accountId: accountId, standard: standard, version: version, credentials: refreshedCredentials, completion: completion)
                 
             case .failure(let error):
                 resultQueue.async {
-                    completion(.failure(error))
+                    completion(credentials, .failure(error))
                 }
             }
         }
@@ -487,7 +511,7 @@ public final class DigiMe {
     ///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called on completion with any error encountered.
-    public func deleteUser(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (SDKError?) -> Void) {
+    public func deleteUser(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):
@@ -496,16 +520,16 @@ public final class DigiMe {
                     resultQueue.async {
                         switch result {
                         case .success:
-                            completion(nil)
+                            completion(refreshedCredentials, .success(()))
                         case .failure(let error):
-                            completion(error)
+                            completion(refreshedCredentials, .failure(error))
                         }
                     }
                 }
             
             case .failure(let error):
                 resultQueue.async {
-                    completion(error)
+                    completion(credentials, .failure(error))
                 }
             }
         }
@@ -590,7 +614,9 @@ public final class DigiMe {
     }
     
     
-    /// The Portability Report is a report through which an individual is informed by their Individual's Service Provider about the health information that the individual has collected from providers in the digi.me application. This allows the individual to supplement another or a new personal health environment (PHE) with the same collection actions.
+    /// The Portability Report is a report through which an individual is informed by their Individual's Service Provider about the health information that
+    /// the individual has collected from providers in the digi.me application. This allows the individual to supplement another or
+    /// a new personal health environment (PHE) with the same collection actions.
     /// - Parameters:
     ///   - serviceTypeName: Service type name, such as 'medmij'
     ///   - format: File format, such as 'xml'
@@ -599,20 +625,20 @@ public final class DigiMe {
     ///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue on which the completion block will be called. Defaults to the main dispatch queue.
     ///   - completion: Block called upon completion with either the report data or any errors encountered.
-    public func exportPortabilityReport(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Data, SDKError>) -> Void) {
+    public func exportPortabilityReport(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Data, SDKError>) -> Void) {
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):
                 self.exportData(for: serviceTypeName, format: format, from: from, to: to, credentials: refreshedCredentials) { result in
                     self.session = nil
                     resultQueue.async {
-                        completion(result)
+                        completion(refreshedCredentials, result)
                     }
                 }
                 
             case .failure(let error):
                 resultQueue.async {
-                    completion(.failure(error))
+                    completion(credentials, .failure(error))
                 }
             }
         }
@@ -681,60 +707,9 @@ public final class DigiMe {
     
     // MARK: - Private
     
-    private func readAccountsFile(session: Session, credentials: Credentials, completion: @escaping (Result<AccountsInfo, SDKError>) -> Void) {
-		guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-			return completion(.failure(.errorCreatingRequestJwtToDownloadFile))
-		}
-		
-		let route = ReadDataRoute(jwt: jwt, sessionKey: session.key, fileId: "accounts.json")
-        apiClient.makeRequest(route) { result in
-            switch result {
-            case .success(let response):
-                do {
-					guard !response.data.isEmpty else {
-						if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
-                            completion(.success(AccountsInfo(accounts: [HealthKitAccountData().sourceAccount], consentId: String.random(length: 32))))
-						}
-						else {
-							completion(.failure(SDKError.readAccountsError))
-						}
-						return
-					}
-
-					let unpackedData = try self.dataDecryptor.decrypt(response: response, dataIsHashed: false)
-					let accountsInfo = try unpackedData.decoded() as AccountsInfo
-					
-					if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
-						var accounts = accountsInfo.accounts
-						let consentId = accountsInfo.consentId
-                        accounts.append(HealthKitAccountData().sourceAccount)
-						completion(.success(AccountsInfo(accounts: accounts, consentId: consentId)))
-					}
-					else {
-						completion(.success(accountsInfo))
-					}
-                }
-                catch let error as SDKError {
-                    completion(.failure(error))
-                }
-                catch {
-                    completion(.failure(SDKError.readAccountsError))
-                }
-            case .failure(let error):
-				if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
-                    let info = AccountsInfo(accounts: [HealthKitAccountData().sourceAccount], consentId: String.random(length: 32))
-					completion(.success(info))
-				}
-				else {
-					completion(.failure(error))
-				}
-            }
-        }
-    }
-    
     private func readAccounts(credentials: Credentials, completion: @escaping (Result<[SourceAccountData], SDKError>) -> Void) {
         guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-            return completion(.failure(.other))
+            return completion(.failure(.errorCreatingDataRequestJwt))
         }
         
         let route = ConnectedAccountsRoute(jwt: jwt)
@@ -759,12 +734,11 @@ public final class DigiMe {
         }
     }
 	
-	private func writeDirect(data: Data, metadata: RawFileMetadata, credentials: Credentials, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+	private func writeDirect(data: Data, metadata: RawFileMetadata, credentials: Credentials, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
 		uploadService.uploadFileDirect(data: data, metadata: metadata, credentials: credentials) { result in
 			switch result {
-			case .success(let response):
-				print(response)
-				completion(.success(credentials))
+			case .success:
+				completion(credentials, .success(()))
 			case .failure(let error):
 				// We should be pre-emptively catching the situation where the access token has expired,
 				// but just in case we should react to server message
@@ -772,18 +746,42 @@ public final class DigiMe {
 				case .httpResponseError(statusCode: 401, apiError: let apiError) where apiError?.code == "InvalidToken":
 					self.refreshTokens(credentials: credentials) { refreshResult in
 						switch refreshResult {
-						case .success(let credentials):
-							self.writeDirect(data: data, metadata: metadata, credentials: credentials, completion: completion)
+						case .success(let refreshedCredentials):
+							self.writeDirect(data: data, metadata: metadata, credentials: refreshedCredentials, completion: completion)
 						case .failure(let error):
-							completion(.failure(error))
+							completion(credentials, .failure(error))
 						}
 					}
 				default:
-					completion(.failure(error))
+					completion(credentials, .failure(error))
 				}
 			}
 		}
 	}
+    
+    private func pushDataToProvider(payload: Data, accountId: String, standard: String, version: String, credentials: Credentials, completion: @escaping (Credentials, Result<Data, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+            return completion(credentials, .failure(.errorCreatingDataRequestJwt))
+        }
+
+        let route = PushDataToProviderRoute(jwt: jwt, accountId: accountId, standard: standard, version: version, payload: payload)
+        apiClient.makeRequest(route) { result in
+            completion(credentials, result)
+        }
+    }
+    
+    private func exportData(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval, credentials: Credentials, completion: @escaping (Result<Data, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
+            return completion(.failure(.errorCreatingRequestJwtToExportReport))
+        }
+        
+        let route = ExportReportDataRoute(jwt: jwt, serviceTypeName: serviceTypeName, format: format, from: from, to: to)
+        apiClient.makeRequest(route) { result in
+            completion(result)
+        }
+    }
+    
+    // MARK: - Auth & Refresh
     
     // Auth - needs app to be able to receive response via URL
     private func beginAuth(serviceId: Int?, readOptions: ReadOptions?, linkToContractWithCredentials linkCredentials: Credentials?, onlyPushServices: Bool = false, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
@@ -803,16 +801,16 @@ public final class DigiMe {
     }
     
     // Request read session by triggering source sync
-    private func triggerSourceSync(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Result<Void, SDKError>) -> Void) {
+    private func triggerSourceSync(credentials: Credentials, readOptions: ReadOptions?, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
         guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-            return completion(.failure(.errorCreatingRequestJwtToTriggerData))
+            return completion(credentials, .failure(.errorCreatingRequestJwtToTriggerData))
         }
 
 		apiClient.makeRequest(TriggerSyncRoute(jwt: jwt, readOptions: readOptions)) { result in
             switch result {
             case .success(let response):
                 self.session = response.session
-                completion(.success(Void()))
+                completion(credentials, .success(Void()))
 
             case .failure(let error):
                 // We should be pre-emptively catching the situation where the access token has expired,
@@ -824,24 +822,13 @@ public final class DigiMe {
                         case .success(let refreshedCredentials):
                             self.triggerSourceSync(credentials: refreshedCredentials, readOptions: readOptions, completion: completion)
                         case .failure(let error):
-                            completion(.failure(error))
+                            completion(credentials, .failure(error))
                         }
                     }
                 default:
-                    completion(.failure(error))
+                    completion(credentials, .failure(error))
                 }
             }
-        }
-    }
-    
-    private func exportData(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval, credentials: Credentials, completion: @escaping (Result<Data, SDKError>) -> Void) {
-        guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-            return completion(.failure(.errorCreatingRequestJwtToExportReport))
-        }
-        
-        let route = ExportReportDataRoute(jwt: jwt, serviceTypeName: serviceTypeName, format: format, from: from, to: to)
-        apiClient.makeRequest(route) { result in
-            completion(result)
         }
     }
         
@@ -913,16 +900,7 @@ public final class DigiMe {
         }
     }
     
-    private func pushDataToProvider(payload: Data, accountId: String, standard: String, version: String, credentials: Credentials, completion: @escaping (Result<Data, SDKError>) -> Void) {
-        guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: configuration) else {
-            return completion(.failure(.other))
-        }
-
-        let route = PushDataToProviderRoute(jwt: jwt, accountId: accountId, standard: standard, version: version, payload: payload)
-        apiClient.makeRequest(route) { result in
-            completion(result)
-        }
-    }
+    // MARK: - Utils
     
     private func validateClient() -> SDKError? {
 		#if !DEBUG

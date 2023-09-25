@@ -83,10 +83,10 @@ class AppleHealthSummaryViewModel: ObservableObject {
 			case .failure(let error):
 				self.handleError(error)
 			}
-		} completion: { result in
+		} completion: { newOrRefreshedCredentials, result in
 			switch result {
-			case .success(let (fileList, refreshedCredentials)):
-				self.preferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContractId)
+			case .success(let fileList):
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContractId)
 				
 				if
 					let accountState = fileList.status.details?.first,
@@ -172,10 +172,10 @@ class AppleHealthSummaryViewModel: ObservableObject {
 			return
 		}
 		
-		digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
+		digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { newOrRefreshedCredentials, result in
 			switch result {
-			case .success(let credentials):
-				self.preferences.setCredentials(newCredentials: credentials, for: self.activeContractId)
+			case .success:
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContractId)
 				completion(true)
 				
 			case .failure(let error):

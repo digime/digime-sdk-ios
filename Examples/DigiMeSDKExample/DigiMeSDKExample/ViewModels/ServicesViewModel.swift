@@ -116,11 +116,11 @@ class ServicesViewModel: ObservableObject {
         
         isLoadingData = true
         shouldDisplayCancelButton = true
-        digiMeService?.reauthorizeAccount(accountId: accountId, credentials: accountCredentials) { reauthResult in
+        digiMeService?.reauthorizeAccount(accountId: accountId, credentials: accountCredentials) { refreshedCredentials, reauthResult in
+            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
             self.shouldDisplayCancelButton = false
             switch reauthResult {
-            case .success(let refreshedCredentials):
-                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+            case .success:
                 self.fetchData(credentials: refreshedCredentials)
                 if let index = self.linkedAccounts.firstIndex(where: { $0 == connectedAccount }) {
                     self.linkedAccounts[index].requiredReauth = false
@@ -150,12 +150,12 @@ class ServicesViewModel: ObservableObject {
             }
             
             self.shouldDisplayCancelButton = true
-            self.digiMeService?.addService(identifier: selectedService.identifier, credentials: accountCredentials) { addServiceResult in
+            self.digiMeService?.addService(identifier: selectedService.identifier, credentials: accountCredentials) { refreshedCredentials, addServiceResult in
+                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
                 self.shouldDisplayCancelButton = false
                 switch addServiceResult {
-                case .success(let refreshedCredentials):
+                case .success:
                     self.linkedAccounts.append(LinkedAccount(service: selectedService))
-                    self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
                     self.fetchData(credentials: refreshedCredentials, readOptions: selectedService.options)
                     
                 case.failure(let error):
@@ -208,12 +208,11 @@ class ServicesViewModel: ObservableObject {
         }
         
         isLoadingData = true
-        digiMeService?.deleteUser(credentials: accountCredentials) { error in
+        digiMeService?.deleteUser(credentials: accountCredentials) { refreshedCredentials, result in
             self.isLoadingData = false
-            if let error = error {
-                self.logErrorMessage(error.description)
-            }
-            else {
+            
+            switch result {
+            case .success:
                 self.userPreferences.clearCredentials(for: self.activeContract.identifier)
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                     self.logEntries = []
@@ -221,6 +220,9 @@ class ServicesViewModel: ObservableObject {
                     self.userPreferences.reset()
                     self.logMessage("Your user entry and the library deleted successfully")
                 }
+            case .failure(let error):
+                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+                self.logErrorMessage(error.description)
             }
         }
     }
@@ -233,7 +235,8 @@ class ServicesViewModel: ObservableObject {
         }
 
         isLoadingData = true
-        digiMeService?.exportPortabilityReport(for: serviceTypeName, format: format, from: from, to: to, credentials: accountCredentials) { result in
+        digiMeService?.exportPortabilityReport(for: serviceTypeName, format: format, from: from, to: to, credentials: accountCredentials) { refreshedCredentials, result in
+            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
             self.isLoadingData = false
             switch result {
             case .success(let data):
@@ -302,11 +305,12 @@ class ServicesViewModel: ObservableObject {
     }
 
     private func authenticateAndFetchData(service: Service) {
+        DispatchQueue.main.async {
+            self.isLoadingData = true
+            self.shouldDisplayCancelButton = true
+        }
+        
         let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier)
-        
-        isLoadingData = true
-        shouldDisplayCancelButton = true
-        
         digiMeService?.authorize(credentials: accountCredentials, serviceId: service.identifier, readOptions: service.options) { result in
             self.shouldDisplayCancelButton = false
             
@@ -368,18 +372,21 @@ class ServicesViewModel: ObservableObject {
     }
 
     private func fetchAccounts(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
-        isLoadingData = true
-        digiMeService?.readAccounts(credentials: credentials) { result in
+        DispatchQueue.main.async {
+            self.isLoadingData = true
+        }
+        
+        digiMeService?.readAccounts(credentials: credentials) { refreshedCredentials, result in
             switch result {
             case .success(let accountDetails):
                 self.logMessage("Accounts info retrieved successfully")
                 self.addAccountDetails(accounts: accountDetails)
-                completion(credentials)
+                completion(refreshedCredentials)
             case .failure(let error):
                 if case .failure(.invalidSession) = result {
                     // Need to create a new session
-                    self.requestDataFetch(credentials: credentials) { refreshedCredentials in
-                        self.fetchAccounts(credentials: refreshedCredentials, completion: completion)
+                    self.requestDataFetch(credentials: refreshedCredentials) { renewedCredentials in
+                        self.fetchAccounts(credentials: renewedCredentials, completion: completion)
                     }
                     return
                 }
@@ -390,10 +397,11 @@ class ServicesViewModel: ObservableObject {
     }
 
     private func requestDataFetch(credentials: Credentials, readOptions: ReadOptions? = nil, completion: @escaping (Credentials) -> Void) {
-        digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { result in
+        digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { refreshedCredentials, result in
+            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+
             switch result {
-            case .success(let refreshedCredentials):
-                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+            case .success:
                 completion(refreshedCredentials)
                 
             case.failure(let error):
@@ -404,7 +412,10 @@ class ServicesViewModel: ObservableObject {
     }
 
     private func fetchServiceData(credentials: Credentials, readOptions: ReadOptions? = nil) {
-        isLoadingData = true
+        DispatchQueue.main.async {
+            self.isLoadingData = true
+        }
+        
         digiMeService?.readAllFiles(credentials: credentials, readOptions: readOptions, resultQueue: .global()) { result in
             switch result {
             case .success(let fileContainer):
@@ -425,19 +436,21 @@ class ServicesViewModel: ObservableObject {
             case .failure(let error):
                 self.logErrorMessage("Error reading file: \(error)")
             }
-        } completion: { result in
+        } completion: { refreshedCredentials, result in
+            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+
             DispatchQueue.main.async {
                 self.isLoadingData = false
             }
             switch result {
-            case .success(let (fileList, refreshedCredentials)):
+            case .success(let fileList):
                 if
                     let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }),
                     !reauthAccounts.isEmpty {
                     
                     self.updateReauthenticationStatus(reauthAccounts: reauthAccounts)
                 }
-                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+                
                 self.logMessage("Finished reading files. Total files \(fileList.files?.count ?? 0)")
 
             case .failure(let error):

@@ -126,19 +126,22 @@ class WriteDataViewModel: ObservableObject {
 			return
 		}
 		
-		digiMeWriteService?.deleteUser(credentials: credentials) { error in
+		digiMeWriteService?.deleteUser(credentials: credentials) { newOrRefreshedCredentials, result in
 			self.loadingInProgress = false
-			if let error = error {
-				self.logErrorMessage(error.description)
-			}
-			else {
-				self.credentialsForWrite = nil
-				self.credentialsForRead = nil
-				DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-					self.logEntries = []
-					self.logMessage("Your user entry and the library deleted successfully")
-				}
-			}
+            
+            switch result {
+            case .success:
+                self.credentialsForWrite = nil
+                self.credentialsForRead = nil
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                    self.logEntries = []
+                    self.logMessage("Your user entry and the library deleted successfully")
+                }
+                
+            case .failure(let error):
+                self.credentialsForRead = newOrRefreshedCredentials
+                self.logErrorMessage(error.description)
+            }
 		}
 	}
 	
@@ -158,11 +161,11 @@ class WriteDataViewModel: ObservableObject {
 			.build()
 		
 		loadingInProgress = true
-		digiMeWriteService?.pushDataToLibrary(data: data, metadata: metadata, credentials: credentials) { result in
+		digiMeWriteService?.pushDataToLibrary(data: data, metadata: metadata, credentials: credentials) { newOrRefreshedCredentials, result in
+            self.credentialsForWrite = newOrRefreshedCredentials
 			self.loadingInProgress = false
 			switch result {
-			case .success(let refreshedCredentials):
-				self.credentialsForWrite = refreshedCredentials
+			case .success:
 				self.logMessage("JSON file uploaded successfully", attachmentType: .json, attachment: data, metadataRaw: try? metadata.encoded())
 			case .failure(let error):
 				self.logErrorMessage("Upload JSON file error: \(error)")
@@ -185,11 +188,11 @@ class WriteDataViewModel: ObservableObject {
 			.build()
 	
 		loadingInProgress = true
-		digiMeWriteService?.pushDataToLibrary(data: data, metadata: metadata, credentials: credentials) { result in
+		digiMeWriteService?.pushDataToLibrary(data: data, metadata: metadata, credentials: credentials) { newOrRefreshedCredentials, result in
+            self.credentialsForWrite = newOrRefreshedCredentials
 			self.loadingInProgress = false
 			switch result {
-			case .success(let refreshedCredentials):
-				self.credentialsForWrite = refreshedCredentials
+			case .success:
 				self.logMessage("PDF file uploaded successfully", attachmentType: .pdf, attachment: data, metadataRaw: try? metadata.encoded())
 				
 			case .failure(let error):
@@ -212,11 +215,11 @@ class WriteDataViewModel: ObservableObject {
 			.build()
 		
 		loadingInProgress = true
-		digiMeWriteService?.pushDataToLibrary(data: data, metadata: metadata, credentials: credentials) { result in
+		digiMeWriteService?.pushDataToLibrary(data: data, metadata: metadata, credentials: credentials) { newOrRefreshedCredentials, result in
+            self.credentialsForWrite = newOrRefreshedCredentials
 			self.loadingInProgress = false
 			switch result {
-			case .success(let refreshedCredentials):
-				self.credentialsForWrite = refreshedCredentials
+			case .success:
 				self.logMessage("Image file uploaded successfully", attachmentType: .image, attachment: data, metadataRaw: try? metadata.encoded())
 			case .failure(let error):
 				self.logErrorMessage("Upload image error: \(error)")
@@ -232,11 +235,11 @@ class WriteDataViewModel: ObservableObject {
 		}
 		
 		loadingInProgress = true
-		digiMeReadService?.requestDataQuery(credentials: credentials, readOptions: nil) { result in
+		digiMeReadService?.requestDataQuery(credentials: credentials, readOptions: nil) { newOrRefreshedCredentials, result in
+            self.credentialsForWrite = newOrRefreshedCredentials
 			switch result {
-			case .success(let refreshedCredentials):
-				self.credentialsForRead = refreshedCredentials
-				self.fetchAllFiles(credentials: refreshedCredentials)
+			case .success:
+				self.fetchAllFiles(credentials: newOrRefreshedCredentials)
 			case .failure(let error):
 				self.loadingInProgress = false
 				self.logErrorMessage("Error requesting data query: \(error)")
@@ -287,11 +290,11 @@ class WriteDataViewModel: ObservableObject {
 			case .failure(let error):
 				self.logErrorMessage("Error reading file: \(error)")
 			}
-		} completion: { result in
+		} completion: { newOrRefreshedCredentials, result in
+            self.credentialsForWrite = newOrRefreshedCredentials
 			self.loadingInProgress = false
 			switch result {
-			case .success(let (fileList, refreshedCredentials)):
-				self.credentialsForRead = refreshedCredentials
+			case .success(let fileList):
 				self.logMessage("Finished reading files. Total files \(fileList.files?.count ?? 0)")
 
 			case .failure(let error):
