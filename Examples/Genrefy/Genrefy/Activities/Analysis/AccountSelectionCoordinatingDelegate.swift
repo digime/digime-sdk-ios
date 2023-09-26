@@ -10,5 +10,5 @@ import DigiMeSDK
 
 protocol AccountSelectionCoordinatingDelegate: CoordinatingDelegate {
     
-    func selectedAccountsChanged(selectedAccounts: [SourceAccount])
+    func selectedAccountsChanged(selectedAccounts: [SourceAccountData])
 }

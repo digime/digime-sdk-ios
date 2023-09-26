@@ -38,7 +38,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         
     private let cache = AppStateCache()
     
-    private var filteredAccounts: [SourceAccount] = []
+    private var filteredAccounts: [SourceAccountData] = []
     private var accountsViewController: AccountsViewController?
     
     private lazy var homeViewController: HomeViewController = {
@@ -64,8 +64,8 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     
         if
             accounts.isEmpty,
-            let persistedData = PersistentStorage.shared.loadData(for: "accounts.json"),
-            let loadedAccounts = try? JSONDecoder().decode([SourceAccount].self, from: persistedData) {
+            let persistedData = FilePersistentStorage(with: .documentDirectory).loadData(for: "accounts.json"),
+            let loadedAccounts = try? JSONDecoder().decode([SourceAccountData].self, from: persistedData) {
                 accounts = loadedAccounts
         }
         
@@ -110,7 +110,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         let songs = repository.recentSongs
         do {
             let songData = try JSONEncoder().encode(songs)
-            PersistentStorage.shared.store(data: songData, fileName: "songs.json")
+            FilePersistentStorage(with: .documentDirectory).store(data: songData, fileName: "songs.json")
         }
         catch {
             print("Unable to encode song data")
@@ -158,7 +158,7 @@ extension AnalysisCoordinator: HomeViewControllerDelegate {
 }
        
 extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
-    func selectedAccountsChanged(selectedAccounts: [SourceAccount]) {
+    func selectedAccountsChanged(selectedAccounts: [SourceAccountData]) {
         // Filter analysis using selected accounts only
         filteredAccounts = selectedAccounts
         if let repository = repository {
@@ -179,7 +179,7 @@ extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
                 return
             }
             
-            PersistentStorage.shared.reset(fileName: "songs.json")
+            FilePersistentStorage(with: .documentDirectory).reset(fileName: "songs.json")
             
             DispatchQueue.main.async {
                 self.navigationController.popViewController(animated: true)

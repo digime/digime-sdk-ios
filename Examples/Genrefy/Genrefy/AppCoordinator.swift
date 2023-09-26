@@ -92,7 +92,7 @@ u3W6P+D7xkopNDDFki7IcLyaRzKvXjGf8HeKz0YP+XomHb25Bc3A
         // If have data, go to analysis, otherwise onboard
         if digimeService.isConnected {
             if
-                let songData = PersistentStorage.shared.loadData(for: "songs.json"),
+                let songData = FilePersistentStorage(with: .documentDirectory).loadData(for: "songs.json"),
                 let songs = try? JSONDecoder().decode([Song].self, from: songData) {
                 digimeService.repository.process(songs: songs)
             }

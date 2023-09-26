@@ -51,7 +51,7 @@ class DigiMeService {
             return
         }
         
-        dmeClient.readAccounts(credentials: credentials) { result in
+        dmeClient.readAccounts(credentials: credentials) { newOrUpdatedCredentials, result in
             switch result {
             case .success(let accountsInfo):
                 self.serialQueue.sync {
@@ -80,10 +80,12 @@ class DigiMeService {
             case .failure(let error):
                 print("digi.me failed to retrieve file with error: \(error)")
             }
-        } completion: { result in
+        } completion: { newOrRefreshedCredentials, result in
+            self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: AppCoordinator.configuration.contractId)
+            
             switch result {
-            case .success(let (_, newOrRefreshedCredentials)):
-                self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: AppCoordinator.configuration.contractId)
+            case .success(_):
+                print("digi.me successfully downloaded all files.")
                 
             case .failure(let error):
                 print("digi.me failed to complete getting session data with error: \(error)")
@@ -103,16 +105,21 @@ class DigiMeService {
             return
         }
         
-        dmeClient.deleteUser(credentials: credentials) { error in
+        dmeClient.deleteUser(credentials: credentials) { _, result in
             self.preferences.clearCredentials(for: AppCoordinator.configuration.contractId)
-            completion(error)
+            switch result {
+            case .success():
+                completion(nil)
+            case .failure(let error):
+                completion(error)
+            }
         }
     }
     
     func lastDayScope() -> Scope {
         let objects = [ServiceObjectType(identifier: 406)]
         let services = [ServiceType(identifier: 19, objectTypes: objects)]
-        let groups = [ServiceGroupScope(identifier: 5, serviceTypes: services)]
+        let groups = [ServiceGroupType(identifier: 5, serviceTypes: services)]
         let timeRanges = [TimeRange.last(amount: 1, unit: .day)]
         return Scope(serviceGroups: groups, timeRanges: timeRanges)
     }
