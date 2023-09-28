@@ -15,23 +15,23 @@ struct DailyActivityChart: View {
 	@Binding var showAverageLine: Bool
 	@Binding var dataAverage: Double
 	
-	var dataType: QuantityType
+//	var dataType: QuantityType
 	var barColor: Color
 
 	var body: some View {
 		Chart {
 			ForEach(data, id: \.id) { activity in
 				let yValue: Double = {
-					switch dataType {
-					case .stepCount:
-						return activity.steps
-					case .distanceWalkingRunning:
-						return activity.distances.first?.distance ?? 0.0
-					case .activeEnergyBurned:
-						return activity.calories
-					default:
+//					switch dataType {
+//					case .stepCount:
+//						return activity.steps
+//					case .distanceWalkingRunning:
+//						return activity.distances.first?.distance ?? 0.0
+//					case .activeEnergyBurned:
+//						return activity.calories
+//					default:
 						return 0.0
-					}
+//					}
 				}()
 				
 				BarMark(
@@ -58,9 +58,12 @@ struct DailyActivityChart: View {
 
 struct DailyStepsChart_Previews: PreviewProvider {
 	@State static var data = TestDailyActivity.last30Days
-	static var dataType = QuantityType.stepCount
+//	static var dataType = QuantityType.stepCount
 	
     static var previews: some View {
-		DailyActivityChart(data: $data, showAverageLine: .constant(false), dataAverage: .constant(0), dataType: dataType, barColor: .blue)
+		DailyActivityChart(data: $data, showAverageLine: .constant(false), 
+                           dataAverage: .constant(0),
+//                           dataType: dataType,
+                           barColor: .blue)
     }
 }

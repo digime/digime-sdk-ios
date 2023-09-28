@@ -24,7 +24,7 @@ public final class DigiMe {
     private let apiClient: APIClient
     private let dataDecryptor: DataDecryptor
     private let certificateParser: CertificateParser
-	private let healthSerivce: HealthKitService
+//	private let healthSerivce: HealthKitService
 
     private lazy var downloadService: FileDownloadService = {
         FileDownloadService(apiClient: apiClient, dataDecryptor: dataDecryptor)
@@ -75,7 +75,7 @@ public final class DigiMe {
 		self.contractsCache = ContractsCache()
         self.dataDecryptor = DataDecryptor(configuration: configuration)
         self.certificateParser = CertificateParser()
-		self.healthSerivce = HealthKitService()
+//		self.healthSerivce = HealthKitService()
 
         setupLogger()
     }
@@ -318,7 +318,7 @@ public final class DigiMe {
         
 		allFilesReader = AllFilesReader(apiClient: self.apiClient,
 										credentials: credentials,
-										healthSerivce: self.healthSerivce,
+//										healthSerivce: self.healthSerivce,
 										certificateParser: self.certificateParser,
 										contractsCache: self.contractsCache,
 										configuration: self.configuration,
@@ -646,64 +646,64 @@ public final class DigiMe {
     
     // MARK: - Apple Health
     
-	public func appleHealthStatisticsCollectionQuery(for contractId: String, queryConfig: HealthKitConfiguration, resultQueue: DispatchQueue = .main, accountHandler: @escaping (SourceAccount) -> Void, completion: @escaping (StatisticsCompletionHandler)) {
-		
-        accountHandler(HealthKitAccountData().sourceAccount)
-		healthSerivce.requestAuthorization(typesToRead: queryConfig.typesToRead, typesToWrite: queryConfig.typesToWrite) { success, error in
-			if let error = error {
-				completion(nil, error)
-			}
-			else {
-				guard let contractTimeRange = self.contractsCache.firstTimeRange(for: contractId) else {
-					self.contractDetails(resultQueue: resultQueue) { contractResult in
-						switch contractResult {
-						case .success(let certificat):
-							self.contractsCache.addTimeRanges(ranges: certificat.dataRequest?.timeRanges, for: contractId)
-							let limits = certificat.verifyTimeRange(startDate: queryConfig.startDate, endDate: queryConfig.endDate)
-							self.healthSerivce.readStatisticsCollectionQuery(from: limits.startDate,
-																			 to: limits.endDate,
-																			 anchorDate: queryConfig.anchorDate!,
-																			 intervalComponents: queryConfig.intervalComponents!,
-																			 for: queryConfig.typesToRead,
-																			 mergeResultForSameType: queryConfig.mergeResultForSameType,
-																			 singleCallbackForAllTypes: queryConfig.singleCallbackForAllTypes, completionHandler: completion)
-							
-						case .failure(let error):
-							resultQueue.async {
-								HealthKitService.reportErrorLog(error: error)
-								completion(nil, error)
-							}
-						}
-					}
-					
-					return
-				}
-				
-				let limits = contractTimeRange.verifyTimeRange(startDate: queryConfig.startDate, endDate: queryConfig.endDate)
-				
-				self.healthSerivce.readStatisticsCollectionQuery(from: limits.startDate,
-																 to: limits.endDate,
-																 anchorDate: queryConfig.anchorDate!,
-																 intervalComponents: queryConfig.intervalComponents!,
-																 for: queryConfig.typesToRead,
-																 mergeResultForSameType: queryConfig.mergeResultForSameType,
-																 singleCallbackForAllTypes: queryConfig.singleCallbackForAllTypes, completionHandler: completion)
-			}
-		}
-	}
+//	public func appleHealthStatisticsCollectionQuery(for contractId: String, queryConfig: HealthKitConfiguration, resultQueue: DispatchQueue = .main, accountHandler: @escaping (SourceAccount) -> Void, completion: @escaping (StatisticsCompletionHandler)) {
+//		
+//        accountHandler(HealthKitAccountData().sourceAccount)
+//		healthSerivce.requestAuthorization(typesToRead: queryConfig.typesToRead, typesToWrite: queryConfig.typesToWrite) { success, error in
+//			if let error = error {
+//				completion(nil, error)
+//			}
+//			else {
+//				guard let contractTimeRange = self.contractsCache.firstTimeRange(for: contractId) else {
+//					self.contractDetails(resultQueue: resultQueue) { contractResult in
+//						switch contractResult {
+//						case .success(let certificat):
+//							self.contractsCache.addTimeRanges(ranges: certificat.dataRequest?.timeRanges, for: contractId)
+//							let limits = certificat.verifyTimeRange(startDate: queryConfig.startDate, endDate: queryConfig.endDate)
+//							self.healthSerivce.readStatisticsCollectionQuery(from: limits.startDate,
+//																			 to: limits.endDate,
+//																			 anchorDate: queryConfig.anchorDate!,
+//																			 intervalComponents: queryConfig.intervalComponents!,
+//																			 for: queryConfig.typesToRead,
+//																			 mergeResultForSameType: queryConfig.mergeResultForSameType,
+//																			 singleCallbackForAllTypes: queryConfig.singleCallbackForAllTypes, completionHandler: completion)
+//							
+//						case .failure(let error):
+//							resultQueue.async {
+//								HealthKitService.reportErrorLog(error: error)
+//								completion(nil, error)
+//							}
+//						}
+//					}
+//					
+//					return
+//				}
+//				
+//				let limits = contractTimeRange.verifyTimeRange(startDate: queryConfig.startDate, endDate: queryConfig.endDate)
+//				
+//				self.healthSerivce.readStatisticsCollectionQuery(from: limits.startDate,
+//																 to: limits.endDate,
+//																 anchorDate: queryConfig.anchorDate!,
+//																 intervalComponents: queryConfig.intervalComponents!,
+//																 for: queryConfig.typesToRead,
+//																 mergeResultForSameType: queryConfig.mergeResultForSameType,
+//																 singleCallbackForAllTypes: queryConfig.singleCallbackForAllTypes, completionHandler: completion)
+//			}
+//		}
+//	}
     
-#if targetEnvironment(simulator)
-    public func saveHealthData(dataToSave: [HKObject], completion: @escaping (Result<Bool, SDKError>) -> Void) {
-		self.healthSerivce.saveHealthData(dataToSave) { success, error in
-            if success {
-                completion(.success(success))
-            }
-            else {
-                completion(.failure(.other))
-            }
-        }
-    }
-#endif
+//#if targetEnvironment(simulator)
+//    public func saveHealthData(dataToSave: [HKObject], completion: @escaping (Result<Bool, SDKError>) -> Void) {
+//		self.healthSerivce.saveHealthData(dataToSave) { success, error in
+//            if success {
+//                completion(.success(success))
+//            }
+//            else {
+//                completion(.failure(.other))
+//            }
+//        }
+//    }
+//#endif
     
     // MARK: - Private
     
@@ -717,7 +717,7 @@ public final class DigiMe {
             switch result {
             case .success(var accounts):
                 if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
-                    accounts.append(HealthKitAccountData().sourceAccountData)
+//                    accounts.append(HealthKitAccountData().sourceAccountData)
                     completion(.success(accounts))
                 }
                 else {
@@ -725,7 +725,7 @@ public final class DigiMe {
                 }
             case .failure(let error):
                 if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
-                    completion(.success([HealthKitAccountData().sourceAccountData]))
+//                    completion(.success([HealthKitAccountData().sourceAccountData]))
                 }
                 else {
                     completion(.failure(error))

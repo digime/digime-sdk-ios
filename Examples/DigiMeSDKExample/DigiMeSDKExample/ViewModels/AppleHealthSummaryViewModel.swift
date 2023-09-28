@@ -222,19 +222,19 @@ extension AppleHealthSummaryViewModel {
 				counter += 1
 			}
 			
-			digiMeService?.saveHealthData(dataToSave: dataToWrite) { result in
-				DispatchQueue.main.async { [weak self] in
-					self?.isDataLoading = false
-					switch result {
-					case .success(let success):
-						self?.infoMessage = "Data is \(success ? "saved" : "NOT saved"), \(counter) samples added."
-					case .failure(let error):
-						self?.errorMessage = "An error occured saving test data: \(error)"
-					}
-
-					self?.authorize()
-				}
-			}
+//			digiMeService?.saveHealthData(dataToSave: dataToWrite) { result in
+//				DispatchQueue.main.async { [weak self] in
+//					self?.isDataLoading = false
+//					switch result {
+//					case .success(let success):
+//						self?.infoMessage = "Data is \(success ? "saved" : "NOT saved"), \(counter) samples added."
+//					case .failure(let error):
+//						self?.errorMessage = "An error occured saving test data: \(error)"
+//					}
+//
+//					self?.authorize()
+//				}
+//			}
 		}
 	}
 }

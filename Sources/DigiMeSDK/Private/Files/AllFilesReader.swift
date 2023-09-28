@@ -21,7 +21,7 @@ class AllFilesReader {
     private let apiClient: APIClient
     private let configuration: Configuration
 	private let credentials: Credentials
-	private let healthSerivce: HealthKitService
+//	private let healthSerivce: HealthKitService
 	private let certificateParser: CertificateParser
 	private let contractsCache: ContractsCache
     private var sessionDataCompletion: ((Result<FileList, SDKError>) -> Void)?
@@ -37,10 +37,17 @@ class AllFilesReader {
         static let pollInterval = 3
     }
     
-	init(apiClient: APIClient, credentials: Credentials, healthSerivce: HealthKitService, certificateParser: CertificateParser, contractsCache: ContractsCache, configuration: Configuration, readOptions: ReadOptions? = nil) {
+	init(apiClient: APIClient,
+         credentials: Credentials,
+//         healthSerivce: HealthKitService,
+         certificateParser: CertificateParser,
+         contractsCache: ContractsCache,
+         configuration: Configuration,
+         readOptions: ReadOptions? = nil) {
+        
         self.apiClient = apiClient
 		self.credentials = credentials
-		self.healthSerivce = healthSerivce
+//		self.healthSerivce = healthSerivce
 		self.certificateParser = certificateParser
 		self.contractsCache = contractsCache
         self.configuration = configuration
@@ -245,8 +252,8 @@ class AllFilesReader {
 			switch result {
 			case .success(let limits):
 				
-				let account = HealthKitAccountData().sourceAccount
-				let filesDataService = HealthKitFilesDataService(account: account)
+//				let account = HealthKitAccountData().sourceAccount
+//				let filesDataService = HealthKitFilesDataService(account: account)
 				let deviceDataCompletion: (Result<[FileListItem], SDKError>) -> Void = { [weak self] result in
 					switch result {
 					case .success(let files):
@@ -257,10 +264,10 @@ class AllFilesReader {
 					}
 				}
 				
-				filesDataService.queryData(from: limits.startDate, to: limits.endDate, downloadHandler: self.sessionContentHandler, completion: deviceDataCompletion)
+//				filesDataService.queryData(from: limits.startDate, to: limits.endDate, downloadHandler: self.sessionContentHandler, completion: deviceDataCompletion)
 				
 			case .failure(let error):
-				HealthKitService.reportErrorLog(error: error)
+//				HealthKitService.reportErrorLog(error: error)
 				self.sessionDataCompletion?(.failure(error))
 			}
 		}

@@ -34,34 +34,34 @@ struct AppleHealthBarChartView: View {
 					ChartTimeRangePicker(value: $timeRange)
 						.background(.clear)
 						.padding(.bottom)
-					switch timeRange {
-					case .last30Days:
-						if !$viewModel.result30days.isEmpty {
-							getBarTitleView(data: viewModel.result30days, dataType: .stepCount, title: "Steps", unit: "steps")
-							DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .stepCount)), dataType: .stepCount, barColor: .blue)
-								.frame(height: 240)
-							
-							getBarTitleView(data: viewModel.result30days, dataType: .stepCount, title: "Distance Walking or Runnin", unit: "km")
-							DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .distanceWalkingRunning)), dataType: .distanceWalkingRunning, barColor: .indigo)
-								.frame(height: 240)
-							
-							getBarTitleView(data: viewModel.result30days, dataType: .activeEnergyBurned, title: "Active Energy Burned", unit: "cal")
-							DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .activeEnergyBurned)), dataType: .activeEnergyBurned, barColor: .teal)
-								.frame(height: 240)
-						}
-					case .allTime:
-						getBarTitleView(data: viewModel.result, dataType: .stepCount, title: "Steps", unit: "steps")
-						MonthlyActivityChart(data: $viewModel.result, dataType: .stepCount, barColor: .blue)
-							.frame(height: 240)
-						
-						getBarTitleView(data: viewModel.result, dataType: .distanceWalkingRunning, title: "Distance Walking or Running", unit: "km")
-						MonthlyActivityChart(data: $viewModel.result, dataType: .distanceWalkingRunning, barColor: .indigo)
-							.frame(height: 240)
-						
-						getBarTitleView(data: viewModel.result, dataType: .activeEnergyBurned, title: "Active Energy Burned", unit: "cal")
-						MonthlyActivityChart(data: $viewModel.result, dataType: .activeEnergyBurned, barColor: .teal)
-							.frame(height: 240)
-					}
+//					switch timeRange {
+//					case .last30Days:
+//						if !$viewModel.result30days.isEmpty {
+//							getBarTitleView(data: viewModel.result30days, dataType: .stepCount, title: "Steps", unit: "steps")
+//							DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .stepCount)), dataType: .stepCount, barColor: .blue)
+//								.frame(height: 240)
+//							
+//							getBarTitleView(data: viewModel.result30days, dataType: .stepCount, title: "Distance Walking or Runnin", unit: "km")
+//							DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .distanceWalkingRunning)), dataType: .distanceWalkingRunning, barColor: .indigo)
+//								.frame(height: 240)
+//							
+//							getBarTitleView(data: viewModel.result30days, dataType: .activeEnergyBurned, title: "Active Energy Burned", unit: "cal")
+//							DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .activeEnergyBurned)), dataType: .activeEnergyBurned, barColor: .teal)
+//								.frame(height: 240)
+//						}
+//					case .allTime:
+//						getBarTitleView(data: viewModel.result, dataType: .stepCount, title: "Steps", unit: "steps")
+//						MonthlyActivityChart(data: $viewModel.result, dataType: .stepCount, barColor: .blue)
+//							.frame(height: 240)
+//						
+//						getBarTitleView(data: viewModel.result, dataType: .distanceWalkingRunning, title: "Distance Walking or Running", unit: "km")
+//						MonthlyActivityChart(data: $viewModel.result, dataType: .distanceWalkingRunning, barColor: .indigo)
+//							.frame(height: 240)
+//						
+//						getBarTitleView(data: viewModel.result, dataType: .activeEnergyBurned, title: "Active Energy Burned", unit: "cal")
+//						MonthlyActivityChart(data: $viewModel.result, dataType: .activeEnergyBurned, barColor: .teal)
+//							.frame(height: 240)
+//					}
 				}
 				
 				if timeRange == .last30Days {
@@ -161,13 +161,15 @@ struct AppleHealthBarChartView: View {
 		.background(.clear)
 	}
 	
-	private func getBarTitleView(data: [FitnessActivitySummary], dataType: QuantityType, title: String, unit: String) -> some View {
+	private func getBarTitleView(data: [FitnessActivitySummary], 
+//                                 dataType: QuantityType,
+                                 title: String, unit: String) -> some View {
 		VStack(alignment: .leading) {
 			Text("Total \(title)")
 				.background(.clear)
 				.font(.callout)
 				.foregroundStyle(.secondary)
-			Text("\(getTotal(data: data, dataType: dataType), format: .number) \(unit)")
+			Text("\(getTotal(data: data/*, dataType: dataType*/), format: .number) \(unit)")
 				.background(.clear)
 				.font(.title2.bold())
 				.foregroundColor(.primary)
@@ -177,37 +179,37 @@ struct AppleHealthBarChartView: View {
 	}
 	
 	// MARK: - Data wrappers
-	private func getTotal(data: [FitnessActivitySummary], dataType: QuantityType) -> Int {
+	private func getTotal(data: [FitnessActivitySummary]/*, dataType: QuantityType*/) -> Int {
 		data.map { activity in
-			switch dataType {
-			case .stepCount:
-				return Int(activity.steps)
-			case .distanceWalkingRunning:
-				return Int(activity.distances.first?.distance ?? 0)
-			case .activeEnergyBurned:
-				return Int(activity.calories)
-			default:
+//			switch dataType {
+//			case .stepCount:
+//				return Int(activity.steps)
+//			case .distanceWalkingRunning:
+//				return Int(activity.distances.first?.distance ?? 0)
+//			case .activeEnergyBurned:
+//				return Int(activity.calories)
+//			default:
 				return 0
-			}
+//			}
 		}.reduce(0, +)
 	}
 
-	private func dataAverage(dataType: QuantityType) -> Double {
+	private func dataAverage(/*dataType: QuantityType*/) -> Double {
 		guard !viewModel.result30days.isEmpty else {
 			return 0.0
 		}
 
 		let total = viewModel.result30days.map { activity in
-			switch dataType {
-			case .stepCount:
-				return Int(activity.steps)
-			case .distanceWalkingRunning:
-				return Int(activity.distances.first?.distance ?? 0)
-			case .activeEnergyBurned:
-				return Int(activity.calories)
-			default:
+//			switch dataType {
+//			case .stepCount:
+//				return Int(activity.steps)
+//			case .distanceWalkingRunning:
+//				return Int(activity.distances.first?.distance ?? 0)
+//			case .activeEnergyBurned:
+//				return Int(activity.calories)
+//			default:
 				return 0
-			}
+//			}
 		}.reduce(0, +)
 		return Double(total / viewModel.result30days.count)
 	}
