@@ -12,22 +12,22 @@ import SwiftUI
 
 struct MonthlyActivityChart: View {
 	@Binding var data: [FitnessActivitySummary]
-	var dataType: QuantityType
+//	var dataType: QuantityType
 	var barColor: Color
 	
 	var body: some View {
 		Chart(data, id: \.id) { activity in
 			let yValue: Double = {
-				switch dataType {
-				case .stepCount:
-					return activity.steps
-				case .distanceWalkingRunning:
-					return activity.distances.first?.distance ?? 0.0
-				case .activeEnergyBurned:
-					return activity.calories
-				default:
+//				switch dataType {
+//				case .stepCount:
+//					return activity.steps
+//				case .distanceWalkingRunning:
+//					return activity.distances.first?.distance ?? 0.0
+//				case .activeEnergyBurned:
+//					return activity.calories
+//				default:
 					return 0.0
-				}
+//				}
 			}()
 			
 			BarMark(
@@ -50,6 +50,8 @@ struct MonthlyActivityChart: View {
 struct MonthlyStepsChart_Previews: PreviewProvider {
 	@State static var data = TestDailyActivity.allTime
     static var previews: some View {
-		MonthlyActivityChart(data: $data, dataType: QuantityType.stepCount, barColor: .blue)
+		MonthlyActivityChart(data: $data, 
+//                             dataType: QuantityType.stepCount,
+                             barColor: .blue)
     }
 }

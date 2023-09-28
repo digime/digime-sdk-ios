@@ -149,13 +149,13 @@ final class ConsentManager: NSObject {
 		}
 		
 		LocalDataCache().requestLocalData(for: configuration.contractId)
-		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
-			self.localServiceRequested = false
-			self.reset()
-			self.userConsentCompletion?(self.mapErrors(result: result))
-			self.userConsentCompletion = nil
-			self.addServiceCompletion = nil
-		}
+//		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
+//			self.localServiceRequested = false
+//			self.reset()
+//			self.userConsentCompletion?(self.mapErrors(result: result))
+//			self.userConsentCompletion = nil
+//			self.addServiceCompletion = nil
+//		}
     }
     
     private func finishAddService(with result: Result<Void, Error>) {
@@ -176,13 +176,13 @@ final class ConsentManager: NSObject {
 		}
 		
 		LocalDataCache().requestLocalData(for: configuration.contractId)
-		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
-			self.localServiceRequested = false
-			self.reset()
-			self.addServiceCompletion?(self.mapErrors(result: result))
-			self.addServiceCompletion = nil
-			self.userConsentCompletion = nil
-		}
+//		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
+//			self.localServiceRequested = false
+//			self.reset()
+//			self.addServiceCompletion?(self.mapErrors(result: result))
+//			self.addServiceCompletion = nil
+//			self.userConsentCompletion = nil
+//		}
     }
     
     private func mapErrors<T>(result: Result<T, Error>) -> Result<T, SDKError> {
