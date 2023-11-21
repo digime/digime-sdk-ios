@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
         :tag => s.version
     }
     
-    s.source_files 	= "Sources/DigiMeCore/**/*.swift"
+    s.source_files 	= "DigiMeCore/Sources/DigiMeCore/**/*.swift"
     s.frameworks 	= "Foundation", "UIKit", "SafariServices", "CryptoKit", "Security", "HealthKit"
 
 end
