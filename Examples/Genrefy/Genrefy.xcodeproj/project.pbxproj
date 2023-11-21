@@ -12,8 +12,8 @@
 		1E49BDA624223D80003119F2 /* ReceiptsLinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E49BDA524223D80003119F2 /* ReceiptsLinkTableViewCell.swift */; };
 		1E4AEB292199B71800C83328 /* IntroViewControllerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */; };
 		1E4AEB312199FB8000C83328 /* IntroCoordinatingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */; };
-		1E6EDA622B0D00C00077A80C /* DigiMeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6EDA612B0D00C00077A80C /* DigiMeCore.framework */; };
-		1E6EDA642B0D00C50077A80C /* DigiMeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6EDA632B0D00C50077A80C /* DigiMeSDK.framework */; };
+		1E6EDAB62B0D1E140077A80C /* DigiMeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6EDAB52B0D1E140077A80C /* DigiMeCore.framework */; };
+		1E6EDAB82B0D1E180077A80C /* DigiMeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E6EDAB72B0D1E180077A80C /* DigiMeSDK.framework */; };
 		1EEB8AB029EE8D8000E2BE37 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEB8AAF29EE8D8000E2BE37 /* UserPreferences.swift */; };
 		276AF972242BB5E000BC3867 /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF971242BB5E000BC3867 /* Song.swift */; };
 		276AF974242CB98900BC3867 /* GenreSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276AF973242CB98900BC3867 /* GenreSummary.swift */; };
@@ -55,18 +55,19 @@
 		5C8C6B7D22A935D20004E7F4 /* SectionTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C6B7C22A935D20004E7F4 /* SectionTitleTableViewCell.swift */; };
 		5C8C6B8122A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C6B8022A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift */; };
 		5C9B437B22A1134B0012B933 /* StartOverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9B437A22A1134B0012B933 /* StartOverTableViewCell.swift */; };
-		9B3A96492DDFC5F50092F48C /* Pods_Genrefy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 758184AF8A3899F3F21DC3D2 /* Pods_Genrefy.framework */; };
+		B91787FE5C58A16DDB1D250B /* Pods_Genrefy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4A846C36E82A8649C30AC10 /* Pods_Genrefy.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0610E8D1212C42170089D3B2 /* GenreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreCell.swift; sourceTree = "<group>"; };
 		0686EFEB214671DF005C425D /* AppStateCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateCache.swift; sourceTree = "<group>"; };
-		11C0F0C126FE8E708E5DE3D6 /* Pods-Genrefy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.release.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.release.xcconfig"; sourceTree = "<group>"; };
 		1E49BDA524223D80003119F2 /* ReceiptsLinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptsLinkTableViewCell.swift; sourceTree = "<group>"; };
 		1E4AEB282199B71800C83328 /* IntroViewControllerUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewControllerUseCase.swift; sourceTree = "<group>"; };
 		1E4AEB302199FB8000C83328 /* IntroCoordinatingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinatingDelegate.swift; sourceTree = "<group>"; };
 		1E6EDA612B0D00C00077A80C /* DigiMeCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DigiMeCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E6EDA632B0D00C50077A80C /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E6EDAB52B0D1E140077A80C /* DigiMeCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DigiMeCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E6EDAB72B0D1E180077A80C /* DigiMeSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DigiMeSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EEB8AAF29EE8D8000E2BE37 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		276AF971242BB5E000BC3867 /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		276AF973242CB98900BC3867 /* GenreSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreSummary.swift; sourceTree = "<group>"; };
@@ -106,12 +107,13 @@
 		27EDC10C20FF9C1E0092E661 /* Analysis.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Analysis.storyboard; sourceTree = "<group>"; };
 		27EDC10E20FF9CC50092E661 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		27EDC11020FF9CD90092E661 /* AccountsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsViewController.swift; sourceTree = "<group>"; };
-		3EB8D21F0005563D8DAD334C /* Pods-Genrefy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.debug.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.debug.xcconfig"; sourceTree = "<group>"; };
 		5C194BDA22AE28D60068821C /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		5C8C6B7C22A935D20004E7F4 /* SectionTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleTableViewCell.swift; sourceTree = "<group>"; };
 		5C8C6B8022A9360A0004E7F4 /* SectionTitleDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitleDetailTableViewCell.swift; sourceTree = "<group>"; };
 		5C9B437A22A1134B0012B933 /* StartOverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartOverTableViewCell.swift; sourceTree = "<group>"; };
-		758184AF8A3899F3F21DC3D2 /* Pods_Genrefy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Genrefy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		76862909826E96B51C71F60F /* Pods-Genrefy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.release.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.release.xcconfig"; sourceTree = "<group>"; };
+		76D02876A5AB0F38A60F8B26 /* Pods-Genrefy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.debug.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.debug.xcconfig"; sourceTree = "<group>"; };
+		B4A846C36E82A8649C30AC10 /* Pods_Genrefy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Genrefy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,9 +121,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E6EDA642B0D00C50077A80C /* DigiMeSDK.framework in Frameworks */,
-				1E6EDA622B0D00C00077A80C /* DigiMeCore.framework in Frameworks */,
-				9B3A96492DDFC5F50092F48C /* Pods_Genrefy.framework in Frameworks */,
+				1E6EDAB82B0D1E180077A80C /* DigiMeSDK.framework in Frameworks */,
+				1E6EDAB62B0D1E140077A80C /* DigiMeCore.framework in Frameworks */,
+				B91787FE5C58A16DDB1D250B /* Pods_Genrefy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,13 +160,22 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		24FCF21937D8956B369CC104 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				76D02876A5AB0F38A60F8B26 /* Pods-Genrefy.debug.xcconfig */,
+				76862909826E96B51C71F60F /* Pods-Genrefy.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		27C6759D20FCA04900E6AFBC = {
 			isa = PBXGroup;
 			children = (
 				27C675A820FCA04900E6AFBC /* Genrefy */,
 				27C675A720FCA04900E6AFBC /* Products */,
-				60197811B7843C8967744E03 /* Pods */,
 				7E4FE53113B1E0BD7974A1DC /* Frameworks */,
+				24FCF21937D8956B369CC104 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -264,21 +275,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		60197811B7843C8967744E03 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3EB8D21F0005563D8DAD334C /* Pods-Genrefy.debug.xcconfig */,
-				11C0F0C126FE8E708E5DE3D6 /* Pods-Genrefy.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		7E4FE53113B1E0BD7974A1DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E6EDAB72B0D1E180077A80C /* DigiMeSDK.framework */,
+				1E6EDAB52B0D1E140077A80C /* DigiMeCore.framework */,
 				1E6EDA632B0D00C50077A80C /* DigiMeSDK.framework */,
 				1E6EDA612B0D00C00077A80C /* DigiMeCore.framework */,
-				758184AF8A3899F3F21DC3D2 /* Pods_Genrefy.framework */,
+				B4A846C36E82A8649C30AC10 /* Pods_Genrefy.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -290,16 +294,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27C675BA20FCA04C00E6AFBC /* Build configuration list for PBXNativeTarget "Genrefy" */;
 			buildPhases = (
-				AA87B4D4E68427774879DA81 /* [CP] Check Pods Manifest.lock */,
+				D6D05EE766DCF223B0CB0903 /* [CP] Check Pods Manifest.lock */,
 				27C675A220FCA04900E6AFBC /* Sources */,
 				27C675A320FCA04900E6AFBC /* Frameworks */,
 				27C675A420FCA04900E6AFBC /* Resources */,
-				C010BA252090F81C9AEFD15B /* [CP] Embed Pods Frameworks */,
+				224A25B9EA4A277E947F3258 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				1E2CC7922ACDA2EB00DADCF9 /* PBXTargetDependency */,
 			);
 			name = Genrefy;
 			productName = "Apps Skeleton";
@@ -355,7 +358,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		AA87B4D4E68427774879DA81 /* [CP] Check Pods Manifest.lock */ = {
+		224A25B9EA4A277E947F3258 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Genrefy/Pods-Genrefy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Genrefy/Pods-Genrefy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Genrefy/Pods-Genrefy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D6D05EE766DCF223B0CB0903 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -375,23 +395,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C010BA252090F81C9AEFD15B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Genrefy/Pods-Genrefy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Genrefy/Pods-Genrefy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Genrefy/Pods-Genrefy-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -447,13 +450,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		1E2CC7922ACDA2EB00DADCF9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 1E2CC7912ACDA2EB00DADCF9 /* DigiMeSDK */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		27C675B420FCA04C00E6AFBC /* LaunchScreen.storyboard */ = {
@@ -589,7 +585,7 @@
 		};
 		27C675BB20FCA04C00E6AFBC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3EB8D21F0005563D8DAD334C /* Pods-Genrefy.debug.xcconfig */;
+			baseConfigurationReference = 76D02876A5AB0F38A60F8B26 /* Pods-Genrefy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -614,7 +610,7 @@
 		};
 		27C675BC20FCA04C00E6AFBC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 11C0F0C126FE8E708E5DE3D6 /* Pods-Genrefy.release.xcconfig */;
+			baseConfigurationReference = 76862909826E96B51C71F60F /* Pods-Genrefy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -661,21 +657,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		1E3B391D2ACDA04E00343F60 /* XCLocalSwiftPackageReference "../../DigiMeSDK" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../DigiMeSDK;
-		};
-/* End XCLocalSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		1E2CC7912ACDA2EB00DADCF9 /* DigiMeSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1E3B391D2ACDA04E00343F60 /* XCLocalSwiftPackageReference "../../DigiMeSDK" */;
-			productName = DigiMeSDK;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 27C6759E20FCA04900E6AFBC /* Project object */;
 }

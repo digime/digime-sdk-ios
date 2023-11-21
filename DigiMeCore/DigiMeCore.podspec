@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     s.swift_version = "5.0"
     s.source       	= {
         :git => "https://github.com/digime/digime-sdk-ios.git",
-        :branch => "master",
+        :branch => "task/SDK-87",
         :tag => s.version
     }
     
