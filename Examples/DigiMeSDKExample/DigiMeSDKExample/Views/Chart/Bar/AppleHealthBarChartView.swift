@@ -7,7 +7,10 @@
 //
 
 import Charts
+import DigiMeCore
+import DigiMeHealthKit
 import DigiMeSDK
+import Foundation
 import SwiftUI
 
 struct AppleHealthBarChartView: View {
@@ -28,110 +31,79 @@ struct AppleHealthBarChartView: View {
 	}
 	
 	var body: some View {
-		List {
+		ScrollView {
 			if !viewModel.result.isEmpty {
-				VStack(alignment: .leading) {
-					ChartTimeRangePicker(value: $timeRange)
-						.background(.clear)
-						.padding(.bottom)
-//					switch timeRange {
-//					case .last30Days:
-//						if !$viewModel.result30days.isEmpty {
-//							getBarTitleView(data: viewModel.result30days, dataType: .stepCount, title: "Steps", unit: "steps")
-//							DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .stepCount)), dataType: .stepCount, barColor: .blue)
-//								.frame(height: 240)
-//							
-//							getBarTitleView(data: viewModel.result30days, dataType: .stepCount, title: "Distance Walking or Runnin", unit: "km")
-//							DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .distanceWalkingRunning)), dataType: .distanceWalkingRunning, barColor: .indigo)
-//								.frame(height: 240)
-//							
-//							getBarTitleView(data: viewModel.result30days, dataType: .activeEnergyBurned, title: "Active Energy Burned", unit: "cal")
-//							DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .activeEnergyBurned)), dataType: .activeEnergyBurned, barColor: .teal)
-//								.frame(height: 240)
-//						}
-//					case .allTime:
-//						getBarTitleView(data: viewModel.result, dataType: .stepCount, title: "Steps", unit: "steps")
-//						MonthlyActivityChart(data: $viewModel.result, dataType: .stepCount, barColor: .blue)
-//							.frame(height: 240)
-//						
-//						getBarTitleView(data: viewModel.result, dataType: .distanceWalkingRunning, title: "Distance Walking or Running", unit: "km")
-//						MonthlyActivityChart(data: $viewModel.result, dataType: .distanceWalkingRunning, barColor: .indigo)
-//							.frame(height: 240)
-//						
-//						getBarTitleView(data: viewModel.result, dataType: .activeEnergyBurned, title: "Active Energy Burned", unit: "cal")
-//						MonthlyActivityChart(data: $viewModel.result, dataType: .activeEnergyBurned, barColor: .teal)
-//							.frame(height: 240)
-//					}
-				}
+                SectionView(header: "Steps, Distance & Calories") {
+                    VStack(alignment: .leading) {
+                        ChartTimeRangePicker(value: $timeRange)
+                            .background(.clear)
+                            .padding(.bottom)
+                        switch timeRange {
+                        case .last30Days:
+                            if !$viewModel.result30days.isEmpty {
+                                getBarTitleView(data: viewModel.result30days, dataType: .stepCount, title: "Steps", unit: "steps")
+                                DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .stepCount)), dataType: .stepCount, barColor: .accentColor)
+                                    .frame(height: 240)
+                                
+                                getBarTitleView(data: viewModel.result30days, dataType: .stepCount, title: "Distance Walking or Running", unit: "km")
+                                DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .distanceWalkingRunning)), dataType: .distanceWalkingRunning, barColor: .indigo)
+                                    .frame(height: 240)
+                                
+                                getBarTitleView(data: viewModel.result30days, dataType: .activeEnergyBurned, title: "Active Energy Burned", unit: "cal")
+                                DailyActivityChart(data: $viewModel.result30days, showAverageLine: $showAverageLine, dataAverage: .constant(dataAverage(dataType: .activeEnergyBurned)), dataType: .activeEnergyBurned, barColor: .teal)
+                                    .frame(height: 240)
+                            }
+                        case .allTime:
+                            getBarTitleView(data: viewModel.result, dataType: .stepCount, title: "Steps", unit: "steps")
+                            MonthlyActivityChart(data: $viewModel.result, dataType: .stepCount, barColor: .accentColor)
+                                .frame(height: 240)
+                            
+                            getBarTitleView(data: viewModel.result, dataType: .distanceWalkingRunning, title: "Distance Walking or Running", unit: "km")
+                            MonthlyActivityChart(data: $viewModel.result, dataType: .distanceWalkingRunning, barColor: .indigo)
+                                .frame(height: 240)
+                            
+                            getBarTitleView(data: viewModel.result, dataType: .activeEnergyBurned, title: "Active Energy Burned", unit: "cal")
+                            MonthlyActivityChart(data: $viewModel.result, dataType: .activeEnergyBurned, barColor: .teal)
+                                .frame(height: 240)
+                        }
+                    }
+                }
 				
 				if timeRange == .last30Days {
-					Section("Options") {
+                    SectionView(header: "Options") {
 						Toggle("Show Daily Average", isOn: $showAverageLine)
 					}
 					.background(.clear)
 				}
 			}
 			
-			Section {
-				Button {
-					queryData()
-				} label: {
-					HStack(alignment: .center, spacing: 20) {
-						Text("Request New Data")
-						if viewModel.isLoadingData {
-							ActivityIndicator()
-								.frame(width: 20, height: 20)
-								.foregroundColor(.white)
-						}
-					}
-					.listRowSeparator(.hidden)
-					.frame(minWidth: 0, maxWidth: .infinity)
-					.font(.headline)
-                    .foregroundColor(.white)
-					.padding(10)
-					.background(
-						RoundedRectangle(cornerRadius: 10, style: .continuous)
-							.fill(.blue)
-					)
+            SectionView(footer: viewModel.result.isEmpty ? "Press this button to download you Apple Health data." : nil) {
+                StyledPressableButtonView(text: "Read Apple Health Data",
+                                          iconSystemName: "heart.circle",
+                                          iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
+                                          textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                          backgroundColor: Color(.secondarySystemGroupedBackground),
+                                          action: {
+                    queryData()
+                })
+                .disabled(viewModel.isLoadingData)
+            }
+            
+			if let error = viewModel.errorMessage {
+                SectionView(header: "Error") {
+                    InfoMessageView(message: error, foregroundColor: .red)
 				}
-				.padding(.top, 20)
-				.listRowSeparator(.hidden)
-				.buttonStyle(PlainButtonStyle())
-				.background(.clear)
-			}
-			.background(.clear)
-			
-			if viewModel.result.isEmpty {
-				Section {
-					VStack(alignment: .center) {
-						Text("Press this button to download you Apple Health data.")
-							.background(.clear)
-							.frame(maxWidth: .infinity, alignment: .center)
-							.font(.caption)
-							.foregroundColor(.secondary)
-						Image(systemName: "chart.bar.xaxis")
-							.background(.clear)
-							.foregroundColor(.secondary).opacity(0.1)
-							.font(.largeTitle)
-							.padding(.top, 30)
-							.scaleEffect(3)
-					}
-					.listRowSeparator(.hidden)
-					.background(.clear)
-				}
-				.background(.clear)
-			}
-			
-			if viewModel.errorMessage != nil {
-				Section {
-					errorBanner
-				}
-				.background(.clear)
 			}
 		}
-		.listStyle(.plain).background(.clear)
+        .background(Color(.systemGroupedBackground))
 		.navigationBarTitle("Activity", displayMode: .inline)
 		.toolbar {
+            if viewModel.isLoadingData {
+                ActivityIndicator()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(.gray)
+            }
+            
 			if !viewModel.result.isEmpty {
 				Button {
 					showModal.toggle()
@@ -147,29 +119,15 @@ struct AppleHealthBarChartView: View {
 		}
 	}
 	
-	// MARK: - views
-	private var errorBanner: some View {
-		VStack(alignment: .leading, spacing: 2) {
-			Text("Error")
-				.font(.headline)
-				.background(.clear)
-			Text(viewModel.errorMessage ?? "Error...")
-				.font(.callout)
-				.background(.clear)
-		}
-		.foregroundColor(.red)
-		.background(.clear)
-	}
-	
 	private func getBarTitleView(data: [FitnessActivitySummary], 
-//                                 dataType: QuantityType,
+                                 dataType: QuantityType,
                                  title: String, unit: String) -> some View {
 		VStack(alignment: .leading) {
 			Text("Total \(title)")
 				.background(.clear)
 				.font(.callout)
 				.foregroundStyle(.secondary)
-			Text("\(getTotal(data: data/*, dataType: dataType*/), format: .number) \(unit)")
+			Text("\(getTotal(data: data, dataType: dataType), format: .number) \(unit)")
 				.background(.clear)
 				.font(.title2.bold())
 				.foregroundColor(.primary)
@@ -179,44 +137,43 @@ struct AppleHealthBarChartView: View {
 	}
 	
 	// MARK: - Data wrappers
-	private func getTotal(data: [FitnessActivitySummary]/*, dataType: QuantityType*/) -> Int {
+	private func getTotal(data: [FitnessActivitySummary], dataType: QuantityType) -> Int {
 		data.map { activity in
-//			switch dataType {
-//			case .stepCount:
-//				return Int(activity.steps)
-//			case .distanceWalkingRunning:
-//				return Int(activity.distances.first?.distance ?? 0)
-//			case .activeEnergyBurned:
-//				return Int(activity.calories)
-//			default:
+			switch dataType {
+			case .stepCount:
+				return Int(activity.steps)
+			case .distanceWalkingRunning:
+				return Int(activity.distances.first?.distance ?? 0)
+			case .activeEnergyBurned:
+				return Int(activity.calories)
+			default:
 				return 0
-//			}
+			}
 		}.reduce(0, +)
 	}
 
-	private func dataAverage(/*dataType: QuantityType*/) -> Double {
+	private func dataAverage(dataType: QuantityType) -> Double {
 		guard !viewModel.result30days.isEmpty else {
 			return 0.0
 		}
 
 		let total = viewModel.result30days.map { activity in
-//			switch dataType {
-//			case .stepCount:
-//				return Int(activity.steps)
-//			case .distanceWalkingRunning:
-//				return Int(activity.distances.first?.distance ?? 0)
-//			case .activeEnergyBurned:
-//				return Int(activity.calories)
-//			default:
+			switch dataType {
+			case .stepCount:
+				return Int(activity.steps)
+			case .distanceWalkingRunning:
+				return Int(activity.distances.first?.distance ?? 0)
+			case .activeEnergyBurned:
+				return Int(activity.calories)
+			default:
 				return 0
-//			}
+			}
 		}.reduce(0, +)
 		return Double(total / viewModel.result30days.count)
 	}
 		
 	// MARK: - Actions
 	private func queryData() {
-		viewModel.isLoadingData = true
 		viewModel.fetchData(readOptions: readOptions)
 	}
 }

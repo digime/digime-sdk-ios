@@ -10,6 +10,7 @@ use_modular_headers!
 source 'https://cdn.cocoapods.org/'
 
 target 'Genrefy' do
-    pod 'DigiMeSDK', :path => '../../'
+    pod 'DigiMeCore', :path => '../../DigiMeCore'
+    pod 'DigiMeSDK', :path => '../../DigiMeSDK'
     pod 'SwiftLint'
 end

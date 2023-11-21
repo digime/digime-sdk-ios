@@ -6,11 +6,12 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import Foundation
 
-struct ServiceSection: Identifiable {
-	let id = UUID()
+struct ServiceSection: Codable, Identifiable {
+    var id = UUID().uuidString
 	let serviceGroupId: Int
 	let title: String
 	let items: [Service]

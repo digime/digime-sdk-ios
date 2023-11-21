@@ -6,6 +6,7 @@
 //  Copyright © 2022 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import Foundation
 
@@ -16,6 +17,9 @@ final class UserPreferences: NSObject {
 		case credentials = "kCredentials"
 		case connectedAccounts = "kConnectedAccounts"
         case servicesInfo = "kServicesInfo"
+        case services = "kServices"
+        case sampleData = "kSampleData"
+        case servicesSampleData = "kServicesSampleData"
         case readOptions = "kReadOptions"
 	}
 	
@@ -88,10 +92,40 @@ final class UserPreferences: NSObject {
         }
     }
 	
-    // MARK: - Credentials
+    // MARK: - Discovery info
     
     @CodableUserDefault(key: Key.servicesInfo)
     var servicesInfo: ServicesInfo?
+    
+    // MARK: - Discovery service sections
+    
+    @CodableUserDefault(key: Key.services)
+    private var serviceSections: [String: [ServiceSection]]?
+    
+    func readServiceSections(for contractId: String) -> [ServiceSection]? {
+        return serviceSections?[contractId]
+    }
+    
+    func setServiceSections(sections: [ServiceSection], for contractId: String) {
+        var cached = serviceSections ?? [:]
+        cached[contractId] = sections
+        serviceSections = cached
+    }
+    
+    // MARK: - Discovery service sample data sections
+    
+    @CodableUserDefault(key: Key.sampleData)
+    private var serviceSampleDataSections: [String: [ServiceSection]]?
+    
+    func readServiceSampleDataSections(for contractId: String) -> [ServiceSection]? {
+        return serviceSampleDataSections?[contractId]
+    }
+    
+    func setServiceSampleDataSections(sections: [ServiceSection], for contractId: String) {
+        var cached = serviceSampleDataSections ?? [:]
+        cached[contractId] = sections
+        serviceSampleDataSections = cached
+    }
     
     // MARK: - Credentials
     
@@ -116,5 +150,7 @@ final class UserPreferences: NSObject {
 		credentials = nil
 		linkedAccounts = nil
         servicesInfo = nil
+        serviceSections = nil
+        serviceSampleDataSections = nil
 	}
 }

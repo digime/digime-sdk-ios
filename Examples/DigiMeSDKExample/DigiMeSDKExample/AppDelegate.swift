@@ -13,6 +13,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // Set up URLCache
+        let memoryCapacity = 500 * 1024 * 1024 // 500 MB
+        let diskCapacity = 500 * 1024 * 1024   // 500 MB
+        let cache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: "myDataPath")
+        URLCache.shared = cache
+        
         return true
     }
 

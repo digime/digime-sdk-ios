@@ -6,6 +6,7 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import Foundation
 
@@ -46,6 +47,7 @@ class AppleHealthChartViewModel: ObservableObject {
 	
 	func fetchData(readOptions: ReadOptions? = nil) {
 		self.readOptions = readOptions
+        errorMessage = nil
 		dataFetched = false
 		isLoadingData = true
 		let credentials = userPreferences.getCredentials(for: digiMeConfig.contractId)

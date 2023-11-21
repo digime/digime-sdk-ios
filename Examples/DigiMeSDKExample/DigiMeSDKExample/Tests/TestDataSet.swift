@@ -6,6 +6,7 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import SwiftUI
 
@@ -592,3 +593,31 @@ enum TestDailyActivity {
 		allTime.map { Int($0.steps) }.reduce(0, +) / allTime.count
 	}
 }
+
+enum TestDiscoveryObjects {
+    static let sections: [ServiceSection] = {
+        guard let url = Bundle.main.url(forResource: "discovery", withExtension: "json"),
+              let jsonData = try? Data(contentsOf: url),
+              let serviceInfo = try? JSONDecoder().decode(ServicesInfo.self, from: jsonData) else {
+            return []
+        }
+        
+        let services = serviceInfo.services
+        
+        let serviceGroupIds = Set(services.flatMap { $0.serviceGroupIds })
+        let serviceGroups = serviceInfo.serviceGroups.filter { serviceGroupIds.contains($0.identifier) }
+        
+        var sections = [ServiceSection]()
+        serviceGroups.forEach { group in
+            let items = services
+                .filter { $0.serviceGroupIds.contains(group.identifier) }
+                .sorted { $0.name < $1.name }
+            sections.append(ServiceSection(serviceGroupId: group.identifier, title: group.name, items: items))
+        }
+        
+        sections.sort { $0.serviceGroupId < $1.serviceGroupId }
+        return sections
+    }()
+}
+
+    

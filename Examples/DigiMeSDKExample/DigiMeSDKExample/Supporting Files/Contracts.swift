@@ -6,6 +6,7 @@
 //  Copyright © 2022 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import Foundation
 

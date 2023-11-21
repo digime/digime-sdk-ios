@@ -17,21 +17,27 @@ struct ScopeLimitsDetailsView: View {
     }
 
     var body: some View {
-        VStack {
-            List(viewModel.durationOptions, id: \.sourceFetch) { item in
-                Button {
-                    viewModel.selectedDuration = item
-                } label: {
-                    HStack {
-                        let sourceFetch = item.sourceFetch
-                        Text(sourceFetch == 0 ? "unlimited" : (sourceFetch >= 60 ? "\(sourceFetch / 60) min" : "\(sourceFetch) sec"))
-                        Spacer()
-                        if item.sourceFetch == viewModel.selectedDuration.sourceFetch {
-                            Image(systemName: "checkmark")
+        ScrollView {
+            VStack {
+                ForEach(viewModel.durationOptions, id: \.sourceFetch) { item in
+                    Button {
+                        viewModel.selectedDuration = item
+                    } label: {
+                        HStack {
+                            let sourceFetch = item.sourceFetch
+                            Text(sourceFetch == 0 ? "unlimited" : (sourceFetch >= 60 ? "\(sourceFetch / 60) min" : "\(sourceFetch) sec"))
+                            
+                            Spacer()
+                            
+                            if item.sourceFetch == viewModel.selectedDuration.sourceFetch {
+                                Image(systemName: "checkmark")
+                            }
                         }
                     }
+                    .buttonStyle(SourceSelectorButtonStyle(backgroundColor: Color("pickerItemColor"), padding: 15))
                 }
             }
+            .padding()
         }
     }
 }

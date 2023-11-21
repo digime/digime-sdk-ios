@@ -7,11 +7,12 @@
 //
 
 import Combine
+import DigiMeCore
 import DigiMeSDK
 import SwiftUI
 
 class ScopeViewModel: ObservableObject {
-    @AppStorage("ActiveServiceContractId") var activeContractId: String = Contracts.prodFinSocMus.identifier
+    @AppStorage("ActiveServiceContractId") var activeContractId: String = Contracts.development.identifier
     @AppStorage("SelectedTimeRangeIndex") var selectedTimeRangeIndex: Int = 0
     
     @Published var shouldDisplayModal = false

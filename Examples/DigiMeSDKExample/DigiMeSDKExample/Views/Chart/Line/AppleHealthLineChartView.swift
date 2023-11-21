@@ -7,12 +7,14 @@
 //
 
 import Charts
+import DigiMeCore
 import DigiMeSDK
 import SwiftUI
 
 struct AppleHealthLineChartView: View {
 	@ObservedObject var viewModel: AppleHealthChartViewModel
     @State private var timeRange: ChartTimeRange = .last30Days
+    
     private let contract = Contracts.prodAppleHealth
     
 	init?() {
@@ -24,101 +26,68 @@ struct AppleHealthLineChartView: View {
 	}
 	
     var body: some View {
-		
-        List {
-			if !viewModel.result.isEmpty {
-				VStack(alignment: .leading) {
-					ChartTimeRangePicker(value: $timeRange)
-						.padding(.bottom)
-					
-					Text("Steps & Calories")
-						.font(.callout)
-						.foregroundStyle(.secondary)
-					
-					Text("Fitness Activity Summary")
-						.font(.title2.bold())
-					
-					switch timeRange {
-					case .last30Days:
-						LineChartView(timeRange: $timeRange, data: $viewModel.data30InSeries)
-							.frame(height: 240)
-					case .allTime:
-						LineChartView(timeRange: $timeRange, data: $viewModel.dataMonthsInSeries)
-							.frame(height: 240)
-					}
-				}
-				.listRowSeparator(.hidden)
-			}
-			
-			Section {
-				Button {
-					queryData()
-				} label: {
-					HStack(alignment: .center, spacing: 20) {
-						Text("Request New Data")
-						if viewModel.isLoadingData {
-							ActivityIndicator()
-								.frame(width: 20, height: 20)
-								.foregroundColor(.white)
-						}
-					}
-					.listRowSeparator(.hidden)
-					.frame(minWidth: 0, maxWidth: .infinity)
-					.font(.headline).foregroundColor(.white)
-					.padding(10)
-					.background(
-						RoundedRectangle(cornerRadius: 10, style: .continuous)
-							.fill(.blue)
-					)
-				}
-				.padding(.top, 20)
-				.buttonStyle(PlainButtonStyle())
-				.listRowSeparator(.hidden)
-			}
-			
-			if viewModel.result.isEmpty {
-				VStack(alignment: .center) {
-					Text("Press this button to download you Apple Health data.")
-						.frame(maxWidth: .infinity, alignment: .center)
-						.font(.caption)
-						.foregroundColor(.secondary)
-					Image(systemName: "chart.xyaxis.line")
-						.foregroundColor(.secondary).opacity(0.1)
-						.font(.largeTitle)
-						.padding(.top, 30)
-						.scaleEffect(3)
-				}
-				.listRowSeparator(.hidden)
-			}
-			
-			if viewModel.errorMessage != nil {
-				Section {
-					errorBanner
-				}
-			}
+        ScrollView {
+            if !viewModel.result.isEmpty {
+                SectionView(header: "Steps & Calories") {
+                    VStack(alignment: .leading) {
+                        ChartTimeRangePicker(value: $timeRange)
+                            .padding(.bottom)
+                        
+                        Text("Fitness Activity Summary")
+                            .font(.title2.bold())
+                        
+                        switch timeRange {
+                        case .last30Days:
+                            LineChartView(timeRange: $timeRange, data: $viewModel.data30InSeries)
+                                .frame(height: 240)
+                        case .allTime:
+                            LineChartView(timeRange: $timeRange, data: $viewModel.dataMonthsInSeries)
+                                .frame(height: 240)
+                        }
+                    }
+                    .padding()
+                }
+            }
+            
+            SectionView(footer: viewModel.result.isEmpty ? "Press this button to download you Apple Health data." : nil) {
+                StyledPressableButtonView(text: "Read Apple Health Data",
+                                          iconSystemName: "heart.circle",
+                                          iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
+                                          textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                          backgroundColor: Color(.secondarySystemGroupedBackground),
+                                          action: {
+                    queryData()
+                })
+                .disabled(viewModel.isLoadingData)
+            }
+            
+            if let error = viewModel.errorMessage {
+                SectionView(header: "Error") {
+                    InfoMessageView(message: error, foregroundColor: .red)
+                }
+            }
         }
-        .listStyle(.plain)
         .navigationBarTitle("Activity", displayMode: .inline)
+        .background(Color(.systemGroupedBackground))
+        .toolbar {
+            if viewModel.isLoadingData {
+                ActivityIndicator()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(.white)
+            }
+        }
     }
 	
-	private var errorBanner: some View {
-		VStack(alignment: .leading, spacing: 2) {
-			Text("Error")
-				.font(.headline)
-			Text(viewModel.errorMessage ?? "Error...")
-				.font(.callout)
-		}
-		.foregroundColor(Color.red)
-	}
-	
 	private func queryData() {
-		viewModel.isLoadingData = true
 		viewModel.fetchData(readOptions: nil)
 	}
 }
 
 struct AppleHealthLineChartView_Previews: PreviewProvider {
     static var previews: some View {
-		AppleHealthLineChartView()
+        NavigationView {
+            AppleHealthLineChartView()
+            // .environment(\.colorScheme, .dark)
+        }
     }
 }

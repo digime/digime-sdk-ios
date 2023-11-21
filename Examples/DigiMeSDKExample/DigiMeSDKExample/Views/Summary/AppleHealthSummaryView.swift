@@ -6,6 +6,7 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import SwiftUI
 
@@ -14,7 +15,8 @@ struct AppleHealthSummaryView: View {
     @ObservedObject var scopeViewModel = ScopeViewModel()
     
 	@State private var dialogDetent = PresentationDetent.height(200)
-
+    @State private var isPressedScope = false
+    
 	private let contract = Contracts.prodAppleHealth
 	private var fromDate: Date {
 		return Calendar.current.date(byAdding: .month, value: -1, to: Date())!
@@ -32,11 +34,11 @@ struct AppleHealthSummaryView: View {
 	}
 	
 	var body: some View {
-        let scopeFooterText = !scopeViewModel.isScopeModificationAllowed ? Text("Turn on the toggle to set the scope of mapped data using time ranges and narrow down the results.") : Text("To revert to the default contract's time range, turn off the scoping option and execute the query again.")
-        let footerText = !scopeViewModel.isScopeModificationAllowed ? Text("You can try turning the Scoping option On to narrow down your next request.") : Text("")
+        let scopeFooterText = !scopeViewModel.isScopeModificationAllowed ? "Turn on the toggle to set the scope of mapped data using time ranges and narrow down the results." : "To revert to the default contract's time range, turn off the scoping option and execute the query again."
+        let footerText = !scopeViewModel.isScopeModificationAllowed ? "You can try turning the Scoping option On to narrow down your next request." : nil
 		ZStack {
-			List {
-				Section(header: Text("Scope"), footer: scopeFooterText) {
+			ScrollView {
+				SectionView(header: "Scope", footer: scopeFooterText) {
 					HStack {
 						Image(systemName: "scope")
 							.frame(width: 30, height: 30, alignment: .center)
@@ -48,23 +50,26 @@ struct AppleHealthSummaryView: View {
                                     self.reset()
                                 }
                             }
+                            .disabled(viewModel.isLoadingData)
 					}
 					
                     if scopeViewModel.isScopeModificationAllowed {
-						Button {
-                            self.scopeViewModel.shouldDisplayModal = true
-						} label: {
-							HStack(spacing: 40) {
-								VStack(alignment: .leading, spacing: 10) {
-									Text("Your Scope time range. ")
-										.foregroundColor(.primary)
-										.font(.footnote) +
-									Text("Tap to change:")
-										.foregroundColor(.blue)
-										.font(.footnote)
-									
+                        GenericPressableButtonView(isPressed: $isPressedScope, action: {
+                            if !viewModel.isLoadingData {
+                                self.scopeViewModel.shouldDisplayModal = true
+                            }
+                        }) {
+                            HStack {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text("Your Scope time range. ")
+                                        .foregroundColor(isPressedScope ? .white : .primary)
+                                        .font(.footnote) +
+                                    Text("Tap to change:")
+                                        .foregroundColor(isPressedScope ? .white : .accentColor)
+                                        .font(.footnote)
+                                    
                                     Text("\(scopeViewModel.startDateFormatString) - \(scopeViewModel.endDateFormatString)")
-                                        .foregroundColor(.gray)
+                                        .foregroundColor(isPressedScope ? .white : .gray)
                                         .font(.footnote)
                                         .onChange(of: scopeViewModel.startDate) { newValue in
                                             scopeViewModel.startDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
@@ -74,31 +79,36 @@ struct AppleHealthSummaryView: View {
                                         }
                                     
                                     ScopeObjectTypeIconView(name: "Fitness Activity Summary", size: 30)
-								}
-								.padding(.vertical, 10)
-							}
-						}
+                                }
+                                .padding(.vertical, 10)
+                                
+                                Spacer()
+                            }
+                            .padding(8)
+                            .padding(.horizontal, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(isPressedScope ? .accentColor : Color(.secondarySystemGroupedBackground))
+                            )
+                            .disabled(viewModel.isLoadingData)
+                        }
 					}
 				}
-				
-				Section(header: Text("Access Your Records"), footer: Text("When you query for the first time, you will be prompted for Apple Health permissions.\n\nIf you blocked or ignored the permission request, you may need to open the iOS Settings and manually allow access to approve sharing data with the SDK Example App.")) {
-					Button {
-						queryData()
-					} label: {
-						HStack {
-							Text("Read Apple Health Data")
-							Spacer()
-							if viewModel.isDataLoading {
-								ActivityIndicator()
-									.frame(width: 20, height: 20)
-									.foregroundColor(.gray)
-							}
-						}
-					}
+                
+				SectionView(header: "Access Your Records", footer: "When you query for the first time, you will be prompted for Apple Health permissions.\n\nIf you blocked or ignored the permission request, you may need to open the iOS Settings and manually allow access to approve sharing data with the SDK Example App.") {
+                    StyledPressableButtonView(text: "Read Apple Health Data",
+                                       iconSystemName: "heart.circle",
+                                       iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
+                                       textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                       backgroundColor: Color(.secondarySystemGroupedBackground),
+                                       action: {
+                        queryData()
+                    })
+                    .disabled(viewModel.isLoadingData)
 				}
 				
 				if viewModel.isDataFetched && viewModel.errorMessage == nil {
-					Section(header: Text("Result"), footer: footerText) {
+					SectionView(header: "Result", footer: footerText) {
 						HStack {
 							Image(systemName: "calendar.badge.clock")
 								.rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
@@ -142,45 +152,44 @@ struct AppleHealthSummaryView: View {
 						}
 					}
 				}
-				else if viewModel.errorMessage != nil {
-					errorBanner
+				else if let error = viewModel.errorMessage {
+                    SectionView(header: "Error") {
+                        InfoMessageView(message: error, foregroundColor: .red)
+                    }
 				}
-				else if viewModel.infoMessage != nil {
-					infoBanner
+				else if let message = viewModel.infoMessage {
+                    SectionView {
+                        InfoMessageView(message: message, foregroundColor: .primary)
+                    }
 				}
 			}
-			.navigationBarTitle("Apple Health", displayMode: .inline)
-			.listStyle(InsetGroupedListStyle())
-			.toolbar {
+			
+		}
+        .navigationBarTitle("Apple Health", displayMode: .inline)
+        .background(Color(.systemGroupedBackground))
+        .toolbar {
+            if viewModel.isLoadingData {
+                ActivityIndicator()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(.gray)
+            }
 #if targetEnvironment(simulator)
-				Button {
-					viewModel.addTestData()
-				} label: {
-					Image(systemName: "plus.square.on.square")
-				}
+            Button {
+                viewModel.addTestData()
+            } label: {
+                Image(systemName: "plus.square.on.square")
+            }
+            .disabled(viewModel.isLoadingData)
 #endif
-			}
-            .sheet(isPresented: $scopeViewModel.shouldDisplayModal) {
-                ScopeAddView(viewModel: scopeViewModel)
+        }
+        .sheet(isPresented: $scopeViewModel.shouldDisplayModal) {
+            ScopeAddView(viewModel: scopeViewModel)
+        }
+		.sheet(isPresented: $viewModel.showCancelOption) {
+            ActionView(title: "Waiting callback from your browser...", actionTitle: "Cancel Request", dialogDetent: dialogDetent) {
+                self.viewModel.cancel()
             }
 		}
-		.sheet(isPresented: $viewModel.showCancelOption) {
-			withAnimation {
-				ActionView(title: "Waiting callback from your browser...", actionTitle: "Cancel Request", dialogDetent: dialogDetent) {
-					self.viewModel.cancel()
-				}
-			}
-		}
-	}
-	
-	private var errorBanner: some View {
-		VStack(alignment: .leading, spacing: 2) {
-			Text("Error")
-				.font(.headline)
-			Text(viewModel.errorMessage ?? "Error...")
-				.font(.callout)
-		}
-		.foregroundColor(Color.red)
 	}
 	
 	private var infoBanner: some View {
@@ -193,9 +202,6 @@ struct AppleHealthSummaryView: View {
 	}
 	
 	private func queryData() {
-		viewModel.errorMessage = nil
-		viewModel.infoMessage = nil
-		viewModel.isDataLoading = true
         viewModel.authorize(readOptions: scopeViewModel.readOptions)
 	}
 	
@@ -207,5 +213,6 @@ struct AppleHealthSummaryView: View {
 struct AppleHealthSummaryView_Previews: PreviewProvider {
     static var previews: some View {
         AppleHealthSummaryView()
+            .environment(\.colorScheme, .dark)
     }
 }

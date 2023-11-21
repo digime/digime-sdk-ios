@@ -6,20 +6,36 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import Foundation
 import SwiftUI
 
+enum ConnectSourceViewState {
+    case none, sources, sampleData
+}
+
 @MainActor
 class ServicesViewModel: ObservableObject {
-    @AppStorage("ActiveServiceContractId") private var activeContractId: String = Contracts.development.identifier
-
     @Published var activeContract: DigimeContract = Contracts.development {
         didSet {
             updateContract(activeContract)
         }
     }
-    @Published var serviceSections: [ServiceSection] = []
+    @Published var serviceSections: [ServiceSection] = [] {
+        didSet {
+            if let data = try? serviceSections.encoded(dateEncodingStrategy: .millisecondsSince1970) {
+                FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "serviceSections")
+            }
+        }
+    }
+    @Published var sampleDataSections: [ServiceSection] = [] {
+        didSet {
+            if let data = try? sampleDataSections.encoded(dateEncodingStrategy: .millisecondsSince1970) {
+                FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "sampleDataSections")
+            }
+        }
+    }
     @Published var linkedAccounts = [LinkedAccount]() {
         didSet {
             userPreferences.setLinkedAccounts(newAccounts: linkedAccounts, for: activeContract.identifier)
@@ -32,6 +48,7 @@ class ServicesViewModel: ObservableObject {
             }
         }
     }
+    @Published var sampleDatasets: [String: SampleDataset]?
     @Published var xmlReportURL: URL?
     @Published var isLoadingData = false
     @Published var shouldDisplaySourceSelector = false
@@ -42,8 +59,13 @@ class ServicesViewModel: ObservableObject {
             objectWillChange.send()
         }
     }
-    @Published var serviceSelectionCompletionHandler: ((Service) -> Void)?
-
+    @Published var serviceSelectionCompletionHandler: ((Service, String?) -> Void)?
+//    @Published var showNoSampleDataAlert = false
+    
+    var onShowSampleDataSelectorChanged: ((Bool) -> Void)?
+    var onShowSampleDataErrorChanged: ((Bool) -> Void)?
+    var onProceedSampleDatasetChanged: ((Bool) -> Void)?
+    
     var isAuthorized: Bool {
         return userPreferences.getCredentials(for: activeContract.identifier) != nil
     }
@@ -61,8 +83,17 @@ class ServicesViewModel: ObservableObject {
     private let userPreferences = UserPreferences.shared()
     
     private var digiMeService: DigiMe?
-    
-    init() {
+
+    private var activeContractId: String {
+        get {
+            UserDefaults.standard.string(forKey: "ActiveServiceContractId") ?? Contracts.development.identifier
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "ActiveServiceContractId")
+        }
+    }
+
+    init(sections: [ServiceSection]? = nil) {
         do {
             if
                 let logData = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs_services"),
@@ -71,6 +102,12 @@ class ServicesViewModel: ObservableObject {
             }
             else {
                 logMessage("This is where log messages appear")
+            }
+            
+            // support SwiftUI preview
+            if let sections = sections {
+                self.serviceSections = sections
+                self.sampleDataSections = sections
             }
             
             linkedAccounts = userPreferences.getLinkedAccounts(for: activeContract.identifier)
@@ -88,12 +125,17 @@ class ServicesViewModel: ObservableObject {
             return
         }
         
-        chooseService { selectedService in
+        chooseService { selectedService, sampleDataSetId in
             guard let selectedService = selectedService else {
                 return
             }
             
-            self.authenticateAndFetchData(service: selectedService)
+            if let sampleDataSetId = sampleDataSetId {
+                self.authenticateAndFetchData(service: selectedService, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: true)
+            }
+            else {
+                self.authenticateAndFetchData(service: selectedService)
+            }
         }
     }
 
@@ -144,25 +186,12 @@ class ServicesViewModel: ObservableObject {
         }
         
         isLoadingData = true
-        chooseService { selectedService in
+        chooseService { selectedService, sampleDataSetId in
             guard let selectedService = selectedService else {
                 return
             }
             
-            self.shouldDisplayCancelButton = true
-            self.digiMeService?.addService(identifier: selectedService.identifier, credentials: accountCredentials) { refreshedCredentials, addServiceResult in
-                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
-                self.shouldDisplayCancelButton = false
-                switch addServiceResult {
-                case .success:
-                    self.linkedAccounts.append(LinkedAccount(service: selectedService))
-                    self.fetchData(credentials: refreshedCredentials, readOptions: selectedService.options)
-                    
-                case.failure(let error):
-                    self.isLoadingData = false
-                    self.logErrorMessage("Adding \(selectedService.name) failed: \(error)")
-                }
-            }
+            self.addAccountAndFetchData(service: selectedService, credentials: accountCredentials)
         }
     }
     
@@ -182,7 +211,76 @@ class ServicesViewModel: ObservableObject {
             self?.fetchServiceData(credentials: refreshedCredentials, readOptions: readOptions)
         }
     }
+    
+    func presentActionSheet(withDatasets datasets: [String: SampleDataset], on viewController: UIViewController, completion: @escaping (String) -> Void) {
+        let actionSheet = UIAlertController(title: "Select Sample Dataset", message: nil, preferredStyle: .actionSheet)
 
+        for (_, dataset) in datasets {
+            let action = UIAlertAction(title: dataset.name, style: .default) { _ in
+                completion(dataset.name)
+            }
+            actionSheet.addAction(action)
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        actionSheet.addAction(cancelAction)
+        viewController.present(actionSheet, animated: true)
+    }
+    
+    func fetchDemoDataSetsInfoForService(service: Service) {
+        guard !isLoadingData else {
+            return
+        }
+
+        isLoadingData = true
+        digiMeService?.fetchDemoDataSetsInfoForService(serviceId: "\(service.identifier)") { result in
+            self.isLoadingData = false
+            switch result {
+            case .success(let datasets):
+                self.sampleDatasets = datasets
+                if datasets.keys.count > 1 {
+                    self.handleSampleDataSelectorChange()
+                }
+                else if datasets.keys.count == 1 {
+//                    if self.isAuthorized {
+//                        self.addNewService()
+//                    }
+//                    else {
+//                        self.authenticateAndFetchData(service: service, sampleDataSetId: datasets.first?.key, sampleDataAutoOnboard: true)
+//                    }
+                    self.handleProceedSampleDatasetChange()
+                }
+                else {
+                    self.handleSampleDataErrorChange()
+                }
+            case .failure(let error):
+                self.logErrorMessage("Unable to retrieve sample datasets details: \(error)")
+                self.handleSampleDataErrorChange()
+            }
+        }
+    }
+    
+    func handleSampleDataSelectorChange() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.onShowSampleDataSelectorChanged?(true)
+        }
+    }
+    
+    func handleSampleDataErrorChange() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.onShowSampleDataErrorChanged?(true)
+        }
+    }
+    
+    func handleProceedSampleDatasetChange() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.onProceedSampleDatasetChanged?(true)
+        }
+    }
+    
     func displayContractDetails() {
         guard !isLoadingData else {
             return
@@ -304,14 +402,14 @@ class ServicesViewModel: ObservableObject {
         }
     }
 
-    private func authenticateAndFetchData(service: Service) {
+    private func authenticateAndFetchData(service: Service, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil) {
         DispatchQueue.main.async {
             self.isLoadingData = true
             self.shouldDisplayCancelButton = true
         }
         
         let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier)
-        digiMeService?.authorize(credentials: accountCredentials, serviceId: service.identifier, readOptions: service.options) { result in
+        digiMeService?.authorize(credentials: accountCredentials, serviceId: service.identifier, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, readOptions: service.options) { result in
             self.shouldDisplayCancelButton = false
             
             switch result {
@@ -328,16 +426,54 @@ class ServicesViewModel: ObservableObject {
         }
     }
 
-    private func chooseService(completion: @escaping ((Service?) -> Void)) {
-        isLoadingData = true
+    private func addAccountAndFetchData(service: Service, credentials: Credentials, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil) {
+        self.shouldDisplayCancelButton = true
+        self.digiMeService?.addService(identifier: service.identifier, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataSetId != nil, credentials: credentials) { refreshedCredentials, addServiceResult in
+            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+            self.shouldDisplayCancelButton = false
+            switch addServiceResult {
+            case .success:
+                self.linkedAccounts.append(LinkedAccount(service: service))
+                self.fetchData(credentials: refreshedCredentials, readOptions: service.options)
+                
+            case.failure(let error):
+                self.isLoadingData = false
+                self.logErrorMessage("Adding \(service.name) failed: \(error)")
+            }
+        }
+    }
+    
+    private func chooseService(completion: @escaping ((Service?, String?) -> Void)) {
+        serviceSelectionCompletionHandler = completion
+        var showServiceSelector = true
+        
+        if
+            let services = userPreferences.readServiceSections(for: activeContractId),
+            let sampleData = userPreferences.readServiceSampleDataSections(for: activeContractId) {
+
+            self.serviceSections = services
+            self.sampleDataSections = sampleData
+            showServiceSelector = false
+            isLoadingData = false
+            withAnimation {
+                shouldDisplaySourceSelector = true
+            }
+        }
+        else {
+            isLoadingData = true
+        }
+        
         digiMeService?.availableServices(contractId: activeContract.identifier, filterAvailable: false) { result in
             self.isLoadingData = false
             switch result {
             case .success(let serviceInfo):
-                self.serviceSelectionCompletionHandler = completion
+//                FilePersistentStorage(with: .documentDirectory).store(object: serviceInfo, fileName: "discovery.json")
                 self.populateSections(serviceInfo: serviceInfo)
-                self.shouldDisplaySourceSelector = true
-                return
+                if showServiceSelector {
+                    withAnimation {
+                        self.shouldDisplaySourceSelector = true
+                    }
+                }
             case .failure(let error):
                 self.logErrorMessage("Unable to retrieve services: \(error)")
             }
@@ -351,16 +487,22 @@ class ServicesViewModel: ObservableObject {
         let serviceGroups = serviceInfo.serviceGroups.filter { serviceGroupIds.contains($0.identifier) }
         
         var sections = [ServiceSection]()
+        var sampleDataSections = [ServiceSection]()
+        
         serviceGroups.forEach { group in
             let items = services
                 .filter { $0.serviceGroupIds.contains(group.identifier) }
                 .sorted { $0.name < $1.name }
-            sections.append(ServiceSection(serviceGroupId: group.identifier, title: group.name, items: items))
+            sections.append(ServiceSection(serviceGroupId: group.identifier, title: group.name, items: items.filter { !$0.sampleDataOnly }))
+            sampleDataSections.append(ServiceSection(serviceGroupId: group.identifier, title: group.name, items: items))
         }
         
         sections.sort { $0.serviceGroupId < $1.serviceGroupId }
+        sampleDataSections.sort { $0.serviceGroupId < $1.serviceGroupId }
         self.serviceSections = sections
-        userPreferences.servicesInfo = serviceInfo
+        self.userPreferences.setServiceSections(sections: sections, for: activeContractId)
+        self.sampleDataSections = sampleDataSections
+        self.userPreferences.setServiceSampleDataSections(sections: sampleDataSections, for: activeContractId)
     }
 
     private func fetchData(credentials: Credentials, readOptions: ReadOptions? = nil) {

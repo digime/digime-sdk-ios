@@ -6,6 +6,7 @@
 //  Copyright © 2018 digi.me. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 
 protocol AccountSelectionCoordinatingDelegate: CoordinatingDelegate {

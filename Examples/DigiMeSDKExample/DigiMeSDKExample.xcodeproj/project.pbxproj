@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,15 +11,17 @@
 		1E02269829817C2C00892CE8 /* AppleHealthSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */; };
 		1E0226AF29828BAF00892CE8 /* Binding+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0226AE29828BAF00892CE8 /* Binding+Helper.swift */; };
 		1E02535729A94B4200702D90 /* SourceImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E02535629A94B4200702D90 /* SourceImage.swift */; };
-		1E02535929AA883800702D90 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E02535829AA883800702D90 /* ContentView.swift */; };
+		1E02535929AA883800702D90 /* CustomDisclosureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E02535829AA883800702D90 /* CustomDisclosureView.swift */; };
 		1E06B22B29A4E11A00809D13 /* ServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E06B22A29A4E11A00809D13 /* ServicesView.swift */; };
 		1E07621529A0C41800CED8E9 /* Date+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E07621429A0C41800CED8E9 /* Date+Helper.swift */; };
 		1E0E1320298BE0BB00F1A813 /* AppleHealthChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E131F298BE0BB00F1A813 /* AppleHealthChartViewModel.swift */; };
 		1E0E1326298C134100F1A813 /* AppleHealthBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E1325298C134100F1A813 /* AppleHealthBarChartView.swift */; };
+		1E0E79EA2AFA99710015A89C /* ServicePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E79E92AFA99710015A89C /* ServicePickerView.swift */; };
 		1E1DC11829ABA19700B827E3 /* DigiMeSDKExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11729ABA19700B827E3 /* DigiMeSDKExampleApp.swift */; };
 		1E1DC11A29ABA61900B827E3 /* ChartSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11929ABA61900B827E3 /* ChartSeries.swift */; };
 		1E1DC11C29ABA6B300B827E3 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11B29ABA6B300B827E3 /* Section.swift */; };
 		1E1DC11E29ABA6E700B827E3 /* GroupObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */; };
+		1E29EC152AE558D70016B8D5 /* discovery.json in Resources */ = {isa = PBXBuildFile; fileRef = 1E29EC142AE558D70016B8D5 /* discovery.json */; };
 		1E32B96729A4E3590013B1C1 /* ServicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */; };
 		1E3653B42A1D23D000F0FFA5 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3653B32A1D23D000F0FFA5 /* PDFKitView.swift */; };
 		1E47A0E5298D25EF0081A2C5 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */; };
@@ -62,18 +64,28 @@
 		1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */; };
 		1EA52DAF2987A42E00A61213 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA52DAE2987A42E00A61213 /* HomeView.swift */; };
 		1EA5A1A929A3DD8100A9DB5A /* HighlightedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA5A1A829A3DD8100A9DB5A /* HighlightedTextView.swift */; };
+		1EA7196D2AD42B9500B76275 /* DigiMeHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1EA7196C2AD42B9500B76275 /* DigiMeHealthKit */; };
+		1EA719B92AD5972C00B76275 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EA719B82AD5972C00B76275 /* Security.framework */; };
+		1EA86AA52B0554880030CB91 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA86AA42B0554880030CB91 /* SectionView.swift */; };
+		1EA86AA72B055D990030CB91 /* GenericPressableButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA86AA62B055D990030CB91 /* GenericPressableButtonView.swift */; };
+		1EA86AA92B0668F40030CB91 /* StyledPressableButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA86AA82B0668F40030CB91 /* StyledPressableButtonView.swift */; };
 		1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */; };
 		1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */; };
 		1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */; };
-		1EC8C14329A7F8C200E34338 /* ServicePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC8C14229A7F8C200E34338 /* ServicePickerView.swift */; };
+		1EC93DC32AD3DAB40028F50C /* DigiMeCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1EC93DC22AD3DAB40028F50C /* DigiMeCore */; };
+		1EC93DC62AD3DAC90028F50C /* DigiMeSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 1EC93DC52AD3DAC90028F50C /* DigiMeSDK */; };
+		1ED268462B09683500588855 /* InfoMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED268452B09683500588855 /* InfoMessageView.swift */; };
+		1ED268482B0A6D2800588855 /* CustomNavigationLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED268472B0A6D2800588855 /* CustomNavigationLinkView.swift */; };
 		1ED4CA2729D3783400C9874B /* ReportDateManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */; };
 		1ED4CA2F29D4356C00C9874B /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4CA2E29D4356C00C9874B /* BlurView.swift */; };
+		1EDA770D2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDA770C2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift */; };
 		1EE0FA3F29D04B900084F5ED /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */; };
 		1EE6FAF22A13F7A900796505 /* ScopeLimitsDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE6FAF12A13F7A900796505 /* ScopeLimitsDetailsView.swift */; };
 		1EED5A2E29BF9C3600B3F544 /* ActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED5A2D29BF9C3600B3F544 /* ActionView.swift */; };
 		1EEE0EC629BE5267004FA4D0 /* BallScaleRippleMultiple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEE0EC529BE5267004FA4D0 /* BallScaleRippleMultiple.swift */; };
 		1EEE0EC829BE54A1004FA4D0 /* KeyframeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEE0EC729BE54A1004FA4D0 /* KeyframeAnimation.swift */; };
 		1EEE0ECA29BE5503004FA4D0 /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EEE0EC929BE5503004FA4D0 /* Ring.swift */; };
+		1EF62B072AFE45CD00AAE3FB /* CustomActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF62B062AFE45CD00AAE3FB /* CustomActionSheetView.swift */; };
 		27D31A24266A4EAB00DB2524 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31A23266A4EAB00DB2524 /* AppDelegate.swift */; };
 		27D31A26266A4EAB00DB2524 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31A25266A4EAB00DB2524 /* SceneDelegate.swift */; };
 		27D31A2D266A4EAD00DB2524 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27D31A2C266A4EAD00DB2524 /* Assets.xcassets */; };
@@ -81,8 +93,6 @@
 		27D31BEB266E231C00DB2524 /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31BEA266E231C00DB2524 /* RouterTests.swift */; };
 		27E3DE7E267B8A250048A84C /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E3DE7C267B8A250048A84C /* CryptographyTests.swift */; };
 		27E3DE7F267B8A250048A84C /* CryptographyTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27E3DE7D267B8A250048A84C /* CryptographyTestingAssets.plist */; };
-		6E8814346F575E5423DDFEAB /* Pods_DigiMeSDKExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7691FBBD81F724ED71663824 /* Pods_DigiMeSDKExample.framework */; };
-		ECD63CC050D9CDBD15EFD591 /* Pods_DigiMeSDKExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED691AF784557742069EE444 /* Pods_DigiMeSDKExampleTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,15 +110,17 @@
 		1E02269729817C2C00892CE8 /* AppleHealthSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryView.swift; sourceTree = "<group>"; };
 		1E0226AE29828BAF00892CE8 /* Binding+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Helper.swift"; sourceTree = "<group>"; };
 		1E02535629A94B4200702D90 /* SourceImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceImage.swift; sourceTree = "<group>"; };
-		1E02535829AA883800702D90 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1E02535829AA883800702D90 /* CustomDisclosureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisclosureView.swift; sourceTree = "<group>"; };
 		1E06B22A29A4E11A00809D13 /* ServicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesView.swift; sourceTree = "<group>"; };
 		1E07621429A0C41800CED8E9 /* Date+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Helper.swift"; sourceTree = "<group>"; };
 		1E0E131F298BE0BB00F1A813 /* AppleHealthChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthChartViewModel.swift; sourceTree = "<group>"; };
 		1E0E1325298C134100F1A813 /* AppleHealthBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthBarChartView.swift; sourceTree = "<group>"; };
+		1E0E79E92AFA99710015A89C /* ServicePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicePickerView.swift; sourceTree = "<group>"; };
 		1E1DC11729ABA19700B827E3 /* DigiMeSDKExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigiMeSDKExampleApp.swift; sourceTree = "<group>"; };
 		1E1DC11929ABA61900B827E3 /* ChartSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartSeries.swift; sourceTree = "<group>"; };
 		1E1DC11B29ABA6B300B827E3 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupObjectType.swift; sourceTree = "<group>"; };
+		1E29EC142AE558D70016B8D5 /* discovery.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = discovery.json; sourceTree = "<group>"; };
 		1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesViewModel.swift; sourceTree = "<group>"; };
 		1E3653B32A1D23D000F0FFA5 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
 		1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -153,18 +165,25 @@
 		1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthSummaryViewModel.swift; sourceTree = "<group>"; };
 		1EA52DAE2987A42E00A61213 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		1EA5A1A829A3DD8100A9DB5A /* HighlightedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightedTextView.swift; sourceTree = "<group>"; };
+		1EA719B82AD5972C00B76275 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		1EA86AA42B0554880030CB91 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
+		1EA86AA62B055D990030CB91 /* GenericPressableButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPressableButtonView.swift; sourceTree = "<group>"; };
+		1EA86AA82B0668F40030CB91 /* StyledPressableButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyledPressableButtonView.swift; sourceTree = "<group>"; };
 		1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceFormatter.swift; sourceTree = "<group>"; };
 		1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Locale+Helper.swift"; sourceTree = "<group>"; };
 		1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesFormatter.swift; sourceTree = "<group>"; };
-		1EC8C14229A7F8C200E34338 /* ServicePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePickerView.swift; sourceTree = "<group>"; };
+		1ED268452B09683500588855 /* InfoMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMessageView.swift; sourceTree = "<group>"; };
+		1ED268472B0A6D2800588855 /* CustomNavigationLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationLinkView.swift; sourceTree = "<group>"; };
 		1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDateManagerView.swift; sourceTree = "<group>"; };
 		1ED4CA2E29D4356C00C9874B /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		1EDA770C2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActionSheetViewModifier.swift; sourceTree = "<group>"; };
 		1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
 		1EE6FAF12A13F7A900796505 /* ScopeLimitsDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeLimitsDetailsView.swift; sourceTree = "<group>"; };
 		1EED5A2D29BF9C3600B3F544 /* ActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionView.swift; sourceTree = "<group>"; };
 		1EEE0EC529BE5267004FA4D0 /* BallScaleRippleMultiple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallScaleRippleMultiple.swift; sourceTree = "<group>"; };
 		1EEE0EC729BE54A1004FA4D0 /* KeyframeAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyframeAnimation.swift; sourceTree = "<group>"; };
 		1EEE0EC929BE5503004FA4D0 /* Ring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
+		1EF62B062AFE45CD00AAE3FB /* CustomActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActionSheetView.swift; sourceTree = "<group>"; };
 		27D31A20266A4EAB00DB2524 /* DigiMeSDKExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiMeSDKExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27D31A23266A4EAB00DB2524 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		27D31A25266A4EAB00DB2524 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -176,12 +195,6 @@
 		27D31BEA266E231C00DB2524 /* RouterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
 		27E3DE7C267B8A250048A84C /* CryptographyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		27E3DE7D267B8A250048A84C /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
-		2916443F9A5E43A13EE0ADD3 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
-		7691FBBD81F724ED71663824 /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9ACAB444A5A398E9BBF53E43 /* Pods-DigiMeSDKExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.release.xcconfig"; sourceTree = "<group>"; };
-		9ED7578BF77579CC62DA31C8 /* Pods-DigiMeSDKExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExampleTests/Pods-DigiMeSDKExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		A5D20F7E3C3A94D697629E3D /* Pods-DigiMeSDKExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleTests.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExampleTests/Pods-DigiMeSDKExampleTests.release.xcconfig"; sourceTree = "<group>"; };
-		ED691AF784557742069EE444 /* Pods_DigiMeSDKExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,8 +202,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EA719B92AD5972C00B76275 /* Security.framework in Frameworks */,
+				1EA7196D2AD42B9500B76275 /* DigiMeHealthKit in Frameworks */,
+				1EC93DC32AD3DAB40028F50C /* DigiMeCore in Frameworks */,
 				1E49021427D918FC00F13D29 /* HealthKit.framework in Frameworks */,
-				6E8814346F575E5423DDFEAB /* Pods_DigiMeSDKExample.framework in Frameworks */,
+				1EC93DC62AD3DAC90028F50C /* DigiMeSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,7 +214,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECD63CC050D9CDBD15EFD591 /* Pods_DigiMeSDKExampleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +225,7 @@
 			children = (
 				1E06B22A29A4E11A00809D13 /* ServicesView.swift */,
 				1E87223829A5633E00418DE1 /* ContractDetailsView.swift */,
-				1EC8C14229A7F8C200E34338 /* ServicePickerView.swift */,
+				1E0E79E92AFA99710015A89C /* ServicePickerView.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -256,6 +271,7 @@
 				1E3653B32A1D23D000F0FFA5 /* PDFKitView.swift */,
 				1ED4CA2E29D4356C00C9874B /* BlurView.swift */,
 				1E4901E127D9112200F13D29 /* Logger.swift */,
+				1ED268472B0A6D2800588855 /* CustomNavigationLinkView.swift */,
 				1EEE0EC529BE5267004FA4D0 /* BallScaleRippleMultiple.swift */,
 				1EEE0EC929BE5503004FA4D0 /* Ring.swift */,
 				1E811D8E299F860200EC80B0 /* SplitView.swift */,
@@ -268,6 +284,10 @@
 				1EEE0EC729BE54A1004FA4D0 /* KeyframeAnimation.swift */,
 				1EED5A2D29BF9C3600B3F544 /* ActionView.swift */,
 				1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */,
+				1EA86AA42B0554880030CB91 /* SectionView.swift */,
+				1EA86AA62B055D990030CB91 /* GenericPressableButtonView.swift */,
+				1EA86AA82B0668F40030CB91 /* StyledPressableButtonView.swift */,
+				1ED268452B09683500588855 /* InfoMessageView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -283,6 +303,8 @@
 				1E0226AE29828BAF00892CE8 /* Binding+Helper.swift */,
 				1E811D92299FD15800EC80B0 /* Modifiers.swift */,
 				1E07621429A0C41800CED8E9 /* Date+Helper.swift */,
+				1EDA770C2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift */,
+				1EF62B062AFE45CD00AAE3FB /* CustomActionSheetView.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -366,7 +388,8 @@
 		1E811D9A29A019E100EC80B0 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				1E02535829AA883800702D90 /* ContentView.swift */,
+				1E29EC142AE558D70016B8D5 /* discovery.json */,
+				1E02535829AA883800702D90 /* CustomDisclosureView.swift */,
 				1E47A0EA298FCE060081A2C5 /* TestDataSet.swift */,
 			);
 			path = Tests;
@@ -377,9 +400,9 @@
 			children = (
 				1EA52C9F29850F5A00A61213 /* AppleHealthSummaryViewModel.swift */,
 				1E0E131F298BE0BB00F1A813 /* AppleHealthChartViewModel.swift */,
-				1E811D94299FEECC00EC80B0 /* WriteDataViewModel.swift */,
 				1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */,
 				1EA4CFED2A0281B300A2493A /* ScopeViewModel.swift */,
+				1E811D94299FEECC00EC80B0 /* WriteDataViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -390,7 +413,6 @@
 				27D31A22266A4EAB00DB2524 /* DigiMeSDKExample */,
 				27D31A39266A4EAD00DB2524 /* DigiMeSDKExampleTests */,
 				27D31A21266A4EAB00DB2524 /* Products */,
-				AD158D34784046125FD732A2 /* Pods */,
 				7318BCE517FF712805769161 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -454,23 +476,11 @@
 		7318BCE517FF712805769161 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1EA719B82AD5972C00B76275 /* Security.framework */,
 				1E66044627F49CA800A18292 /* CareKitUI.framework */,
 				1E49021327D918FC00F13D29 /* HealthKit.framework */,
-				7691FBBD81F724ED71663824 /* Pods_DigiMeSDKExample.framework */,
-				ED691AF784557742069EE444 /* Pods_DigiMeSDKExampleTests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AD158D34784046125FD732A2 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				2916443F9A5E43A13EE0ADD3 /* Pods-DigiMeSDKExample.debug.xcconfig */,
-				9ACAB444A5A398E9BBF53E43 /* Pods-DigiMeSDKExample.release.xcconfig */,
-				9ED7578BF77579CC62DA31C8 /* Pods-DigiMeSDKExampleTests.debug.xcconfig */,
-				A5D20F7E3C3A94D697629E3D /* Pods-DigiMeSDKExampleTests.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -480,19 +490,22 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27D31A4A266A4EAD00DB2524 /* Build configuration list for PBXNativeTarget "DigiMeSDKExample" */;
 			buildPhases = (
-				4B1E69CACA2502299A6B3BC6 /* [CP] Check Pods Manifest.lock */,
 				27D31A1C266A4EAB00DB2524 /* Sources */,
 				27D31A1D266A4EAB00DB2524 /* Frameworks */,
 				27D31A1E266A4EAB00DB2524 /* Resources */,
-				27D31B64266E181E00DB2524 /* Lint Code */,
-				5F56F60B3B32BCA3A5869A99 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1EA7196F2AD42B9E00B76275 /* PBXTargetDependency */,
+				1EA719682AD4238400B76275 /* PBXTargetDependency */,
+				1EA719662AD4238000B76275 /* PBXTargetDependency */,
 			);
 			name = DigiMeSDKExample;
 			packageProductDependencies = (
+				1EC93DC22AD3DAB40028F50C /* DigiMeCore */,
+				1EC93DC52AD3DAC90028F50C /* DigiMeSDK */,
+				1EA7196C2AD42B9500B76275 /* DigiMeHealthKit */,
 			);
 			productName = DigiMeSDKExample;
 			productReference = 27D31A20266A4EAB00DB2524 /* DigiMeSDKExample.app */;
@@ -502,7 +515,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27D31A4D266A4EAD00DB2524 /* Build configuration list for PBXNativeTarget "DigiMeSDKExampleTests" */;
 			buildPhases = (
-				538C3677F002E52B668727DB /* [CP] Check Pods Manifest.lock */,
 				27D31A32266A4EAD00DB2524 /* Sources */,
 				27D31A33266A4EAD00DB2524 /* Frameworks */,
 				27D31A34266A4EAD00DB2524 /* Resources */,
@@ -547,6 +559,9 @@
 			);
 			mainGroup = 27D31A17266A4EAB00DB2524;
 			packageReferences = (
+				1EC93DC12AD3DAB40028F50C /* XCLocalSwiftPackageReference "../../DigiMeCore" */,
+				1EC93DC42AD3DAC90028F50C /* XCLocalSwiftPackageReference "../../DigiMeSDK" */,
+				1EA7196B2AD42B9500B76275 /* XCLocalSwiftPackageReference "../../DigiMeHealthKit" */,
 			);
 			productRefGroup = 27D31A21266A4EAB00DB2524 /* Products */;
 			projectDirPath = "";
@@ -563,6 +578,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E29EC152AE558D70016B8D5 /* discovery.json in Resources */,
 				27D31A30266A4EAD00DB2524 /* LaunchScreen.storyboard in Resources */,
 				27D31A2D266A4EAD00DB2524 /* Assets.xcassets in Resources */,
 			);
@@ -578,89 +594,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		27D31B64266E181E00DB2524 /* Lint Code */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Lint Code";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint lint\n";
-		};
-		4B1E69CACA2502299A6B3BC6 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExample-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		538C3677F002E52B668727DB /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExampleTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5F56F60B3B32BCA3A5869A99 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		27D31A1C266A4EAB00DB2524 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -669,6 +602,7 @@
 				1E61E88F2A0D0E9C00EDD3D7 /* ScopeDateButton.swift in Sources */,
 				1E1DC11C29ABA6B300B827E3 /* Section.swift in Sources */,
 				1E811D8C299E5C4500EC80B0 /* WriteDataView.swift in Sources */,
+				1EA86AA72B055D990030CB91 /* GenericPressableButtonView.swift in Sources */,
 				1EEE0EC829BE54A1004FA4D0 /* KeyframeAnimation.swift in Sources */,
 				27D31A24266A4EAB00DB2524 /* AppDelegate.swift in Sources */,
 				1ED4CA2729D3783400C9874B /* ReportDateManagerView.swift in Sources */,
@@ -684,15 +618,18 @@
 				1E4901F127D9114B00F13D29 /* Contracts.swift in Sources */,
 				1EE6FAF22A13F7A900796505 /* ScopeLimitsDetailsView.swift in Sources */,
 				1EA5A1A929A3DD8100A9DB5A /* HighlightedTextView.swift in Sources */,
-				1E02535929AA883800702D90 /* ContentView.swift in Sources */,
+				1E02535929AA883800702D90 /* CustomDisclosureView.swift in Sources */,
 				1E47A0EF298FE6A60081A2C5 /* DailyActivityChart.swift in Sources */,
 				1E32B96729A4E3590013B1C1 /* ServicesViewModel.swift in Sources */,
 				1E07621529A0C41800CED8E9 /* Date+Helper.swift in Sources */,
 				1E61E8912A0D0F2A00EDD3D7 /* ScopeServiceObjectTypesRow.swift in Sources */,
 				1E811D9929A017E700EC80B0 /* LineChartView.swift in Sources */,
 				1E1DC11829ABA19700B827E3 /* DigiMeSDKExampleApp.swift in Sources */,
+				1EF62B072AFE45CD00AAE3FB /* CustomActionSheetView.swift in Sources */,
 				1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */,
 				1E47A0F3299176100081A2C5 /* Square.swift in Sources */,
+				1EA86AA92B0668F40030CB91 /* StyledPressableButtonView.swift in Sources */,
+				1EDA770D2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift in Sources */,
 				1E0E1326298C134100F1A813 /* AppleHealthBarChartView.swift in Sources */,
 				1E02269829817C2C00892CE8 /* AppleHealthSummaryView.swift in Sources */,
 				1EA4CFF02A04CAD900A2493A /* ScopeObjectTypeIconView.swift in Sources */,
@@ -702,7 +639,6 @@
 				1E4901E227D9112200F13D29 /* Logger.swift in Sources */,
 				1E02535729A94B4200702D90 /* SourceImage.swift in Sources */,
 				1E47A0E5298D25EF0081A2C5 /* ActivityIndicator.swift in Sources */,
-				1EC8C14329A7F8C200E34338 /* ServicePickerView.swift in Sources */,
 				1E4901F227D9114B00F13D29 /* DigimeContract.swift in Sources */,
 				1E0E1320298BE0BB00F1A813 /* AppleHealthChartViewModel.swift in Sources */,
 				1E1DC11E29ABA6E700B827E3 /* GroupObjectType.swift in Sources */,
@@ -718,6 +654,7 @@
 				1E811D93299FD15800EC80B0 /* Modifiers.swift in Sources */,
 				1E811D95299FEECC00EC80B0 /* WriteDataViewModel.swift in Sources */,
 				1EEE0ECA29BE5503004FA4D0 /* Ring.swift in Sources */,
+				1ED268462B09683500588855 /* InfoMessageView.swift in Sources */,
 				1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */,
 				1ED4CA2F29D4356C00C9874B /* BlurView.swift in Sources */,
 				1E61E83E2A0BB6B300EDD3D7 /* ScopeTimeRangeTemplatesRow.swift in Sources */,
@@ -728,7 +665,10 @@
 				1E0225D52980675600892CE8 /* DatePickerWithButtons.swift in Sources */,
 				1E56030729A3759A007AC2FF /* LogDetailsView.swift in Sources */,
 				1EA4CFEC2A0280F100A2493A /* TimeRangeTemplate.swift in Sources */,
+				1EA86AA52B0554880030CB91 /* SectionView.swift in Sources */,
 				1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */,
+				1E0E79EA2AFA99710015A89C /* ServicePickerView.swift in Sources */,
+				1ED268482B0A6D2800588855 /* CustomNavigationLinkView.swift in Sources */,
 				1E811D9C29A0233F00EC80B0 /* LogEntry.swift in Sources */,
 				1E06B22B29A4E11A00809D13 /* ServicesView.swift in Sources */,
 				1E47A0F1298FEC0D0081A2C5 /* AppleHealthLineChartView.swift in Sources */,
@@ -749,6 +689,18 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1EA719662AD4238000B76275 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 1EA719652AD4238000B76275 /* DigiMeCore */;
+		};
+		1EA719682AD4238400B76275 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 1EA719672AD4238400B76275 /* DigiMeSDK */;
+		};
+		1EA7196F2AD42B9E00B76275 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 1EA7196E2AD42B9E00B76275 /* DigiMeHealthKit */;
+		};
 		27D31A38266A4EAD00DB2524 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 27D31A1F266A4EAB00DB2524 /* DigiMeSDKExample */;
@@ -890,12 +842,11 @@
 		};
 		27D31A4B266A4EAD00DB2524 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2916443F9A5E43A13EE0ADD3 /* Pods-DigiMeSDKExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
@@ -915,12 +866,11 @@
 		};
 		27D31A4C266A4EAD00DB2524 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9ACAB444A5A398E9BBF53E43 /* Pods-DigiMeSDKExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
@@ -940,7 +890,6 @@
 		};
 		27D31A4E266A4EAD00DB2524 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9ED7578BF77579CC62DA31C8 /* Pods-DigiMeSDKExampleTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -963,7 +912,6 @@
 		};
 		27D31A4F266A4EAD00DB2524 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A5D20F7E3C3A94D697629E3D /* Pods-DigiMeSDKExampleTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1015,6 +963,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		1EA7196B2AD42B9500B76275 /* XCLocalSwiftPackageReference "../../DigiMeHealthKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../DigiMeHealthKit;
+		};
+		1EC93DC12AD3DAB40028F50C /* XCLocalSwiftPackageReference "../../DigiMeCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../DigiMeCore;
+		};
+		1EC93DC42AD3DAC90028F50C /* XCLocalSwiftPackageReference "../../DigiMeSDK" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../DigiMeSDK;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1EA719652AD4238000B76275 /* DigiMeCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1EC93DC12AD3DAB40028F50C /* XCLocalSwiftPackageReference "../../DigiMeCore" */;
+			productName = DigiMeCore;
+		};
+		1EA719672AD4238400B76275 /* DigiMeSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1EC93DC42AD3DAC90028F50C /* XCLocalSwiftPackageReference "../../DigiMeSDK" */;
+			productName = DigiMeSDK;
+		};
+		1EA7196C2AD42B9500B76275 /* DigiMeHealthKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DigiMeHealthKit;
+		};
+		1EA7196E2AD42B9E00B76275 /* DigiMeHealthKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1EA7196B2AD42B9500B76275 /* XCLocalSwiftPackageReference "../../DigiMeHealthKit" */;
+			productName = DigiMeHealthKit;
+		};
+		1EC93DC22AD3DAB40028F50C /* DigiMeCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DigiMeCore;
+		};
+		1EC93DC52AD3DAC90028F50C /* DigiMeSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DigiMeSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 27D31A18266A4EAB00DB2524 /* Project object */;
 }

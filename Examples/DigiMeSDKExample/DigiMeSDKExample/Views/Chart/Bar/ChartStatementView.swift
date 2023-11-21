@@ -6,6 +6,7 @@
 //  Copyright © 2022 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import SwiftUI
 
@@ -21,7 +22,7 @@ struct ChartStatementView: View {
 	}
 	
 	var body: some View {
-		NavigationStack {
+		NavigationView {
 			List(data) { activity in
 				let start = formatter.string(from: activity.startDate)
 				let steps = String(format: "%.f", activity.steps)

@@ -22,7 +22,7 @@ struct ActionView: View {
 			if dialogDetent == .height(200) {
 				BallScaleRippleMultiple()
 					.frame(width: 75, height: 75)
-					.foregroundColor(.blue)
+					.foregroundColor(.accentColor)
 					.padding(.trailing, 10)
 				Spacer()
 			}

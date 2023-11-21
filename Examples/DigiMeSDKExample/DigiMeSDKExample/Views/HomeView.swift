@@ -8,99 +8,112 @@
 
 import SwiftUI
 
-struct HomeView: View {
-	@State var showAddServices = false
-	@State var showWriteRead = false
-	@State var showAppleHealthCharts = false
-	@State var showAppleHealthSummary = false
-	
-    var body: some View {
-		ZStack {
-			NavigationView {
-				List {
-					Section(header: Text("Services"), footer: Text("User can add services to digi.me and read data.")) {
-						NavigationLink {
-							ServicesView()
-						} label: {
-							HStack {
-								Image(systemName: "arrow.down.circle")
-									.foregroundColor(.purple)
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("Service Data Example")
-									.foregroundColor(.blue)
-								Spacer()
-							}
-						}
-					}
-					
-					Section(header: Text("Push data"), footer: Text("Users can upload data to digi.me and then read that data back.")) {
-						NavigationLink {
-							WriteDataView()
-						} label: {
-							HStack {
-								Image(systemName: "arrow.up.arrow.down.circle")
-									.foregroundColor(.green)
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("Write & Read Written Data")
-									.foregroundColor(.blue)
-								Spacer()
-							}
-						}
-					}
+enum HomeNavigationDestination: Hashable {
+    case servicesView
+    case writeReadView
+    case barChartsView
+    case lineChartsView
+    case summaryView
+}
 
-					Section(header: Text("Apple Health"), footer: Text("Presenting Apple Health statistics collection query in a daily interval for the entire period of the digi.me contract time range. Check the Statement view for the exact daily numbers.")) {
-						NavigationLink {
-							AppleHealthBarChartView()
-						} label: {
-							HStack {
-								Image(systemName: "chart.bar")
-									.foregroundColor(.orange)
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("Activity Bar Chart")
-									.foregroundColor(.blue)
-								Spacer()
-							}
-						}
-			
-						NavigationLink {
-							AppleHealthLineChartView()
-						} label: {
-							HStack {
-								Image(systemName: "chart.xyaxis.line")
-									.foregroundColor(.red)
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("Activity Line Chart")
-									.foregroundColor(.blue)
-								Spacer()
-							}
-						}
-					}
-					
-					Section(footer: Text("Presenting Apple Health statistics collection query result as totals within the digi.me contract time range. You can limit your query by turning on Scoping.")) {
-						NavigationLink {
-							AppleHealthSummaryView()
-						} label: {
-							HStack {
-								Image(systemName: "sum")
-									.foregroundColor(.brown)
-									.frame(width: 30, height: 30, alignment: .center)
-								Text("Activity Summary")
-									.foregroundColor(.blue)
-								Spacer()
-							}
-						}
-					}
-				}
-				.navigationBarTitle("digi.me SDK", displayMode: .large)
-				.listStyle(InsetGroupedListStyle())
-			}
-			.navigationViewStyle(StackNavigationViewStyle())
-		}
+struct HomeView: View {
+    @State private var navigationPath = NavigationPath()
+    
+    @State private var isPressedAddServices = false
+    @State private var isPressedWriteRead = false
+    @State private var isPressedAppleHealthBarCharts = false
+    @State private var isPressedAppleHealthLineCharts = false
+    @State private var isPressedAppleHealthSummary = false
+    
+    var body: some View {
+        NavigationStack(path: $navigationPath) {
+            ScrollView {
+                SectionView(header: "Services", footer: "User can add services to digi.me and read data.") {
+                    makeCustomButton(imageName: "arrow.down.circle",
+                                     buttonText: "Service Data Example",
+                                     isPressed: $isPressedAddServices,
+                                     destination: .servicesView,
+                                     imageColor: .purple)
+                }
+                
+                SectionView(header: "Push data", footer: "Users can upload data to digi.me and then read that data back.") {
+                    makeCustomButton(imageName: "arrow.up.arrow.down.circle",
+                                     buttonText: "Write & Read Written Data",
+                                     isPressed: $isPressedWriteRead,
+                                     destination: .writeReadView,
+                                     imageColor: .green)
+                }
+                
+                SectionView(header: "Apple Health", footer: "Presenting Apple Health statistics collection query in a daily interval for the entire period of the digi.me contract time range. Check the Statement view for the exact daily numbers.") {
+                    makeCustomButton(imageName: "chart.bar",
+                                     buttonText: "Activity Bar Chart",
+                                     isPressed: $isPressedAppleHealthBarCharts,
+                                     destination: .barChartsView,
+                                     imageColor: .orange)
+                    
+                    makeCustomButton(imageName: "chart.xyaxis.line",
+                                     buttonText: "Activity Line Chart",
+                                     isPressed: $isPressedAppleHealthLineCharts,
+                                     destination: .lineChartsView,
+                                     imageColor: .red)
+                }
+                
+                SectionView(header: nil, footer: "Presenting Apple Health statistics collection query result as totals within the digi.me contract time range. You can limit your query by turning on Scoping.") {
+                    makeCustomButton(imageName: "sum",
+                                     buttonText: "Activity Summary",
+                                     isPressed: $isPressedAppleHealthSummary,
+                                     destination: .summaryView,
+                                     imageColor: .indigo)
+                }
+            }
+            .navigationBarTitle("digi.me SDK", displayMode: .large)
+            .background(Color(.systemGroupedBackground))
+            .navigationDestination(for: HomeNavigationDestination.self) { destination in
+                switch destination {
+                case .servicesView:
+                    ServicesView(navigationPath: $navigationPath)
+                case .writeReadView:
+                    WriteDataView()
+                case .barChartsView:
+                    AppleHealthBarChartView()
+                case .lineChartsView:
+                    AppleHealthLineChartView()
+                case .summaryView:
+                    AppleHealthSummaryView()
+                }
+            }
+        }
     }
 }
+
+extension HomeView {
+    @ViewBuilder
+    func makeCustomButton(imageName: String, buttonText: String, isPressed: Binding<Bool>, destination: HomeNavigationDestination, imageColor: Color) -> some View {
+        GenericPressableButtonView(isPressed: isPressed, action: {
+            navigationPath.append(destination)
+        }) {
+            HStack {
+                Image(systemName: imageName)
+                    .foregroundColor(isPressed.wrappedValue ? .white : imageColor)
+                    .frame(width: 30, height: 30, alignment: .center)
+                Text(buttonText)
+                    .foregroundColor(isPressed.wrappedValue ? .white : .accentColor)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .imageScale(.small)
+                    .foregroundColor(isPressed.wrappedValue ? .white : .gray)
+            }
+            .padding(8)
+            .padding(.horizontal, 10)
+            .background(isPressed.wrappedValue ? .accentColor : Color(.secondarySystemGroupedBackground))
+        }
+    }
+}
+
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environment(\.colorScheme, .dark)
     }
 }

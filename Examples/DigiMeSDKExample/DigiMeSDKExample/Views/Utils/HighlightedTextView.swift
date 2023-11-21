@@ -18,7 +18,7 @@ struct HighlightedTextView: View {
 	var textPart: String?
 	/// The <Text> views created inside the current view inherits Text params defined for self (HighlightedText) like font, underline, etc
 	/// Color used for view background when text value contans textPart value
-	var textPartBgColor = Color.blue
+	var textPartBgColor = Color.accentColor
 	/// Font size used to determine if the current text needs more than one line for render
 	var fontSize: CGFloat = 18
 	/// Max characters length allowed for one line, if exceeds a new line will be added
