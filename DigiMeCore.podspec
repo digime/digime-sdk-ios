@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
     }
     
     s.source_files 	= "DigiMeCore/Sources/DigiMeCore/**/*.swift"
-    s.frameworks 	= "Foundation", "UIKit", "SafariServices", "CryptoKit", "Security", "HealthKit"
+    s.frameworks 	= "Foundation", "CryptoKit", "Security"
 
 end
