@@ -26,7 +26,7 @@ class AppleHealthChartViewModel: ObservableObject {
 	private let endDate = Date()
 	private let startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
 	
-	private var digiMeService: DigiMe?
+    private var digiMeService: DigiMeSDK.DigiMe?
 	private var digiMeConfig: Configuration
 	private var readOptions: ReadOptions?
 	private var dateFormatter: DateFormatter {

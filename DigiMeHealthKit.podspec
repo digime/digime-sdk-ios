@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name         	= "DigiMeHealthKit"
-    s.version      	= "5.0.6"
+    s.version      	= "5.0.7"
     s.summary      	= "digi.me iOS Consent Access SDK HealthKit Component"
     s.homepage     	= "https://github.com/digime/digime-sdk-ios"
     s.license      	= { :type => "MIT", :file => "LICENSE" }
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
     }
     
     s.source_files 	= "DigiMeHealthKit/Sources/DigiMeHealthKit/**/*.swift"
-    s.frameworks 	= "Foundation", "UIKit", "SafariServices", "CryptoKit", "Security", "HealthKit"
-    s.dependency 'DigiMeCore', '~> 5.0.6'
+    s.frameworks 	= "Foundation", "CoreLocation", "HealthKit"
+    s.dependency 'DigiMeCore', '~> 5.0.7'
 
 end

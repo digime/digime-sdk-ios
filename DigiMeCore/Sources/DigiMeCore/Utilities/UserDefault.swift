@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 @propertyWrapper
 public struct UserDefault<T: UserDefaultStorable> {

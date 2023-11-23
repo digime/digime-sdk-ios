@@ -4,12 +4,17 @@ install! 'cocoapods',
     :generate_multiple_pod_projects => true,
     :incremental_installation => true
 
+# inhibit_all_warnings!
 use_frameworks!
 use_modular_headers!
 
 source 'https://cdn.cocoapods.org/'
 
-target 'Genrefy' do
-    pod 'DigiMeSDK/Core', :path => '../../'
-    pod 'SwiftLint'
+target 'DigiMeSDKExample' do
+  pod 'DigiMeSDK', :path => '../../'
+  pod 'SwiftLint'
+
+  target 'DigiMeSDKExampleTests' do
+    inherit! :search_paths
+  end
 end

@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name         	= "DigiMeCore"
-    s.version      	= "5.0.6"
+    s.version      	= "5.0.7"
     s.summary      	= "digi.me iOS Consent Access SDK Core Component"
     s.homepage     	= "https://github.com/digime/digime-sdk-ios"
     s.license      	= { :type => "MIT", :file => "LICENSE" }
@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
     }
     
     s.source_files 	= "DigiMeCore/Sources/DigiMeCore/**/*.swift"
-    s.frameworks 	= "Foundation", "CryptoKit", "Security"
+    s.frameworks 	= "Foundation", "Security", "UIKit"
 
 end

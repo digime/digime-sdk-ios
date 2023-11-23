@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 public struct FitnessActivitySummary: Codable, Dated, Identifiable {
     public struct Distances: Codable {

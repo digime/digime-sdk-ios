@@ -7,7 +7,6 @@
 
 import DigiMeCore
 import HealthKit
-import CoreLocation
 
 class SeriesSampleRetriever {
     func makeHeartbeatSeriesQuery(healthStore: HKHealthStore, predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor], limit: Int, resultsHandler: @escaping HeartbeatSeriesResultsDataHandler) throws -> HKSampleQuery {
