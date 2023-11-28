@@ -190,8 +190,13 @@ class ServicesViewModel: ObservableObject {
             guard let selectedService = selectedService else {
                 return
             }
-            
-            self.addAccountAndFetchData(service: selectedService, credentials: accountCredentials)
+                        
+            if let sampleDataSetId = sampleDataSetId {
+                self.addAccountAndFetchData(service: selectedService, credentials: accountCredentials, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: true)
+            }
+            else {
+                self.addAccountAndFetchData(service: selectedService, credentials: accountCredentials)
+            }
         }
     }
     
@@ -300,8 +305,12 @@ class ServicesViewModel: ObservableObject {
 
     func removeUser() {
         guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
-            self.isLoadingData = false
             self.logWarningMessage("Contract must be authorized first.")
+            return
+        }
+
+        guard accountCredentials.token.refreshToken.isValid else {
+            self.reset()
             return
         }
         
@@ -312,12 +321,9 @@ class ServicesViewModel: ObservableObject {
             switch result {
             case .success:
                 self.userPreferences.clearCredentials(for: self.activeContract.identifier)
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                    self.logEntries = []
-                    self.linkedAccounts = []
-                    self.userPreferences.reset()
-                    self.logMessage("Your user entry and the library deleted successfully")
-                }
+                self.logEntries = []
+                self.linkedAccounts = []
+                self.logMessage("Your user entry and the library deleted successfully")
             case .failure(let error):
                 self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
                 self.logErrorMessage(error.description)
@@ -592,7 +598,7 @@ class ServicesViewModel: ObservableObject {
                     
                     self.updateReauthenticationStatus(reauthAccounts: reauthAccounts)
                 }
-                
+                self.logMessage("Sync state - \(fileList.status.state.rawValue)")
                 self.logMessage("Finished reading files. Total files \(fileList.files?.count ?? 0)")
 
             case .failure(let error):
@@ -619,5 +625,11 @@ class ServicesViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    private func reset() {
+        self.logEntries = []
+        self.linkedAccounts = []
+        self.userPreferences.reset()
     }
 }

@@ -248,6 +248,13 @@ class WriteDataViewModel: ObservableObject {
 		}
 	}
 	
+    func reset() {
+        self.logEntries = []
+        self.credentialsForRead = nil
+        self.credentialsForWrite = nil
+        self.userPreferences.reset()
+    }
+    
 	// MARK: - Logs
 	
 	func logMessage(_ message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {

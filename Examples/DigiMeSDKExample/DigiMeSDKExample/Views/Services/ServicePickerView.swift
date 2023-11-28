@@ -34,74 +34,74 @@ struct ServicePickerView: View {
     
     private var servicesButtonStyle: SourceSelectorButtonStyle {
         if viewState == .sampleData {
-            return SourceSelectorButtonStyle(backgroundColor: Color("pickerBackgroundColor"), padding: 15)
+            return SourceSelectorButtonStyle(backgroundColor: Color("pickerBackgroundColor"), foregroundColor: viewModel.isLoadingData ? .gray : .primary, padding: 15)
         }
         else {
-            return SourceSelectorButtonStyle(backgroundColor: Color("pickerItemColor"), padding: 15)
+            return SourceSelectorButtonStyle(backgroundColor: Color("pickerItemColor"), foregroundColor: viewModel.isLoadingData ? .gray : .primary, padding: 15)
         }
     }
     
     private var navigationButtonStyle: SourceSelectorButtonStyle {
-        return SourceSelectorButtonStyle(backgroundColor: Color(.systemGroupedBackground), padding: 10, strokeColor: .primary)
+        return SourceSelectorButtonStyle(backgroundColor: Color(.systemGroupedBackground), foregroundColor: viewModel.isLoadingData ? .gray : .primary, padding: 10, strokeColor: .primary)
     }
 
     private var filteredSections: [ServiceSection] {
         return viewState == .sampleData ? viewModel.sampleDataSections : viewModel.serviceSections
     }
     
-//    private var blockUI: Bool {
-//        return scopeViewModel.selectedService == nil && !viewModel.isLoadingData
-//    }
-    
     var body: some View {
-//        ZStack {
-            NavigationStack {
-                VStack {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 20) {
-                            if viewState == .sources {
-                                sourcesHeaderView
-                            }
-                            else if viewState == .sampleData {
-                                sampleDataHeaderView
-                            }
+        NavigationStack {
+            VStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        if viewState == .sources {
+                            sourcesHeaderView
                         }
-                        .padding(.bottom, 10)
-                        
-                        searchBar
-                        content
-                    }
-                    .background(.clear)
-                    .scrollIndicators(.hidden)
-                    .padding(.horizontal, 20)
-                    .navigationBarItems(leading: cancelButton, trailing: addServiceButton)
-                    .onChange(of: searchText) { newValue in
-                        flags = Array(repeating: !newValue.isEmpty, count: filteredSections.count)
-                    }
-                    
-                    if allowScoping {
-                        VStack(spacing: 20) {
-                            scopingToggle
-                            
-                            if scopeViewModel.isScopeModificationAllowed {
-                                scopingPreview
-                            }
-                            
-                            buttonProceed
+                        else if viewState == .sampleData {
+                            sampleDataHeaderView
                         }
-                        .padding()
-                        .background(viewState == .sampleData ? Color.clear : Color(.systemGroupedBackground))
                     }
+                    .padding(.bottom, 10)
                     
-                    
+                    searchBar
+                    content
                 }
-                .background(viewState == .sampleData ? Color.yellow.opacity(0.1) : Color(.systemBackground))
-//            }
-//            
-//            if showSampleDataSetActionSheet {
-//                CustomActionSheetView(isPresented: $showSampleDataSetActionSheet, buttons: customActionSheetButtons(), title: "Sample Datasets", message: "Choose one to proceed")
-//                    .transition(.move(edge: .bottom))
-//            }
+                .background(.clear)
+                .scrollIndicators(.hidden)
+                .padding(.horizontal, 20)
+                .navigationBarItems(leading: cancelButton)
+                .onChange(of: searchText) { newValue in
+                    flags = Array(repeating: !newValue.isEmpty, count: filteredSections.count)
+                }
+                .toolbar {
+                    if viewModel.isLoadingData {
+                        ActivityIndicator()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 10)
+                    }
+                    else {
+                        addServiceButton
+                    }
+                }
+                
+                if allowScoping {
+                    VStack(spacing: 20) {
+                        scopingToggle
+                        
+                        if scopeViewModel.isScopeModificationAllowed {
+                            scopingPreview
+                        }
+                        
+                        buttonProceed
+                    }
+                    .padding()
+                    .background(viewState == .sampleData ? Color.clear : Color(.systemGroupedBackground))
+                }
+                
+                
+            }
+            .background(viewState == .sampleData ? Color.yellow.opacity(0.1) : Color(.systemBackground))
         }
         .onAppear {
             scopeViewModel.serviceSections = filteredSections
@@ -119,9 +119,6 @@ struct ServicePickerView: View {
                 self.proceedSampleDataset = proceed
             }
         }
-//        .actionSheet(isPresented: $showSampleDataSetActionSheet) {
-//            sampleDataActionSheet
-//        }
         .customActionSheet(isPresented: $showSampleDataSetActionSheet, 
                            title: "Sample Datasets",
                            message: "Choose one to proceed",
@@ -162,7 +159,6 @@ struct ServicePickerView: View {
         }, message: {
             Text("No sample datasets available at this time")
         })
-
         .navigationBarTitle("")
         .navigationBarBackButtonHidden(true)
         .disabled(viewModel.isLoadingData)
@@ -228,9 +224,10 @@ struct ServicePickerView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 20, height: 20, alignment: .leading)
+                                .disabled(viewModel.isLoadingData)
                             
                             Text(section.title)
-                                .foregroundColor(.primary)
+                                .foregroundColor(viewModel.isLoadingData ? .gray : .primary)
                             
                             Spacer()
                             
@@ -239,7 +236,7 @@ struct ServicePickerView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 15, height: 15)
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(viewModel.isLoadingData ? .gray : .primary)
                             }
                         }
                         .padding(15)
@@ -248,6 +245,7 @@ struct ServicePickerView: View {
                         .padding(.horizontal, 2)
                     }
                     .padding(.vertical, 5)
+                    .disabled(viewModel.isLoadingData)
                     
                     if !flags.isEmpty, flags[i] {
                         ForEach(searchText.isEmpty ? section.items : section.items.filter { $0.name.lowercased().contains(searchText.lowercased()) }) { service in
@@ -388,14 +386,6 @@ struct ServicePickerView: View {
             .navigationDestination(isPresented: $pushNextView) {
                 ServicePickerView(showView: $showView, selectServiceCompletion: $selectServiceCompletion, viewModel: viewModel, scopeViewModel: scopeViewModel, viewState: .sampleData, allowScoping: allowScoping)
             }
-            
-//            NavigationLink(
-//                "",
-//                destination: ServicePickerView(sections: $sections, showView: $showView, selectServiceCompletion: $selectServiceCompletion, scopeViewModel: scopeViewModel, viewState: .sampleData, allowScoping: allowScoping),
-//                isActive: $pushNextView
-//            )
-//            .frame(width: 0, height: 0)
-//            .hidden()
         }
     }
     
@@ -511,10 +501,6 @@ struct ServicePickerView: View {
         }
     }
     
-//    private var sampleDataActionSheet: ActionSheet {
-//        ActionSheet(title: Text("Sample Datasets"), message: Text("Choose one to proceed"), buttons: actionSheetButtons())
-//    }
-    
     private func reset() {
         scopeViewModel.resetSettings()
     }
@@ -562,47 +548,15 @@ struct ServicePickerView: View {
     }
 }
 
-//struct AnyButtonStyle: ButtonStyle {
-//    private let _makeBody: (ButtonStyle.Configuration) -> AnyView
-//
-//    init<S: ButtonStyle>(_ style: S) {
-//        self._makeBody = { configuration in
-//            AnyView(style.makeBody(configuration: configuration))
-//        }
-//    }
-//
-//    func makeBody(configuration: ButtonStyle.Configuration) -> some View {
-//        self._makeBody(configuration)
-//    }
-//}
-//
-//struct SampleDataButtonStyle: ButtonStyle {
-//    func makeBody(configuration: Self.Configuration) -> some View {
-//        configuration.label
-//          .padding()
-//          .foregroundColor(configuration.isPressed ? .white : .primary)
-//          .background(configuration.isPressed ? Color.accentColor : .sampleDataBG)
-//          .cornerRadius(10)
-//      }
-//}
-//
-//struct ServicesButtonStyle: ButtonStyle {
-//    func makeBody(configuration: Self.Configuration) -> some View {
-//        configuration.label
-//          .padding()
-//          .foregroundColor(configuration.isPressed ? .white : .primary)
-//          .background(configuration.isPressed ? Color.accentColor : .rowColor)
-//          .cornerRadius(10)
-//      }
-//}
-
 struct SourceSelectorButtonStyle: ButtonStyle {
     var backgroundColor: Color
+    var foregroundColor: Color
     var padding: CGFloat
     var strokeColor: Color
 
-    init(backgroundColor: Color, padding: CGFloat, strokeColor: Color = .clear) {
+    init(backgroundColor: Color, foregroundColor: Color, padding: CGFloat, strokeColor: Color = .clear) {
         self.backgroundColor = backgroundColor
+        self.foregroundColor = foregroundColor
         self.padding = padding
         self.strokeColor = strokeColor
     }
@@ -610,7 +564,7 @@ struct SourceSelectorButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .padding(padding)
-            .foregroundColor(configuration.isPressed ? .white : .primary)
+            .foregroundColor(configuration.isPressed ? .white : foregroundColor)
             .background(configuration.isPressed ? .accentColor : backgroundColor)
             .cornerRadius(10)
             .overlay {

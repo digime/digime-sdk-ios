@@ -14,6 +14,26 @@ struct CustomActionSheetViewModifier: ViewModifier {
     let title: String
     let message: String?
 
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+                .disabled(isPresented)
+                .overlay(isPresented ? Color.black.opacity(0.1) : Color.clear)
+
+            if isPresented {
+                VStack {
+                    Spacer()
+                    actionSheetContent
+                }
+                .transition(.move(edge: .bottom))
+                .animation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0))
+            }
+        }
+        .onTapGesture {
+            dismiss()
+        }
+    }
+    
     private var actionSheetContent: some View {
         VStack(spacing: 5) {
             VStack(alignment: .center, spacing: 3) {
@@ -50,27 +70,6 @@ struct CustomActionSheetViewModifier: ViewModifier {
             .shadow(radius: 3)
         }
         .padding(20)
-    }
-
-    func body(content: Content) -> some View {
-        ZStack {
-            content
-                .disabled(isPresented)
-                .overlay(isPresented ? Color.black.opacity(0.1) : Color.clear)
-
-            if isPresented {
-                VStack {
-                    Spacer()
-                    actionSheetContent
-                }
-                .transition(.move(edge: .bottom))
-                .animation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0))
-            }
-        }
-//        .animation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0))
-        .onTapGesture {
-            dismiss()
-        }
     }
     
     private func dismiss() {

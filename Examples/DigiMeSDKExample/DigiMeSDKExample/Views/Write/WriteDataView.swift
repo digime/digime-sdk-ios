@@ -117,13 +117,13 @@ struct WriteDataView: View {
                     if viewModel.credentialsForWrite != nil || viewModel.credentialsForRead != nil {
                         SectionView(header: "Delete Your Data") {
                             
-                            StyledPressableButtonView(text: "Start Over",
+                            StyledPressableButtonView(text: "Delete Data and Clear Logs",
                                                iconName: "deleteIcon",
                                                iconForegroundColor: viewModel.loadingInProgress ? .gray : .red,
                                                textForegroundColor: viewModel.loadingInProgress ? .gray : .red,
                                                backgroundColor: Color(.secondarySystemGroupedBackground),
                                                action: {
-                                viewModel.removeUser()
+                                viewModel.reset()
                             })
                             .disabled(viewModel.loadingInProgress)
                         }

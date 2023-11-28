@@ -115,7 +115,7 @@ struct ServicesView: View {
                         
                         if viewModel.isAuthorized {
                             SectionView(header: "Reset") {
-                                StyledPressableButtonView(text: "Start Over",
+                                StyledPressableButtonView(text: "Delete Data and Clear Logs",
                                                    iconName: "deleteIcon",
                                                    iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
                                                    textForegroundColor: viewModel.isLoadingData ? .gray : .red,

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -45,6 +45,9 @@
 		1E61E8932A0D10DF00EDD3D7 /* ScopeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E61E8922A0D10DF00EDD3D7 /* ScopeEditView.swift */; };
 		1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E717C2861AA1000E7954E /* UserPreferences.swift */; };
 		1E6E71B22862FE8600E7954E /* ChartStatementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6E71B12862FE8600E7954E /* ChartStatementView.swift */; };
+		1E6EDDAE2B14B3340077A80C /* DigiMeSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 1E6EDDAD2B14B3340077A80C /* DigiMeSDK */; };
+		1E6EDDB12B14B3770077A80C /* DigiMeHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1E6EDDB02B14B3770077A80C /* DigiMeHealthKit */; };
+		1E6EDDB42B14B3860077A80C /* DigiMeCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1E6EDDB32B14B3860077A80C /* DigiMeCore */; };
 		1E7B414E29A3925D00F7B5B4 /* JSONTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7B414B29A3925C00F7B5B4 /* JSONTreeView.swift */; };
 		1E7B415029A3925D00F7B5B4 /* JSONCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7B414D29A3925D00F7B5B4 /* JSONCell.swift */; };
 		1E811D8C299E5C4500EC80B0 /* WriteDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E811D8B299E5C4500EC80B0 /* WriteDataView.swift */; };
@@ -88,8 +91,6 @@
 		27D31BEB266E231C00DB2524 /* RouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D31BEA266E231C00DB2524 /* RouterTests.swift */; };
 		27E3DE7E267B8A250048A84C /* CryptographyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E3DE7C267B8A250048A84C /* CryptographyTests.swift */; };
 		27E3DE7F267B8A250048A84C /* CryptographyTestingAssets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27E3DE7D267B8A250048A84C /* CryptographyTestingAssets.plist */; };
-		57B0ED993F915A8CE0CE3B04 /* Pods_DigiMeSDKExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 566959473E8DD8B387670970 /* Pods_DigiMeSDKExample.framework */; };
-		8F240A556F3DBE005CFBBD4E /* Pods_DigiMeSDKExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5F79BF8B7054702A614ED76 /* Pods_DigiMeSDKExampleTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,12 +190,6 @@
 		27D31BEA266E231C00DB2524 /* RouterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouterTests.swift; sourceTree = "<group>"; };
 		27E3DE7C267B8A250048A84C /* CryptographyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptographyTests.swift; sourceTree = "<group>"; };
 		27E3DE7D267B8A250048A84C /* CryptographyTestingAssets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CryptographyTestingAssets.plist; sourceTree = "<group>"; };
-		566959473E8DD8B387670970 /* Pods_DigiMeSDKExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7288010101F577B5FE7BE161 /* Pods-DigiMeSDKExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.release.xcconfig"; sourceTree = "<group>"; };
-		A5F79BF8B7054702A614ED76 /* Pods_DigiMeSDKExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DigiMeSDKExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB12E8D397A2931C00BC5A21 /* Pods-DigiMeSDKExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExample.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample.debug.xcconfig"; sourceTree = "<group>"; };
-		D51A19B46E99739E0B36FFBB /* Pods-DigiMeSDKExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleTests.release.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExampleTests/Pods-DigiMeSDKExampleTests.release.xcconfig"; sourceTree = "<group>"; };
-		D9E792C25C573993DE6F4F6C /* Pods-DigiMeSDKExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DigiMeSDKExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-DigiMeSDKExampleTests/Pods-DigiMeSDKExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,7 +197,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57B0ED993F915A8CE0CE3B04 /* Pods_DigiMeSDKExample.framework in Frameworks */,
+				1E6EDDB12B14B3770077A80C /* DigiMeHealthKit in Frameworks */,
+				1E6EDDAE2B14B3340077A80C /* DigiMeSDK in Frameworks */,
+				1E6EDDB42B14B3860077A80C /* DigiMeCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +207,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F240A556F3DBE005CFBBD4E /* Pods_DigiMeSDKExampleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,8 +406,6 @@
 				27D31A22266A4EAB00DB2524 /* DigiMeSDKExample */,
 				27D31A39266A4EAD00DB2524 /* DigiMeSDKExampleTests */,
 				27D31A21266A4EAB00DB2524 /* Products */,
-				CBB2A05D8B2E9AEC40D3A97A /* Pods */,
-				C4BCE927A09FF749DEB9E38A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -471,27 +465,6 @@
 			path = Security;
 			sourceTree = "<group>";
 		};
-		C4BCE927A09FF749DEB9E38A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				566959473E8DD8B387670970 /* Pods_DigiMeSDKExample.framework */,
-				A5F79BF8B7054702A614ED76 /* Pods_DigiMeSDKExampleTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CBB2A05D8B2E9AEC40D3A97A /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				CB12E8D397A2931C00BC5A21 /* Pods-DigiMeSDKExample.debug.xcconfig */,
-				7288010101F577B5FE7BE161 /* Pods-DigiMeSDKExample.release.xcconfig */,
-				D9E792C25C573993DE6F4F6C /* Pods-DigiMeSDKExampleTests.debug.xcconfig */,
-				D51A19B46E99739E0B36FFBB /* Pods-DigiMeSDKExampleTests.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -499,17 +472,20 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27D31A4A266A4EAD00DB2524 /* Build configuration list for PBXNativeTarget "DigiMeSDKExample" */;
 			buildPhases = (
-				1434F0E416C77BC6ADACCE79 /* [CP] Check Pods Manifest.lock */,
 				27D31A1C266A4EAB00DB2524 /* Sources */,
 				27D31A1D266A4EAB00DB2524 /* Frameworks */,
 				27D31A1E266A4EAB00DB2524 /* Resources */,
-				85ACD9F53774D6D9DE41CFE0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = DigiMeSDKExample;
+			packageProductDependencies = (
+				1E6EDDAD2B14B3340077A80C /* DigiMeSDK */,
+				1E6EDDB02B14B3770077A80C /* DigiMeHealthKit */,
+				1E6EDDB32B14B3860077A80C /* DigiMeCore */,
+			);
 			productName = DigiMeSDKExample;
 			productReference = 27D31A20266A4EAB00DB2524 /* DigiMeSDKExample.app */;
 			productType = "com.apple.product-type.application";
@@ -518,7 +494,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27D31A4D266A4EAD00DB2524 /* Build configuration list for PBXNativeTarget "DigiMeSDKExampleTests" */;
 			buildPhases = (
-				EB7A86217A9F0D4D3EDF0150 /* [CP] Check Pods Manifest.lock */,
 				27D31A32266A4EAD00DB2524 /* Sources */,
 				27D31A33266A4EAD00DB2524 /* Frameworks */,
 				27D31A34266A4EAD00DB2524 /* Resources */,
@@ -562,6 +537,11 @@
 				Base,
 			);
 			mainGroup = 27D31A17266A4EAB00DB2524;
+			packageReferences = (
+				1E6EDDAC2B14B3340077A80C /* XCLocalSwiftPackageReference "../../DigiMeSDK" */,
+				1E6EDDAF2B14B3770077A80C /* XCLocalSwiftPackageReference "../../DigiMeHealthKit" */,
+				1E6EDDB22B14B3860077A80C /* XCLocalSwiftPackageReference "../../DigiMeCore" */,
+			);
 			productRefGroup = 27D31A21266A4EAB00DB2524 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -592,70 +572,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		1434F0E416C77BC6ADACCE79 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExample-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		85ACD9F53774D6D9DE41CFE0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DigiMeSDKExample/Pods-DigiMeSDKExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EB7A86217A9F0D4D3EDF0150 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExampleTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		27D31A1C266A4EAB00DB2524 /* Sources */ = {
@@ -893,7 +809,6 @@
 		};
 		27D31A4B266A4EAD00DB2524 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB12E8D397A2931C00BC5A21 /* Pods-DigiMeSDKExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
@@ -918,7 +833,6 @@
 		};
 		27D31A4C266A4EAD00DB2524 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7288010101F577B5FE7BE161 /* Pods-DigiMeSDKExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
@@ -943,7 +857,6 @@
 		};
 		27D31A4E266A4EAD00DB2524 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D9E792C25C573993DE6F4F6C /* Pods-DigiMeSDKExampleTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -966,7 +879,6 @@
 		};
 		27D31A4F266A4EAD00DB2524 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D51A19B46E99739E0B36FFBB /* Pods-DigiMeSDKExampleTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1018,6 +930,36 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		1E6EDDAC2B14B3340077A80C /* XCLocalSwiftPackageReference "../../DigiMeSDK" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../DigiMeSDK;
+		};
+		1E6EDDAF2B14B3770077A80C /* XCLocalSwiftPackageReference "../../DigiMeHealthKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../DigiMeHealthKit;
+		};
+		1E6EDDB22B14B3860077A80C /* XCLocalSwiftPackageReference "../../DigiMeCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../DigiMeCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1E6EDDAD2B14B3340077A80C /* DigiMeSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DigiMeSDK;
+		};
+		1E6EDDB02B14B3770077A80C /* DigiMeHealthKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DigiMeHealthKit;
+		};
+		1E6EDDB32B14B3860077A80C /* DigiMeCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DigiMeCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 27D31A18266A4EAB00DB2524 /* Project object */;
 }

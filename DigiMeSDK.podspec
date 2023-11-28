@@ -15,14 +15,14 @@ Pod::Spec.new do |s|
 
     # Core functionality
     s.subspec 'Core' do |core|
-        core.dependency 'DigiMeCore', '~> 5.0.7'
+        core.dependency 'DigiMeCore'
         core.frameworks = "Foundation", "Security", "UIKit", "SafariServices"
         core.source_files = "DigiMeSDK/Sources/DigiMeSDK/**/*.swift"
     end
 
     # Core an HealthKit functionality
     s.subspec 'HealthKit' do |healthkit|
-        healthkit.dependency 'DigiMeHealthKit', '~> 5.0.7'
+        healthkit.dependency 'DigiMeHealthKit'
         healthkit.frameworks = "Foundation", "Security", "UIKit", "SafariServices"
         healthkit.source_files = "DigiMeSDK/Sources/DigiMeSDK/**/*.swift"
     end

@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
     
     s.source_files 	= "DigiMeHealthKit/Sources/DigiMeHealthKit/**/*.swift"
     s.frameworks 	= "Foundation", "CoreLocation", "HealthKit"
-    s.dependency 'DigiMeCore', '~> 5.0.7'
+    s.dependency 'DigiMeCore'
 
 end

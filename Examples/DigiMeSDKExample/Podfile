@@ -11,7 +11,7 @@ use_modular_headers!
 source 'https://cdn.cocoapods.org/'
 
 target 'DigiMeSDKExample' do
-  pod 'DigiMeSDK', :path => '../../'
+  pod 'DigiMeSDK'
   pod 'SwiftLint'
 
   target 'DigiMeSDKExampleTests' do

@@ -34,7 +34,7 @@ struct ScopeLimitsDetailsView: View {
                             }
                         }
                     }
-                    .buttonStyle(SourceSelectorButtonStyle(backgroundColor: Color("pickerItemColor"), padding: 15))
+                    .buttonStyle(SourceSelectorButtonStyle(backgroundColor: Color("pickerItemColor"), foregroundColor: .primary, padding: 15))
                 }
             }
             .padding()
