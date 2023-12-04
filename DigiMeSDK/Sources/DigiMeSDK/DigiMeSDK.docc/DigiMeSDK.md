@@ -1,27 +1,6 @@
-![](https://securedownloads.digi.me/partners/digime/SDKReadmeBanner.png)
+# ``DigiMeSDK``
 
-<p align="center">
-    <a href="https://developers.digi.me/slack/join">
-        <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
-    </a>
-    <a href="https://github.com/digime/digime-sdk-ios/blob/master/LICENSE">
-        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
-    </a>
-    <a href="#">
-    	<img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
-    </a>
-    <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/language-swift-orange.svg" alt="Swift">
-    </a>
-    <a href="https://developers.digi.me">
-        <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
-    </a>
-    <a href="https://digime.freshdesk.com/support/solutions/9000115894">
-        <img src="https://img.shields.io/badge/support-freshdesk-721744.svg" alt="Support">
-    </a>
-</p>
-
-<br>
+Digi.me - The Private Sharing Platform 
 
 ## Introduction
 
@@ -40,8 +19,6 @@ The digi.me SDK is split into three primary components to provide modular integr
 ## DigiMeSDK
 This is the primary SDK module. It encapsulates the core functionalities required to interact with the digi.me platform. It is designed for straightforward integration into your project.
 
-[Go to DigiMeSDK Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeSDK/documentation/digimesdk/)
-
 ## DigiMeCore
 DigiMeCore defines all the classes and fundamental definitions used across the SDK. It serves as the foundational layer upon which DigiMeSDK builds. As a critical dependency module, `DigiMeCore` is automatically included when you integrate `DigiMeSDK` into your project. 
 
@@ -53,6 +30,7 @@ While `DigiMeCore` is automatically included as part of the `DigiMeSDK`, you mig
 This module provides functionality specific to Apple HealthKit. It's an optional addition to the main SDK for apps that require access to Apple Health data.
 
 [Go to DigiMeHealthKit Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeHealthKit/documentation/digimehealthkit/)
+
 
 ## Requirements
 
@@ -265,3 +243,5 @@ Additionally, there are a number of example apps built on digi.me in the example
 For more detailed information about the DigiMeSDK and its capabilities, please refer to the [official documentation](https://developers.digi.me).
 
 If you encounter any issues or have questions, please reach out to us at [support@digi.me](mailto:support@digi.me).
+
+

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E3423472B1C93EC007D41CE /* Genrefy.docc in Sources */ = {isa = PBXBuildFile; fileRef = 1E3423462B1C93EC007D41CE /* Genrefy.docc */; };
 		1E6EDB8B2B0DF1C80077A80C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E6EDB8A2B0DF1C80077A80C /* Assets.xcassets */; };
 		1E6EDB8E2B0DF1C80077A80C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E6EDB8C2B0DF1C80077A80C /* LaunchScreen.storyboard */; };
 		1E6EDBAD2B0DF3A70077A80C /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E6EDBA92B0DF3A70077A80C /* Onboarding.storyboard */; };
@@ -58,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		00FCE09D5471530F76AF7858 /* Pods-Genrefy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Genrefy.debug.xcconfig"; path = "Target Support Files/Pods-Genrefy/Pods-Genrefy.debug.xcconfig"; sourceTree = "<group>"; };
+		1E3423462B1C93EC007D41CE /* Genrefy.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Genrefy.docc; sourceTree = "<group>"; };
 		1E6EDB7E2B0DF1C70077A80C /* Genrefy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Genrefy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E6EDB8A2B0DF1C80077A80C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1E6EDB8D2B0DF1C80077A80C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				1E6EDBAB2B0DF3A70077A80C /* Analysis.storyboard */,
 				1E6EDBA92B0DF3A70077A80C /* Onboarding.storyboard */,
 				1E6EDB8F2B0DF1C80077A80C /* Info.plist */,
+				1E3423462B1C93EC007D41CE /* Genrefy.docc */,
 			);
 			path = Genrefy;
 			sourceTree = "<group>";
@@ -272,7 +275,6 @@
 				00FCE09D5471530F76AF7858 /* Pods-Genrefy.debug.xcconfig */,
 				8C9E6D6C8DF2C37B89E8014A /* Pods-Genrefy.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -409,6 +411,7 @@
 				1E6EDC062B0DF8800077A80C /* AccountCell.swift in Sources */,
 				1E6EDC052B0DF8800077A80C /* HomeViewController.swift in Sources */,
 				1E6EDC012B0DF8800077A80C /* AccountSelectionCoordinatingDelegate.swift in Sources */,
+				1E3423472B1C93EC007D41CE /* Genrefy.docc in Sources */,
 				1E6EDC072B0DF8800077A80C /* AccountSelectionDataSource.swift in Sources */,
 				1E6EDC152B0DF9320077A80C /* AppDelegate.swift in Sources */,
 				1E6EDBDA2B0DF8700077A80C /* Coordinating.swift in Sources */,

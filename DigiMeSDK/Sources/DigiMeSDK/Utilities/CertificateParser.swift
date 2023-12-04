@@ -5,8 +5,9 @@
 //  Created on 23/12/2020.
 //  Copyright © 2020 digi.me Limited. All rights reserved.
 //
-
-//import ASN1Decoder
+#if canImport(ASN1Decoder)
+import ASN1Decoder
+#endif
 import DigiMeCore
 import Foundation
 

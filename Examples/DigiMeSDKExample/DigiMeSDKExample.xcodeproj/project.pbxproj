@@ -23,6 +23,7 @@
 		1E1DC11E29ABA6E700B827E3 /* GroupObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */; };
 		1E29EC152AE558D70016B8D5 /* discovery.json in Resources */ = {isa = PBXBuildFile; fileRef = 1E29EC142AE558D70016B8D5 /* discovery.json */; };
 		1E32B96729A4E3590013B1C1 /* ServicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */; };
+		1E34233D2B1C8F81007D41CE /* DigiMeSDKExample.docc in Sources */ = {isa = PBXBuildFile; fileRef = 1E34233C2B1C8F81007D41CE /* DigiMeSDKExample.docc */; };
 		1E3653B42A1D23D000F0FFA5 /* PDFKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3653B32A1D23D000F0FFA5 /* PDFKitView.swift */; };
 		1E47A0E5298D25EF0081A2C5 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */; };
 		1E47A0E9298D420E0081A2C5 /* ChartTimeRangePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E47A0E8298D420E0081A2C5 /* ChartTimeRangePicker.swift */; };
@@ -48,6 +49,7 @@
 		1E6EDDAE2B14B3340077A80C /* DigiMeSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 1E6EDDAD2B14B3340077A80C /* DigiMeSDK */; };
 		1E6EDDB12B14B3770077A80C /* DigiMeHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1E6EDDB02B14B3770077A80C /* DigiMeHealthKit */; };
 		1E6EDDB42B14B3860077A80C /* DigiMeCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1E6EDDB32B14B3860077A80C /* DigiMeCore */; };
+		1E6EDE142B175C670077A80C /* DiscoveryResource+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6EDE132B175C670077A80C /* DiscoveryResource+Helper.swift */; };
 		1E7B414E29A3925D00F7B5B4 /* JSONTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7B414B29A3925C00F7B5B4 /* JSONTreeView.swift */; };
 		1E7B415029A3925D00F7B5B4 /* JSONCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7B414D29A3925D00F7B5B4 /* JSONCell.swift */; };
 		1E811D8C299E5C4500EC80B0 /* WriteDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E811D8B299E5C4500EC80B0 /* WriteDataView.swift */; };
@@ -120,6 +122,7 @@
 		1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupObjectType.swift; sourceTree = "<group>"; };
 		1E29EC142AE558D70016B8D5 /* discovery.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = discovery.json; sourceTree = "<group>"; };
 		1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesViewModel.swift; sourceTree = "<group>"; };
+		1E34233C2B1C8F81007D41CE /* DigiMeSDKExample.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; name = DigiMeSDKExample.docc; path = DigiMeSDKExample/DigiMeSDKExample.docc; sourceTree = "<group>"; };
 		1E3653B32A1D23D000F0FFA5 /* PDFKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFKitView.swift; sourceTree = "<group>"; };
 		1E47A0E4298D25EF0081A2C5 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		1E47A0E8298D420E0081A2C5 /* ChartTimeRangePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTimeRangePicker.swift; sourceTree = "<group>"; };
@@ -143,6 +146,7 @@
 		1E61E8922A0D10DF00EDD3D7 /* ScopeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeEditView.swift; sourceTree = "<group>"; };
 		1E6E717C2861AA1000E7954E /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
 		1E6E71B12862FE8600E7954E /* ChartStatementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStatementView.swift; sourceTree = "<group>"; };
+		1E6EDE132B175C670077A80C /* DiscoveryResource+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiscoveryResource+Helper.swift"; sourceTree = "<group>"; };
 		1E7B414B29A3925C00F7B5B4 /* JSONTreeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTreeView.swift; sourceTree = "<group>"; };
 		1E7B414D29A3925D00F7B5B4 /* JSONCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONCell.swift; sourceTree = "<group>"; };
 		1E811D8B299E5C4500EC80B0 /* WriteDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteDataView.swift; sourceTree = "<group>"; };
@@ -256,7 +260,7 @@
 			path = Summary;
 			sourceTree = "<group>";
 		};
-		1E47A0E3298D25CE0081A2C5 /* Utils */ = {
+		1E47A0E3298D25CE0081A2C5 /* Other */ = {
 			isa = PBXGroup;
 			children = (
 				1E7B414A29A3925C00F7B5B4 /* JSONPreview */,
@@ -281,14 +285,16 @@
 				1EA86AA62B055D990030CB91 /* GenericPressableButtonView.swift */,
 				1EA86AA82B0668F40030CB91 /* StyledPressableButtonView.swift */,
 				1ED268452B09683500588855 /* InfoMessageView.swift */,
+				1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */,
+				1EDA770C2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift */,
+				1EF62B062AFE45CD00AAE3FB /* CustomActionSheetView.swift */,
 			);
-			path = Utils;
+			path = Other;
 			sourceTree = "<group>";
 		};
 		1E4901DE27D9105F00F13D29 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				1E0225D42980675600892CE8 /* DatePickerWithButtons.swift */,
 				1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */,
 				1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */,
 				1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */,
@@ -296,8 +302,7 @@
 				1E0226AE29828BAF00892CE8 /* Binding+Helper.swift */,
 				1E811D92299FD15800EC80B0 /* Modifiers.swift */,
 				1E07621429A0C41800CED8E9 /* Date+Helper.swift */,
-				1EDA770C2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift */,
-				1EF62B062AFE45CD00AAE3FB /* CustomActionSheetView.swift */,
+				1E6EDE132B175C670077A80C /* DiscoveryResource+Helper.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -319,7 +324,7 @@
 				1E811D8D299E5C8000EC80B0 /* Write */,
 				1E0E136E298D19F300F1A813 /* Chart */,
 				1E0E1370298D1A4600F1A813 /* Summary */,
-				1E47A0E3298D25CE0081A2C5 /* Utils */,
+				1E47A0E3298D25CE0081A2C5 /* Other */,
 				1E0E136F298D1A0D00F1A813 /* Scope */,
 			);
 			path = Views;
@@ -403,6 +408,7 @@
 		27D31A17266A4EAB00DB2524 = {
 			isa = PBXGroup;
 			children = (
+				1E34233C2B1C8F81007D41CE /* DigiMeSDKExample.docc */,
 				27D31A22266A4EAB00DB2524 /* DigiMeSDKExample */,
 				27D31A39266A4EAD00DB2524 /* DigiMeSDKExampleTests */,
 				27D31A21266A4EAB00DB2524 /* Products */,
@@ -540,7 +546,6 @@
 			packageReferences = (
 				1E6EDDAC2B14B3340077A80C /* XCLocalSwiftPackageReference "../../DigiMeSDK" */,
 				1E6EDDAF2B14B3770077A80C /* XCLocalSwiftPackageReference "../../DigiMeHealthKit" */,
-				1E6EDDB22B14B3860077A80C /* XCLocalSwiftPackageReference "../../DigiMeCore" */,
 			);
 			productRefGroup = 27D31A21266A4EAB00DB2524 /* Products */;
 			projectDirPath = "";
@@ -623,6 +628,7 @@
 				1E1DC11E29ABA6E700B827E3 /* GroupObjectType.swift in Sources */,
 				1E7B414E29A3925D00F7B5B4 /* JSONTreeView.swift in Sources */,
 				1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */,
+				1E34233D2B1C8F81007D41CE /* DigiMeSDKExample.docc in Sources */,
 				1E87223929A5633E00418DE1 /* ContractDetailsView.swift in Sources */,
 				1E6E71B22862FE8600E7954E /* ChartStatementView.swift in Sources */,
 				1E3653B42A1D23D000F0FFA5 /* PDFKitView.swift in Sources */,
@@ -636,6 +642,7 @@
 				1ED268462B09683500588855 /* InfoMessageView.swift in Sources */,
 				1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */,
 				1ED4CA2F29D4356C00C9874B /* BlurView.swift in Sources */,
+				1E6EDE142B175C670077A80C /* DiscoveryResource+Helper.swift in Sources */,
 				1E61E83E2A0BB6B300EDD3D7 /* ScopeTimeRangeTemplatesRow.swift in Sources */,
 				1E811D91299F912900EC80B0 /* LogOutputView.swift in Sources */,
 				1E0226AF29828BAF00892CE8 /* Binding+Helper.swift in Sources */,
@@ -815,6 +822,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
+				DOCC_HOSTING_BASE_PATH = "gh-pages";
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
@@ -839,6 +847,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
+				DOCC_HOSTING_BASE_PATH = "gh-pages";
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
@@ -939,10 +948,6 @@
 		1E6EDDAF2B14B3770077A80C /* XCLocalSwiftPackageReference "../../DigiMeHealthKit" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../DigiMeHealthKit;
-		};
-		1E6EDDB22B14B3860077A80C /* XCLocalSwiftPackageReference "../../DigiMeCore" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../DigiMeCore;
 		};
 /* End XCLocalSwiftPackageReference section */
 

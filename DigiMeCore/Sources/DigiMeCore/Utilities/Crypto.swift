@@ -70,22 +70,22 @@ public enum Crypto {
         return encryptedData.base64EncodedString(options: .lineLength64Characters)
     }
     
-    static func encryptRSA(data: Data, publicKey: String) throws -> Data {
+    public static func encryptRSA(data: Data, publicKey: String) throws -> Data {
         let publicKeyData = try base64EncodedData(from: publicKey)
         return try encryptRSA(data: data, publicKeyData: publicKeyData)
     }
     
-    static func encryptRSA(data: Data, publicKeyData: Data) throws -> Data {
+    public static func encryptRSA(data: Data, publicKeyData: Data) throws -> Data {
         let secKey = try secKey(keyData: publicKeyData, isPublic: true)
         return try encryptRSA(data: data, secKey: secKey)
     }
     
-    static func decryptRSA(data: Data, privateKey: String) throws -> Data {
+    public static func decryptRSA(data: Data, privateKey: String) throws -> Data {
         let privateKeyData = try base64EncodedData(from: privateKey)
         return try decryptRSA(data: data, privateKeyData: privateKeyData)
     }
     
-    static func decryptRSA(data: Data, privateKeyData: Data) throws -> Data {
+    public static func decryptRSA(data: Data, privateKeyData: Data) throws -> Data {
         let secKey = try secKey(keyData: privateKeyData, isPublic: false)
         return try decryptRSA(data: data, secKey: secKey)
     }
