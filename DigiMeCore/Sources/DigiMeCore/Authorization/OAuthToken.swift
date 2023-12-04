@@ -32,6 +32,7 @@ public struct OAuthToken: Codable {
     let identifier: Identifier
     let consentId: String
     let tokenType: String
+    let userId: String
     
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
@@ -39,5 +40,6 @@ public struct OAuthToken: Codable {
         case identifier
         case consentId = "consentid"
         case tokenType = "token_type"
+        case userId = "sub"
     }
 }

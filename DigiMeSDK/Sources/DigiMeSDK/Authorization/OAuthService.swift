@@ -35,7 +35,7 @@ class OAuthService {
             switch result {
             case .success(let response):
                 self?.extractPreAuthorizationCode(from: response) { result in
-                    completion(result.map { TokenSessionResponse(token: $0, session: response.session, userId: response.userId) })
+                    completion(result.map { TokenSessionResponse(token: $0, session: response.session) })
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -115,7 +115,7 @@ class OAuthService {
             switch result {
             case .success(let response):
                 self?.extractReferenceCode(from: response) { result in
-                    completion(result.map { TokenSessionResponse(token: $0, session: response.session, userId: response.userId) })
+                    completion(result.map { TokenSessionResponse(token: $0, session: response.session) })
                 }
             case .failure(let error):
                 completion(.failure(error))

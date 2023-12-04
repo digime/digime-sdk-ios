@@ -11,5 +11,4 @@ import Foundation
 struct TokenSessionResponse: Decodable {
     let token: String
     let session: Session
-    let userId: String?
 }
