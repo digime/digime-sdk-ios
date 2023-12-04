@@ -7,6 +7,7 @@
 //
 
 @testable import DigiMeSDK
+import DigiMeCore
 import Foundation
 import XCTest
 

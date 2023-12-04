@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 /// Represents a file retrieved from library
 public struct File: Codable {
@@ -62,17 +61,6 @@ public struct File: Codable {
         }
         
         return result
-    }
-    
-    /// Convenience function to return data as UIImage, if possible
-    /// - Returns: UIImage or nil if mime type is not an image type
-    public func toImage() -> UIImage? {
-        let imageMimeTypes: [MimeType] = [.imageBmp, .imageGif, .imagePng, .imageJpeg, .imageTiff]
-        guard imageMimeTypes.contains(mimeType) else {
-            return nil
-        }
-        
-        return UIImage(data: data)
     }
     
     public init(fileWithId id: String, rawData: Data, metadata: FileMetadata, updated: Date) {

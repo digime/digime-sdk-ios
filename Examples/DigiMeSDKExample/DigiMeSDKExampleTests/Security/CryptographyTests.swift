@@ -7,6 +7,7 @@
 //
 
 import CryptoKit
+import DigiMeCore
 import XCTest
 
 @testable import DigiMeSDK

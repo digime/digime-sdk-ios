@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if canImport(Gzip)
+import Gzip
+#endif
 
 enum DataCompressor {
     case gzip
