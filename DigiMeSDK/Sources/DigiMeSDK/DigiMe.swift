@@ -693,7 +693,7 @@ public final class DigiMe {
     
     // MARK: - Apple Health
     
-#if canImport(DigiMeHealthKit)
+#if targetEnvironment(simulator) && canImport(DigiMeHealthKit)
     public func addTestData(completion: @escaping (Result<Bool, SDKError>) -> Void) {
 		healthSerivce.addTestData { success, error in
             if success {
