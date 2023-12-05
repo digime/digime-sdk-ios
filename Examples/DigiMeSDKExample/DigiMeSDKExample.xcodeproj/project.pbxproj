@@ -19,7 +19,7 @@
 		1E0E79EA2AFA99710015A89C /* ServicePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E79E92AFA99710015A89C /* ServicePickerView.swift */; };
 		1E1DC11829ABA19700B827E3 /* DigiMeSDKExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11729ABA19700B827E3 /* DigiMeSDKExampleApp.swift */; };
 		1E1DC11A29ABA61900B827E3 /* ChartSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11929ABA61900B827E3 /* ChartSeries.swift */; };
-		1E1DC11C29ABA6B300B827E3 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11B29ABA6B300B827E3 /* Section.swift */; };
+		1E1DC11C29ABA6B300B827E3 /* ServiceSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11B29ABA6B300B827E3 /* ServiceSection.swift */; };
 		1E1DC11E29ABA6E700B827E3 /* GroupObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */; };
 		1E29EC152AE558D70016B8D5 /* discovery.json in Resources */ = {isa = PBXBuildFile; fileRef = 1E29EC142AE558D70016B8D5 /* discovery.json */; };
 		1E32B96729A4E3590013B1C1 /* ServicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */; };
@@ -118,7 +118,7 @@
 		1E0E79E92AFA99710015A89C /* ServicePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicePickerView.swift; sourceTree = "<group>"; };
 		1E1DC11729ABA19700B827E3 /* DigiMeSDKExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigiMeSDKExampleApp.swift; sourceTree = "<group>"; };
 		1E1DC11929ABA61900B827E3 /* ChartSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartSeries.swift; sourceTree = "<group>"; };
-		1E1DC11B29ABA6B300B827E3 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		1E1DC11B29ABA6B300B827E3 /* ServiceSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceSection.swift; sourceTree = "<group>"; };
 		1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupObjectType.swift; sourceTree = "<group>"; };
 		1E29EC142AE558D70016B8D5 /* discovery.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = discovery.json; sourceTree = "<group>"; };
 		1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesViewModel.swift; sourceTree = "<group>"; };
@@ -338,7 +338,7 @@
 				1E811D9B29A0233F00EC80B0 /* LogEntry.swift */,
 				1E49020F27D9155000F13D29 /* ServerResponse.swift */,
 				1E1DC11929ABA61900B827E3 /* ChartSeries.swift */,
-				1E1DC11B29ABA6B300B827E3 /* Section.swift */,
+				1E1DC11B29ABA6B300B827E3 /* ServiceSection.swift */,
 				1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */,
 				1E864C1F29BA5631005BA921 /* LinkedAccount.swift */,
 				1EA4CFEB2A0280F100A2493A /* TimeRangeTemplate.swift */,
@@ -584,7 +584,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E61E88F2A0D0E9C00EDD3D7 /* ScopeDateButton.swift in Sources */,
-				1E1DC11C29ABA6B300B827E3 /* Section.swift in Sources */,
+				1E1DC11C29ABA6B300B827E3 /* ServiceSection.swift in Sources */,
 				1E811D8C299E5C4500EC80B0 /* WriteDataView.swift in Sources */,
 				1EA86AA72B055D990030CB91 /* GenericPressableButtonView.swift in Sources */,
 				1EEE0EC829BE54A1004FA4D0 /* KeyframeAnimation.swift in Sources */,
@@ -820,7 +820,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 24;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				DOCC_HOSTING_BASE_PATH = "gh-pages";
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -845,7 +845,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DigiMeSDKExample/DigiMeSDKExample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 24;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = 6K8XB5P6AF;
 				DOCC_HOSTING_BASE_PATH = "gh-pages";
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;

@@ -1,5 +1,5 @@
 //
-//  Section.swift
+//  ServiceSection.swift
 //  DigiMeSDKExample
 //
 //  Created on 26/02/2023.
