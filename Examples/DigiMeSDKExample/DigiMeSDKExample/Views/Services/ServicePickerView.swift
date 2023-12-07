@@ -166,7 +166,7 @@ struct ServicePickerView: View {
     
     func makeServiceRow(service: Service) -> some View {
         HStack {
-            if let resource = optimalResource(for: CGSize(width: 20, height: 20), from: service.resources) {
+            if let resource = service.resources.optimalResource(for: CGSize(width: 20, height: 20)) {
                 SourceImage(url: resource.url)
             }
             else {

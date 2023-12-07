@@ -60,7 +60,6 @@ class ServicesViewModel: ObservableObject {
         }
     }
     @Published var serviceSelectionCompletionHandler: ((Service, String?) -> Void)?
-//    @Published var showNoSampleDataAlert = false
     
     var onShowSampleDataSelectorChanged: ((Bool) -> Void)?
     var onShowSampleDataErrorChanged: ((Bool) -> Void)?

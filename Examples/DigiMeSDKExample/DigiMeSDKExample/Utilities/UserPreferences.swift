@@ -19,7 +19,6 @@ final class UserPreferences: NSObject {
         case servicesInfo = "kServicesInfo"
         case services = "kServices"
         case sampleData = "kSampleData"
-        case servicesSampleData = "kServicesSampleData"
         case readOptions = "kReadOptions"
 	}
 	
@@ -127,7 +126,7 @@ final class UserPreferences: NSObject {
         serviceSampleDataSections = cached
     }
     
-    // MARK: - Credentials
+    // MARK: - Read Options
     
     @CodableUserDefault(key: Key.readOptions)
     private var readOptions: [String: ReadOptions]?
