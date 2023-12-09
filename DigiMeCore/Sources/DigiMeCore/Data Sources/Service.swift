@@ -37,6 +37,7 @@ public struct Service: Codable, Identifiable {
     /// Convenience property to encapsulate read options within the each service
     public var options: ReadOptions?
 	public var resources: [DiscoveryResource]
+    public var security: ConnectionSecurity?
     public var isAvailable: Bool {
         return publishedStatus == "approved" && platform.isAvailable
     }

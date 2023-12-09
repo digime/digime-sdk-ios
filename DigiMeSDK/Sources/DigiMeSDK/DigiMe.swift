@@ -236,7 +236,7 @@ public final class DigiMe {
                 switch result {
                 case .success(let response):
                     self.session = response.session
-                    self.consentManager.addService(identifier: identifier, token: response.token) { result in
+                    self.consentManager.addService(identifier: identifier, token: response.token, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard) { result in
                         switch result {
                         case .success:
                             resultQueue.async {

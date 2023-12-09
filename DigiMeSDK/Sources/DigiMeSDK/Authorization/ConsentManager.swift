@@ -83,7 +83,7 @@ final class ConsentManager: NSObject {
     func addService(identifier: Int, token: String, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, completion: @escaping ((Result<Void, SDKError>) -> Void)) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
-                self.addService(identifier: identifier, token: token, completion: completion)
+                self.addService(identifier: identifier, token: token, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, completion: completion)
             }
             return
         }
