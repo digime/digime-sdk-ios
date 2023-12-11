@@ -6,10 +6,6 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
-#if canImport(DigiMeHealthKit)
-import DigiMeHealthKit
-#endif
-
 import DigiMeCore
 import Foundation
 import SafariServices
@@ -161,26 +157,28 @@ final class ConsentManager: NSObject {
             return
         }
         
-		guard localServiceRequested else {
-			localServiceRequested = false
-			reset()
-			userConsentCompletion?(mapErrors(result: result))
-			userConsentCompletion = nil
-			addServiceCompletion = nil
+        guard localServiceRequested else {
+            localServiceRequested = false
+            reset()
+            userConsentCompletion?(mapErrors(result: result))
+            userConsentCompletion = nil
+            addServiceCompletion = nil
 
-			return
-		}
-		
-		LocalDataCache().requestLocalData(for: configuration.contractId)
-#if canImport(DigiMeHealthKit)
-		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
-			self.localServiceRequested = false
-			self.reset()
-			self.userConsentCompletion?(self.mapErrors(result: result))
-			self.userConsentCompletion = nil
-			self.addServiceCompletion = nil
-		}
-#endif
+            return
+        }
+        
+        LocalDataCache().requestLocalData(for: configuration.contractId)
+        
+        if let healthKitServiceClass = NSClassFromString("DigiMeHealthKit.HealthKitService") as? HealthKitServiceProtocol.Type {
+            let healthKitServiceInstance = healthKitServiceClass.init()
+            healthKitServiceInstance.requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
+                self.localServiceRequested = false
+                self.reset()
+                self.userConsentCompletion?(self.mapErrors(result: result))
+                self.userConsentCompletion = nil
+                self.addServiceCompletion = nil
+            }
+        }
     }
     
     private func finishAddService(with result: Result<Void, Error>) {
@@ -191,25 +189,26 @@ final class ConsentManager: NSObject {
             return
         }
         
-		guard localServiceRequested else {
-			localServiceRequested = false
-			reset()
-			addServiceCompletion?(mapErrors(result: result))
-			addServiceCompletion = nil
-			userConsentCompletion = nil
-			return
-		}
-		
-		LocalDataCache().requestLocalData(for: configuration.contractId)
-#if canImport(DigiMeHealthKit)
-		HealthKitService().requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
-			self.localServiceRequested = false
-			self.reset()
-			self.addServiceCompletion?(self.mapErrors(result: result))
-			self.addServiceCompletion = nil
-			self.userConsentCompletion = nil
-		}
-#endif
+        guard localServiceRequested else {
+            localServiceRequested = false
+            reset()
+            addServiceCompletion?(mapErrors(result: result))
+            addServiceCompletion = nil
+            userConsentCompletion = nil
+            return
+        }
+        
+        LocalDataCache().requestLocalData(for: configuration.contractId)
+        if let healthKitServiceClass = NSClassFromString("DigiMeHealthKit.HealthKitService") as? HealthKitServiceProtocol.Type {
+            let healthKitServiceInstance = healthKitServiceClass.init()
+            healthKitServiceInstance.requestAuthorization(typesToRead: [], typesToWrite: []) { _, _ in
+                self.localServiceRequested = false
+                self.reset()
+                self.addServiceCompletion?(self.mapErrors(result: result))
+                self.addServiceCompletion = nil
+                self.userConsentCompletion = nil
+            }
+        }
     }
     
     private func mapErrors<T>(result: Result<T, Error>) -> Result<T, SDKError> {

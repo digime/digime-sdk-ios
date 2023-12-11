@@ -6,10 +6,6 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
-#if canImport(DigiMeHealthKit)
-import DigiMeHealthKit
-#endif
-
 import DigiMeCore
 import Foundation
 
@@ -28,9 +24,13 @@ public final class DigiMe {
     private let apiClient: APIClient
     private let dataDecryptor: DataDecryptor
     private let certificateParser: CertificateParser
-#if canImport(DigiMeHealthKit)
-	private let healthSerivce: HealthKitService
-#endif
+    
+    // Apple Health
+	private var healthSerivce: HealthKitServiceProtocol?
+    private var healthDataFilesSerivce: HealthKitFilesDataServiceProtocol?
+    private var healthAccount: SourceAccount?
+    private var healthAccountData: SourceAccountData?
+    
     private lazy var downloadService: FileDownloadService = {
         FileDownloadService(apiClient: apiClient, dataDecryptor: dataDecryptor)
     }()
@@ -80,9 +80,21 @@ public final class DigiMe {
 		self.contractsCache = ContractsCache()
         self.dataDecryptor = DataDecryptor(configuration: configuration)
         self.certificateParser = CertificateParser()
-#if canImport(DigiMeHealthKit)
-		self.healthSerivce = HealthKitService()
-#endif
+
+        if let healthSerivceType = NSClassFromString("DigiMeHealthKit.HealthKitService") as? HealthKitServiceProtocol.Type {
+            let healthSerivce = healthSerivceType.init()
+            self.healthSerivce = healthSerivce
+            if
+                let healthAccountType = NSClassFromString("DigiMeHealthKit.HealthKitAccountDataProvider") as? HealthKitAccountDataProviderProtocol.Type,
+                let healthDataFilesSerivceType = NSClassFromString("DigiMeHealthKit.HealthKitFilesDataService") as? HealthKitFilesDataServiceProtocol.Type {
+                
+                let account = healthAccountType.init()
+                self.healthAccount = account.sourceAccount
+                self.healthAccountData = account.sourceAccountData
+                self.healthDataFilesSerivce = healthDataFilesSerivceType.init(account: account.sourceAccount, healthKitService: healthSerivce)
+            }
+        }
+        
         setupLogger()
     }
     
@@ -325,22 +337,15 @@ public final class DigiMe {
             }
             return
         }
-#if canImport(DigiMeHealthKit)
-		allFilesReader = AllFilesReader(apiClient: self.apiClient,
-										credentials: credentials,
-										healthSerivce: self.healthSerivce,
-										certificateParser: self.certificateParser,
-										contractsCache: self.contractsCache,
-										configuration: self.configuration,
-										readOptions: readOptions)
-#else
+        
         allFilesReader = AllFilesReader(apiClient: self.apiClient,
                                         credentials: credentials,
                                         certificateParser: self.certificateParser,
                                         contractsCache: self.contractsCache,
                                         configuration: self.configuration,
+                                        healthService: self.healthSerivce,
+                                        healthFilesDataService: self.healthDataFilesSerivce,
                                         readOptions: readOptions)
-#endif
         
         allFilesReader?.readAllFiles(downloadHandler: { result in
             resultQueue.async {
@@ -693,9 +698,10 @@ public final class DigiMe {
     
     // MARK: - Apple Health
     
-#if targetEnvironment(simulator) && canImport(DigiMeHealthKit)
+
     public func addTestData(completion: @escaping (Result<Bool, SDKError>) -> Void) {
-		healthSerivce.addTestData { success, error in
+#if targetEnvironment(simulator)
+		healthSerivce?.addTestData { success, error in
             if success {
                 completion(.success(success))
             }
@@ -703,8 +709,8 @@ public final class DigiMe {
                 completion(.failure(.other))
             }
         }
-    }
 #endif
+    }
     
     // MARK: - Private
     
@@ -718,9 +724,9 @@ public final class DigiMe {
             switch result {
             case .success(var accounts):
                 if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
-#if canImport(DigiMeHealthKit)
-                    accounts.append(HealthKitAccountDataProvider().sourceAccountData)
-#endif
+                    if let accountData = self.healthAccountData {
+                        accounts.append(accountData)
+                    }
                     completion(.success(accounts))
                 }
                 else {
@@ -728,9 +734,9 @@ public final class DigiMe {
                 }
             case .failure(let error):
                 if LocalDataCache().isDeviceDataRequested(for: self.configuration.contractId) {
-#if canImport(DigiMeHealthKit)
-                    completion(.success([HealthKitAccountDataProvider().sourceAccountData]))
-#endif
+                    if let accountData = self.healthAccountData {
+                        completion(.success([accountData]))
+                    }
                 }
                 else {
                     completion(.failure(error))

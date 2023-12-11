@@ -159,7 +159,7 @@ public typealias ElectrocardiogramResultsHandler = (_ ecgs: [Electrocardiogram],
  */
 
 /// **HealthKitService** class for HK easy integration
-public class HealthKitService {
+public class HealthKitService: HealthKitServiceProtocol {    
     /// **HealthKitReader** is reponsible for reading operations in HK
     public let reader: HealthKitReader
     /// **HealthKitWriter** is reponsible for writing operations in HK
@@ -174,7 +174,7 @@ public class HealthKitService {
      - Requires: Apple Healt App is installed on the device.
      - Returns: **HealthKitService** instance
      */
-    public init() {
+    public required init() {
         let healthStore = HKHealthStore()
         self.reader = HealthKitReader(healthStore: healthStore)
         self.writer = HealthKitWriter(healthStore: healthStore)
@@ -182,21 +182,24 @@ public class HealthKitService {
         self.manager = HealthKitManager(healthStore: healthStore)
     }
     
-    public func requestAuthorization(typesToRead: [ObjectType], typesToWrite: [SampleType], completion: @escaping StatusCompletionBlock) {
+    public func requestAuthorization(typesToRead: [ReadableObjectType], typesToWrite: [WritableSampleType], completion: @escaping (Bool, Error?) -> Void) {
         Logger.mixpanel("device-data-source-auth-started", metadata: HealthKitAccountDataProvider().metadata)
         
         guard HKHealthStore.isHealthDataAvailable() else {
             let error = SDKError.healthDataIsNotAvailable
             Logger.mixpanel("device-data-source-auth-failed", metadata: HealthKitAccountDataProvider().metadata)
-            HealthKitService.reportErrorLog(error: error)
+            reportErrorLog(error: error)
             completion(false, error)
             return
         }
         
-        manager.requestAuthorization(toRead: typesToRead, toWrite: typesToWrite) { success, error in
+        let toRead: [ObjectType] = typesToRead.compactMap { $0 as? ObjectType }
+        let toWrite: [SampleType] = typesToWrite.compactMap { $0 as? SampleType }
+
+        manager.requestAuthorization(toRead: toRead, toWrite: toWrite) { success, error in
             if let error = error {
                 Logger.mixpanel("device-data-source-auth-failed", metadata: HealthKitAccountDataProvider().metadata)
-                HealthKitService.reportErrorLog(error: error)
+                self.reportErrorLog(error: error)
                 completion(success, error)
             }
             
@@ -208,13 +211,13 @@ public class HealthKitService {
             else {
                 Logger.mixpanel("device-data-source-auth-unsuccessful", metadata: HealthKitAccountDataProvider().metadata)
                 let error = SDKError.healthDataError(message: "HealthKit authorization was NOT successful.")
-                HealthKitService.reportErrorLog(error: error)
+                self.reportErrorLog(error: error)
                 completion(success, error)
             }
         }
     }
     
-    public static func reportErrorLog(error: Error?) {
+    public func reportErrorLog(error: Error?) {
         guard let error = error else {
             return
         }

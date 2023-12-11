@@ -189,7 +189,7 @@ class AppleHealthSummaryViewModel: ObservableObject {
 	}
 }
 
-#if targetEnvironment(simulator)
+#if targetEnvironment(simulator) && canImport(DigiMeHealthKit)
 extension AppleHealthSummaryViewModel {
     /// iOS Simulator doesn't have any health data by default.
     /// Here we create some random data.

@@ -8,7 +8,7 @@
 import DigiMeCore
 import HealthKit
 
-public protocol ObjectType {
+public protocol ObjectType: ReadableObjectType {
     /**
      Represents type as an original **HKObjectType**
      */

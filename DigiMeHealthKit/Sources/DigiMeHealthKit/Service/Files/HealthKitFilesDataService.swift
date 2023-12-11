@@ -10,7 +10,7 @@ import DigiMeCore
 import Foundation
 import HealthKit
 
-public class HealthKitFilesDataService {
+public class HealthKitFilesDataService: HealthKitFilesDataServiceProtocol {
 	private let queue: OperationQueue
 	private let healthStore: HKHealthStore
 	
@@ -20,12 +20,14 @@ public class HealthKitFilesDataService {
     private var fitnessActivityResult: [String: [FitnessActivitySummary]] = [:]
 	private var fileDownloadHandler: ((Result<File, SDKError>) -> Void)?
 	private var completionHandler: ((Result<[FileListItem], SDKError>) -> Void)?
-	
+	private var healthKitService: HealthKitServiceProtocol
+    
     // MARK: - Life Cycle
     
-	public init(account: SourceAccount) {
+    public required init(account: SourceAccount, healthKitService: HealthKitServiceProtocol) {
         self.account = account
-		
+        self.healthKitService = healthKitService
+        
 		healthStore = HKHealthStore()
         queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
@@ -51,6 +53,7 @@ public class HealthKitFilesDataService {
 		
         Logger.mixpanel("device-data-source-read-started", metadata: HealthKitAccountDataProvider().metadata)
 
+        
 		let dataTypes = FitnessActivityProcessor.defaultTypesToRead
         var operationsToQueue: [Operation] = []
         var parentOperation: HealthKitAccountDataQuantityOperation?
@@ -61,7 +64,7 @@ public class HealthKitFilesDataService {
             let operationCompletion: (Result<HealthDataOperationResult, SDKError>) -> Void = { result in
                 switch result {
                 case .failure(let error):
-					HealthKitService.reportErrorLog(error: error)
+                    self.healthKitService.reportErrorLog(error: error)
                     self.fileDownloadHandler?(.failure(error))
                 case .success(let operationResult):
                     self.fitnessActivityResult[dataType.original!.identifier] = operationResult.data[dataType.original!.identifier]
@@ -90,7 +93,7 @@ public class HealthKitFilesDataService {
     private func processAndFinish() {
         guard let result = processor.process(data: fitnessActivityResult) else {
             let error = SDKError.healthDataError(message: "Health Data Processor returned no result")
-			HealthKitService.reportErrorLog(error: error)
+			healthKitService.reportErrorLog(error: error)
 			completionHandler?(.failure(error))
             return
         }

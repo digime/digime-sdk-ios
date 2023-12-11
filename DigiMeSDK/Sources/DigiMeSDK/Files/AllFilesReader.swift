@@ -6,10 +6,6 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
-#if canImport(DigiMeHealthKit)
-import DigiMeHealthKit
-#endif
-
 import DigiMeCore
 import Foundation
 
@@ -26,9 +22,8 @@ class AllFilesReader {
     private let apiClient: APIClient
     private let configuration: Configuration
 	private let credentials: Credentials
-#if canImport(DigiMeHealthKit)
-	private let healthSerivce: HealthKitService
-#endif
+    private let healthService: HealthKitServiceProtocol?
+    private let healthFilesDataService: HealthKitFilesDataServiceProtocol?
 	private let certificateParser: CertificateParser
 	private let contractsCache: ContractsCache
     private var sessionDataCompletion: ((Result<FileList, SDKError>) -> Void)?
@@ -44,39 +39,24 @@ class AllFilesReader {
         static let pollInterval = 3
     }
     
-#if canImport(DigiMeHealthKit)
     init(apiClient: APIClient,
          credentials: Credentials,
-         healthSerivce: HealthKitService,
          certificateParser: CertificateParser,
          contractsCache: ContractsCache,
          configuration: Configuration,
+         healthService: HealthKitServiceProtocol?,
+         healthFilesDataService: HealthKitFilesDataServiceProtocol?,
          readOptions: ReadOptions? = nil) {
         
         self.apiClient = apiClient
         self.credentials = credentials
-        self.healthSerivce = healthSerivce
         self.certificateParser = certificateParser
         self.contractsCache = contractsCache
         self.configuration = configuration
+        self.healthService = healthService
+        self.healthFilesDataService = healthFilesDataService
         self.readOptions = readOptions
     }
-#else
-	init(apiClient: APIClient,
-         credentials: Credentials,
-         certificateParser: CertificateParser,
-         contractsCache: ContractsCache,
-         configuration: Configuration,
-         readOptions: ReadOptions? = nil) {
-        
-        self.apiClient = apiClient
-		self.credentials = credentials
-		self.certificateParser = certificateParser
-		self.contractsCache = contractsCache
-        self.configuration = configuration
-		self.readOptions = readOptions
-    }
-#endif
     
     private var session: Session? {
         get {
@@ -275,9 +255,6 @@ class AllFilesReader {
 		contractTimeRangeLimits(appId: appId, contractId: contractId) { result in
 			switch result {
 			case .success(let limits):
-#if canImport(DigiMeHealthKit)
-				let filesDataService = HealthKitFilesDataService(account: HealthKitAccountDataProvider().sourceAccount)
-#endif
 				let deviceDataCompletion: (Result<[FileListItem], SDKError>) -> Void = { [weak self] result in
 					switch result {
 					case .success(let files):
@@ -287,13 +264,9 @@ class AllFilesReader {
 						self?.sessionDataCompletion?(.failure(error))
 					}
 				}
-#if canImport(DigiMeHealthKit)
-				filesDataService.queryData(from: limits.startDate, to: limits.endDate, downloadHandler: self.sessionContentHandler, completion: deviceDataCompletion)
-#endif
+                self.healthFilesDataService?.queryData(from: limits.startDate, to: limits.endDate, downloadHandler: self.sessionContentHandler, completion: deviceDataCompletion)
 			case .failure(let error):
-#if canImport(DigiMeHealthKit)
-				HealthKitService.reportErrorLog(error: error)
-#endif
+                self.healthService?.reportErrorLog(error: error)
 				self.sessionDataCompletion?(.failure(error))
 			}
 		}

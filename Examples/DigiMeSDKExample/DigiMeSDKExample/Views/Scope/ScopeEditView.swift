@@ -98,7 +98,7 @@ struct ScopeEditView: View {
                     }
                 } label: {
                     HStack {
-                        if let resource = connectedAccount.service.resources.optimalResource(for: CGSize(width: 20, height: 20)) {
+                        if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: connectedAccount.service.resources) {
                             SourceImage(url: resource.url)
                         }
                         else {

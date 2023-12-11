@@ -140,7 +140,7 @@ struct ServicePickerView: View {
         .onChange(of: scopeViewModel.selectedObjectTypes) { newValue in
             objectTypes = scopeViewModel.objectTypes.filter { newValue.contains($0.id) }
         }
-        .onChange(of: proceedSampleDataset) { newValue in
+        .onChange(of: proceedSampleDataset) { _ in
             finish(sampleDataset: viewModel.sampleDatasets?.first?.key)
         }
         .alert("Sample Datasets", isPresented: $showSampleDataErrorActionSheet, actions: {
@@ -166,7 +166,7 @@ struct ServicePickerView: View {
     
     func makeServiceRow(service: Service) -> some View {
         HStack {
-            if let resource = service.resources.optimalResource(for: CGSize(width: 20, height: 20)) {
+            if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: service.resources) {
                 SourceImage(url: resource.url)
             }
             else {

@@ -48,7 +48,7 @@ struct ServicesView: View {
                                 ForEach(viewModel.linkedAccounts) { account in
                                     StyledPressableButtonView(text: account.service.name,
                                                        iconName: "passIcon",
-                                                       iconUrl: account.service.resources.optimalResource(for: CGSize(width: 20, height: 20))?.url,
+                                                       iconUrl: ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: account.service.resources)?.url,
                                                        iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
                                                        textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
                                                        backgroundColor: Color(.secondarySystemGroupedBackground),

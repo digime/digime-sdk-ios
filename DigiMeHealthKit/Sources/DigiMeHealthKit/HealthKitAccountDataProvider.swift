@@ -9,7 +9,7 @@
 import DigiMeCore
 import Foundation
 
-public struct HealthKitAccountDataProvider: AccountDataProvider {
+public class HealthKitAccountDataProvider: AccountDataProvider, HealthKitAccountDataProviderProtocol {
     public var metadata: LogEventMeta {
         LogEventMeta(service: ["applehealth"],
                      servicegroup: ["health & fitness"],
@@ -49,5 +49,6 @@ public struct HealthKitAccountDataProvider: AccountDataProvider {
                                  username: nil)
     }
     
-    public init() {}
+    public required init() {
+    }
 }
