@@ -25,6 +25,7 @@ struct ServicePickerView: View {
     @State private var showSampleDataErrorActionSheet = false
     @State private var proceedSampleDataset = false
     @State private var pushNextView: Bool = false
+    @State private var proceedButtonIsPressed: Bool = false
     @State private var flags: [Bool] = []
     @State private var searchText: String = ""
     @State private var timeRangeTemplates: [TimeRangeTemplate] = TestTimeRangeTemplates.data
@@ -98,15 +99,13 @@ struct ServicePickerView: View {
                     .padding()
                     .background(viewState == .sampleData ? Color.clear : Color(.systemGroupedBackground))
                 }
-                
-                
             }
             .background(viewState == .sampleData ? Color.yellow.opacity(0.1) : Color(.systemBackground))
         }
         .onAppear {
             scopeViewModel.serviceSections = filteredSections
-            flags = filteredSections.map { _ in true }
-            
+            flags = filteredSections.map { _ in false }
+
             viewModel.onShowSampleDataSelectorChanged = { shouldShow in
                 self.showSampleDataSetActionSheet = shouldShow
             }
@@ -119,10 +118,10 @@ struct ServicePickerView: View {
                 self.proceedSampleDataset = proceed
             }
         }
-        .customActionSheet(isPresented: $showSampleDataSetActionSheet, 
-                           title: "Sample Datasets",
-                           message: "Choose one to proceed",
-                           buttons: customActionSheetButtons())
+        .customActionPickerView(isPresented: $showSampleDataSetActionSheet,
+                                title: "Sample Datasets",
+                                message: "Choose one to proceed",
+                                buttons: customActionSheetPickerButtons())
         .sheet(isPresented: $scopeViewModel.shouldDisplayModal) {
             ScopeAddView(viewModel: scopeViewModel)
         }
@@ -168,6 +167,7 @@ struct ServicePickerView: View {
         HStack {
             if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: service.resources) {
                 SourceImage(url: resource.url)
+                    .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
             }
             else {
                 Image(systemName: "photo.circle.fill")
@@ -224,6 +224,7 @@ struct ServicePickerView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 20, height: 20, alignment: .leading)
+                                .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
                                 .disabled(viewModel.isLoadingData)
                             
                             Text(section.title)
@@ -448,33 +449,36 @@ struct ServicePickerView: View {
     }
     
     private var buttonProceed: some View {
-        Button {
-            if 
+        GenericPressableButtonView(isPressed: $proceedButtonIsPressed, action: {
+            if
                 viewState == .sampleData,
                 let selectedService = scopeViewModel.selectedService {
-                
+
                 viewModel.fetchDemoDataSetsInfoForService(service: selectedService)
             }
             else {
                 finish()
             }
-            
-        } label: {
+        }) {
             Text("Add Service")
                 .font(.headline)
                 .fontWeight(.bold)
-                .foregroundColor(.white)
+                .foregroundColor(proceedDisabled ? .secondary : proceedButtonIsPressed ? .white : .primary)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(viewModel.isLoadingData ? .gray : .accentColor)
-                        .opacity(viewModel.isLoadingData ? 0.5 : 1)
+                        .fill(proceedDisabled ? .gray : proceedButtonIsPressed ? .accentColor : .white)
+                        .opacity(proceedDisabled ? 0.5 : 1)
                 )
+                .disabled(proceedDisabled)
         }
-        .disabled(viewModel.isLoadingData)
     }
-    
+
+    private var proceedDisabled: Bool {
+        return viewModel.isLoadingData || (viewState == .sampleData && scopeViewModel.selectedService == nil)
+    }
+
     private var cancelButton: some View {
         Button {
             showView = false
@@ -497,8 +501,9 @@ struct ServicePickerView: View {
         } label: {
             Text("Add Service")
                 .font(.headline)
-                .foregroundColor(viewModel.isLoadingData ? .gray : .accentColor)
+                .foregroundColor(proceedDisabled ? .gray : .accentColor)
         }
+        .disabled(proceedDisabled)
     }
     
     private func reset() {
@@ -529,21 +534,20 @@ struct ServicePickerView: View {
         buttons.append(.cancel())
         return buttons
     }
-    
-    private func customActionSheetButtons() -> [CustomActionSheetButton] {
+
+    private func customActionSheetPickerButtons() -> [CustomActionPickerViewButtonData] {
         guard let datasets = viewModel.sampleDatasets else {
             return []
         }
 
         let buttons = datasets.compactMap { (key, dataset) in
-            CustomActionSheetButton(title: dataset.name.uppercased(),
-                                    subtitle: dataset.description.isEmpty ? "A comprehensive set of data points for you to get a feel for a real user..." : dataset.description,
-                                    action: {
-                                        self.finish(sampleDataset: key)
-                                    },
-                                    isDestructive: false)
+            CustomActionPickerViewButtonData(title: dataset.name.uppercased(),
+                                       subtitle: dataset.description.isEmpty ? "A comprehensive set of data points for you to get a feel for a real user..." : dataset.description, 
+                                       action: {
+                self.finish(sampleDataset: key)
+            })
         }
-        
+
         return buttons
     }
 }

@@ -130,6 +130,9 @@ public enum SDKError: Error {
 	/// Invalid delete user token request JWT
 	case invalidDeleteUserTokenRequestJwt
 	
+    /// Invalid delete account token request JWT
+    case invalidDeleteAccountTokenRequestJwt
+
 	/// Error creating request JWT to download file
 	case errorCreatingDataRequestJwt
 	
@@ -324,6 +327,9 @@ extension SDKError: CustomStringConvertible {
 		case .invalidDeleteUserTokenRequestJwt:
 			return "Invalid delete user token request JWT"
 			
+        case .invalidDeleteAccountTokenRequestJwt:
+            return "Invalid delete account token request JWT"
+
 		case .errorCreatingDataRequestJwt:
 			return "Error creating data request JWT"
             

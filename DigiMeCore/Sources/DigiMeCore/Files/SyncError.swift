@@ -11,24 +11,15 @@ import Foundation
 /// Reason why connecting to source or importing data from source into user's library failed
 public struct SyncError: Decodable, Equatable {
     public let code: String
+    public let message: String?
     public let statusCode: Int?
+    public let retryAfter: Date?
     public let error: ServiceError?
-    
-    enum CodingKeys: String, CodingKey {
-        case code
-        case statusCode = "statuscode"
-        case error
-    }
 }
 
 public struct ServiceError: Decodable, Equatable {
     public let message: String
+    public let statusCode: Int?
     public let retryAfter: Date?
 	public let reauth: Bool?
-    
-    enum CodingKeys: String, CodingKey {
-        case message
-        case retryAfter = "retryafter"
-		case reauth
-    }
 }

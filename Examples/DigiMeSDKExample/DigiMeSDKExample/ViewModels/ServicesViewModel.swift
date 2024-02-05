@@ -82,6 +82,7 @@ class ServicesViewModel: ObservableObject {
     private let userPreferences = UserPreferences.shared()
     
     private var digiMeService: DigiMe?
+    private var retryAfter: Date?
 
     private var activeContractId: String {
         get {
@@ -109,6 +110,13 @@ class ServicesViewModel: ObservableObject {
                 self.sampleDataSections = sections
             }
             
+            if let contract = contracts.first(where: { $0.identifier == activeContractId }) {
+                self.activeContract = contract
+            } 
+            else {
+                self.activeContract = Contracts.development
+            }
+
             linkedAccounts = userPreferences.getLinkedAccounts(for: activeContract.identifier)
             
             let sdkConfig = try Configuration(appId: activeContract.appId, contractId: activeContract.identifier, privateKey: activeContract.privateKey, authUsingExternalBrowser: true, baseUrl: activeContract.baseURL)
@@ -200,6 +208,11 @@ class ServicesViewModel: ObservableObject {
     }
     
     func reloadServiceData(readOptions: ReadOptions? = nil) {
+        if let retry = retryAfter, retry > Date() {
+            logWarningMessage("Data refresh blocked: Retry permissible in \(retry.timeIntervalDescription()).")
+            return
+        }
+
         guard !isLoadingData else {
             return
         }
@@ -209,10 +222,19 @@ class ServicesViewModel: ObservableObject {
             logWarningMessage("Current contract must be authorized first.")
             return
         }
-        
+
+        guard accountCredentials.token.refreshToken.isValid else {
+            isLoadingData = false
+            logWarningMessage("Authentication credentials have expired. Please start over.")
+            return
+        }
+
         isLoadingData = true
+
         requestDataFetch(credentials: accountCredentials, readOptions: readOptions) { [weak self] refreshedCredentials in
-            self?.fetchServiceData(credentials: refreshedCredentials, readOptions: readOptions)
+            self?.fetchAccounts(credentials: refreshedCredentials) { newOrRefresgedCredentials in
+                self?.fetchServiceData(credentials: newOrRefresgedCredentials, readOptions: readOptions)
+            }
         }
     }
     
@@ -330,6 +352,56 @@ class ServicesViewModel: ObservableObject {
         }
     }
 
+    func deleteAccount(_ account: LinkedAccount) {
+        guard
+            let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier),
+            let accountId = account.sourceAccount?.id else {
+            
+            self.logWarningMessage("Contract must be authorized first.")
+            return
+        }
+
+        isLoadingData = true
+        digiMeService?.deleteAccount(accountId: accountId, credentials: accountCredentials) { refreshedCredentials, result in
+            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+            self.isLoadingData = false
+
+            switch result {
+            case .success:
+                self.linkedAccounts.remove(object: account)
+                self.logMessage("User account deleted successfully")
+            case .failure(let error):
+                self.logErrorMessage(error.description)
+            }
+        }
+    }
+
+    func withdrawConsent(for account: LinkedAccount) {
+        guard
+            let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier),
+            let accountId = account.sourceAccount?.id else {
+
+            self.logWarningMessage("Contract must be authorized first.")
+            return
+        }
+
+        isLoadingData = true
+        shouldDisplayCancelButton = true
+        digiMeService?.getRevokeAccountPermissionUrl(for: accountId, credentials: accountCredentials) { refreshedCredentials, result in
+            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+            self.shouldDisplayCancelButton = false
+            self.isLoadingData = false
+
+            switch result {
+            case .success:
+                self.logMessage("Service account access revoked successfully")
+                self.fetchData(credentials: refreshedCredentials)
+            case .failure(let error):
+                self.logErrorMessage(error.description)
+            }
+        }
+    }
+
     func fetchReport(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval) {
         guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
             self.isLoadingData = false
@@ -372,7 +444,7 @@ class ServicesViewModel: ObservableObject {
         DispatchQueue.main.async {
             withAnimation {
                 let entry = LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped)
-                self.logEntries.append(entry)
+                self.logEntries.insert(entry, at: 0)
             }
         }
     }
@@ -380,7 +452,7 @@ class ServicesViewModel: ObservableObject {
     func logWarningMessage(_ message: String) {
         DispatchQueue.main.async {
             withAnimation {
-                self.logEntries.append(LogEntry(state: .warning, message: message))
+                self.logEntries.insert(LogEntry(state: .warning, message: message), at: 0)
             }
         }
     }
@@ -388,7 +460,7 @@ class ServicesViewModel: ObservableObject {
     func logErrorMessage(_ message: String) {
         DispatchQueue.main.async {
             withAnimation {
-                self.logEntries.append(LogEntry(state: .error, message: message))
+                self.logEntries.insert(LogEntry(state: .error, message: message), at: 0)
             }
         }
     }
@@ -396,14 +468,16 @@ class ServicesViewModel: ObservableObject {
     // MARK: - Private
 
     private func updateContract(_ contract: DigimeContract) {
-        linkedAccounts = userPreferences.getLinkedAccounts(for: contract.identifier)
-        activeContractId = contract.identifier
-        do {
-            let config = try Configuration(appId: contract.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true, baseUrl: contract.baseURL)
-            digiMeService = DigiMe(configuration: config)
-        }
-        catch {
-            logErrorMessage("Unable to configure digi.me SDK: \(error)")
+        DispatchQueue.main.async {
+            self.linkedAccounts = self.userPreferences.getLinkedAccounts(for: contract.identifier)
+            self.activeContractId = contract.identifier
+            do {
+                let config = try Configuration(appId: contract.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true, baseUrl: contract.baseURL)
+                self.digiMeService = DigiMe(configuration: config)
+            }
+            catch {
+                self.logErrorMessage("Unable to configure digi.me SDK: \(error)")
+            }
         }
     }
 
@@ -586,19 +660,27 @@ class ServicesViewModel: ObservableObject {
         } completion: { refreshedCredentials, result in
             self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
 
-            DispatchQueue.main.async {
-                self.isLoadingData = false
-            }
+            self.isLoadingData = false
+
             switch result {
             case .success(let fileList):
-                if
-                    let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }),
-                    !reauthAccounts.isEmpty {
-                    
-                    self.updateReauthenticationStatus(reauthAccounts: reauthAccounts)
-                }
+                self.updateReauthStatus(fileList.status.details ?? [])
                 self.logMessage("Sync state - \(fileList.status.state.rawValue)")
                 self.logMessage("Finished reading files. Total files \(fileList.files?.count ?? 0)")
+                
+                if let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }) {
+                    if let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }) {
+                        let allErrors = reauthAccounts.compactMap { $0.error }
+                        allErrors.forEach { error in
+                            self.logErrorMessage("Error: '\(error.message ?? "N/A")', code: \(error.statusCode ?? 0)")
+                        }
+                    }
+
+                    if let retryAfter = reauthAccounts.compactMap({ $0.error?.retryAfter }).max() {
+                        self.retryAfter = retryAfter
+                        self.logWarningMessage("Data refresh blocked: Retry permissible in \(retryAfter.timeIntervalDescription()).")
+                    }
+                }
 
             case .failure(let error):
                 self.logErrorMessage("Error reading files: \(error)")
@@ -609,18 +691,20 @@ class ServicesViewModel: ObservableObject {
     private func addAccountDetails(accounts: [SourceAccountData]) {
         DispatchQueue.main.async {
             accounts.forEach { newAccount in
-                if let index = self.linkedAccounts.firstIndex(where: { $0.service.name == newAccount.serviceTypeName && $0.sourceAccount == nil }) {
+                if let index = self.linkedAccounts.firstIndex(where: { $0.service.serviceIdentifier == newAccount.serviceTypeId && $0.sourceAccount == nil }) {
                     self.linkedAccounts[index].sourceAccount = newAccount
                 }
             }
         }
     }
 
-    private func updateReauthenticationStatus(reauthAccounts: [SyncAccount]) {
+    private func updateReauthStatus(_ syncAccounts: [SyncAccount]) {
         DispatchQueue.main.async {
-            reauthAccounts.forEach { reauth in
-                if let index = self.linkedAccounts.firstIndex(where: { ($0.sourceAccount?.id ?? "") == reauth.identifier && !$0.requiredReauth }) {
-                    self.linkedAccounts[index].requiredReauth = true
+            syncAccounts.forEach { syncAccount in
+                let hasError = syncAccount.error != nil
+                
+                if let index = self.linkedAccounts.firstIndex(where: { ($0.sourceAccount?.id ?? "") == syncAccount.identifier }) {
+                    self.linkedAccounts[index].requiredReauth = hasError
                 }
             }
         }

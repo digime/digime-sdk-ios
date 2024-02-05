@@ -44,10 +44,12 @@ struct GenericPressableButtonView<Content: View>: View {
     }
 }
 
-struct GenericPressableButtonView_Previews: PreviewProvider {
-    @State static var isPressed = false
+// MARK: - Preview
 
-    static var previews: some View {
+struct GenericPressableButtonViewPreview: View {
+    @State private var isPressed = false
+
+    var body: some View {
         GenericPressableButtonView(isPressed: $isPressed, action: {
             print("Button pressed")
         }) {
@@ -62,4 +64,8 @@ struct GenericPressableButtonView_Previews: PreviewProvider {
         }
         .previewLayout(.sizeThatFits)
     }
+}
+
+#Preview {
+    GenericPressableButtonViewPreview()
 }

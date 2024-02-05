@@ -46,7 +46,8 @@ public class HealthKitAccountDataProvider: AccountDataProvider, HealthKitAccount
                                  serviceProviderId: nil,
                                  serviceProviderName: nil,
                                  serviceProviderReference: nil,
-                                 username: nil)
+                                 username: nil, 
+                                 sample: false)
     }
     
     public required init() {

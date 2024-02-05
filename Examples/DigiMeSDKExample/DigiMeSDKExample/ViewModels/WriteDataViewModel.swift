@@ -259,19 +259,19 @@ class WriteDataViewModel: ObservableObject {
 	
 	func logMessage(_ message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
 		withAnimation {
-			logEntries.append(LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped))
+            logEntries.insert(LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped), at: 0)
 		}
 	}
 	
 	func logWarningMessage(_ message: String) {
 		withAnimation {
-			logEntries.append(LogEntry(state: .warning, message: message))
+            logEntries.insert(LogEntry(state: .warning, message: message), at: 0)
 		}
 	}
 	
 	func logErrorMessage(_ message: String) {
 		withAnimation {
-			logEntries.append(LogEntry(state: .error, message: message))
+            logEntries.insert(LogEntry(state: .error, message: message), at: 0)
 		}
 	}
 	

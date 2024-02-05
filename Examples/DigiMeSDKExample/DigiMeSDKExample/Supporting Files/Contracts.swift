@@ -361,4 +361,8 @@ enum Contracts {
          -----END RSA PRIVATE KEY-----
          """,
                                        baseURL: "https://api.test08.devdigi.me")
+
+    static var all: [DigimeContract] {
+        return [prodFinSocMus, prodFitHealth, prodWriteContract, prodReadContract, prodAppleHealth, development, integration, staging, test05, test08]
+    }
 }

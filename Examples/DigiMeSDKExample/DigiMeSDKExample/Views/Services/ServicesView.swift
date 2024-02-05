@@ -20,8 +20,8 @@ struct ServicesView: View {
     
 	@State private var dialogDetent = PresentationDetent.height(200)
 	@State private var showAccountOptions = false
-    @State private var activeAccountName: String?
     @State private var presentPortabilityDateManager = false
+    @State private var activeAccount: LinkedAccount?
     @State private var reportStartDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
     @State private var reportEndDate = Date()
     
@@ -58,10 +58,11 @@ struct ServicesView: View {
                                             viewModel.reauthorizeAccount(connectedAccount: account)
                                         }
                                         else {
-                                            activeAccountName = account.service.name.lowercased()
+                                            activeAccount = account
                                             showAccountOptions = true
                                         }
                                     })
+                                    .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
                                     .disabled(viewModel.isLoadingData)
                                 }
                             }
@@ -91,15 +92,17 @@ struct ServicesView: View {
                                 })
                                 .disabled(viewModel.isLoadingData)
                                 
-                                StyledPressableButtonView(text: "Refresh Data",
-                                                   iconSystemName: "arrow.clockwise.circle",
-                                                   iconForegroundColor: viewModel.isLoadingData ? .gray : .purple,
-                                                   textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                                   backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                   action: {
-                                    viewModel.reloadServiceData(readOptions: scopeViewModel.readOptions)
-                                })
-                                .disabled(viewModel.isLoadingData)
+                                if !viewModel.linkedAccounts.isEmpty {
+                                    StyledPressableButtonView(text: "Refresh Data",
+                                                              iconSystemName: "arrow.clockwise.circle",
+                                                              iconForegroundColor: viewModel.isLoadingData ? .gray : .purple,
+                                                              textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                                              backgroundColor: Color(.secondarySystemGroupedBackground),
+                                                              action: {
+                                        viewModel.reloadServiceData(readOptions: scopeViewModel.readOptions)
+                                    })
+                                    .disabled(viewModel.isLoadingData)
+                                }
                             }
                             
                             StyledPressableButtonView(text: "Request Contract Details",
@@ -151,14 +154,9 @@ struct ServicesView: View {
             }
 		}
         .actionSheet(isPresented: $showAccountOptions) {
-            ActionSheet(title: Text(activeAccountName?.uppercased() ?? "EXPORT"),
+            ActionSheet(title: Text(activeAccount?.service.name.uppercased() ?? "EXPORT"),
                         message: Text("Choose an option"),
-                        buttons: [
-                            .cancel(),
-                            .destructive(Text("Export Portability Report")) {
-                                presentPortabilityDateManager = true
-                            },
-                        ])
+                        buttons: generateActionSheetButtons())
         }
         .sheet(isPresented: $viewModel.shouldDisplayShareSheet) {
             ShareSheetView(shareItems: [viewModel.xmlReportURL as Any])
@@ -192,6 +190,34 @@ struct ServicesView: View {
     private func loadReport() {
         viewModel.fetchReport(for: "medmij", format: "xml", from: reportStartDate.timeIntervalSince1970, to: reportEndDate.timeIntervalSince1970)
     }
+
+    private func generateActionSheetButtons() -> [ActionSheet.Button] {
+        var buttons: [ActionSheet.Button] = [
+            .cancel(),
+            .default(Text("Export Portability Report")) {
+                presentPortabilityDateManager = true
+            }
+        ]
+
+        if let account = activeAccount {
+            // Medmij service accounts
+            if account.service.serviceIdentifier == 37 {
+                buttons.append(
+                    .default(Text("Withdraw Consent")) {
+                        viewModel.withdrawConsent(for: account)
+                    }
+                )
+            }
+
+            buttons.append(
+                .destructive(Text("Delete Account")) {
+                    viewModel.deleteAccount(account)
+                }
+            )
+        }
+
+        return buttons
+    }
 }
 
 struct ServicesView_Previews: PreviewProvider {
@@ -199,7 +225,7 @@ struct ServicesView_Previews: PreviewProvider {
         let mockNavigationPath = NavigationPath()
 		NavigationView {
             ServicesView(navigationPath: .constant(mockNavigationPath))
-                .environment(\.colorScheme, .dark)
+//                .environment(\.colorScheme, .dark)
 		}
     }
 }

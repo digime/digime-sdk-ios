@@ -18,7 +18,7 @@ struct CustomActionSheetViewModifier: ViewModifier {
         ZStack {
             content
                 .disabled(isPresented)
-                .overlay(isPresented ? Color.black.opacity(0.1) : Color.clear)
+                .overlay(isPresented ? Color.black.opacity(0.2) : Color.clear)
 
             if isPresented {
                 VStack {
@@ -64,7 +64,7 @@ struct CustomActionSheetViewModifier: ViewModifier {
             
             CustomActionSheetButton(title: "Cancel", subtitle: nil, action: {
                 dismiss()
-            }, isDestructive: true)
+            })
             .background(Color(.tertiarySystemGroupedBackground))
             .cornerRadius(10)
             .shadow(radius: 3)
@@ -79,54 +79,13 @@ struct CustomActionSheetViewModifier: ViewModifier {
     }
 }
 
-struct CustomActionSheetButton: View {
-    let title: String
-    let subtitle: String?
-    let action: () -> Void
-    let isDestructive: Bool
-
-    var body: some View {
-        Button(action: action) {
-            VStack(alignment: .center, spacing: 3) {
-                Text(title)
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                
-                if let subtitle = subtitle {
-                    Text(subtitle)
-                        .font(.subheadline)
-                }
-            }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .center)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(CustomActionSheetButtonStyle(backgroundColor: Color(.tertiarySystemGroupedBackground), foregroundColor: isDestructive ? .accentColor : .primary))
-    }
-}
-
-struct CustomActionSheetButtonStyle: ButtonStyle {
-    var backgroundColor: Color
-    var foregroundColor: Color
-
-    init(backgroundColor: Color, foregroundColor: Color) {
-        self.backgroundColor = backgroundColor
-        self.foregroundColor = foregroundColor
-    }
-
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .foregroundColor(configuration.isPressed ? .white : foregroundColor)
-            .background(configuration.isPressed ? .accentColor : backgroundColor)
-            .cornerRadius(10)
-    }
-}
-
 extension View {
     func customActionSheet(isPresented: Binding<Bool>, title: String, message: String, buttons: [CustomActionSheetButton]) -> some View {
         self.modifier(CustomActionSheetViewModifier(isPresented: isPresented, buttons: buttons, title: title, message: message))
     }
 }
+
+// MARK: - Preview
 
 struct CustomActionSheetPreview: View {
     @State private var showingActionSheet = false
@@ -136,23 +95,20 @@ struct CustomActionSheetPreview: View {
             Button("Show Action Sheet") {
                 showDialog()
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.systemBackground))
             .customActionSheet(isPresented: $showingActionSheet, title: "Actions", message: "Please choose an option", buttons: [
-                CustomActionSheetButton(title: "Option 1", subtitle: nil, action: {
-                    print("Option 1 selected")
+                CustomActionSheetButton(title: "Dataset 1", subtitle: nil, action: {
                     dismiss()
-                }, isDestructive: false),
-                CustomActionSheetButton(title: "Option 2", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", action: {
-                    print("Option 2 selected")
+                }),
+                CustomActionSheetButton(title: "Dataset 2", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", action: {
                     dismiss()
-                }, isDestructive: false),
-                CustomActionSheetButton(title: "Option 3", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.", action: {
-                    print("Option 3 selected")
+                }),
+                CustomActionSheetButton(title: "Dataset 3", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.", action: {
                     dismiss()
-                }, isDestructive: false),
+                }),
             ])
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemBackground))
     }
     
     private func showDialog() {

@@ -20,11 +20,20 @@ struct LogDetailsView: View {
 			json = jsonDictionary
 		}
 	}
-	
-	var body: some View {
-		JSONTreeView(json ?? JSON())
-			.navigationTitle("Log Details")
-	}
+
+    var body: some View {
+        if let jsonDictionary = json {
+            // Convert the JSON dictionary to an array of key-value pairs
+            let keyValuePairs = jsonDictionary.map { (key: $0.key, value: $0.value) }
+            JSONTreeView(keyValuePairs)
+                .navigationTitle("Log Details")
+        } 
+        else {
+            // Handle the case where json is nil (e.g., show an error message or an empty view)
+            Text("No JSON data available")
+                .navigationTitle("Log Details")
+        }
+    }
 }
 
 struct LogDetailsView_Previews: PreviewProvider {

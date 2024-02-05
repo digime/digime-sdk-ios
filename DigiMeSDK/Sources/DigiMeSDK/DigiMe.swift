@@ -586,7 +586,84 @@ public final class DigiMe {
             }
         }
     }
+
     
+    /// Deletes a specified service account from your library..
+    ///
+    /// This function is responsible for initiating the deletion process of a service account, identified by its unique `accountId`.
+    /// It requires the client to provide valid `credentials` to authenticate the request. The deletion process is performed
+    /// asynchronously, and the outcome is returned via the `completion` block.
+    ///
+    /// - Parameters:
+    ///   - accountId: Service account entity identifier.
+    ///   - credentials: The existing credentials for the contract.
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called on completion with any error encountered.
+    public func deleteAccount(accountId: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.authService.deleteAccount(with: accountId, oauthToken: refreshedCredentials.token) { result in
+                    resultQueue.async {
+                        completion(refreshedCredentials, result)
+                    }
+                }
+
+            case .failure(let error):
+                resultQueue.async {
+                    completion(credentials, .failure(error))
+                }
+            }
+        }
+    }
+
+
+    /// Initiates the withdrawal of user consent for a specific service account.
+    ///
+    /// This function allows the user to withdraw previously granted consent for a service account.
+    /// It requires the client to provide valid `credentials` for authentication and the `accountId`
+    /// of the specific account for which the consent is being withdrawn. The process is asynchronous,
+    /// and the outcome is communicated via the `completion` block.
+    ///
+    /// - Parameters:
+    ///   - accountId: Service account entity identifier.
+    ///   - credentials: The existing credentials for the contract.
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called on completion with any error encountered.
+    public func getRevokeAccountPermissionUrl(for accountId: String, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+                self.authService.revokeAccountPermission(with: accountId, oauthToken: refreshedCredentials.token) { result in
+                    switch result {
+                    case .success(let response):
+                        self.consentManager.revokeAccount(revokeURL: response) { result in
+                            switch result {
+                            case .success:
+                                resultQueue.async {
+                                    completion(refreshedCredentials, .success(()))
+                                }
+                            case .failure(let error):
+                                resultQueue.async {
+                                    completion(refreshedCredentials, .failure(error))
+                                }
+                            }
+                        }
+
+                    case .failure(let error):
+                        resultQueue.async {
+                            completion(refreshedCredentials, .failure(error))
+                        }
+                    }
+                }
+            case .failure(let error):
+                resultQueue.async {
+                    completion(credentials, .failure(error))
+                }
+            }
+        }
+    }
+
     /// Get a list of possible services a user can add to their digi.me.
     /// If contract identifier is specified, then only those services relevant to the contract are retrieved, otherwise all services are retrieved.
     ///

@@ -12,22 +12,19 @@ struct LogOutputView: View {
 	@Binding var logs: [LogEntry]
 	
 	var body: some View {
-		VStack(alignment: .leading, spacing: 8) {
-			List {
-				ForEach(logs.indices, id: \.self) { index in
-					let entry = logs[index]
-					NavigationLink {
-						ScrollView {
-							LogDetailsView(entry: entry)
-						}
-					} label: {
-						getEntryRow(index: index, entry: entry)
-					}
-					.listRowBackground(index.isMultiple(of: 2) ? Color.secondary.opacity(0.2) : Color.clear)
-				}
-			}
-			.listStyle(PlainListStyle())
-		}
+        List {
+            ForEach(logs.indices, id: \.self) { index in
+                let entry = logs[index]
+                NavigationLink {
+                    LogDetailsView(entry: entry)
+                } label: {
+                    getEntryRow(index: index, entry: entry)
+                }
+                .listRowBackground(index.isMultiple(of: 2) ? Color.gray.opacity(0.2) : Color.clear)
+            }
+        }
+        .listStyle(PlainListStyle())
+        .padding(.vertical, 10)
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		.font(.custom("Menlo", size: 14))
 		.foregroundColor(.white)

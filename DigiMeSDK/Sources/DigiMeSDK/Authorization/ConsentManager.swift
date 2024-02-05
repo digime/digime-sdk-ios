@@ -14,10 +14,11 @@ final class ConsentManager: NSObject {
     private let configuration: Configuration
     private var userConsentCompletion: ((Result<ConsentResponse, SDKError>) -> Void)?
     private var addServiceCompletion: ((Result<Void, SDKError>) -> Void)?
+    private var revokeAccountCompletion: ((Result<Void, SDKError>) -> Void)?
     private var safariViewController: SFSafariViewController?
 	private var localServiceRequested = false
 	
-    private enum ResponseKey: String {
+    private enum ResponseKey: String, Codable {
         case state
         case code
         case postboxId
@@ -25,11 +26,26 @@ final class ConsentManager: NSObject {
         case success
         case errorCode
         case accountReference
+        case result
+        case errorMessage
+
+        private enum CodingKeys: String, CodingKey {
+            case state
+            case code
+            case postboxId
+            case publicKey
+            case success
+            case errorCode
+            case accountReference
+            case result
+            case errorMessage = "error_message"
+        }
     }
     
     private enum Action: String {
         case auth
         case service
+        case revoke
     }
 
     init(configuration: Configuration) {
@@ -75,7 +91,25 @@ final class ConsentManager: NSObject {
         components.percentEncodedQueryItems = percentEncodedQueryItems
         open(url: components.url!)
     }
-    
+
+    func revokeAccount(revokeURL: String, completion: @escaping ((Result<Void, SDKError>) -> Void)) {
+        guard Thread.current.isMainThread else {
+            DispatchQueue.main.async {
+                self.revokeAccount(revokeURL: revokeURL, completion: completion)
+            }
+            return
+        }
+
+        guard let url = URL(string: revokeURL) else {
+            completion(Result.failure(SDKError.unknown(message: "Error creating revoke account url")))
+            return
+        }
+
+        revokeAccountCompletion = completion
+        CallbackService.shared().setCallbackHandler(self)
+        open(url: url)
+    }
+
     func addService(identifier: Int, token: String, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, completion: @escaping ((Result<Void, SDKError>) -> Void)) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
@@ -162,8 +196,6 @@ final class ConsentManager: NSObject {
             reset()
             userConsentCompletion?(mapErrors(result: result))
             userConsentCompletion = nil
-            addServiceCompletion = nil
-
             return
         }
         
@@ -176,7 +208,6 @@ final class ConsentManager: NSObject {
                 self.reset()
                 self.userConsentCompletion?(self.mapErrors(result: result))
                 self.userConsentCompletion = nil
-                self.addServiceCompletion = nil
             }
         }
     }
@@ -194,7 +225,6 @@ final class ConsentManager: NSObject {
             reset()
             addServiceCompletion?(mapErrors(result: result))
             addServiceCompletion = nil
-            userConsentCompletion = nil
             return
         }
         
@@ -206,11 +236,23 @@ final class ConsentManager: NSObject {
                 self.reset()
                 self.addServiceCompletion?(self.mapErrors(result: result))
                 self.addServiceCompletion = nil
-                self.userConsentCompletion = nil
             }
         }
     }
     
+    private func finishRevokeAccount(with result: Result<Void, Error>) {
+        guard Thread.current.isMainThread else {
+            DispatchQueue.main.async {
+                self.finishRevokeAccount(with: result)
+            }
+            return
+        }
+
+        reset()
+        revokeAccountCompletion?(self.mapErrors(result: result))
+        revokeAccountCompletion = nil
+    }
+
     private func mapErrors<T>(result: Result<T, Error>) -> Result<T, SDKError> {
         return result.mapError { error in
             switch error {
@@ -243,6 +285,9 @@ final class ConsentManager: NSObject {
         
         userConsentCompletion?(.failure(.authorizationCancelled))
         userConsentCompletion = nil
+
+        revokeAccountCompletion?(.failure(.authorizationCancelled))
+        revokeAccountCompletion = nil
     }
     
     private func reset() {
@@ -312,7 +357,37 @@ final class ConsentManager: NSObject {
             result = .failure(CallbackError.invalidCallbackParameters)
         }
     }
-    
+
+    private func handleRevokeAction(parameters: [String: String?], presentingViewController: UIViewController?) {
+        let result: Result<Void, Error>!
+        defer {
+            if let vc = presentingViewController {
+                vc.dismiss(animated: true) {
+                    self.finishRevokeAccount(with: result)
+                }
+            }
+
+            self.finishRevokeAccount(with: result)
+        }
+
+        guard let success = parameters[ResponseKey.result.rawValue] else {
+            result = .failure(CallbackError.invalidCallbackParameters)
+            return
+        }
+
+        switch success {
+        case "success":
+            result = .success(())
+
+        case "failed":
+            let error = processErrorCallback(parameters: parameters)
+            result = .failure(error)
+
+        default:
+            result = .failure(CallbackError.invalidCallbackParameters)
+        }
+    }
+
     private func processAuthSuccessCallback(parameters: [String: String?]) -> Result<ConsentResponse, Error> {
         guard
             let status = parameters[ResponseKey.state.rawValue] as? String,
@@ -337,13 +412,20 @@ final class ConsentManager: NSObject {
     }
     
     private func processErrorCallback(parameters: [String: String?]) -> ConsentError {
-        guard
+        if
             let errorCode = parameters[ResponseKey.errorCode.rawValue] as? String,
-            let error = ConsentError(rawValue: errorCode) else {
-            return .unexpectedError
+            let error = ConsentError(rawValue: errorCode) {
+            return error
         }
-        
-        return error
+
+        if
+            let errorMessage = parameters[ResponseKey.errorMessage.rawValue] as? String,
+            let error = ConsentError(rawValue: errorMessage) {
+            return error
+        }
+
+        return .unexpectedError
+
     }
 }
 
@@ -366,7 +448,10 @@ extension ConsentManager: CallbackHandler {
 			
 			case .service:
 				handleServiceAction(parameters: parameters, presentingViewController: nil)
-			}
+
+            case .revoke:
+                handleRevokeAction(parameters: parameters, presentingViewController: nil)
+            }
 			
 			return
 		}
@@ -392,6 +477,9 @@ extension ConsentManager: CallbackHandler {
         
         case .service:
             handleServiceAction(parameters: parameters, presentingViewController: presentingViewController)
+
+        case .revoke:
+            handleRevokeAction(parameters: parameters, presentingViewController: presentingViewController)
         }
     }
 }

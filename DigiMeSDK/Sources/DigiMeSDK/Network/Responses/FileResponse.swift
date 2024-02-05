@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FileResponse {
+struct FileResponse: Decodable {
     let data: Data
     let info: FileInfo
 }

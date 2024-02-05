@@ -71,7 +71,7 @@ struct CustomActionSheetView: View {
                 withAnimation {
                     self.isPresented = false
                 }
-            }, isDestructive: true)
+            })
             .background(Color(.tertiarySystemGroupedBackground))
             .cornerRadius(10)
             .shadow(radius: 3)
@@ -79,6 +79,8 @@ struct CustomActionSheetView: View {
         .padding(20)
     }
 }
+
+// MARK: - Preview
 
 struct CustomActionSheetViewPreview: View {
     @State private var showingActionSheet = false
@@ -106,17 +108,14 @@ struct CustomActionSheetViewPreview: View {
     func customActionSheetButtons() -> [CustomActionSheetButton] {
         let buttons = [
             CustomActionSheetButton(title: "Option 1", subtitle: nil, action: {
-                print("Option 1 selected")
                 dismiss()
-            }, isDestructive: false),
+            }),
             CustomActionSheetButton(title: "Option 2", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", action: {
-                print("Option 2 selected")
                 dismiss()
-            }, isDestructive: false),
+            }),
             CustomActionSheetButton(title: "Option 3", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.", action: {
-                print("Option 3 selected")
                 dismiss()
-            }, isDestructive: false),
+            }),
         ]
         return buttons
     }

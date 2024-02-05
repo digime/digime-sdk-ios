@@ -132,7 +132,36 @@ class OAuthService {
 
 		apiClient.makeRequest(DeleteUserRoute(jwt: jwt), completion: completion)
     }
-    
+
+    func deleteAccount(with accountId: String, oauthToken: OAuthToken, completion: @escaping (Result<Void, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.dataRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
+            Logger.critical("Invalid delete account token request JWT")
+            completion(.failure(SDKError.invalidDeleteAccountTokenRequestJwt))
+            return
+        }
+
+        apiClient.makeRequest(DeleteAccountRoute(jwt: jwt, accountId: accountId), completion: completion)
+    }
+
+    func revokeAccountPermission(with accountId: String, oauthToken: OAuthToken, completion: @escaping (Result<String, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.dataRequestJWT(accessToken: oauthToken.accessToken.value, configuration: configuration) else {
+            Logger.critical("Invalid reference token request JWT")
+            completion(.failure(SDKError.invalidReferenceTokenRequestJwt))
+            return
+        }
+
+        let redirectUri = JWTUtility.accountRevokeCallbackURLString(configuration)
+        let route = RevokeAccountPermissionRoute(jwt: jwt, accountId: accountId, redirectUri: redirectUri)
+        apiClient.makeRequest(route) { result in
+            switch result {
+            case .success(let res):
+                completion(.success(res.location))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     private func extractPreAuthorizationCode(from response: TokenSessionResponse, completion: @escaping (Result<String, SDKError>) -> Void) {
         latestJsonWebKeySet { result in
             let newResult = result.flatMap { JWTUtility.preAuthCode(from: response.token, keySet: $0) }

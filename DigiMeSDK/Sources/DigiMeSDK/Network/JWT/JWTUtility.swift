@@ -27,6 +27,7 @@ enum JWTUtility {
 		case auth
 		case service
 		case reauth
+        case revoke
 	}
 	
 	private struct PayloadRequestBasicJWT: RequestClaims {
@@ -344,7 +345,11 @@ enum JWTUtility {
 
 		return createRequestJWT(claims: claims, configuration: configuration)
 	}
-    
+
+    static func accountRevokeCallbackURLString(_ configuration: Configuration) -> String {
+        return configuration.redirectUri + Action.revoke.rawValue
+    }
+
     // MARK: - Utility functions
     private static func createRequestJWT<T: RequestClaims>(claims: T, configuration: Configuration) -> String? {
         let jwt = JWT(claims: claims)

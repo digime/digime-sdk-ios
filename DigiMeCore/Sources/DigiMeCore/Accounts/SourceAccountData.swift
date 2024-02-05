@@ -56,8 +56,9 @@ public struct SourceAccountData: Codable, Identifiable {
     public let serviceProviderName: String?
     public let serviceProviderReference: String?
     public let username: String?
-    
-    public init(identifier: UUID, id: String, reference: String, type: AccountType, createdDate: Double, serviceGroupId: Int, serviceGroupName: String, serviceTypeId: Int, serviceTypeName: String, serviceTypeReference: String, sourceId: Int, updatedDate: Double, accessTokenStatus: AccessTokenStatus?, providerFavIcon: String?, providerLogo: String?, serviceProviderId: Int?, serviceProviderName: String?, serviceProviderReference: String?, username: String?) {
+    public let sample: Bool?
+
+    public init(identifier: UUID, id: String, reference: String, type: AccountType, createdDate: Double, serviceGroupId: Int, serviceGroupName: String, serviceTypeId: Int, serviceTypeName: String, serviceTypeReference: String, sourceId: Int, updatedDate: Double, accessTokenStatus: AccessTokenStatus?, providerFavIcon: String?, providerLogo: String?, serviceProviderId: Int?, serviceProviderName: String?, serviceProviderReference: String?, username: String?, sample: Bool?) {
         self.identifier = identifier
         self.id = id
         self.reference = reference
@@ -77,6 +78,7 @@ public struct SourceAccountData: Codable, Identifiable {
         self.serviceProviderName = serviceProviderName
         self.serviceProviderReference = serviceProviderReference
         self.username = username
+        self.sample = sample
     }
     
     public init(from decoder: Decoder) throws {
@@ -100,6 +102,7 @@ public struct SourceAccountData: Codable, Identifiable {
         self.serviceProviderName = try container.decodeIfPresent(String.self, forKey: .serviceProviderName)
         self.serviceProviderReference = try container.decodeIfPresent(String.self, forKey: .serviceProviderReference)
         self.username = try container.decodeIfPresent(String.self, forKey: .username)
+        self.sample = try container.decodeIfPresent(Bool.self, forKey: .sample) ?? false
     }
     
     public func getAccountId() -> String {
