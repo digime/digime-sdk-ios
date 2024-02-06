@@ -74,6 +74,10 @@
 		1E00AF522B1A08FB00F09990 /* SourceAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AF112B1A08FB00F09990 /* SourceAccount.swift */; };
 		1E00AF532B1A08FB00F09990 /* SourceAccountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AF122B1A08FB00F09990 /* SourceAccountData.swift */; };
 		1E00AF542B1A08FB00F09990 /* AccountsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AF132B1A08FB00F09990 /* AccountsInfo.swift */; };
+		1E55A4FB2B72440400945AC1 /* ConnectionSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55A4FA2B72440400945AC1 /* ConnectionSecurity.swift */; };
+		1E55A5022B72444000945AC1 /* HealthKitAccountDataProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55A4FF2B72444000945AC1 /* HealthKitAccountDataProviderProtocol.swift */; };
+		1E55A5032B72444000945AC1 /* HealthKitFilesDataServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55A5002B72444000945AC1 /* HealthKitFilesDataServiceProtocol.swift */; };
+		1E55A5042B72444000945AC1 /* HealthKitServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55A5012B72444000945AC1 /* HealthKitServiceProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -145,6 +149,10 @@
 		1E00AF112B1A08FB00F09990 /* SourceAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceAccount.swift; sourceTree = "<group>"; };
 		1E00AF122B1A08FB00F09990 /* SourceAccountData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceAccountData.swift; sourceTree = "<group>"; };
 		1E00AF132B1A08FB00F09990 /* AccountsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsInfo.swift; sourceTree = "<group>"; };
+		1E55A4FA2B72440400945AC1 /* ConnectionSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionSecurity.swift; sourceTree = "<group>"; };
+		1E55A4FF2B72444000945AC1 /* HealthKitAccountDataProviderProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitAccountDataProviderProtocol.swift; sourceTree = "<group>"; };
+		1E55A5002B72444000945AC1 /* HealthKitFilesDataServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitFilesDataServiceProtocol.swift; sourceTree = "<group>"; };
+		1E55A5012B72444000945AC1 /* HealthKitServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitServiceProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +185,7 @@
 		1E00AEBF2B1A083500F09990 /* DigiMeCore */ = {
 			isa = PBXGroup;
 			children = (
+				1E55A4FE2B72444000945AC1 /* Health */,
 				1E00AF0E2B1A08FB00F09990 /* Accounts */,
 				1E00AF002B1A08FB00F09990 /* Authorization */,
 				1E00AEE12B1A08FA00F09990 /* Contract */,
@@ -306,6 +315,7 @@
 		1E00AF072B1A08FB00F09990 /* Data Sources */ = {
 			isa = PBXGroup;
 			children = (
+				1E55A4FA2B72440400945AC1 /* ConnectionSecurity.swift */,
 				1E00AF082B1A08FB00F09990 /* ServiceCountry.swift */,
 				1E00AF092B1A08FB00F09990 /* ServiceGroup.swift */,
 				1E00AF0A2B1A08FB00F09990 /* Service.swift */,
@@ -326,6 +336,16 @@
 				1E00AF132B1A08FB00F09990 /* AccountsInfo.swift */,
 			);
 			path = Accounts;
+			sourceTree = "<group>";
+		};
+		1E55A4FE2B72444000945AC1 /* Health */ = {
+			isa = PBXGroup;
+			children = (
+				1E55A4FF2B72444000945AC1 /* HealthKitAccountDataProviderProtocol.swift */,
+				1E55A5002B72444000945AC1 /* HealthKitFilesDataServiceProtocol.swift */,
+				1E55A5012B72444000945AC1 /* HealthKitServiceProtocol.swift */,
+			);
+			path = Health;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -426,6 +446,7 @@
 				1E00AF1C2B1A08FB00F09990 /* FileMetadata.swift in Sources */,
 				1E00AF1F2B1A08FB00F09990 /* LogEventPayload.swift in Sources */,
 				1E00AF3D2B1A08FB00F09990 /* Extensions+Encodable.swift in Sources */,
+				1E55A5022B72444000945AC1 /* HealthKitAccountDataProviderProtocol.swift in Sources */,
 				1E00AF222B1A08FB00F09990 /* FileList.swift in Sources */,
 				1E00AF2F2B1A08FB00F09990 /* ReadOptions.swift in Sources */,
 				1E00AF2E2B1A08FB00F09990 /* Scope.swift in Sources */,
@@ -443,6 +464,8 @@
 				1E00AF3F2B1A08FB00F09990 /* Date+Helper.swift in Sources */,
 				1E00AF232B1A08FB00F09990 /* SyncError.swift in Sources */,
 				1E00AF452B1A08FB00F09990 /* OAuthToken.swift in Sources */,
+				1E55A5032B72444000945AC1 /* HealthKitFilesDataServiceProtocol.swift in Sources */,
+				1E55A5042B72444000945AC1 /* HealthKitServiceProtocol.swift in Sources */,
 				1E00AF312B1A08FB00F09990 /* Limits.swift in Sources */,
 				1E00AF152B1A08FB00F09990 /* SDKError.swift in Sources */,
 				1E00AF322B1A08FB00F09990 /* ContractTimeRangeType.swift in Sources */,
@@ -468,6 +491,7 @@
 				1E00AF482B1A08FB00F09990 /* Credentials.swift in Sources */,
 				1E00AF412B1A08FB00F09990 /* Array+Helper.swift in Sources */,
 				1E00AF272B1A08FB00F09990 /* SyncAccount.swift in Sources */,
+				1E55A4FB2B72440400945AC1 /* ConnectionSecurity.swift in Sources */,
 				1E00AF3E2B1A08FB00F09990 /* AES256.swift in Sources */,
 				1E00AF512B1A08FB00F09990 /* AccountServiceDescriptor.swift in Sources */,
 				1E00AF4B2B1A08FB00F09990 /* ServiceGroup.swift in Sources */,

@@ -272,11 +272,11 @@
 		1E00AF7F2B1A739D00F09990 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				1E00AF802B1A739D00F09990 /* Metadata.swift */,
+				1E00AF972B1A739D00F09990 /* Type */,
 				1E00AF812B1A739D00F09990 /* Payload */,
+				1E00AF802B1A739D00F09990 /* Metadata.swift */,
 				1E00AF952B1A739D00F09990 /* Original.swift */,
 				1E00AF962B1A739D00F09990 /* UnitConvertable.swift */,
-				1E00AF972B1A739D00F09990 /* Type */,
 				1E00AFA52B1A739D00F09990 /* Payload.swift */,
 				1E00AFA62B1A739D00F09990 /* UpdateFrequency.swift */,
 				1E00AFA72B1A739D00F09990 /* Harmonizable.swift */,
@@ -314,9 +314,9 @@
 		1E00AF972B1A739D00F09990 /* Type */ = {
 			isa = PBXGroup;
 			children = (
+				1E00AF9A2B1A739D00F09990 /* Sample */,
 				1E00AF982B1A739D00F09990 /* CharacteristicType.swift */,
 				1E00AF992B1A739D00F09990 /* ActivitySummaryType.swift */,
-				1E00AF9A2B1A739D00F09990 /* Sample */,
 				1E00AFA42B1A739D00F09990 /* ObjectType.swift */,
 			);
 			path = Type;
@@ -395,11 +395,11 @@
 		1E00AFDB2B1A739D00F09990 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				1E00AFE22B1A739D00F09990 /* Files */,
+				1E00AFDE2B1A739D00F09990 /* Retriever */,
 				1E00AFDC2B1A739D00F09990 /* HealthKitObserver.swift */,
 				1E00AFDD2B1A739D00F09990 /* HealthKitWriter.swift */,
-				1E00AFDE2B1A739D00F09990 /* Retriever */,
 				1E00AFE12B1A739D00F09990 /* HealthKitReader.swift */,
-				1E00AFE22B1A739D00F09990 /* Files */,
 				1E00AFE62B1A739D00F09990 /* HealthKitManager.swift */,
 			);
 			path = Service;
@@ -466,7 +466,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					1E00AF6F2B1A734D00F09990 = {
 						CreatedOnToolsVersion = 15.0.1;
@@ -743,6 +743,7 @@
 		1E00AF7A2B1A734D00F09990 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -775,6 +776,7 @@
 		1E00AF7B2B1A734D00F09990 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;

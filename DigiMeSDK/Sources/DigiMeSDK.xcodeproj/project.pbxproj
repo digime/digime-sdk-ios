@@ -87,6 +87,9 @@
 		1E00AEB02B19F4C200F09990 /* Gzip in Frameworks */ = {isa = PBXBuildFile; productRef = 1E00AEAF2B19F4C200F09990 /* Gzip */; };
 		1E00AEB22B1A074000F09990 /* DigiMeSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E00AEB12B1A074000F09990 /* DigiMeSDK.h */; };
 		1E00AF632B1A3C2E00F09990 /* DigiMeCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1E00AF622B1A3C2E00F09990 /* DigiMeCore */; };
+		1E55A5072B72476600945AC1 /* DeleteAccountRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55A5052B72476600945AC1 /* DeleteAccountRoute.swift */; };
+		1E55A5082B72476600945AC1 /* RevokeAccountPermissionRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55A5062B72476600945AC1 /* RevokeAccountPermissionRoute.swift */; };
+		1E55A50A2B72479600945AC1 /* RevokeAccountPermissionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55A5092B72479600945AC1 /* RevokeAccountPermissionResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -181,6 +184,9 @@
 		1E00AE312B19F00000F09990 /* FileListRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileListRoute.swift; sourceTree = "<group>"; };
 		1E00AEA62B19F08400F09990 /* DigiMeSDK.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = DigiMeSDK.docc; sourceTree = "<group>"; };
 		1E00AEB12B1A074000F09990 /* DigiMeSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DigiMeSDK.h; sourceTree = "<group>"; };
+		1E55A5052B72476600945AC1 /* DeleteAccountRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteAccountRoute.swift; sourceTree = "<group>"; };
+		1E55A5062B72476600945AC1 /* RevokeAccountPermissionRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevokeAccountPermissionRoute.swift; sourceTree = "<group>"; };
+		1E55A5092B72479600945AC1 /* RevokeAccountPermissionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevokeAccountPermissionResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +322,7 @@
 		1E00AE0A2B19F00000F09990 /* Responses */ = {
 			isa = PBXGroup;
 			children = (
+				1E55A5092B72479600945AC1 /* RevokeAccountPermissionResponse.swift */,
 				1E00AE0B2B19F00000F09990 /* SessionResponse.swift */,
 				1E00AE0C2B19F00000F09990 /* APIErrorResponse.swift */,
 				1E00AE0D2B19F00000F09990 /* ExportReport.swift */,
@@ -347,6 +354,8 @@
 		1E00AE1E2B19F00000F09990 /* Routes */ = {
 			isa = PBXGroup;
 			children = (
+				1E55A5052B72476600945AC1 /* DeleteAccountRoute.swift */,
+				1E55A5062B72476600945AC1 /* RevokeAccountPermissionRoute.swift */,
 				1E00AE1F2B19F00000F09990 /* ReadSampleDataSetsRoute.swift */,
 				1E00AE202B19F00000F09990 /* ServicesRoute.swift */,
 				1E00AE212B19F00000F09990 /* AccountReferenceRoute.swift */,
@@ -518,6 +527,7 @@
 				1E00AE692B19F00000F09990 /* JWTError.swift in Sources */,
 				1E00AE482B19F00000F09990 /* ConsentManager.swift in Sources */,
 				1E00AE582B19F00000F09990 /* DigiMe.swift in Sources */,
+				1E55A5072B72476600945AC1 /* DeleteAccountRoute.swift in Sources */,
 				1E00AE752B19F00100F09990 /* LogEventsUploadResponse.swift in Sources */,
 				1E00AE6B2B19F00100F09990 /* JWTClaims.swift in Sources */,
 				1E00AE612B19F00000F09990 /* LogEventsUploadOperation.swift in Sources */,
@@ -537,9 +547,11 @@
 				1E00AE772B19F00100F09990 /* AccountReferenceResponse.swift in Sources */,
 				1E00AE862B19F00100F09990 /* ContractRoute.swift in Sources */,
 				1E00AE762B19F00100F09990 /* AuthResponse.swift in Sources */,
+				1E55A50A2B72479600945AC1 /* RevokeAccountPermissionResponse.swift in Sources */,
 				1E00AEA72B19F08400F09990 /* DigiMeSDK.docc in Sources */,
 				1E00AE892B19F00100F09990 /* ReadDataRoute.swift in Sources */,
 				1E00AE7B2B19F00100F09990 /* RequestBody.swift in Sources */,
+				1E55A5082B72476600945AC1 /* RevokeAccountPermissionRoute.swift in Sources */,
 				1E00AE912B19F00100F09990 /* AuthorizeRoute.swift in Sources */,
 				1E00AE852B19F00100F09990 /* UploadMixpanelEventsRoute.swift in Sources */,
 				1E00AE5D2B19F00000F09990 /* FileDownloadService.swift in Sources */,
