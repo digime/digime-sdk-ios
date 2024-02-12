@@ -11,8 +11,8 @@ import Foundation
 /// Reason why connecting to source or importing data from source into user's library failed
 public struct SyncError: Decodable, Equatable {
     public let code: String
-    public let message: String
     public let statusCode: Int
+    public let message: String?
     public let reauth: Bool?
     public let retryAfter: Date?
     public let objectTypeErrors: [ObjectTypeError]?
