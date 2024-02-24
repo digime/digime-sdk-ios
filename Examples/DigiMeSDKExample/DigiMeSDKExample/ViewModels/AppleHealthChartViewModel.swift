@@ -71,7 +71,7 @@ class AppleHealthChartViewModel: ObservableObject {
 						
 						if
 							let accountState = fileList.status.details?.first,
-							let date = accountState.error?.error?.retryAfter {
+							let date = accountState.error?.retryAfter {
 							
 							print("[DigiMeSDKExample] Next sync date: \(date), sync state: \(fileList.status.state)")
 						}
