@@ -80,6 +80,7 @@
 		1ED4CA2729D3783400C9874B /* ReportDateManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */; };
 		1ED4CA2F29D4356C00C9874B /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4CA2E29D4356C00C9874B /* BlurView.swift */; };
 		1EDA770D2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDA770C2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift */; };
+		1EDF307B2B8711160012275E /* SVGView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDF307A2B8711160012275E /* SVGView.swift */; };
 		1EE0FA3F29D04B900084F5ED /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */; };
 		1EE6FAF22A13F7A900796505 /* ScopeLimitsDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE6FAF12A13F7A900796505 /* ScopeLimitsDetailsView.swift */; };
 		1EED5A2E29BF9C3600B3F544 /* ActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EED5A2D29BF9C3600B3F544 /* ActionView.swift */; };
@@ -180,6 +181,7 @@
 		1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDateManagerView.swift; sourceTree = "<group>"; };
 		1ED4CA2E29D4356C00C9874B /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		1EDA770C2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActionSheetViewModifier.swift; sourceTree = "<group>"; };
+		1EDF307A2B8711160012275E /* SVGView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGView.swift; sourceTree = "<group>"; };
 		1EE0FA3E29D04B900084F5ED /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
 		1EE6FAF12A13F7A900796505 /* ScopeLimitsDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeLimitsDetailsView.swift; sourceTree = "<group>"; };
 		1EED5A2D29BF9C3600B3F544 /* ActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionView.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 			children = (
 				1E29EC142AE558D70016B8D5 /* discovery.json */,
 				1E02535829AA883800702D90 /* CustomDisclosureView.swift */,
+				1EDF307A2B8711160012275E /* SVGView.swift */,
 				1E47A0EA298FCE060081A2C5 /* TestDataSet.swift */,
 			);
 			path = Tests;
@@ -663,6 +666,7 @@
 				1EA52CA029850F5A00A61213 /* AppleHealthSummaryViewModel.swift in Sources */,
 				1E47A0F3299176100081A2C5 /* Square.swift in Sources */,
 				1EA86AA92B0668F40030CB91 /* StyledPressableButtonView.swift in Sources */,
+				1EDF307B2B8711160012275E /* SVGView.swift in Sources */,
 				1EDA770D2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift in Sources */,
 				1E0E1326298C134100F1A813 /* AppleHealthBarChartView.swift in Sources */,
 				1E02269829817C2C00892CE8 /* AppleHealthSummaryView.swift in Sources */,

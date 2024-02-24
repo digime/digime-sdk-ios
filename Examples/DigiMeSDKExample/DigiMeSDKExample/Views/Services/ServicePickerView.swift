@@ -165,7 +165,13 @@ struct ServicePickerView: View {
     
     func makeServiceRow(service: Service) -> some View {
         HStack {
-            if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: service.resources) {
+            if
+                let resource = service.resources.svgResource() {
+                SVGWebView(url: resource.url)
+                    .frame(width: 20, height: 20)
+                    .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
+            }
+            else if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: service.resources) {
                 SourceImage(url: resource.url)
                     .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
             }
