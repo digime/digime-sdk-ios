@@ -167,8 +167,7 @@ struct ServicePickerView: View {
         HStack {
             if
                 let resource = service.resources.svgResource() {
-                SVGWebView(url: resource.url)
-                    .frame(width: 20, height: 20)
+                ImageDownloaderView(url: resource.url, size: CGSize(width: 20, height: 20))
                     .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
             }
             else if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: service.resources) {
@@ -469,13 +468,13 @@ struct ServicePickerView: View {
             Text("Add Service")
                 .font(.headline)
                 .fontWeight(.bold)
-                .foregroundColor(proceedDisabled ? .secondary : proceedButtonIsPressed ? .white : .primary)
+                .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(proceedDisabled ? .gray : proceedButtonIsPressed ? .accentColor : .white)
-                        .opacity(proceedDisabled ? 0.5 : 1)
+                        .fill(Color.accentColor)
+                        .opacity(proceedDisabled || proceedButtonIsPressed ? 0.5 : 1)
                 )
                 .disabled(proceedDisabled)
         }
