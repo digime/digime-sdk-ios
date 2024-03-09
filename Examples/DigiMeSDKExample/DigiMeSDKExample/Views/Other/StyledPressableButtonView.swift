@@ -17,11 +17,23 @@ struct StyledPressableButtonView: View {
     var textForegroundColor: Color
     var backgroundColor: Color
     var requiredReauth = false
+    var retryAfter: Date?
     var disclosureIndicator = false
     
     let action: () -> Void
-    @State private var isPressed: Bool = false
-    
+    @State private var isPressed: Bool = false {
+        didSet {
+            if isPressed {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                    // Ensure isPressed is still true before setting it to false to avoid overriding user re-presses
+                    if self.isPressed {
+                        self.isPressed = false
+                    }
+                }
+            }
+        }
+    }
+
     private var image: Image? {
         if let iconSystemName = iconSystemName {
             return Image(systemName: iconSystemName)
@@ -52,11 +64,8 @@ struct StyledPressableButtonView: View {
             
             Spacer()
             
-            if requiredReauth {
-                Text("Reauthorize")
-                    .foregroundColor(isPressed ? .white : .red)
-            }
-            
+            status
+
             if disclosureIndicator {
                 Image(systemName: "chevron.right")
                     .imageScale(.small)
@@ -66,7 +75,7 @@ struct StyledPressableButtonView: View {
         .padding(12)
         .padding(.horizontal, 10)
         .frame(maxWidth: .infinity)
-        .background(isPressed ? .accentColor : backgroundColor)
+        .background(fillColor)
         .cornerRadius(10)
         .overlay(
             GeometryReader { geometry in
@@ -76,17 +85,52 @@ struct StyledPressableButtonView: View {
                         DragGesture(minimumDistance: 0)
                             .onChanged({ _ in self.isPressed = true })
                             .onEnded { value in
-                                self.isPressed = false
                                 // Check if the drag ended inside the view
                                 let location = value.location
                                 let frame = geometry.frame(in: .local)
                                 if frame.contains(location) {
                                     action()
                                 }
+                                
+                                // Reset isPressed regardless of where the gesture ends
+                                self.isPressed = false
                             }
                     )
             }
         )
+    }
+
+    private var status: some View {
+        var textColor: Color = .red
+        var textContent: String = ""
+
+        if 
+            let retryAfter = retryAfter,
+            retryAfter > Date() {
+
+            textColor = Color(.systemGray)
+            textContent = "Sync Paused"
+        }
+        else if requiredReauth {
+            textContent = "Reauthorize"
+        }
+        else {
+            textContent = ""
+        }
+
+        if isPressed {
+            textColor = Color.white
+        }
+
+        return Text(textContent).foregroundColor(textColor)
+    }
+
+    private var fillColor: Color {
+        return isPressed ? .accentColor : (syncPaused ? Color(.systemGray5) : backgroundColor)
+    }
+
+    private var syncPaused: Bool {
+        return retryAfter?.compare(Date()) == .orderedDescending
     }
 }
 
@@ -100,12 +144,35 @@ struct StyledPressableButtonView_Previews: PreviewProvider {
                                iconForegroundColor: .gray,
                                textForegroundColor: .accentColor,
                                backgroundColor: Color(.secondarySystemGroupedBackground),
+                               requiredReauth: true,
+                               retryAfter: Date().adding(hours: 3),
                                action: {
             })
             .previewLayout(.sizeThatFits)
             .padding()
+
+            StyledPressableButtonView(text: "Action Title",
+                                      iconSystemName: "photo",
+                                      iconForegroundColor: .gray,
+                                      textForegroundColor: .accentColor,
+                                      backgroundColor: Color(.secondarySystemGroupedBackground),
+                                      requiredReauth: true,
+                                      action: {
+            })
+            .previewLayout(.sizeThatFits)
+            .padding()
+
+            StyledPressableButtonView(text: "Action Title",
+                                      iconSystemName: "photo",
+                                      iconForegroundColor: .gray,
+                                      textForegroundColor: .accentColor,
+                                      backgroundColor: Color(.secondarySystemGroupedBackground),
+                                      action: {
+            })
+            .previewLayout(.sizeThatFits)
+            .padding()
         }
-        .background(.gray)
+        .background(.black)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

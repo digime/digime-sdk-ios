@@ -15,7 +15,7 @@ extension Date {
 }
 
 extension Date {
-    func timeIntervalDescription() -> String {
+    func timeIntervalRetryDescription() -> String {
         let now = Date()
         let calendar = Calendar.current
         // Make sure the 'from' date is now, and 'to' date is the future date
@@ -26,7 +26,7 @@ extension Date {
         let minutes = components.minute ?? 0
         let seconds = components.second ?? 0
 
-        var timeString = ""
+        var timeString = "Retry in "
         if days > 0 {
             timeString += "\(days) day" + (days > 1 ? "s " : " ")
         }
@@ -39,7 +39,15 @@ extension Date {
         if seconds > 0 {
             timeString += "\(seconds) second" + (seconds > 1 ? "s " : " ")
         }
-        return timeString.isEmpty ? "now" : timeString.trimmingCharacters(in: .whitespaces)
+        
+        return timeString.isEmpty ? "Retry now" : timeString.trimmingCharacters(in: .whitespaces)
+    }
+
+    func adding(minutes: Int) -> Date {
+        Calendar.current.date(byAdding: .minute, value: minutes, to: self)!
+    }
+
+    func adding(hours: Int) -> Date {
+        Calendar.current.date(byAdding: .hour, value: hours, to: self)!
     }
 }
-

@@ -9,6 +9,7 @@
 import DigiMeCore
 import DigiMeSDK
 import Foundation
+import SwiftData
 import SwiftUI
 
 enum ConnectSourceViewState {
@@ -17,6 +18,9 @@ enum ConnectSourceViewState {
 
 @MainActor
 class ServicesViewModel: ObservableObject {
+    @ObservationIgnored
+    private let modelContext: ModelContext
+
     @Published var activeContract: DigimeContract = Contracts.development {
         didSet {
             updateContract(activeContract)
@@ -41,13 +45,7 @@ class ServicesViewModel: ObservableObject {
             userPreferences.setLinkedAccounts(newAccounts: linkedAccounts, for: activeContract.identifier)
         }
     }
-    @Published var logEntries: [LogEntry] = [] {
-        didSet {
-            if let data = try? logEntries.encoded(dateEncodingStrategy: .millisecondsSince1970) {
-                FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "logs_services")
-            }
-        }
-    }
+
     @Published var sampleDatasets: [String: SampleDataset]?
     @Published var xmlReportURL: URL?
     @Published var isLoadingData = false
@@ -93,28 +91,22 @@ class ServicesViewModel: ObservableObject {
         }
     }
 
-    init(sections: [ServiceSection]? = nil) {
+    init(modelContext: ModelContext, sections: [ServiceSection]? = nil) {
+        self.modelContext = modelContext
+
         do {
-            if
-                let logData = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs_services"),
-                let savedLogEntries = try? logData.decoded(dateDecodingStrategy: .millisecondsSince1970) as [LogEntry] {
-                logEntries = savedLogEntries
-            }
-            else {
-                logMessage("This is where log messages appear")
-            }
-            
             // support SwiftUI preview
             if let sections = sections {
-                self.serviceSections = sections
-                self.sampleDataSections = sections
+                serviceSections = sections
+                sampleDataSections = sections
             }
             
             if let contract = contracts.first(where: { $0.identifier == activeContractId }) {
-                self.activeContract = contract
-            } 
+                activeContract = contract
+                activeContractId = contract.identifier
+            }
             else {
-                self.activeContract = Contracts.development
+                activeContract = Contracts.development
             }
 
             linkedAccounts = userPreferences.getLinkedAccounts(for: activeContract.identifier)
@@ -209,7 +201,7 @@ class ServicesViewModel: ObservableObject {
     
     func reloadServiceData(readOptions: ReadOptions? = nil) {
         if let retry = retryAfter, retry > Date() {
-            logWarningMessage("Data refresh blocked: Retry permissible in \(retry.timeIntervalDescription()).")
+            logWarningMessage("Data refresh blocked. \(retry.timeIntervalRetryDescription()).")
             return
         }
 
@@ -342,7 +334,7 @@ class ServicesViewModel: ObservableObject {
             switch result {
             case .success:
                 self.userPreferences.clearCredentials(for: self.activeContract.identifier)
-                self.logEntries = []
+                self.resetLogs()
                 self.linkedAccounts = []
                 self.logMessage("Your user entry and the library deleted successfully")
             case .failure(let error):
@@ -442,26 +434,31 @@ class ServicesViewModel: ObservableObject {
 
     func logMessage(_ message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
         DispatchQueue.main.async {
-            withAnimation {
-                let entry = LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped)
-                self.logEntries.insert(entry, at: 0)
-            }
+            let entry = LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped)
+            self.modelContext.insert(entry)
         }
     }
 
     func logWarningMessage(_ message: String) {
         DispatchQueue.main.async {
-            withAnimation {
-                self.logEntries.insert(LogEntry(state: .warning, message: message), at: 0)
-            }
+            let entry = LogEntry(state: .warning, message: message)
+            self.modelContext.insert(entry)
         }
     }
 
     func logErrorMessage(_ message: String) {
         DispatchQueue.main.async {
-            withAnimation {
-                self.logEntries.insert(LogEntry(state: .error, message: message), at: 0)
-            }
+            let entry = LogEntry(state: .error, message: message)
+            self.modelContext.insert(entry)
+        }
+    }
+
+    func resetLogs() {
+        do {
+            try modelContext.delete(model: LogEntry.self)
+        }
+        catch {
+            print("Failed to delete all log entries.")
         }
     }
 
@@ -530,8 +527,8 @@ class ServicesViewModel: ObservableObject {
             let services = userPreferences.readServiceSections(for: activeContractId),
             let sampleData = userPreferences.readServiceSampleDataSections(for: activeContractId) {
 
-            self.serviceSections = services
-            self.sampleDataSections = sampleData
+            serviceSections = services
+            sampleDataSections = sampleData
             showServiceSelector = false
             isLoadingData = false
             withAnimation {
@@ -546,7 +543,6 @@ class ServicesViewModel: ObservableObject {
             self.isLoadingData = false
             switch result {
             case .success(let serviceInfo):
-//                FilePersistentStorage(with: .documentDirectory).store(object: serviceInfo, fileName: "discovery.json")
                 self.populateSections(serviceInfo: serviceInfo)
                 if showServiceSelector {
                     withAnimation {
@@ -585,10 +581,8 @@ class ServicesViewModel: ObservableObject {
     }
 
     private func fetchData(credentials: Credentials, readOptions: ReadOptions? = nil) {
-        isLoadingData = true
         fetchAccounts(credentials: credentials) { updatedCredentials in
             self.fetchServiceData(credentials: updatedCredentials, readOptions: readOptions)
-            self.isLoadingData = false
         }
     }
 
@@ -637,7 +631,7 @@ class ServicesViewModel: ObservableObject {
             self.isLoadingData = true
         }
         
-        digiMeService?.readAllFiles(credentials: credentials, readOptions: readOptions, resultQueue: .global()) { result in
+        digiMeService?.readAllFiles(credentials: credentials, readOptions: readOptions) { result in
             switch result {
             case .success(let fileContainer):
 
@@ -672,13 +666,13 @@ class ServicesViewModel: ObservableObject {
                     if let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }) {
                         let allErrors = reauthAccounts.compactMap { $0.error }
                         allErrors.forEach { error in
-                            self.logErrorMessage("Error: '\(error.message ?? "N/A")', code: \(error.statusCode ?? 0)")
+                            self.logErrorMessage("Error: '\(error.message)', code: \(error.statusCode)")
                         }
                     }
 
                     if let retryAfter = reauthAccounts.compactMap({ $0.error?.retryAfter }).max() {
                         self.retryAfter = retryAfter
-                        self.logWarningMessage("Data refresh blocked: Retry permissible in \(retryAfter.timeIntervalDescription()).")
+                        self.logWarningMessage("Data refresh blocked. \(retryAfter.timeIntervalRetryDescription()).")
                     }
                 }
 
@@ -701,17 +695,19 @@ class ServicesViewModel: ObservableObject {
     private func updateReauthStatus(_ syncAccounts: [SyncAccount]) {
         DispatchQueue.main.async {
             syncAccounts.forEach { syncAccount in
-                let hasError = syncAccount.error != nil
-                
+                let requiredReauth = (syncAccount.error?.statusCode ?? 0) == 511
+                let retryAfter = syncAccount.error?.retryAfter
+
                 if let index = self.linkedAccounts.firstIndex(where: { ($0.sourceAccount?.id ?? "") == syncAccount.identifier }) {
-                    self.linkedAccounts[index].requiredReauth = hasError
+                    self.linkedAccounts[index].requiredReauth = requiredReauth
+                    self.linkedAccounts[index].retryAfter = retryAfter
                 }
             }
         }
     }
     
     private func reset() {
-        self.logEntries = []
+        resetLogs()
         self.linkedAccounts = []
         self.userPreferences.reset()
     }

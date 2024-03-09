@@ -11,7 +11,8 @@ import PhotosUI
 import SwiftUI
 
 struct WriteDataView: View {
-    @ObservedObject private var viewModel = WriteDataViewModel()
+    @EnvironmentObject private var viewModel: WriteDataViewModel
+
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var presentImporter = false
     @State private var presentPhotoPicker = false
@@ -129,7 +130,10 @@ struct WriteDataView: View {
                         }
                     }
                 }
-                PhotosPicker("Select images", selection: $selectedPhoto, matching: .images)
+
+                if presentPhotoPicker {
+                    PhotosPicker("Select images", selection: $selectedPhoto, matching: .images)
+                }
             }
             .navigationBarTitle("Write", displayMode: .inline)
             .background(Color(.systemGroupedBackground))
@@ -142,7 +146,7 @@ struct WriteDataView: View {
                         .padding(.trailing, 10)
                 }
                 else {
-                    ShareLink(item: viewModel.logEntries.json)
+                    ShareLink(item: viewModel.exportLogs())
                 }
             }
             .fileImporter(isPresented: $presentImporter, allowedContentTypes: [fileType]) { result in
@@ -166,7 +170,7 @@ struct WriteDataView: View {
                     self.viewModel.logErrorMessage("Error reading file: \(error)")
                 }
             }
-            .onChange(of: selectedPhoto) { newItem in
+            .onChange(of: selectedPhoto) { _, newItem in
                 Task {
                     if
                         let data = try? await newItem?.loadTransferable(type: Data.self) {
@@ -175,16 +179,23 @@ struct WriteDataView: View {
                 }
             }
         }, bottom: {
-            LogOutputView(logs: $viewModel.logEntries)
+            LogOutputView()
         })
     }
 }
 
-struct WriteDataView_Previews: PreviewProvider {
-    static var previews: some View {
-		NavigationView {
-			WriteDataView()
+#Preview {
+    do {
+        let previewer = try Previewer()
+
+        return NavigationView {
+            WriteDataView()
+                .environmentObject(WriteDataViewModel(modelContext: previewer.container.mainContext))
+                .modelContainer(previewer.container)
                 .environment(\.colorScheme, .dark)
-		}
+        }
+    }
+    catch {
+        return Text(error.localizedDescription)
     }
 }

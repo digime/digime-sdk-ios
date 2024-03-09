@@ -6,6 +6,7 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
+import SwiftData
 import SwiftUI
 
 enum HomeNavigationDestination: Hashable {
@@ -25,6 +26,18 @@ struct HomeView: View {
     @State private var isPressedAppleHealthLineCharts = false
     @State private var isPressedAppleHealthSummary = false
     
+    let container: ModelContainer
+
+    init() {
+        do {
+            container = try ModelContainer(for: LogEntry.self)
+        }
+        catch {
+            fatalError(error.localizedDescription)
+        }
+
+    }
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             ScrollView {
@@ -72,8 +85,12 @@ struct HomeView: View {
                 switch destination {
                 case .servicesView:
                     ServicesView(navigationPath: $navigationPath)
+                        .environmentObject(ServicesViewModel(modelContext: container.mainContext))
+                        .modelContainer(container)
                 case .writeReadView:
                     WriteDataView()
+                        .environmentObject(WriteDataViewModel(modelContext: container.mainContext))
+                        .modelContainer(container)
                 case .barChartsView:
                     AppleHealthBarChartView()
                 case .lineChartsView:

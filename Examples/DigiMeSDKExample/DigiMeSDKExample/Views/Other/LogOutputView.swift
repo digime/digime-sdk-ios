@@ -6,48 +6,62 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
+import SwiftData
 import SwiftUI
 
 struct LogOutputView: View {
-	@Binding var logs: [LogEntry]
-	
+    @Query(sort: [
+        SortDescriptor(\LogEntry.date, order: .reverse)
+    ]) private var logs: [LogEntry]
+
 	var body: some View {
-        List {
-            ForEach(logs.indices, id: \.self) { index in
-                let entry = logs[index]
-                NavigationLink {
-                    LogDetailsView(entry: entry)
-                } label: {
-                    getEntryRow(index: index, entry: entry)
+        ScrollView {
+            LazyVStack {
+                ForEach(logs.indices, id: \.self) { index in
+                    let entry = logs[index]
+                    NavigationLink {
+                        LogDetailsView(entry: entry)
+                    } label: {
+                        getEntryRow(index: index, entry: entry)
+                    }
                 }
-                .listRowBackground(index.isMultiple(of: 2) ? Color.gray.opacity(0.2) : Color.clear)
             }
+            .padding(.vertical, 10)
         }
-        .listStyle(PlainListStyle())
-        .padding(.vertical, 10)
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		.font(.custom("Menlo", size: 14))
 		.foregroundColor(.white)
 		.background(Color.black)
 	}
 	
-	private func getEntryRow(index: Int, entry: LogEntry) -> some View {
-		Group {
-			HStack(alignment: .top, spacing: 8) {
-				Text(entry.date, style: .time)
-				Image(systemName: entry.state.iconSystemName)
-					.foregroundColor(entry.state.tintColor)
-				Text(entry.message)
-					.lineLimit(nil)
-					.frame(maxWidth: .infinity, alignment: .topLeading)
-					.foregroundColor(entry.state.tintColor)
-			}
-		}
-	}
+    @ViewBuilder
+    private func getEntryRow(index: Int, entry: LogEntry) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            Text(entry.date, style: .time)
+            Image(systemName: entry.iconSystemName)
+                .foregroundColor(entry.tintColor)
+            Text(entry.message)
+                .multilineTextAlignment(.leading)
+                .lineLimit(nil)
+                .foregroundColor(entry.tintColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 15)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(index.isMultiple(of: 2) ? Color.gray.opacity(0.2) : Color.clear)
+    }
 }
 
-struct LogOutputView_Previews: PreviewProvider {
-    static var previews: some View {
-		LogOutputView(logs: .constant(TestLogs.dataset))
+#Preview {
+    do {
+        let previewer = try Previewer()
+
+        return LogOutputView()
+            .environmentObject(ServicesViewModel(modelContext: previewer.container.mainContext))
+            .modelContainer(previewer.container)
+    }
+    catch {
+        return Text("\(error.localizedDescription)")
     }
 }

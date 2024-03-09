@@ -71,7 +71,7 @@ struct ServicePickerView: View {
                 .scrollIndicators(.hidden)
                 .padding(.horizontal, 20)
                 .navigationBarItems(leading: cancelButton)
-                .onChange(of: searchText) { newValue in
+                .onChange(of: searchText) { _, newValue in
                     flags = Array(repeating: !newValue.isEmpty, count: filteredSections.count)
                 }
                 .toolbar {
@@ -104,7 +104,7 @@ struct ServicePickerView: View {
         }
         .onAppear {
             scopeViewModel.serviceSections = filteredSections
-            flags = filteredSections.map { _ in false }
+            flags = filteredSections.map { _ in true }
 
             viewModel.onShowSampleDataSelectorChanged = { shouldShow in
                 self.showSampleDataSetActionSheet = shouldShow
@@ -125,7 +125,7 @@ struct ServicePickerView: View {
         .sheet(isPresented: $scopeViewModel.shouldDisplayModal) {
             ScopeAddView(viewModel: scopeViewModel)
         }
-        .onChange(of: scopeViewModel.selectedService) { newValue in
+        .onChange(of: scopeViewModel.selectedService) { _, newValue in
             guard
                 let service = newValue,
                 let groupId = service.serviceGroupIds.first,
@@ -136,10 +136,10 @@ struct ServicePickerView: View {
             scopeViewModel.objectTypes = data
             scopeViewModel.selectedObjectTypes = Set(data.map { $0.id })
         }
-        .onChange(of: scopeViewModel.selectedObjectTypes) { newValue in
+        .onChange(of: scopeViewModel.selectedObjectTypes) { _, newValue in
             objectTypes = scopeViewModel.objectTypes.filter { newValue.contains($0.id) }
         }
-        .onChange(of: proceedSampleDataset) { _ in
+        .onChange(of: proceedSampleDataset) { _, _ in
             finish(sampleDataset: viewModel.sampleDatasets?.first?.key)
         }
         .alert("Sample Datasets", isPresented: $showSampleDataErrorActionSheet, actions: {
@@ -167,7 +167,7 @@ struct ServicePickerView: View {
         HStack {
             if
                 let resource = service.resources.svgResource() {
-                ImageDownloaderView(url: resource.url, size: CGSize(width: 20, height: 20))
+                SVGImageView(url: resource.url, size: CGSize(width: 20, height: 20))
                     .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
             }
             else if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: service.resources) {
@@ -291,7 +291,7 @@ struct ServicePickerView: View {
             Text("Limit your query")
             Spacer()
             Toggle("", isOn: $scopeViewModel.isScopeModificationAllowed)
-                .onChange(of: scopeViewModel.isScopeModificationAllowed) { value in
+                .onChange(of: scopeViewModel.isScopeModificationAllowed) { _, value in
                     if !value {
                         self.reset()
                     }
@@ -316,10 +316,10 @@ struct ServicePickerView: View {
                     .padding(.bottom, 10)
                     .foregroundColor(.gray)
                     .font(.footnote)
-                    .onChange(of: scopeViewModel.startDate) { newValue in
+                    .onChange(of: scopeViewModel.startDate) { _, newValue in
                         scopeViewModel.startDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
                     }
-                    .onChange(of: scopeViewModel.endDate) { newValue in
+                    .onChange(of: scopeViewModel.endDate) { _, newValue in
                         scopeViewModel.endDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
                     }
                 
@@ -583,10 +583,18 @@ struct SourceSelectorButtonStyle: ButtonStyle {
     }
 }
 
-struct ServicePickerView_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
+    do {
+        let previewer = try Previewer()
         let sections = TestDiscoveryObjects.sections
-        ServicePickerView(showView: .constant(true), selectServiceCompletion: .constant(nil), viewModel: ServicesViewModel(sections: sections), scopeViewModel: ScopeViewModel(), viewState: .sources, allowScoping: true)
-//            .environment(\.colorScheme, .dark)
+        let model = ServicesViewModel(modelContext: previewer.container.mainContext, sections: sections)
+        return ServicePickerView(showView: .constant(true), selectServiceCompletion: .constant(nil), viewModel: model, scopeViewModel: ScopeViewModel(), viewState: .sources, allowScoping: true)
+            .environmentObject(model)
+            .modelContainer(previewer.container)
+            .environment(\.colorScheme, .dark)
+    } catch {
+        return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }
+
+

@@ -28,7 +28,15 @@ struct GenericPressableButtonView<Content: View>: View {
                         .contentShape(Rectangle())
                         .gesture(
                             DragGesture(minimumDistance: 0)
-                                .onChanged { _ in isPressed = true }
+                                .onChanged { _ in
+                                    isPressed = true
+
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                                        if self.isPressed {
+                                            self.isPressed = false
+                                        }
+                                    }
+                                }
                                 .onEnded { value in
                                     self.isPressed = false
                                     // Check if the drag ended inside the view

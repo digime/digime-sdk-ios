@@ -6,9 +6,10 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
-import SwiftUI
 import Combine
+import CryptoKit
 import Foundation
+import SwiftUI
 
 class ImageDownloader: ObservableObject {
     enum DownloadState {
@@ -22,6 +23,15 @@ class ImageDownloader: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     func download(fromURL url: URL, to localURL: URL) {
+        // Check if the file already exists at the local URL
+        if FileManager.default.fileExists(atPath: localURL.path) {
+            // If file exists, immediately move to the completed state
+            DispatchQueue.main.async {
+                self.downloadState = .completed(localURL)
+            }
+            return
+        }
+
         downloadState = .inProgress(0)
 
         let request = URLRequest(url: url)
@@ -55,7 +65,10 @@ struct ImageDownloaderView: View {
 
     init(url: URL, size: CGSize) {
         self.url = url
-        self.localFileURL = FileManager.default.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
+        let inputData = Data(url.absoluteString.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashedFilename = hashedData.compactMap { String(format: "%02x", $0) }.joined()
+        self.localFileURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(hashedFilename).svg")
         self.size = size
     }
 
@@ -79,7 +92,6 @@ struct ImageDownloaderView: View {
         }
     }
 }
-
 
 struct SVGDownloaderViewPreview: View {
     var body: some View {

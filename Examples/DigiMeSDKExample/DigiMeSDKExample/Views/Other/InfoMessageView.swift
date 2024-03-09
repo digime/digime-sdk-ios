@@ -2,7 +2,7 @@
 //  InfoMessageView.swift
 //  DigiMeSDKExample
 //
-//  Created by Alex Hamilton on 18/11/2023.
+//  Created on 18/11/2023.
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 

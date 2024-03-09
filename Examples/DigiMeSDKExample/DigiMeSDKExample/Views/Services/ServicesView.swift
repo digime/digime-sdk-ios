@@ -15,7 +15,7 @@ enum ServicesNavigationDestination: Hashable {
 struct ServicesView: View {
     @Binding var navigationPath: NavigationPath
     
-	@ObservedObject private var viewModel = ServicesViewModel()
+    @EnvironmentObject private var viewModel: ServicesViewModel
     @ObservedObject private var scopeViewModel = ScopeViewModel()
     
 	@State private var dialogDetent = PresentationDetent.height(200)
@@ -30,109 +30,112 @@ struct ServicesView: View {
             SplitView(top: {
                 VStack {
                     ScrollView {
-                        SectionView(header: "Contract") {
-                            StyledPressableButtonView(text: viewModel.activeContract.name,
-                                               iconSystemName: "gear",
-                                               iconForegroundColor: viewModel.isLoadingData ? .gray : .indigo,
-                                               textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                                               disclosureIndicator: true,
-                                               action: {
-                                navigationPath.append(ServicesNavigationDestination.contracts)
-                            })
-                            .disabled(viewModel.isLoadingData)
-                        }
-                        
-                        if !viewModel.linkedAccounts.isEmpty {
-                            SectionView(header: "Connected Accounts") {
-                                ForEach(viewModel.linkedAccounts) { account in
-                                    StyledPressableButtonView(text: account.service.name,
-                                                       iconName: "passIcon",
-                                                       iconUrl: ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: account.service.resources)?.url,
-                                                       iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
-                                                       textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                                       backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                       requiredReauth: account.requiredReauth,
-                                                       action: {
-                                        if account.requiredReauth {
-                                            viewModel.reauthorizeAccount(connectedAccount: account)
-                                        }
-                                        else {
-                                            activeAccount = account
-                                            showAccountOptions = true
-                                        }
-                                    })
-                                    .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
-                                    .disabled(viewModel.isLoadingData)
+                        LazyVStack {
+                            SectionView(header: "Contract") {
+                                StyledPressableButtonView(text: viewModel.activeContract.name,
+                                                          iconSystemName: "gear",
+                                                          iconForegroundColor: viewModel.isLoadingData ? .gray : .indigo,
+                                                          textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                                          backgroundColor: Color(.secondarySystemGroupedBackground),
+                                                          disclosureIndicator: true,
+                                                          action: {
+                                    navigationPath.append(ServicesNavigationDestination.contracts)
+                                })
+                                .disabled(viewModel.isLoadingData)
+                            }
+
+                            if !viewModel.linkedAccounts.isEmpty {
+                                SectionView(header: "Connected Accounts") {
+                                    ForEach(viewModel.linkedAccounts) { account in
+                                        StyledPressableButtonView(text: account.service.name,
+                                                                  iconName: "passIcon",
+                                                                  iconUrl: ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: account.service.resources)?.url,
+                                                                  iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
+                                                                  textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                                                  backgroundColor: Color(.secondarySystemGroupedBackground),
+                                                                  requiredReauth: account.requiredReauth,
+                                                                  retryAfter: account.retryAfter,
+                                                                  action: {
+                                            if account.requiredReauth {
+                                                viewModel.reauthorizeAccount(connectedAccount: account)
+                                            }
+                                            else {
+                                                activeAccount = account
+                                                showAccountOptions = true
+                                            }
+                                        })
+                                        .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
+                                        .disabled(viewModel.isLoadingData)
+                                    }
                                 }
                             }
-                        }
-                        
-                        SectionView(header: "Manage") {
-                            if !viewModel.isAuthorized {
-                                StyledPressableButtonView(text: "Authorise With Service",
-                                                   iconName: "passIcon",
-                                                   iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
-                                                   textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                                   backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                   action: {
-                                    viewModel.authorizeSelectedService()
-                                })
-                                .disabled(viewModel.isLoadingData)
-                            }
-                            
-                            if viewModel.isAuthorized {
-                                StyledPressableButtonView(text: "Add Service",
-                                                   iconSystemName: "plus.circle",
-                                                   iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
-                                                   textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                                   backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                   action: {
-                                    viewModel.addNewService()
-                                })
-                                .disabled(viewModel.isLoadingData)
-                                
-                                if !viewModel.linkedAccounts.isEmpty {
-                                    StyledPressableButtonView(text: "Refresh Data",
-                                                              iconSystemName: "arrow.clockwise.circle",
-                                                              iconForegroundColor: viewModel.isLoadingData ? .gray : .purple,
+
+                            SectionView(header: "Manage") {
+                                if !viewModel.isAuthorized {
+                                    StyledPressableButtonView(text: "Authorise With Service",
+                                                              iconName: "passIcon",
+                                                              iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
                                                               textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
                                                               backgroundColor: Color(.secondarySystemGroupedBackground),
                                                               action: {
-                                        viewModel.reloadServiceData(readOptions: scopeViewModel.readOptions)
+                                        viewModel.authorizeSelectedService()
                                     })
                                     .disabled(viewModel.isLoadingData)
                                 }
-                            }
-                            
-                            StyledPressableButtonView(text: "Request Contract Details",
-                                               iconName: "certIcon",
-                                               iconForegroundColor: viewModel.isLoadingData ? .gray : .orange,
-                                               textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                                               action: {
-                                viewModel.displayContractDetails()
-                            })
-                            .disabled(viewModel.isLoadingData)
-                        }
-                        
-                        if viewModel.isAuthorized {
-                            SectionView(header: "Reset") {
-                                StyledPressableButtonView(text: "Delete Data and Clear Logs",
-                                                   iconName: "deleteIcon",
-                                                   iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
-                                                   textForegroundColor: viewModel.isLoadingData ? .gray : .red,
-                                                   backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                   action: {
-                                    viewModel.removeUser()
+
+                                if viewModel.isAuthorized {
+                                    StyledPressableButtonView(text: "Add Service",
+                                                              iconSystemName: "plus.circle",
+                                                              iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
+                                                              textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                                              backgroundColor: Color(.secondarySystemGroupedBackground),
+                                                              action: {
+                                        viewModel.addNewService()
+                                    })
+                                    .disabled(viewModel.isLoadingData)
+
+                                    if !viewModel.linkedAccounts.isEmpty {
+                                        StyledPressableButtonView(text: "Refresh Data",
+                                                                  iconSystemName: "arrow.clockwise.circle",
+                                                                  iconForegroundColor: viewModel.isLoadingData ? .gray : .purple,
+                                                                  textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                                                  backgroundColor: Color(.secondarySystemGroupedBackground),
+                                                                  action: {
+                                            viewModel.reloadServiceData(readOptions: scopeViewModel.readOptions)
+                                        })
+                                        .disabled(viewModel.isLoadingData)
+                                    }
+                                }
+
+                                StyledPressableButtonView(text: "Request Contract Details",
+                                                          iconName: "certIcon",
+                                                          iconForegroundColor: viewModel.isLoadingData ? .gray : .orange,
+                                                          textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                                          backgroundColor: Color(.secondarySystemGroupedBackground),
+                                                          action: {
+                                    viewModel.displayContractDetails()
                                 })
                                 .disabled(viewModel.isLoadingData)
+                            }
+
+                            if viewModel.isAuthorized {
+                                SectionView(header: "Reset") {
+                                    StyledPressableButtonView(text: "Delete Data and Clear Logs",
+                                                              iconName: "deleteIcon",
+                                                              iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
+                                                              textForegroundColor: viewModel.isLoadingData ? .gray : .red,
+                                                              backgroundColor: Color(.secondarySystemGroupedBackground),
+                                                              action: {
+                                        viewModel.removeUser()
+                                    })
+                                    .disabled(viewModel.isLoadingData)
+                                }
                             }
                         }
                     }
                 }
             }, bottom: {
-                LogOutputView(logs: $viewModel.logEntries)
+                LogOutputView()
             })
         }
         .navigationBarTitle("Service Data Example", displayMode: .inline)
@@ -220,12 +223,18 @@ struct ServicesView: View {
     }
 }
 
-struct ServicesView_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
+    do {
+        let previewer = try Previewer()
         let mockNavigationPath = NavigationPath()
-		NavigationView {
+
+        return NavigationView {
             ServicesView(navigationPath: .constant(mockNavigationPath))
-//                .environment(\.colorScheme, .dark)
-		}
+                .environmentObject(ServicesViewModel(modelContext: previewer.container.mainContext))
+                .modelContainer(previewer.container)
+                .environment(\.colorScheme, .dark)
+        }
+    } catch {
+        return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }

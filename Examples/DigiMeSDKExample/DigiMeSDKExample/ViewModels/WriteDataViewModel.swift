@@ -10,16 +10,13 @@ import DigiMeCore
 import DigiMeSDK
 import Foundation
 import PhotosUI
+import SwiftData
 import SwiftUI
 
 class WriteDataViewModel: ObservableObject {
-	@Published var logEntries: [LogEntry] = [] {
-		didSet {
-            if let data = try? logEntries.encoded(dateEncodingStrategy: .millisecondsSince1970) {
-				FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "logs_write")
-			}
-		}
-	}
+    @ObservationIgnored
+    private let modelContext: ModelContext
+
 	@Published var credentialsForRead: Credentials? {
 		didSet {
 			if let credentials = credentialsForRead {
@@ -46,17 +43,10 @@ class WriteDataViewModel: ObservableObject {
 	private var digiMeWriteService: DigiMe?
 	private let userPreferences = UserPreferences.shared()
 	
-	init() {
+	init(modelContext: ModelContext) {
+        self.modelContext = modelContext
+
 		do {
-			if
-				let data = FilePersistentStorage(with: .documentDirectory).loadData(for: "logs_write"),
-                let logHistory = try? data.decoded(dateDecodingStrategy: .millisecondsSince1970) as [LogEntry] {
-				logEntries = logHistory
-			}
-			else {
-				logMessage("This is where log messages appear")
-			}
-			
 			credentialsForWrite = userPreferences.getCredentials(for: Contracts.prodWriteContract.identifier)
 			credentialsForRead = userPreferences.getCredentials(for: Contracts.prodReadContract.identifier)
 
@@ -135,7 +125,7 @@ class WriteDataViewModel: ObservableObject {
                 self.credentialsForWrite = nil
                 self.credentialsForRead = nil
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                    self.logEntries = []
+                    self.resetLogs()
                     self.logMessage("Your user entry and the library deleted successfully")
                 }
                 
@@ -248,8 +238,19 @@ class WriteDataViewModel: ObservableObject {
 		}
 	}
 	
+    func exportLogs() -> String  {
+        do {
+            let descriptor = FetchDescriptor<LogEntry>(sortBy: [SortDescriptor(\.date, order: .reverse)])
+            let entries = try modelContext.fetch(descriptor)
+            return entries.json
+        }
+        catch {
+            return error.localizedDescription
+        }
+    }
+
     func reset() {
-        self.logEntries = []
+        resetLogs()
         self.credentialsForRead = nil
         self.credentialsForWrite = nil
         self.userPreferences.reset()
@@ -257,24 +258,36 @@ class WriteDataViewModel: ObservableObject {
     
 	// MARK: - Logs
 	
-	func logMessage(_ message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
-		withAnimation {
-            logEntries.insert(LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped), at: 0)
-		}
-	}
-	
-	func logWarningMessage(_ message: String) {
-		withAnimation {
-            logEntries.insert(LogEntry(state: .warning, message: message), at: 0)
-		}
-	}
-	
-	func logErrorMessage(_ message: String) {
-		withAnimation {
-            logEntries.insert(LogEntry(state: .error, message: message), at: 0)
-		}
-	}
-	
+    func logMessage(_ message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
+        DispatchQueue.main.async {
+            let entry = LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped)
+            self.modelContext.insert(entry)
+        }
+    }
+
+    func logWarningMessage(_ message: String) {
+        DispatchQueue.main.async {
+            let entry = LogEntry(state: .warning, message: message)
+            self.modelContext.insert(entry)
+        }
+    }
+
+    func logErrorMessage(_ message: String) {
+        DispatchQueue.main.async {
+            let entry = LogEntry(state: .error, message: message)
+            self.modelContext.insert(entry)
+        }
+    }
+
+    func resetLogs() {
+        do {
+            try modelContext.delete(model: LogEntry.self)
+        }
+        catch {
+            print("Failed to delete all log entries.")
+        }
+    }
+
 	// MARK: - Private
 	
 	private func fetchAllFiles(credentials: Credentials) {

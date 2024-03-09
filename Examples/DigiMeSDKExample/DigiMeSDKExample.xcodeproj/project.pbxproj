@@ -59,6 +59,7 @@
 		1E864C2029BA5631005BA921 /* LinkedAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E864C1F29BA5631005BA921 /* LinkedAccount.swift */; };
 		1E87223929A5633E00418DE1 /* ContractDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E87223829A5633E00418DE1 /* ContractDetailsView.swift */; };
 		1E8B62A12A0D6C2B00FC0FC6 /* ScopeObjectTypesGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8B62A02A0D6C2B00FC0FC6 /* ScopeObjectTypesGridView.swift */; };
+		1E9072B82B796D00003F96B1 /* Previewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9072B72B796D00003F96B1 /* Previewer.swift */; };
 		1EA4CFEC2A0280F100A2493A /* TimeRangeTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4CFEB2A0280F100A2493A /* TimeRangeTemplate.swift */; };
 		1EA4CFEE2A0281B300A2493A /* ScopeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4CFED2A0281B300A2493A /* ScopeViewModel.swift */; };
 		1EA4CFF02A04CAD900A2493A /* ScopeObjectTypeIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4CFEF2A04CAD900A2493A /* ScopeObjectTypeIconView.swift */; };
@@ -76,6 +77,7 @@
 		1EBABAF128FC36C600C96C01 /* DistanceFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */; };
 		1EBABAF328FC36EF00C96C01 /* Locale+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */; };
 		1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */; };
+		1EC7BFAE2B9CAD1000B918EE /* SVGDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC7BFAD2B9CAD1000B918EE /* SVGDownloader.swift */; };
 		1ED268462B09683500588855 /* InfoMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED268452B09683500588855 /* InfoMessageView.swift */; };
 		1ED268482B0A6D2800588855 /* CustomNavigationLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED268472B0A6D2800588855 /* CustomNavigationLinkView.swift */; };
 		1ED4CA2729D3783400C9874B /* ReportDateManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */; };
@@ -165,6 +167,7 @@
 		1E864C1F29BA5631005BA921 /* LinkedAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedAccount.swift; sourceTree = "<group>"; };
 		1E87223829A5633E00418DE1 /* ContractDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractDetailsView.swift; sourceTree = "<group>"; };
 		1E8B62A02A0D6C2B00FC0FC6 /* ScopeObjectTypesGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeObjectTypesGridView.swift; sourceTree = "<group>"; };
+		1E9072B72B796D00003F96B1 /* Previewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Previewer.swift; sourceTree = "<group>"; };
 		1EA4CFEB2A0280F100A2493A /* TimeRangeTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangeTemplate.swift; sourceTree = "<group>"; };
 		1EA4CFED2A0281B300A2493A /* ScopeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeViewModel.swift; sourceTree = "<group>"; };
 		1EA4CFEF2A04CAD900A2493A /* ScopeObjectTypeIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeObjectTypeIconView.swift; sourceTree = "<group>"; };
@@ -178,6 +181,7 @@
 		1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceFormatter.swift; sourceTree = "<group>"; };
 		1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Locale+Helper.swift"; sourceTree = "<group>"; };
 		1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesFormatter.swift; sourceTree = "<group>"; };
+		1EC7BFAD2B9CAD1000B918EE /* SVGDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGDownloader.swift; sourceTree = "<group>"; };
 		1ED268452B09683500588855 /* InfoMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMessageView.swift; sourceTree = "<group>"; };
 		1ED268472B0A6D2800588855 /* CustomNavigationLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationLinkView.swift; sourceTree = "<group>"; };
 		1ED4CA2629D3783400C9874B /* ReportDateManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDateManagerView.swift; sourceTree = "<group>"; };
@@ -291,6 +295,7 @@
 				1EA5A1A829A3DD8100A9DB5A /* HighlightedTextView.swift */,
 				1E02535629A94B4200702D90 /* SourceImage.swift */,
 				1E2A1B592B8B269100B1E1E4 /* ImageDownloader.swift */,
+				1EC7BFAD2B9CAD1000B918EE /* SVGDownloader.swift */,
 				1EDF307A2B8711160012275E /* SVGView.swift */,
 				1EEE0EC729BE54A1004FA4D0 /* KeyframeAnimation.swift */,
 				1EED5A2D29BF9C3600B3F544 /* ActionView.swift */,
@@ -313,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				1EA7BEEE2B24C1F9006C3536 /* DiscoveryResource+Helper.swift */,
+				1E9072B72B796D00003F96B1 /* Previewer.swift */,
 				1EBABAF228FC36EF00C96C01 /* Locale+Helper.swift */,
 				1EBABAF028FC36C600C96C01 /* DistanceFormatter.swift */,
 				1EBABAF428FC39D300C96C01 /* CaloriesFormatter.swift */,
@@ -526,7 +532,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27D31A4D266A4EAD00DB2524 /* Build configuration list for PBXNativeTarget "DigiMeSDKExampleTests" */;
 			buildPhases = (
-				AF7455D944CF31CA5AB6F0B4 /* [CP] Check Pods Manifest.lock */,
 				27D31A32266A4EAD00DB2524 /* Sources */,
 				27D31A33266A4EAD00DB2524 /* Frameworks */,
 				27D31A34266A4EAD00DB2524 /* Resources */,
@@ -606,31 +611,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		AF7455D944CF31CA5AB6F0B4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DigiMeSDKExampleTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		27D31A1C266A4EAB00DB2524 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -673,6 +653,7 @@
 				1EDA770D2AFD294E002EE2B9 /* CustomActionSheetViewModifier.swift in Sources */,
 				1E0E1326298C134100F1A813 /* AppleHealthBarChartView.swift in Sources */,
 				1E02269829817C2C00892CE8 /* AppleHealthSummaryView.swift in Sources */,
+				1EC7BFAE2B9CAD1000B918EE /* SVGDownloader.swift in Sources */,
 				1EA4CFF02A04CAD900A2493A /* ScopeObjectTypeIconView.swift in Sources */,
 				1E6E717D2861AA1000E7954E /* UserPreferences.swift in Sources */,
 				1E61E8932A0D10DF00EDD3D7 /* ScopeEditView.swift in Sources */,
@@ -685,6 +666,7 @@
 				1EF728112B5C1FEF00E4CD83 /* CustomActionSheetButton.swift in Sources */,
 				1E1DC11E29ABA6E700B827E3 /* GroupObjectType.swift in Sources */,
 				1E7B414E29A3925D00F7B5B4 /* JSONTreeView.swift in Sources */,
+				1E9072B82B796D00003F96B1 /* Previewer.swift in Sources */,
 				1EBABAF528FC39D300C96C01 /* CaloriesFormatter.swift in Sources */,
 				1E34233D2B1C8F81007D41CE /* DigiMeSDKExample.docc in Sources */,
 				1E87223929A5633E00418DE1 /* ContractDetailsView.swift in Sources */,
@@ -884,7 +866,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -892,6 +874,9 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -909,7 +894,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = DigiMeSDKExample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SDK Example";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -917,6 +902,9 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.digi.sdk.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
