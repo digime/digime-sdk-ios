@@ -11,7 +11,7 @@ import SwiftUI
 struct CustomActionSheetButton: View {
     let title: String
     let subtitle: String?
-    let isDestructive: Bool = false
+    let isDestructive = false
     let action: () -> Void
 
     var body: some View {
@@ -38,11 +38,6 @@ struct CustomActionSheetButtonStyle: ButtonStyle {
     var backgroundColor: Color
     var foregroundColor: Color
 
-    init(backgroundColor: Color, foregroundColor: Color) {
-        self.backgroundColor = backgroundColor
-        self.foregroundColor = foregroundColor
-    }
-
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .foregroundColor(configuration.isPressed ? .white : foregroundColor)
@@ -52,5 +47,5 @@ struct CustomActionSheetButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    CustomActionSheetButton(title: "Test Title", subtitle: "Test Subtitle", action: { })
+    CustomActionSheetButton(title: "Test Title", subtitle: "Test Subtitle") {}
 }

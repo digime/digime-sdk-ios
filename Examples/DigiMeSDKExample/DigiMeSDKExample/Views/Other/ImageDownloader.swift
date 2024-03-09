@@ -107,4 +107,3 @@ struct SVGDownloaderViewPreview: View {
 #Preview {
     SVGDownloaderViewPreview()
 }
-

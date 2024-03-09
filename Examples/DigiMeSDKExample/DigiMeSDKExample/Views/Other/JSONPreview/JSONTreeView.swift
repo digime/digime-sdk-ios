@@ -18,14 +18,14 @@ struct JSONTreeView: View {
     private var keyValues: [(key: String, value: AnyHashable)]
 
     init(_ dictionary: JSON, depth: Int = 0) {
-        self.keyValues = dictionary.sorted { $0.key < $1.key }.map { (key, value) in
+        self.keyValues = dictionary.sorted { $0.key < $1.key }.map { key, value in
             (key: key, value: value)
         }
         self.depth = depth
     }
 
     init(_ array: [JSON], prefix key: String = "", depth: Int = 0) {
-        self.keyValues = array.enumerated().map { (offset, element) in
+        self.keyValues = array.enumerated().map { offset, element in
             (key: "\(key)[\(offset)]", value: element)
         }
         self.depth = depth
@@ -39,7 +39,7 @@ struct JSONTreeView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(spacing: 0) {
-                ForEach(Array(filtered.enumerated()), id: \.element.key) { (index, element) in
+                ForEach(Array(filtered.enumerated()), id: \.element.key) { index, _ in
                     VStack(alignment: .leading, spacing: 0) {
                         if index > 0 {
                             Divider()

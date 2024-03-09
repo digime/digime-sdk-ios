@@ -63,7 +63,8 @@ struct DailyStepsChart_Previews: PreviewProvider {
 	static var dataType = QuantityType.stepCount
 	
     static var previews: some View {
-		DailyActivityChart(data: $data, showAverageLine: .constant(false), 
+        DailyActivityChart(data: $data,
+                           showAverageLine: .constant(false),
                            dataAverage: .constant(0),
                            dataType: dataType,
                            barColor: .accentColor)

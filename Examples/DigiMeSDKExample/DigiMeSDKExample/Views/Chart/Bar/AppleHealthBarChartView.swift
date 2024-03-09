@@ -69,12 +69,12 @@ struct AppleHealthBarChartView: View {
                     }
                 }
 				
-				if timeRange == .last30Days {
+                if timeRange == .last30Days {
                     SectionView(header: "Options") {
-						Toggle("Show Daily Average", isOn: $showAverageLine)
-					}
-					.background(.clear)
-				}
+                        Toggle("Show Daily Average", isOn: $showAverageLine)
+                    }
+                    .background(.clear)
+                }
 			}
 			
             SectionView(footer: viewModel.result.isEmpty ? "Press this button to download you Apple Health data." : nil) {
@@ -82,18 +82,17 @@ struct AppleHealthBarChartView: View {
                                           iconSystemName: "heart.circle",
                                           iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
                                           textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                          backgroundColor: Color(.secondarySystemGroupedBackground),
-                                          action: {
+                                          backgroundColor: Color(.secondarySystemGroupedBackground)) {
                     queryData()
-                })
+                }
                 .disabled(viewModel.isLoadingData)
             }
             
-			if let error = viewModel.errorMessage {
+            if let error = viewModel.errorMessage {
                 SectionView(header: "Error") {
                     InfoMessageView(message: error, foregroundColor: .red)
-				}
-			}
+                }
+            }
 		}
         .background(Color(.systemGroupedBackground))
 		.navigationBarTitle("Activity", displayMode: .inline)
@@ -119,22 +118,20 @@ struct AppleHealthBarChartView: View {
 		}
 	}
 	
-	private func getBarTitleView(data: [FitnessActivitySummary], 
-                                 dataType: QuantityType,
-                                 title: String, unit: String) -> some View {
-		VStack(alignment: .leading) {
-			Text("Total \(title)")
-				.background(.clear)
-				.font(.callout)
-				.foregroundStyle(.secondary)
-			Text("\(getTotal(data: data, dataType: dataType), format: .number) \(unit)")
-				.background(.clear)
-				.font(.title2.bold())
-				.foregroundColor(.primary)
-		}
-		.background(.clear)
-		.padding(.top, 20)
-	}
+    private func getBarTitleView(data: [FitnessActivitySummary], dataType: QuantityType, title: String, unit: String) -> some View {
+        VStack(alignment: .leading) {
+            Text("Total \(title)")
+                .background(.clear)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+            Text("\(getTotal(data: data, dataType: dataType), format: .number) \(unit)")
+                .background(.clear)
+                .font(.title2.bold())
+                .foregroundColor(.primary)
+        }
+        .background(.clear)
+        .padding(.top, 20)
+    }
 	
 	// MARK: - Data wrappers
 	private func getTotal(data: [FitnessActivitySummary], dataType: QuantityType) -> Int {

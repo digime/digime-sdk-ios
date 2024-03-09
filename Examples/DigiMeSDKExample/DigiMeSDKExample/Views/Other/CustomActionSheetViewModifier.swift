@@ -62,9 +62,9 @@ struct CustomActionSheetViewModifier: ViewModifier {
                     .shadow(radius: 1)
             }
             
-            CustomActionSheetButton(title: "Cancel", subtitle: nil, action: {
+            CustomActionSheetButton(title: "Cancel", subtitle: nil) {
                 dismiss()
-            })
+            }
             .background(Color(.tertiarySystemGroupedBackground))
             .cornerRadius(10)
             .shadow(radius: 3)
@@ -98,15 +98,15 @@ struct CustomActionSheetPreview: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
             .customActionSheet(isPresented: $showingActionSheet, title: "Actions", message: "Please choose an option", buttons: [
-                CustomActionSheetButton(title: "Dataset 1", subtitle: nil, action: {
+                CustomActionSheetButton(title: "Dataset 1", subtitle: nil) {
                     dismiss()
-                }),
-                CustomActionSheetButton(title: "Dataset 2", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", action: {
+                },
+                CustomActionSheetButton(title: "Dataset 2", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.") {
                     dismiss()
-                }),
-                CustomActionSheetButton(title: "Dataset 3", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.", action: {
+                },
+                CustomActionSheetButton(title: "Dataset 3", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.") {
                     dismiss()
-                }),
+                },
             ])
         }
     }
@@ -124,11 +124,7 @@ struct CustomActionSheetPreview: View {
     }
 }
 
-struct CustomActionSheet_Preview: PreviewProvider {
-    static var previews: some View {
-        CustomActionSheetPreview()
-//            .environment(\.colorScheme, .dark)
-    }
+#Preview {
+    CustomActionSheetPreview()
+        .environment(\.colorScheme, .dark)
 }
-
-

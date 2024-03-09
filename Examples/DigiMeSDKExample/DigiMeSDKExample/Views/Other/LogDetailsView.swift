@@ -27,7 +27,7 @@ struct LogDetailsView: View {
             let keyValuePairs = jsonDictionary.map { (key: $0.key, value: $0.value) }
             JSONTreeView(keyValuePairs)
                 .navigationTitle("Log Details")
-        } 
+        }
         else {
             // Handle the case where json is nil (e.g., show an error message or an empty view)
             Text("No JSON data available")

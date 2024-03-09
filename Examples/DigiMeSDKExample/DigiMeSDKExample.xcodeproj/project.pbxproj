@@ -516,6 +516,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				1E56481A2B9CCFBD00E5FAF7 /* PBXTargetDependency */,
 			);
 			name = DigiMeSDKExample;
 			packageProductDependencies = (
@@ -579,6 +580,7 @@
 				1EB7902F2B46DBB9001D0811 /* XCLocalSwiftPackageReference "../../DigiMeCore" */,
 				1EB790322B46DBDA001D0811 /* XCLocalSwiftPackageReference "../../DigiMeHealthKit" */,
 				1EB790352B46DBE7001D0811 /* XCLocalSwiftPackageReference "../../DigiMeSDK" */,
+				1E5648182B9CCFB100E5FAF7 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = 27D31A21266A4EAB00DB2524 /* Products */;
 			projectDirPath = "";
@@ -715,6 +717,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1E56481A2B9CCFBD00E5FAF7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 1E5648192B9CCFBD00E5FAF7 /* SwiftLintPlugin */;
+		};
 		27D31A38266A4EAD00DB2524 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 27D31A1F266A4EAB00DB2524 /* DigiMeSDKExample */;
@@ -1001,7 +1007,23 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		1E5648182B9CCFB100E5FAF7 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.54.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		1E5648192B9CCFBD00E5FAF7 /* SwiftLintPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E5648182B9CCFB100E5FAF7 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintPlugin";
+		};
 		1EB7902B2B46DB86001D0811 /* DigiMeSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DigiMeSDK;

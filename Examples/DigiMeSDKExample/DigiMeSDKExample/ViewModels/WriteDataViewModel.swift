@@ -238,7 +238,7 @@ class WriteDataViewModel: ObservableObject {
 		}
 	}
 	
-    func exportLogs() -> String  {
+    func exportLogs() -> String {
         do {
             let descriptor = FetchDescriptor<LogEntry>(sortBy: [SortDescriptor(\.date, order: .reverse)])
             let entries = try modelContext.fetch(descriptor)
@@ -267,14 +267,14 @@ class WriteDataViewModel: ObservableObject {
 
     func logWarningMessage(_ message: String) {
         DispatchQueue.main.async {
-            let entry = LogEntry(state: .warning, message: message)
+            let entry = LogEntry(message: message, state: .warning)
             self.modelContext.insert(entry)
         }
     }
 
     func logErrorMessage(_ message: String) {
         DispatchQueue.main.async {
-            let entry = LogEntry(state: .error, message: message)
+            let entry = LogEntry(message: message, state: .error)
             self.modelContext.insert(entry)
         }
     }

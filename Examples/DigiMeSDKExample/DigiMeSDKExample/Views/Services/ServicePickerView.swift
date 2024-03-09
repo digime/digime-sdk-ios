@@ -24,8 +24,8 @@ struct ServicePickerView: View {
     @State private var showSampleDataSetActionSheet = false
     @State private var showSampleDataErrorActionSheet = false
     @State private var proceedSampleDataset = false
-    @State private var pushNextView: Bool = false
-    @State private var proceedButtonIsPressed: Bool = false
+    @State private var pushNextView = false
+    @State private var proceedButtonIsPressed = false
     @State private var flags: [Bool] = []
     @State private var searchText: String = ""
     @State private var timeRangeTemplates: [TimeRangeTemplate] = TestTimeRangeTemplates.data
@@ -104,7 +104,7 @@ struct ServicePickerView: View {
         }
         .onAppear {
             scopeViewModel.serviceSections = filteredSections
-            flags = filteredSections.map { _ in true }
+            flags = filteredSections.map { _ in false }
 
             viewModel.onShowSampleDataSelectorChanged = { shouldShow in
                 self.showSampleDataSetActionSheet = shouldShow
@@ -221,9 +221,9 @@ struct ServicePickerView: View {
         LazyVStack {
             ForEach(Array(filteredSections.enumerated()), id: \.1.id) { i, section in
                 Section {
-                    Button(action: {
+                    Button {
                         flags[i].toggle()
-                    }) {
+                    } label: {
                         HStack {
                             Image(section.iconName)
                                 .resizable()
@@ -259,10 +259,10 @@ struct ServicePickerView: View {
                                 guard !viewModel.isLoadingData else {
                                     return
                                 }
-                                
+
                                 scopeViewModel.selectedService = service
                                 viewModel.sampleDatasets = nil
-                                
+
                                 if !allowScoping {
                                     if viewState == .sampleData {
                                         viewModel.fetchDemoDataSetsInfoForService(service: service)
@@ -271,8 +271,7 @@ struct ServicePickerView: View {
                                         finish()
                                     }
                                 }
-                                    
-                                } label: {
+                            } label: {
                                 makeServiceRow(service: service)
                             }
                             .buttonStyle(servicesButtonStyle)
@@ -454,7 +453,7 @@ struct ServicePickerView: View {
     }
     
     private var buttonProceed: some View {
-        GenericPressableButtonView(isPressed: $proceedButtonIsPressed, action: {
+        GenericPressableButtonView(isPressed: $proceedButtonIsPressed) {
             if
                 viewState == .sampleData,
                 let selectedService = scopeViewModel.selectedService {
@@ -464,7 +463,7 @@ struct ServicePickerView: View {
             else {
                 finish()
             }
-        }) {
+        } content: {
             Text("Add Service")
                 .font(.headline)
                 .fontWeight(.bold)
@@ -529,7 +528,7 @@ struct ServicePickerView: View {
     private func actionSheetButtons() -> [ActionSheet.Button] {
         var buttons: [ActionSheet.Button] = []
 
-        viewModel.sampleDatasets?.forEach { (key, dataset) in
+        viewModel.sampleDatasets?.forEach { key, dataset in
             let button = ActionSheet.Button.default(Text(dataset.name.uppercased())) {
                 self.finish(sampleDataset: key)
             }
@@ -545,12 +544,11 @@ struct ServicePickerView: View {
             return []
         }
 
-        let buttons = datasets.compactMap { (key, dataset) in
+        let buttons = datasets.compactMap { key, dataset in
             CustomActionPickerViewButtonData(title: dataset.name.uppercased(),
-                                       subtitle: dataset.description.isEmpty ? "A comprehensive set of data points for you to get a feel for a real user..." : dataset.description, 
-                                       action: {
+                                             subtitle: dataset.description.isEmpty ? "A comprehensive set of data points for you to get a feel for a real user..." : dataset.description) {
                 self.finish(sampleDataset: key)
-            })
+            }
         }
 
         return buttons
@@ -592,9 +590,8 @@ struct SourceSelectorButtonStyle: ButtonStyle {
             .environmentObject(model)
             .modelContainer(previewer.container)
             .environment(\.colorScheme, .dark)
-    } catch {
+    }
+    catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }
-
-

@@ -45,7 +45,7 @@ struct AppleHealthSummaryView: View {
 						Text("Limit your query")
 						Spacer()
                         Toggle("", isOn: $scopeViewModel.isScopeModificationAllowed)
-                            .onChange(of: scopeViewModel.isScopeModificationAllowed) { value in
+                            .onChange(of: scopeViewModel.isScopeModificationAllowed) { _, value in
                                 if !value {
                                     self.reset()
                                 }
@@ -54,11 +54,11 @@ struct AppleHealthSummaryView: View {
 					}
 					
                     if scopeViewModel.isScopeModificationAllowed {
-                        GenericPressableButtonView(isPressed: $isPressedScope, action: {
+                        GenericPressableButtonView(isPressed: $isPressedScope) {
                             if !viewModel.isLoadingData {
                                 self.scopeViewModel.shouldDisplayModal = true
                             }
-                        }) {
+                        } content: {
                             HStack {
                                 VStack(alignment: .leading, spacing: 10) {
                                     Text("Your Scope time range. ")
@@ -71,10 +71,10 @@ struct AppleHealthSummaryView: View {
                                     Text("\(scopeViewModel.startDateFormatString) - \(scopeViewModel.endDateFormatString)")
                                         .foregroundColor(isPressedScope ? .white : .gray)
                                         .font(.footnote)
-                                        .onChange(of: scopeViewModel.startDate) { newValue in
+                                        .onChange(of: scopeViewModel.startDate) { _, newValue in
                                             scopeViewModel.startDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
                                         }
-                                        .onChange(of: scopeViewModel.endDate) { newValue in
+                                        .onChange(of: scopeViewModel.endDate) { _, newValue in
                                             scopeViewModel.endDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
                                         }
                                     
@@ -95,17 +95,16 @@ struct AppleHealthSummaryView: View {
 					}
 				}
                 
-				SectionView(header: "Access Your Records", footer: "When you query for the first time, you will be prompted for Apple Health permissions.\n\nIf you blocked or ignored the permission request, you may need to open the iOS Settings and manually allow access to approve sharing data with the SDK Example App.") {
+                SectionView(header: "Access Your Records", footer: "When you query for the first time, you will be prompted for Apple Health permissions.\n\nIf you blocked or ignored the permission request, you may need to open the iOS Settings and manually allow access to approve sharing data with the SDK Example App.") {
                     StyledPressableButtonView(text: "Read Apple Health Data",
-                                       iconSystemName: "heart.circle",
-                                       iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
-                                       textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                       backgroundColor: Color(.secondarySystemGroupedBackground),
-                                       action: {
+                                              iconSystemName: "heart.circle",
+                                              iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
+                                              textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                              backgroundColor: Color(.secondarySystemGroupedBackground)) {
                         queryData()
-                    })
-                    .disabled(viewModel.isLoadingData)
-				}
+                    }
+                                              .disabled(viewModel.isLoadingData)
+                }
 				
 				if viewModel.isDataFetched && viewModel.errorMessage == nil {
 					SectionView(header: "Result", footer: footerText) {
@@ -163,7 +162,6 @@ struct AppleHealthSummaryView: View {
                     }
 				}
 			}
-			
 		}
         .navigationBarTitle("Apple Health", displayMode: .inline)
         .background(Color(.systemGroupedBackground))

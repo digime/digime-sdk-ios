@@ -58,9 +58,9 @@ struct GenericPressableButtonViewPreview: View {
     @State private var isPressed = false
 
     var body: some View {
-        GenericPressableButtonView(isPressed: $isPressed, action: {
+        GenericPressableButtonView(isPressed: $isPressed) {
             print("Button pressed")
-        }) {
+        } content: {
             HStack {
                 Image(systemName: "star.fill")
                     .foregroundColor(isPressed ? .white : .yellow)

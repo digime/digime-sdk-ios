@@ -102,7 +102,6 @@ struct JSONCell: View {
 
                 default:
                     leafView("No data")
-                    
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -117,7 +116,7 @@ struct JSONCell: View {
             formatter.dateStyle = .long
             formatter.timeStyle = .short
             return AnyView(leafView(formatter.string(from: date)))
-        } 
+        }
         else {
             return AnyView(leafView(number.stringValue))
         }
@@ -127,14 +126,14 @@ struct JSONCell: View {
         if let data = Data(base64Encoded: string) {
             // Handle potential JSON or other formats encoded in the string
             return handleEncodedStringData(data)
-        } 
+        }
         else {
             return AnyView(leafView(string))
         }
     }
 
     private func handleEncodedStringData(_ data: Data) -> AnyView {
-        if 
+        if
             let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
             let json = jsonObject as? JSON {
 

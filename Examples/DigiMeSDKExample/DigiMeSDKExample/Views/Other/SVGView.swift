@@ -22,8 +22,8 @@ struct SVGWebView: UIViewRepresentable {
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard 
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard
                 let data = data,
                 error == nil else {
                 
@@ -78,7 +78,6 @@ struct SVGWebViewPreview: View {
             SVGWebView(url: svgURL)
                 .frame(width: 50, height: 50)
         }
-
     }
 }
 

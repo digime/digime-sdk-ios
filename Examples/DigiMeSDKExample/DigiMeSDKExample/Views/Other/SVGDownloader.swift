@@ -67,7 +67,7 @@ struct SVGImageView: View {
             switch downloader.downloadState {
             case .notStarted, .inProgress:
                 ProgressView()
-            case .completed(_):
+            case .completed:
                 SVGWebView(url: url)
                     .frame(width: size.width, height: size.height)
             case .failed:

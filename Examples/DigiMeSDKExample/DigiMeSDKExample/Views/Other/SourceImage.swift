@@ -47,7 +47,7 @@ struct SourceImage: View {
                 image
                     .resizable()
                     .transition(.scale(scale: 0.1, anchor: .center))
-            } 
+            }
             else {
                 ProgressView()
                     .frame(width: 10, height: 10)

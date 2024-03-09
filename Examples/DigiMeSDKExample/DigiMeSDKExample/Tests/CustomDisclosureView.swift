@@ -88,7 +88,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let data: [CustomDisclosureItem] = [
             CustomDisclosureItem(title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet lectus felis. Proin rutrum interdum fringilla. Proin arcu nulla, consectetur sed purus non, egestas semper dui. Proin ut nulla a enim lacinia accumsan. Nam in ex interdum, efficitur leo non, convallis lorem. Proin imperdiet venenatis dolor, sed tincidunt arcu. Cras vestibulum lacus nec gravida congue."),
-            CustomDisclosureItem(title: "Cras sit amet lectus felis. Proin rutrum interdum fringilla.", subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet lectus felis. Proin rutrum interdum fringilla. Proin arcu nulla, consectetur sed purus non, egestas semper dui. Proin ut nulla a enim lacinia accumsan. Nam in ex interdum, efficitur leo non, convallis lorem. Proin imperdiet venenatis dolor, sed tincidunt arcu. Cras vestibulum lacus nec gravida congue.")
+            CustomDisclosureItem(title: "Cras sit amet lectus felis. Proin rutrum interdum fringilla.", subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet lectus felis. Proin rutrum interdum fringilla. Proin arcu nulla, consectetur sed purus non, egestas semper dui. Proin ut nulla a enim lacinia accumsan. Nam in ex interdum, efficitur leo non, convallis lorem. Proin imperdiet venenatis dolor, sed tincidunt arcu. Cras vestibulum lacus nec gravida congue."),
         ]
         CustomDisclosureView(data: data)
     }

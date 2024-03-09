@@ -26,11 +26,11 @@ struct CustomNavigationLinkView<Content: View, Destination: View>: View {
                 .foregroundColor(isPressed ? .white : .primary) // Change text color on press
                 .background(isPressed ? Color.blue : Color.clear) // Change background color on press
         }
-        .simultaneousGesture(DragGesture(minimumDistance: 0).onChanged({ _ in
+        .simultaneousGesture(DragGesture(minimumDistance: 0).onChanged { _ in
             isPressed = true
-        }).onEnded({ _ in
+        }.onEnded { _ in
             isPressed = false
-        }))
+        })
         .background(
             NavigationLink(destination: destination) {
                 EmptyView()

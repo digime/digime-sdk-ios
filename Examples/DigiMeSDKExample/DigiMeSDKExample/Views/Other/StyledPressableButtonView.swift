@@ -21,7 +21,7 @@ struct StyledPressableButtonView: View {
     var disclosureIndicator = false
     
     let action: () -> Void
-    @State private var isPressed: Bool = false {
+    @State private var isPressed = false {
         didSet {
             if isPressed {
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
@@ -80,10 +80,12 @@ struct StyledPressableButtonView: View {
         .overlay(
             GeometryReader { geometry in
                 Color.clear
-                    .contentShape(Rectangle())                    
+                    .contentShape(Rectangle())
                     .gesture(
                         DragGesture(minimumDistance: 0)
-                            .onChanged({ _ in self.isPressed = true })
+                            .onChanged { _ in
+                                self.isPressed = true
+                            }
                             .onEnded { value in
                                 // Check if the drag ended inside the view
                                 let location = value.location
@@ -91,7 +93,7 @@ struct StyledPressableButtonView: View {
                                 if frame.contains(location) {
                                     action()
                                 }
-                                
+
                                 // Reset isPressed regardless of where the gesture ends
                                 self.isPressed = false
                             }
@@ -104,7 +106,7 @@ struct StyledPressableButtonView: View {
         var textColor: Color = .red
         var textContent: String = ""
 
-        if 
+        if
             let retryAfter = retryAfter,
             retryAfter > Date() {
 
@@ -140,37 +142,34 @@ struct StyledPressableButtonView_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             StyledPressableButtonView(text: "Action Title",
-                               iconSystemName: "photo",
-                               iconForegroundColor: .gray,
-                               textForegroundColor: .accentColor,
-                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                               requiredReauth: true,
-                               retryAfter: Date().adding(hours: 3),
-                               action: {
-            })
-            .previewLayout(.sizeThatFits)
-            .padding()
-
-            StyledPressableButtonView(text: "Action Title",
                                       iconSystemName: "photo",
                                       iconForegroundColor: .gray,
                                       textForegroundColor: .accentColor,
                                       backgroundColor: Color(.secondarySystemGroupedBackground),
                                       requiredReauth: true,
-                                      action: {
-            })
-            .previewLayout(.sizeThatFits)
-            .padding()
-
+                                      retryAfter: Date().adding(hours: 3)) {
+            }
+                                      .previewLayout(.sizeThatFits)
+                                      .padding()
+            
             StyledPressableButtonView(text: "Action Title",
                                       iconSystemName: "photo",
                                       iconForegroundColor: .gray,
                                       textForegroundColor: .accentColor,
                                       backgroundColor: Color(.secondarySystemGroupedBackground),
-                                      action: {
-            })
-            .previewLayout(.sizeThatFits)
-            .padding()
+                                      requiredReauth: true) {
+            }
+                                      .previewLayout(.sizeThatFits)
+                                      .padding()
+            
+            StyledPressableButtonView(text: "Action Title",
+                                      iconSystemName: "photo",
+                                      iconForegroundColor: .gray,
+                                      textForegroundColor: .accentColor,
+                                      backgroundColor: Color(.secondarySystemGroupedBackground)) {
+            }
+                                      .previewLayout(.sizeThatFits)
+                                      .padding()
         }
         .background(.black)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

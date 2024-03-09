@@ -52,7 +52,7 @@ struct MonthlyActivityChart: View {
 struct MonthlyStepsChart_Previews: PreviewProvider {
 	@State static var data = TestDailyActivity.allTime
     static var previews: some View {
-		MonthlyActivityChart(data: $data, 
+        MonthlyActivityChart(data: $data,
                              dataType: QuantityType.stepCount,
                              barColor: .accentColor)
     }

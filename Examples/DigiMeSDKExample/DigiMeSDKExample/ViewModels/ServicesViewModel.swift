@@ -280,21 +280,27 @@ class ServicesViewModel: ObservableObject {
     
     func handleSampleDataSelectorChange() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
             self.onShowSampleDataSelectorChanged?(true)
         }
     }
     
     func handleSampleDataErrorChange() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
             self.onShowSampleDataErrorChanged?(true)
         }
     }
     
     func handleProceedSampleDatasetChange() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
             self.onProceedSampleDatasetChanged?(true)
         }
     }
@@ -441,14 +447,14 @@ class ServicesViewModel: ObservableObject {
 
     func logWarningMessage(_ message: String) {
         DispatchQueue.main.async {
-            let entry = LogEntry(state: .warning, message: message)
+            let entry = LogEntry(message: message, state: .warning)
             self.modelContext.insert(entry)
         }
     }
 
     func logErrorMessage(_ message: String) {
         DispatchQueue.main.async {
-            let entry = LogEntry(state: .error, message: message)
+            let entry = LogEntry(message: message, state: .error)
             self.modelContext.insert(entry)
         }
     }
@@ -666,7 +672,7 @@ class ServicesViewModel: ObservableObject {
                     if let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }) {
                         let allErrors = reauthAccounts.compactMap { $0.error }
                         allErrors.forEach { error in
-                            self.logErrorMessage("Error: '\(error.message)', code: \(error.statusCode)")
+                            self.logErrorMessage("Error: '\(error.message ?? "n/a")', code: \(error.statusCode)")
                         }
                     }
 

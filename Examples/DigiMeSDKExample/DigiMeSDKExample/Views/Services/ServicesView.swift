@@ -37,10 +37,9 @@ struct ServicesView: View {
                                                           iconForegroundColor: viewModel.isLoadingData ? .gray : .indigo,
                                                           textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
                                                           backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                          disclosureIndicator: true,
-                                                          action: {
+                                                          disclosureIndicator: true) {
                                     navigationPath.append(ServicesNavigationDestination.contracts)
-                                })
+                                }
                                 .disabled(viewModel.isLoadingData)
                             }
 
@@ -54,8 +53,7 @@ struct ServicesView: View {
                                                                   textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
                                                                   backgroundColor: Color(.secondarySystemGroupedBackground),
                                                                   requiredReauth: account.requiredReauth,
-                                                                  retryAfter: account.retryAfter,
-                                                                  action: {
+                                                                  retryAfter: account.retryAfter) {
                                             if account.requiredReauth {
                                                 viewModel.reauthorizeAccount(connectedAccount: account)
                                             }
@@ -63,7 +61,7 @@ struct ServicesView: View {
                                                 activeAccount = account
                                                 showAccountOptions = true
                                             }
-                                        })
+                                        }
                                         .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
                                         .disabled(viewModel.isLoadingData)
                                     }
@@ -76,10 +74,9 @@ struct ServicesView: View {
                                                               iconName: "passIcon",
                                                               iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
                                                               textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                                              backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                              action: {
+                                                              backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                         viewModel.authorizeSelectedService()
-                                    })
+                                    }
                                     .disabled(viewModel.isLoadingData)
                                 }
 
@@ -88,10 +85,9 @@ struct ServicesView: View {
                                                               iconSystemName: "plus.circle",
                                                               iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
                                                               textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                                              backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                              action: {
+                                                              backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                         viewModel.addNewService()
-                                    })
+                                    }
                                     .disabled(viewModel.isLoadingData)
 
                                     if !viewModel.linkedAccounts.isEmpty {
@@ -99,10 +95,9 @@ struct ServicesView: View {
                                                                   iconSystemName: "arrow.clockwise.circle",
                                                                   iconForegroundColor: viewModel.isLoadingData ? .gray : .purple,
                                                                   textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                                                  backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                                  action: {
+                                                                  backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                             viewModel.reloadServiceData(readOptions: scopeViewModel.readOptions)
-                                        })
+                                        }
                                         .disabled(viewModel.isLoadingData)
                                     }
                                 }
@@ -111,10 +106,9 @@ struct ServicesView: View {
                                                           iconName: "certIcon",
                                                           iconForegroundColor: viewModel.isLoadingData ? .gray : .orange,
                                                           textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                                          backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                          action: {
+                                                          backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                     viewModel.displayContractDetails()
-                                })
+                                }
                                 .disabled(viewModel.isLoadingData)
                             }
 
@@ -124,10 +118,9 @@ struct ServicesView: View {
                                                               iconName: "deleteIcon",
                                                               iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
                                                               textForegroundColor: viewModel.isLoadingData ? .gray : .red,
-                                                              backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                              action: {
+                                                              backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                         viewModel.removeUser()
-                                    })
+                                    }
                                     .disabled(viewModel.isLoadingData)
                                 }
                             }
@@ -199,7 +192,7 @@ struct ServicesView: View {
             .cancel(),
             .default(Text("Export Portability Report")) {
                 presentPortabilityDateManager = true
-            }
+            },
         ]
 
         if let account = activeAccount {
@@ -234,7 +227,8 @@ struct ServicesView: View {
                 .modelContainer(previewer.container)
                 .environment(\.colorScheme, .dark)
         }
-    } catch {
+    }
+    catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }

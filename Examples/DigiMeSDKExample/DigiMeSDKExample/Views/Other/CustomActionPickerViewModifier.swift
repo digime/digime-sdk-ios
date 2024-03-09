@@ -37,7 +37,7 @@ struct CustomActionPickerViewModifier: ViewModifier {
         .onAppear {
             updateSelectedItemIfNeeded()
         }
-        .onChange(of: buttons) { _ in
+        .onChange(of: buttons) { _, _ in
             updateSelectedItemIfNeeded()
         }
         .onTapGesture {
@@ -98,7 +98,7 @@ struct CustomActionPickerViewModifier: ViewModifier {
     }
 
     private func updateSelectedItemIfNeeded() {
-        if 
+        if
             selectedItem == nil,
             let firstItem = buttons.first {
 
@@ -116,9 +116,9 @@ struct CustomActionPickerViewModifier: ViewModifier {
 extension CustomActionPickerViewModifier {
     @ViewBuilder
     func makeCustomButton(isPressed: Binding<Bool>, destructive: Bool, buttonText: String, backgroundColor: Color, action: @escaping () -> Void) -> some View {
-        GenericPressableButtonView(isPressed: isPressed, action: {
+        GenericPressableButtonView(isPressed: isPressed) {
             action()
-        }) {
+        } content: {
             HStack {
                 Text(buttonText)
                     .foregroundColor(isPressed.wrappedValue ? .white : .accentColor)
@@ -148,18 +148,17 @@ struct CustomPickerPreview: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
             .customActionPickerView(isPresented: $showingActionSheet, title: "Actions", message: "Please choose an option", buttons: [
-                CustomActionPickerViewButtonData(title: "Dataset 1", subtitle: nil, action: {
+                CustomActionPickerViewButtonData(title: "Dataset 1", subtitle: nil) {
                     dismiss()
-                }),
-                CustomActionPickerViewButtonData(title: "Dataset 2", subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", action: {
+                },
+                CustomActionPickerViewButtonData(title: "Dataset 2", subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.") {
                     dismiss()
-                }),
-                CustomActionPickerViewButtonData(title: "Dataset 3", subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", action: {
+                },
+                CustomActionPickerViewButtonData(title: "Dataset 3", subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") {
                     dismiss()
-                }),
+                },
             ])
         }
-
     }
 
     private func showDialog() {

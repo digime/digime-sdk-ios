@@ -108,7 +108,7 @@ opt_in_rules:
   - array_init
 #  - attributes
 #  - balanced_xctest_lifecycle
-  - capture_variable
+#  - capture_variable
 #  - closure_body_length
   - closure_end_indentation
   - closure_spacing
@@ -133,7 +133,7 @@ opt_in_rules:
 #  - explicit_acl
 #  - explicit_enum_raw_value
   - explicit_init
-  - explicit_self
+#  - explicit_self
 #  - explicit_top_level_acl
 #  - explicit_type_interface
   - extension_access_modifier
@@ -213,8 +213,8 @@ opt_in_rules:
   - unavailable_function
   - unneeded_parentheses_in_closure_argument
   - unowned_variable_capture
-  - unused_declaration
-  - unused_import
+#  - unused_declaration
+#  - unused_import
   - untyped_error_in_catch
   - vertical_parameter_alignment_on_call
 #  - vertical_whitespace_between_cases
@@ -223,6 +223,12 @@ opt_in_rules:
 #  - void_function_in_ternary // temporarily removed in 0.39.1
   - xct_specific_matcher
   - yoda_condition
+
+analyzer_rules:
+  - capture_variable
+  - explicit_self
+  - unused_declaration
+  - unused_import
 
 cyclomatic_complexity:
   warning: 15

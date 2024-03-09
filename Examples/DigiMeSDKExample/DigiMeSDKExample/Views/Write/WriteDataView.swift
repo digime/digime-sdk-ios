@@ -25,108 +25,99 @@ struct WriteDataView: View {
                     SectionView(header: "Upload Example Data") {
                         if viewModel.credentialsForWrite != nil {
                             StyledPressableButtonView(text: "Upload JSON",
-                                               iconName: "jsonIcon",
-                                               iconForegroundColor: viewModel.loadingInProgress ? .gray : .green,
-                                               textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
-                                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                                               action: {
+                                                      iconName: "jsonIcon",
+                                                      iconForegroundColor: viewModel.loadingInProgress ? .gray : .green,
+                                                      textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
+                                                      backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                 presentImporter = true
                                 fileType = .json
-                            })
-                            .disabled(viewModel.loadingInProgress)
-                            
+                            }
+                                                      .disabled(viewModel.loadingInProgress)
+
                             StyledPressableButtonView(text: "Upload PDF",
-                                               iconName: "pdfIcon",
-                                               iconForegroundColor: viewModel.loadingInProgress ? .gray : .red,
-                                               textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
-                                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                                               action: {
+                                                      iconName: "pdfIcon",
+                                                      iconForegroundColor: viewModel.loadingInProgress ? .gray : .red,
+                                                      textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
+                                                      backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                 presentImporter = true
                                 fileType = .pdf
-                            })
-                            .disabled(viewModel.loadingInProgress)
-                            
+                            }
+                                                      .disabled(viewModel.loadingInProgress)
+
                             StyledPressableButtonView(text: "Upload Image",
-                                               iconSystemName: "photo.on.rectangle.angled",
-                                               iconForegroundColor: .gray,
-                                               textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
-                                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                                               action: {
+                                                      iconSystemName: "photo.on.rectangle.angled",
+                                                      iconForegroundColor: .gray,
+                                                      textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
+                                                      backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                 presentPhotoPicker = true
                                 fileType = .image
-                            })
-                            .disabled(viewModel.loadingInProgress)
+                            }
+                                                      .disabled(viewModel.loadingInProgress)
                         }
                         else {
                             StyledPressableButtonView(text: "Authorise",
-                                               iconName: "passIcon",
-                                               iconForegroundColor: viewModel.loadingInProgress ? .gray : .green,
-                                               textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
-                                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                                               action: {
+                                                      iconName: "passIcon",
+                                                      iconForegroundColor: viewModel.loadingInProgress ? .gray : .green,
+                                                      textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
+                                                      backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                 viewModel.authorizeWriteContract()
-                            })
-                            .disabled(viewModel.loadingInProgress)
+                            }
+                                                      .disabled(viewModel.loadingInProgress)
                         }
-                        
+
                         StyledPressableButtonView(text: "Request Contract Details",
-                                           iconName: "certIcon",
-                                           iconForegroundColor: viewModel.loadingInProgress ? .gray : .orange,
-                                           textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
-                                           backgroundColor: Color(.secondarySystemGroupedBackground),
-                                           action: {
+                                                  iconName: "certIcon",
+                                                  iconForegroundColor: viewModel.loadingInProgress ? .gray : .orange,
+                                                  textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
+                                                  backgroundColor: Color(.secondarySystemGroupedBackground)) {
                             viewModel.authorizeWriteContract()
-                        })
-                        .disabled(viewModel.loadingInProgress)
+                        }
+                                                  .disabled(viewModel.loadingInProgress)
                     }
-                    
+
                     SectionView(header: "Read Uploaded Data") {
                         if viewModel.credentialsForRead != nil {
                             StyledPressableButtonView(text: "Read Data",
-                                               iconSystemName: "arrow.down.doc",
-                                               iconForegroundColor: viewModel.loadingInProgress ? .gray : .green,
-                                               textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
-                                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                                               action: {
+                                                      iconSystemName: "arrow.down.doc",
+                                                      iconForegroundColor: viewModel.loadingInProgress ? .gray : .green,
+                                                      textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
+                                                      backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                 viewModel.retrieveData()
-                            })
-                            .disabled(viewModel.loadingInProgress)
+                            }
+                                                      .disabled(viewModel.loadingInProgress)
                         }
                         else {
                             StyledPressableButtonView(text: "Authorise",
-                                               iconName: "passIcon",
-                                               iconForegroundColor: viewModel.loadingInProgress ? .gray : .green,
-                                               textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
-                                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                                               action: {
+                                                      iconName: "passIcon",
+                                                      iconForegroundColor: viewModel.loadingInProgress ? .gray : .green,
+                                                      textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
+                                                      backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                 viewModel.authorizeReadContract()
-                            })
-                            .disabled(viewModel.loadingInProgress)
+                            }
+                                                      .disabled(viewModel.loadingInProgress)
                         }
-                        
+
                         StyledPressableButtonView(text: "Request Contract Details",
-                                           iconName: "certIcon",
-                                           iconForegroundColor: viewModel.loadingInProgress ? .gray : .orange,
-                                           textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
-                                           backgroundColor: Color(.secondarySystemGroupedBackground),
-                                           action: {
+                                                  iconName: "certIcon",
+                                                  iconForegroundColor: viewModel.loadingInProgress ? .gray : .orange,
+                                                  textForegroundColor: viewModel.loadingInProgress ? .gray : .accentColor,
+                                                  backgroundColor: Color(.secondarySystemGroupedBackground)) {
                             viewModel.displayContractDetails()
-                        })
-                        .disabled(viewModel.loadingInProgress)
+                        }
+                                                  .disabled(viewModel.loadingInProgress)
                     }
-                    
+
                     if viewModel.credentialsForWrite != nil || viewModel.credentialsForRead != nil {
                         SectionView(header: "Delete Your Data") {
                             
                             StyledPressableButtonView(text: "Delete Data and Clear Logs",
-                                               iconName: "deleteIcon",
-                                               iconForegroundColor: viewModel.loadingInProgress ? .gray : .red,
-                                               textForegroundColor: viewModel.loadingInProgress ? .gray : .red,
-                                               backgroundColor: Color(.secondarySystemGroupedBackground),
-                                               action: {
+                                                      iconName: "deleteIcon",
+                                                      iconForegroundColor: viewModel.loadingInProgress ? .gray : .red,
+                                                      textForegroundColor: viewModel.loadingInProgress ? .gray : .red,
+                                                      backgroundColor: Color(.secondarySystemGroupedBackground)) {
                                 viewModel.reset()
-                            })
-                            .disabled(viewModel.loadingInProgress)
+                            }
+                                                      .disabled(viewModel.loadingInProgress)
                         }
                     }
                 }

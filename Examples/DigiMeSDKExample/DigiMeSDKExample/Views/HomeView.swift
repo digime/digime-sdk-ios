@@ -35,7 +35,6 @@ struct HomeView: View {
         catch {
             fatalError(error.localizedDescription)
         }
-
     }
 
     var body: some View {
@@ -106,9 +105,9 @@ struct HomeView: View {
 extension HomeView {
     @ViewBuilder
     func makeCustomButton(imageName: String, buttonText: String, isPressed: Binding<Bool>, destination: HomeNavigationDestination, imageColor: Color) -> some View {
-        GenericPressableButtonView(isPressed: isPressed, action: {
+        GenericPressableButtonView(isPressed: isPressed) {
             navigationPath.append(destination)
-        }) {
+        } content: {
             HStack {
                 Image(systemName: imageName)
                     .foregroundColor(isPressed.wrappedValue ? .white : imageColor)
@@ -127,10 +126,7 @@ extension HomeView {
     }
 }
 
-
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-            .environment(\.colorScheme, .dark)
-    }
+#Preview {
+    HomeView()
+        .environment(\.colorScheme, .dark)
 }

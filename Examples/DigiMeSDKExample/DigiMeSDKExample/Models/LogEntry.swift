@@ -26,15 +26,16 @@ class LogEntry: Codable {
 		case image
 	}
 	
-	var state: State = State.success
+	var state = State.success
 	var date = Date()
 	var message: String
-	var attachmentType: AttachmentType = AttachmentType.none
+	var attachmentType = AttachmentType.none
+    
     @Attribute(.externalStorage) var attachment: Data?
     @Attribute(.externalStorage) var attachmentRawMeta: Data?
     @Attribute(.externalStorage) var attachmentMappedMeta: Data?
 
-    init(state: State = .success, date: Date = Date(), message: String, attachmentType: AttachmentType = .none, attachment: Data? = nil, attachmentRawMeta: Data? = nil, attachmentMappedMeta: Data? = nil) {
+    init(message: String, state: State = .success, date: Date = Date(), attachmentType: AttachmentType = .none, attachment: Data? = nil, attachmentRawMeta: Data? = nil, attachmentMappedMeta: Data? = nil) {
         self.state = state
         self.date = date
         self.message = message

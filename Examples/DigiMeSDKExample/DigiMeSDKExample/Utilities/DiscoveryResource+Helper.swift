@@ -52,7 +52,7 @@ class ResourceUtility: NSObject {
 
 extension Array where Element == DiscoveryResource {
     func svgResource() -> DiscoveryResource? {
-        return self.filter { $0.mimeType == "image/svg+xml" }.first
+        return self.first { $0.mimeType == "image/svg+xml" }
     }
 
     func optimalResource(for givenSize: CGSize) -> DiscoveryResource? {

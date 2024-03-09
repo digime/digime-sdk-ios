@@ -54,10 +54,9 @@ struct AppleHealthLineChartView: View {
                                           iconSystemName: "heart.circle",
                                           iconForegroundColor: viewModel.isLoadingData ? .gray : .red,
                                           textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
-                                          backgroundColor: Color(.secondarySystemGroupedBackground),
-                                          action: {
+                                          backgroundColor: Color(.secondarySystemGroupedBackground)) {
                     queryData()
-                })
+                }
                 .disabled(viewModel.isLoadingData)
             }
             

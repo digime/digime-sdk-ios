@@ -67,11 +67,11 @@ struct CustomActionSheetView: View {
                     .shadow(radius: 1)
             }
 
-            CustomActionSheetButton(title: "Cancel", subtitle: nil, action: {
+            CustomActionSheetButton(title: "Cancel", subtitle: nil) {
                 withAnimation {
                     self.isPresented = false
                 }
-            })
+            }
             .background(Color(.tertiarySystemGroupedBackground))
             .cornerRadius(10)
             .shadow(radius: 3)
@@ -107,15 +107,15 @@ struct CustomActionSheetViewPreview: View {
     
     func customActionSheetButtons() -> [CustomActionSheetButton] {
         let buttons = [
-            CustomActionSheetButton(title: "Option 1", subtitle: nil, action: {
+            CustomActionSheetButton(title: "Option 1", subtitle: nil) {
                 dismiss()
-            }),
-            CustomActionSheetButton(title: "Option 2", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", action: {
+            },
+            CustomActionSheetButton(title: "Option 2", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.") {
                 dismiss()
-            }),
-            CustomActionSheetButton(title: "Option 3", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.", action: {
+            },
+            CustomActionSheetButton(title: "Option 3", subtitle: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.") {
                 dismiss()
-            }),
+            },
         ]
         return buttons
     }
@@ -127,9 +127,7 @@ struct CustomActionSheetViewPreview: View {
     }
 }
 
-struct CustomActionSheetView_Preview: PreviewProvider {
-    static var previews: some View {
-        CustomActionSheetViewPreview()
-//            .environment(\.colorScheme, .dark)
-    }
+#Preview {
+    CustomActionSheetViewPreview()
+        .environment(\.colorScheme, .dark)
 }
