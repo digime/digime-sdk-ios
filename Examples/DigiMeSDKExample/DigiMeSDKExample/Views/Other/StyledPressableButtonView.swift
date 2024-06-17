@@ -19,7 +19,8 @@ struct StyledPressableButtonView: View {
     var requiredReauth = false
     var retryAfter: Date?
     var disclosureIndicator = false
-    
+    var isDisabled = false
+
     let action: () -> Void
     @State private var isPressed = false {
         didSet {
@@ -49,7 +50,14 @@ struct StyledPressableButtonView: View {
     var body: some View {
         HStack {
             if let url = iconUrl {
-                SourceImage(url: url)
+                if url.pathExtension.lowercased() == "svg" {
+                    SVGImageView(url: url, size: CGSize(width: 20, height: 20))
+                        .frame(width: 20, height: 20, alignment: .center)
+                }
+                else {
+                    SourceImage(url: url)
+                        .frame(width: 20, height: 20, alignment: .center)
+                }
             }
             else if let image = image {
                 image
@@ -84,14 +92,18 @@ struct StyledPressableButtonView: View {
                     .gesture(
                         DragGesture(minimumDistance: 0)
                             .onChanged { _ in
-                                self.isPressed = true
+                                if !isDisabled {
+                                    self.isPressed = true
+                                }
                             }
                             .onEnded { value in
-                                // Check if the drag ended inside the view
-                                let location = value.location
-                                let frame = geometry.frame(in: .local)
-                                if frame.contains(location) {
-                                    action()
+                                if !isDisabled {
+                                    // Check if the drag ended inside the view
+                                    let location = value.location
+                                    let frame = geometry.frame(in: .local)
+                                    if frame.contains(location) {
+                                        action()
+                                    }
                                 }
 
                                 // Reset isPressed regardless of where the gesture ends
@@ -136,42 +148,38 @@ struct StyledPressableButtonView: View {
     }
 }
 
-struct StyledPressableButtonView_Previews: PreviewProvider {
-    @State static var isPressed = false
-
-    static var previews: some View {
-        ScrollView {
-            StyledPressableButtonView(text: "Action Title",
-                                      iconSystemName: "photo",
-                                      iconForegroundColor: .gray,
-                                      textForegroundColor: .accentColor,
-                                      backgroundColor: Color(.secondarySystemGroupedBackground),
-                                      requiredReauth: true,
-                                      retryAfter: Date().adding(hours: 3)) {
-            }
-                                      .previewLayout(.sizeThatFits)
-                                      .padding()
-            
-            StyledPressableButtonView(text: "Action Title",
-                                      iconSystemName: "photo",
-                                      iconForegroundColor: .gray,
-                                      textForegroundColor: .accentColor,
-                                      backgroundColor: Color(.secondarySystemGroupedBackground),
-                                      requiredReauth: true) {
-            }
-                                      .previewLayout(.sizeThatFits)
-                                      .padding()
-            
-            StyledPressableButtonView(text: "Action Title",
-                                      iconSystemName: "photo",
-                                      iconForegroundColor: .gray,
-                                      textForegroundColor: .accentColor,
-                                      backgroundColor: Color(.secondarySystemGroupedBackground)) {
-            }
-                                      .previewLayout(.sizeThatFits)
-                                      .padding()
+#Preview {
+    ScrollView {
+        StyledPressableButtonView(text: "Action Title",
+                                  iconSystemName: "photo",
+                                  iconForegroundColor: .gray,
+                                  textForegroundColor: .accentColor,
+                                  backgroundColor: Color(.secondarySystemGroupedBackground),
+                                  requiredReauth: true,
+                                  retryAfter: Date().adding(hours: 3)) {
         }
-        .background(.black)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                  .previewLayout(.sizeThatFits)
+                                  .padding()
+
+        StyledPressableButtonView(text: "Action Title",
+                                  iconSystemName: "photo",
+                                  iconForegroundColor: .gray,
+                                  textForegroundColor: .accentColor,
+                                  backgroundColor: Color(.secondarySystemGroupedBackground),
+                                  requiredReauth: true) {
+        }
+                                  .previewLayout(.sizeThatFits)
+                                  .padding()
+
+        StyledPressableButtonView(text: "Action Title",
+                                  iconSystemName: "photo",
+                                  iconForegroundColor: .gray,
+                                  textForegroundColor: .accentColor,
+                                  backgroundColor: Color(.secondarySystemGroupedBackground)) {
+        }
+                                  .previewLayout(.sizeThatFits)
+                                  .padding()
     }
+    .background(.black)
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
 }

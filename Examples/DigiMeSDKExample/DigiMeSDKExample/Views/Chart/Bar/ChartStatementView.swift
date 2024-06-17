@@ -71,13 +71,11 @@ struct ChartStatementView: View {
 	}
 }
 
-struct ChartStatementView_Previews: PreviewProvider {
-	static var endDate = Date()
-	static var startDate = Calendar.current.date(byAdding: .month, value: -1, to: endDate)!
-	static var distance = FitnessActivitySummary.Distances(activity: "activity", distance: 888.0)
-	static var data = [FitnessActivitySummary(identifier: "id", entityId: "entityId", accountEntityId: "accountId", steps: 100.0, distances: [distance], calories: 1000, activity: 500, createdDate: startDate, startDate: startDate, endDate: endDate)]
-	
-    static var previews: some View {
-		ChartStatementView(showModal: .constant(true), data: data)
-    }
+#Preview {
+    let endDate = Date()
+    let startDate = Calendar.current.date(byAdding: .month, value: -1, to: endDate)!
+    let distance = FitnessActivitySummary.Distances(activity: "activity", distance: 888.0)
+    let data = [FitnessActivitySummary(identifier: "id", entityId: "entityId", accountEntityId: "accountId", steps: 100.0, distances: [distance], calories: 1000, activity: 500, createdDate: startDate, startDate: startDate, endDate: endDate)]
+
+    return ChartStatementView(showModal: .constant(true), data: data)
 }

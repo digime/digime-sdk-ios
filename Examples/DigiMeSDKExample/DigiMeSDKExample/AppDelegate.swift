@@ -6,6 +6,7 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
+import DigiMeHealthKit
 import UIKit
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +20,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let diskCapacity = 500 * 1024 * 1024   // 500 MB
         let cache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: "myDataPath")
         URLCache.shared = cache
-        
+
+        let exampleString = "application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {" // ASCII characters
+
+        // Memory usage of String
+        let stringMemory = exampleString.utf16.count * 2 // UTF-16, 2 bytes per character
+
+        // Memory usage of Data
+        let dataUTF8 = exampleString.data(using: .utf8)!
+        let dataMemoryUTF8 = dataUTF8.count // 1 byte per ASCII character in UTF-8
+
+        print("Memory used by String: \(stringMemory) bytes")
+        print("Memory used by Data (UTF-8): \(dataMemoryUTF8) bytes")
+
         return true
     }
 

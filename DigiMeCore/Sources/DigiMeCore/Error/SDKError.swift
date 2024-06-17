@@ -139,6 +139,12 @@ public enum SDKError: Error {
     /// Error creating request JWT to export report
     case errorCreatingRequestJwtToExportReport
     
+    /// Invalid  basic request JWT
+    case invalidBasicRequestJwt
+
+    /// An unsuccessful HTTP response was returned from digi.me server
+    case storageResponseError(statusCode: Int?, errorMessage: String?)
+
     /// An unexpected error has occurred - please contact support
     case other
     
@@ -336,6 +342,16 @@ extension SDKError: CustomStringConvertible {
         case .errorCreatingRequestJwtToExportReport:
             return "Error creating JWT to export report"
 		
+        case .invalidBasicRequestJwt:
+            return "Error creating basic request JWT"
+
+        case let .storageResponseError(statusCode, errorMessage):
+            guard let statusCode = statusCode, let errorMessage = errorMessage else {
+                return "An unsuccessful HTTP response was returned from cloud.digi.me server."
+            }
+            
+            return "An unsuccessful HTTP response was returned from cloud.digi.me server. Status code: \(statusCode). Error message: `\(errorMessage)`"
+
         case .other:
             return "An unexpected error has occurred - please contact digi.me support."
 	

@@ -25,19 +25,24 @@ public struct Configuration {
     
 	/// Base URL path to override default digi.me host. If not present will use the default value.
 	public let baseUrl: String?
-	
+
+    /// Provisional cloud storage base URL path to override default digi.me host. If not present will use the default value.
+    public let cloudBaseUrl: String?
+
     /// Creates a configuration
     /// - Parameters:
     ///   - appId: Your application identifier
     ///   - contractId: Your contract identifier
     ///   - privateKey: Your PKCS1 private key in PEM format - either with or without the "-----BEGIN RSA PRIVATE KEY-----"  header and "-----END RSA PRIVATE KEY-----" footer
-	///   - authUsingExternalBrowser:	By default will use `SFSafariViewController` instance or will forward authentication flow to the default browser on the device.
-	///	  - baseUrl: Base URL path including version to change digi.me environment. If not present will use the default one.
-    public init(appId: String, contractId: String, privateKey: String, authUsingExternalBrowser: Bool = false, baseUrl: String? = nil) throws {
+    ///   - authUsingExternalBrowser:	By default will use `SFSafariViewController` instance or will forward authentication flow to the default browser on the device.
+    ///	  - baseUrl: Base URL path including version to change digi.me environment. If not present will use the default one.
+    ///   - cloudBaseUrl: Provisional cloud storage base URL path including version to change digi.me environment. If not present will use the default one.
+    public init(appId: String, contractId: String, privateKey: String, authUsingExternalBrowser: Bool = false, baseUrl: String? = nil, cloudBaseUrl: String? = nil) throws {
         self.appId = appId
         self.contractId = contractId
         self.privateKeyData = try Crypto.base64EncodedData(from: privateKey)
 		self.authUsingExternalBrowser = authUsingExternalBrowser
 		self.baseUrl = baseUrl
+        self.cloudBaseUrl = cloudBaseUrl
     }
 }

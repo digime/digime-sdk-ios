@@ -42,8 +42,6 @@ struct ScopeLimitsDetailsView: View {
     }
 }
 
-struct ScopeLimitsDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ScopeLimitsDetailsView(viewModel: ScopeViewModel())
-    }
+#Preview {
+    ScopeLimitsDetailsView(viewModel: ScopeViewModel())
 }

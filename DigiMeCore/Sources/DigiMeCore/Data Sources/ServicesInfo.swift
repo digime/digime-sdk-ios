@@ -10,11 +10,11 @@ import Foundation
 
 /// Info for services and related groups
 public struct ServicesInfo: Codable {
-    public let countries: [ServiceCountry]
-    public let serviceGroups: [ServiceGroup]
+    public let countries: [SourceCountry]
+    public let serviceGroups: [ServiceGroupType]
     public let services: [Service]
     
-    public init(countries: [ServiceCountry], serviceGroups: [ServiceGroup], services: [Service]) {
+    public init(countries: [SourceCountry], serviceGroups: [ServiceGroupType], services: [Service]) {
         self.countries = countries
         self.serviceGroups = serviceGroups
         self.services = services

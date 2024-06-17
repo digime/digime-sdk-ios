@@ -16,12 +16,17 @@ public final class DigiMe {
         return self.downloadService.isDownloadingFiles
     }
 
+    public var isDownloadingStorageFiles: Bool {
+        return self.downloadStorageService.isDownloadingFiles
+    }
+
     private let configuration: Configuration
 	private let authService: OAuthService
     private let consentManager: ConsentManager
     private let sessionCache: SessionCache
 	private let contractsCache: ContractsCache
     private let apiClient: APIClient
+    private let storageClient: StorageClient
     private let dataDecryptor: DataDecryptor
     private let certificateParser: CertificateParser
     
@@ -38,7 +43,15 @@ public final class DigiMe {
     private lazy var uploadService: FileUploadService = {
         FileUploadService(apiClient: apiClient, configuration: configuration)
     }()
-    
+
+    private lazy var downloadStorageService: StorageDownloadService = {
+        StorageDownloadService(storageClient: storageClient, dataDecryptor: dataDecryptor)
+    }()
+
+    private lazy var uploadStorageService: StorageUploadService = {
+        StorageUploadService(storageClient: storageClient, configuration: configuration)
+    }()
+
     @Atomic private var allFilesReader: AllFilesReader?
     
     private var session: Session? {
@@ -74,6 +87,7 @@ public final class DigiMe {
     public init(configuration: Configuration) {
         self.configuration = configuration
 		self.apiClient = APIClient(with: configuration.baseUrl)
+        self.storageClient = StorageClient(with: configuration.cloudBaseUrl)
         self.authService = OAuthService(configuration: configuration, apiClient: apiClient)
         self.consentManager = ConsentManager(configuration: configuration)
         self.sessionCache = SessionCache()
@@ -120,7 +134,8 @@ public final class DigiMe {
     ///   - linkToContractWithCredentials: When specified, connects to same library as another contract.  Does nothing if user has already authorized this contract.
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon authorization completion with new or refreshed credentials, or any errors encountered.
-    public func authorize(credentials: Credentials? = nil, serviceId: Int? = nil, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, readOptions: ReadOptions? = nil, linkToContractWithCredentials linkCredentials: Credentials? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    ///   - storageId: The unique identifier for the cloud storage instance. This ID is typically obtained after creating a cloud instance through the SDK or via direct integration.
+    public func authorize(credentials: Credentials? = nil, serviceId: Int? = nil, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, readOptions: ReadOptions? = nil, linkToContractWithCredentials linkCredentials: Credentials? = nil, storageId: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         if let validationError = validateClient() {
             resultQueue.async {
                 completion(.failure(validationError))
@@ -136,12 +151,30 @@ public final class DigiMe {
                 }
                 
             case .failure(SDKError.authorizationRequired):
-                self.beginAuth(serviceId: serviceId, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, readOptions: readOptions, linkToContractWithCredentials: linkCredentials) { authResult in
-                    resultQueue.async {
-                        completion(authResult)
+                guard let storageId = storageId else {
+                    self.beginAuth(serviceId: serviceId, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, readOptions: readOptions, linkToContractWithCredentials: linkCredentials) { authResult in
+                        resultQueue.async {
+                            completion(authResult)
+                        }
+                    }
+                    return
+                }
+
+                self.authService.requestStorageReference(cloudId: storageId) { refStorageResult in
+                    switch refStorageResult {
+                    case .success(let accountRef):
+                        self.beginAuth(serviceId: serviceId, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, readOptions: readOptions, linkToContractWithCredentials: linkCredentials, storageRef: accountRef.id) { authResult in
+                        resultQueue.async {
+                            completion(authResult)
+                        }
+                    }
+                    case .failure(let error):
+                        resultQueue.async {
+                            completion(.failure(error))
+                        }
                     }
                 }
-                
+
             case .failure(let error):
                 resultQueue.async {
                     completion(.failure(error))
@@ -448,7 +481,7 @@ public final class DigiMe {
             }
         }
     }
-    
+
     /// Retrieves the content of a specified file.
     ///
     /// Requires a valid session to have been created, either implicitly by adding a new service, or explicitly by calling `requestDataQuery(credentials:readOptions:resultQueue:completion)`.
@@ -664,42 +697,21 @@ public final class DigiMe {
         }
     }
 
-    /// Get a list of possible services a user can add to their digi.me.
-    /// If contract identifier is specified, then only those services relevant to the contract are retrieved, otherwise all services are retrieved.
+    /// Clears cached data associated with a specific contract or all cached data if no contract ID is specified.
+    /// This function provides a mechanism to clear various types of cached information, either globally or scoped to a particular contract.
+    /// It affects session data, credentials, session caches, contract-specific time ranges, and locally cached request data.
     ///
-    /// - Parameters:
-    ///   - contractId: The contract identifier for which relevant available services are retrieved. If `nil` then all services are retrieved.
-    ///   - filterAvailable: Filter all services by: “approved” && “production” && “available”
-    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
-    ///   - completion: Block called upon completion with either the service list or any errors encountered
-    public func availableServices(contractId: String?, filterAvailable: Bool = true, resultQueue: DispatchQueue = .main, completion: @escaping (Result<ServicesInfo, SDKError>) -> Void) {
-        let route = ServicesRoute(contractId: contractId)
-        apiClient.makeRequest(route) { result in
-            switch result {
-            case .success(let response):
-                var availableServices = response.data.services
-                
-                if filterAvailable {
-                    availableServices = availableServices.filter { $0.isAvailable }
-                }
-                
-                let info = ServicesInfo(countries: response.data.countries, serviceGroups: response.data.serviceGroups, services: availableServices)
-                resultQueue.async {
-                    completion(.success(info))
-                }
-                
-            case .failure(let error):
-                resultQueue.async {
-                    completion(.failure(error))
-                }
-            }
-        }
-    }
-	
-	/// Clear cached data.
-	///
-	/// - Parameters:
-	///   - contractId: The contract identifier for which relevant available service
+    /// If a `contractId` is provided, the function clears data specifically related to that contract:
+    /// - Clears session data held by `allFilesReader`.
+    /// - Clears credentials related to the contract from `CredentialCache`.
+    /// - Clears session information for the contract from `SessionCache`.
+    /// - Clears cached time ranges for the contract from `ContractsCache`.
+    /// - Removes requests for local data associated with the contract from `LocalDataCache`.
+    ///
+    /// If no `contractId` is provided, the function performs a general reset:
+    /// - Resets the entire contracts cache and local data cache.
+    ///
+    /// - Parameter contractId: Optional. The ID of the contract for which to clear cached data. If nil, all caches are reset.
 	public func clearCachedData(for contractId: String? = nil) {
 		guard let contractId = contractId else {
 			ContractsCache().reset()
@@ -713,7 +725,7 @@ public final class DigiMe {
 		ContractsCache().clearTimeRanges(for: contractId)
 		LocalDataCache().removeRequestOfLocalData(for: contractId)
 	}
-    
+
     /// Get contract details.
     /// If contract identifier is specified, then only those services relevant to the contract are retrieved, otherwise all services are retrieved.
     ///
@@ -741,7 +753,6 @@ public final class DigiMe {
             }
         }
     }
-    
     
     /// The Portability Report is a report through which an individual is informed by their Individual's Service Provider about the health information that
     /// the individual has collected from providers in the digi.me application. This allows the individual to supplement another or
@@ -772,9 +783,443 @@ public final class DigiMe {
             }
         }
     }
-    
+
+    // MARK: - Discovery Services
+
+    /// Get a list of possible services a user can add to their digi.me.
+    /// If contract identifier is specified, then only those services relevant to the contract are retrieved, otherwise all services are retrieved.
+    ///
+    /// - Parameters:
+    ///   - contractId: The contract identifier for which relevant available services are retrieved. If `nil` then all services are retrieved.
+    ///   - filterAvailable: Filter all services by: “approved” && “production” && “available”
+    ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
+    ///   - completion: Block called upon completion with either the service list or any errors encountered
+    public func availableServices(contractId: String?, filterAvailable: Bool = true, resultQueue: DispatchQueue = .main, completion: @escaping (Result<ServicesInfo, SDKError>) -> Void) {
+        let route = ServicesRoute(contractId: contractId)
+        apiClient.makeRequest(route) { result in
+            switch result {
+            case .success(let response):
+                var availableServices = response.data.services
+
+                if filterAvailable {
+                    availableServices = availableServices.filter { $0.isAvailable }
+                }
+
+                let info = ServicesInfo(countries: response.data.countries, serviceGroups: response.data.serviceGroups, services: availableServices)
+                resultQueue.async {
+                    completion(.success(info))
+                }
+
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    // MARK: - Discovery Sources
+
+    /// Retrieves available source types from the API based on the given filter criteria.
+    /// This function makes an asynchronous API request to fetch source types that can be onboarded for a contract.
+    /// The result is returned on the specified `resultQueue` via a completion handler.
+    ///
+    /// - Parameters:
+    ///   - filter: The filter criteria to apply for fetching source types.
+    ///   - resultQueue: The dispatch queue on which the completion handler is called. Defaults to the main queue.
+    ///   - completion: The completion handler that processes the result of the API call as either `SourceTypesInfo` or `SDKError`.
+    public func availableSourceTypes(filter: SourceTypesRequestCriteria, resultQueue: DispatchQueue = .main, completion: @escaping (Result<[SourceType]?, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.basicRequestJWT(configuration: configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = SourceTypesRoute(jwt: jwt, payload: filter)
+        self.apiClient.makeRequest(route) { result in
+            switch result {
+            case .success(let response):
+                resultQueue.async {
+                    completion(.success(response.data))
+                }
+
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    /// Fetches available platforms related to the SDK services from the API using the specified filter.
+    /// Ensures that a valid JWT is available before making the API request. If not, an error is returned.
+    /// Asynchronous operation, results returned via a completion block on the specified dispatch queue.
+    ///
+    /// - Parameters:
+    ///   - filter: The filter criteria to apply for fetching platform data.
+    ///   - resultQueue: The queue on which completion handler is executed, defaults to main.
+    ///   - completion: A closure that handles the result, returning either `PlatformsInfo` or `SDKError`.
+    public func availablePlatforms(filter: SourcePlatformsRequestCriteria, resultQueue: DispatchQueue = .main, completion: @escaping (Result<[SourcePlatform]?, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.basicRequestJWT(configuration: configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = PlatformsRoute(jwt: jwt, payload: filter)
+        self.apiClient.makeRequest(route) { result in
+            switch result {
+            case .success(let response):
+                resultQueue.async {
+                    completion(.success(response.data))
+                }
+
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    /// Asynchronously retrieves available countries from the API according to the provided filter.
+    /// Checks for a valid JWT before proceeding with the API request, failing which it returns an error.
+    /// The function leverages asynchronous API calls to manage potentially large data sets efficiently.
+    ///
+    /// - Parameters:
+    ///   - filter: Filter conditions to refine the country data retrieval.
+    ///   - resultQueue: Queue to run the completion handler on, defaults to the main queue.
+    ///   - completion: Completion handler that receives a `Result` containing `CountriesInfo` or `SDKError`.
+    public func availableCountries(filter: SourceCountriesRequestCriteria, resultQueue: DispatchQueue = .main, completion: @escaping (Result<[SourceCountry]?, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.basicRequestJWT(configuration: configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = CountriesRoute(jwt: jwt, payload: filter)
+        self.apiClient.makeRequest(route) { result in
+            switch result {
+            case .success(let response):
+                resultQueue.async {
+                    completion(.success(response.data))
+                }
+
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    /// Fetches available categories from the API based on specified filter conditions.
+    /// This function ensures authentication through JWT before making the request and handles errors appropriately.
+    /// Results are returned asynchronously, allowing for effective handling of large data sets like thousands of healthcare providers.
+    ///
+    /// - Parameters:
+    ///   - filter: Criteria used to filter the categories data.
+    ///   - resultQueue: Dispatch queue for the completion handler, defaults to main.
+    ///   - completion: Handler for successful or failed API responses, returns `CategoriesInfo` or `SDKError`.
+    public func availableCategories(filter: SourceCategoriesRequestCriteria, resultQueue: DispatchQueue = .main, completion: @escaping (Result<[ServiceGroupType]?, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.basicRequestJWT(configuration: configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = CategoriesRoute(jwt: jwt, payload: filter)
+        self.apiClient.makeRequest(route) { result in
+            switch result {
+            case .success(let response):
+                resultQueue.async {
+                    completion(.success(response.data))
+                }
+
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    /// Obtains available sources using a given filter, with support for pagination via limit and offset.
+    /// Prior to fetching, it checks for the presence of a valid JWT. On failure, it immediately returns an error.
+    /// Designed to support efficient data delivery for potentially large numbers of sources by leveraging asynchronous operations.
+    ///
+    /// - Parameters:
+    ///   - filter: Filter that includes optional pagination and sorting parameters to refine the sources retrieval.
+    ///   - resultQueue: Queue to run the completion handler, typically the main queue.
+    ///   - completion: Block to handle the API response, providing `SourcesInfo` or `SDKError`.
+    public func availableSources(filter: SourceRequestCriteria, resultQueue: DispatchQueue = .main, completion: @escaping (Result<SourcesInfo, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.basicRequestJWT(configuration: configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = SourcesRoute(jwt: jwt, payload: filter)
+        self.apiClient.makeRequest(route) { result in
+            switch result {
+            case .success(let response):
+                resultQueue.async {
+                    completion(.success(response))
+                }
+
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    // MARK: - Provisional Cloud Storage
+
+    /// Creates a provisional storage for the given contract.
+    /// - Parameters:
+    ///   - resultQueue: The dispatch queue which the download handler and completion blocks will be called on. Defaults to main dispatch queue.
+    ///   - completion: A completion handler that is called with the result of the operation.
+    public func createProvisionalStorage(resultQueue: DispatchQueue = .main, completion: @escaping (Result<StorageConfig, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.basicRequestJWT(configuration: configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = StorageCreateRoute(jwt: jwt)
+        self.apiClient.makeRequest(route) { result in
+            switch result {
+            case .success(let response):
+                resultQueue.async {
+                    completion(.success(response))
+                }
+
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    /// Retrieves the provisional storage configuration for a given contract identifier.
+    /// Provisional storage is a space on the server created during the onboarding of a new user,
+    /// which includes creating the user's library.
+    /// - Parameters:
+    ///   - credentials: The existing credentials for the contract.
+    ///   - resultQueue: The dispatch queue on which the download handler and completion blocks will be called. Defaults to the main dispatch queue.
+    ///   - completion: A completion handler that is called with the credentials and the result of the storage configuration retrieval.
+    public func retrieveProvisionalStorage(credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<StorageConfig, SDKError>) -> Void) {
+        guard
+            let session = session,
+            session.isValid else {
+            return completion(credentials, .failure(.invalidSession))
+        }
+
+        validateOrRefreshCredentials(credentials) { result in
+            switch result {
+            case .success(let refreshedCredentials):
+
+                guard let jwt = JWTUtility.dataRequestJWT(accessToken: credentials.token.accessToken.value, configuration: self.configuration) else {
+                    Logger.critical("Invalid data request JWT")
+                    completion(refreshedCredentials, .failure(SDKError.invalidBasicRequestJwt))
+                    return
+                }
+
+                let route = StorageRetrieveRoute(jwt: jwt)
+                self.apiClient.makeRequest(route) { result in
+                    switch result {
+                    case .success(let response):
+                        resultQueue.async {
+                            completion(refreshedCredentials, .success(response))
+                        }
+
+                    case .failure(let error):
+                        resultQueue.async {
+                            completion(refreshedCredentials, .failure(error))
+                        }
+                    }
+                }
+            case .failure(let error):
+                resultQueue.async {
+                    completion(credentials, .failure(error))
+                }
+            }
+        }
+    }
+
+    /// Reads the list of storage files from a provisional cloud storage instance.
+    ///
+    /// This function is part of the SDK's capabilities to interact with a cloud storage instance
+    /// created and managed within the context of an App client's credentials. It supports operations
+    /// essential for apps to handle user data before users are fully onboarded
+    /// to digi.me. The function allows for listing files stored under a specific path within the app's cloud storage instance.
+    ///
+    /// - Parameters:
+    ///   - storageId: The unique identifier for the cloud storage instance. This ID is typically obtained after creating a cloud instance through the SDK or via direct integration.
+    ///   - path: An optional path to a specific directory or file in the cloud storage. If not provided, the root directory is assumed. This allows for scoped access to a subset of files.
+    ///   - recursive: A Boolean value that determines whether the listing should include all subdirectories recursively. If `false`, only the contents of the specified path (or root) are listed. Defaults to `false`.
+    ///   - resultQueue: The dispatch queue on which the completion handler is executed. This allows for flexibility in UI thread handling and integration within different parts of an app. Defaults to the main queue.
+    ///   - completion: A closure that is called upon the completion of the file listing request. It returns a `Result` type which will either contain a `StorageFileList` on success or an `SDKError` on failure.
+    public func readStorageFileList(storageId: String, path: String? = nil, recursive: Bool = false, resultQueue: DispatchQueue = .main, completion: @escaping (Result<StorageFileList, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.createCloudJWT(configuration: self.configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = StorageListFilesRoute(jwt: jwt, storageId: storageId, applicationId: self.configuration.appId, formatedPath: path, recursive: recursive)
+        self.storageClient.makeRequest(route) { result in
+            resultQueue.async {
+                completion(result)
+            }
+        }
+    }
+
+    /// Uploads a file to storage.
+    /// - Parameters:
+    ///   - storageId: The ID of the storage to upload to.
+    ///   - fileName: The name of the file to upload.
+    ///   - data: The data of the file to upload.
+    ///   - path: An optional path to a specific directory or file in the cloud storage. If not provided, the root directory is assumed. This allows for scoped access to a subset of files.
+    ///   - resultQueue: The dispatch queue on which the completion handler is executed. This allows for flexibility in UI thread handling and integration within different parts of an app. Defaults to the main queue.
+    ///   - completion: A completion handler with the result of the file upload.
+    /// - Returns: A `URLSessionUploadTask` object that allows for controlling the upload, such as pausing, resuming, and canceling the task.
+    @discardableResult
+    public func uploadStorageFileTask(storageId: String, fileName: String, data: Data, path: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<StorageUploadFileInfo, SDKError>) -> Void) -> URLSessionUploadTask? {
+        guard
+            let payload = try? Crypto.encrypt(inputData: data, privateKeyData: configuration.privateKeyData),
+            let jwt = JWTUtility.createCloudJWT(configuration: self.configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return nil
+        }
+
+        FilePersistentStorage(with: .documentDirectory).store(data: payload, fileName: "\(fileName).uploaded")
+        let route = StorageUploadFileRoute(jwt: jwt, storageId: storageId, applicationId: configuration.appId, fileName: fileName, /*payload: payload,*/ formatedPath: path)
+        return self.storageClient.makeRequestFileUpload(route, uploadData: payload) { result in
+            resultQueue.async {
+                completion(result)
+            }
+        }
+    }
+
+    /// Uploads a file to storage.
+    /// - Parameters:
+    ///   - storageId: The ID of the storage to upload to.
+    ///   - fileName: The name of the file to upload.
+    ///   - data: The data of the file to upload.
+    ///   - path: An optional path to a specific directory or file in the cloud storage. If not provided, the root directory is assumed. This allows for scoped access to a subset of files.
+    ///   - resultQueue: The dispatch queue on which the completion handler is executed. This allows for flexibility in UI thread handling and integration within different parts of an app. Defaults to the main queue.
+    ///   - completion: A completion handler with the result of the file upload.
+    public func uploadStorageFile(storageId: String, fileName: String, data: Data, path: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<StorageUploadFileInfo, SDKError>) -> Void) {
+        resultQueue.async {
+            self.uploadStorageService.upload(storageId: storageId, fileName: fileName, data: data, path: path, completion: completion)
+        }
+    }
+
+    /// Deletes a file from storage.
+    /// - Parameters:
+    ///   - storageId: The ID of the storage to delete from.
+    ///   - fileName: The name of the file to delete.
+    ///   - path: An optional path to a specific directory or file in the cloud storage. If not provided, the root directory is assumed. This allows for scoped access to a subset of files.
+    ///   - resultQueue: The dispatch queue on which the completion handler is executed. This allows for flexibility in UI thread handling and integration within different parts of an app. Defaults to the main queue.
+    ///   - completion: A completion handler with the result of the file deletion.
+    public func deleteStorageFile(storageId: String, fileName: String, path: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Void, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.createCloudJWT(configuration: self.configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = StorageDeleteFileRoute(jwt: jwt, storageId: storageId, applicationId: configuration.appId, fileName: fileName, formatedPath: path)
+        self.storageClient.makeRequest(route) { result in
+            resultQueue.async {
+                completion(result)
+            }
+        }
+    }
+
+    /// Deletes a folder or file from storage. This will delete all files that belong to the specified folder.
+    /// You can specify paths like:
+    /// - "/somefolder/": Deletes a folder and all its contents.
+    /// - "/somefolder/somesubfolder/": Deletes a subfolder and all its contents.
+    /// - "/": Deletes everything in the storage.
+    /// - Parameters:
+    ///   - storageId: The ID of the storage to delete from.
+    ///   - path: A path or a directory name in the cloud storage you wish to delete.
+    ///   - resultQueue: The dispatch queue on which the completion handler is executed. This allows for flexibility in UI thread handling and integration within different parts of an app. Defaults to the main queue.
+    ///   - completion: A completion handler with the result of the file or folder deletion.
+    public func deleteStorageFolder(storageId: String, path: String, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Void, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.createCloudJWT(configuration: self.configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = StorageDeleteFolderRoute(jwt: jwt, storageId: storageId, applicationId: configuration.appId, formatedPath: path)
+        self.storageClient.makeRequest(route) { result in
+            resultQueue.async {
+                completion(result)
+            }
+        }
+    }
+
+    /// Downloads a file from storage.
+    /// - Parameters:
+    ///   - storageId: The ID of the storage to download from.
+    ///   - fileName: The name of the file to download.
+    ///   - path: An optional path to a specific directory or file in the cloud storage. If not provided, the root directory is assumed. This allows for scoped access to a subset of files.
+    ///   - resultQueue: The dispatch queue on which the completion handler is executed. This allows for flexibility in UI thread handling and integration within different parts of an app. Defaults to the main queue.
+    ///   - completion: A completion handler with the result of the file download.
+    /// - Returns: A `URLSessionDownloadTask` object that allows for controlling the download, such as pausing, resuming, and canceling the task.
+    public func downloadStorageFileTask(storageId: String, fileName: String, path: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Data?, SDKError>) -> Void) -> URLSessionDownloadTask? {
+        guard let jwt = JWTUtility.createCloudJWT(configuration: self.configuration) else {
+            Logger.critical("Invalid data request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return nil
+        }
+
+        let route = StorageFileRoute(jwt: jwt, storageId: storageId, applicationId: configuration.appId, fileName: fileName, formatedPath: path)
+        return self.storageClient.makeRequestFileDownload(route) { result in
+            switch result {
+            case .success(let encryptedFile):
+                do {
+                    let file = try Crypto.decrypt(encryptedBase64EncodedData: encryptedFile, privateKeyData: self.configuration.privateKeyData, dataIsHashed: false)
+                    resultQueue.async {
+                        completion(.success(file))
+                    }
+                }
+                catch {
+                    resultQueue.async {
+                        completion(.failure(.errorDecryptingResponse))
+                    }
+                }
+
+            case .failure(let error):
+                resultQueue.async {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    /// Downloads a file from storage.
+    /// - Parameters:
+    ///   - storageId: The ID of the storage to download from.
+    ///   - fileName: The name of the file to download.
+    ///   - path: An optional path to a specific directory or file in the cloud storage. If not provided, the root directory is assumed. This allows for scoped access to a subset of files.
+    ///   - resultQueue: The dispatch queue on which the completion handler is executed. This allows for flexibility in UI thread handling and integration within different parts of an app. Defaults to the main queue.
+    ///   - completion: A completion handler with the result of the file download.
+    public func downloadStorageFile(storageId: String, fileName: String, path: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Data, SDKError>) -> Void) {
+        resultQueue.async {
+            self.downloadStorageService.downloadFile(storageId: storageId, fileName: fileName, configuration: self.configuration, filePath: path, completion: completion)
+        }
+    }
+
     // MARK: - Apple Health
-    
 
     public func addTestData(completion: @escaping (Result<Bool, SDKError>) -> Void) {
 #if targetEnvironment(simulator)
@@ -872,7 +1317,7 @@ public final class DigiMe {
     // MARK: - Auth & Refresh
     
     // Auth - needs app to be able to receive response via URL
-    private func beginAuth(serviceId: Int?, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, readOptions: ReadOptions?, linkToContractWithCredentials linkCredentials: Credentials?, onlyPushServices: Bool = false, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    private func beginAuth(serviceId: Int?, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, readOptions: ReadOptions?, linkToContractWithCredentials linkCredentials: Credentials?, onlyPushServices: Bool = false, storageRef: String? = nil, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
 
         // Ensure we don't have any session left over from previous
         session = nil
@@ -881,7 +1326,7 @@ public final class DigiMe {
             switch result {
             case .success(let response):
                 self.session = response.session
-                self.performAuth(preAuthResponse: response, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, completion: completion)
+                self.performAuth(preAuthResponse: response, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, storageRef: storageRef, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -963,8 +1408,8 @@ public final class DigiMe {
         }
     }
     
-    private func performAuth(preAuthResponse: TokenSessionResponse, serviceId: Int?, onlyPushServices: Bool = false, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
-        consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard) { result in
+    private func performAuth(preAuthResponse: TokenSessionResponse, serviceId: Int?, onlyPushServices: Bool = false, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, storageRef: String? = nil, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+        consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, storageRef: storageRef) { result in
             switch result {
             case .success(let response):
                 self.exchangeToken(authResponse: response, completion: completion)

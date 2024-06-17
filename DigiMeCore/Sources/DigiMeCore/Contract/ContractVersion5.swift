@@ -113,7 +113,7 @@ public struct DataRequest: Codable {
     public let externalSharePolicy: ExternalSharePolicy?
     public let gdpr: GDPR?
     public let purpose: String?
-    public let serviceGroups: [ServiceGroupCodable]?
+    public let serviceGroups: [ServiceGroupType]?
     public let timeRanges: [ConsentAccessTimeRange]?
     
     enum CodingKeys: String, CodingKey {
@@ -141,7 +141,7 @@ public struct DataRequest: Codable {
         externalSharePolicy = try container.decodeIfPresent(ExternalSharePolicy.self, forKey: .externalSharePolicy)
         gdpr = try container.decodeIfPresent(GDPR.self, forKey: .gdpr)
         purpose = try container.decodeIfPresent(String.self, forKey: .purpose)
-        serviceGroups = try container.decodeIfPresent([ServiceGroupCodable].self, forKey: .serviceGroups)
+        serviceGroups = try container.decodeIfPresent([ServiceGroupType].self, forKey: .serviceGroups)
         if let timeRangesCodable = try container.decodeIfPresent([TimeRangeCodable].self, forKey: .timeRanges) {
             var result = [ConsentAccessTimeRange]()
             timeRangesCodable.forEach { timeRange in
@@ -173,20 +173,6 @@ public struct DataPush: Codable {
     public let disclamer: String?
     public let callbackUrl: String?
     public let consentPolicy: String?
-}
-
-public struct ServiceObjectTypeCodable: Codable {
-    public let id: Int?
-}
-
-public struct ServiceTypeCodable: Codable {
-    public let id: Int?
-    public let serviceObjectTypes: [ServiceObjectTypeCodable]?
-}
-
-public struct ServiceGroupCodable: Codable {
-    public let id: Int?
-    public let serviceTypes: [ServiceTypeCodable]?
 }
 
 public struct TimeRangeCodable: Codable {

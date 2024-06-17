@@ -17,7 +17,8 @@ struct WriteDataView: View {
     @State private var presentImporter = false
     @State private var presentPhotoPicker = false
     @State private var fileType: UTType = .json
-    
+    @Binding var navigationPath: NavigationPath
+
     var body: some View {
         SplitView(top: {
             VStack {
@@ -180,13 +181,13 @@ struct WriteDataView: View {
         let previewer = try Previewer()
 
         return NavigationView {
-            WriteDataView()
+            WriteDataView(navigationPath: .constant(NavigationPath()))
                 .environmentObject(WriteDataViewModel(modelContext: previewer.container.mainContext))
                 .modelContainer(previewer.container)
                 .environment(\.colorScheme, .dark)
         }
     }
     catch {
-        return Text(error.localizedDescription)
+        return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }

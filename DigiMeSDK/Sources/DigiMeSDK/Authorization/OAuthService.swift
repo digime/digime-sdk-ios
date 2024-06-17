@@ -43,7 +43,7 @@ class OAuthService {
         }
     }
     
-	func requestAccountReference(accountId: String, completion: @escaping (Result<AccountReferenceResponse, SDKError>) -> Void) {
+	func requestAccountReference(accountId: String, completion: @escaping (Result<ReferenceResponse, SDKError>) -> Void) {
 		guard let jwt = JWTUtility.basicRequestJWT(configuration: configuration) else {
 			Logger.critical("Invalid account reference request JWT")
 			completion(.failure(SDKError.invalidAccountReferenceRequestJwt))
@@ -60,7 +60,25 @@ class OAuthService {
 			}
 		}
 	}
-	
+
+    func requestStorageReference(cloudId: String, completion: @escaping (Result<ReferenceResponse, SDKError>) -> Void) {
+        guard let jwt = JWTUtility.basicRequestJWT(configuration: configuration) else {
+            Logger.critical("Invalid storage reference request JWT")
+            completion(.failure(SDKError.invalidBasicRequestJwt))
+            return
+        }
+
+        let route = StorageReferenceRoute(jwt: jwt, cloudId: cloudId)
+        apiClient.makeRequest(route) { result in
+            switch result {
+            case .success(let accountRef):
+                completion(.success(accountRef))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     func requestTokenExchange(authCode: String, completion: @escaping (Result<OAuthToken, SDKError>) -> Void) {
         guard let jwt = JWTUtility.authorizationRequestJWT(authCode: authCode, configuration: configuration) else {
             Logger.critical("Invalid authorization request JWT")

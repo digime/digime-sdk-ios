@@ -61,12 +61,10 @@ struct SplitView<PrimaryView: View, SecondaryView: View>: View {
 	}
 }
 
-struct SplitView_Previews: PreviewProvider {
-	static var previews: some View {
-		SplitView(top: {
-			Rectangle().foregroundColor(.red)
-		}, bottom: {
-			Rectangle().foregroundColor(.green)
-		})
-	}
+#Preview {
+    SplitView {
+        Rectangle().foregroundColor(.red)
+    } bottom: {
+        Rectangle().foregroundColor(.green)
+    }
 }

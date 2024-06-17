@@ -6,6 +6,7 @@
 //  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import Foundation
 
 struct FileResponse: Decodable {

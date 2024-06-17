@@ -16,16 +16,15 @@ enum ConnectSourceViewState {
     case none, sources, sampleData
 }
 
-@MainActor
 class ServicesViewModel: ObservableObject {
-    @ObservationIgnored
-    private let modelContext: ModelContext
-
-    @Published var activeContract: DigimeContract = Contracts.development {
+    @Published var activeContract: DigimeContract = Contracts.integration {
         didSet {
             updateContract(activeContract)
         }
     }
+
+    @Published var sourceSections: [SourceSection] = []
+    @Published var sourceSampleDataSections: [SourceSection] = []
     @Published var serviceSections: [ServiceSection] = [] {
         didSet {
             if let data = try? serviceSections.encoded(dateEncodingStrategy: .millisecondsSince1970) {
@@ -46,6 +45,7 @@ class ServicesViewModel: ObservableObject {
         }
     }
 
+    @Published var totalNumberOfItems: Int = 0
     @Published var sampleDatasets: [String: SampleDataset]?
     @Published var xmlReportURL: URL?
     @Published var isLoadingData = false
@@ -57,8 +57,9 @@ class ServicesViewModel: ObservableObject {
             objectWillChange.send()
         }
     }
+    @Published var sourceSelectionCompletionHandler: ((Source, String?) -> Void)?
     @Published var serviceSelectionCompletionHandler: ((Service, String?) -> Void)?
-    
+
     var onShowSampleDataSelectorChanged: ((Bool) -> Void)?
     var onShowSampleDataErrorChanged: ((Bool) -> Void)?
     var onProceedSampleDatasetChanged: ((Bool) -> Void)?
@@ -67,51 +68,29 @@ class ServicesViewModel: ObservableObject {
         return userPreferences.getCredentials(for: activeContract.identifier) != nil
     }
 
-    var contracts = [
-        Contracts.prodFinSocMus,
-        Contracts.prodFitHealth,
-        Contracts.development,
-        Contracts.integration,
-        Contracts.staging,
-        Contracts.test05,
-        Contracts.test08,
-    ]
-
+    private let loggingService: LoggingServiceProtocol
     private let userPreferences = UserPreferences.shared()
-    
+
     private var digiMeService: DigiMe?
     private var retryAfter: Date?
 
-    private var activeContractId: String {
-        get {
-            UserDefaults.standard.string(forKey: "ActiveServiceContractId") ?? Contracts.development.identifier
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "ActiveServiceContractId")
-        }
-    }
+    private var modelContainer: ModelContainer
 
-    init(modelContext: ModelContext, sections: [ServiceSection]? = nil) {
-        self.modelContext = modelContext
+    init(loggingService: LoggingServiceProtocol, modelContainer: ModelContainer) {
+        self.loggingService = loggingService
+        self.modelContainer = modelContainer
 
         do {
-            // support SwiftUI preview
-            if let sections = sections {
-                serviceSections = sections
-                sampleDataSections = sections
-            }
-            
-            if let contract = contracts.first(where: { $0.identifier == activeContractId }) {
+            if let contract = Contracts.all.first(where: { $0.identifier == userPreferences.activeContract?.identifier }) {
                 activeContract = contract
-                activeContractId = contract.identifier
             }
             else {
-                activeContract = Contracts.development
+                activeContract = Contracts.integration
             }
 
-            linkedAccounts = userPreferences.getLinkedAccounts(for: activeContract.identifier)
-            
-            let sdkConfig = try Configuration(appId: activeContract.appId, contractId: activeContract.identifier, privateKey: activeContract.privateKey, authUsingExternalBrowser: true, baseUrl: activeContract.baseURL)
+            linkedAccounts = userPreferences.getLinkedAccounts(for: userPreferences.activeContract?.identifier ?? Contracts.development.identifier)
+
+            let sdkConfig = try Configuration(appId: activeContract.appId, contractId: activeContract.identifier, privateKey: activeContract.privateKey, authUsingExternalBrowser: true, baseUrl: activeContract.baseURL, cloudBaseUrl: activeContract.storageBaseURL)
             digiMeService = DigiMe(configuration: sdkConfig)
         }
         catch {
@@ -124,16 +103,16 @@ class ServicesViewModel: ObservableObject {
             return
         }
         
-        chooseService { selectedService, sampleDataSetId in
-            guard let selectedService = selectedService else {
+        chooseSource { [weak self] selectedSource, sampleDataSetId in
+            guard let selectedSource = selectedSource else {
                 return
             }
             
             if let sampleDataSetId = sampleDataSetId {
-                self.authenticateAndFetchData(service: selectedService, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: true)
+                self?.authenticateAndFetchData(source: selectedSource, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: true)
             }
             else {
-                self.authenticateAndFetchData(service: selectedService)
+                self?.authenticateAndFetchData(source: selectedSource)
             }
         }
     }
@@ -157,48 +136,48 @@ class ServicesViewModel: ObservableObject {
         
         isLoadingData = true
         shouldDisplayCancelButton = true
-        digiMeService?.reauthorizeAccount(accountId: accountId, credentials: accountCredentials) { refreshedCredentials, reauthResult in
-            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
-            self.shouldDisplayCancelButton = false
+        digiMeService?.reauthorizeAccount(accountId: accountId, credentials: accountCredentials) { [weak self] refreshedCredentials, reauthResult in
+            self?.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self?.activeContract.identifier)
+            self?.shouldDisplayCancelButton = false
             switch reauthResult {
             case .success:
-                self.fetchData(credentials: refreshedCredentials)
-                if let index = self.linkedAccounts.firstIndex(where: { $0 == connectedAccount }) {
-                    self.linkedAccounts[index].requiredReauth = false
+                self?.fetchData(credentials: refreshedCredentials)
+                if let index = self?.linkedAccounts.firstIndex(where: { $0 == connectedAccount }) {
+                    self?.linkedAccounts[index].requiredReauth = false
                 }
             case .failure(let error):
-                self.isLoadingData = false
-                self.logErrorMessage("Reauthorizing \(connectedAccount.service.name) failed: \(error)")
+                self?.isLoadingData = false
+                self?.logErrorMessage("Reauthorizing \(connectedAccount.source.name) failed: \(error)")
             }
         }
     }
 
-    func addNewService() {
+    func addNewSource() {
         guard !isLoadingData else {
             return
         }
-        
+
         guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
             isLoadingData = false
             logWarningMessage("Current contract must be authorized first.")
             return
         }
-        
+
         isLoadingData = true
-        chooseService { selectedService, sampleDataSetId in
-            guard let selectedService = selectedService else {
+        chooseSource { [weak self] selectedSource, sampleDataSetId in
+            guard let selectedSource = selectedSource else {
                 return
             }
-                        
+
             if let sampleDataSetId = sampleDataSetId {
-                self.addAccountAndFetchData(service: selectedService, credentials: accountCredentials, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: true)
+                self?.addAccountAndFetchData(source: selectedSource, credentials: accountCredentials, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: true)
             }
             else {
-                self.addAccountAndFetchData(service: selectedService, credentials: accountCredentials)
+                self?.addAccountAndFetchData(source: selectedSource, credentials: accountCredentials)
             }
         }
     }
-    
+
     func reloadServiceData(readOptions: ReadOptions? = nil) {
         if let retry = retryAfter, retry > Date() {
             logWarningMessage("Data refresh blocked. \(retry.timeIntervalRetryDescription()).")
@@ -244,40 +223,40 @@ class ServicesViewModel: ObservableObject {
         actionSheet.addAction(cancelAction)
         viewController.present(actionSheet, animated: true)
     }
-    
-    func fetchDemoDataSetsInfoForService(service: Service) {
+
+    func fetchDemoDataSetsInfoForSource(source: Source) {
         guard !isLoadingData else {
             return
         }
 
         isLoadingData = true
-        digiMeService?.fetchDemoDataSetsInfoForService(serviceId: "\(service.identifier)") { result in
-            self.isLoadingData = false
+        digiMeService?.fetchDemoDataSetsInfoForService(serviceId: "\(source.id)") { [weak self] result in
+            self?.isLoadingData = false
             switch result {
             case .success(let datasets):
-                self.sampleDatasets = datasets
+                self?.sampleDatasets = datasets
                 if datasets.keys.count > 1 {
-                    self.handleSampleDataSelectorChange()
+                    self?.handleSampleDataSelectorChange()
                 }
                 else if datasets.keys.count == 1 {
-//                    if self.isAuthorized {
-//                        self.addNewService()
+//                    if self?.isAuthorized {
+//                        self?.addNewService()
 //                    }
 //                    else {
-//                        self.authenticateAndFetchData(service: service, sampleDataSetId: datasets.first?.key, sampleDataAutoOnboard: true)
+//                        self?.authenticateAndFetchData(service: service, sampleDataSetId: datasets.first?.key, sampleDataAutoOnboard: true)
 //                    }
-                    self.handleProceedSampleDatasetChange()
+                    self?.handleProceedSampleDatasetChange()
                 }
                 else {
-                    self.handleSampleDataErrorChange()
+                    self?.handleSampleDataErrorChange()
                 }
             case .failure(let error):
-                self.logErrorMessage("Unable to retrieve sample datasets details: \(error)")
-                self.handleSampleDataErrorChange()
+                self?.logErrorMessage("Unable to retrieve sample datasets details: \(error)")
+                self?.handleSampleDataErrorChange()
             }
         }
     }
-    
+
     func handleSampleDataSelectorChange() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else {
@@ -311,41 +290,41 @@ class ServicesViewModel: ObservableObject {
         }
         
         isLoadingData = true
-        digiMeService?.contractDetails { result in
-            self.isLoadingData = false
+        digiMeService?.contractDetails { [weak self] result in
+            self?.isLoadingData = false
             switch result {
             case .success(let certificate):
-                self.logMessage("Contract details:", attachmentType: LogEntry.AttachmentType.json, attachment: try? certificate.encoded())
+                self?.logMessage("Contract details:", attachmentType: LogEntry.AttachmentType.json, attachment: try? certificate.encoded())
             case .failure(let error):
-                self.logErrorMessage("Unable to retrieve contract details: \(error)")
+                self?.logErrorMessage("Unable to retrieve contract details: \(error)")
             }
         }
     }
 
     func removeUser() {
         guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
-            self.logWarningMessage("Contract must be authorized first.")
+            logWarningMessage("Contract must be authorized first.")
             return
         }
 
         guard accountCredentials.token.refreshToken.isValid else {
-            self.reset()
+            reset()
             return
         }
         
         isLoadingData = true
-        digiMeService?.deleteUser(credentials: accountCredentials) { refreshedCredentials, result in
-            self.isLoadingData = false
-            
+        digiMeService?.deleteUser(credentials: accountCredentials) { [weak self] refreshedCredentials, result in
+            self?.isLoadingData = false
+
             switch result {
             case .success:
-                self.userPreferences.clearCredentials(for: self.activeContract.identifier)
-                self.resetLogs()
-                self.linkedAccounts = []
-                self.logMessage("Your user entry and the library deleted successfully")
+                self?.userPreferences.clearCredentials(for: self?.activeContract.identifier)
+                self?.resetLogs()
+                self?.linkedAccounts = []
+                self?.logMessage("Your user entry and the library deleted successfully")
             case .failure(let error):
-                self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
-                self.logErrorMessage(error.description)
+                self?.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self?.activeContract.identifier)
+                self?.logErrorMessage(error.description)
             }
         }
     }
@@ -355,21 +334,21 @@ class ServicesViewModel: ObservableObject {
             let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier),
             let accountId = account.sourceAccount?.id else {
             
-            self.logWarningMessage("Contract must be authorized first.")
+            logWarningMessage("Contract must be authorized first.")
             return
         }
 
         isLoadingData = true
-        digiMeService?.deleteAccount(accountId: accountId, credentials: accountCredentials) { refreshedCredentials, result in
-            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
-            self.isLoadingData = false
+        digiMeService?.deleteAccount(accountId: accountId, credentials: accountCredentials) { [weak self] refreshedCredentials, result in
+            self?.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self?.activeContract.identifier)
+            self?.isLoadingData = false
 
             switch result {
             case .success:
-                self.linkedAccounts.remove(object: account)
-                self.logMessage("User account deleted successfully")
+                self?.linkedAccounts.remove(object: account)
+                self?.logMessage("User account deleted successfully")
             case .failure(let error):
-                self.logErrorMessage(error.description)
+                self?.logErrorMessage(error.description)
             }
         }
     }
@@ -379,53 +358,53 @@ class ServicesViewModel: ObservableObject {
             let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier),
             let accountId = account.sourceAccount?.id else {
 
-            self.logWarningMessage("Contract must be authorized first.")
+            logWarningMessage("Contract must be authorized first.")
             return
         }
 
         isLoadingData = true
         shouldDisplayCancelButton = true
-        digiMeService?.getRevokeAccountPermissionUrl(for: accountId, credentials: accountCredentials) { refreshedCredentials, result in
-            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
-            self.shouldDisplayCancelButton = false
-            self.isLoadingData = false
+        digiMeService?.getRevokeAccountPermissionUrl(for: accountId, credentials: accountCredentials) { [weak self] refreshedCredentials, result in
+            self?.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self?.activeContract.identifier)
+            self?.shouldDisplayCancelButton = false
+            self?.isLoadingData = false
 
             switch result {
             case .success:
-                self.logMessage("Service account access revoked successfully")
-                self.fetchData(credentials: refreshedCredentials)
+                self?.logMessage("Service account access revoked successfully")
+                self?.fetchData(credentials: refreshedCredentials)
             case .failure(let error):
-                self.logErrorMessage(error.description)
+                self?.logErrorMessage(error.description)
             }
         }
     }
 
-    func fetchReport(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval) {
+    func exportPortabilityReport(for serviceTypeName: String, format: String, from: TimeInterval, to: TimeInterval) {
         guard let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier) else {
-            self.isLoadingData = false
-            self.logWarningMessage("Contract must be authorized first.")
+            isLoadingData = false
+            logWarningMessage("Contract must be authorized first.")
             return
         }
 
         isLoadingData = true
-        digiMeService?.exportPortabilityReport(for: serviceTypeName, format: format, from: from, to: to, credentials: accountCredentials) { refreshedCredentials, result in
-            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
-            self.isLoadingData = false
+        digiMeService?.exportPortabilityReport(for: serviceTypeName, format: format, from: from, to: to, credentials: accountCredentials) { [weak self] refreshedCredentials, result in
+            self?.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self?.activeContract.identifier)
+            self?.isLoadingData = false
             switch result {
             case .success(let data):
                 let fileName = "Report_\(serviceTypeName)_\(Date().description).\(format)"
                 FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: fileName) { url in
                     guard let url = url else {
-                        self.logErrorMessage("An error occured storing '\(fileName)' file")
+                        self?.logErrorMessage("An error occured storing '\(fileName)' file")
                         return
                     }
-                    self.xmlReportURL = url
-                    self.logMessage("Report successfully shared.")
-                    self.shouldDisplayShareSheet = true
+                    self?.xmlReportURL = url
+                    self?.logMessage("Report successfully shared.")
+                    self?.shouldDisplayShareSheet = true
                 }
 
             case .failure(let error):
-                self.logErrorMessage("Error requesting data export: \(error)")
+                self?.logErrorMessage("Error requesting data export: \(error)")
             }
         }
     }
@@ -435,47 +414,15 @@ class ServicesViewModel: ObservableObject {
         shouldDisplayCancelButton = false
         logWarningMessage("Data retrieval was cancelled by the user.")
     }
-	
-    // MARK: - Logs
-
-    func logMessage(_ message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
-        DispatchQueue.main.async {
-            let entry = LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped)
-            self.modelContext.insert(entry)
-        }
-    }
-
-    func logWarningMessage(_ message: String) {
-        DispatchQueue.main.async {
-            let entry = LogEntry(message: message, state: .warning)
-            self.modelContext.insert(entry)
-        }
-    }
-
-    func logErrorMessage(_ message: String) {
-        DispatchQueue.main.async {
-            let entry = LogEntry(message: message, state: .error)
-            self.modelContext.insert(entry)
-        }
-    }
-
-    func resetLogs() {
-        do {
-            try modelContext.delete(model: LogEntry.self)
-        }
-        catch {
-            print("Failed to delete all log entries.")
-        }
-    }
 
     // MARK: - Private
 
     private func updateContract(_ contract: DigimeContract) {
         DispatchQueue.main.async {
             self.linkedAccounts = self.userPreferences.getLinkedAccounts(for: contract.identifier)
-            self.activeContractId = contract.identifier
+            self.userPreferences.activeContract = contract
             do {
-                let config = try Configuration(appId: contract.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true, baseUrl: contract.baseURL)
+                let config = try Configuration(appId: contract.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true, baseUrl: contract.baseURL, cloudBaseUrl: contract.storageBaseURL)
                 self.digiMeService = DigiMe(configuration: config)
             }
             catch {
@@ -484,76 +431,125 @@ class ServicesViewModel: ObservableObject {
         }
     }
 
-    private func authenticateAndFetchData(service: Service, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil) {
-        DispatchQueue.main.async {
-            self.isLoadingData = true
-            self.shouldDisplayCancelButton = true
-        }
+    private func authenticateAndFetchData(source: Source, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil) {
+        isLoadingData = true
+        shouldDisplayCancelButton = true
         
         let accountCredentials = userPreferences.getCredentials(for: activeContract.identifier)
-        digiMeService?.authorize(credentials: accountCredentials, serviceId: service.identifier, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, readOptions: service.options) { result in
-            self.shouldDisplayCancelButton = false
-            
+        let storageId = userPreferences.getStorageId(for: activeContract.identifier)
+        digiMeService?.authorize(credentials: accountCredentials, serviceId: source.id, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, readOptions: source.options, storageId: storageId) { [weak self] result in
+            self?.shouldDisplayCancelButton = false
+
             switch result {
             case .success(let newOrRefreshedCredentials):
-                self.logMessage("Contract authorised successfully for service id: \(service.identifier)")
-                self.linkedAccounts.append(LinkedAccount(service: service))
-                self.userPreferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContract.identifier)
-                self.fetchData(credentials: newOrRefreshedCredentials, readOptions: service.options)
-                
+                self?.logMessage("Contract authorised successfully for service id: \(source.id)")
+                self?.linkedAccounts.append(LinkedAccount(source: source))
+                self?.userPreferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self?.activeContract.identifier)
+                self?.fetchData(credentials: newOrRefreshedCredentials, readOptions: source.options)
+
             case.failure(let error):
-                self.isLoadingData = false
-                self.logErrorMessage("Authorization failed: \(error)")
+                self?.isLoadingData = false
+                self?.logErrorMessage("Authorization failed: \(error)")
             }
         }
     }
 
-    private func addAccountAndFetchData(service: Service, credentials: Credentials, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil) {
-        self.shouldDisplayCancelButton = true
-        self.digiMeService?.addService(identifier: service.identifier, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataSetId != nil, credentials: credentials) { refreshedCredentials, addServiceResult in
-            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
-            self.shouldDisplayCancelButton = false
+    private func addAccountAndFetchData(source: Source, credentials: Credentials, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil) {
+        shouldDisplayCancelButton = true
+        digiMeService?.addService(identifier: source.id, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataSetId != nil, credentials: credentials) { [weak self] refreshedCredentials, addServiceResult in
+            self?.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self?.activeContract.identifier)
+            self?.shouldDisplayCancelButton = false
             switch addServiceResult {
             case .success:
-                self.linkedAccounts.append(LinkedAccount(service: service))
-                self.fetchData(credentials: refreshedCredentials, readOptions: service.options)
-                
+                self?.linkedAccounts.append(LinkedAccount(source: source))
+                self?.fetchData(credentials: refreshedCredentials, readOptions: source.options)
+
             case.failure(let error):
-                self.isLoadingData = false
-                self.logErrorMessage("Adding \(service.name) failed: \(error)")
+                self?.isLoadingData = false
+                self?.logErrorMessage("Adding \(source.name) failed: \(error)")
             }
         }
     }
-    
-    private func chooseService(completion: @escaping ((Service?, String?) -> Void)) {
-        serviceSelectionCompletionHandler = completion
-        var showServiceSelector = true
-        
-        if
-            let services = userPreferences.readServiceSections(for: activeContractId),
-            let sampleData = userPreferences.readServiceSampleDataSections(for: activeContractId) {
 
-            serviceSections = services
-            sampleDataSections = sampleData
-            showServiceSelector = false
-            isLoadingData = false
-            withAnimation {
-                shouldDisplaySourceSelector = true
+    private func chooseSource(completion: @escaping ((Source?, String?) -> Void)) {
+        sourceSelectionCompletionHandler = completion
+        totalNumberOfItems = 0
+
+        withAnimation {
+            self.shouldDisplaySourceSelector = true
+        }
+
+        let includeFields: [SourcesFieldList] = [
+            // .address,
+            .category,
+            // .categoryTypeId,
+            .categoryId,
+            // .categoryJson,
+            .categoryName,
+            // .categoryReference,
+            // .country,
+            // .countryCode,
+            // .countryId,
+            // .countryJson,
+            // .countryName,
+            // .dynamic,
+            .id,
+            // .json,
+            // .onboardable,
+            .name,
+            // .platform,
+            // .platformId,
+            // .platformJson,
+            // .platformName,
+            // .platformReference,
+            // .providerId,
+            // .publishedDate,
+            .publishedStatus,
+            // .reference,
+            .resourceUrl,
+            // .resourceMimetype,
+            .service,
+            // .serviceDynamic,
+            .serviceId,
+            // .serviceJson,
+            // .serviceName,
+            // .servicePublishedDate,
+            .servicePublishedStatus,
+            // .serviceReference,
+            .serviceServiceTypeId,
+            // .type,
+            // .typeId,
+            // .typeName,
+            // .typeReference,
+        ]
+
+        let type = SourceTypeRequestFilter([.pull])
+        let filter = SourceFilter(publishedStatus: [.approved, .sampledataonly], type: type)
+        let query = SourcesQuery(search: nil, include: includeFields, filter: filter)
+        let sort = SourcesSort(name: .asc)
+
+        let payload = SourceRequestCriteria(limit: nil, offset: 0, sort: sort, query: query)
+
+        digiMeService?.availableSources(filter: payload) { [weak self] result in
+            guard let self = self else {
+                return
             }
-        }
-        else {
-            isLoadingData = true
-        }
-        
-        digiMeService?.availableServices(contractId: activeContract.identifier, filterAvailable: false) { result in
-            self.isLoadingData = false
+
             switch result {
-            case .success(let serviceInfo):
-                self.populateSections(serviceInfo: serviceInfo)
-                if showServiceSelector {
-                    withAnimation {
-                        self.shouldDisplaySourceSelector = true
-                    }
+            case .success(let sourceInfo):
+                print("The Total Number of Sources: \(sourceInfo.total)")
+                print("Sources Fetch Limit: \(sourceInfo.limit)")
+                print("Sources Fetch Offset: \(sourceInfo.offset)")
+                
+                let imported = SourceImporter(modelContainer: self.modelContainer).populateSources(contractId: self.activeContract.identifier, sourceInfo: sourceInfo)
+                totalNumberOfItems += imported
+
+                DispatchQueue.global(qos: .background).async { [weak self] in
+//                    if let data = try? sourceInfo.encoded() {
+//                        FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "sources.json")
+//                    }
+
+                    self?.downloadSubsequentBatches(initialSourceInfo: sourceInfo, includeFields: includeFields, filter: filter, sort: sort)
                 }
             case .failure(let error):
                 self.logErrorMessage("Unable to retrieve services: \(error)")
@@ -561,73 +557,87 @@ class ServicesViewModel: ObservableObject {
         }
     }
 
-    private func populateSections(serviceInfo: ServicesInfo) {
-        let services = serviceInfo.services
-        
-        let serviceGroupIds = Set(services.flatMap { $0.serviceGroupIds })
-        let serviceGroups = serviceInfo.serviceGroups.filter { serviceGroupIds.contains($0.identifier) }
-        
-        var sections = [ServiceSection]()
-        var sampleDataSections = [ServiceSection]()
-        
-        serviceGroups.forEach { group in
-            let items = services
-                .filter { $0.serviceGroupIds.contains(group.identifier) }
-                .sorted { $0.name < $1.name }
-            sections.append(ServiceSection(serviceGroupId: group.identifier, title: group.name, items: items.filter { !$0.sampleDataOnly }))
-            sampleDataSections.append(ServiceSection(serviceGroupId: group.identifier, title: group.name, items: items))
+    // MARK: - Private
+
+    private func downloadSubsequentBatches(initialSourceInfo: SourcesInfo, includeFields: [SourcesFieldList], filter: SourceFilter, sort: SourcesSort) {
+        let total = initialSourceInfo.total
+        let batchSize = initialSourceInfo.limit
+        guard total > batchSize else {
+            return
         }
-        
-        sections.sort { $0.serviceGroupId < $1.serviceGroupId }
-        sampleDataSections.sort { $0.serviceGroupId < $1.serviceGroupId }
-        self.serviceSections = sections
-        self.userPreferences.setServiceSections(sections: sections, for: activeContractId)
-        self.sampleDataSections = sampleDataSections
-        self.userPreferences.setServiceSampleDataSections(sections: sampleDataSections, for: activeContractId)
+
+        let remainingBatches = (total - batchSize) / batchSize + (!(total - batchSize).isMultiple(of: batchSize) ? 1 : 0)
+
+        for index in 0..<remainingBatches {
+            let offset = (index + 1) * batchSize
+            let subsequentPayload = SourceRequestCriteria(limit: nil, offset: offset, sort: sort, query: SourcesQuery(search: nil, include: includeFields, filter: filter))
+            fetchAndProcessBatch(payload: subsequentPayload, index: index)
+        }
+    }
+
+    private func fetchAndProcessBatch(payload: SourceRequestCriteria, index: Int) {
+        digiMeService?.availableSources(filter: payload) { [weak self] result in
+            guard let self = self else {
+                print("Download Subsequent Sources Interrupted")
+                return
+            }
+            switch result {
+            case .success(let sourceInfo):
+//                if let data = try? sourceInfo.encoded() {
+//                    FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "sources_\(index).json")
+//                }
+
+                let imported = SourceImporter(modelContainer: self.modelContainer).populateSources(contractId: self.activeContract.identifier, sourceInfo: sourceInfo)
+                DispatchQueue.main.async {
+                    self.totalNumberOfItems += imported
+                }
+
+            case .failure(let error):
+                self.logErrorMessage("Failed to retrieve subsequent batch: \(error)")
+            }
+        }
     }
 
     private func fetchData(credentials: Credentials, readOptions: ReadOptions? = nil) {
-        fetchAccounts(credentials: credentials) { updatedCredentials in
-            self.fetchServiceData(credentials: updatedCredentials, readOptions: readOptions)
+        fetchAccounts(credentials: credentials) { [weak self] updatedCredentials in
+            self?.fetchServiceData(credentials: updatedCredentials, readOptions: readOptions)
         }
     }
 
     private func fetchAccounts(credentials: Credentials, completion: @escaping (Credentials) -> Void) {
-        DispatchQueue.main.async {
-            self.isLoadingData = true
-        }
+        isLoadingData = true
         
-        digiMeService?.readAccounts(credentials: credentials) { refreshedCredentials, result in
+        digiMeService?.readAccounts(credentials: credentials) { [weak self] refreshedCredentials, result in
             switch result {
             case .success(let accountDetails):
-                self.logMessage("Accounts info retrieved successfully")
-                self.addAccountDetails(accounts: accountDetails)
+                self?.logMessage("Accounts info retrieved successfully")
+                self?.addAccountDetails(accounts: accountDetails)
                 completion(refreshedCredentials)
             case .failure(let error):
                 if case .failure(.invalidSession) = result {
                     // Need to create a new session
-                    self.requestDataFetch(credentials: refreshedCredentials) { renewedCredentials in
-                        self.fetchAccounts(credentials: renewedCredentials, completion: completion)
+                    self?.requestDataFetch(credentials: refreshedCredentials) { renewedCredentials in
+                        self?.fetchAccounts(credentials: renewedCredentials, completion: completion)
                     }
                     return
                 }
                 
-                self.logErrorMessage("Error retrieving accounts: \(error)")
+                self?.logErrorMessage("Error retrieving accounts: \(error)")
             }
         }
     }
 
     private func requestDataFetch(credentials: Credentials, readOptions: ReadOptions? = nil, completion: @escaping (Credentials) -> Void) {
-        digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { refreshedCredentials, result in
-            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+        digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { [weak self] refreshedCredentials, result in
+            self?.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self?.activeContract.identifier)
 
             switch result {
             case .success:
                 completion(refreshedCredentials)
                 
             case.failure(let error):
-                self.isLoadingData = false
-                self.logErrorMessage("Authorization failed: \(error)")
+                self?.isLoadingData = false
+                self?.logErrorMessage("Authorization failed: \(error)")
             }
         }
     }
@@ -637,17 +647,17 @@ class ServicesViewModel: ObservableObject {
             self.isLoadingData = true
         }
         
-        digiMeService?.readAllFiles(credentials: credentials, readOptions: readOptions) { result in
+        digiMeService?.readAllFiles(credentials: credentials, readOptions: readOptions) { [weak self] result in
             switch result {
             case .success(let fileContainer):
 
                 switch fileContainer.metadata {
                 case .mapped(let metadata):
-                    self.logMessage("Downloaded mapped file \(fileContainer.identifier).", attachmentType: .jfs, attachment: fileContainer.data, metadataMapped: try? metadata.encoded())
+                    self?.logMessage("Downloaded mapped file \(fileContainer.identifier).", attachmentType: .jfs, attachment: fileContainer.data, metadataMapped: try? metadata.encoded())
                 case .raw(let metadata):
-                    self.logMessage("Downloaded unmapped file \(fileContainer.identifier). File size: \(fileContainer.data.count) bytes.", attachmentType: LogEntry.mapped(mimeType: metadata.mimeType), attachment: fileContainer.data, metadataRaw: try? metadata.encoded())
+                    self?.logMessage("Downloaded unmapped file \(fileContainer.identifier). File size: \(fileContainer.data.count) bytes.", attachmentType: LogEntry.mapped(mimeType: metadata.mimeType), attachment: fileContainer.data, metadataRaw: try? metadata.encoded())
                 default:
-                    self.logErrorMessage("Error reading file 'Unexpected metadata'")
+                    self?.logErrorMessage("Error reading file 'Unexpected metadata'")
                 }
                                 
                 if !fileContainer.data.isEmpty {
@@ -655,44 +665,44 @@ class ServicesViewModel: ObservableObject {
                 }
                 
             case .failure(let error):
-                self.logErrorMessage("Error reading file: \(error)")
+                self?.logErrorMessage("Error reading file: \(error)")
             }
-        } completion: { refreshedCredentials, result in
-            self.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self.activeContract.identifier)
+        } completion: { [weak self] refreshedCredentials, result in
+            self?.userPreferences.setCredentials(newCredentials: refreshedCredentials, for: self?.activeContract.identifier)
 
-            self.isLoadingData = false
+            self?.isLoadingData = false
 
             switch result {
             case .success(let fileList):
-                self.updateReauthStatus(fileList.status.details ?? [])
-                self.logMessage("Sync state - \(fileList.status.state.rawValue)")
-                self.logMessage("Finished reading files. Total files \(fileList.files?.count ?? 0)")
-                
+                self?.updateReauthStatus(fileList.status.details ?? [])
+                self?.logMessage("Sync state - \(fileList.status.state.rawValue)")
+                self?.logMessage("Finished reading files. Total files \(fileList.files?.count ?? 0)")
+
                 if let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }) {
                     if let reauthAccounts = fileList.status.details?.filter({ $0.error != nil }) {
                         let allErrors = reauthAccounts.compactMap { $0.error }
                         allErrors.forEach { error in
-                            self.logErrorMessage("Error: '\(error.message ?? "n/a")', code: \(error.statusCode)")
+                            self?.logErrorMessage("Error: '\(error.message ?? "n/a")', code: \(error.statusCode)")
                         }
                     }
 
                     if let retryAfter = reauthAccounts.compactMap({ $0.error?.retryAfter }).max() {
-                        self.retryAfter = retryAfter
-                        self.logWarningMessage("Data refresh blocked. \(retryAfter.timeIntervalRetryDescription()).")
+                        self?.retryAfter = retryAfter
+                        self?.logWarningMessage("Data refresh blocked. \(retryAfter.timeIntervalRetryDescription()).")
                     }
                 }
 
             case .failure(let error):
-                self.logErrorMessage("Error reading files: \(error)")
+                self?.logErrorMessage("Error reading files: \(error)")
             }
         }
     }
 
     private func addAccountDetails(accounts: [SourceAccountData]) {
         DispatchQueue.main.async {
-            accounts.forEach { newAccount in
-                if let index = self.linkedAccounts.firstIndex(where: { $0.service.serviceIdentifier == newAccount.serviceTypeId && $0.sourceAccount == nil }) {
-                    self.linkedAccounts[index].sourceAccount = newAccount
+            accounts.forEach { [weak self] newAccount in
+                if let index = self?.linkedAccounts.firstIndex(where: { $0.source.service.id == newAccount.serviceTypeId && $0.sourceAccount == nil }) {
+                    self?.linkedAccounts[index].sourceAccount = newAccount
                 }
             }
         }
@@ -700,13 +710,13 @@ class ServicesViewModel: ObservableObject {
 
     private func updateReauthStatus(_ syncAccounts: [SyncAccount]) {
         DispatchQueue.main.async {
-            syncAccounts.forEach { syncAccount in
+            syncAccounts.forEach { [weak self] syncAccount in
                 let requiredReauth = (syncAccount.error?.statusCode ?? 0) == 511
                 let retryAfter = syncAccount.error?.retryAfter
 
-                if let index = self.linkedAccounts.firstIndex(where: { ($0.sourceAccount?.id ?? "") == syncAccount.identifier }) {
-                    self.linkedAccounts[index].requiredReauth = requiredReauth
-                    self.linkedAccounts[index].retryAfter = retryAfter
+                if let index = self?.linkedAccounts.firstIndex(where: { ($0.sourceAccount?.id ?? "") == syncAccount.identifier }) {
+                    self?.linkedAccounts[index].requiredReauth = requiredReauth
+                    self?.linkedAccounts[index].retryAfter = retryAfter
                 }
             }
         }
@@ -714,7 +724,36 @@ class ServicesViewModel: ObservableObject {
     
     private func reset() {
         resetLogs()
-        self.linkedAccounts = []
-        self.userPreferences.reset()
+        linkedAccounts = []
+        userPreferences.reset()
+    }
+
+    // MARK: - Logs
+
+    func logMessage(_ message: String, attachmentType: LogEntry.AttachmentType = LogEntry.AttachmentType.none, attachment: Data? = nil, metadataRaw: Data? = nil, metadataMapped: Data? = nil) {
+        Task {
+            let entry = LogEntry(message: message, attachmentType: attachmentType, attachment: attachment, attachmentRawMeta: metadataRaw, attachmentMappedMeta: metadataMapped)
+            await self.loggingService.logMessage(entry)
+        }
+    }
+
+    func logWarningMessage(_ message: String) {
+        Task {
+            let entry = LogEntry(message: message, state: .warning)
+            await self.loggingService.logWarningMessage(entry)
+        }
+    }
+
+    func logErrorMessage(_ message: String) {
+        Task {
+            let entry = LogEntry(message: message, state: .error)
+            await self.loggingService.logErrorMessage(entry)
+        }
+    }
+
+    func resetLogs() {
+        Task {
+            await self.loggingService.resetLogs()
+        }
     }
 }

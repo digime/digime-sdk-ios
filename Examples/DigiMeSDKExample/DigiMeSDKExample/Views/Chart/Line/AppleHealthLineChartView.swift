@@ -27,6 +27,17 @@ struct AppleHealthLineChartView: View {
 	
     var body: some View {
         ScrollView {
+            SectionView(header: "Contract") {
+                StyledPressableButtonView(text: UserPreferences.shared().activeContract?.name ?? Contracts.development.name,
+                                          iconSystemName: "gear",
+                                          iconForegroundColor: .gray,
+                                          textForegroundColor: .gray,
+                                          backgroundColor: Color(.secondarySystemGroupedBackground),
+                                          disclosureIndicator: false,
+                                          isDisabled: true) {
+                }
+            }
+            .disabled(true)
             if !viewModel.result.isEmpty {
                 SectionView(header: "Steps & Calories") {
                     VStack(alignment: .leading) {
@@ -82,11 +93,9 @@ struct AppleHealthLineChartView: View {
 	}
 }
 
-struct AppleHealthLineChartView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            AppleHealthLineChartView()
-            // .environment(\.colorScheme, .dark)
-        }
+#Preview {
+    NavigationView {
+        AppleHealthLineChartView()
+            .environment(\.colorScheme, .dark)
     }
 }

@@ -54,8 +54,6 @@ struct ScopeObjectTypeIconView: View {
     }
 }
 
-struct ObjectTypeIconView_Previews: PreviewProvider {
-    static var previews: some View {
-        ScopeObjectTypeIconView(name: "Activity Summary", size: 35)
-    }
+#Preview {
+    ScopeObjectTypeIconView(name: "Activity Summary", size: 35)
 }

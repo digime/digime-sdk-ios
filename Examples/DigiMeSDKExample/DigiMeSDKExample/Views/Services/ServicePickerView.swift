@@ -13,13 +13,13 @@ import SwiftUI
 
 struct ServicePickerView: View {
     @Environment(\.presentationMode) var presentationMode
-    
+
     @Binding var showView: Bool
     @Binding var selectServiceCompletion: ((Service, String?) -> Void)?
-    
+
     @ObservedObject var viewModel: ServicesViewModel
     @ObservedObject var scopeViewModel: ScopeViewModel
-    
+
     @State var viewState: ConnectSourceViewState
     @State private var showSampleDataSetActionSheet = false
     @State private var showSampleDataErrorActionSheet = false
@@ -30,9 +30,9 @@ struct ServicePickerView: View {
     @State private var searchText: String = ""
     @State private var timeRangeTemplates: [TimeRangeTemplate] = TestTimeRangeTemplates.data
     @State private var objectTypes: [ServiceObjectType] = []
-    
+
     var allowScoping: Bool
-    
+
     private var servicesButtonStyle: SourceSelectorButtonStyle {
         if viewState == .sampleData {
             return SourceSelectorButtonStyle(backgroundColor: Color("pickerBackgroundColor"), foregroundColor: viewModel.isLoadingData ? .gray : .primary, padding: 15)
@@ -41,7 +41,7 @@ struct ServicePickerView: View {
             return SourceSelectorButtonStyle(backgroundColor: Color("pickerItemColor"), foregroundColor: viewModel.isLoadingData ? .gray : .primary, padding: 15)
         }
     }
-    
+
     private var navigationButtonStyle: SourceSelectorButtonStyle {
         return SourceSelectorButtonStyle(backgroundColor: Color(.systemGroupedBackground), foregroundColor: viewModel.isLoadingData ? .gray : .primary, padding: 10, strokeColor: .primary)
     }
@@ -49,7 +49,7 @@ struct ServicePickerView: View {
     private var filteredSections: [ServiceSection] {
         return viewState == .sampleData ? viewModel.sampleDataSections : viewModel.serviceSections
     }
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -63,7 +63,7 @@ struct ServicePickerView: View {
                         }
                     }
                     .padding(.bottom, 10)
-                    
+
                     searchBar
                     content
                 }
@@ -85,15 +85,15 @@ struct ServicePickerView: View {
                         addServiceButton
                     }
                 }
-                
+
                 if allowScoping {
                     VStack(spacing: 20) {
                         scopingToggle
-                        
+
                         if scopeViewModel.isScopeModificationAllowed {
                             scopingPreview
                         }
-                        
+
                         buttonProceed
                     }
                     .padding()
@@ -103,17 +103,17 @@ struct ServicePickerView: View {
             .background(viewState == .sampleData ? Color.yellow.opacity(0.1) : Color(.systemBackground))
         }
         .onAppear {
-            scopeViewModel.serviceSections = filteredSections
+//            scopeViewModel.serviceSections = filteredSections
             flags = filteredSections.map { _ in false }
 
             viewModel.onShowSampleDataSelectorChanged = { shouldShow in
                 self.showSampleDataSetActionSheet = shouldShow
             }
-            
+
             viewModel.onShowSampleDataErrorChanged = { shouldShow in
                 self.showSampleDataErrorActionSheet = shouldShow
             }
-            
+
             viewModel.onProceedSampleDatasetChanged = { proceed in
                 self.proceedSampleDataset = proceed
             }
@@ -132,7 +132,7 @@ struct ServicePickerView: View {
                 let data = TestServiceObjectTypesByGroups.data.first(where: { $0.id == groupId })?.items else {
                 return
             }
-            
+
             scopeViewModel.objectTypes = data
             scopeViewModel.selectedObjectTypes = Set(data.map { $0.id })
         }
@@ -162,45 +162,45 @@ struct ServicePickerView: View {
         .navigationBarBackButtonHidden(true)
         .disabled(viewModel.isLoadingData)
     }
-    
+
     func makeServiceRow(service: Service) -> some View {
         HStack {
-            if
-                let resource = service.resources.svgResource() {
-                SVGImageView(url: resource.url, size: CGSize(width: 20, height: 20))
-                    .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
-            }
-            else if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: service.resources) {
-                SourceImage(url: resource.url)
-                    .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
-            }
-            else {
+//            if
+//                let resource = service.resources.svgResource() {
+//                SVGImageView(url: resource.url, size: CGSize(width: 20, height: 20))
+//                    .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
+//            }
+//            else if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: service.resources) {
+//                SourceImage(url: resource.url)
+//                    .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
+//            }
+//            else {
                 Image(systemName: "photo.circle.fill")
                     .foregroundColor(.gray)
                     .frame(width: 20, height: 20)
-            }
-            
+//            }
+
             Text(service.name)
-            
+
             Spacer()
-            
+
             if
                 let selected = scopeViewModel.selectedService,
-                selected.identifier == service.identifier {
-                
+                selected.id == service.id {
+
                 Image(systemName: "checkmark")
             }
         }
     }
-    
+
     private var searchBar: some View {
         HStack {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.secondary)
-            
+
             TextField("Search ...", text: $searchText)
                 .padding(3)
-            
+
             if !searchText.isEmpty {
                 Image(systemName: "xmark.circle.fill")
                     .imageScale(.medium)
@@ -216,7 +216,7 @@ struct ServicePickerView: View {
                 .fill(viewState == .sampleData ? Color("pickerBackgroundColor") : Color("pickerItemColor"))
         }
     }
-    
+
     private var content: some View {
         LazyVStack {
             ForEach(Array(filteredSections.enumerated()), id: \.1.id) { i, section in
@@ -231,12 +231,12 @@ struct ServicePickerView: View {
                                 .frame(width: 20, height: 20, alignment: .leading)
                                 .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
                                 .disabled(viewModel.isLoadingData)
-                            
+
                             Text(section.title)
                                 .foregroundColor(viewModel.isLoadingData ? .gray : .primary)
-                            
+
                             Spacer()
-                            
+
                             if !flags.isEmpty {
                                 Image(systemName: flags[i] ? "chevron.down" : "chevron.right")
                                     .resizable()
@@ -252,7 +252,7 @@ struct ServicePickerView: View {
                     }
                     .padding(.vertical, 5)
                     .disabled(viewModel.isLoadingData)
-                    
+
                     if !flags.isEmpty, flags[i] {
                         ForEach(searchText.isEmpty ? section.items : section.items.filter { $0.name.lowercased().contains(searchText.lowercased()) }) { service in
                             Button {
@@ -265,7 +265,7 @@ struct ServicePickerView: View {
 
                                 if !allowScoping {
                                     if viewState == .sampleData {
-                                        viewModel.fetchDemoDataSetsInfoForService(service: service)
+//                                        viewModel.fetchDemoDataSetsInfoForService(service: service)
                                     }
                                     else {
                                         finish()
@@ -282,7 +282,7 @@ struct ServicePickerView: View {
             }
         }
     }
-    
+
     private var scopingToggle: some View {
         HStack {
             Image(systemName: "scope")
@@ -303,14 +303,14 @@ struct ServicePickerView: View {
                 .fill(viewState == .sampleData ? Color("pickerBackgroundColor") : Color(.secondarySystemGroupedBackground))
         )
     }
-    
+
     private var scopingPreview: some View {
         Button {
             scopeViewModel.shouldDisplayModal = true
         } label: {
             VStack(alignment: .center, spacing: 10) {
                 scopeTitle
-                
+
                 Text("\(scopeViewModel.startDateFormatString) - \(scopeViewModel.endDateFormatString)")
                     .padding(.bottom, 10)
                     .foregroundColor(.gray)
@@ -321,7 +321,7 @@ struct ServicePickerView: View {
                     .onChange(of: scopeViewModel.endDate) { _, newValue in
                         scopeViewModel.endDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
                     }
-                
+
                 ScopeObjectTypesGridView(objectTypes: objectTypes)
             }
             .padding()
@@ -331,7 +331,7 @@ struct ServicePickerView: View {
             )
         }
     }
-    
+
     private var sourcesHeaderView: some View {
         VStack(alignment: .leading) {
             // Title and Description
@@ -339,23 +339,23 @@ struct ServicePickerView: View {
                 Text("Connect a source")
                     .font(.title)
                     .bold()
-                
+
                 Text("You will be asked to login your selected source to approve access.")
                     .font(.body)
                     .foregroundColor(.secondary)
             }
-            
+
             // Sample Data Box
             VStack(alignment: .leading) {
                 HStack {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Not sure what to connect? Try with sample data first.")
                             .font(.headline)
-                        
+
                         Text("Play with sample data and when you’re ready you can start over and connect your own sources.")
                             .font(.body)
                             .foregroundColor(.secondary)
-                        
+
                         Button {
                             pushNextView.toggle()
                         } label: {
@@ -367,14 +367,14 @@ struct ServicePickerView: View {
                         }
                         .buttonStyle(navigationButtonStyle)
                     }
-                    
+
                     VStack {
                         Image("serviceIconRaw")
                             .resizable()
                             .frame(width: 50, height: 50)
                             .padding(.top, 10)
                             .foregroundColor(.green)
-                        
+
                         Spacer()
                     }
                 }
@@ -393,7 +393,7 @@ struct ServicePickerView: View {
             }
         }
     }
-    
+
     private var sampleDataHeaderView: some View {
         VStack(alignment: .leading, spacing: 20) {
             Button {
@@ -406,41 +406,41 @@ struct ServicePickerView: View {
                 }
             }
             .buttonStyle(navigationButtonStyle)
-            
+
             // Title and Description
             Text("Select a sample source")
                 .font(.title)
                 .bold()
-            
+
             // Sample Data Box
             HStack {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("These are sample data sources.")
                         .font(.headline)
-                    
+
                     Text("Tap one to import a small sample set of content so you can explore how the app works.")
                         .font(.body)
                         .foregroundColor(.secondary)
                 }
-                
+
                 VStack {
                     Image("serviceIconRaw")
                         .resizable()
                         .frame(width: 50, height: 50)
                         .padding(.top, 10)
                         .foregroundColor(.green)
-                    
+
                     Spacer()
                 }
             }
         }
     }
-    
+
     private var viewBackground: some View {
         RoundedRectangle(cornerRadius: 10)
             .stroke(viewState == .sampleData ? Color("pickerBackgroundColor") : Color("pickerItemColor"), lineWidth: 2)
     }
-    
+
     private var scopeTitle: some View {
         HStack {
             Text("Your Scope time range. ")
@@ -451,14 +451,14 @@ struct ServicePickerView: View {
                 .font(.footnote)
         }
     }
-    
+
     private var buttonProceed: some View {
         GenericPressableButtonView(isPressed: $proceedButtonIsPressed) {
             if
                 viewState == .sampleData,
                 let selectedService = scopeViewModel.selectedService {
 
-                viewModel.fetchDemoDataSetsInfoForService(service: selectedService)
+//                viewModel.fetchDemoDataSetsInfoForService(service: selectedService)
             }
             else {
                 finish()
@@ -490,14 +490,14 @@ struct ServicePickerView: View {
             Text("Cancel")
         }
     }
-    
+
     private var addServiceButton: some View {
         Button {
             if
                 viewState == .sampleData,
                 let selectedService = scopeViewModel.selectedService {
-                
-                viewModel.fetchDemoDataSetsInfoForService(service: selectedService)
+
+//                viewModel.fetchDemoDataSetsInfoForService(service: selectedService)
             }
             else {
                 finish()
@@ -509,22 +509,22 @@ struct ServicePickerView: View {
         }
         .disabled(proceedDisabled)
     }
-    
+
     private func reset() {
         scopeViewModel.resetSettings()
     }
-    
+
     private func finish(sampleDataset: String? = nil) {
         guard var service = scopeViewModel.selectedService else {
             return
         }
-        
+
         service.options = scopeViewModel.readOptions
         selectServiceCompletion?(service, sampleDataset)
         showView = false
         scopeViewModel.selectedService = nil
     }
-    
+
     private func actionSheetButtons() -> [ActionSheet.Button] {
         var buttons: [ActionSheet.Button] = []
 
@@ -552,46 +552,5 @@ struct ServicePickerView: View {
         }
 
         return buttons
-    }
-}
-
-struct SourceSelectorButtonStyle: ButtonStyle {
-    var backgroundColor: Color
-    var foregroundColor: Color
-    var padding: CGFloat
-    var strokeColor: Color
-
-    init(backgroundColor: Color, foregroundColor: Color, padding: CGFloat, strokeColor: Color = .clear) {
-        self.backgroundColor = backgroundColor
-        self.foregroundColor = foregroundColor
-        self.padding = padding
-        self.strokeColor = strokeColor
-    }
-
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .padding(padding)
-            .foregroundColor(configuration.isPressed ? .white : foregroundColor)
-            .background(configuration.isPressed ? .accentColor : backgroundColor)
-            .cornerRadius(10)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(strokeColor, lineWidth: configuration.isPressed ? 0 : 2)
-            }
-    }
-}
-
-#Preview {
-    do {
-        let previewer = try Previewer()
-        let sections = TestDiscoveryObjects.sections
-        let model = ServicesViewModel(modelContext: previewer.container.mainContext, sections: sections)
-        return ServicePickerView(showView: .constant(true), selectServiceCompletion: .constant(nil), viewModel: model, scopeViewModel: ScopeViewModel(), viewState: .sources, allowScoping: true)
-            .environmentObject(model)
-            .modelContainer(previewer.container)
-            .environment(\.colorScheme, .dark)
-    }
-    catch {
-        return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }

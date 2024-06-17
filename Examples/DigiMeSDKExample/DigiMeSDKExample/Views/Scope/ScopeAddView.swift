@@ -86,8 +86,6 @@ struct ScopeAddView: View {
     }
 }
 
-struct ScopeView_Previews: PreviewProvider {
-    static var previews: some View {
-        ScopeAddView(viewModel: ScopeViewModel())
-    }
+#Preview {
+    ScopeAddView(viewModel: ScopeViewModel())
 }

@@ -13,6 +13,7 @@ public enum MimeType: String, CaseIterable, Codable {
     case applicationOctetStream = "application/octet-stream"
 	case applicationPdf  = "application/pdf"
 	
+    case imageJpg = "image/jpg"
     case imageJpeg = "image/jpeg"
     case imageTiff = "image/tiff"
     case imagePng = "image/png"

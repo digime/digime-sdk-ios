@@ -50,4 +50,15 @@ extension Date {
     func adding(hours: Int) -> Date {
         Calendar.current.date(byAdding: .hour, value: hours, to: self)!
     }
+
+    static let iso8601Formatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.formatOptions = [.withFullDate, .withFullTime, .withDashSeparatorInDate, .withFractionalSeconds]
+        return formatter
+    }()
+
+    var iso8601String: String {
+        return Date.iso8601Formatter.string(from: self)
+    }
 }

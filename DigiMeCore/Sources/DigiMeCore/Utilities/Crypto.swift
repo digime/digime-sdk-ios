@@ -19,6 +19,8 @@ public enum Crypto {
         case chunkEncryptFailed(index: Int)
         case dskDecryptFailed(status: OSStatus)
         case corruptData
+        case publicKeyDerivationFailed
+        case keyConversionFailed(error: CFError)
     }
     
     public static func secureRandomData(length: Int) -> Data {
@@ -65,6 +67,12 @@ public enum Crypto {
         return data
     }
     
+    public static func encrypt(symmetricKey: Data, privateKeyData: Data) throws -> String {
+        let publicKeyData = try publicKey(from: privateKeyData)
+        let encryptedData = try encryptRSA(data: symmetricKey, publicKeyData: publicKeyData)
+        return encryptedData.base64EncodedString(options: .lineLength64Characters)
+    }
+
     public static func encrypt(symmetricKey: Data, publicKey: String) throws -> String {
         let encryptedData = try encryptRSA(data: symmetricKey, publicKey: publicKey)
         return encryptedData.base64EncodedString(options: .lineLength64Characters)
@@ -90,6 +98,71 @@ public enum Crypto {
         return try decryptRSA(data: data, secKey: secKey)
     }
     
+    public static func encryptAndAppendHash(inputData data: Data, privateKeyData: Data) throws -> Data {
+        let typeDescriptor = Data([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F])
+        let mskIndex: UInt32 = 1
+        let msk = Crypto.secureRandomData(length: 32)
+        
+        // Generate random KIV and DSK
+        let kiv = Crypto.secureRandomData(length: 16)
+        let dsk = Crypto.secureRandomData(length: 32)
+
+        // Encrypt DSK using MSK and KIV
+        let aesKIV = try AES256(key: msk, iv: kiv)
+        let encryptedDSK = try aesKIV.encrypt(dsk)
+
+        // Generate random DIV
+        let div = Crypto.secureRandomData(length: 16)
+
+        // Hash the data using SHA512
+        let dataHash = Data(SHA512.hash(data: data))
+
+        // Prepend the hash to the data
+        var dataToEncrypt = Data()
+        dataToEncrypt.append(dataHash)
+        dataToEncrypt.append(data)
+
+        // Encrypt the hash + data using DSK and DIV
+        let aesDIV = try AES256(key: dsk, iv: div)
+        let encryptedData = try aesDIV.encrypt(dataToEncrypt)
+
+        // Assemble components into one contiguous byte array
+        var combinedData = Data()
+        combinedData.append(typeDescriptor)
+        combinedData.append(withUnsafeBytes(of: mskIndex.bigEndian) { Data($0) }) // Convert MSKI to network-byte-order
+        combinedData.append(kiv)
+        combinedData.append(encryptedDSK)
+        combinedData.append(div)
+        combinedData.append(encryptedData)
+
+        return combinedData
+    }
+
+    public static func encrypt(inputData data: Data, privateKeyData: Data) throws -> Data {
+        // Generate a random symmetric key (Data Symmetric Key - DSK)
+        let symmetricKey = secureRandomData(length: kCCKeySizeAES256)
+
+        // Generate a random initialization vector (IV)
+        let iv = secureRandomData(length: kCCBlockSizeAES128)
+
+        // Encrypt the input data using AES with the symmetric key and IV
+        let aes = try AES256(key: symmetricKey, iv: iv)
+        let encryptedFileData = try aes.encrypt(data)
+
+        // Encrypt the symmetric key using RSA with the public key derived from the private key
+        let publicKeyData = try publicKey(from: privateKeyData)
+        let publicKey = try secKey(keyData: publicKeyData, isPublic: true)
+        let encryptedSymmetricKey = try encryptRSA(data: symmetricKey, secKey: publicKey)
+
+        // Combine the encrypted symmetric key, IV, and encrypted file data into one output
+        var combinedData = Data()
+        combinedData.append(encryptedSymmetricKey)
+        combinedData.append(iv)
+        combinedData.append(encryptedFileData)
+
+        return combinedData
+    }
+
     public static func decrypt(encryptedBase64EncodedData data: Data, privateKeyData: Data, dataIsHashed: Bool) throws -> Data {
         // Split data into components
         let encryptedDskLength = 256
@@ -145,7 +218,26 @@ public enum Crypto {
         
         return secKey
     }
-    
+
+    public static func publicKey(from privateKeyData: Data) throws -> Data {
+        do {
+            let privateKey = try secKey(keyData: privateKeyData, isPublic: false)
+            guard let publicKey = SecKeyCopyPublicKey(privateKey) else {
+                throw CryptoError.publicKeyDerivationFailed
+            }
+
+            var error: Unmanaged<CFError>?
+            guard let keyData = SecKeyCopyExternalRepresentation(publicKey, &error) as Data? else {
+                throw CryptoError.keyConversionFailed(error: error!.takeRetainedValue())
+            }
+
+            return keyData
+        }
+        catch {
+            throw error
+        }
+    }
+
     private static func encryptRSA(data: Data, secKey: SecKey) throws -> Data {
         let blockSize = SecKeyGetBlockSize(secKey)
         

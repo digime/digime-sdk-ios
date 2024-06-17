@@ -12,58 +12,90 @@ struct DatePickerWithButtons: View {
 	@Binding var showDatePicker: Bool
 	@Binding var showTime: Bool
 	@Binding var date: Date
-	
+
+    @State private var tempDate: Date
+    private var minDate: Date?
+    private var maxDate: Date?
+
+    init(showDatePicker: Binding<Bool>, showTime: Binding<Bool>, date: Binding<Date>, minDate: Date? = nil, maxDate: Date? = nil) {
+        self._showDatePicker = showDatePicker
+        self._showTime = showTime
+        self._date = date
+        self.minDate = minDate
+        self.maxDate = maxDate
+        self._tempDate = State(initialValue: date.wrappedValue)
+    }
+
 	var body: some View {
 		ZStack {
-			VStack {
-				let components: DatePickerComponents = showTime ? [.date, .hourAndMinute] : [.date]
-				let picker = DatePicker("Pick Date", selection: $date, displayedComponents: components)
-				
-				if #available(iOS 14.0, *) {
-					picker.datePickerStyle(GraphicalDatePickerStyle())
-				}
-				else {
-					picker.datePickerStyle(WheelDatePickerStyle())
-				}
+            VStack(alignment: .center) {
+                picker
+                    .datePickerStyle(.graphical)
+                    .frame(width: 330)
 
 				Divider()
-				HStack {
+
+                HStack(alignment: .top) {
 					Button {
-						showDatePicker = false
+                        withAnimation {
+                            showDatePicker = false
+                        }
 					} label: {
 						Text("Cancel")
+                            .foregroundColor(.accentColor)
 					}
+
 					Spacer()
+
 					Button {
-						showDatePicker = false
+                        date = tempDate
+                        withAnimation {
+                            showDatePicker = false
+                        }
 					} label: {
 						Text("Save".uppercased())
 							.bold()
+                            .foregroundColor(.accentColor)
 					}
 				}
-				.padding(.horizontal)
-				.padding(.bottom, 20)
+                .padding(20)
 			}
-			.padding(.horizontal)
-			.foregroundColor(.primary)
 			.background(
 				Color(UIColor.tertiarySystemBackground)
 					.cornerRadius(30)
 			)
-			.padding(.horizontal, 20)
-			.cornerRadius(30)
 		}
+        .frame(maxWidth: 380, maxHeight: .infinity, alignment: .center)
+        .onAppear {
+            tempDate = date
+        }
 	}
+
+    private var picker: some View {
+        let components: DatePickerComponents = showTime ? [.date, .hourAndMinute] : [.date]
+        return Group {
+            if let minDate = minDate, let maxDate = maxDate {
+                DatePicker("Pick Date", selection: $tempDate, in: minDate...maxDate, displayedComponents: components)
+            } 
+            else if let minDate = minDate {
+                DatePicker("Pick Date", selection: $tempDate, in: minDate..., displayedComponents: components)
+            } 
+            else if let maxDate = maxDate {
+                DatePicker("Pick Date", selection: $tempDate, in: ...maxDate, displayedComponents: components)
+            } 
+            else {
+                DatePicker("Pick Date", selection: $tempDate, displayedComponents: components)
+            }
+        }
+    }
 }
 
-struct DatePickerWithButtons_Previews: PreviewProvider {
-	@State static var date = Date()
-	static var previews: some View {
-		Group {
-			DatePickerWithButtons(showDatePicker: .constant(true), showTime: .constant(true), date: $date)
-				.preferredColorScheme(.light)
-			DatePickerWithButtons(showDatePicker: .constant(true), showTime: .constant(true), date: $date)
-				.preferredColorScheme(.dark)
-		}
-	}
+#Preview {
+    ZStack {
+        Color.black.opacity(0.4)
+            .edgesIgnoringSafeArea(.all)
+
+        DatePickerWithButtons(showDatePicker: .constant(true), showTime: .constant(true), date: .constant(Date()))
+//            .preferredColorScheme(.dark)
+    }
 }

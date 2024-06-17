@@ -98,16 +98,10 @@ struct ScopeEditView: View {
                     }
                 } label: {
                     HStack {
-                        if let resource = ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: connectedAccount.service.resources) {
-                            SourceImage(url: resource.url)
-                        }
-                        else {
-                            Image(systemName: "photo.circle.fill")
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(.gray)
-                        }
+                        SVGImageView(url: connectedAccount.source.resource.url, size: CGSize(width: 20, height: 20))
+                            .frame(width: 20, height: 20)
 
-                        Text(connectedAccount.service.name)
+                        Text(connectedAccount.source.name)
                     }
                 }
             }
@@ -132,8 +126,6 @@ struct ScopeEditView: View {
     }
 }
 
-struct ScopeEditView_Previews: PreviewProvider {
-    static var previews: some View {
-        ScopeEditView(viewModel: ScopeViewModel())
-    }
+#Preview {
+    ScopeEditView(viewModel: ScopeViewModel())
 }

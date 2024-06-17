@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CustomNavigationLinkView<Content: View, Destination: View>: View {
     @State private var isPressed = false
+    
     let destination: Destination
     let content: Content
     let action: () -> Void
@@ -40,10 +41,8 @@ struct CustomNavigationLinkView<Content: View, Destination: View>: View {
     }
 }
 
-struct CustomNavigationLinkView_Previews: PreviewProvider {
-    static var previews: some View {
-        CustomNavigationLinkView(destination: Text("Destination View")) {
-            Text("Navigate")
-        }
+#Preview {
+    CustomNavigationLinkView(destination: Text("Destination View")) {
+        Text("Navigate")
     }
 }

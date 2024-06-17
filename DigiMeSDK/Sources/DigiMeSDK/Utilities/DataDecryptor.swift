@@ -35,4 +35,19 @@ class DataDecryptor {
             throw SDKError.errorDecryptingResponse
         }
     }
+
+    func decrypt(storageData: Data) throws -> Data {
+        do {
+            return try Crypto.decrypt(encryptedBase64EncodedData: storageData, privateKeyData: configuration.privateKeyData, dataIsHashed: false)
+        }
+        catch let error as Crypto.CryptoError {
+            throw error
+        }
+        catch let error as SDKError {
+            throw error
+        }
+        catch {
+            throw SDKError.errorDecryptingResponse
+        }
+    }
 }

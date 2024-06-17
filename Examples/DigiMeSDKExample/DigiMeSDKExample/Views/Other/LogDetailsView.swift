@@ -36,9 +36,6 @@ struct LogDetailsView: View {
     }
 }
 
-struct LogDetailsView_Previews: PreviewProvider {
-	static var entry = TestLogs.dataset.first!
-    static var previews: some View {
-		LogDetailsView(entry: entry)
-    }
+#Preview {
+    LogDetailsView(entry: TestLogs.dataset.first!)
 }

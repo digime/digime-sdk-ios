@@ -58,15 +58,6 @@ struct DailyActivityChart: View {
 	}
 }
 
-struct DailyStepsChart_Previews: PreviewProvider {
-	@State static var data = TestDailyActivity.last30Days
-	static var dataType = QuantityType.stepCount
-	
-    static var previews: some View {
-        DailyActivityChart(data: $data,
-                           showAverageLine: .constant(false),
-                           dataAverage: .constant(0),
-                           dataType: dataType,
-                           barColor: .accentColor)
-    }
+#Preview {
+    DailyActivityChart(data: .constant(TestDailyActivity.last30Days), showAverageLine: .constant(false), dataAverage: .constant(0), dataType: QuantityType.stepCount, barColor: .accentColor)
 }

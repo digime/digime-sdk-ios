@@ -12,7 +12,6 @@ import DigiMeSDK
 import SwiftUI
 
 class ScopeViewModel: ObservableObject {
-    @AppStorage("ActiveServiceContractId") var activeContractId: String = Contracts.development.identifier
     @AppStorage("SelectedTimeRangeIndex") var selectedTimeRangeIndex: Int = 0
     
     @Published var shouldDisplayModal = false
@@ -36,6 +35,7 @@ class ScopeViewModel: ObservableObject {
     }()
 
     @Published var selectedService: Service?
+    @Published var selectedSource: Source?
     @Published var startDate: Date?
     @Published var endDate: Date?
     @Published var readOptions: ReadOptions?
@@ -44,7 +44,7 @@ class ScopeViewModel: ObservableObject {
 
     @Published var objectTypes: [ServiceObjectType] = []
     @Published var timeRangeTemplates: [TimeRangeTemplate] = TestTimeRangeTemplates.data
-    @Published var serviceSections: [ServiceSection] = []
+    @Published var sourceSections: [SourceSection] = []
     @Published var linkedAccounts: [LinkedAccount] = []
     @Published var durationOptions: [Duration] = [Duration.unlimited(), 30, 60, 120, 180, 300, 600, 1200]
 
@@ -56,11 +56,11 @@ class ScopeViewModel: ObservableObject {
         return selectedTimeRangeIndex == (timeRangeTemplates.count - 1)
     }
     
-    private var preferences = UserPreferences.shared()
-    
+    private var userPreferences = UserPreferences.shared()
+
     func displayScopeEditor() {
-        linkedAccounts = preferences.getLinkedAccounts(for: activeContractId)
-        readOptions = preferences.readOptions(for: activeContractId)
+        linkedAccounts = userPreferences.getLinkedAccounts(for: userPreferences.activeContract?.identifier ?? Contracts.development.identifier)
+        readOptions = userPreferences.readOptions(for: userPreferences.activeContract?.identifier ?? Contracts.development.identifier)
         selectedDuration = readOptions?.limits?.duration ?? Duration.unlimited()
         refreshObjectTypes()
         flags = linkedAccounts.map { _ in false }
@@ -78,10 +78,12 @@ class ScopeViewModel: ObservableObject {
         
         for (index, account) in linkedAccounts.enumerated() {
             for serviceGroup in groups {
-                for serviceType in serviceGroup.serviceTypes where serviceType.id == account.service.serviceIdentifier {
-                    let serviceObjectTypes = serviceType.serviceObjectTypes
-                    if !serviceObjectTypes.isEmpty {
-                        linkedAccounts[index].selectedObjectTypeIds = Set(serviceObjectTypes.compactMap { $0.id })
+                if let serviceTypes = serviceGroup.serviceTypes {
+                    for serviceType in serviceTypes where serviceType.id == account.source.service.id {
+                        let serviceObjectTypes = serviceType.serviceObjectTypes
+                        if !serviceObjectTypes.isEmpty {
+                            linkedAccounts[index].selectedObjectTypeIds = Set(serviceObjectTypes.compactMap { $0.id })
+                        }
                     }
                 }
             }
@@ -114,8 +116,8 @@ class ScopeViewModel: ObservableObject {
     func completeProcess() {
         refreshDates()
         refreshReadOptions()
-        preferences.setLinkedAccounts(newAccounts: linkedAccounts, for: activeContractId)
-        preferences.setReadOptions(newReadOptions: readOptions, for: activeContractId)
+        userPreferences.setLinkedAccounts(newAccounts: linkedAccounts, for: userPreferences.activeContract?.identifier ?? Contracts.development.identifier)
+        userPreferences.setReadOptions(newReadOptions: readOptions, for: userPreferences.activeContract?.identifier ?? Contracts.development.identifier)
         shouldDisplayModal = false
     }
     
@@ -135,7 +137,7 @@ class ScopeViewModel: ObservableObject {
     }
     
     func getDefaultObjectTypes(for section: LinkedAccount) -> [ServiceObjectType] {
-        guard let serviceGroupId = section.service.serviceGroupIds.first else {
+        guard let serviceGroupId = section.source.serviceGroupIds.first else {
             return []
         }
         
@@ -151,9 +153,9 @@ class ScopeViewModel: ObservableObject {
         selectedTimeRangeIndex = 0
         selectedObjectTypes = Set<Int>()
         selectedDuration = Duration.unlimited()
-        preferences.clearLinkedAccounts(for: activeContractId)
-        preferences.clearReadOptions(for: activeContractId)
-        
+        userPreferences.clearLinkedAccounts(for: userPreferences.activeContract?.identifier ?? Contracts.development.identifier)
+        userPreferences.clearReadOptions(for: userPreferences.activeContract?.identifier ?? Contracts.development.identifier)
+
         if isObjectTypeEditingAllowed {
             selectedObjectTypes = Set(objectTypes.map { $0.id })
         }
@@ -202,7 +204,7 @@ class ScopeViewModel: ObservableObject {
         }
                 
         if
-            let serviceId = selectedService?.identifier,
+            let serviceId = selectedSource?.id,
             let serviceGroupType = generateServiceGroupTypeForAuthorization(with: serviceId) {
             
             // authorize route, when adding your first service
@@ -229,21 +231,22 @@ class ScopeViewModel: ObservableObject {
         }
     }
     
+    // TODO: - XXXXXX
     private func generateServiceGroupTypeForAuthorization(with serviceTypeId: Int) -> ServiceGroupType? {
-        guard
-            let section = serviceSections.first(where: { $0.items.contains { $0.identifier == serviceTypeId } }),
-            let service = section.items.first(where: { $0.identifier == serviceTypeId }) else {
+//        guard
+//            let section = sourceSections.first(where: { $0.items.contains { $0.id == serviceTypeId } }),
+//            let service = section.items.first(where: { $0.id == serviceTypeId }) else {
             return nil
-        }
-        
-        let objectTypes = objectTypes.filter { selectedObjectTypes.contains($0.id) }
-        
-        guard !objectTypes.isEmpty else {
-            return nil
-        }
-        
-        let serviceType = ServiceType(identifier: service.serviceIdentifier, objectTypes: objectTypes, name: service.name)
-        return ServiceGroupType(identifier: section.serviceGroupId, serviceTypes: [serviceType], name: section.title)
+//        }
+//        
+//        let objectTypes = objectTypes.filter { selectedObjectTypes.contains($0.id) }
+//        
+//        guard !objectTypes.isEmpty else {
+//            return nil
+//        }
+//        
+//        let serviceType = ServiceType(identifier: service.service.id, objectTypes: objectTypes, name: service.name)
+//        return ServiceGroupType(identifier: section.serviceGroupId, name: section.title, serviceTypes: [serviceType])
     }
     
     private func generateServiceGroupTypeForDataSync() -> [ServiceGroupType]? {
@@ -252,10 +255,10 @@ class ScopeViewModel: ObservableObject {
             let objectTypes = account.defaultObjectTypes.filter { account.selectedObjectTypeIds.contains($0.id) }
             if
                 !objectTypes.isEmpty,
-                let serviceGroupId = account.service.serviceGroupIds.first {
-                
-                let serviceType = ServiceType(identifier: account.service.serviceIdentifier, objectTypes: objectTypes, name: account.service.name)
-                let serviceGroupType = ServiceGroupType(identifier: serviceGroupId, serviceTypes: [serviceType])
+                let serviceGroupId = account.source.serviceGroupIds.first {
+
+                let serviceType = ServiceType(identifier: account.source.service.id, objectTypes: objectTypes, name: account.source.name)
+                let serviceGroupType = ServiceGroupType(id: serviceGroupId, serviceTypes: [serviceType])
                 serviceGroups.append(serviceGroupType)
             }
         }

@@ -44,8 +44,6 @@ struct ActionView: View {
     }
 }
 
-struct ActionView_Previews: PreviewProvider {
-    static var previews: some View {
-		ActionView(title: "Waiting callback from your browser...", actionTitle: "Cancel Request")
-    }
+#Preview {
+    ActionView(title: "Waiting callback from your browser...", actionTitle: "Cancel Request")
 }

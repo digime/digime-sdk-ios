@@ -39,12 +39,10 @@ struct ContractDetailsView: View {
 	}
 }
 
-struct ContractDetailsView_Previews: PreviewProvider {
-	static var previews: some View {
-        let selectedContract = Contracts.prodFinSocMus
-        let contracts = [Contracts.prodFinSocMus, Contracts.prodFitHealth]
-		NavigationView {
-            ContractDetailsView(selectedContract: .constant(selectedContract), contracts: contracts)
-		}
-	}
+#Preview {
+    let selectedContract = Contracts.prodFinSocMus
+    let contracts = [Contracts.prodFinSocMus, Contracts.prodFitHealth]
+    return NavigationView {
+        ContractDetailsView(selectedContract: .constant(selectedContract), contracts: contracts)
+    }
 }

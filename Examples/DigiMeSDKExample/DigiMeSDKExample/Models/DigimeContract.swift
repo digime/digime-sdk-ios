@@ -10,7 +10,7 @@ import DigiMeCore
 import DigiMeSDK
 import Foundation
 
-struct DigimeContract: Identifiable {
+struct DigimeContract: Codable, Identifiable {
 	var id = UUID()
     let name: String
     let appId: String
@@ -18,4 +18,5 @@ struct DigimeContract: Identifiable {
     let privateKey: String
     var timeRanges: [TimeRange]?
     var baseURL: String?
+    var storageBaseURL: String?
 }

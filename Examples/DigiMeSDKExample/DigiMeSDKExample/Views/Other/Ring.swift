@@ -45,8 +45,6 @@ public struct BallScaleRipple: View {
 	}
 }
 
-struct BallScaleRipple_Previews: PreviewProvider {
-	static var previews: some View {
-		BallScaleRipple()
-	}
+#Preview {
+    BallScaleRipple()
 }

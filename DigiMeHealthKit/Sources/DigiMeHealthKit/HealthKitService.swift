@@ -239,14 +239,15 @@ public class HealthKitService: HealthKitServiceProtocol {
     /// Here we create some random data for testing purposes.
     public func addTestData(completion: @escaping (_ success: Bool, _ error: Error?) -> Void) {
         var dataToWrite: [HKQuantitySample] = []
-        let startDate = Date.from(year: 2014, month: 6, day: 1, hour: 0, minute: 0, second: 0)!
+        let startDate = Date.from(year: 1970, month: 1, day: 1, hour: 0, minute: 0, second: 0)!
         let endDate = Date().endOfTomorrow
         let dayDurationInSeconds: TimeInterval = 60 * 60 * 24
         var counter: Int = 0
         for date in stride(from: startDate, to: endDate, by: dayDurationInSeconds) {
-            let end = Calendar.utcCalendar.date(byAdding: .day, value: -1, to: date)!.endOfDay
+            let end = Calendar.utcCalendar.date(byAdding: .minute, value: -1, to: date)!.endOfDay
             let start = Calendar.utcCalendar.startOfDay(for: end)
             print("Start: \(start) End: \(end)")
+
             // steps data
             let stepsType = HKObjectType.quantityType(forIdentifier: .stepCount)!
             let stepsQuantity = HKQuantity(unit: .count(), doubleValue: Double.random(in: 1...10))
@@ -264,6 +265,19 @@ public class HealthKitService: HealthKitServiceProtocol {
             let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: Double.random(in: 1...10))
             let energy = HKQuantitySample(type: energyType, quantity: energyQuantity, start: start, end: end)
             dataToWrite.append(energy)
+
+            // heart rate
+            let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
+            let heartRateQuantity = HKQuantity(unit: HKUnit.count().unitDivided(by: .minute()), doubleValue: Double.random(in: 1...250))
+            let heartRate = HKQuantitySample(type: heartRateType, quantity: heartRateQuantity, start: start, end: end)
+            dataToWrite.append(heartRate)
+
+            // respiratory rate
+            let respiratoryRateType = HKObjectType.quantityType(forIdentifier: .respiratoryRate)!
+            let respiratoryRateQuantity = HKQuantity(unit: HKUnit.count().unitDivided(by: .minute()), doubleValue: Double.random(in: 1...25))
+            let respiratoryRate = HKQuantitySample(type: respiratoryRateType, quantity: respiratoryRateQuantity, start: start, end: end)
+            dataToWrite.append(respiratoryRate)
+
             counter += 1
         }
         

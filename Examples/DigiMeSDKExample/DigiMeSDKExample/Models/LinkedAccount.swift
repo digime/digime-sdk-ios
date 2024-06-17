@@ -12,13 +12,13 @@ import Foundation
 
 struct LinkedAccount: Codable, Identifiable {
 	var id = UUID()
-	var service: Service
+	var source: Source
 	var requiredReauth = false
     var selectedObjectTypeIds = Set<Int>()
     var sourceAccount: SourceAccountData?
     var retryAfter: Date?
     var defaultObjectTypes: [ServiceObjectType] {
-        guard let serviceGroupId = service.serviceGroupIds.first else {
+        guard let serviceGroupId = source.serviceGroupIds.first else {
             return []
         }
         

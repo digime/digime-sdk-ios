@@ -80,6 +80,26 @@
 				<string>digime-ca-8xQSl0XkCfa434LqNC7NwJdvc38qEWGz</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Consent Access</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>digime-ca-8YcZRyfgKeimmlCUC3cBaVJLLmqEodgh</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Consent Access</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>digime-ca-C8YhEFweYVpDTYtmXAJuzNXNNxkTo7xY</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -125,5 +145,46 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>We need access to your photo library to save files.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We need access to your photo library to read files.</string>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>We need access to your media library to read files.</string>
+    <key>UTExportedTypeDeclarations</key>
+    <array>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>com.example.myapp.customtype</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.data</string>
+            </array>
+            <key>UTTypeDescription</key>
+            <string>Custom File Type</string>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <string>custom</string>
+                <key>public.mime-type</key>
+                <string>application/custom</string>
+            </dict>
+        </dict>
+    </array>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>Custom File Type</string>
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>com.example.myapp.customtype</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>

@@ -58,7 +58,6 @@ struct LogOutputView: View {
         let previewer = try Previewer()
 
         return LogOutputView()
-            .environmentObject(ServicesViewModel(modelContext: previewer.container.mainContext))
             .modelContainer(previewer.container)
     }
     catch {

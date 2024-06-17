@@ -84,15 +84,21 @@ internal protocol JSONRepresentable {
 }
 
 extension JSONRepresentable {
-	var stringValue: String? {
-		do {
-			let data = try JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)
-			return String(data: data, encoding: .utf8)
-		}
-		catch {
-			return nil
-		}
-	}
+    var stringValue: String? {
+        if let string = self as? String {
+            return string
+        }
+        else {
+            do {
+                let data = try JSONSerialization.data(withJSONObject: self, options: [.withoutEscapingSlashes])
+                return String(data: data, encoding: .utf8)
+            }
+            catch {
+                print("Error during JSON serialization: \(error.localizedDescription)")
+                return nil
+            }
+        }
+    }
 }
 
 extension Array: JSONRepresentable where Element: JSONRepresentable {

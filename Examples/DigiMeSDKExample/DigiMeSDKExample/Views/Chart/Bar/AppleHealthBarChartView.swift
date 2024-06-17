@@ -32,6 +32,18 @@ struct AppleHealthBarChartView: View {
 	
 	var body: some View {
 		ScrollView {
+            SectionView(header: "Contract") {
+                StyledPressableButtonView(text: UserPreferences.shared().activeContract?.name ?? Contracts.development.name,
+                                          iconSystemName: "gear",
+                                          iconForegroundColor: .gray,
+                                          textForegroundColor: .gray,
+                                          backgroundColor: Color(.secondarySystemGroupedBackground),
+                                          disclosureIndicator: false,
+                                          isDisabled: true) {
+                }
+            }
+            .disabled(true)
+            
 			if !viewModel.result.isEmpty {
                 SectionView(header: "Steps, Distance & Calories") {
                     VStack(alignment: .leading) {
@@ -175,8 +187,6 @@ struct AppleHealthBarChartView: View {
 	}
 }
 
-struct AppleHealthChartView_Previews: PreviewProvider {
-	static var previews: some View {
-		AppleHealthBarChartView()
-	}
+#Preview {
+    AppleHealthBarChartView()
 }

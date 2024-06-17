@@ -16,10 +16,11 @@ final class UserPreferences: NSObject {
 	private enum Key: String, CaseIterable {
 		case credentials = "kCredentials"
 		case connectedAccounts = "kConnectedAccounts"
-        case servicesInfo = "kServicesInfo"
-        case services = "kServices"
-        case sampleData = "kSampleData"
+        case storageId = "kStorageId"
         case readOptions = "kReadOptions"
+        case selfMeasurementLastUsedType = "kSelfMeasurementLastUsedType"
+        case selfMeasurementPersonId = "kSelfMeasurementPersonId"
+        case activeContract = "kActiveContract"
 	}
 	
 	@discardableResult
@@ -40,18 +41,26 @@ final class UserPreferences: NSObject {
 		return credentials?[contractId]
 	}
 	
-	func setCredentials(newCredentials: Credentials, for contractId: String) {
+	func setCredentials(newCredentials: Credentials, for contractId: String?) {
+        guard let contractId = contractId else {
+            return
+        }
+        
 		var cachedCredentials = credentials ?? [:]
 		cachedCredentials[contractId] = newCredentials
 		credentials = cachedCredentials
 	}
 	
-	func clearCredentials(for contractId: String) {
+	func clearCredentials(for contractId: String?) {
+        guard let contractId = contractId else {
+            return
+        }
+
 		credentials?[contractId] = nil
 	}
 	
-	// MARK: - Connected Accounts
-		
+	// MARK: - Onboarded Accounts
+
 	@CodableUserDefault(key: Key.connectedAccounts)
 	private var linkedAccounts: [String: [LinkedAccount]]?
 	
@@ -90,42 +99,31 @@ final class UserPreferences: NSObject {
             linkedAccounts?[contractId]?[index] = linkedAccount
         }
     }
-	
-    // MARK: - Discovery info
-    
-    @CodableUserDefault(key: Key.servicesInfo)
-    var servicesInfo: ServicesInfo?
-    
-    // MARK: - Discovery service sections
-    
-    @CodableUserDefault(key: Key.services)
-    private var serviceSections: [String: [ServiceSection]]?
-    
-    func readServiceSections(for contractId: String) -> [ServiceSection]? {
-        return serviceSections?[contractId]
+
+    // MARK: - Active Contract
+
+    @CodableUserDefault(key: Key.activeContract)
+    var activeContract: DigimeContract?
+
+    // MARK: - Storage
+
+    @CodableUserDefault(key: Key.storageId)
+    private var storageIds: [String: String]?
+
+    func getStorageId(for contractId: String) -> String? {
+        return storageIds?[contractId]
     }
-    
-    func setServiceSections(sections: [ServiceSection], for contractId: String) {
-        var cached = serviceSections ?? [:]
-        cached[contractId] = sections
-        serviceSections = cached
+
+    func setStorageId(identifier: String, for contractId: String) {
+        var cached = storageIds ?? [:]
+        cached[contractId] = identifier
+        storageIds = cached
     }
-    
-    // MARK: - Discovery service sample data sections
-    
-    @CodableUserDefault(key: Key.sampleData)
-    private var serviceSampleDataSections: [String: [ServiceSection]]?
-    
-    func readServiceSampleDataSections(for contractId: String) -> [ServiceSection]? {
-        return serviceSampleDataSections?[contractId]
+
+    func clearStorageIds(for contractId: String) {
+        storageIds?[contractId] = nil
     }
-    
-    func setServiceSampleDataSections(sections: [ServiceSection], for contractId: String) {
-        var cached = serviceSampleDataSections ?? [:]
-        cached[contractId] = sections
-        serviceSampleDataSections = cached
-    }
-    
+
     // MARK: - Read Options
     
     @CodableUserDefault(key: Key.readOptions)
@@ -144,12 +142,22 @@ final class UserPreferences: NSObject {
     func clearReadOptions(for contractId: String) {
         readOptions?[contractId] = nil
     }
-    
+
+    // MARK: Self Measurements
+
+    @UserDefault(key: Key.selfMeasurementLastUsedType, defaultValue: SelfMeasurementType.weight.rawValue)
+    var selfMeasurementLastUsedType: Int
+
+    @UserDefault(key: Key.selfMeasurementPersonId, defaultValue: UUID().uuidString, persistDefaultValue: true)
+    var selfMeasurementPersonId: String
+
+    // MARK: - Reset
+
 	func reset() {
 		credentials = nil
 		linkedAccounts = nil
-        servicesInfo = nil
-        serviceSections = nil
-        serviceSampleDataSections = nil
+        storageIds = nil
+        readOptions = nil
+        activeContract = nil
 	}
 }

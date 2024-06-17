@@ -59,8 +59,6 @@ struct LineChartView: View {
 	}
 }
 
-struct LineChartView_Previews: PreviewProvider {
-    static var previews: some View {
-		LineChartView(timeRange: .constant(.last30Days), data: .constant([]))
-    }
+#Preview {
+    LineChartView(timeRange: .constant(.last30Days), data: .constant([]))
 }

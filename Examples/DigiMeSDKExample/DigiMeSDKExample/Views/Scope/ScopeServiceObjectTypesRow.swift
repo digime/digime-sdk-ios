@@ -66,8 +66,6 @@ struct ScopeServiceObjectTypesRow: View {
     }
 }
 
-struct ScopeServiceObjectTypesRow_Previews: PreviewProvider {
-    static var previews: some View {
-        ScopeServiceObjectTypesRow(viewModel: ScopeViewModel())
-    }
+#Preview {
+    ScopeServiceObjectTypesRow(viewModel: ScopeViewModel())
 }

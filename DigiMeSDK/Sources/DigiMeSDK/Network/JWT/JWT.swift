@@ -20,7 +20,12 @@ struct JWT<T: JWTClaims>: Codable {
         self.header = JWTHeader(alg: "PS512")
         self.claims = claims
     }
-    
+
+    init(header: JWTHeader, claims: T) {
+        self.header = header
+        self.claims = claims
+    }
+
     init(jwtString: String, keySet: JSONWebKeySet) throws {
         let components = jwtString.components(separatedBy: ".")
         guard

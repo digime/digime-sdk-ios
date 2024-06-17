@@ -52,10 +52,10 @@ final class ConsentManager: NSObject {
         self.configuration = configuration
     }
     
-    func requestUserConsent(preAuthCode: String, serviceId: Int?, onlyPushServices: Bool = false, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, completion: @escaping ((Result<ConsentResponse, SDKError>) -> Void)) {
+    func requestUserConsent(preAuthCode: String, serviceId: Int?, onlyPushServices: Bool = false, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, storageRef: String? = nil, completion: @escaping ((Result<ConsentResponse, SDKError>) -> Void)) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
-                self.requestUserConsent(preAuthCode: preAuthCode, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, completion: completion)
+                self.requestUserConsent(preAuthCode: preAuthCode, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, storageRef: storageRef, completion: completion)
             }
             return
         }
@@ -87,7 +87,13 @@ final class ConsentManager: NSObject {
         if let sampleDataAutoOnboard = sampleDataAutoOnboard {
             percentEncodedQueryItems.append(URLQueryItem(name: "sampleDataAutoOnboard", value: "\(sampleDataAutoOnboard)"))
         }
-        
+
+        percentEncodedQueryItems.append(URLQueryItem(name: "lng", value: Locale.current.identifier))
+
+        if let storageRef = storageRef {
+            percentEncodedQueryItems.append(URLQueryItem(name: "storageRef", value: storageRef))
+        }
+
         components.percentEncodedQueryItems = percentEncodedQueryItems
         open(url: components.url!)
     }

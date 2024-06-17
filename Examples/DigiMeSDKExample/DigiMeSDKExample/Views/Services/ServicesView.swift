@@ -8,16 +8,12 @@
 
 import SwiftUI
 
-enum ServicesNavigationDestination: Hashable {
-    case contracts
-}
-
 struct ServicesView: View {
     @Binding var navigationPath: NavigationPath
     
     @EnvironmentObject private var viewModel: ServicesViewModel
-    @ObservedObject private var scopeViewModel = ScopeViewModel()
-    
+    @EnvironmentObject private var scopeViewModel: ScopeViewModel
+
 	@State private var dialogDetent = PresentationDetent.height(200)
 	@State private var showAccountOptions = false
     @State private var presentPortabilityDateManager = false
@@ -34,21 +30,21 @@ struct ServicesView: View {
                             SectionView(header: "Contract") {
                                 StyledPressableButtonView(text: viewModel.activeContract.name,
                                                           iconSystemName: "gear",
-                                                          iconForegroundColor: viewModel.isLoadingData ? .gray : .indigo,
-                                                          textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
+                                                          iconForegroundColor: .gray,
+                                                          textForegroundColor: .gray,
                                                           backgroundColor: Color(.secondarySystemGroupedBackground),
-                                                          disclosureIndicator: true) {
-                                    navigationPath.append(ServicesNavigationDestination.contracts)
+                                                          disclosureIndicator: false,
+                                                          isDisabled: true) {
                                 }
-                                .disabled(viewModel.isLoadingData)
+                                .disabled(true)
                             }
 
                             if !viewModel.linkedAccounts.isEmpty {
                                 SectionView(header: "Connected Accounts") {
                                     ForEach(viewModel.linkedAccounts) { account in
-                                        StyledPressableButtonView(text: account.service.name,
+                                        StyledPressableButtonView(text: account.source.name,
                                                                   iconName: "passIcon",
-                                                                  iconUrl: ResourceUtility.optimalResource(for: CGSize(width: 20, height: 20), from: account.service.resources)?.url,
+                                                                  iconUrl: account.source.resource.url,
                                                                   iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
                                                                   textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
                                                                   backgroundColor: Color(.secondarySystemGroupedBackground),
@@ -86,7 +82,7 @@ struct ServicesView: View {
                                                               iconForegroundColor: viewModel.isLoadingData ? .gray : .green,
                                                               textForegroundColor: viewModel.isLoadingData ? .gray : .accentColor,
                                                               backgroundColor: Color(.secondarySystemGroupedBackground)) {
-                                        viewModel.addNewService()
+                                        viewModel.addNewSource()
                                     }
                                     .disabled(viewModel.isLoadingData)
 
@@ -133,16 +129,8 @@ struct ServicesView: View {
         }
         .navigationBarTitle("Service Data Example", displayMode: .inline)
         .background(Color(.systemGroupedBackground))
-        .toolbar {
-            if viewModel.isLoadingData {
-                ActivityIndicator()
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(.gray)
-                    .padding(.trailing, 10)
-            }
-        }
 		.sheet(isPresented: $viewModel.shouldDisplaySourceSelector) {
-            ServicePickerView(showView: $viewModel.shouldDisplaySourceSelector, selectServiceCompletion: $viewModel.serviceSelectionCompletionHandler, viewModel: viewModel, scopeViewModel: scopeViewModel, viewState: .sources, allowScoping: !viewModel.linkedAccounts.isEmpty)
+            SourcePickerView(showView: $viewModel.shouldDisplaySourceSelector, selectSourceCompletion: $viewModel.sourceSelectionCompletionHandler, viewModel: viewModel, scopeViewModel: scopeViewModel, viewState: .sources, allowScoping: !viewModel.linkedAccounts.isEmpty)
 		}
 		.sheet(isPresented: $viewModel.shouldDisplayCancelButton) {
             ActionView(title: "Waiting callback from your browser...", actionTitle: "Cancel Request", dialogDetent: dialogDetent) {
@@ -150,7 +138,7 @@ struct ServicesView: View {
             }
 		}
         .actionSheet(isPresented: $showAccountOptions) {
-            ActionSheet(title: Text(activeAccount?.service.name.uppercased() ?? "EXPORT"),
+            ActionSheet(title: Text(activeAccount?.source.name.uppercased() ?? "EXPORT"),
                         message: Text("Choose an option"),
                         buttons: generateActionSheetButtons())
         }
@@ -159,11 +147,20 @@ struct ServicesView: View {
                 .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $presentPortabilityDateManager) {
-            ReportDateManagerView(presentViewModally: $presentPortabilityDateManager, startDate: $reportStartDate, endDate: $reportEndDate) {
-                self.loadReport()
+            NavigationView {
+                ReportDateManagerView(navigationPath: $navigationPath, startDate: $reportStartDate, endDate: $reportEndDate) {
+                    self.loadPortabilityReport()
+                }
             }
         }
         .toolbar {
+            if viewModel.isLoadingData {
+                ActivityIndicator()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(.gray)
+                    .padding(.trailing, 10)
+            }
+
             if !viewModel.linkedAccounts.isEmpty {
                 Button {
                     scopeViewModel.displayScopeEditor()
@@ -175,16 +172,10 @@ struct ServicesView: View {
         .sheet(isPresented: $scopeViewModel.shouldDisplayModal) {
             ScopeEditView(viewModel: scopeViewModel)
         }
-        .navigationDestination(for: ServicesNavigationDestination.self) { destination in
-            switch destination {
-            case .contracts:
-                ContractDetailsView(selectedContract: $viewModel.activeContract, contracts: viewModel.contracts)
-            }
-        }
     }
     
-    private func loadReport() {
-        viewModel.fetchReport(for: "medmij", format: "xml", from: reportStartDate.timeIntervalSince1970, to: reportEndDate.timeIntervalSince1970)
+    private func loadPortabilityReport() {
+        viewModel.exportPortabilityReport(for: "medmij", format: "xml", from: reportStartDate.timeIntervalSince1970, to: reportEndDate.timeIntervalSince1970)
     }
 
     private func generateActionSheetButtons() -> [ActionSheet.Button] {
@@ -197,7 +188,7 @@ struct ServicesView: View {
 
         if let account = activeAccount {
             // Medmij service accounts
-            if account.service.serviceIdentifier == 37 {
+            if account.source.service.id == 37 {
                 buttons.append(
                     .default(Text("Withdraw Consent")) {
                         viewModel.withdrawConsent(for: account)
@@ -218,12 +209,15 @@ struct ServicesView: View {
 
 #Preview {
     do {
-        let previewer = try Previewer()
         let mockNavigationPath = NavigationPath()
-
+        let previewer = try Previewer()
+        let loggingService = LoggingService(modelContainer: previewer.container)
+        let servicesViewModel = ServicesViewModel(loggingService: loggingService, modelContainer: previewer.container)
+        let scopeViewModel = ScopeViewModel()
         return NavigationView {
             ServicesView(navigationPath: .constant(mockNavigationPath))
-                .environmentObject(ServicesViewModel(modelContext: previewer.container.mainContext))
+                .environmentObject(servicesViewModel)
+                .environmentObject(scopeViewModel)
                 .modelContainer(previewer.container)
                 .environment(\.colorScheme, .dark)
         }

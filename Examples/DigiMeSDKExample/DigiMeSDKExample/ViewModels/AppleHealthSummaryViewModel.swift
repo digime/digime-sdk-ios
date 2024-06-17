@@ -28,8 +28,7 @@ class AppleHealthSummaryViewModel: ObservableObject {
 			objectWillChange.send()
 		}
 	}
-	
-    private let activeContractId = Contracts.prodAppleHealth.identifier
+    private let activeContract: DigimeContract
 	private let preferences = UserPreferences.shared()
 	private var digiMeService: DigiMe?
 	private var readOptions: ReadOptions?
@@ -41,22 +40,35 @@ class AppleHealthSummaryViewModel: ObservableObject {
 	}
 
 	init(config: Configuration) {
-		digiMeService = DigiMe(configuration: config)
+        activeContract = preferences.activeContract ?? Contracts.development
+        initialiseClient()
 	}
-	
+
+    private func initialiseClient() {
+        DispatchQueue.main.async {
+            do {
+                let config = try Configuration(appId: self.activeContract.appId, contractId: self.activeContract.identifier, privateKey: self.activeContract.privateKey, authUsingExternalBrowser: true, baseUrl: self.activeContract.baseURL)
+                self.digiMeService = DigiMe(configuration: config)
+            }
+            catch {
+                fatalError("Fatal error during DigiMe client initialization.")
+            }
+        }
+    }
+
 	func authorize(readOptions: ReadOptions? = nil) {
 		self.readOptions = readOptions
 		isDataFetched = false
 		isLoadingData = true
         errorMessage = nil
         infoMessage = nil
-		guard let credentials = preferences.getCredentials(for: activeContractId) else {
+        guard let credentials = preferences.getCredentials(for: activeContract.identifier) else {
 			showCancelOption = true
 			digiMeService?.authorize(serviceId: DeviceOnlyServices.appleHealth.rawValue) { result in
 				self.showCancelOption = false
 				switch result {
 				case .success(let newOrRefreshedCredentials):
-					self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContractId)
+					self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContract.identifier)
 					self.fetchData(with: newOrRefreshedCredentials)
 					
 				case.failure(let error):
@@ -89,8 +101,8 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		} completion: { newOrRefreshedCredentials, result in
 			switch result {
 			case .success(let fileList):
-				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContractId)
-				
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContract.identifier)
+
 				if
 					let accountState = fileList.status.details?.first,
 					let date = accountState.error?.retryAfter {
@@ -170,7 +182,7 @@ class AppleHealthSummaryViewModel: ObservableObject {
 	}
 	
 	private func refreshCtredentials(_ completion: @escaping((Bool) -> Void)) {
-		guard let credentials = preferences.getCredentials(for: activeContractId) else {
+		guard let credentials = preferences.getCredentials(for: activeContract.identifier) else {
 			errorMessage = "[DigiMeSDKExample] Attempting to read data before authorizing contract"
 			return
 		}
@@ -178,7 +190,7 @@ class AppleHealthSummaryViewModel: ObservableObject {
 		digiMeService?.requestDataQuery(credentials: credentials, readOptions: readOptions) { newOrRefreshedCredentials, result in
 			switch result {
 			case .success:
-				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContractId)
+				self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: self.activeContract.identifier)
 				completion(true)
 				
 			case .failure(let error):
@@ -205,7 +217,7 @@ extension AppleHealthSummaryViewModel {
                     self?.errorMessage = "An error occured saving test data: \(error)"
                 }
                 
-                self?.authorize()
+//                self?.authorize()
             }
         }
     }

@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol PayloadIdentifiable: Codable {
+public protocol PayloadIdentifiable: Codable {
     var identifier: String { get }
 }

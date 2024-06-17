@@ -41,8 +41,6 @@ struct ScopeDateButton<Content: View>: View {
     }
 }
 
-struct ScopeDateButton_Previews: PreviewProvider {
-    static var previews: some View {
-        ScopeDateButton(showModal: .constant(true), date: .constant(Date()), formatter: DateFormatter(), actionButtonTitle: "Title", imageIcon: Image(systemName: "calendar.badge.clock"))
-    }
+#Preview {
+    ScopeDateButton(showModal: .constant(true), date: .constant(Date()), formatter: DateFormatter(), actionButtonTitle: "Title", imageIcon: Image(systemName: "calendar.badge.clock"))
 }

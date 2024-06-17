@@ -1,0 +1,42 @@
+{
+    "serviceId": 37,
+    "serviceGroups": [{ "id": 2 }],
+    "countries": [{ "id": 10 }],
+    "uuid": "A2EA43ED-11CC-4C60-926B-8C7E84FFF157",
+    "publishedStatus": "approved",
+    "name": "NL - Ravdrenthe Rav 9482tb10 (Documenten)",
+    "resources": [
+        {
+            "type": 0,
+            "mimetype": "image/png",
+            "resize": "fit",
+            "url": "https://securedownloads.digi.me/static/development/discovery/services/medmij/icon25x25.png",
+            "height": 25,
+            "width": 25
+        },
+        {
+            "resize": "fit",
+            "width": 50,
+            "mimetype": "image/png",
+            "height": 50,
+            "url": "https://securedownloads.digi.me/static/development/discovery/services/medmij/icon50x50.png",
+            "type": 0
+        },
+        {
+            "url": "https://securedownloads.digi.me/static/development/discovery/services/medmij/icon75x75.png",
+            "mimetype": "image/png",
+            "resize": "fit",
+            "type": 0,
+            "height": 75,
+            "width": 75
+        }
+    ],
+    "platform": {
+        "windows": {
+            "currentStatus": "available",
+            "availability": "production"
+        }
+    },
+    "id": 20328
+    }
+}

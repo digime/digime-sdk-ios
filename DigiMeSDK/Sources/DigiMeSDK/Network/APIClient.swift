@@ -78,7 +78,12 @@ class APIClient {
 		}
 		
 		let httpHeaders = httpResponse.allHeaderFields
-		
+        
+#if targetEnvironment(simulator)
+        DispatchQueue.global(qos: .background).async {
+            FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "\(T.path.replacingOccurrences(of: "/", with: "-")).json")
+        }
+#endif
 		do {
 			let result = try route.parseResponse(data: data, headers: httpHeaders)
 			completion(.success(result))

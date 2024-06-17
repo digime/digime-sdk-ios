@@ -10,10 +10,8 @@ import Foundation
 
 /// Information about a service data source
 public struct Service: Codable, Identifiable {
-	public let id = UUID()
-	
     /// The service's identifier for authorization
-    public let identifier: Int
+    public let id: Int
     
     /// The service's identifier for scoping data requests
     ///
@@ -36,14 +34,14 @@ public struct Service: Codable, Identifiable {
     
     /// Convenience property to encapsulate read options within the each service
     public var options: ReadOptions?
-	public var resources: [DiscoveryResource]
+	public var resources: [SourceResource]
     public var security: ConnectionSecurity?
     public var isAvailable: Bool {
         return publishedStatus == "approved" && platform.isAvailable
     }
     
-    public init(identifier: Int, serviceIdentifier: Int, name: String, options: ReadOptions? = nil, resources: [DiscoveryResource], countries: [IdentifierReference], serviceGroups: [IdentifierReference], publishedStatus: String, platform: Platform) {
-        self.identifier = identifier
+    public init(identifier: Int, serviceIdentifier: Int, name: String, options: ReadOptions? = nil, resources: [SourceResource], countries: [IdentifierReference], serviceGroups: [IdentifierReference], publishedStatus: String, platform: Platform) {
+        self.id = identifier
         self.serviceIdentifier = serviceIdentifier
         self.name = name
         self.options = options
@@ -85,8 +83,7 @@ public struct Service: Codable, Identifiable {
     }
     
     enum CodingKeys: String, CodingKey {
-		case id = "uuid"
-        case identifier = "id"
+        case id
         case name
         case serviceGroups
         case serviceIdentifier = "serviceId"

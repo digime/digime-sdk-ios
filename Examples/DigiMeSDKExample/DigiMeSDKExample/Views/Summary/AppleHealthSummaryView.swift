@@ -38,63 +38,82 @@ struct AppleHealthSummaryView: View {
         let footerText = !scopeViewModel.isScopeModificationAllowed ? "You can try turning the Scoping option On to narrow down your next request." : nil
 		ZStack {
 			ScrollView {
-				SectionView(header: "Scope", footer: scopeFooterText) {
-					HStack {
-						Image(systemName: "scope")
-							.frame(width: 30, height: 30, alignment: .center)
-						Text("Limit your query")
-						Spacer()
-                        Toggle("", isOn: $scopeViewModel.isScopeModificationAllowed)
-                            .onChange(of: scopeViewModel.isScopeModificationAllowed) { _, value in
-                                if !value {
-                                    self.reset()
+                SectionView(header: "Contract") {
+                    StyledPressableButtonView(text: UserPreferences.shared().activeContract?.name ?? Contracts.development.name,
+                                              iconSystemName: "gear",
+                                              iconForegroundColor: .gray,
+                                              textForegroundColor: .gray,
+                                              backgroundColor: Color(.secondarySystemGroupedBackground),
+                                              disclosureIndicator: false,
+                                              isDisabled: true) {
+                    }
+                }
+                .disabled(true)
+
+                VStack {
+                    SectionView(header: "Scope", footer: scopeFooterText) {
+                        HStack {
+                            Image(systemName: "scope")
+                                .frame(width: 30, height: 30, alignment: .center)
+                            Text("Limit your query")
+                            Spacer()
+                            Toggle("", isOn: $scopeViewModel.isScopeModificationAllowed)
+                                .onChange(of: scopeViewModel.isScopeModificationAllowed) { _, value in
+                                    if !value {
+                                        self.reset()
+                                    }
                                 }
-                            }
-                            .disabled(viewModel.isLoadingData)
-					}
-					
-                    if scopeViewModel.isScopeModificationAllowed {
-                        GenericPressableButtonView(isPressed: $isPressedScope) {
-                            if !viewModel.isLoadingData {
-                                self.scopeViewModel.shouldDisplayModal = true
-                            }
-                        } content: {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 10) {
-                                    Text("Your Scope time range. ")
-                                        .foregroundColor(isPressedScope ? .white : .primary)
-                                        .font(.footnote) +
-                                    Text("Tap to change:")
-                                        .foregroundColor(isPressedScope ? .white : .accentColor)
-                                        .font(.footnote)
-                                    
-                                    Text("\(scopeViewModel.startDateFormatString) - \(scopeViewModel.endDateFormatString)")
-                                        .foregroundColor(isPressedScope ? .white : .gray)
-                                        .font(.footnote)
-                                        .onChange(of: scopeViewModel.startDate) { _, newValue in
-                                            scopeViewModel.startDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
-                                        }
-                                        .onChange(of: scopeViewModel.endDate) { _, newValue in
-                                            scopeViewModel.endDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
-                                        }
-                                    
-                                    ScopeObjectTypeIconView(name: "Fitness Activity Summary", size: 30)
-                                }
-                                .padding(.vertical, 10)
-                                
-                                Spacer()
-                            }
-                            .padding(8)
-                            .padding(.horizontal, 10)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(isPressedScope ? .accentColor : Color(.secondarySystemGroupedBackground))
-                            )
-                            .disabled(viewModel.isLoadingData)
+                                .disabled(viewModel.isLoadingData)
                         }
-					}
-				}
-                
+
+                        if scopeViewModel.isScopeModificationAllowed {
+                            GenericPressableButtonView(isPressed: $isPressedScope) {
+                                if !viewModel.isLoadingData {
+                                    self.scopeViewModel.shouldDisplayModal = true
+                                }
+                            } content: {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 10) {
+                                        Text("Your Scope time range. ")
+                                            .foregroundColor(isPressedScope ? .white : .primary)
+                                            .font(.footnote) +
+                                        Text("Tap to change:")
+                                            .foregroundColor(isPressedScope ? .white : .accentColor)
+                                            .font(.footnote)
+
+                                        Text("\(scopeViewModel.startDateFormatString) - \(scopeViewModel.endDateFormatString)")
+                                            .foregroundColor(isPressedScope ? .white : .gray)
+                                            .font(.footnote)
+                                            .onChange(of: scopeViewModel.startDate) { _, newValue in
+                                                scopeViewModel.startDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
+                                            }
+                                            .onChange(of: scopeViewModel.endDate) { _, newValue in
+                                                scopeViewModel.endDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
+                                            }
+
+                                        ScopeObjectTypeIconView(name: "Fitness Activity Summary", size: 30)
+                                    }
+                                    .padding(.vertical, 10)
+
+                                    Spacer()
+                                }
+                                .padding(8)
+                                .padding(.horizontal, 10)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .fill(isPressedScope ? .accentColor : Color(.secondarySystemGroupedBackground))
+                                )
+                                .disabled(viewModel.isLoadingData)
+                            }
+                        }
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .stroke(Color(.secondarySystemGroupedBackground), lineWidth: 2)
+                    }
+                    .padding(.horizontal, 18)
+                }
+
                 SectionView(header: "Access Your Records", footer: "When you query for the first time, you will be prompted for Apple Health permissions.\n\nIf you blocked or ignored the permission request, you may need to open the iOS Settings and manually allow access to approve sharing data with the SDK Example App.") {
                     StyledPressableButtonView(text: "Read Apple Health Data",
                                               iconSystemName: "heart.circle",
@@ -105,7 +124,7 @@ struct AppleHealthSummaryView: View {
                     }
                                               .disabled(viewModel.isLoadingData)
                 }
-				
+
 				if viewModel.isDataFetched && viewModel.errorMessage == nil {
 					SectionView(header: "Result", footer: footerText) {
 						HStack {
@@ -208,9 +227,7 @@ struct AppleHealthSummaryView: View {
 	}
 }
 
-struct AppleHealthSummaryView_Previews: PreviewProvider {
-    static var previews: some View {
-        AppleHealthSummaryView()
-            .environment(\.colorScheme, .dark)
-    }
+#Preview {
+    AppleHealthSummaryView()
+//        .environment(\.colorScheme, .dark)
 }

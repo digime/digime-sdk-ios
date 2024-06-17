@@ -247,8 +247,6 @@ struct HighlightedTextView: View {
 	}
 }
 
-struct HighlightedText_Previews: PreviewProvider {
-	static var previews: some View {
-		HighlightedTextView(text: "False to disable multiline drawing")
-	}
+#Preview {
+    HighlightedTextView(text: "False to disable multiline drawing")
 }

@@ -31,7 +31,7 @@ struct ScopeTimeRangeTemplatesRow: View {
             .onAppear {
                 self.viewModel.refreshUserInterface()
             }
-            .onChange(of: viewModel.selectedTimeRangeIndex) { _ in
+            .onChange(of: viewModel.selectedTimeRangeIndex) { _, _ in
                 self.viewModel.refreshUserInterface()
             }
             
@@ -56,8 +56,6 @@ struct ScopeTimeRangeTemplatesRow: View {
     }
 }
 
-struct ScopeTimeRangeTemplatesRow_Previews: PreviewProvider {
-    static var previews: some View {
-        ScopeTimeRangeTemplatesRow(viewModel: ScopeViewModel())
-    }
+#Preview {
+    ScopeTimeRangeTemplatesRow(viewModel: ScopeViewModel())
 }

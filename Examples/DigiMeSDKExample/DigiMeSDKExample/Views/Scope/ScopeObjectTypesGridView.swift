@@ -39,8 +39,8 @@ struct ScopeObjectTypesGridView: View {
     }
 }
 
-struct ScopeObjectTypesGridView_Previews: PreviewProvider {
-    static let data = [
+#Preview {
+    let data = [
         ServiceObjectType(identifier: 1, name: "Media"),
         ServiceObjectType(identifier: 2, name: "Post"),
         ServiceObjectType(identifier: 7, name: "Comment"),
@@ -49,7 +49,6 @@ struct ScopeObjectTypesGridView_Previews: PreviewProvider {
         ServiceObjectType(identifier: 15, name: "Social Network User"),
         ServiceObjectType(identifier: 19, name: "Profile"),
     ]
-    static var previews: some View {
-        ScopeObjectTypesGridView(objectTypes: data)
-    }
+
+    return ScopeObjectTypesGridView(objectTypes: data)
 }

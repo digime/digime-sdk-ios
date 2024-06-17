@@ -9,7 +9,7 @@
 import Foundation
 
 struct AccountReferenceRoute: Route {
-	typealias ResponseType = AccountReferenceResponse
+	typealias ResponseType = ReferenceResponse
 	
 	static var method = "POST"
 	static var path = "reference"

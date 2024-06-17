@@ -17,6 +17,16 @@ class FitnessActivityProcessor {
 			QuantityType.distanceWalkingRunning,
 			QuantityType.activeEnergyBurned,
 			QuantityType.appleExerciseTime,
+            QuantityType.bloodPressureSystolic,
+            QuantityType.bloodPressureDiastolic,
+            QuantityType.bloodGlucose,
+            QuantityType.heartRate,
+            QuantityType.respiratoryRate,
+            QuantityType.oxygenSaturation,
+            QuantityType.bodyTemperature,
+            QuantityType.height,
+            QuantityType.bodyMass,
+//            CorrelationType.bloodPressure,
 		]
 		return types
 	}
@@ -26,6 +36,16 @@ class FitnessActivityProcessor {
 			QuantityType.stepCount,
 			QuantityType.distanceWalkingRunning,
 			QuantityType.activeEnergyBurned,
+            QuantityType.bloodPressureSystolic,
+            QuantityType.bloodPressureDiastolic,
+            QuantityType.bloodGlucose,
+            QuantityType.heartRate,
+            QuantityType.respiratoryRate,
+            QuantityType.oxygenSaturation,
+            QuantityType.bodyTemperature,
+            QuantityType.height,
+            QuantityType.bodyMass,
+//            CorrelationType.bloodPressure,
 		]
 		return types
 	}

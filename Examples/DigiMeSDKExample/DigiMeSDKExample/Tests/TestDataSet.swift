@@ -7,7 +7,9 @@
 //
 
 import DigiMeCore
+import DigiMeHealthKit
 import DigiMeSDK
+import ModelsR5
 import SwiftUI
 
 enum TestLogs {
@@ -17,6 +19,14 @@ enum TestLogs {
         LogEntry(message: "normal activity registered"),
         LogEntry(message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
     ]
+}
+
+enum TestMeasurement {
+    static let measurement = SelfMeasurement(name: "Height",
+                                             type: SelfMeasurementType.height,
+                                             createdDate: Date(),
+                                             components: [SelfMeasurementComponent(measurementValue: 80, unit: "cm", unitCode: "cm", display: "cm")],
+                                             receipts: [SelfMeasurementReceipt(providerName: "NL - Zorgaanbieder1 (Meetwaardenvitale functies)", shareDate: Date())])
 }
 
 enum TestTimeRangeTemplates {
@@ -521,11 +531,11 @@ enum TestServiceTypes {
     ]
     
     static let data: [ServiceGroupType] = [
-        ServiceGroupType(identifier: 1, serviceTypes: social, name: "Social"),
-        ServiceGroupType(identifier: 2, serviceTypes: medical, name: "Medical"),
-        ServiceGroupType(identifier: 3, serviceTypes: finance, name: "Finance"),
-        ServiceGroupType(identifier: 4, serviceTypes: fitness, name: "Health & Fitness"),
-        ServiceGroupType(identifier: 5, serviceTypes: entertainment, name: "Entertainment"),
+        ServiceGroupType(id: 1, name: "Social", serviceTypes: social),
+        ServiceGroupType(id: 2, name: "Medical", serviceTypes: medical),
+        ServiceGroupType(id: 3, name: "Finance", serviceTypes: finance),
+        ServiceGroupType(id: 4, name: "Health & Fitness", serviceTypes: fitness),
+        ServiceGroupType(id: 5, name: "Entertainment", serviceTypes: entertainment),
     ]
 }
 
@@ -596,27 +606,90 @@ enum TestDailyActivity {
 }
 
 enum TestDiscoveryObjects {
-    static let sections: [ServiceSection] = {
-        guard let url = Bundle.main.url(forResource: "discovery", withExtension: "json"),
+    static let sources: [DigiMeCore.Source] = {
+        guard let url = Bundle.main.url(forResource: "sources", withExtension: "json"),
               let jsonData = try? Data(contentsOf: url),
-              let serviceInfo = try? JSONDecoder().decode(ServicesInfo.self, from: jsonData) else {
+              let sourcesInfo = try? jsonData.decoded() as SourcesInfo else {
             return []
         }
-        
-        let services = serviceInfo.services
-        
-        let serviceGroupIds = Set(services.flatMap { $0.serviceGroupIds })
-        let serviceGroups = serviceInfo.serviceGroups.filter { serviceGroupIds.contains($0.identifier) }
-        
-        var sections = [ServiceSection]()
-        serviceGroups.forEach { group in
-            let items = services
-                .filter { $0.serviceGroupIds.contains(group.identifier) }
-                .sorted { $0.name < $1.name }
-            sections.append(ServiceSection(serviceGroupId: group.identifier, title: group.name, items: items))
-        }
-        
-        sections.sort { $0.serviceGroupId < $1.serviceGroupId }
-        return sections
+
+        return sourcesInfo.data
     }()
 }
+
+enum TestStorageObjects {
+    static let testImage: Data? = {
+        guard
+            let url = Bundle.main.url(forResource: "test-image", withExtension: "jpg"),
+            let imageData = try? Data(contentsOf: url) else {
+                return nil
+            }
+
+        return imageData
+    }()
+
+    static let testLargeImage: Data? = {
+        guard
+            let url = Bundle.main.url(forResource: "test-large-image", withExtension: "jpg"),
+            let imageData = try? Data(contentsOf: url) else {
+            return nil
+        }
+
+        return imageData
+    }()
+
+    static let testLargeSM: Data? = {
+        guard
+            let url = Bundle.main.url(forResource: "AH_Respiratory_Rate_2024-February-2024-May_items_100", withExtension: "json"),
+            let imageData = try? Data(contentsOf: url) else {
+            return nil
+        }
+
+        return imageData
+    }()
+}
+
+//enum TestDiscoveryObjects {
+//    static let sections: [SourceSection] = {
+//        guard let url = Bundle.main.url(forResource: "sources", withExtension: "json"),
+//              let jsonData = try? Data(contentsOf: url),
+//              let sourcesInfo = try? jsonData.decoded() as SourcesInfo else {
+//            return []
+//        }
+//
+//        // Group the sources by their service group ID using the category id of the first category item
+//        let groupedSources = Dictionary(grouping: sourcesInfo.data) { $0.category.first?.id ?? 0 }
+//
+//        // Create an array of SourceSection from the grouped data
+//        var sourceSections: [SourceSection] = []
+//
+//        for (groupId, sources) in groupedSources {
+//            let sectionTitle = sources.first?.category.first?.name ?? "Unknown"
+//            let sourceSection = SourceSection(identifier: groupId, contractId: "contractId", title: sectionTitle, items: sources)
+//            sourceSections.append(sourceSection)
+//        }
+//
+//        return sourceSections
+//    }()
+//}
+
+//enum TestHealthDataExportSections {
+//    static var allSections: [HealthDataExportSection] {
+//        let type1 = HealthDataType(type: QuantityType.bodyMass)
+//        let item1 = HealthDataExportItem(createdDate: Date(), stringValue: "82 kg")
+//        let item2 = HealthDataExportItem(createdDate: Date(), stringValue: "90 kg")
+//        let section1 = HealthDataExportSection(type: type1, items: [item1, item2], elapsedInterval: TimeInterval(10))
+//
+//        let type2 = HealthDataType(type: QuantityType.height)
+//        let item3 = HealthDataExportItem(createdDate: Date(), stringValue: "180 cm")
+//        let item4 = HealthDataExportItem(createdDate: Date(), stringValue: "200 cm")
+//        let section2 = HealthDataExportSection(type: type2, items: [item3, item4], elapsedInterval: TimeInterval(15))
+//
+//        let type3 = HealthDataType(type: CorrelationType.bloodPressure)
+//        let item5 = HealthDataExportItem(createdDate: Date(), stringValue: "200 mm/Hg, 30 mm/Hg")
+//        let item6 = HealthDataExportItem(createdDate: Date(), stringValue: "170 mm/Hg, 60 mm/Hg")
+//        let section3 = HealthDataExportSection(type: type3, items: [item5, item6], elapsedInterval: TimeInterval(180))
+//
+//        return [section1, section2, section3]
+//    }
+//}

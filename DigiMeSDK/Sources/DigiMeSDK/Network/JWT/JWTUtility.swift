@@ -380,3 +380,69 @@ extension JWTUtility {
         return UserDefaults.standard.object(forKey: JWTUtility.codeVerifierPrefix + configuration.contractId) as? String
     }
 }
+
+// MARK: - Provisional Cloud Support
+
+/// `CloudJWTClaims` struct defines the structure for JWT claims used in cloud-based API authentication.
+struct CloudJWTClaims: RequestClaims {
+    // JWT claim "subject" typically indicates the entity this JWT represents.
+    let sub: String
+
+    // JWT claim "issuer" identifies the principal that issued the JWT.
+    let iss: String
+
+    // JWT claim "audience" identifies the recipients that the JWT is intended for.
+    let aud: String
+
+    // JWT claim "issued at" is a timestamp of when the JWT was issued.
+    let iat: Int
+
+    // JWT claim "expiration time" is a timestamp of when the JWT will expire.
+    let exp: Int
+
+    // `CodingKeys` enum specifies the keys that are used in the JWT payload.
+    enum CodingKeys: String, CodingKey {
+        case sub, iss, aud, iat, exp
+    }
+
+    /// Encodes the current claims into a Base64-URL encoded JSON string suitable for JWT payload.
+    ///
+    /// - Returns: A base64-URL encoded string representing the serialized form of the claims.
+    /// - Throws: An error if encoding fails.
+    func encode() throws -> String {
+        let encoder = JSONEncoder()
+
+        // Configures the encoder to represent dates as Unix timestamp seconds.
+        // This is used for `iat` and `exp` claims to ensure they are encoded as integers.
+        encoder.dateEncodingStrategy = .secondsSince1970
+
+        // Attempts to encode the claims as JSON data.
+        let data = try encoder.encode(self)
+
+        // Converts the JSON data into a base64-URL encoded string, which is the format required for JWT payloads.
+        return data.base64URLEncodedString()
+    }
+}
+
+extension JWTUtility {
+    static func createCloudJWT(configuration: Configuration) -> String? {
+        let currentTime = Int(Date().timeIntervalSince1970)
+        let claims = CloudJWTClaims(
+            sub: configuration.appId,
+            iss: configuration.contractId,
+            aud: "cloud",
+            iat: currentTime,
+            exp: currentTime + 59  // Expires after 60 seconds
+        )
+
+        let header = JWTHeader(
+            typ: "at+jwt",
+            alg: "PS512",
+            kid: "\(configuration.contractId)_\(configuration.appId)_0"
+        )
+
+        let jwt = JWT(header: header, claims: claims)
+        let signed = try? jwt.sign(using: configuration.privateKeyData)
+        return signed
+    }
+}
