@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name         	= "DigiMeCore"
-    s.version      	= "5.0.7"
+    s.version      	= "5.0.8"
     s.summary      	= "digi.me iOS Consent Access SDK Core Component"
     s.homepage     	= "https://github.com/digime/digime-sdk-ios"
     s.license      	= { :type => "MIT", :file => "LICENSE" }
@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     s.swift_version = "5.0"
     s.source       	= {
         :git => "https://github.com/digime/digime-sdk-ios.git",
-        :branch => "task/SDK-87",
+        :branch => "feature/SDK-81",
         :tag => s.version
     }
     
