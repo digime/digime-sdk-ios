@@ -89,8 +89,8 @@
 		1EAAFC172BEDF4D900B7C41D /* StorageConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAFC162BEDF4D900B7C41D /* StorageConfig.swift */; };
 		1EAAFC192BEE06AB00B7C41D /* StorageFileList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAFC182BEE06AB00B7C41D /* StorageFileList.swift */; };
 		1EAAFC1B2BEE06BE00B7C41D /* StorageFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAFC1A2BEE06BE00B7C41D /* StorageFileInfo.swift */; };
-		1EAAFC1D2BEE0A8A00B7C41D /* StorageUploadFileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAFC1C2BEE0A8A00B7C41D /* StorageUploadFileStatus.swift */; };
 		1EAAFC1F2BEE0F2C00B7C41D /* StorageDeleteFileStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAFC1E2BEE0F2C00B7C41D /* StorageDeleteFileStatus.swift */; };
+		1EBD63DB2C23E952001A797B /* StorageUploadFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBD63DA2C23E952001A797B /* StorageUploadFileInfo.swift */; };
 		1EFDAAC22BEA37FC006EEEA1 /* FileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFDAAC12BEA37FC006EEEA1 /* FileInfo.swift */; };
 		1EFDAACE2BEA447C006EEEA1 /* SourceCountry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFDAACD2BEA447C006EEEA1 /* SourceCountry.swift */; };
 /* End PBXBuildFile section */
@@ -179,8 +179,8 @@
 		1EAAFC162BEDF4D900B7C41D /* StorageConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageConfig.swift; sourceTree = "<group>"; };
 		1EAAFC182BEE06AB00B7C41D /* StorageFileList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageFileList.swift; sourceTree = "<group>"; };
 		1EAAFC1A2BEE06BE00B7C41D /* StorageFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageFileInfo.swift; sourceTree = "<group>"; };
-		1EAAFC1C2BEE0A8A00B7C41D /* StorageUploadFileStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageUploadFileStatus.swift; sourceTree = "<group>"; };
 		1EAAFC1E2BEE0F2C00B7C41D /* StorageDeleteFileStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageDeleteFileStatus.swift; sourceTree = "<group>"; };
+		1EBD63DA2C23E952001A797B /* StorageUploadFileInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageUploadFileInfo.swift; sourceTree = "<group>"; };
 		1EFDAAC12BEA37FC006EEEA1 /* FileInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileInfo.swift; sourceTree = "<group>"; };
 		1EFDAACD2BEA447C006EEEA1 /* SourceCountry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceCountry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -403,8 +403,8 @@
 				1EAAFC162BEDF4D900B7C41D /* StorageConfig.swift */,
 				1EAAFC182BEE06AB00B7C41D /* StorageFileList.swift */,
 				1EAAFC1A2BEE06BE00B7C41D /* StorageFileInfo.swift */,
-				1EAAFC1C2BEE0A8A00B7C41D /* StorageUploadFileStatus.swift */,
 				1EAAFC1E2BEE0F2C00B7C41D /* StorageDeleteFileStatus.swift */,
+				1EBD63DA2C23E952001A797B /* StorageUploadFileInfo.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -488,7 +488,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EAAFC1D2BEE0A8A00B7C41D /* StorageUploadFileStatus.swift in Sources */,
 				1E00AF4F2B1A08FB00F09990 /* SourceResource.swift in Sources */,
 				1E00AF542B1A08FB00F09990 /* AccountsInfo.swift in Sources */,
 				1E00AF1D2B1A08FB00F09990 /* RawFileMetadataBuilder.swift in Sources */,
@@ -563,6 +562,7 @@
 				1EAAFBF52BEB4E2200B7C41D /* SourceCategoriesRequestCriteria.swift in Sources */,
 				1E00AF482B1A08FB00F09990 /* Credentials.swift in Sources */,
 				1E00AF412B1A08FB00F09990 /* Array+Helper.swift in Sources */,
+				1EBD63DB2C23E952001A797B /* StorageUploadFileInfo.swift in Sources */,
 				1EFDAACE2BEA447C006EEEA1 /* SourceCountry.swift in Sources */,
 				1E00AF272B1A08FB00F09990 /* SyncAccount.swift in Sources */,
 				1E55A4FB2B72440400945AC1 /* ConnectionSecurity.swift in Sources */,
