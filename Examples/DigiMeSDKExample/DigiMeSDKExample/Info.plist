@@ -100,6 +100,46 @@
 				<string>digime-ca-C8YhEFweYVpDTYtmXAJuzNXNNxkTo7xY</string>
 			</array>
 		</dict>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>SDK PROD</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>digime-ca-DhMsn0jhW9zzDymAner5XkRQkabkQSXu</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>SDK STG</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>digime-ca-BTJHy9zEq3L4laJqCMXPpwDgDGxjVYJd</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>SDK Int</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>digime-ca-C0423qfDyMpOfH9nr5GZS4R4XhPdkfgN</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>SDK DEV</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>digime-ca-u3rYdPHDqJs9hzixLcVw6laMF070SLjZ</string>
+            </array>
+        </dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>

@@ -22,7 +22,6 @@
 		1E07EABC2BF3F9AA00ECE9BB /* sm-test.json in Resources */ = {isa = PBXBuildFile; fileRef = 1E07EABB2BF3F9AA00ECE9BB /* sm-test.json */; };
 		1E0E1320298BE0BB00F1A813 /* AppleHealthChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E131F298BE0BB00F1A813 /* AppleHealthChartViewModel.swift */; };
 		1E0E1326298C134100F1A813 /* AppleHealthBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E1325298C134100F1A813 /* AppleHealthBarChartView.swift */; };
-		1E0E79EA2AFA99710015A89C /* ServicePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0E79E92AFA99710015A89C /* ServicePickerView.swift */; };
 		1E1361622BE4CBE0004FBBA9 /* SourceSelectorButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1361612BE4CBE0004FBBA9 /* SourceSelectorButtonStyle.swift */; };
 		1E1361662BE5085B004FBBA9 /* ScopeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1361652BE5085B004FBBA9 /* ScopeViewModel.swift */; };
 		1E1361B42BE51610004FBBA9 /* medmij-disco3.json in Resources */ = {isa = PBXBuildFile; fileRef = 1E1361B32BE51610004FBBA9 /* medmij-disco3.json */; };
@@ -31,6 +30,7 @@
 		1E1DC11E29ABA6E700B827E3 /* GroupObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */; };
 		1E242E2E2BE7EF6A00A63653 /* SourceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E242E2D2BE7EF6A00A63653 /* SourceItem.swift */; };
 		1E242E302BE80AC300A63653 /* SourceItemsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E242E2F2BE80AC300A63653 /* SourceItemsListView.swift */; };
+		1E254EC52C3D75CA000656D2 /* SourceItemsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E254EC42C3D75CA000656D2 /* SourceItemsViewModel.swift */; };
 		1E29EC152AE558D70016B8D5 /* discovery.json in Resources */ = {isa = PBXBuildFile; fileRef = 1E29EC142AE558D70016B8D5 /* discovery.json */; };
 		1E2A1B5A2B8B269100B1E1E4 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2A1B592B8B269100B1E1E4 /* ImageDownloader.swift */; };
 		1E32B96729A4E3590013B1C1 /* ServicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */; };
@@ -204,7 +204,6 @@
 		1E07EABB2BF3F9AA00ECE9BB /* sm-test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "sm-test.json"; sourceTree = "<group>"; };
 		1E0E131F298BE0BB00F1A813 /* AppleHealthChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthChartViewModel.swift; sourceTree = "<group>"; };
 		1E0E1325298C134100F1A813 /* AppleHealthBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHealthBarChartView.swift; sourceTree = "<group>"; };
-		1E0E79E92AFA99710015A89C /* ServicePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicePickerView.swift; sourceTree = "<group>"; };
 		1E1361612BE4CBE0004FBBA9 /* SourceSelectorButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceSelectorButtonStyle.swift; sourceTree = "<group>"; };
 		1E1361652BE5085B004FBBA9 /* ScopeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScopeViewModel.swift; sourceTree = "<group>"; };
 		1E1361B32BE51610004FBBA9 /* medmij-disco3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "medmij-disco3.json"; sourceTree = "<group>"; };
@@ -213,6 +212,7 @@
 		1E1DC11D29ABA6E700B827E3 /* GroupObjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupObjectType.swift; sourceTree = "<group>"; };
 		1E242E2D2BE7EF6A00A63653 /* SourceItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceItem.swift; sourceTree = "<group>"; };
 		1E242E2F2BE80AC300A63653 /* SourceItemsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceItemsListView.swift; sourceTree = "<group>"; };
+		1E254EC42C3D75CA000656D2 /* SourceItemsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceItemsViewModel.swift; sourceTree = "<group>"; };
 		1E29EC142AE558D70016B8D5 /* discovery.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = discovery.json; sourceTree = "<group>"; };
 		1E2A1B592B8B269100B1E1E4 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		1E32B96629A4E3590013B1C1 /* ServicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesViewModel.swift; sourceTree = "<group>"; };
@@ -431,7 +431,6 @@
 			children = (
 				1E06B22A29A4E11A00809D13 /* ServicesView.swift */,
 				1E87223829A5633E00418DE1 /* ContractDetailsView.swift */,
-				1E0E79E92AFA99710015A89C /* ServicePickerView.swift */,
 				1EB179362BE40360006014D0 /* SourcePickerView.swift */,
 			);
 			path = Services;
@@ -657,6 +656,7 @@
 				1E811D94299FEECC00EC80B0 /* WriteDataViewModel.swift */,
 				1EA332132B99A32F00D31B06 /* MeasurementsViewModel.swift */,
 				1E4ACA182BFDFE6D00F91565 /* HealthDataViewModel.swift */,
+				1E254EC42C3D75CA000656D2 /* SourceItemsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -959,6 +959,7 @@
 				1E34233D2B1C8F81007D41CE /* DigiMeSDKExample.docc in Sources */,
 				1E87223929A5633E00418DE1 /* ContractDetailsView.swift in Sources */,
 				1E6E71B22862FE8600E7954E /* ChartStatementView.swift in Sources */,
+				1E254EC52C3D75CA000656D2 /* SourceItemsViewModel.swift in Sources */,
 				1E3653B42A1D23D000F0FFA5 /* PDFKitView.swift in Sources */,
 				1EFC341E2BD1AF5C000AC490 /* BackgroundExporter.swift in Sources */,
 				1E4ACA1D2BFF720800F91565 /* EditableTextAndActionView.swift in Sources */,
@@ -996,7 +997,6 @@
 				1EA86AA52B0554880030CB91 /* SectionView.swift in Sources */,
 				1E4901F027D9114B00F13D29 /* AppInfo.swift in Sources */,
 				1E05E6FF2B97BF8300E2B42B /* SelfMeasurementComponent.swift in Sources */,
-				1E0E79EA2AFA99710015A89C /* ServicePickerView.swift in Sources */,
 				1ED268482B0A6D2800588855 /* CustomNavigationLinkView.swift in Sources */,
 				1E66B3AD2BCEE825006A0DA3 /* BackgroundImporter.swift in Sources */,
 				1E811D9C29A0233F00EC80B0 /* LogEntry.swift in Sources */,

@@ -18,8 +18,7 @@ class SourceImporter {
         self.modelContainer = modelContainer
     }
 
-    @discardableResult
-    func populateSources(contractId: String, sourceInfo: SourcesInfo) -> Int {
+    func populateSources(contractId: String, sourceInfo: SourcesInfo) {
         autoreleasepool {
             let modelContext = ModelContext(self.modelContainer)
             modelContext.autosaveEnabled = false
@@ -34,8 +33,6 @@ class SourceImporter {
             }
 
             try? modelContext.save()
-            
-            return sourceInfo.data.count
         }
     }
 }

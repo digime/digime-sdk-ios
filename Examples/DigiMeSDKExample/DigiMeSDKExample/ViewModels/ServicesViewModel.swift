@@ -44,8 +44,9 @@ class ServicesViewModel: ObservableObject {
             userPreferences.setLinkedAccounts(newAccounts: linkedAccounts, for: activeContract.identifier)
         }
     }
-
+    @Published var sourceItemsUpdateTrigger = false
     @Published var totalNumberOfItems: Int = 0
+    @Published var totalNumberOfSampleDataItems: Int = 0
     @Published var sampleDatasets: [String: SampleDataset]?
     @Published var xmlReportURL: URL?
     @Published var isLoadingData = false
@@ -58,12 +59,11 @@ class ServicesViewModel: ObservableObject {
         }
     }
     @Published var sourceSelectionCompletionHandler: ((Source, String?) -> Void)?
-    @Published var serviceSelectionCompletionHandler: ((Service, String?) -> Void)?
 
     var onShowSampleDataSelectorChanged: ((Bool) -> Void)?
     var onShowSampleDataErrorChanged: ((Bool) -> Void)?
     var onProceedSampleDatasetChanged: ((Bool) -> Void)?
-    
+    var modelContainer: ModelContainer
     var isAuthorized: Bool {
         return userPreferences.getCredentials(for: activeContract.identifier) != nil
     }
@@ -73,8 +73,6 @@ class ServicesViewModel: ObservableObject {
 
     private var digiMeService: DigiMe?
     private var retryAfter: Date?
-
-    private var modelContainer: ModelContainer
 
     init(loggingService: LoggingServiceProtocol, modelContainer: ModelContainer) {
         self.loggingService = loggingService
@@ -96,6 +94,8 @@ class ServicesViewModel: ObservableObject {
         catch {
             logErrorMessage("Unable to configure digi.me SDK: \(error)")
         }
+        
+        updateCounter()
     }
 
     func authorizeSelectedService() {
@@ -163,7 +163,6 @@ class ServicesViewModel: ObservableObject {
             return
         }
 
-        isLoadingData = true
         chooseSource { [weak self] selectedSource, sampleDataSetId in
             guard let selectedSource = selectedSource else {
                 return
@@ -417,6 +416,45 @@ class ServicesViewModel: ObservableObject {
 
     // MARK: - Private
 
+    private func updateCounter() {
+        updateApprovedCounter()
+        updateSampleDataCounter()
+        DispatchQueue.main.async {
+            self.sourceItemsUpdateTrigger.toggle()
+        }
+    }
+
+    private func updateApprovedCounter() {
+        let contractId = activeContract.identifier
+        DispatchQueue.global(qos: .userInitiated).async {
+            let predicate = #Predicate<SourceItem> { item in
+                item.contractId == contractId
+                && item.sampleData == false
+            }
+
+            let descriptor = FetchDescriptor<SourceItem>(predicate: predicate)
+            let total = (try? ModelContext(self.modelContainer).fetchCount(descriptor)) ?? 0
+            DispatchQueue.main.async {
+                self.totalNumberOfItems = total
+            }
+        }
+    }
+
+    private func updateSampleDataCounter() {
+        let contractId = activeContract.identifier
+        DispatchQueue.global(qos: .userInitiated).async {
+            let predicate = #Predicate<SourceItem> { item in
+                item.contractId == contractId
+            }
+
+            let descriptor = FetchDescriptor<SourceItem>(predicate: predicate)
+            let total = (try? ModelContext(self.modelContainer).fetchCount(descriptor)) ?? 0
+            DispatchQueue.main.async {
+                self.totalNumberOfSampleDataItems = total
+            }
+        }
+    }
+
     private func updateContract(_ contract: DigimeContract) {
         DispatchQueue.main.async {
             self.linkedAccounts = self.userPreferences.getLinkedAccounts(for: contract.identifier)
@@ -473,7 +511,6 @@ class ServicesViewModel: ObservableObject {
 
     private func chooseSource(completion: @escaping ((Source?, String?) -> Void)) {
         sourceSelectionCompletionHandler = completion
-        totalNumberOfItems = 0
 
         withAnimation {
             self.shouldDisplaySourceSelector = true
@@ -530,27 +567,25 @@ class ServicesViewModel: ObservableObject {
 
         let payload = SourceRequestCriteria(limit: nil, offset: 0, sort: sort, query: query)
 
-        digiMeService?.availableSources(filter: payload) { [weak self] result in
+        digiMeService?.availableSources(filter: payload, resultQueue: .global(qos: .utility)) { [weak self] result in
             guard let self = self else {
                 return
             }
 
             switch result {
             case .success(let sourceInfo):
-                print("The Total Number of Sources: \(sourceInfo.total)")
-                print("Sources Fetch Limit: \(sourceInfo.limit)")
-                print("Sources Fetch Offset: \(sourceInfo.offset)")
-                
-                let imported = SourceImporter(modelContainer: self.modelContainer).populateSources(contractId: self.activeContract.identifier, sourceInfo: sourceInfo)
-                totalNumberOfItems += imported
+                self.logMessage("The Total Number of Sources: \(sourceInfo.total)")
+                self.logMessage("Sources Fetch Limit: \(sourceInfo.limit)")
+                self.logMessage("Sources Fetch Offset: \(sourceInfo.offset)")
 
-                DispatchQueue.global(qos: .background).async { [weak self] in
-//                    if let data = try? sourceInfo.encoded() {
-//                        FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "sources.json")
-//                    }
+                SourceImporter(modelContainer: self.modelContainer).populateSources(contractId: self.activeContract.identifier, sourceInfo: sourceInfo)
+                updateCounter()
 
-                    self?.downloadSubsequentBatches(initialSourceInfo: sourceInfo, includeFields: includeFields, filter: filter, sort: sort)
-                }
+//              if let data = try? sourceInfo.encoded() {
+//                 FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "sources.json")
+//              }
+
+                self.downloadSubsequentBatches(initialSourceInfo: sourceInfo, includeFields: includeFields, filter: filter, sort: sort)
             case .failure(let error):
                 self.logErrorMessage("Unable to retrieve services: \(error)")
             }
@@ -563,20 +598,25 @@ class ServicesViewModel: ObservableObject {
         let total = initialSourceInfo.total
         let batchSize = initialSourceInfo.limit
         guard total > batchSize else {
+            self.logMessage("Finished downloading: Only one batch required or total sources less than batch size.")
             return
         }
 
         let remainingBatches = (total - batchSize) / batchSize + (!(total - batchSize).isMultiple(of: batchSize) ? 1 : 0)
+        self.logMessage("Starting to download \(remainingBatches) subsequent batches.")
 
         for index in 0..<remainingBatches {
             let offset = (index + 1) * batchSize
             let subsequentPayload = SourceRequestCriteria(limit: nil, offset: offset, sort: sort, query: SourcesQuery(search: nil, include: includeFields, filter: filter))
+            self.logMessage("Downloading batch \(index + 1) of \(remainingBatches); \(remainingBatches - (index + 1)) batches left.")
             fetchAndProcessBatch(payload: subsequentPayload, index: index)
         }
+
+        self.logMessage("Download discovery sources completed. Batches to import: \(remainingBatches)")
     }
 
     private func fetchAndProcessBatch(payload: SourceRequestCriteria, index: Int) {
-        digiMeService?.availableSources(filter: payload) { [weak self] result in
+        digiMeService?.availableSources(filter: payload, resultQueue: .global(qos: .utility)) { [weak self] result in
             guard let self = self else {
                 print("Download Subsequent Sources Interrupted")
                 return
@@ -587,10 +627,9 @@ class ServicesViewModel: ObservableObject {
 //                    FilePersistentStorage(with: .documentDirectory).store(data: data, fileName: "sources_\(index).json")
 //                }
 
-                let imported = SourceImporter(modelContainer: self.modelContainer).populateSources(contractId: self.activeContract.identifier, sourceInfo: sourceInfo)
-                DispatchQueue.main.async {
-                    self.totalNumberOfItems += imported
-                }
+                SourceImporter(modelContainer: self.modelContainer).populateSources(contractId: self.activeContract.identifier, sourceInfo: sourceInfo)
+                self.logMessage("Importing batch: \(index + 1)")
+                updateCounter()
 
             case .failure(let error):
                 self.logErrorMessage("Failed to retrieve subsequent batch: \(error)")

@@ -34,7 +34,6 @@ class ScopeViewModel: ObservableObject {
         return formatter
     }()
 
-    @Published var selectedService: Service?
     @Published var selectedSource: Source?
     @Published var startDate: Date?
     @Published var endDate: Date?
@@ -44,7 +43,6 @@ class ScopeViewModel: ObservableObject {
 
     @Published var objectTypes: [ServiceObjectType] = []
     @Published var timeRangeTemplates: [TimeRangeTemplate] = TestTimeRangeTemplates.data
-    @Published var sourceSections: [SourceSection] = []
     @Published var linkedAccounts: [LinkedAccount] = []
     @Published var durationOptions: [Duration] = [Duration.unlimited(), 30, 60, 120, 180, 300, 600, 1200]
 
@@ -57,6 +55,15 @@ class ScopeViewModel: ObservableObject {
     }
     
     private var userPreferences = UserPreferences.shared()
+    private var sourceSections: [SourceSection] {
+        return [
+            SourceSection(id: 1, title: "Social"),
+            SourceSection(id: 2, title: "Medical"),
+            SourceSection(id: 3, title: "Finance"),
+            SourceSection(id: 4, title: "Health & Fitness"),
+            SourceSection(id: 5, title: "Entertainment"),
+        ]
+    }
 
     func displayScopeEditor() {
         linkedAccounts = userPreferences.getLinkedAccounts(for: userPreferences.activeContract?.identifier ?? Contracts.development.identifier)
@@ -231,24 +238,25 @@ class ScopeViewModel: ObservableObject {
         }
     }
     
-    // TODO: - XXXXXX
     private func generateServiceGroupTypeForAuthorization(with serviceTypeId: Int) -> ServiceGroupType? {
-//        guard
-//            let section = sourceSections.first(where: { $0.items.contains { $0.id == serviceTypeId } }),
-//            let service = section.items.first(where: { $0.id == serviceTypeId }) else {
+        guard
+            let serviceGroupId = selectedSource?.serviceGroupIds.first,
+            let serviceId = selectedSource?.id,
+            let serviceName = selectedSource?.name,
+            let section = sourceSections.first(where: { $0.id == serviceGroupId }) else {
             return nil
-//        }
-//        
-//        let objectTypes = objectTypes.filter { selectedObjectTypes.contains($0.id) }
-//        
-//        guard !objectTypes.isEmpty else {
-//            return nil
-//        }
-//        
-//        let serviceType = ServiceType(identifier: service.service.id, objectTypes: objectTypes, name: service.name)
-//        return ServiceGroupType(identifier: section.serviceGroupId, name: section.title, serviceTypes: [serviceType])
+        }
+
+        let objectTypes = objectTypes.filter { selectedObjectTypes.contains($0.id) }
+
+        guard !objectTypes.isEmpty else {
+            return nil
+        }
+
+        let serviceType = ServiceType(identifier: serviceId, objectTypes: objectTypes, name: serviceName)
+        return ServiceGroupType(id: serviceGroupId, name: section.title, serviceTypes: [serviceType])
     }
-    
+
     private func generateServiceGroupTypeForDataSync() -> [ServiceGroupType]? {
         var serviceGroups: [ServiceGroupType] = []
         linkedAccounts.forEach { account in

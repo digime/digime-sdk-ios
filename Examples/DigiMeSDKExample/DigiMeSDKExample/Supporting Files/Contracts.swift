@@ -13,7 +13,7 @@ import Foundation
 enum Contracts {
     // ThisDigimeContract allows SDK user to read user's social,
     // financial and music data from the past 3 months.
-    
+
     static let prodFinSocMus = DigimeContract(name: "PROD: Social, Music, Financial",
                                               appId: "6bKMA1Sz8EopMY1a2GwMvFkaqbOmRcN8",
                                               identifier: "DGLxRJiTjKZJvvtDB6timfzw4DHiQwek",
@@ -48,7 +48,7 @@ enum Contracts {
         """,
                                               timeRanges: [TimeRange.last(amount: 3, unit: .month)]
     )
-    
+
     // ThisDigimeContract allows SDK user to read user's medical
     // and fitness data from the past 3 months.
     static let prodFitHealth = DigimeContract(name: "PROD: Health & Fitness",
@@ -85,7 +85,7 @@ enum Contracts {
         """,
                                               timeRanges: [TimeRange.last(amount: 4, unit: .month)]
     )
-    
+
     static let prodWriteContract = DigimeContract(name: "Upload data",
                                                   appId: "C8YhEFweYVpDTYtmXAJuzNXNNxkTo7xY",
                                                   identifier: "V5cRNEhdXHWqDEM54tZNqBaElDQcfl4v",
@@ -119,7 +119,7 @@ enum Contracts {
         -----END RSA PRIVATE KEY-----
         """
     )
-    
+
     static let prodReadContract = DigimeContract(name: "Read uploaded data",
                                                  appId: "C8YhEFweYVpDTYtmXAJuzNXNNxkTo7xY",
                                                  identifier: "slA5X9HyO2TnAxBIcRwf1VfpovcD1aQX",
@@ -153,7 +153,7 @@ enum Contracts {
         -----END RSA PRIVATE KEY-----
         """
     )
-    
+
     // applicationId: QGgBnPQOJBe6JqEAkgZ3t4y7PulaR66V
     static let prodAppleHealth = DigimeContract(name: "Apple Health",
                                                 appId: "6bKMA1Sz8EopMY1a2GwMvFkaqbOmRcN8",
@@ -189,7 +189,7 @@ enum Contracts {
         """,
                                                 timeRanges: [TimeRange.last(amount: 4, unit: .month)]
     )
-    
+
     static let development = DigimeContract(name: "Development",
                                             appId: "IL7aPYWO6DUaU9kgY7ZwHpV1G7AeBHQT",
                                             identifier: "jKsCqdBbgm4HnAv08GXfPxlTluGl7qfa",
@@ -227,9 +227,9 @@ enum Contracts {
     )
 
     static let developmentOgi = DigimeContract(name: "Development Ogi",
-                                            appId: "IL7aPYWO6DUaU9kgY7ZwHpV1G7AeBHQT",
-                                            identifier: "th3ADq2kCZIRCtlFYiDXhacyHCf1R1gf",
-                                            privateKey: """
+                                               appId: "IL7aPYWO6DUaU9kgY7ZwHpV1G7AeBHQT",
+                                               identifier: "th3ADq2kCZIRCtlFYiDXhacyHCf1R1gf",
+                                               privateKey: """
         -----BEGIN RSA PRIVATE KEY-----
         MIIEpAIBAAKCAQEAlTaLPsatkKAE6rlIDwLkD7K+SRXXiocxkwbKWUaSYlVP7u2w
         Td5ic0kWQeAXMiUFnGPIW21Y7Q4WNCfXO9t/WBvmb1HBe1p9Ie/gB+j1qsOZbF45
@@ -258,14 +258,14 @@ enum Contracts {
         rWiZPWx9DGi6zDeESPwxsx+2W45EYqiMGIFdR6jMzoMryrccOXD9SQ==
         -----END RSA PRIVATE KEY-----
         """,
-                                            baseURL: "https://api.development.devdigi.me",
-                                            storageBaseURL: "https://cloud.development.devdigi.me"
+                                               baseURL: "https://api.development.devdigi.me",
+                                               storageBaseURL: "https://cloud.development.devdigi.me"
     )
 
-        static let jamesIntegration = DigimeContract(name: "Integration James",
-                                                     appId: "2GhzGYpdwpy5baUoq8ZNgIeALtcXZNcz",
-                                                     identifier: "fjCfLRfbEm88O4036ayBlQEtwvbIXDVz",
-                                                     privateKey: """
+    static let jamesIntegration = DigimeContract(name: "Integration James",
+                                                 appId: "2GhzGYpdwpy5baUoq8ZNgIeALtcXZNcz",
+                                                 identifier: "fjCfLRfbEm88O4036ayBlQEtwvbIXDVz",
+                                                 privateKey: """
 
         -----BEGIN RSA PRIVATE KEY-----
         MIIEogIBAAKCAQEAh1z1Mo4B/GzEU1LOgeFIfAFg9H6cf3iYmGsk8hCyb2ygyE41
@@ -295,9 +295,9 @@ enum Contracts {
         BiKryBKNdZOCamJiIyhTb2Fbt0tRNHd1Nks1VcdN5D9mtYSSYiE=
         -----END RSA PRIVATE KEY-----
     """,
-                                                     baseURL: "https://api.integration.devdigi.me",
-                                                     storageBaseURL: "https://cloud.integration.devdigi.me"
-        )
+                                                 baseURL: "https://api.integration.devdigi.me",
+                                                 storageBaseURL: "https://cloud.integration.devdigi.me"
+    )
 
     static let integration = DigimeContract(name: "Integration",
                                             appId: "8xQSl0XkCfa434LqNC7NwJdvc38qEWGz",
@@ -334,7 +334,7 @@ enum Contracts {
                                             baseURL: "https://api.integration.devdigi.me",
                                             storageBaseURL: "https://cloud.integration.devdigi.me"
     )
-    
+
     static let staging = DigimeContract(name: "Staging",
                                         appId: "lFrMvUSnWLRB0WkzKpW45y9USpA3Uygh",
                                         identifier: "VNQr2gCQqGmtUzoVVzZIxw5cBooWKBQQ",
@@ -443,7 +443,7 @@ enum Contracts {
                                        storageBaseURL: "https://cloud.test08.devdigi.me"
     )
 
-    static let prodJames = DigimeContract(name: "PROD: James for Medmij",
+    static let prodJames = DigimeContract(name: "PROD: DEV",
                                           appId: "8YcZRyfgKeimmlCUC3cBaVJLLmqEodgh",
                                           identifier: "az3uKLTTRY6wLjllfNLQaTOWX1KAEO1N",
                                           privateKey: """
@@ -479,7 +479,166 @@ enum Contracts {
                                           storageBaseURL: "https://cloud.digi.me"
     )
 
+    static let prodSDK = DigimeContract(name: "SDK: PROD",
+                                        appId: "DhMsn0jhW9zzDymAner5XkRQkabkQSXu",
+                                        identifier: "qE3HxxmZZ5miS9QddlC5J5n7Da7Hz1E8",
+                                        privateKey: """
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEA5Eb1IrRtn2u6on6DYlfirsazhec4YjnPC1aGtYcVVy14/hNV
+        n/zgmvWXzKWuz4RFrdt5RXMBzaXJEzjLUFQt1o94fFbeKE/8URNu00IJAxtFABJu
+        qwL6DhVrzx+0me5jan+ZIo/oM0iE1B0NcyoSBgoHEW3Y1b/GyQfxaRxV/3bRjJpG
+        ke8TbgwKv3BRin6i2FmyvMSd2bFkq8n7tin1yi3BwXn9X3wtmCzF67GDbh2z2OL0
+        YOMzK5DTGoH/rhOHJKXljTcaI5ZYunzosnvRJDTlrtZiAIG1J42nd9OAg0W6NOT6
+        gzxJMj3c467ka0M4SGGdbzRa3wupmh/tJvd9gQIDAQABAoIBAQCxd9C/6FGJLPFt
+        vrlZzUV35xZONZIKGzMxd1VG7vvSSJHVxSY+ORRMpD4dZXlf709UeFnxehWe0RJf
+        lTnK+4afVe6vi8EuyfA4/8ibCK2E8sBT7ACJhsjsBg9IeTeorEIx230r94Dnzasm
+        VGfObpiQhV81V5bJpkxeoYQ22UaqUTd6e4+4hOZaxIt1IOeWE4IVvimMov5l8G/U
+        m0scBCf8bGgDCXY0l0gdS49QRDXbOJARVcnRGhatLHl8l7VHgDjD7lm9sV5WHKsU
+        8w3+Z/tFb78VB8blY/BvHPddVBcKNk/x6nC9VyX1i6TVQ1G58fGk6TFN2vEK/ANo
+        E+Bz1Z4ZAoGBAPLgb5M1hdXmNLgs8clxt2AAVS0xcOrRudFERmJfqQiqgTZ89o9F
+        CvE2YAzHRWXOLlKHzp50/KjQ09Afb04uiSeDnVQMf8bPj9TgPuC+3moiJ8bqi8z0
+        BsG6ZlLw6NOKUJS1LIAWHC8lDZXUML68jo6RoLVl/SCa9Fxcw31ZMvA/AoGBAPCc
+        k1IJDQu6p5vC4PLX1fZLNXlmpSbh06GmEFj/SAnZ4ZnU3vNk0/6bhe88vlOXUifv
+        4rUhxinYzuK3x0kpp1VoisQHf6nfl4bzFTojrf64wh8TCqPvg8E3SJmpwnKJH/HV
+        47IrZ7HhIBtSihSc3sprV1RuFkhBMQujkE6u+iI/AoGBAKDTt25uYbpbXwuaT11K
+        XNhIQB7V/2SvDfGh2U2o9KCVb0yqgQYr/OvvSrkLd0vLtObXoR1ScEBFUA0f06+c
+        pxuwTozqXe5DYYXgHCLsoRD8nwRcKcjEynicOsevWS1DCMsAEYCbo3wgeBd/0+tp
+        pqiHjDiyWWSu1yMWFik52L43AoGAQKvlEQSrw/5MdJpBuiP3N3bpjZLgSv4h0u3+
+        sN0UsMkmUSGdN1BfhqyoqC/sfC1NAL0Cc2r7h13l5Zw97VVLy7IIsj3Nu4wEf1ow
+        12qlprRkQNPuZTfIcxN36Q1u3TgsJOU3iTkPawk2hwF9aaLsYv3NAD2CsbMMCrPQ
+        4sU3KCMCgYB3HfhxvDZS+EmGDNfvQQbS3lJBCm8mJwVGAqspub65/0z3yzEz4fai
+        3YiMppcsLZeeVRb4Xq/PFgAk9O7t/725HZ0D9R2M0aDHkQqlelv4yNxaElvloTyQ
+        8Z5pZzxh+HgO3LU5N5ykWDsbmfw2mgXGdr7muasoyhvCmFlTNCWN3Q==
+        -----END RSA PRIVATE KEY-----
+        """,
+                                        baseURL: "https://api.digi.me",
+                                        storageBaseURL: "https://cloud.digi.me"
+    )
+
+    static let stagingSDK = DigimeContract(name: "SDK: STAGING",
+                                           appId: "BTJHy9zEq3L4laJqCMXPpwDgDGxjVYJd",
+                                           identifier: "YB6yB9pRguaucWy92ArikSzEmbaIrZms",
+                                           privateKey: """
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpQIBAAKCAQEA0+pmMsK+u1w6DFfSmma31XGw66CNsVWxRew++UNAqJIQ5++I
+        aKyLtfwbgjN7HEW+PQoU+oXZxQxXtkPYR1r5o/yPb9RFUy1mkd2NuFBH6ZAN5Cx9
+        CTLTuxBAveLvmkpG5HgosVzkZ138qbGbhPBlHh2WMDgOVAI7Ej1rUaQhaZz83juz
+        BOap+qHKNqbwYzO9aUzJIAveg3og0F3sgNO9y/2C7d4oGMQJDFJluQDw6HxDuKh3
+        H4ldh2I8K3pMzYdmE15qCdGC5lJL6oqTQ3Degk10a2SCyuYlvJUXAcYj/dOs5PkJ
+        pFzzRr2eKTXpfO1s95WUNT2PUlea4YvrFNHIZQIDAQABAoIBACjVPaQCSmYnuzet
+        pHMD3+BM6947LZJCBMqIXwoAn3Db1E4cpZglxzXlwhcwfERSW/m++5PaPr/tROll
+        4UK+kOO8Qpc1u7XvRZhNrIUbUv/6NfMFb4JaPNoKo67zD2AXd9mGHbEvSQNx5MF9
+        642OFK3c3Zek9X3SgDdfhlJQ4e9LasFs+Mg9Rjk0WkxYnZzz0ntWNYnCGmn4msS9
+        U30akDaSA9G2S3Jdz2u+nUaZqlJFORLHQkYu1Frw1SPQLTt4XHV14vTiXDu7m3rI
+        Y84YdthIsQMi4JnD8UH1ylnnwJdfEEFsYVWHTtGRxSrvP2DftWR6SmtfjZ6Arvdn
+        Bzl3ifECgYEA9D/BBxL/LTht43316z8Kcx9lBEfKoO2TkvDpOv7z+9+EYn2+gtn7
+        paPkXIHelcCps5rzN2IcnkT3S7rty/W0imKhQaxsxG55BaPpIukJZCvzhlUTzAIg
+        kbE4/AuOLiy12nA7cBnZz3aY2uqFvMUhCAIqX6Up/wEtJBE2p+AUHS8CgYEA3hxq
+        u7udFAWJN7dA/t2VjmvJbHUrqs/RiXd/Ovxwo1R3S1cGKOviODyZpDvwoSMg6Kp5
+        DyNVBHlfV33SI1qWxa2cJU7u0ShNkrHqNHVmz2Ka8AlsnTpeC+/4hVuJuqOh1/XS
+        i8xYEwJ9A4jgdQwmcGN2vg6eC3NWylWanzuT1qsCgYEAoQcTNJ3CnEaStCPMKL8U
+        HZf6GltWbMiUvZCUw29o3YqcFe7+1ffun2Kw4IhCfgpaF241oTLO2U1wmH3x3sDr
+        uTyTQd/yiYKnyR8qSfjHV0JeuBaJCbvxSvxDLHBV2X1im1PY6+wvHEb9OX7akvyH
+        7Wa4Fvyl9lgJMbkjhoQF3sMCgYEAvfHzXSTvCiZJ2LoA/XSl56xKD1SMyYD8IuFs
+        jxc/hI5Bjs6XV/uR9KHuisMv373Y8OCIsud2V2Mso/fX86AO/HKh7E36cihTXraE
+        IeSczZH4CnskxbkaoH7SO8mymUhCqhtxuVhBodAo9RLjUXXYkZid/Z8mjYhPmq1m
+        k/IxVg0CgYEAjclp3O/lMbVRvTvdhcth+XDl3F23f1ldM40UWzjNml4NfDOoNkae
+        gHH5JgsBT9SvDo3q3YLLt3IRLgnzroHwty0xofX8edxApiAHZTzxTzUkqCvEw7dU
+        XMOqk7n8/MGpThZX5F/MUnDyPcbg7t+hOd9v8hz06FTOV7McC/hPimo=
+        -----END RSA PRIVATE KEY-----
+        """,
+                                           baseURL: "https://api.stagingdigi.me",
+                                           storageBaseURL: "https://cloud.stagingdigi.me"
+    )
+
+    static let integrationSDK = DigimeContract(name: "SDK: INTEGRATION",
+                                               appId: "C0423qfDyMpOfH9nr5GZS4R4XhPdkfgN",
+                                               identifier: "yw61RQW7Q2rnnSJqpXtsbegG11Zg06ZS",
+                                               privateKey: """
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEAqznIe2paD7bXR/mQp0UETxHoz0q30CydIvNLnxNx/dn9QDFR
+        5U43CVTbBpSqfFjMAkwR3xNToe0qnF1Nbonad/P/qKcgT7PzIAiihf6WvqFkZWVd
+        N0I0Fo1EdARp66zZUoaPNuGPKLX/6myzMvwxnuSUmQf88jI8/JdB66TyzEO+LG4W
+        DfTPa3/lXB1FobWFe6Zj6OAwAmwAnm5372lZ8pDLRPRhebFsJON5+m5nCYEHNii/
+        cS8U91gA0Rd1c4AB2GrkeC+KJ9mF+EHkmDQRdCU0LGd8zDyvuNV4qRyNiTrRcE2/
+        TOl4/PBy2GVT33Rj8zm66f8XE0cQnY+QTmpTcQIDAQABAoIBAQCdn80CaA5Ohwg5
+        1vGmOm/UBm2mXmdGebuSUByebX0zrnhnnr+Ac3dQ3M/gh/1GCUyNFNAi5pzH5Rej
+        6HR+vOLkKDeDX47sMIExTSGobo0BInvUp/KfCw/+br/Eece0UGOjiAHRCOYMGTdk
+        6/ovhmB7oHt3QRZHM55W/TuPHULybCvJk10dlRTDAojD+oLyiHTmKDRvUMSTcIjG
+        98yhJlejfZlJX/XZ8AQzkxx+OYXXXeXq6IVyJJD/ACyNVZl8fXuslnHXsYvsBdix
+        sfvbLVGivkWAQ9q+30VRni4Y6Ams5gPumdgU0i2bhgM1md8tT/eRcg10u8kmnZqF
+        9sZr0A4BAoGBAOIYRIed6nmnYHeq11C8GSUj3xumJ5mLAxO1N0TZxqvWvYW1gPCG
+        096TZl/W2+lrQbweSNJd5/BMiO9vuKO7VqT8CCoRveByyfcMHf7RsTewiIFSuQba
+        2+JQf6ARyXCNWEGB3jtiMozOMVWPxO8GvYK/ymta1jFfgqQSmc2obwAhAoGBAMHf
+        m+NXW0PluU+qPbMWicN5u4jPpJ1+Deku6+IoRaBZOFAo/f/lYG50SQY5UrbY8gFj
+        gTK1ZmcY5kNwre5oXO0VrXimejO1VVTVi9aLsubvVtqDlqkFJ+hwBaH5zCDjU4s/
+        mxhL6NWPDrB4omkRW2VDGBL1Od7sjTXLPFDLhilRAoGAHlvj19H8ihlPesIV52Fa
+        fwIyEyRcbOGdqCfNJBGZ+7j5+dpFVgbErD5eoL/ZB56/VOM8JAM4AaxFNuFpiZK+
+        L6kn734yYNEJDYMzA+RkR3YM3lCdR65bmCf2+ydoRRS1pRYrIQ4ue3m0ZijH6NCe
+        4c+e/otT9407nYxh2pujTAECgYBxueYMGjZjQeLOpKLE5zew/zvPKV77M/KdEvU0
+        GUOeqDesbh9xePB0WqpriDzJHcH4ppInWNnVKHoKnZKqA3ZfbRPxblbI9lo0BYCe
+        PhyX81YToJVEWM3sP6pONeZUdIWRbaJhQkY24FBRnLJIx/HBGPaKSGfGKSU8pReg
+        nYL5wQKBgQDNDKR1DreizDf9veuqbxd5PAlgaZXRLZj9th20peFtOhMcvuzmxepD
+        FV0VvkgHUmDnb+KV/0TPScNhR0a6+SYkxnmN5FJyi+Mggpy0o04M27lGSAgEow+T
+        lv0wIezhvUdrqNahnTjUJTGLT+pUzL4ex+1otc9Fr9YgFficFGzMoQ==
+        -----END RSA PRIVATE KEY-----
+        """,
+                                               baseURL: "https://api.integration.devdigi.me",
+                                               storageBaseURL: "https://cloud.integration.devdigi.me"
+    )
+
+    static let developmentSDK = DigimeContract(name: "SDK: DEVELOPMENT",
+                                               appId: "u3rYdPHDqJs9hzixLcVw6laMF070SLjZ",
+                                               identifier: "ajOLbhEsRugXwIG16EEQ6YagKE2ANNdk",
+                                               privateKey: """
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEAqUDfGYN9rGmVEWQtw+nQUsGMFFAn7or6YMT7cY/ALEdnzLd5
+        DlTPxh5EaDYuAnp+dORjB0KE/93r3vRprHMdD8KW8hFqQLYv/G9BHRZg+HMjEOws
+        jUIrufMmA7K+DgQHJ9D2UT7P6s+z/EHEhn9j9SW0dI3PB/HSztD+qivA5NfFg2Ed
+        DdBIGR7TD9GRjhtL9OGC/+IHHPDB8/fBuj5ppiMg7HD0vrUGNcr+I7J6JLg+ckFP
+        cYx4hZcRJ51QMjHzBDTEDJ2Y5/+UKYM9cwGuWK6NCtXFjdJKana8OuQozmma+Xfq
+        PfEJj7jleiQYOrukBC0dD5rMWuykCj+Aj51tkQIDAQABAoIBAFzrrJBJTFm3rYta
+        wHVqjGCiudD9IK8pxcQS4Si7jvnAShBuOhvQHDHctBmyhRf/QCXUrTlzH6mJoNFK
+        xilTGYVpg41qWjckzrt8KPdbLem47GuB/gOfbHouL5SgMQ9ozrThWBnKrkNvvJSl
+        VsuwbKROCwBiSmNGNEIvI2ExnDkGBsWJe0W7i4mZD1GzaqrkTzHzSRjKsX+iqJ1r
+        LpOLmP0Zbs4/LHhphjVDwXtwFKczSBi448cRl0gBbGg+aOI1a38jqrOyuiKCveOf
+        40DjmW+4Z6TBB20hiIOoydzvGqinrSS6BLnNiGlDGkGk9FSMZRogBepRQ+vQnsHm
+        iYYRT0ECgYEA6s0sKeCrMKjvcxBSZX0fHXcEBJmooR7uLk/varRAilrMlTzYPv2X
+        uMRer9HINFfh8GPE6r6dwKMq96iCeOXfGLVtFjNAjK+tXN6FeSFcUgqskfKeFXFV
+        zFWZwf0Nkd/C9Ixh3bqZdZwMKoPUYrO/fbnPnZf4DrotSFwh+PZ9EW0CgYEAuIi5
+        vV0Uk1iWVnG3fgs+TvLgSiVO0AwKM8k7SKj31boH/vsPHR/8nIrwHUKe8A30ZHRs
+        bHDArmyeyMzAulI6G9G7SSlFCu40VHKm+JhK3m4Kd23gzChgOEKPo+GBnDL3qeU5
+        C27OYj2IVUSyT1DZMEpiu/xSwGGBRJwBYvcq2jUCgYEAsbXsER4MM14JLStTUaDr
+        pd9oWRr7eEbyunahnD8lAhJK+UD94l8JMDzf9W5ver5xMQIyDgGLYDuez6boaRyC
+        SC84iy7rUg+8xKdemhlXyHhvuF7KqywGZgr7vskKNjgHVBPUFn+emlcrFhqE6tdk
+        vYGe04YrpuneT//7bnUQn9kCgYB9XU2qKxEuZPGFeq3o8GR9KB1d4eigCH3p3pzq
+        6Pet+Ds0a4VCCRgJlY44oqjtdt2AXWPHa/ZKyTo6Onf4XKJjgeGVe3cPTPK6KEXs
+        /zFl2SY9KqWcrRVpQzboY+w0nJ+KiVJuxPFq5li3bPsiTU+vselPwsTJM7SpUr7S
+        aA5xvQKBgQDow2HveexbbxgEAOfJin2g/FAibxtcjrjBQz+RdccxZxEGarkQ4iYV
+        /GOY/oefWzuAK/GzdZEDRtu5GkHg9KiA7Qnrmg+ZsXXwx0maR3GEyERn9k4369NG
+        our70w5LQP0CetitzCNZTXRTYUvagkhhVAzMFQt3NRUx0UQWCM6fpw==
+        -----END RSA PRIVATE KEY-----
+        """,
+                                               baseURL: "https://api.development.devdigi.me",
+                                               storageBaseURL: "https://cloud.development.devdigi.me"
+    )
+
     static var all: [DigimeContract] {
-        return [prodJames, prodFinSocMus, prodFitHealth, development, developmentOgi, integration, jamesIntegration, staging, test05, test08]
+        return [
+            prodJames,
+            prodFinSocMus,
+            prodFitHealth,
+            development,
+            developmentOgi,
+            integration,
+            jamesIntegration,
+            staging,
+            test05,
+            test08,
+            prodSDK,
+            stagingSDK,
+            integrationSDK,
+            developmentSDK
+        ]
     }
 }

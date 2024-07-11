@@ -12,13 +12,13 @@ import SwiftData
 import SwiftUI
 
 @Model
-class SourceItem: Codable, Identifiable {
+final class SourceItem: Codable, Identifiable {
     @Attribute(.unique) let id: Int
-    let serviceGroupId: Int
-    let contractId: String
-    let sampleData: Bool
-    let searchable: String
-    let items: [DigiMeCore.Source]
+    var serviceGroupId: Int
+    var contractId: String
+    var sampleData: Bool
+    var searchable: String
+    var items: [DigiMeCore.Source]
     var readOptions: ReadOptions?
 
     init(id: Int, serviceGroupId: Int, contractId: String, sampleData: Bool, searchable: String, item: Source, readOptions: ReadOptions? = nil) {

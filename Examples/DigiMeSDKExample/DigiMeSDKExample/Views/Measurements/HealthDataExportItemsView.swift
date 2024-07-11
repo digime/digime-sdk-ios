@@ -67,10 +67,11 @@ struct HealthDataExportItemsView: View {
                     if readyToExport {
                         header
                     }
-                    else {
-                        SingleSelectionView(selectedItem: $selectedAggregationMethod, items: AggregationMethod.allCases)
-                        aggregationSelectorFooter
-                    }
+                    // XXXX no decidion yet about data aggregation
+//                    else {
+//                        SingleSelectionView(selectedItem: $selectedAggregationMethod, items: AggregationMethod.allCases)
+//                        aggregationSelectorFooter
+//                    }
 
                     content
 

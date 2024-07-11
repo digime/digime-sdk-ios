@@ -11,38 +11,25 @@ import SwiftData
 import SwiftUI
 
 struct SourceItemsListView: View {
-    @Query private var items: [SourceItem]
-
+    @StateObject private var viewModel: SourceItemsViewModel
+    @Binding var filterString: String
+    @Binding var updateTrigger: Bool
     private let action: (SourceItem) -> Void
     private let rowContent: (SourceItem) -> AnyView
     private let buttonStyle: SourceSelectorButtonStyle
 
-    init(filterString: String, contractId: String, groupId: Int, sampleData: Bool, servicesButtonStyle: SourceSelectorButtonStyle, @ViewBuilder rowContent: @escaping (SourceItem) -> AnyView, completion: @escaping ((SourceItem) -> Void)) {
+    init(context: ModelContext, filterString: Binding<String>, contractId: String, sampleData: Bool, servicesButtonStyle: SourceSelectorButtonStyle, updateTrigger: Binding<Bool>, @ViewBuilder rowContent: @escaping (SourceItem) -> AnyView, completion: @escaping ((SourceItem) -> Void)) {
+        _filterString = filterString
+        _updateTrigger = updateTrigger
+        _viewModel = StateObject(wrappedValue: SourceItemsViewModel(context: context, filterString: filterString.wrappedValue, contractId: contractId, sampleData: sampleData))
         self.rowContent = rowContent
         self.action = completion
         self.buttonStyle = servicesButtonStyle
-
-        let predicate = #Predicate<SourceItem> { item in
-            (filterString.isEmpty || item.searchable.localizedStandardContains(filterString))
-            && (sampleData || (!sampleData && item.sampleData == sampleData))
-            && item.serviceGroupId == groupId
-            && item.contractId == contractId
-        }
-
-        var descriptor = FetchDescriptor<SourceItem>(predicate: predicate, sortBy: [
-            SortDescriptor(\SourceItem.searchable, order: .forward)
-        ])
-
-        if !filterString.isEmpty {
-            descriptor.fetchLimit = 100
-        }
-
-        _items = Query(descriptor)
     }
 
     var body: some View {
-        LazyVStack {
-            ForEach(items) { item in
+        VStack {
+            ForEach(viewModel.items) { item in
                 Button {
                     self.action(item)
                 } label: {
@@ -51,21 +38,36 @@ struct SourceItemsListView: View {
                 .buttonStyle(buttonStyle)
                 .frame(minWidth: 0, maxWidth: .infinity)
             }
+
+            if viewModel.canLoadMore {
+                Button {
+                    viewModel.loadMoreItems()
+                } label: {
+                    Text("Load More")
+                        .fontWeight(.bold)
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding(.vertical)
+            }
+
+            if viewModel.isLoading {
+                ProgressView()
+                    .padding()
+            }
+        }
+        .onChange(of: filterString) { _, newValue in
+            viewModel.filterString = newValue
+        }
+        .onChange(of: updateTrigger) { _, _ in
+            // We only need to load the first batch of data if the list is empty.
+            // The end user uses manual search to load filtered data.
+            if viewModel.items.isEmpty {
+                viewModel.resetAndReload()
+            }
         }
     }
-}
-
-#Preview {
-    let previewer = try? Previewer()
-    let loggingService = LoggingService(modelContainer: previewer!.container)
-    let servicesViewModel = ServicesViewModel(loggingService: loggingService, modelContainer: previewer!.container)
-    let style = SourceSelectorButtonStyle(backgroundColor: Color("pickerBackgroundColor"), foregroundColor: .primary, padding: 15)
-    return SourceItemsListView(filterString: "", contractId: "testContractId", groupId: 2, sampleData: false, servicesButtonStyle: style) { item in
-        AnyView(Text(item.searchable))
-    } completion: { item in
-        print("selected item id: \(item.id)")
-    }
-    .environmentObject(servicesViewModel)
-    .modelContainer(previewer!.container)
-    .environment(\.colorScheme, .dark)
 }

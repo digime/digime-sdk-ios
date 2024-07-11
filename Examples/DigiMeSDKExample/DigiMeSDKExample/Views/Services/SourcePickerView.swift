@@ -27,7 +27,6 @@ struct SourcePickerView: View {
     @State private var proceedSampleDataset = false
     @State private var pushNextView = false
     @State private var proceedButtonIsPressed = false
-    @State private var flags: [Bool] = []
     @State private var searchText: String = ""
     @State private var timeRangeTemplates: [TimeRangeTemplate] = TestTimeRangeTemplates.data
     @State private var objectTypes: [ServiceObjectType] = []
@@ -45,16 +44,6 @@ struct SourcePickerView: View {
 
     private var navigationButtonStyle: SourceSelectorButtonStyle {
         return SourceSelectorButtonStyle(backgroundColor: Color(.systemGroupedBackground), foregroundColor: viewModel.isLoadingData ? .gray : .primary, padding: 10, strokeColor: .primary)
-    }
-        
-    private var groupSections: [SourceSection] {
-        return [
-            SourceSection(id: 1, title: "Social"),
-            SourceSection(id: 2, title: "Medical"),
-            SourceSection(id: 3, title: "Finance"),
-            SourceSection(id: 4, title: "Health & Fitness"),
-            SourceSection(id: 5, title: "Entertainment"),
-        ]
     }
 
     var body: some View {
@@ -90,7 +79,7 @@ struct SourcePickerView: View {
                     }
                 }
 
-                if allowScoping {
+                if allowScoping && scopeViewModel.selectedSource != nil {
                     VStack(spacing: 20) {
                         scopingToggle
 
@@ -107,8 +96,6 @@ struct SourcePickerView: View {
             .background(viewState == .sampleData ? Color.yellow.opacity(0.1) : Color(.systemBackground))
         }
         .onAppear {
-            scopeViewModel.sourceSections = groupSections
-            flags = groupSections.map { _ in false }
             viewModel.onShowSampleDataSelectorChanged = { shouldShow in
                 self.showSampleDataSetActionSheet = shouldShow
             }
@@ -127,12 +114,6 @@ struct SourcePickerView: View {
                                 buttons: customActionSheetPickerButtons())
         .sheet(isPresented: $scopeViewModel.shouldDisplayModal) {
             ScopeAddView(viewModel: scopeViewModel)
-        }
-        .onChange(of: searchText) { oldValue, newValue in
-            // only trigger when start typing
-            if oldValue.isEmpty && newValue.count == 1 {
-                flags = Array(repeating: true, count: groupSections.count)
-            }
         }
         .onChange(of: scopeViewModel.selectedSource) { _, newValue in
             guard
@@ -177,7 +158,7 @@ struct SourcePickerView: View {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.secondary)
 
-            TextField("Search in \(viewModel.totalNumberOfItems) items", text: $searchText)
+            TextField("Search in \(counter) items", text: $searchText)
                 .padding(3)
 
             if !searchText.isEmpty {
@@ -196,75 +177,41 @@ struct SourcePickerView: View {
         }
     }
 
+    private var counter: Int {
+        viewState == .sampleData ? viewModel.totalNumberOfSampleDataItems : viewModel.totalNumberOfItems
+    }
+
     private var content: some View {
-        VStack {
-            ForEach(Array(groupSections.enumerated()), id: \.1.id) { i, section in
-                Section {
-                    Button {
-                        flags[i].toggle()
-                    } label: {
-                        HStack {
-                            Image(section.iconName)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 20, height: 20, alignment: .leading)
-                                .opacity(viewModel.isLoadingData ? 0.8 : 1.0)
-                                .disabled(viewModel.isLoadingData)
+        SourceItemsListView(
+            context: ModelContext(viewModel.modelContainer),
+            filterString: $searchText,
+            contractId: viewModel.activeContract.identifier,
+            sampleData: viewState == .sampleData,
+            servicesButtonStyle: servicesButtonStyle,
+            updateTrigger: $viewModel.sourceItemsUpdateTrigger,
+            rowContent: { item in
+                AnyView(self.makeSourceRow(source: item))
+            }, completion: { sourceItem in
+                guard
+                    !viewModel.isLoadingData,
+                    let source = sourceItem.items.first else {
+                    return
+                }
 
-                            Text(section.title)
-                                .foregroundColor(viewModel.isLoadingData ? .gray : .primary)
+                scopeViewModel.selectedSource = source
+                viewModel.sampleDatasets = nil
 
-                            Spacer()
-
-                            if !flags.isEmpty, flags[i] {
-                                Image(systemName: flags[i] ? "chevron.down" : "chevron.right")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 15, height: 15)
-                                    .foregroundColor(viewModel.isLoadingData ? .gray : .primary)
-                            }
-                        }
-                        .padding(15)
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        .background(viewBackground)
-                        .padding(.horizontal, 2)
+                if !allowScoping {
+                    if viewState == .sampleData {
+                        viewModel.fetchDemoDataSetsInfoForSource(source: source)
                     }
-                    .padding(.vertical, 5)
-                    .disabled(viewModel.isLoadingData)
-
-                    if !flags.isEmpty, flags[i] {
-                        SourceItemsListView(
-                            filterString: searchText,
-                            contractId: viewModel.activeContract.identifier,
-                            groupId: section.id,
-                            sampleData: viewState == .sampleData,
-                            servicesButtonStyle: servicesButtonStyle,
-                            rowContent: { item in
-                                AnyView(self.makeSourceRow(source: item))
-                            }, completion: { sourceItem in
-                                guard
-                                    !viewModel.isLoadingData,
-                                    let source = sourceItem.items.first else {
-                                    return
-                                }
-
-                                scopeViewModel.selectedSource = source
-                                viewModel.sampleDatasets = nil
-
-                                if !allowScoping {
-                                    if viewState == .sampleData {
-                                        viewModel.fetchDemoDataSetsInfoForSource(source: source)
-                                    }
-                                    else {
-                                        finish()
-                                    }
-                                }
-                            }
-                        )
+                    else {
+                        finish()
                     }
                 }
             }
-        }
+        )
+        .modelContainer(viewModel.modelContainer)
     }
 
     private func makeSourceRow(source: SourceItem) -> some View {
