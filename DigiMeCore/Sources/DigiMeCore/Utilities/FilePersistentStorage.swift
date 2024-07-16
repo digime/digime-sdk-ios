@@ -24,6 +24,22 @@ public class FilePersistentStorage {
         return url
     }
 
+    public func store(data: Data, fileName: String) -> URL? {
+        guard
+            !data.isEmpty,
+            let fileURL = getURL()?.appendingPathComponent(fileName, isDirectory: false) else {
+            return nil
+        }
+
+        do {
+            try data.write(to: fileURL)
+            return fileURL
+        }
+        catch {
+            return nil
+        }
+    }
+
     public func store(data: Data, fileName: String, completion: ((URL?) -> Void)? = nil) {
         guard Thread.isMainThread else {
             DispatchQueue.main.async {

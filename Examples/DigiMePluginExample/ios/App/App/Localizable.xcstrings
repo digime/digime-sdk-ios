@@ -1,19 +1,25 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Ok" : {
+    "locKey" : {
       "extractionState" : "manual",
       "localizations" : {
-        "de" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ok"
+            "value" : "English"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ok"
+            "value" : "Dutch"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Russian"
           }
         }
       }

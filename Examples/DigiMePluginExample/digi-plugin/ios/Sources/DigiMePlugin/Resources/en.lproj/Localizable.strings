@@ -1,0 +1,78 @@
+"allowImportAppleHealthData" = "Allow this app to import your Apple Health data. On the next step you will be prompted to choose the time range.";
+"turnOffAll" = "Turn Off All";
+"turnOnAll" = "Turn On All";
+"appleHealthDataTypes" = "Apple Health Data Types";
+"missingCloudId" = "Missing cloud id";
+"next" = "Next";
+"sources" = "Sources";
+"success" = "Success";
+"error" = "Error";
+"copyFileName" = "Copy File Name";
+"files" = "Files";
+"close" = "Close";
+"uploadingProgressScreen" = "You are currently viewing the uploading progress screen. This screen displays the files you have selected in the previous steps, which are now queued for upload to your library. Your library is a provisional cloud storage space dedicated to the files you have chosen to push here.
+
+Current Actions:
+
+- Upload Progress: Each file is being uploaded to your library. Once uploaded, the file will be removed from the local buffer and securely stored in your cloud library.
+
+Important Information:
+
+- Data Handling: The data being uploaded consists of Apple Health exported items in FHIR format. Please note that the actual Apple Health data on your device will not be affected. The files being handled here are copies meant for upload to your library.";
+"resetLocalCacheDescription" = "Tap 'Reset Local Cache' to clear all locally stored information and prepare for a new export session. This action will only remove temporary files from your device and will not affect your Apple Health data or files already uploaded to your cloud library. Restart the export process with a clean slate.";
+"upload" = "Upload";
+"successfullyUploadedAllFiles" = "Successfully uploaded all files";
+"processing" = "Processing...";
+"process" = "Process";
+"fileItemCount" = "%d items";
+"resetLocalCache" = "Reset Local Cache";
+"uploadedFromTotal" = "Uploaded %d from %d";
+"cancel" = "Cancel";
+"quickReports" = "Quick Reports";
+"thisWeek" = "This Week";
+"thisMonth" = "This Month";
+"thisYear" = "This Year";
+"everything" = "Everything";
+"customPeriod" = "Custom Period";
+"from" = "From";
+"to" = "To";
+"noMeasurementsToShare" = "You have no measurements to share";
+"ok" = "OK";
+"selectTimePeriodForReport" = "Select the Time Period for Your Report";
+"shareMeasurementsFor" = "Share Measurements for";
+"generateReport" = "Generate Report";
+"selectDestination" = "Select Destination";
+"portabilityReport" = "Portability Report";
+"shareMeasurements" = "Share Measurements";
+"selectTimePeriod" = "Select Time Period";
+"selectLocalDestination" = "You will be able to select your local destination";
+"selectGPOrHospital" = "You will be able to select the GP or Hospital you would like to share with.";
+"startFetchingAppleHealthData" = "On the next step you are going to start fetching your Apple Health data and then you need to select the items you want to push to your cloud library.";
+"failedToExportSelfMeasurements" = "Failed to export your self-measurements.";
+"errorOccurred" = "An error occurred: %@";
+"dataFetch" = "Data Fetch";
+"exported" = "Exported: %d";
+"healthKitDataImported" = "Now that your HealthKit data has been imported, please select the specific items you wish to include. Once you've made your selections, choose one of the following actions:
+
+- Push to 'digi.me' Library: Safely transfer your selected data to your 'digi.me' library for secure storage and easy access.
+- Export as JSON and Save Locally: Convert your selected data into JSON format and save it directly on your device.
+
+Tap the appropriate action button below to proceed with your export choice.";
+"firstTimePermissionMessage" = "First time, you will see an iOS native permission message asking you to allow this app to access your selected data types. Then, the app will convert the data to FHIR format and present it to you for further selection and upload to your cloud library.";
+"fetching" = "Fetching...";
+"startFetching" = "Start Fetching";
+"updateData" = "Update Data";
+"pushToDigiMeLibrary" = "Push to 'digi.me' Library";
+"resetLocalCache" = "Reset Local Cache";
+"elapsedTime" = "Elapsed time: %@";
+"importComplete" = "Import complete.";
+"pickDate" = "Pick Date";
+"weight" = "Weight";
+"height" = "Height";
+"bodyTemperature" = "Body Temperature";
+"bloodOxygen" = "Blood Oxygen";
+"respiratoryRate" = "Respiratory Rate";
+"heartRate" = "Heart Rate";
+"systolicBloodPressure" = "Systolic Blood Pressure";
+"diastolicBloodPressure" = "Diastolic Blood Pressure";
+"bloodGlucose" = "Blood Glucose";

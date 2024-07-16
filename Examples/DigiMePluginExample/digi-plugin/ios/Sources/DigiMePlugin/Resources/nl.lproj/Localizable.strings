@@ -1,0 +1,78 @@
+"allowImportAppleHealthData" = "Sta deze app toe om je Apple Health-gegevens te importeren. In de volgende stap wordt je gevraagd om de tijdsperiode te kiezen.";
+"turnOffAll" = "Alles uitschakelen";
+"turnOnAll" = "Alles inschakelen";
+"appleHealthDataTypes" = "Apple Health-gegevenssoorten";
+"missingCloudId" = "Ontbrekende cloud-ID";
+"next" = "Volgende";
+"sources" = "Bronnen";
+"success" = "Succes";
+"error" = "Fout";
+"copyFileName" = "Bestandsnaam kopiëren";
+"files" = "Bestanden";
+"close" = "Sluiten";
+"uploadingProgressScreen" = "Je bekijkt momenteel het uploadscherm. Dit scherm toont de bestanden die je in de vorige stappen hebt geselecteerd en die nu in de wachtrij staan voor upload naar je bibliotheek. Je bibliotheek is een voorlopige cloudopslagruimte die is gewijd aan de bestanden die je hierheen hebt gestuurd.
+
+Huidige acties:
+
+- Uploadvoortgang: Elk bestand wordt geüpload naar je bibliotheek. Zodra het is geüpload, wordt het bestand uit de lokale buffer verwijderd en veilig opgeslagen in je cloudbibliotheek.
+
+Belangrijke informatie:
+
+- Gegevensverwerking: De gegevens die worden geüpload, bestaan uit Apple Health-geëxporteerde items in FHIR-indeling. Houd er rekening mee dat de werkelijke Apple Health-gegevens op je apparaat niet worden beïnvloed. De hier verwerkte bestanden zijn kopieën die bedoeld zijn voor upload naar je bibliotheek.";
+"resetLocalCacheDescription" = "Tik op 'Lokale cache resetten' om alle lokaal opgeslagen informatie te wissen en je voor te bereiden op een nieuwe exportsessie. Deze actie verwijdert alleen tijdelijke bestanden van je apparaat en heeft geen invloed op je Apple Health-gegevens of bestanden die al naar je cloudbibliotheek zijn geüpload. Herstart het exportproces met een schone lei.";
+"upload" = "Uploaden";
+"successfullyUploadedAllFiles" = "Alle bestanden succesvol geüpload";
+"processing" = "Verwerken...";
+"process" = "Verwerken";
+"fileItemCount" = "%d items";
+"resetLocalCache" = "Lokale cache resetten";
+"uploadedFromTotal" = "Geüpload %d van %d";
+"cancel" = "Annuleren";
+"quickReports" = "Snelle rapporten";
+"thisWeek" = "Deze week";
+"thisMonth" = "Deze maand";
+"thisYear" = "Dit jaar";
+"everything" = "Alles";
+"customPeriod" = "Aangepaste periode";
+"from" = "Van";
+"to" = "Tot";
+"noMeasurementsToShare" = "Je hebt geen metingen om te delen";
+"ok" = "OK";
+"selectTimePeriodForReport" = "Selecteer de tijdsperiode voor je rapport";
+"shareMeasurementsFor" = "Deel metingen voor";
+"generateReport" = "Genereer rapport";
+"selectDestination" = "Selecteer bestemming";
+"portabilityReport" = "Overdraagbaarheidsrapport";
+"shareMeasurements" = "Deel metingen";
+"selectTimePeriod" = "Selecteer tijdsperiode";
+"selectLocalDestination" = "Je kunt je lokale bestemming selecteren";
+"selectGPOrHospital" = "Je kunt de huisarts of het ziekenhuis selecteren waarmee je wilt delen.";
+"startFetchingAppleHealthData" = "In de volgende stap ga je je Apple Health-gegevens ophalen en moet je de items selecteren die je naar je cloudbibliotheek wilt sturen.";
+"failedToExportSelfMeasurements" = "Het exporteren van je zelfmetingen is mislukt.";
+"errorOccurred" = "Er is een fout opgetreden: %@";
+"dataFetch" = "Gegevens ophalen";
+"exported" = "Geëxporteerd: %d";
+"healthKitDataImported" = "Nu je HealthKit-gegevens zijn geïmporteerd, selecteer je de specifieke items die je wilt opnemen. Nadat je je selectie hebt gemaakt, kies je een van de volgende acties:
+
+- Push naar 'digi.me' Bibliotheek: Verplaats je geselecteerde gegevens veilig naar je 'digi.me'-bibliotheek voor veilige opslag en gemakkelijke toegang.
+- Exporteer als JSON en sla lokaal op: Zet je geselecteerde gegevens om in JSON-formaat en sla deze direct op je apparaat op.
+
+Tik op de juiste actieknop hieronder om door te gaan met je exportkeuze.";
+"firstTimePermissionMessage" = "De eerste keer zie je een native iOS-melding waarin je wordt gevraagd deze app toegang te geven tot je geselecteerde gegevenstypen. Vervolgens zet de app de gegevens om naar FHIR-formaat en presenteert deze aan jou voor verdere selectie en upload naar je cloudbibliotheek.";
+"fetching" = "Ophalen...";
+"startFetching" = "Beginnen met ophalen";
+"updateData" = "Gegevens bijwerken";
+"pushToDigiMeLibrary" = "Push naar 'digi.me' Bibliotheek";
+"resetLocalCache" = "Lokale cache resetten";
+"elapsedTime" = "Verstreken tijd: %@";
+"importComplete" = "Import voltooid.";
+"pickDate" = "Kiesdatum";
+"weight" = "Gewicht";
+"height" = "Lengte";
+"bodyTemperature" = "Lichaamstemperatuur";
+"bloodOxygen" = "Saturatie";
+"respiratoryRate" = "Ademfrequentie";
+"heartRate" = "Hartslag";
+"systolicBloodPressure" = "Bovendruk (systolisch)";
+"diastolicBloodPressure" = "Onderdruk (diastolisch)";
+"bloodGlucose" = "Bloedsuikerspiegel";
