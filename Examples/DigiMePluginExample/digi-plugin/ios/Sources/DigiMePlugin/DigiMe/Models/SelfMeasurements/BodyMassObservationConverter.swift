@@ -45,7 +45,7 @@ struct BodyMassObservationConverter: FHIRObservationConverter {
 
     private func createObservation(data: DigiMeHealthKit.Quantity) -> Observation {
         let coding = ModelsR5.Coding(code: "29463-7", display: "Body Weight", system: "http://loinc.org")
-        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://terminology.hl7.org/CodeSystem/observation-category")
+        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://hl7.org/fhir/observation-category")
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Body Weight")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
         let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
@@ -74,15 +74,10 @@ struct BodyMassObservationConverter: FHIRObservationConverter {
         let deviceReference = Reference()
         deviceReference.display = FHIRPrimitive(FHIRString(data.sourceRevision.productType ?? "iOS Device"))
         deviceReference.reference = FHIRPrimitive(FHIRString(data.sourceRevision.source.bundleIdentifier))
-        deviceReference.type = FHIRPrimitive(FHIRURI("http://hl7.org/fhir/StructureDefinition/Device"))
 
-        let deviceId = Identifier()
-        deviceId.type = CodeableConcept(text: FHIRPrimitive(FHIRString("version")))
-        deviceId.value = FHIRPrimitive(FHIRString(data.sourceRevision.systemVersion))
-
-        deviceReference.identifier = deviceId
         observation.device = deviceReference
-
+        let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+        observation.performer = [performer]
         return observation
     }
 
