@@ -36,7 +36,6 @@ import UIKit
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        // let rootView = HomeView(modelContainer: container).modelContainer(container)
 
         let rootView = HealthDataPermissionView(modelContainer: container)
         let hostingController = UIHostingController(rootView: rootView)
@@ -52,11 +51,6 @@ import UIKit
         navigationController.view.frame = view.bounds
         view.addSubview(navigationController.view)
         navigationController.didMove(toParent: self)
-
-        // addChild(hostingController)
-        // hostingController.view.frame = view.bounds
-        // view.addSubview(hostingController.view)
-        // hostingController.didMove(toParent: self)
     }
 
     @objc private func dismissButtonTapped() {
