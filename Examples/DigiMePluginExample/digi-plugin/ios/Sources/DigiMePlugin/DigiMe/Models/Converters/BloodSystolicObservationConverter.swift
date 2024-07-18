@@ -1,5 +1,5 @@
 //
-//  OxygenSaturationObservationConverter.swift
+//  BloodSystolicObservationConverter.swift
 //  DigiMeSDKExample
 //
 //  Created on 29/03/2024.
@@ -12,7 +12,15 @@ import Foundation
 import ModelsR5
 import UIKit
 
-struct OxygenSaturationObservationConverter: FHIRObservationConverter {
+struct BloodSystolicObservationConverter: FHIRObservationConverter {
+    var code: String {
+        return ""
+    }
+
+    var unit: String {
+        return ""
+    }
+
     func convertToObservation(data: Any) -> Observation? {
         guard let quantityData = data as? DigiMeHealthKit.Quantity else {
             return nil
@@ -22,7 +30,7 @@ struct OxygenSaturationObservationConverter: FHIRObservationConverter {
     }
 
     func dataConverterType() -> SampleType {
-        return QuantityType.oxygenSaturation
+        return QuantityType.bloodPressureSystolic
     }
 
     func getCreatedDate(data: Any) -> Date {
@@ -44,9 +52,10 @@ struct OxygenSaturationObservationConverter: FHIRObservationConverter {
     // MARK: - Private
 
     private func createObservation(data: DigiMeHealthKit.Quantity) -> Observation {
-        let coding = ModelsR5.Coding(code: "2708-6", display: "Oxygen Saturation", system: "http://loinc.org")
-        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://terminology.hl7.org/CodeSystem/observation-category")
-        let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Oxygen Saturation")))
+        // Updated coding for Systolic Blood Pressure
+        let coding = ModelsR5.Coding(code: "8480-6", display: "Systolic Blood Pressure", system: "http://loinc.org")
+        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://hl7.org/fhir/observation-category")
+        let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Systolic Blood Pressure")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
         let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
@@ -69,7 +78,7 @@ struct OxygenSaturationObservationConverter: FHIRObservationConverter {
         observation.category = [CodeableConcept(coding: [categoryCoding])]
 
         // Update the subject display for the observation
-        observation.subject = Reference(display: "Health App Oxygen Saturation Observation", reference: "Patient/healthkit-export")
+        observation.subject = Reference(display: "Health App Systolic Blood Pressure Observation", reference: "Patient/healthkit-export")
 
         let dateString = Date(timeIntervalSince1970: data.startTimestamp).iso8601String
         if let dateTime = try? DateTime(dateString) {
@@ -83,15 +92,14 @@ struct OxygenSaturationObservationConverter: FHIRObservationConverter {
         let deviceReference = Reference()
         deviceReference.display = FHIRPrimitive(FHIRString(data.sourceRevision.productType ?? "iOS Device"))
         deviceReference.reference = FHIRPrimitive(FHIRString(data.sourceRevision.source.bundleIdentifier))
-        deviceReference.type = FHIRPrimitive(FHIRURI("http://hl7.org/fhir/StructureDefinition/Device"))
-
-        let deviceId = Identifier()
-        deviceId.type = CodeableConcept(text: FHIRPrimitive(FHIRString("version")))
-        deviceId.value = FHIRPrimitive(FHIRString(data.sourceRevision.systemVersion))
-
-        deviceReference.identifier = deviceId
         observation.device = deviceReference
 
+        let profileURL = URL(string: "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure")!
+        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL))])
+
+        let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+        observation.performer = [performer]
+        
         return observation
     }
 }

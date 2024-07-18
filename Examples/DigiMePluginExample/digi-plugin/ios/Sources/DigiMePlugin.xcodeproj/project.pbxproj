@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E725B2D2C47E88400B93639 /* BloodDiastolicObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B222C47E88400B93639 /* BloodDiastolicObservationConverter.swift */; };
+		1E725B2E2C47E88400B93639 /* BloodGlucoseObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B232C47E88400B93639 /* BloodGlucoseObservationConverter.swift */; };
+		1E725B2F2C47E88400B93639 /* BloodPressureObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B242C47E88400B93639 /* BloodPressureObservationConverter.swift */; };
+		1E725B302C47E88400B93639 /* BloodSystolicObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B252C47E88400B93639 /* BloodSystolicObservationConverter.swift */; };
+		1E725B312C47E88400B93639 /* BodyMassObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B262C47E88400B93639 /* BodyMassObservationConverter.swift */; };
+		1E725B322C47E88400B93639 /* HeartRateObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B272C47E88400B93639 /* HeartRateObservationConverter.swift */; };
+		1E725B332C47E88400B93639 /* HeightObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B282C47E88400B93639 /* HeightObservationConverter.swift */; };
+		1E725B342C47E88400B93639 /* OxygenSaturationObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B292C47E88400B93639 /* OxygenSaturationObservationConverter.swift */; };
+		1E725B352C47E88400B93639 /* RespiratoryRateObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B2A2C47E88400B93639 /* RespiratoryRateObservationConverter.swift */; };
+		1E725B362C47E88400B93639 /* TemperatureObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B2B2C47E88400B93639 /* TemperatureObservationConverter.swift */; };
+		1E725B3C2C47E89700B93639 /* HealthDataPermissionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B372C47E89700B93639 /* HealthDataPermissionType.swift */; };
+		1E725B3D2C47E89700B93639 /* HealthDataExportItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B382C47E89700B93639 /* HealthDataExportItem.swift */; };
+		1E725B3E2C47E89700B93639 /* HealthDataExportSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B392C47E89700B93639 /* HealthDataExportSection.swift */; };
+		1E725B3F2C47E89700B93639 /* FHIRObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B3A2C47E89700B93639 /* FHIRObservationConverter.swift */; };
+		1E725B402C47E89700B93639 /* HealthDataExportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B3B2C47E89700B93639 /* HealthDataExportFile.swift */; };
 		1E98165B2C40660600D8F68A /* DigiMePlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E98165A2C40660600D8F68A /* DigiMePlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1E9816B32C40662500D8F68A /* BloodDiastolicObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98165F2C40662500D8F68A /* BloodDiastolicObservationConverter.swift */; };
-		1E9816B42C40662500D8F68A /* BloodGlucoseObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816602C40662500D8F68A /* BloodGlucoseObservationConverter.swift */; };
-		1E9816B52C40662500D8F68A /* BloodPressureObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816612C40662500D8F68A /* BloodPressureObservationConverter.swift */; };
-		1E9816B62C40662500D8F68A /* BloodSystolicObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816622C40662500D8F68A /* BloodSystolicObservationConverter.swift */; };
-		1E9816B72C40662500D8F68A /* BodyMassObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816632C40662500D8F68A /* BodyMassObservationConverter.swift */; };
-		1E9816B82C40662500D8F68A /* FHIRObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816642C40662500D8F68A /* FHIRObservationConverter.swift */; };
-		1E9816B92C40662500D8F68A /* HealthDataExportFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816652C40662500D8F68A /* HealthDataExportFile.swift */; };
-		1E9816BA2C40662500D8F68A /* HealthDataExportItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816662C40662500D8F68A /* HealthDataExportItem.swift */; };
-		1E9816BB2C40662500D8F68A /* HealthDataExportSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816672C40662500D8F68A /* HealthDataExportSection.swift */; };
-		1E9816BC2C40662500D8F68A /* HealthDataPermissionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816682C40662500D8F68A /* HealthDataPermissionType.swift */; };
-		1E9816BD2C40662500D8F68A /* HeartRateObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816692C40662500D8F68A /* HeartRateObservationConverter.swift */; };
-		1E9816BE2C40662500D8F68A /* HeightObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98166A2C40662500D8F68A /* HeightObservationConverter.swift */; };
-		1E9816BF2C40662500D8F68A /* OxygenSaturationObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98166B2C40662500D8F68A /* OxygenSaturationObservationConverter.swift */; };
-		1E9816C02C40662500D8F68A /* RespiratoryRateObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98166C2C40662500D8F68A /* RespiratoryRateObservationConverter.swift */; };
-		1E9816C52C40662500D8F68A /* TemperatureObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816712C40662500D8F68A /* TemperatureObservationConverter.swift */; };
 		1E9816C62C40662500D8F68A /* DigimeContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816732C40662500D8F68A /* DigimeContract.swift */; };
 		1E9816C92C40662500D8F68A /* UploadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816762C40662500D8F68A /* UploadState.swift */; };
 		1E9816CA2C40662500D8F68A /* Contracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816782C40662500D8F68A /* Contracts.swift */; };
@@ -68,23 +68,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E725B222C47E88400B93639 /* BloodDiastolicObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodDiastolicObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B232C47E88400B93639 /* BloodGlucoseObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodGlucoseObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B242C47E88400B93639 /* BloodPressureObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodPressureObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B252C47E88400B93639 /* BloodSystolicObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodSystolicObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B262C47E88400B93639 /* BodyMassObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyMassObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B272C47E88400B93639 /* HeartRateObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeartRateObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B282C47E88400B93639 /* HeightObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B292C47E88400B93639 /* OxygenSaturationObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OxygenSaturationObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B2A2C47E88400B93639 /* RespiratoryRateObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RespiratoryRateObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B2B2C47E88400B93639 /* TemperatureObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemperatureObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B372C47E89700B93639 /* HealthDataPermissionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataPermissionType.swift; sourceTree = "<group>"; };
+		1E725B382C47E89700B93639 /* HealthDataExportItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataExportItem.swift; sourceTree = "<group>"; };
+		1E725B392C47E89700B93639 /* HealthDataExportSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataExportSection.swift; sourceTree = "<group>"; };
+		1E725B3A2C47E89700B93639 /* FHIRObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRObservationConverter.swift; sourceTree = "<group>"; };
+		1E725B3B2C47E89700B93639 /* HealthDataExportFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataExportFile.swift; sourceTree = "<group>"; };
 		1E9816582C40660600D8F68A /* DigiMePlugin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DigiMePlugin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E98165A2C40660600D8F68A /* DigiMePlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DigiMePlugin.h; sourceTree = "<group>"; };
-		1E98165F2C40662500D8F68A /* BloodDiastolicObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodDiastolicObservationConverter.swift; sourceTree = "<group>"; };
-		1E9816602C40662500D8F68A /* BloodGlucoseObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodGlucoseObservationConverter.swift; sourceTree = "<group>"; };
-		1E9816612C40662500D8F68A /* BloodPressureObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodPressureObservationConverter.swift; sourceTree = "<group>"; };
-		1E9816622C40662500D8F68A /* BloodSystolicObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodSystolicObservationConverter.swift; sourceTree = "<group>"; };
-		1E9816632C40662500D8F68A /* BodyMassObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BodyMassObservationConverter.swift; sourceTree = "<group>"; };
-		1E9816642C40662500D8F68A /* FHIRObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRObservationConverter.swift; sourceTree = "<group>"; };
-		1E9816652C40662500D8F68A /* HealthDataExportFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataExportFile.swift; sourceTree = "<group>"; };
-		1E9816662C40662500D8F68A /* HealthDataExportItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataExportItem.swift; sourceTree = "<group>"; };
-		1E9816672C40662500D8F68A /* HealthDataExportSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataExportSection.swift; sourceTree = "<group>"; };
-		1E9816682C40662500D8F68A /* HealthDataPermissionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataPermissionType.swift; sourceTree = "<group>"; };
-		1E9816692C40662500D8F68A /* HeartRateObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeartRateObservationConverter.swift; sourceTree = "<group>"; };
-		1E98166A2C40662500D8F68A /* HeightObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeightObservationConverter.swift; sourceTree = "<group>"; };
-		1E98166B2C40662500D8F68A /* OxygenSaturationObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OxygenSaturationObservationConverter.swift; sourceTree = "<group>"; };
-		1E98166C2C40662500D8F68A /* RespiratoryRateObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RespiratoryRateObservationConverter.swift; sourceTree = "<group>"; };
-		1E9816712C40662500D8F68A /* TemperatureObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemperatureObservationConverter.swift; sourceTree = "<group>"; };
 		1E9816732C40662500D8F68A /* DigimeContract.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigimeContract.swift; sourceTree = "<group>"; };
 		1E9816762C40662500D8F68A /* UploadState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadState.swift; sourceTree = "<group>"; };
 		1E9816782C40662500D8F68A /* Contracts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contracts.swift; sourceTree = "<group>"; };
@@ -165,6 +165,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1E725B2C2C47E88400B93639 /* Converters */ = {
+			isa = PBXGroup;
+			children = (
+				1E725B222C47E88400B93639 /* BloodDiastolicObservationConverter.swift */,
+				1E725B232C47E88400B93639 /* BloodGlucoseObservationConverter.swift */,
+				1E725B242C47E88400B93639 /* BloodPressureObservationConverter.swift */,
+				1E725B252C47E88400B93639 /* BloodSystolicObservationConverter.swift */,
+				1E725B262C47E88400B93639 /* BodyMassObservationConverter.swift */,
+				1E725B272C47E88400B93639 /* HeartRateObservationConverter.swift */,
+				1E725B282C47E88400B93639 /* HeightObservationConverter.swift */,
+				1E725B292C47E88400B93639 /* OxygenSaturationObservationConverter.swift */,
+				1E725B2A2C47E88400B93639 /* RespiratoryRateObservationConverter.swift */,
+				1E725B2B2C47E88400B93639 /* TemperatureObservationConverter.swift */,
+			);
+			path = Converters;
+			sourceTree = "<group>";
+		};
 		1E9816592C40660600D8F68A /* DigiMePlugin */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,34 +190,17 @@
 			path = DigiMePlugin;
 			sourceTree = "<group>";
 		};
-		1E9816722C40662500D8F68A /* SelfMeasurements */ = {
-			isa = PBXGroup;
-			children = (
-				1E98165F2C40662500D8F68A /* BloodDiastolicObservationConverter.swift */,
-				1E9816602C40662500D8F68A /* BloodGlucoseObservationConverter.swift */,
-				1E9816612C40662500D8F68A /* BloodPressureObservationConverter.swift */,
-				1E9816622C40662500D8F68A /* BloodSystolicObservationConverter.swift */,
-				1E9816632C40662500D8F68A /* BodyMassObservationConverter.swift */,
-				1E9816642C40662500D8F68A /* FHIRObservationConverter.swift */,
-				1E9816652C40662500D8F68A /* HealthDataExportFile.swift */,
-				1E9816662C40662500D8F68A /* HealthDataExportItem.swift */,
-				1E9816672C40662500D8F68A /* HealthDataExportSection.swift */,
-				1E9816682C40662500D8F68A /* HealthDataPermissionType.swift */,
-				1E9816692C40662500D8F68A /* HeartRateObservationConverter.swift */,
-				1E98166A2C40662500D8F68A /* HeightObservationConverter.swift */,
-				1E98166B2C40662500D8F68A /* OxygenSaturationObservationConverter.swift */,
-				1E98166C2C40662500D8F68A /* RespiratoryRateObservationConverter.swift */,
-				1E9816712C40662500D8F68A /* TemperatureObservationConverter.swift */,
-			);
-			path = SelfMeasurements;
-			sourceTree = "<group>";
-		};
 		1E9816772C40662500D8F68A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1E9816722C40662500D8F68A /* SelfMeasurements */,
+				1E725B3A2C47E89700B93639 /* FHIRObservationConverter.swift */,
+				1E725B2C2C47E88400B93639 /* Converters */,
 				1E9816732C40662500D8F68A /* DigimeContract.swift */,
 				1E9816762C40662500D8F68A /* UploadState.swift */,
+				1E725B3B2C47E89700B93639 /* HealthDataExportFile.swift */,
+				1E725B382C47E89700B93639 /* HealthDataExportItem.swift */,
+				1E725B392C47E89700B93639 /* HealthDataExportSection.swift */,
+				1E725B372C47E89700B93639 /* HealthDataPermissionType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -431,47 +431,47 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E9816DC2C40662500D8F68A /* HighlightedTextView.swift in Sources */,
+				1E725B352C47E88400B93639 /* RespiratoryRateObservationConverter.swift in Sources */,
 				1E9816DD2C40662500D8F68A /* NotifyBannerView.swift in Sources */,
 				1E9816F22C40662500D8F68A /* DigiMePlugin.swift in Sources */,
 				1E9816C62C40662500D8F68A /* DigimeContract.swift in Sources */,
-				1E9816B92C40662500D8F68A /* HealthDataExportFile.swift in Sources */,
 				1E9816DB2C40662500D8F68A /* DatePickerWithButtons.swift in Sources */,
-				1E9816B72C40662500D8F68A /* BodyMassObservationConverter.swift in Sources */,
+				1E725B3D2C47E89700B93639 /* HealthDataExportItem.swift in Sources */,
 				1E9816D22C40662500D8F68A /* HealthDataViewModel.swift in Sources */,
 				1E9816CF2C40662500D8F68A /* Previewer.swift in Sources */,
 				1E9816D62C40662500D8F68A /* HealthDataUploadFilesView.swift in Sources */,
 				1E9816D72C40662500D8F68A /* ReportDateManagerView.swift in Sources */,
-				1E9816BD2C40662500D8F68A /* HeartRateObservationConverter.swift in Sources */,
 				1E9816D52C40662500D8F68A /* HealthDataStorageFileListView.swift in Sources */,
-				1E9816BF2C40662500D8F68A /* OxygenSaturationObservationConverter.swift in Sources */,
-				1E9816C02C40662500D8F68A /* RespiratoryRateObservationConverter.swift in Sources */,
-				1E9816BC2C40662500D8F68A /* HealthDataPermissionType.swift in Sources */,
 				1E9816D32C40662500D8F68A /* HealthDataExportItemsView.swift in Sources */,
-				1E9816BB2C40662500D8F68A /* HealthDataExportSection.swift in Sources */,
+				1E725B3C2C47E89700B93639 /* HealthDataPermissionType.swift in Sources */,
+				1E725B362C47E88400B93639 /* TemperatureObservationConverter.swift in Sources */,
 				1E9816EF2C40662500D8F68A /* DigimeMainViewController.swift in Sources */,
 				1E9816C92C40662500D8F68A /* UploadState.swift in Sources */,
-				1E9816B62C40662500D8F68A /* BloodSystolicObservationConverter.swift in Sources */,
-				1E9816B52C40662500D8F68A /* BloodPressureObservationConverter.swift in Sources */,
+				1E725B2E2C47E88400B93639 /* BloodGlucoseObservationConverter.swift in Sources */,
 				1E9816CA2C40662500D8F68A /* Contracts.swift in Sources */,
 				1E9816E12C40662500D8F68A /* SourceSelectorButtonStyle.swift in Sources */,
+				1E725B312C47E88400B93639 /* BodyMassObservationConverter.swift in Sources */,
+				1E725B302C47E88400B93639 /* BloodSystolicObservationConverter.swift in Sources */,
 				1E9816D02C40662500D8F68A /* String+Helper.swift in Sources */,
+				1E725B2D2C47E88400B93639 /* BloodDiastolicObservationConverter.swift in Sources */,
 				1E9816E22C40662500D8F68A /* UploadStateIconView.swift in Sources */,
+				1E725B332C47E88400B93639 /* HeightObservationConverter.swift in Sources */,
 				1E9816E42C40662500D8F68A /* BackgroundExporter.swift in Sources */,
-				1E9816B32C40662500D8F68A /* BloodDiastolicObservationConverter.swift in Sources */,
-				1E9816BE2C40662500D8F68A /* HeightObservationConverter.swift in Sources */,
 				1E9816E52C40662500D8F68A /* BackgroundImporter.swift in Sources */,
-				1E9816C52C40662500D8F68A /* TemperatureObservationConverter.swift in Sources */,
+				1E725B3F2C47E89700B93639 /* FHIRObservationConverter.swift in Sources */,
+				1E725B3E2C47E89700B93639 /* HealthDataExportSection.swift in Sources */,
 				1E9816DE2C40662500D8F68A /* PDFKitView.swift in Sources */,
+				1E725B322C47E88400B93639 /* HeartRateObservationConverter.swift in Sources */,
 				1E9816EE2C40662500D8F68A /* ContentView4.swift in Sources */,
+				1E725B2F2C47E88400B93639 /* BloodPressureObservationConverter.swift in Sources */,
 				1E9817082C4074FC00D8F68A /* JSONCell.swift in Sources */,
-				1E9816B82C40662500D8F68A /* FHIRObservationConverter.swift in Sources */,
+				1E725B342C47E88400B93639 /* OxygenSaturationObservationConverter.swift in Sources */,
 				1E9817092C4074FC00D8F68A /* JSONTreeView.swift in Sources */,
+				1E725B402C47E89700B93639 /* HealthDataExportFile.swift in Sources */,
 				1E9816E02C40662500D8F68A /* ShareSheetView.swift in Sources */,
 				1E9816D12C40662500D8F68A /* UserPreferences.swift in Sources */,
 				1E9816CE2C40662500D8F68A /* Localization.swift in Sources */,
-				1E9816BA2C40662500D8F68A /* HealthDataExportItem.swift in Sources */,
 				1E9816D42C40662500D8F68A /* HealthDataPermissionView.swift in Sources */,
-				1E9816B42C40662500D8F68A /* BloodGlucoseObservationConverter.swift in Sources */,
 				1E9816E62C40662500D8F68A /* HealthDataService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

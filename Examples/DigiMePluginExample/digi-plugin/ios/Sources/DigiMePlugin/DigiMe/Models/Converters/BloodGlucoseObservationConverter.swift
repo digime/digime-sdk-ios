@@ -1,5 +1,5 @@
 //
-//  BloodSystolicObservationConverter.swift
+//  BloodGlucoseObservationConverter.swift
 //  DigiMeSDKExample
 //
 //  Created on 29/03/2024.
@@ -12,7 +12,15 @@ import Foundation
 import ModelsR5
 import UIKit
 
-struct BloodSystolicObservationConverter: FHIRObservationConverter {
+struct BloodGlucoseObservationConverter: FHIRObservationConverter {
+    var code: String {
+        return "mmol/L"
+    }
+
+    var unit: String {
+        return "mmol<180.1558800000541>/L"
+    }
+
     func convertToObservation(data: Any) -> Observation? {
         guard let quantityData = data as? DigiMeHealthKit.Quantity else {
             return nil
@@ -22,7 +30,7 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
     }
 
     func dataConverterType() -> SampleType {
-        return QuantityType.bloodPressureSystolic
+        return QuantityType.bloodGlucose
     }
 
     func getCreatedDate(data: Any) -> Date {
@@ -44,10 +52,10 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
     // MARK: - Private
 
     private func createObservation(data: DigiMeHealthKit.Quantity) -> Observation {
-        // Updated coding for Systolic Blood Pressure
-        let coding = ModelsR5.Coding(code: "8480-6", display: "Systolic Blood Pressure", system: "http://loinc.org")
-        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://terminology.hl7.org/CodeSystem/observation-category")
-        let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Systolic Blood Pressure")))
+        // Updated coding for Blood Glucose
+        let coding = ModelsR5.Coding(code: "14743-9", display: "Glucose [mol/volume] in capillair bloed d.m.v. glucometer", system: "http://loinc.org")
+        let categoryCoding = ModelsR5.Coding(code: "laboratory", display: "Laboratory", system: "http://hl7.org/fhir/observation-category")
+        let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Blood Glucose")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
         let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
@@ -55,7 +63,7 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
         // Create the quantity for the observation value
         let valueQuantity = ModelsR5.Quantity()
         valueQuantity.unit = FHIRPrimitive(FHIRString(data.harmonized.unit))
-        valueQuantity.code = FHIRPrimitive(FHIRString(data.harmonized.unit))
+        valueQuantity.code = FHIRPrimitive(FHIRString(self.code))
         valueQuantity.system = FHIRPrimitive(FHIRURI("http://unitsofmeasure.org"))
         valueQuantity.value = FHIRPrimitive(FHIRDecimal(floatLiteral: data.harmonized.value))
 
@@ -70,7 +78,7 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
         observation.category = [CodeableConcept(coding: [categoryCoding])]
 
         // Update the subject display for the observation
-        observation.subject = Reference(display: "Health App Systolic Blood Pressure Observation", reference: "Patient/healthkit-export")
+        observation.subject = Reference(display: "Health App Blood Glucose Observation", reference: "Patient/healthkit-export")
 
         let dateString = Date(timeIntervalSince1970: data.startTimestamp).iso8601String
         if let dateTime = try? DateTime(dateString) {
@@ -84,15 +92,14 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
         let deviceReference = Reference()
         deviceReference.display = FHIRPrimitive(FHIRString(data.sourceRevision.productType ?? "iOS Device"))
         deviceReference.reference = FHIRPrimitive(FHIRString(data.sourceRevision.source.bundleIdentifier))
-        deviceReference.type = FHIRPrimitive(FHIRURI("http://hl7.org/fhir/StructureDefinition/Device"))
-
-        let deviceId = Identifier()
-        deviceId.type = CodeableConcept(text: FHIRPrimitive(FHIRString("version")))
-        deviceId.value = FHIRPrimitive(FHIRString(data.sourceRevision.systemVersion))
-
-        deviceReference.identifier = deviceId
         observation.device = deviceReference
 
+        let profileURL = URL(string: "http://nictiz.nl/fhir/StructureDefinition/vitalsign-bloodglucose")!
+        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL))])
+
+        let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+        observation.performer = [performer]
+        
         return observation
     }
 }

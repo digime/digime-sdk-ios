@@ -14,6 +14,4 @@ enum UploadState: Int, Codable {
     case uploading     /// Upload is currently in progress.
     case uploaded      /// Upload has completed successfully.
     case error         /// An error occurred during the upload.
-//    case paused        /// Upload has been paused, potentially resumable.
-//    case canceled      /// Upload has been canceled and cannot be resumed.
 }

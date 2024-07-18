@@ -120,40 +120,28 @@ class HealthDataService {
     }
 
     private func queryQuantityType(_ type: QuantityType, from startDate: Date, to endDate: Date, completion: @escaping (Error?) -> Void) {
-        reporter.manager.preferredUnits(for: [type]) { preferredUnits, error in
-            guard error == nil else {
+        do {
+            if let converter = self.quantityConverters[type] {
 
-                completion(error)
-                return
-            }
-
-            for preferredUnit in preferredUnits {
-                do {
-                    if
-                        let type = try? QuantityType.make(from: preferredUnit.identifier),
-                        let converter = self.quantityConverters[type] {
-
-                        let predicate = NSPredicate.samplesPredicate(startDate: startDate, endDate: endDate)
-                        let query = try self.reporter.reader.quantityQuery(type: type, unit: preferredUnit.unit, predicate: predicate) { results, error in
-                            guard error == nil else {
-                                completion(error)
-                                return
-                            }
-
-                            let importer = BackgroundImporter(modelContainer: self.modelContainer)
-                            importer.convertObjects(results, converter: converter, completion: completion)
-                        }
-
-                        self.reporter.manager.executeQuery(query)
+                let predicate = NSPredicate.samplesPredicate(startDate: startDate, endDate: endDate)
+                let query = try self.reporter.reader.quantityQuery(type: type, unit: converter.unit, predicate: predicate) { results, error in
+                    guard error == nil else {
+                        completion(error)
+                        return
                     }
-                    else {
-                        completion(SDKError.healthDataError(message: "Missing FHIR converter."))
-                    }
+
+                    let importer = BackgroundImporter(modelContainer: self.modelContainer)
+                    importer.convertObjects(results, converter: converter, completion: completion)
                 }
-                catch {
-                    completion(error)
-                }
+
+                self.reporter.manager.executeQuery(query)
             }
+            else {
+                completion(SDKError.healthDataError(message: "Missing FHIR converter."))
+            }
+        }
+        catch {
+            completion(error)
         }
     }
 
