@@ -93,8 +93,9 @@ struct OxygenSaturationObservationConverter: FHIRObservationConverter {
         deviceReference.reference = FHIRPrimitive(FHIRString(data.sourceRevision.source.bundleIdentifier))
         observation.device = deviceReference
 
-        let profileURL = URL(string: "http://nictiz.nl/fhir/StructureDefinition/zib-OxygenSaturation")!
-        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL))])
+        let profileURL1 = URL(string: "http://nictiz.nl/fhir/StructureDefinition/zib-OxygenSaturation")!
+        let profileURL2 = URL(string: "http://hl7.org/fhir/3.0/StructureDefinition/Observation")!
+        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL1)), FHIRPrimitive(Canonical(profileURL2))])
 
         let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
         observation.performer = [performer]
