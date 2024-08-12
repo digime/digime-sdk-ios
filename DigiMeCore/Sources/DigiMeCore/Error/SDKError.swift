@@ -75,7 +75,13 @@ public enum SDKError: Error {
     
     /// Only one call to `readAllFiles` can be in progress at any time for each `DigiMe` instance
     case alreadyReadingAllFiles
-	
+
+    /// Sync has been in pending state for too long
+    case syncPendingTimeout
+
+    /// Sync has exceeded the maximum duration
+    case syncTimeout
+
 	/// Error reading accounts json
 	case readAccountsError
 	
@@ -279,6 +285,12 @@ extension SDKError: CustomStringConvertible {
         case .alreadyReadingAllFiles:
             return "Only one call to `readAllFiles` can be in progress at any time for each `DigiMe` instance. Try cancelling existing call if a new call is required."
             
+        case .syncPendingTimeout:
+            return "Sync has been in pending state for too long"
+
+        case .syncTimeout:
+            return "Sync has exceeded the maximum allowed duration. Please try again later."
+
 		case .readAccountsError:
 			return "Error reading accounts json"
 				

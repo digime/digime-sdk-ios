@@ -18,7 +18,9 @@ class AllFilesReader {
     private var sessionFileList: FileList?
 	private var deviceDataFiles: [FileListItem]?
     private var stalePollCount = 0
-    
+    private var pendingStatusCount = 0
+    private var syncStartTime: Date?
+
     private let apiClient: APIClient
     private let configuration: Configuration
 	private let credentials: Credentials
@@ -36,7 +38,9 @@ class AllFilesReader {
     
     private enum Defaults {
         static let maxStalePolls = 100
+        static let maxPendingStatusCount = 20
         static let pollInterval = 3
+        static let maxSyncDuration: TimeInterval = 5 * 60 // 5 minutes
     }
     
     init(apiClient: APIClient,
@@ -86,10 +90,12 @@ class AllFilesReader {
             completion(.failure(SDKError.alreadyReadingAllFiles))
             return
         }
-        
-        self.sessionDataCompletion = completion
+
         self.sessionContentHandler = downloadHandler
-        
+        self.sessionDataCompletion = completion
+
+        syncStartTime = Date()
+
 		if LocalDataCache().isDeviceDataRequested(for: configuration.contractId) {
 			self.beginFetchDeviceLocalData()
 		}
@@ -101,13 +107,13 @@ class AllFilesReader {
 		isFetchingSessionData = false
 		
 		fileListCache.reset()
-		sessionDataCompletion = nil
-		sessionContentHandler = nil
 		downloadService.cancel()
 		downloadService.allDownloadsFinishedHandler = nil
 		sessionError = nil
 		stalePollCount = 0
+        pendingStatusCount = 0
 		deviceDataFiles = nil
+        syncStartTime = nil
 	}
     
     private func beginFileListPollingIfRequired() {
@@ -231,10 +237,29 @@ class AllFilesReader {
         
         Logger.info("Sync state - \(sessionFileList != nil ? sessionFileList!.status.state.rawValue : "unknown")")
         
+        // Check if the status is pending and increment the counter
+        if let status = sessionFileList?.status.state, status == .pending {
+            pendingStatusCount += 1
+            if pendingStatusCount >= Defaults.maxPendingStatusCount {
+                Logger.info("Sync has been pending for too long. Stopping sync.")
+                completeSessionDataFetch(error: .syncPendingTimeout)
+                return
+            }
+        } 
+        else {
+            // Reset the counter if the status is not pending
+            pendingStatusCount = 0
+        }
+
+        if let startTime = syncStartTime, Date().timeIntervalSince(startTime) > Defaults.maxSyncDuration {
+            Logger.info("Sync has exceeded the maximum duration. Stopping sync.")
+            completeSessionDataFetch(error: .syncTimeout)
+            return
+        }
+
         // If sessionError is not nil, then syncState is irrelevant, as it will be the previous successful fileList call.
         if (sessionError != nil || !isSyncRunning) && !self.downloadService.isDownloadingFiles {
             Logger.info("Finished fetching session data.")
-            
             completeSessionDataFetch(error: sessionError)
             return
         }
