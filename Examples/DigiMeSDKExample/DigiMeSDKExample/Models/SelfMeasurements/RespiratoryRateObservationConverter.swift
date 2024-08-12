@@ -13,6 +13,14 @@ import ModelsR5
 import UIKit
 
 struct RespiratoryRateObservationConverter: FHIRObservationConverter {
+    var code: String {
+        return "/min"
+    }
+
+    var unit: String {
+        return "count/min"
+    }
+
     func convertToObservation(data: Any) -> Observation? {
         guard let quantityData = data as? DigiMeHealthKit.Quantity else {
             return nil
@@ -43,23 +51,27 @@ struct RespiratoryRateObservationConverter: FHIRObservationConverter {
 
     // MARK: - Private
 
-    private func createObservation(data: DigiMeHealthKit.Quantity) -> ModelsR5.Observation {
+    private func createObservation(data: DigiMeHealthKit.Quantity) -> Observation {
         // Updated coding for Respiratory Rate
-        let coding = ModelsR5.Coding(code: "9279-1", display: "Respiratory Rate", system: "http://loinc.org")
-        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://terminology.hl7.org/CodeSystem/observation-category")
-        let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Respiratory Rate")))
+        let coding1 = ModelsR5.Coding(code: "422834003", display: "Respiratory assessment", system: "http://snomed.info/sct")
+        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://hl7.org/fhir/observation-category")
+        let code = CodeableConcept(coding: [coding1], text: FHIRPrimitive(FHIRString("Respiratory Rate")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
-        let observation = ModelsR5.Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
 
         // Create the quantity for the observation value
-        let valueQuantity = Quantity()
+        let valueQuantity = ModelsR5.Quantity()
         valueQuantity.unit = FHIRPrimitive(FHIRString(data.harmonized.unit))
-        valueQuantity.code = FHIRPrimitive(FHIRString(data.harmonized.unit))
+        valueQuantity.code = FHIRPrimitive(FHIRString(self.code))
         valueQuantity.system = FHIRPrimitive(FHIRURI("http://unitsofmeasure.org"))
         valueQuantity.value = FHIRPrimitive(FHIRDecimal(floatLiteral: data.harmonized.value))
 
-        observation.value = Observation.ValueX.quantity(valueQuantity)
+        let coding2 = ModelsR5.Coding(code: "9279-1", display: "Respiratory Rate", system: "http://loinc.org")
+        let value = ObservationComponent.ValueX.quantity(valueQuantity)
+        let code2 = CodeableConcept(coding: [coding2])
+        let observationComponent = ObservationComponent(code: code2, value: value)
+        observation.component = [observationComponent]
 
         // Set the identifier for the observation
         let identifier = Identifier()
@@ -74,7 +86,7 @@ struct RespiratoryRateObservationConverter: FHIRObservationConverter {
 
         let dateString = Date(timeIntervalSince1970: data.startTimestamp).iso8601String
         if let dateTime = try? DateTime(dateString) {
-            observation.effective = ModelsR5.Observation.EffectiveX.dateTime(FHIRPrimitive(dateTime))
+            observation.effective = Observation.EffectiveX.dateTime(FHIRPrimitive(dateTime))
         }
         if let issuedInstant = try? Instant(dateString) {
             observation.issued = FHIRPrimitive(issuedInstant)
@@ -84,14 +96,13 @@ struct RespiratoryRateObservationConverter: FHIRObservationConverter {
         let deviceReference = Reference()
         deviceReference.display = FHIRPrimitive(FHIRString(data.sourceRevision.productType ?? "iOS Device"))
         deviceReference.reference = FHIRPrimitive(FHIRString(data.sourceRevision.source.bundleIdentifier))
-        deviceReference.type = FHIRPrimitive(FHIRURI("http://hl7.org/fhir/StructureDefinition/Device"))
-
-        let deviceId = Identifier()
-        deviceId.type = CodeableConcept(text: FHIRPrimitive(FHIRString("version")))
-        deviceId.value = FHIRPrimitive(FHIRString(data.sourceRevision.systemVersion))
-
-        deviceReference.identifier = deviceId
         observation.device = deviceReference
+
+        let profileURL = URL(string: "http://nictiz.nl/fhir/StructureDefinition/zib-Respiration")!
+        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL))])
+
+        let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+        observation.performer = [performer]
 
         return observation
     }

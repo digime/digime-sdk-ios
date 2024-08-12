@@ -13,6 +13,14 @@ import ModelsR5
 import UIKit
 
 struct HeightObservationConverter: FHIRObservationConverter {
+    var code: String {
+        return "cm"
+    }
+
+    var unit: String {
+        return "cm"
+    }
+
     func convertToObservation(data: Any) -> Observation? {
         guard let quantityData = data as? DigiMeHealthKit.Quantity else {
             return nil
@@ -45,13 +53,13 @@ struct HeightObservationConverter: FHIRObservationConverter {
 
     private func createObservation(data: DigiMeHealthKit.Quantity) -> Observation {
         let coding = ModelsR5.Coding(code: "8302-2", display: "Body Height", system: "http://loinc.org")
-        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://terminology.hl7.org/CodeSystem/observation-category")
+        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://hl7.org/fhir/observation-category")
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Body Height")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
-        let observation = ModelsR5.Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
 
-        let valueQuantity = Quantity()
+        let valueQuantity = ModelsR5.Quantity()
         valueQuantity.unit = FHIRPrimitive(FHIRString(data.harmonized.unit))
         valueQuantity.code = FHIRPrimitive(FHIRString(data.harmonized.unit))
         valueQuantity.system = FHIRPrimitive(FHIRURI("http://unitsofmeasure.org"))
@@ -71,7 +79,7 @@ struct HeightObservationConverter: FHIRObservationConverter {
 
         let dateString = Date(timeIntervalSince1970: data.startTimestamp).iso8601String
         if let dateTime = try? DateTime(dateString) {
-            observation.effective = ModelsR5.Observation.EffectiveX.dateTime(FHIRPrimitive(dateTime))
+            observation.effective = Observation.EffectiveX.dateTime(FHIRPrimitive(dateTime))
         }
         if let issuedInstant = try? Instant(dateString) {
             observation.issued = FHIRPrimitive(issuedInstant)
@@ -80,14 +88,13 @@ struct HeightObservationConverter: FHIRObservationConverter {
         let deviceReference = Reference()
         deviceReference.display = FHIRPrimitive(FHIRString(data.sourceRevision.productType ?? "iOS Device"))
         deviceReference.reference = FHIRPrimitive(FHIRString(data.sourceRevision.source.bundleIdentifier))
-        deviceReference.type = FHIRPrimitive(FHIRURI("http://hl7.org/fhir/StructureDefinition/Device"))
-
-        let deviceId = Identifier()
-        deviceId.type = CodeableConcept(text: FHIRPrimitive(FHIRString("version")))
-        deviceId.value = FHIRPrimitive(FHIRString(data.sourceRevision.systemVersion))
-
-        deviceReference.identifier = deviceId
         observation.device = deviceReference
+
+        let profileURL = URL(string: "http://nictiz.nl/fhir/StructureDefinition/zib-BodyHeight")!
+        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL))])
+
+        let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+        observation.performer = [performer]
 
         return observation
     }

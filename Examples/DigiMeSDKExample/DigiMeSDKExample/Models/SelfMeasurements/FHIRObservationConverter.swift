@@ -11,6 +11,8 @@ import Foundation
 import ModelsR5
 
 protocol FHIRObservationConverter {
+    var code: String { get }
+    var unit: String { get }
     func convertToObservation(data: Any) -> Observation?
     func dataConverterType() -> SampleType
     func getCreatedDate(data: Any) -> Date

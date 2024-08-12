@@ -13,6 +13,14 @@ import ModelsR5
 import UIKit
 
 struct BloodGlucoseObservationConverter: FHIRObservationConverter {
+    var code: String {
+        return "mmol/L"
+    }
+
+    var unit: String {
+        return "mmol<180.1558800000541>/L"
+    }
+
     func convertToObservation(data: Any) -> Observation? {
         guard let quantityData = data as? DigiMeHealthKit.Quantity else {
             return nil
@@ -43,19 +51,19 @@ struct BloodGlucoseObservationConverter: FHIRObservationConverter {
 
     // MARK: - Private
 
-    private func createObservation(data: DigiMeHealthKit.Quantity) -> ModelsR5.Observation {
+    private func createObservation(data: DigiMeHealthKit.Quantity) -> Observation {
         // Updated coding for Blood Glucose
-        let coding = ModelsR5.Coding(code: "2339-0", display: "Blood Glucose", system: "http://loinc.org")
-        let categoryCoding = ModelsR5.Coding(code: "laboratory", display: "Laboratory", system: "http://terminology.hl7.org/CodeSystem/observation-category")
+        let coding = ModelsR5.Coding(code: "14743-9", display: "Glucose [mol/volume] in capillair bloed d.m.v. glucometer", system: "http://loinc.org")
+        let categoryCoding = ModelsR5.Coding(code: "laboratory", display: "Laboratory", system: "http://hl7.org/fhir/observation-category")
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Blood Glucose")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
-        let observation = ModelsR5.Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
 
         // Create the quantity for the observation value
-        let valueQuantity = Quantity()
+        let valueQuantity = ModelsR5.Quantity()
         valueQuantity.unit = FHIRPrimitive(FHIRString(data.harmonized.unit))
-        valueQuantity.code = FHIRPrimitive(FHIRString(data.harmonized.unit))
+        valueQuantity.code = FHIRPrimitive(FHIRString(self.code))
         valueQuantity.system = FHIRPrimitive(FHIRURI("http://unitsofmeasure.org"))
         valueQuantity.value = FHIRPrimitive(FHIRDecimal(floatLiteral: data.harmonized.value))
 
@@ -74,7 +82,7 @@ struct BloodGlucoseObservationConverter: FHIRObservationConverter {
 
         let dateString = Date(timeIntervalSince1970: data.startTimestamp).iso8601String
         if let dateTime = try? DateTime(dateString) {
-            observation.effective = ModelsR5.Observation.EffectiveX.dateTime(FHIRPrimitive(dateTime))
+            observation.effective = Observation.EffectiveX.dateTime(FHIRPrimitive(dateTime))
         }
         if let issuedInstant = try? Instant(dateString) {
             observation.issued = FHIRPrimitive(issuedInstant)
@@ -84,14 +92,14 @@ struct BloodGlucoseObservationConverter: FHIRObservationConverter {
         let deviceReference = Reference()
         deviceReference.display = FHIRPrimitive(FHIRString(data.sourceRevision.productType ?? "iOS Device"))
         deviceReference.reference = FHIRPrimitive(FHIRString(data.sourceRevision.source.bundleIdentifier))
-        deviceReference.type = FHIRPrimitive(FHIRURI("http://hl7.org/fhir/StructureDefinition/Device"))
-
-        let deviceId = Identifier()
-        deviceId.type = CodeableConcept(text: FHIRPrimitive(FHIRString("version")))
-        deviceId.value = FHIRPrimitive(FHIRString(data.sourceRevision.systemVersion))
-
-        deviceReference.identifier = deviceId
         observation.device = deviceReference
+
+        let profileURL1 = URL(string: "http://nictiz.nl/fhir/StructureDefinition/vitalsign-bloodglucose")!
+        let profileURL2 = URL(string: "http://hl7.org/fhir/3.0/StructureDefinition/Observation")!
+        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL1)), FHIRPrimitive(Canonical(profileURL2))])
+
+        let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+        observation.performer = [performer]
 
         return observation
     }

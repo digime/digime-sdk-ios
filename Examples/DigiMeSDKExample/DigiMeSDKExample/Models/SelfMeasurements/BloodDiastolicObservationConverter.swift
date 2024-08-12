@@ -13,6 +13,14 @@ import ModelsR5
 import UIKit
 
 struct BloodDiastolicObservationConverter: FHIRObservationConverter {
+    var code: String {
+        return ""
+    }
+
+    var unit: String {
+        return ""
+    }
+
     func convertToObservation(data: Any) -> Observation? {
         guard let quantityData = data as? DigiMeHealthKit.Quantity else {
             return nil
@@ -43,17 +51,17 @@ struct BloodDiastolicObservationConverter: FHIRObservationConverter {
 
     // MARK: - Private
 
-    private func createObservation(data: DigiMeHealthKit.Quantity) -> ModelsR5.Observation {
+    private func createObservation(data: DigiMeHealthKit.Quantity) -> Observation {
         // Updated coding for Diastolic Blood Pressure
         let coding = ModelsR5.Coding(code: "8462-4", display: "Diastolic Blood Pressure", system: "http://loinc.org")
-        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://terminology.hl7.org/CodeSystem/observation-category")
+        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://hl7.org/fhir/observation-category")
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Diastolic Blood Pressure")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
-        let observation = ModelsR5.Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
 
         // Create the quantity for the observation value
-        let valueQuantity = Quantity()
+        let valueQuantity = ModelsR5.Quantity()
         valueQuantity.unit = FHIRPrimitive(FHIRString(data.harmonized.unit))
         valueQuantity.code = FHIRPrimitive(FHIRString(data.harmonized.unit))
         valueQuantity.system = FHIRPrimitive(FHIRURI("http://unitsofmeasure.org"))
@@ -74,7 +82,7 @@ struct BloodDiastolicObservationConverter: FHIRObservationConverter {
 
         let dateString = Date(timeIntervalSince1970: data.startTimestamp).iso8601String
         if let dateTime = try? DateTime(dateString) {
-            observation.effective = ModelsR5.Observation.EffectiveX.dateTime(FHIRPrimitive(dateTime))
+            observation.effective = Observation.EffectiveX.dateTime(FHIRPrimitive(dateTime))
         }
         if let issuedInstant = try? Instant(dateString) {
             observation.issued = FHIRPrimitive(issuedInstant)
@@ -84,14 +92,13 @@ struct BloodDiastolicObservationConverter: FHIRObservationConverter {
         let deviceReference = Reference()
         deviceReference.display = FHIRPrimitive(FHIRString(data.sourceRevision.productType ?? "iOS Device"))
         deviceReference.reference = FHIRPrimitive(FHIRString(data.sourceRevision.source.bundleIdentifier))
-        deviceReference.type = FHIRPrimitive(FHIRURI("http://hl7.org/fhir/StructureDefinition/Device"))
-
-        let deviceId = Identifier()
-        deviceId.type = CodeableConcept(text: FHIRPrimitive(FHIRString("version")))
-        deviceId.value = FHIRPrimitive(FHIRString(data.sourceRevision.systemVersion))
-
-        deviceReference.identifier = deviceId
         observation.device = deviceReference
+
+        let profileURL = URL(string: "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure")!
+        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL))])
+
+        let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+        observation.performer = [performer]
 
         return observation
     }
