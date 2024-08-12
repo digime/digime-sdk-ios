@@ -45,7 +45,7 @@ public struct Source: Codable, Identifiable {
     }
 
     public var sampleDataOnly: Bool {
-        return service.publishedStatus == .sampledataonly
+        return publishedStatus == .sampledataonly
     }
 
 //    public init(id: Int, dynamic: Bool, onboardable: Bool, name: String, providerId: Int? = nil, publishedDate: String, publishedStatus: SourcePublishedStatus, reference: String, category: [ServiceGroupType], country: [ServiceCountry], platform: [Platform], service: SourceService, type: [SourceType], resource: SourceResource, json: JSONDataRepresentation, address: [SourceAddress]? = nil, authorisation: Authorisation? = nil, serviceId: Int? = nil, homepageURL: String? = nil) {

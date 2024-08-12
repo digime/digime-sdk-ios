@@ -52,10 +52,10 @@ final class ConsentManager: NSObject {
         self.configuration = configuration
     }
     
-    func requestUserConsent(preAuthCode: String, serviceId: Int?, onlyPushServices: Bool = false, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, storageRef: String? = nil, completion: @escaping ((Result<ConsentResponse, SDKError>) -> Void)) {
+    func requestUserConsent(preAuthCode: String, serviceId: Int?, onlyPushServices: Bool = false, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, includeSampleDataOnlySources: Bool? = nil, storageRef: String? = nil, completion: @escaping ((Result<ConsentResponse, SDKError>) -> Void)) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
-                self.requestUserConsent(preAuthCode: preAuthCode, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, storageRef: storageRef, completion: completion)
+                self.requestUserConsent(preAuthCode: preAuthCode, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, includeSampleDataOnlySources: includeSampleDataOnlySources, storageRef: storageRef, completion: completion)
             }
             return
         }
@@ -88,6 +88,10 @@ final class ConsentManager: NSObject {
             percentEncodedQueryItems.append(URLQueryItem(name: "sampleDataAutoOnboard", value: "\(sampleDataAutoOnboard)"))
         }
 
+        if let includeSampleDataOnlySources = includeSampleDataOnlySources, includeSampleDataOnlySources {
+            percentEncodedQueryItems.append(URLQueryItem(name: "includeSampleDataOnlySources", value: "\(includeSampleDataOnlySources)"))
+        }
+
         percentEncodedQueryItems.append(URLQueryItem(name: "lng", value: Locale.current.identifier))
 
         if let storageRef = storageRef {
@@ -116,10 +120,10 @@ final class ConsentManager: NSObject {
         open(url: url)
     }
 
-    func addService(identifier: Int, token: String, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, completion: @escaping ((Result<Void, SDKError>) -> Void)) {
+    func addService(identifier: Int, token: String, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, includeSampleDataOnlySources: Bool? = nil, completion: @escaping ((Result<Void, SDKError>) -> Void)) {
         guard Thread.current.isMainThread else {
             DispatchQueue.main.async {
-                self.addService(identifier: identifier, token: token, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, completion: completion)
+                self.addService(identifier: identifier, token: token, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, includeSampleDataOnlySources: includeSampleDataOnlySources, completion: completion)
             }
             return
         }
@@ -142,10 +146,14 @@ final class ConsentManager: NSObject {
             components.percentEncodedQueryItems?.append(URLQueryItem(name: "sampleDataSet", value: "\(sampleDataSetId)"))
         }
         
-        if let sampleDataAutoOnboard = sampleDataAutoOnboard {
+        if let sampleDataAutoOnboard = sampleDataAutoOnboard, sampleDataAutoOnboard {
             components.percentEncodedQueryItems?.append(URLQueryItem(name: "sampleDataAutoOnboard", value: "\(sampleDataAutoOnboard)"))
         }
-        
+
+        if let includeSampleDataOnlySources = includeSampleDataOnlySources, includeSampleDataOnlySources {
+            components.percentEncodedQueryItems?.append(URLQueryItem(name: "includeSampleDataOnlySources", value: "\(includeSampleDataOnlySources)"))
+        }
+
         open(url: components.url!)
     }
     

@@ -130,12 +130,13 @@ public final class DigiMe {
     ///   - serviceId: Identifier of initial service to add. Only valid for first authorization of read contracts where user has not previously granted consent. Ignored for all subsequent calls.
     ///   - sampleDataSetId: Sample Dataset ID to use for sample data onboarding.
     ///   - sampleDataAutoOnboard: Skip consent swipe screen for sample data onboarding.
+    ///   - includeSampleDataOnlySources: Set this flag to `true` if you are onboarding a service that provides only Sample Data.
     ///   - readOptions: Options to filter which data is read from sources for this session. Only used for read contracts.
     ///   - linkToContractWithCredentials: When specified, connects to same library as another contract.  Does nothing if user has already authorized this contract.
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon authorization completion with new or refreshed credentials, or any errors encountered.
     ///   - storageId: The unique identifier for the cloud storage instance. This ID is typically obtained after creating a cloud instance through the SDK or via direct integration.
-    public func authorize(credentials: Credentials? = nil, serviceId: Int? = nil, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, readOptions: ReadOptions? = nil, linkToContractWithCredentials linkCredentials: Credentials? = nil, storageId: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    public func authorize(credentials: Credentials? = nil, serviceId: Int? = nil, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, includeSampleDataOnlySources: Bool? = nil, readOptions: ReadOptions? = nil, linkToContractWithCredentials linkCredentials: Credentials? = nil, storageId: String? = nil, resultQueue: DispatchQueue = .main, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
         if let validationError = validateClient() {
             resultQueue.async {
                 completion(.failure(validationError))
@@ -152,7 +153,7 @@ public final class DigiMe {
                 
             case .failure(SDKError.authorizationRequired):
                 guard let storageId = storageId else {
-                    self.beginAuth(serviceId: serviceId, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, readOptions: readOptions, linkToContractWithCredentials: linkCredentials) { authResult in
+                    self.beginAuth(serviceId: serviceId, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, includeSampleDataOnlySources: includeSampleDataOnlySources, readOptions: readOptions, linkToContractWithCredentials: linkCredentials) { authResult in
                         resultQueue.async {
                             completion(authResult)
                         }
@@ -270,10 +271,11 @@ public final class DigiMe {
     ///   - identifier: Identifier of service to add.
     ///   - sampleDataSetId: Sample Dataset ID to use for sample data onboarding.
     ///   - sampleDataAutoOnboard: Skip consent swipe screen for sample data onboarding.
+    ///   - includeSampleDataOnlySources: Set this flag to `true` if you are onboarding a service that provides only Sample Data.
     ///   - credentials: The existing credentials for the contract.
     ///   - resultQueue: The dispatch queue which the completion block will be called on. Defaults to main dispatch queue.
     ///   - completion: Block called upon completion with new or refreshed credentials, or any errors encountered
-    public func addService(identifier: Int, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
+    public func addService(identifier: Int, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, includeSampleDataOnlySources: Bool? = nil, credentials: Credentials, resultQueue: DispatchQueue = .main, completion: @escaping (Credentials, Result<Void, SDKError>) -> Void) {
         validateOrRefreshCredentials(credentials) { result in
             switch result {
             case .success(let refreshedCredentials):
@@ -281,7 +283,7 @@ public final class DigiMe {
                 switch result {
                 case .success(let response):
                     self.session = response.session
-                    self.consentManager.addService(identifier: identifier, token: response.token, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard) { result in
+                    self.consentManager.addService(identifier: identifier, token: response.token, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, includeSampleDataOnlySources: includeSampleDataOnlySources) { result in
                         switch result {
                         case .success:
                             resultQueue.async {
@@ -1317,7 +1319,7 @@ public final class DigiMe {
     // MARK: - Auth & Refresh
     
     // Auth - needs app to be able to receive response via URL
-    private func beginAuth(serviceId: Int?, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, readOptions: ReadOptions?, linkToContractWithCredentials linkCredentials: Credentials?, onlyPushServices: Bool = false, storageRef: String? = nil, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+    private func beginAuth(serviceId: Int?, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, includeSampleDataOnlySources: Bool? = false, readOptions: ReadOptions?, linkToContractWithCredentials linkCredentials: Credentials?, onlyPushServices: Bool = false, storageRef: String? = nil, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
 
         // Ensure we don't have any session left over from previous
         session = nil
@@ -1326,7 +1328,7 @@ public final class DigiMe {
             switch result {
             case .success(let response):
                 self.session = response.session
-                self.performAuth(preAuthResponse: response, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, storageRef: storageRef, completion: completion)
+                self.performAuth(preAuthResponse: response, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, includeSampleDataOnlySources: includeSampleDataOnlySources, storageRef: storageRef, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -1408,8 +1410,8 @@ public final class DigiMe {
         }
     }
     
-    private func performAuth(preAuthResponse: TokenSessionResponse, serviceId: Int?, onlyPushServices: Bool = false, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, storageRef: String? = nil, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
-        consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, storageRef: storageRef) { result in
+    private func performAuth(preAuthResponse: TokenSessionResponse, serviceId: Int?, onlyPushServices: Bool = false, sampleDataSetId: String? = nil, sampleDataAutoOnboard: Bool? = nil, includeSampleDataOnlySources: Bool? = nil, storageRef: String? = nil, completion: @escaping (Result<Credentials, SDKError>) -> Void) {
+        consentManager.requestUserConsent(preAuthCode: preAuthResponse.token, serviceId: serviceId, onlyPushServices: onlyPushServices, sampleDataSetId: sampleDataSetId, sampleDataAutoOnboard: sampleDataAutoOnboard, includeSampleDataOnlySources: includeSampleDataOnlySources, storageRef: storageRef) { result in
             switch result {
             case .success(let response):
                 self.exchangeToken(authResponse: response, completion: completion)
