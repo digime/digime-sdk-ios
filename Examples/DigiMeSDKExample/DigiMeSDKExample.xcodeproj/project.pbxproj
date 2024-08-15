@@ -135,6 +135,7 @@
 		1EC50C5C2BE63F0B00CAF809 /* SourceImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC50C5B2BE63F0B00CAF809 /* SourceImporter.swift */; };
 		1EC7BFAC2B9C6EC700B918EE /* String+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC7BFAB2B9C6EC700B918EE /* String+Helper.swift */; };
 		1EC7BFAE2B9CAD1000B918EE /* SVGDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC7BFAD2B9CAD1000B918EE /* SVGDownloader.swift */; };
+		1ECCA1CC2C6DDE4D00800DFC /* ModalDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECCA1CB2C6DDE4D00800DFC /* ModalDialogView.swift */; };
 		1ECE29C32C0CA92F00CE9A0D /* DocumentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECE29C22C0CA92F00CE9A0D /* DocumentPicker.swift */; };
 		1ECE29C52C0CA97800CE9A0D /* FileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECE29C42C0CA97800CE9A0D /* FileViewModel.swift */; };
 		1ECE29C72C0D064A00CE9A0D /* HealthDataStorageFileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECE29C62C0D064A00CE9A0D /* HealthDataStorageFileListView.swift */; };
@@ -308,6 +309,7 @@
 		1EC50C5B2BE63F0B00CAF809 /* SourceImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceImporter.swift; sourceTree = "<group>"; };
 		1EC7BFAB2B9C6EC700B918EE /* String+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helper.swift"; sourceTree = "<group>"; };
 		1EC7BFAD2B9CAD1000B918EE /* SVGDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGDownloader.swift; sourceTree = "<group>"; };
+		1ECCA1CB2C6DDE4D00800DFC /* ModalDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalDialogView.swift; sourceTree = "<group>"; };
 		1ECE29C22C0CA92F00CE9A0D /* DocumentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPicker.swift; sourceTree = "<group>"; };
 		1ECE29C42C0CA97800CE9A0D /* FileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileViewModel.swift; sourceTree = "<group>"; };
 		1ECE29C62C0D064A00CE9A0D /* HealthDataStorageFileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataStorageFileListView.swift; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 				1E993CD72C09FB2200997F9E /* FileHelper.swift */,
 				1ECE29C22C0CA92F00CE9A0D /* DocumentPicker.swift */,
 				1ECE29C42C0CA97800CE9A0D /* FileViewModel.swift */,
+				1ECCA1CB2C6DDE4D00800DFC /* ModalDialogView.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -875,6 +878,7 @@
 				1EC50C5C2BE63F0B00CAF809 /* SourceImporter.swift in Sources */,
 				1EA86AA72B055D990030CB91 /* GenericPressableButtonView.swift in Sources */,
 				1EEE0EC829BE54A1004FA4D0 /* KeyframeAnimation.swift in Sources */,
+				1ECCA1CC2C6DDE4D00800DFC /* ModalDialogView.swift in Sources */,
 				1E242E302BE80AC300A63653 /* SourceItemsListView.swift in Sources */,
 				1ED726612C1D52C60014F8E2 /* AggregationMethod.swift in Sources */,
 				1ED7265F2C1C9E970014F8E2 /* SingleSelectionView.swift in Sources */,
