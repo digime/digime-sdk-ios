@@ -554,10 +554,10 @@ class ServicesViewModel: ObservableObject {
             .servicePublishedStatus,
             // .serviceReference,
             .serviceServiceTypeId,
-            // .type,
-            // .typeId,
-            // .typeName,
-            // .typeReference,
+            .type,
+            .typeId,
+            .typeName,
+            .typeReference,
         ]
 
         let type = SourceTypeRequestFilter([.pull])
