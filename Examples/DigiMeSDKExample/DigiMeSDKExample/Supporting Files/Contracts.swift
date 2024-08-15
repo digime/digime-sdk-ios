@@ -515,6 +515,42 @@ enum Contracts {
                                         storageBaseURL: "https://cloud.digi.me"
     )
 
+    static let prodDeApp = DigimeContract(name: "DE App: PROD",
+                                        appId: "8YcZRyfgKeimmlCUC3cBaVJLLmqEodgh",
+                                        identifier: "Fi59RMAhq4szT5o6IjWfWv0YqWIRwWXu",
+                                        privateKey: """
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEogIBAAKCAQEAwskYKd+yNuv4dzDapy86WEgXIqsFlxPtmtTEG/jN5fCtNhqO
+        JMjAtn4OfpGSc49C5b6wNUo6INXPOy2AN/UME/N6ldRCeX+tYrnxEjTDlIVVdmZ+
+        rNSy1/T4JK62aGJb5p2Ng0zztHvNWaHjt6s1RlVdR1px3ufQSQbOewbDYMyOXVIc
+        OlAuMdaUqe/PAr0K9eIHQoOAIU10zeChxsE4gyV859iqpAyw0werfgypy2o+EnP5
+        gVnIYR8DltXD1pjvs0y8exDI+4PTZeMZvkgYyGgIHNZDXm6gHjwGW8M8ykxqxVsp
+        w5Uv/ZpHm56qRpbtbSMkoFj/JzK4XqddFIJugQIDAQABAoIBAErswV+yDUI1CHEI
+        mMLAVugIauXJ9S+E2du5xemgjcrKBkaOdmjN09seqAKlijjrPWdUL0GAWNWyiLER
+        soVTvB6chGXHrP5BT3dvYLyJEUY694HAsS9X7adGMoEht0Z1tzYBGqML4Z5mFLpK
+        nGZU8/wm7+d3cd+1OZgthxUpp9O+jqPNyxP06H9SJxjswvz66GjCk0Wu/tHJNRt7
+        jCczRYpv+ggjUmTHbiEnmMv9BBazrl4//+jWxGIAOlxpVKbMY67ZR2fSohJEhZLo
+        +eda+OfXLCUTU0/ToKdUNnISXHSjO17wSK2Toz4BQmXiI6i+smWDDPrBgc22pn9l
+        1NX6drECgYEA+NPfksOWYCVTh3OyhlX8/d6V1GBi0MhKw9v2QD7XT3UHlx7W2beg
+        4s9XAnNddpeF4T0idTkLHns40G2Ay+qMvmkh1IylW0k7ZsVlChPIs1BtoNqL36yb
+        TLkP+1Ku/kdaCzQFFzW33I7WqyZPNOHXKBub8eDzSn/eIyhtSez8C+0CgYEAyGZw
+        OQmzZHQrKkPMQisCeMI/so+QYDYRCAIBNp41wu+TPCxpbFiqiKOTJmu9FM0au3rC
+        +mNQH63l1KGaF/XJNF/b+loF0U8PwBPB5jBvP0HE96RFvAWtQnJgAlHKpRFiqxmC
+        bxGNf5xqlmJQnFmGK2pvHZDplZZBS9IF6nRlYmUCgYAyQPhCd+YC/QblsGQ55Vv3
+        GeFAx0atzAXtkJsnVom9rnEeAEh8KC4CIMX95LbXoLqVRveSnTa1rUVIMxV0Gabb
+        PfhrKQysZxnsI6nIYz6BmJjLh9gAEKg80pN7urNE/7wbzyHIEj1T+jU407/jekkt
+        /IV+UGRSg4ilqSCJcadl8QKBgCxHvkpMI3Bx3svS+UIxoLUwLsT0xfEMYU0ErGH2
+        KWjuaPkl0xGWse/JPQ2DRt9exqZgZM7QvPaTBTKrlpHuxEunVsMFuz1Zm+BUPUbw
+        stQmYzBZAvOdyX/iJ+a7TeyVX9jwpQqHtV1aIY8jIC679VKIjQ7aY1KjRcBMIvSA
+        TZqlAoGAP7Zfa0JbaZ/C+NKvixNd8EXITEoRqqYwE5Bcw19qvhrTiouxCzlBRAyM
+        GTl63cOBuxMjEiqLhXqyDcEpQy82ufkGcEix1RBq5YImDYAceduUuBUC2IeE9+Hc
+        lbpnXFCyqnWxz2wwTugcgwsiVaE2me8Yv6zvxCGjTL4dVeoiDNg=
+        -----END RSA PRIVATE KEY-----
+        """,
+                                        baseURL: "https://api.digi.me",
+                                        storageBaseURL: "https://cloud.digi.me"
+    )
+
     static let stagingSDK = DigimeContract(name: "SDK: STAGING",
                                            appId: "BTJHy9zEq3L4laJqCMXPpwDgDGxjVYJd",
                                            identifier: "YB6yB9pRguaucWy92ArikSzEmbaIrZms",
@@ -636,6 +672,7 @@ enum Contracts {
             test05,
             test08,
             prodSDK,
+            prodDeApp,
             stagingSDK,
             integrationSDK,
             developmentSDK
