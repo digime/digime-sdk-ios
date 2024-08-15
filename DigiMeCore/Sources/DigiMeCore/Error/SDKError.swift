@@ -412,8 +412,8 @@ extension SDKError: CustomStringConvertible {
 			return "Health Data Store. \(message)"
 			
 		case .unknown(let message):
-			return "Health Data Store. Unknown object type for query. \(message)"
-		
+			return message
+
 		case .invalidType(let message):
 			return "Health Data Store. Invalid type. \(message)"
 		
