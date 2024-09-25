@@ -24,24 +24,24 @@ struct Previewer {
         let date1 = Date.date(year: 2012, month: 2, day: 4)
         let date2 = Date.date(year: 2015, month: 6, day: 8)
         let typeIdentifier1 = QuantityType.bodyMass.identifier!
-        let item1 = HealthDataExportItem(typeIdentifier: typeIdentifier1, createdDate: date1, stringValue: "82 kg")
-        let item2 = HealthDataExportItem(typeIdentifier: typeIdentifier1, createdDate: date2, stringValue: "90 kg")
+        let item1 = HealthDataExportItem(id: UUID().uuidString, typeIdentifier: typeIdentifier1, createdDate: date1, stringValue: "82 kg")
+        let item2 = HealthDataExportItem(id: UUID().uuidString, typeIdentifier: typeIdentifier1, createdDate: date2, stringValue: "90 kg")
         section1 = HealthDataExportSection(typeIdentifier: typeIdentifier1, itemsCount: 2, minDate: date1, maxDate: date2)
         container.mainContext.insert(section1)
         container.mainContext.insert(item1)
         container.mainContext.insert(item2)
 
         let typeIdentifier2 = QuantityType.height.identifier!
-        let item3 = HealthDataExportItem(typeIdentifier: typeIdentifier1, createdDate: date1, stringValue: "180 cm")
-        let item4 = HealthDataExportItem(typeIdentifier: typeIdentifier1, createdDate: date2, stringValue: "200 cm")
+        let item3 = HealthDataExportItem(id: UUID().uuidString, typeIdentifier: typeIdentifier1, createdDate: date1, stringValue: "180 cm")
+        let item4 = HealthDataExportItem(id: UUID().uuidString, typeIdentifier: typeIdentifier1, createdDate: date2, stringValue: "200 cm")
         section2 = HealthDataExportSection(typeIdentifier: typeIdentifier2, itemsCount: 2, minDate: date1, maxDate: date2)
         container.mainContext.insert(section2)
         container.mainContext.insert(item3)
         container.mainContext.insert(item4)
 
         let typeIdentifier3 = CorrelationType.bloodPressure.identifier!
-        let item5 = HealthDataExportItem(typeIdentifier: typeIdentifier1, createdDate: date1, stringValue: "200 mm/Hg, 30 mm/Hg")
-        let item6 = HealthDataExportItem(typeIdentifier: typeIdentifier1, createdDate: date2, stringValue: "170 mm/Hg, 60 mm/Hg")
+        let item5 = HealthDataExportItem(id: UUID().uuidString, typeIdentifier: typeIdentifier1, createdDate: date1, stringValue: "200 mm/Hg, 30 mm/Hg")
+        let item6 = HealthDataExportItem(id: UUID().uuidString, typeIdentifier: typeIdentifier1, createdDate: date2, stringValue: "170 mm/Hg, 60 mm/Hg")
         section3 = HealthDataExportSection(typeIdentifier: typeIdentifier3, itemsCount: 2, minDate: date1, maxDate: date2)
         container.mainContext.insert(section3)
         container.mainContext.insert(item5)

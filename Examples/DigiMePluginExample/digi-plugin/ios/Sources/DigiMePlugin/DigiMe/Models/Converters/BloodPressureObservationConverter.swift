@@ -13,20 +13,19 @@ import ModelsR5
 import UIKit
 
 struct BloodPressureObservationConverter: FHIRObservationConverter {
-    var code: String {
-        return "mm[Hg]"
-    }
+    let code = "mm[Hg]"
+    let unit = "mmHg"
 
-    var unit: String {
-        return "mmHg"
-    }
-
-    func convertToObservation(data: Any) -> Observation? {
-        guard let data = data as? Correlation else {
+    func convertToObservation(data: Any, aggregationType: AggregationType) -> Observation? {
+        if let data = data as? Correlation {
+            return createObservation(data: data)
+        }
+        else if let data = data as? CombinedBloodPressureStats {
+            return createAggregatedBloodPressureObservation(data: data, aggregationType: aggregationType)
+        }
+        else {
             return nil
         }
-
-        return createObservation(data: data)
     }
 
     func dataConverterType() -> SampleType {
@@ -34,23 +33,27 @@ struct BloodPressureObservationConverter: FHIRObservationConverter {
     }
 
     func getCreatedDate(data: Any) -> Date {
-        guard let quantityData = data as? Correlation else {
-            return Date.date(year: 1970, month: 1, day: 1)
+        if let correlation = data as? Correlation {
+            return Date(timeIntervalSince1970: correlation.startTimestamp)
+        } 
+        else if let combinedStats = data as? CombinedBloodPressureStats {
+            return combinedStats.startDate
         }
-
-        return Date(timeIntervalSince1970: quantityData.startTimestamp)
+        return Date.date(year: 1970, month: 1, day: 1)
     }
 
     func getFormattedValueString(data: Any) -> String {
-        guard
-            let quantityData = data as? Correlation,
-            quantityData.harmonized.quantitySamples.count == 2,
-            let first = quantityData.harmonized.quantitySamples.first(where: { $0.identifier == "HKQuantityTypeIdentifierBloodPressureSystolic" }),
-            let second = quantityData.harmonized.quantitySamples.first(where: { $0.identifier == "HKQuantityTypeIdentifierBloodPressureDiastolic" }) else {
-            return ""
+        if let correlation = data as? Correlation,
+           let systolic = correlation.harmonized.quantitySamples.first(where: { $0.identifier == "HKQuantityTypeIdentifierBloodPressureSystolic" }),
+           let diastolic = correlation.harmonized.quantitySamples.first(where: { $0.identifier == "HKQuantityTypeIdentifierBloodPressureDiastolic" }) {
+            return "Sys: \(systolic.harmonized.value), Dia: \(diastolic.harmonized.value) \(systolic.harmonized.unit)"
+        } 
+        else if let combinedStats = data as? CombinedBloodPressureStats {
+            let systolicAvg = combinedStats.systolic.harmonized.average ?? 0
+            let diastolicAvg = combinedStats.diastolic.harmonized.average ?? 0
+            return "Sys: \(systolicAvg), Dia: \(diastolicAvg) \(self.unit)"
         }
-
-        return "Sys: \(first.harmonized.value), Dia: \(second.harmonized.value) \(second.harmonized.unit)"
+        return "n/a"
     }
 
     // MARK: - Private
@@ -60,13 +63,12 @@ struct BloodPressureObservationConverter: FHIRObservationConverter {
         let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://hl7.org/fhir/observation-category")
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Blood Pressure")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
-
-        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.id.lowercased())), status: status)
 
         if
-                data.harmonized.quantitySamples.count == 2,
-                let first = data.harmonized.quantitySamples.first(where: { $0.identifier == "HKQuantityTypeIdentifierBloodPressureSystolic" }),
-                let second = data.harmonized.quantitySamples.first(where: { $0.identifier == "HKQuantityTypeIdentifierBloodPressureDiastolic" }) {
+            data.harmonized.quantitySamples.count == 2,
+            let first = data.harmonized.quantitySamples.first(where: { $0.identifier == "HKQuantityTypeIdentifierBloodPressureSystolic" }),
+            let second = data.harmonized.quantitySamples.first(where: { $0.identifier == "HKQuantityTypeIdentifierBloodPressureDiastolic" }) {
 
             let systolicComponent = ObservationComponent(code: CodeableConcept(coding: [ModelsR5.Coding(code: "8480-6", display: "Systolic blood pressure", system: "http://loinc.org")]))
 
@@ -120,5 +122,93 @@ struct BloodPressureObservationConverter: FHIRObservationConverter {
         observation.performer = [performer]
         
         return observation
+    }
+
+    private func createAggregatedBloodPressureObservation(data: CombinedBloodPressureStats, aggregationType: AggregationType) -> Observation? {
+        let coding = Coding(code: FHIRPrimitive(FHIRString("85354-9")), display: FHIRPrimitive(FHIRString("Blood pressure panel with all children optional")), system: FHIRPrimitive(FHIRURI("http://loinc.org")))
+        let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Blood Pressure")))
+
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.id.lowercased())), status: FHIRPrimitive(ObservationStatus.final))
+
+        let identifier = Identifier(value: FHIRPrimitive(FHIRString("blood-pressure-summary-\(aggregationType.rawValue)-\(UUID().uuidString.lowercased())")))
+        observation.identifier = [identifier]
+
+        let categoryCoding = Coding(code: FHIRPrimitive(FHIRString("vital-signs")), display: FHIRPrimitive(FHIRString("Vital Signs")), system: FHIRPrimitive(FHIRURI("http://terminology.hl7.org/CodeSystem/observation-category")))
+        observation.category = [CodeableConcept(coding: [categoryCoding])]
+
+        observation.subject = Reference(display: FHIRPrimitive(FHIRString("Health App Blood Pressure Observation")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+
+        let effectivePeriod = Period(end: FHIRPrimitive(try? DateTime(date: data.endDate)), start: FHIRPrimitive(try? DateTime(date: data.startDate)))
+        observation.effective = .period(effectivePeriod)
+
+        observation.issued = FHIRPrimitive(try? Instant(date: Date()))
+
+        let systolicComponent = createBloodPressureComponent(
+            code: "8480-6",
+            display: "Systolic blood pressure",
+            stats: data.systolic,
+            identifier: "HKQuantityTypeIdentifierBloodPressureSystolic"
+        )
+        let diastolicComponent = createBloodPressureComponent(
+            code: "8462-4",
+            display: "Diastolic blood pressure",
+            stats: data.diastolic,
+            identifier: "HKQuantityTypeIdentifierBloodPressureDiastolic"
+        )
+
+        observation.component = [systolicComponent, diastolicComponent]
+
+        let aggregationText: String
+        switch aggregationType {
+        case .daily:
+            aggregationText = "Daily"
+        case .weekly:
+            aggregationText = "Weekly"
+        case .monthly:
+            aggregationText = "Monthly"
+        case .yearly:
+            aggregationText = "Yearly"
+        case .none:
+            aggregationText = ""
+        }
+        code.text = FHIRPrimitive(FHIRString("\(aggregationText) Blood Pressure Summary".trimmingCharacters(in: .whitespaces)))
+
+        let deviceReference = Reference(display: FHIRPrimitive(FHIRString("iOS Device")), reference: FHIRPrimitive(FHIRString("Device/healthkit-device")))
+        observation.device = deviceReference
+
+        let profileURL = URL(string: "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure")!
+        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL))])
+
+        let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+        observation.performer = [performer]
+
+        return observation
+    }
+
+    private func createBloodPressureComponent(code: String, display: String, stats: DigiMeHealthKit.Statistics, identifier: String) -> ObservationComponent {
+        let coding = Coding(code: FHIRPrimitive(FHIRString(code)), display: FHIRPrimitive(FHIRString(display)), system: FHIRPrimitive(FHIRURI("http://loinc.org")))
+        let codeableConcept = CodeableConcept(coding: [coding])
+
+        guard let avgValue = stats.harmonized.average else {
+            fatalError("Missing required blood pressure data")
+        }
+
+        let avgQuantity = Quantity(code: FHIRPrimitive(FHIRString(self.code)), system: FHIRPrimitive(FHIRURI("http://unitsofmeasure.org")), unit: FHIRPrimitive(FHIRString(self.unit)), value: FHIRPrimitive(FHIRDecimal(floatLiteral: avgValue)))
+
+        let component = ObservationComponent(code: codeableConcept, value: .quantity(avgQuantity))
+
+        if let minValue = stats.harmonized.min {
+            let minExtension = Extension(url: FHIRPrimitive(FHIRURI("http://hl7.org/fhir/StructureDefinition/observation-min")))
+            minExtension.value = .quantity(Quantity(value: FHIRPrimitive(FHIRDecimal(floatLiteral: minValue))))
+            component.extension = [minExtension]
+        }
+
+        if let maxValue = stats.harmonized.max {
+            let maxExtension = Extension(url: FHIRPrimitive(FHIRURI("http://hl7.org/fhir/StructureDefinition/observation-max")))
+            maxExtension.value = .quantity(Quantity(value: FHIRPrimitive(FHIRDecimal(floatLiteral: maxValue))))
+            component.extension = (component.extension ?? []) + [maxExtension]
+        }
+
+        return component
     }
 }

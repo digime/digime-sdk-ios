@@ -13,58 +13,62 @@ import SwiftData
 
 /// Import Apple Health data into local database
 class BackgroundImporter {
-    private var modelContainer: ModelContainer
+    private let persistenceActor: BackgroundSerialPersistenceActor
 
     init(modelContainer: ModelContainer) {
-        self.modelContainer = modelContainer
+        self.persistenceActor = BackgroundSerialPersistenceActor(container: modelContainer)
     }
 
-    func convertObjects(_ data: [PayloadIdentifiable], converter: FHIRObservationConverter, completion: @escaping ((Error?) -> Void)) {
-        autoreleasepool {
-            let type = converter.dataConverterType()
-            guard let typeIdentifier = type.identifier else {
-                completion(SDKError.healthDataError(message: "Error. Object converter failed for a type - \(type). Expected data converter type identifier."))
-                return
-            }
+    func convertObjects(_ data: [PayloadIdentifiable], converter: FHIRObservationConverter, aggregationType: AggregationType, completion: @escaping ((Error?) -> Void)) {
+        Task {
+            do {
+                let type = converter.dataConverterType()
+                guard let typeIdentifier = type.identifier else {
+                    completion(SDKError.healthDataError(message: "Error. Object converter failed for a type - \(type). Expected data converter type identifier."))
+                    return
+                }
 
-            let modelContext = ModelContext(modelContainer)
-            modelContext.autosaveEnabled = false
-            let batchSize = calculateDynamicBatchSize(for: data.count)
-            let sectionFetchDescriptor = FetchDescriptor<HealthDataExportSection>(predicate: #Predicate { $0.typeIdentifier == typeIdentifier })
-            let section = (try? modelContext.fetch(sectionFetchDescriptor).first) ?? HealthDataExportSection(typeIdentifier: type.identifier!)
-            var items: [HealthDataExportItem] = []
-            modelContext.insert(section)
-            try? modelContext.save()
+                let sectionFetchDescriptor = FetchDescriptor<HealthDataExportSection>(predicate: #Predicate { $0.typeIdentifier == typeIdentifier })
+                var sections = try await persistenceActor.fetchData(predicate: sectionFetchDescriptor.predicate)
+                let section = sections.first ?? HealthDataExportSection(typeIdentifier: type.identifier!)
 
-            for (index, element) in data.enumerated() {
-                if
-                    let observation = converter.convertToObservation(data: element),
-                    let jsonData = try? observation.encoded(outputFormatting: [.withoutEscapingSlashes]) {
-                    let itemCreatedDate = converter.getCreatedDate(data: element)
-                    let item = HealthDataExportItem(typeIdentifier: typeIdentifier, createdDate: itemCreatedDate, stringValue: converter.getFormattedValueString(data: element), parentId: section.id.uuidString, jsonData: jsonData)
-                    items.append(item)
-                    section.update(item.createdDate)
+                if sections.isEmpty {
+                    try await persistenceActor.insert(data: section)
+                    try await persistenceActor.save()
+                }
 
-                    if items.count == 1 {
-                        // show some progress in the UI before the end of the batch size
-                        try? modelContext.save()
-                    }
+                let batchSize = calculateDynamicBatchSize(for: data.count)
+                var items: [HealthDataExportItem] = []
 
-                    if items.count == batchSize || index == data.count - 1 {
-                        let itemsToSave = items
-                        for item in itemsToSave {
-                            modelContext.insert(item)
+                for (index, element) in data.enumerated() {
+                    if let observation = converter.convertToObservation(data: element, aggregationType: aggregationType),
+                       let jsonData = try? observation.encoded(outputFormatting: [.withoutEscapingSlashes]) {
+
+                        let itemCreatedDate = converter.getCreatedDate(data: element)
+                        let item = HealthDataExportItem(id: element.id, typeIdentifier: typeIdentifier, createdDate: itemCreatedDate, stringValue: converter.getFormattedValueString(data: element), parentId: section.id.uuidString, jsonData: jsonData)
+                        items.append(item)
+                        section.update(item.createdDate)
+
+                        if items.count == batchSize || index == data.count - 1 {
+                            for item in items {
+                                try await persistenceActor.insert(data: item)
+                            }
+                            try await persistenceActor.save()
+                            items.removeAll()
                         }
-                        try? modelContext.save()
-                        items.removeAll()
+                    } else {
+                        print("Error. Observation ignored. FHIR data export failed for data type: \(type), \(dump(element))")
                     }
                 }
-                else {
-                    completion(SDKError.healthDataError(message: "Error. Observation ignored. FHIR data export failed for data type: \(type)"))
-                }
-            }
 
-            completion(nil)
+                try await persistenceActor.insert(data: section)
+                try await persistenceActor.save()
+
+                completion(nil)
+            } 
+            catch {
+                completion(error)
+            }
         }
     }
 

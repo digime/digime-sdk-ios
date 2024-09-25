@@ -1,4 +1,4 @@
-"allowImportAppleHealthData" = "Allow this app to import your Apple Health data. On the next step you will be prompted to choose the time range.";
+"allowImportAppleHealthData" = "Select the types you’d like to import or deselect the ones you don’t want.";
 "turnOffAll" = "Turn Off All";
 "turnOnAll" = "Turn On All";
 "appleHealthDataTypes" = "Apple Health Data Types";
@@ -28,6 +28,7 @@ Important Information:
 "resetLocalCache" = "Reset Local Cache";
 "uploadedFromTotal" = "Uploaded %d from %d";
 "cancel" = "Cancel";
+"proceed" = "Proceed";
 "quickReports" = "Quick Reports";
 "thisWeek" = "This Week";
 "thisMonth" = "This Month";
@@ -36,6 +37,7 @@ Important Information:
 "customPeriod" = "Custom Period";
 "from" = "From";
 "to" = "To";
+"done" = "Done";
 "noMeasurementsToShare" = "You have no measurements to share";
 "ok" = "OK";
 "selectTimePeriodForReport" = "Select the Time Period for Your Report";
@@ -52,16 +54,15 @@ Important Information:
 "errorOccurred" = "An error occurred: %@";
 "dataFetch" = "Data Fetch";
 "exported" = "Exported: %d";
-"healthKitDataImported" = "Now that your HealthKit data has been imported, please select the specific items you wish to include. Once you've made your selections, choose one of the following actions:
-
-- Push to 'digi.me' Library: Safely transfer your selected data to your 'digi.me' library for secure storage and easy access.
-- Export as JSON and Save Locally: Convert your selected data into JSON format and save it directly on your device.
-
-Tap the appropriate action button below to proceed with your export choice.";
+"healthKitDataImported" = "Your Apple Health data has been successfully exported into FHIR files. To continue, please press the action button above to close the Apple Health importer. This will allow you to return to the digi.me Health app and import the exported health data into your private provisioned cloud storage.";
 "firstTimePermissionMessage" = "First time, you will see an iOS native permission message asking you to allow this app to access your selected data types. Then, the app will convert the data to FHIR format and present it to you for further selection and upload to your cloud library.";
 "fetching" = "Fetching...";
+"exporting" = "Exporting...";
 "startFetching" = "Start Fetching";
 "updateData" = "Update Data";
+"saveToVault" = "Save to vault";
+"returnToFinishImport" = "Finish and Import";
+"editImportOptions" = "Edit import options";
 "pushToDigiMeLibrary" = "Push to 'digi.me' Library";
 "resetLocalCache" = "Reset Local Cache";
 "elapsedTime" = "Elapsed time: %@";
@@ -76,3 +77,26 @@ Tap the appropriate action button below to proceed with your export choice.";
 "systolicBloodPressure" = "Systolic Blood Pressure";
 "diastolicBloodPressure" = "Diastolic Blood Pressure";
 "bloodGlucose" = "Blood Glucose";
+"succesAhDataFetch" = "Apple Health data file fetch succeed";
+"errorSavingFileMessage" = "Error saving file locally: %@";
+"finishTitleUnsuccessful" = "No Apple Health data was collected. Please go back and adjust your query parameters, data type, or date range, and try again.";
+"finishTitleSuccessful" = "Your Apple Health data has been successfully collected and cached. Please select the “Proceed” option to return to the main app and continue the process. Importing your data will start automatically. The data will be stored in your provisional cloud library and will be displayed in the UI.";
+"confirmation" = "Confirmation";
+"healthData" = "Health Data";
+"pushDataToVaultDescription" = "Below is an indication of the number of items that will be added to your digi.me health vault.";
+"dataAggregationOption" = "Data Aggregation Option";
+"dataAggregationDescription" = "Data will be collected and stored in your digi.me Vault as a summary, including the minimum, maximum, and average only values.";
+"none" = "None";
+"daily" = "Daily";
+"weekly" = "Weekly";
+"monthly" = "Monthly";
+"yearly" = "Yearly";
+"dateSelectorDescription" = "Your health data from the past year will be summarized by day and imported into your digi.me Health Vault. New data will be automatically added to your vault. You can make changes if needed below.";
+"healthDataImportSummary" = "Import Summary";
+"importNow" = "Import now";
+"importingData" = "Importing data...";
+"generatingFiles" = "Generating files...";
+"exportingFiles" = "Exporting files...";
+"viewDetails" = "View Details";
+
+

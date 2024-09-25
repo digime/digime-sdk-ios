@@ -11,14 +11,14 @@ import SwiftData
 
 @Model
 class HealthDataExportFile: Identifiable {
-    @Attribute(.unique) let id: UUID
-    let typeIdentifier: String
-    let fileName: String
-    let createdDate: Date
-    let dataStartDate: Date
-    let dataEndDate: Date
-    let fileURL: URL
-    let itemCount: Int
+    @Attribute(.unique) var id: UUID
+    var typeIdentifier: String
+    var fileName: String
+    var createdDate: Date
+    var dataStartDate: Date
+    var dataEndDate: Date
+    var fileURL: URL
+    var itemCount: Int
     var uploadState: Int
 
     init(typeIdentifier: String, fileName: String, createdDate: Date, dataStartDate: Date, dataEndDate: Date, fileURL: URL, itemCount: Int, state: UploadState = .idle) {

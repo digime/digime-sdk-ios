@@ -13,20 +13,19 @@ import ModelsR5
 import UIKit
 
 struct BloodSystolicObservationConverter: FHIRObservationConverter {
-    var code: String {
-        return ""
-    }
+    let code = "mm[Hg]"
+    let unit = "mmHg"
 
-    var unit: String {
-        return ""
-    }
-
-    func convertToObservation(data: Any) -> Observation? {
-        guard let quantityData = data as? DigiMeHealthKit.Quantity else {
+    func convertToObservation(data: Any, aggregationType: AggregationType) -> Observation? {
+        if let data = data as? DigiMeHealthKit.Quantity {
+            return createObservation(data: data)
+        }
+        else if let data = data as? DigiMeHealthKit.Statistics {
+            return createAggregatedBloodSystolicObservation(data: data, aggregationType: aggregationType)
+        }
+        else {
             return nil
         }
-
-        return createObservation(data: quantityData)
     }
 
     func dataConverterType() -> SampleType {
@@ -34,33 +33,39 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
     }
 
     func getCreatedDate(data: Any) -> Date {
-        guard let quantityData = data as? DigiMeHealthKit.Quantity else {
+        if let data = data as? DigiMeHealthKit.Quantity {
+            return Date(timeIntervalSince1970: data.startTimestamp)
+        }
+        else if let data = data as? DigiMeHealthKit.Statistics {
+            return Date(timeIntervalSince1970: data.startTimestamp)
+        }
+        else {
             return Date.date(year: 1970, month: 1, day: 1)
         }
-
-        return Date(timeIntervalSince1970: quantityData.startTimestamp)
     }
 
     func getFormattedValueString(data: Any) -> String {
-        guard let quantityData = data as? DigiMeHealthKit.Quantity else {
+        if let quantityData = data as? DigiMeHealthKit.Quantity {
+            return "\(quantityData.harmonized.value) \(quantityData.harmonized.unit)"
+        }
+        else if let data = data as? DigiMeHealthKit.Statistics {
+            return "MIN \(Int(round(data.harmonized.min ?? 0))), MAX \(Int(round(data.harmonized.max ?? 0))), AVG \(Int(round(data.harmonized.average ?? 0))) \(data.harmonized.unit)"
+        }
+        else {
             return "n/a"
         }
-
-        return "\(quantityData.harmonized.value) \(quantityData.harmonized.unit)"
     }
 
     // MARK: - Private
 
     private func createObservation(data: DigiMeHealthKit.Quantity) -> Observation {
-        // Updated coding for Systolic Blood Pressure
         let coding = ModelsR5.Coding(code: "8480-6", display: "Systolic Blood Pressure", system: "http://loinc.org")
         let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://hl7.org/fhir/observation-category")
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Systolic Blood Pressure")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
-        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.id.lowercased())), status: status)
 
-        // Create the quantity for the observation value
         let valueQuantity = ModelsR5.Quantity()
         valueQuantity.unit = FHIRPrimitive(FHIRString(data.harmonized.unit))
         valueQuantity.code = FHIRPrimitive(FHIRString(data.harmonized.unit))
@@ -69,7 +74,6 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
 
         observation.value = Observation.ValueX.quantity(valueQuantity)
 
-        // Set the identifier for the observation
         let identifier = Identifier()
         identifier.value = FHIRPrimitive(FHIRString(data.identifier))
         identifier.type?.text = FHIRPrimitive(FHIRString(data.sourceRevision.source.name))
@@ -77,7 +81,6 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
 
         observation.category = [CodeableConcept(coding: [categoryCoding])]
 
-        // Update the subject display for the observation
         observation.subject = Reference(display: "Health App Systolic Blood Pressure Observation", reference: "Patient/healthkit-export")
 
         let dateString = Date(timeIntervalSince1970: data.startTimestamp).iso8601String
@@ -88,7 +91,6 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
             observation.issued = FHIRPrimitive(issuedInstant)
         }
 
-        // Set the device information for the observation
         let deviceReference = Reference()
         deviceReference.display = FHIRPrimitive(FHIRString(data.sourceRevision.productType ?? "iOS Device"))
         deviceReference.reference = FHIRPrimitive(FHIRString(data.sourceRevision.source.bundleIdentifier))
@@ -101,5 +103,71 @@ struct BloodSystolicObservationConverter: FHIRObservationConverter {
         observation.performer = [performer]
         
         return observation
+    }
+
+    private func createAggregatedBloodSystolicObservation(data: DigiMeHealthKit.Statistics, aggregationType: AggregationType) -> Observation? {
+        let minValue = data.harmonized.min ?? 0
+        let maxValue = data.harmonized.max ?? 0
+        let avgValue = data.harmonized.average ?? 0
+
+        let coding = ModelsR5.Coding(code: "8480-6", display: "Systolic Blood Pressure", system: "http://loinc.org")
+        let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://hl7.org/fhir/observation-category")
+        let code = CodeableConcept(coding: [coding])
+
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.id.lowercased())), status: FHIRPrimitive(ObservationStatus.final))
+
+        let identifier = Identifier(value: FHIRPrimitive(FHIRString("systolic-blood-pressure-summary-\(aggregationType.rawValue)-\(data.id.lowercased())")))
+        observation.identifier = [identifier]
+
+        observation.category = [CodeableConcept(coding: [categoryCoding])]
+
+        observation.subject = Reference(display: FHIRPrimitive(FHIRString("Health App Systolic Blood Pressure Observation")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+
+        let effectivePeriod = Period(end: FHIRPrimitive(try? DateTime(date: Date(timeIntervalSince1970: data.endTimestamp))), start: FHIRPrimitive(try? DateTime(date: Date(timeIntervalSince1970: data.startTimestamp))))
+        observation.effective = .period(effectivePeriod)
+
+        observation.issued = FHIRPrimitive(try? Instant(date: Date()))
+
+        let valueQuantity = Quantity(code: FHIRPrimitive(FHIRString(self.code)), system: FHIRPrimitive(FHIRURI("http://unitsofmeasure.org")), unit: FHIRPrimitive(FHIRString(self.unit)), value: FHIRPrimitive(FHIRDecimal(floatLiteral: avgValue)))
+        observation.value = .quantity(valueQuantity)
+
+        let components: [ObservationComponent] = [
+            createBloodSystolicComponent(code: "Minimum Systolic Blood Pressure", value: minValue),
+            createBloodSystolicComponent(code: "Maximum Systolic Blood Pressure", value: maxValue),
+            createBloodSystolicComponent(code: "Average Systolic Blood Pressure", value: avgValue)
+        ]
+
+        observation.component = components
+
+        let aggregationText: String
+        switch aggregationType {
+        case .daily:
+            aggregationText = "Daily"
+        case .weekly:
+            aggregationText = "Weekly"
+        case .monthly:
+            aggregationText = "Monthly"
+        case .yearly:
+            aggregationText = "Yearly"
+        case .none:
+            aggregationText = ""
+        }
+        code.text = FHIRPrimitive(FHIRString("\(aggregationText) Systolic Blood Pressure Summary".trimmingCharacters(in: .whitespaces)))
+
+        let profileURL = URL(string: "http://nictiz.nl/fhir/StructureDefinition/zib-BloodPressure")!
+        observation.meta = Meta(profile: [FHIRPrimitive(Canonical(profileURL))])
+
+        let performer = Reference(display: FHIRPrimitive(FHIRString("Self-recorded")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+        observation.performer = [performer]
+
+        return observation
+    }
+
+    private func createBloodSystolicComponent(code: String, value: Double) -> ObservationComponent {
+        let coding = Coding(code: FHIRPrimitive(FHIRString("8480-6")), display: FHIRPrimitive(FHIRString("Systolic Blood Pressure")), system: FHIRPrimitive(FHIRURI("http://loinc.org")))
+        let codeableConcept = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString(code)))
+        let quantity = Quantity(code: FHIRPrimitive(FHIRString(self.code)), system: FHIRPrimitive(FHIRURI("http://unitsofmeasure.org")), unit: FHIRPrimitive(FHIRString(self.unit)), value: FHIRPrimitive(FHIRDecimal(floatLiteral: value)))
+
+        return ObservationComponent(code: codeableConcept, value: .quantity(quantity))
     }
 }

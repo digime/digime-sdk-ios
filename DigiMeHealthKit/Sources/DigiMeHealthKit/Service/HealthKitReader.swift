@@ -379,74 +379,81 @@ public class HealthKitReader {
 	 - Parameter enumerationBlock: returns a block with statistics on every iteration
 	 - Throws: SDKError.invalidType
 	 */
-	public func statisticsCollectionQuery(type: QuantityType,
-										  unit: String,
-										  quantitySamplePredicate: NSPredicate? = .allSamples,
-										  anchorDate: Date,
-										  enumerateFrom: Date,
-										  enumerateTo: Date,
-										  intervalComponents: DateComponents,
-										  mergeResultForSameType: Bool = false,
-										  monitorUpdates: Bool = false,
-										  enumerationBlock: @escaping StatisticsCompletionHandler) throws -> StatisticsCollectionQuery {
-		
-		guard let quantityType = type.original as? HKQuantityType else {
-			throw SDKError.invalidType(
-				message: "\(type) can not be represented as HKQuantityType"
-			)
-		}
-		
-		let resultsHandler: StatisticsCollectionHandler = { (data, error) in
-			guard
-				error == nil,
-				let result = data else {
-				
-				enumerationBlock(nil, error)
-				return
-			}
-			
-			var dataToMerge: [Statistics] = []
-			
-			result.enumerateStatistics(from: enumerateFrom, to: enumerateTo) { (data, stop) in
+    public func statisticsCollectionQuery(type: QuantityType,
+                                          unit: String,
+                                          quantitySamplePredicate: NSPredicate? = .allSamples,
+                                          anchorDate: Date,
+                                          enumerateFrom: Date,
+                                          enumerateTo: Date,
+                                          intervalComponents: DateComponents,
+                                          mergeResultForSameType: Bool = false,
+                                          monitorUpdates: Bool = false,
+                                          enumerationBlock: @escaping StatisticsCompletionHandler) throws -> StatisticsCollectionQuery {
 
-				do {
-					let statistics = try Statistics(statistics: data, unit: HKUnit.init(from: unit))
-					dataToMerge.append(statistics)
-					
-					if enumerateTo.timeIntervalSince1970 > statistics.startTimestamp && enumerateTo.timeIntervalSince1970 < statistics.endTimestamp {
-						if mergeResultForSameType {
-							let binder = try self.mergeData(data: dataToMerge)
-							enumerationBlock([binder], nil)
-						}
-						else {
-							enumerationBlock(dataToMerge, nil)
-						}
-					}
-				}
-				catch {
-					enumerationBlock(nil, error)
-				}
-			}
-		}
+        guard let quantityType = type.original as? HKQuantityType else {
+            throw SDKError.invalidType(
+                message: "\(type) cannot be represented as HKQuantityType"
+            )
+        }
 
-		let query = HKStatisticsCollectionQuery(quantityType: quantityType,
-												quantitySamplePredicate: quantitySamplePredicate,
-												options: quantityType.statisticsOptions,
-												anchorDate: anchorDate,
-												intervalComponents: intervalComponents)
-		
-		query.initialResultsHandler = { (_, result, error) in
-			resultsHandler(result, error)
-		}
-		
-		if monitorUpdates {
-			query.statisticsUpdateHandler = { (_, _, result, error) in
-				resultsHandler(result, error)
-			}
-		}
-		
-		return query
-	}
+        let resultsHandler: StatisticsCollectionHandler = { (data, error) in
+            guard error == nil else {
+                enumerationBlock(nil, error)
+                return
+            }
+
+            var dataToMerge: [Statistics] = []
+
+            if let result = data {
+                result.enumerateStatistics(from: enumerateFrom, to: enumerateTo) { (data, stop) in
+                    do {
+                        let statistics = try Statistics(statistics: data, unit: HKUnit.init(from: unit))
+
+                        if statistics.harmonized.min != nil ||
+                            statistics.harmonized.max != nil ||
+                            statistics.harmonized.average != nil {
+                            dataToMerge.append(statistics)
+                        }
+                    }
+                    catch {
+                        enumerationBlock(nil, error)
+                        return
+                    }
+                }
+            }
+
+            // After enumeration completes, call enumerationBlock
+            do {
+                if mergeResultForSameType {
+                    let binder = try self.mergeData(data: dataToMerge)
+                    enumerationBlock([binder], nil)
+                } else {
+                    enumerationBlock(dataToMerge, nil)
+                }
+            } catch {
+                enumerationBlock(nil, error)
+            }
+        }
+
+        let query = HKStatisticsCollectionQuery(quantityType: quantityType,
+                                                quantitySamplePredicate: quantitySamplePredicate,
+                                                options: quantityType.statisticsOptions,
+                                                anchorDate: anchorDate,
+                                                intervalComponents: intervalComponents)
+
+        query.initialResultsHandler = { (_, result, error) in
+            resultsHandler(result, error)
+        }
+
+        if monitorUpdates {
+            query.statisticsUpdateHandler = { (_, _, result, error) in
+                resultsHandler(result, error)
+            }
+        }
+
+        return query
+    }
+
     /**
      Queries heartbeat series.
      - Parameter predicate: **NSPredicate** predicate (optional). allSamples by default

@@ -1,4 +1,4 @@
-"allowImportAppleHealthData" = "Sta deze app toe om je Apple Health-gegevens te importeren. In de volgende stap wordt je gevraagd om de tijdsperiode te kiezen.";
+"allowImportAppleHealthData" = "Selecteer de typen die u wilt importeren of deselecteer de typen die u niet wilt importeren.";
 "turnOffAll" = "Alles uitschakelen";
 "turnOnAll" = "Alles inschakelen";
 "appleHealthDataTypes" = "Apple Health-gegevenssoorten";
@@ -28,6 +28,7 @@ Belangrijke informatie:
 "resetLocalCache" = "Lokale cache resetten";
 "uploadedFromTotal" = "Geüpload %d van %d";
 "cancel" = "Annuleren";
+"proceed" = "Doorgaan";
 "quickReports" = "Snelle rapporten";
 "thisWeek" = "Deze week";
 "thisMonth" = "Deze maand";
@@ -52,16 +53,15 @@ Belangrijke informatie:
 "errorOccurred" = "Er is een fout opgetreden: %@";
 "dataFetch" = "Gegevens ophalen";
 "exported" = "Geëxporteerd: %d";
-"healthKitDataImported" = "Nu je HealthKit-gegevens zijn geïmporteerd, selecteer je de specifieke items die je wilt opnemen. Nadat je je selectie hebt gemaakt, kies je een van de volgende acties:
-
-- Push naar 'digi.me' Bibliotheek: Verplaats je geselecteerde gegevens veilig naar je 'digi.me'-bibliotheek voor veilige opslag en gemakkelijke toegang.
-- Exporteer als JSON en sla lokaal op: Zet je geselecteerde gegevens om in JSON-formaat en sla deze direct op je apparaat op.
-
-Tik op de juiste actieknop hieronder om door te gaan met je exportkeuze.";
+"healthKitDataImported" = "Je Apple Health-gegevens zijn succesvol geëxporteerd naar FHIR-bestanden. Om verder te gaan, druk op de actieknop hierboven om de Apple Health-importeur te sluiten. Hierdoor kun je terugkeren naar de digi.me Health-app en de geëxporteerde gezondheidsgegevens importeren in je privé-geconfigureerde cloudopslag.";
 "firstTimePermissionMessage" = "De eerste keer zie je een native iOS-melding waarin je wordt gevraagd deze app toegang te geven tot je geselecteerde gegevenstypen. Vervolgens zet de app de gegevens om naar FHIR-formaat en presenteert deze aan jou voor verdere selectie en upload naar je cloudbibliotheek.";
 "fetching" = "Ophalen...";
+"exporting" = "Exporteren...";
 "startFetching" = "Beginnen met ophalen";
 "updateData" = "Gegevens bijwerken";
+"saveToVault" = "Opslaan in kluis";
+"returnToFinishImport" = "Voltooien en Importeren";
+"editImportOptions" = "Importopties bewerken";
 "pushToDigiMeLibrary" = "Push naar 'digi.me' Bibliotheek";
 "resetLocalCache" = "Lokale cache resetten";
 "elapsedTime" = "Verstreken tijd: %@";
@@ -76,3 +76,25 @@ Tik op de juiste actieknop hieronder om door te gaan met je exportkeuze.";
 "systolicBloodPressure" = "Bovendruk (systolisch)";
 "diastolicBloodPressure" = "Onderdruk (diastolisch)";
 "bloodGlucose" = "Bloedsuikerspiegel";
+"succesAhDataFetch" = "Ophalen van Apple Health-gegevensbestand is gelukt";
+"errorSavingFileMessage" = "Fout bij het lokaal opslaan van het bestand: %@";
+"finishTitleUnsuccessful" = "Er zijn geen Apple Health-gegevens verzameld. Ga terug en pas uw queryparameters, gegevenstype of datumbereik aan en probeer het opnieuw.";
+"finishTitleSuccessful" = "Uw Apple Health-gegevens zijn succesvol verzameld en gecached. Selecteer de optie 'Doorgaan' om terug te keren naar de hoofd-app en het proces voort te zetten. Het importeren van uw gegevens start automatisch. De gegevens worden opgeslagen in uw voorlopige cloudbibliotheek en worden weergegeven in de gebruikersinterface.";
+"confirmation" = "Bevestiging";
+"healthData" = "Gezondheidsgegevens";
+"pushDataToVaultDescription" = "Hieronder ziet u een indicatie van het aantal items dat aan uw digi.me-gezondheidskluis wordt toegevoegd.";
+"dataAggregationOption" = "Optie voor gegevensaggregatie";
+"dataAggregationDescription" = "Er worden gegevens verzameld en opgeslagen in uw digi.me Vault als een samenvatting, inclusief de minimale, maximale en gemiddelde waarden.";
+"none" = "Geen";
+"done" = "Klaar";
+"daily" = "Dagelijks";
+"weekly" = "Wekelijks";
+"monthly" = "Maandelijks";
+"yearly" = "Jaarlijks";
+"dateSelectorDescription" = "Uw gezondheidsgegevens van het afgelopen jaar worden per dag samengevat en geïmporteerd in uw digi.me Health Vault. Nieuwe gegevens worden automatisch toegevoegd aan uw kluis. U kunt hieronder indien nodig wijzigingen aanbrengen.";
+"healthDataImportSummary" = "Import gezondheidsgegevens";
+"importNow" = "Nu importeren";
+"importingData" = "Gegevens importeren...";
+"generatingFiles" = "Bestanden genereren...";
+"exportingFiles" = "Bestanden exporteren...";
+"viewDetails" = "Details bekijken";

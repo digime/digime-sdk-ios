@@ -5,12 +5,13 @@
 //  Created on 24.11.20.
 //
 
+import CryptoKit
 import DigiMeCore
 import HealthKit
 import CoreLocation
 
 public struct WorkoutRoute: PayloadIdentifiable, Sample {
-    public struct Route: Codable {
+    public struct Route: Codable, Hashable {
         public let locations: [Location]
         public let done: Bool
 
@@ -20,7 +21,7 @@ public struct WorkoutRoute: PayloadIdentifiable, Sample {
         }
     }
 
-    public struct Location: Codable {
+    public struct Location: Codable, Hashable {
         public let latitude: Double
         public let longitude: Double
         public let altitude: Double
@@ -99,7 +100,7 @@ public struct WorkoutRoute: PayloadIdentifiable, Sample {
 		}
     }
 
-    public let uuid: String
+    public let id: String
     public let identifier: String
     public let startTimestamp: Double
     public let endTimestamp: Double
@@ -113,23 +114,52 @@ public struct WorkoutRoute: PayloadIdentifiable, Sample {
 				device: Device?,
 				sourceRevision: SourceRevision,
 				harmonized: Harmonized) {
-        self.uuid = UUID().uuidString
         self.identifier = identifier
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
         self.device = device
         self.sourceRevision = sourceRevision
         self.harmonized = harmonized
+        self.id = Self.generateHashId(
+            identifier: self.identifier,
+            startTimestamp: self.startTimestamp,
+            endTimestamp: self.endTimestamp,
+            device: self.device,
+            sourceRevision: self.sourceRevision,
+            harmonized: self.harmonized
+        )
     }
 
     init(sample: HKWorkoutRoute, routes: [Route]) {
-        self.uuid = sample.uuid.uuidString
+        self.id = sample.uuid.uuidString
         self.identifier = sample.sampleType.identifier
         self.startTimestamp = sample.startDate.timeIntervalSince1970
         self.endTimestamp = sample.endDate.timeIntervalSince1970
         self.device = Device(device: sample.device)
         self.sourceRevision = SourceRevision(sourceRevision: sample.sourceRevision)
         self.harmonized = sample.harmonize(routes: routes)
+    }
+
+    private static func generateHashId(identifier: String,
+                                       startTimestamp: Double,
+                                       endTimestamp: Double,
+                                       device: Device?,
+                                       sourceRevision: SourceRevision,
+                                       harmonized: Harmonized) -> String {
+        let deviceId = device?.id ?? "no_device"
+        let idString = "\(identifier)_\(startTimestamp)_\(endTimestamp)_\(deviceId)_\(sourceRevision.id)_\(harmonized.count)_\(harmonized.routes.hashValue)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        // Format the hash string as a UUID
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
     }
 }
 // MARK: - Payload

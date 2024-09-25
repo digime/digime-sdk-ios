@@ -5,11 +5,12 @@
 //  Created on 25.09.20.
 //
 
+import CryptoKit
 import DigiMeCore
 import HealthKit
 
-public struct WorkoutEvent: Sample {
-    public struct Harmonized: Codable {
+public struct WorkoutEvent: Sample, Identifiable {
+    public struct Harmonized: Codable, Hashable {
         public let value: Int
         public let description: String
         public let metadata: Metadata?
@@ -27,6 +28,7 @@ public struct WorkoutEvent: Sample {
 		}
     }
 
+    public let id: String
     public let startTimestamp: Double
     public let endTimestamp: Double
     public let duration: Double
@@ -43,6 +45,12 @@ public struct WorkoutEvent: Sample {
             .timeIntervalSince1970
         self.duration = workoutEvent.dateInterval.duration
         self.harmonized = try workoutEvent.harmonize()
+        self.id = Self.generateHashId(
+            startTimestamp: self.startTimestamp,
+            endTimestamp: self.endTimestamp,
+            duration: self.duration,
+            harmonized: self.harmonized
+        )
     }
 
 	public init(startTimestamp: Double,
@@ -54,6 +62,12 @@ public struct WorkoutEvent: Sample {
         self.endTimestamp = endTimestamp
         self.duration = duration
         self.harmonized = harmonized
+        self.id = Self.generateHashId(
+            startTimestamp: startTimestamp,
+            endTimestamp: endTimestamp,
+            duration: duration,
+            harmonized: harmonized
+        )
     }
 
 	public func copyWith(startTimestamp: Double? = nil,
@@ -65,6 +79,25 @@ public struct WorkoutEvent: Sample {
 							endTimestamp: endTimestamp ?? self.endTimestamp,
 							duration: duration ?? self.duration,
 							harmonized: harmonized ?? self.harmonized)
+    }
+
+    private static func generateHashId(startTimestamp: Double,
+                                       endTimestamp: Double,
+                                       duration: Double,
+                                       harmonized: Harmonized) -> String {
+        let idString = "\(startTimestamp)_\(endTimestamp)_\(duration)_\(harmonized.value)_\(harmonized.description)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        // Format the hash string as a UUID
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
     }
 }
 

@@ -5,6 +5,7 @@
 //  Created on 25.09.20.
 //
 
+import CryptoKit
 import DigiMeCore
 import HealthKit
 
@@ -27,7 +28,7 @@ public struct Quantity: PayloadIdentifiable, Sample {
 		}
     }
 
-    public let uuid: String
+    public let id: String
     public let identifier: String
     public let startTimestamp: Double
     public let endTimestamp: Double
@@ -36,7 +37,6 @@ public struct Quantity: PayloadIdentifiable, Sample {
     public let harmonized: Harmonized
 
     init(quantitySample: HKQuantitySample, unit: HKUnit) throws {
-        self.uuid = quantitySample.uuid.uuidString
         self.identifier = quantitySample.quantityType.identifier
         self.startTimestamp = quantitySample.startDate.timeIntervalSince1970
         self.endTimestamp = quantitySample.endDate.timeIntervalSince1970
@@ -47,46 +47,86 @@ public struct Quantity: PayloadIdentifiable, Sample {
             unit: unit.unitString,
             metadata: quantitySample.metadata?.asMetadata
         )
+        self.id = Self.generateHashId(
+            identifier: self.identifier,
+            startTimestamp: self.startTimestamp,
+            endTimestamp: self.endTimestamp,
+            harmonizedValue: self.harmonized.value,
+            harmonizedUnit: self.harmonized.unit
+        )
     }
 	
     init(quantitySample: HKQuantitySample) throws {
-        self.uuid = quantitySample.uuid.uuidString
         self.identifier = quantitySample.quantityType.identifier
         self.startTimestamp = quantitySample.startDate.timeIntervalSince1970
         self.endTimestamp = quantitySample.endDate.timeIntervalSince1970
         self.device = Device(device: quantitySample.device)
         self.sourceRevision = SourceRevision(sourceRevision: quantitySample.sourceRevision)
         self.harmonized = try quantitySample.harmonize()
+        self.id = Self.generateHashId(
+            identifier: self.identifier,
+            startTimestamp: self.startTimestamp,
+            endTimestamp: self.endTimestamp,
+            harmonizedValue: self.harmonized.value,
+            harmonizedUnit: self.harmonized.unit
+        )
     }
 
-	public init(identifier: String,
-				startTimestamp: Double,
-				endTimestamp: Double,
-				device: Device?,
-				sourceRevision: SourceRevision,
-				harmonized: Harmonized) {
-		
-        self.uuid = UUID().uuidString
+    public init(identifier: String,
+                startTimestamp: Double,
+                endTimestamp: Double,
+                device: Device?,
+                sourceRevision: SourceRevision,
+                harmonized: Harmonized) {
         self.identifier = identifier
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
         self.device = device
         self.sourceRevision = sourceRevision
         self.harmonized = harmonized
+        self.id = Self.generateHashId(
+            identifier: identifier,
+            startTimestamp: startTimestamp,
+            endTimestamp: endTimestamp,
+            harmonizedValue: harmonized.value,
+            harmonizedUnit: harmonized.unit
+        )
     }
 
-	public func copyWith(identifier: String? = nil,
-						 startTimestamp: Double? = nil,
-						 endTimestamp: Double? = nil,
-						 device: Device? = nil,
-						 sourceRevision: SourceRevision? = nil,
-						 harmonized: Harmonized? = nil) -> Quantity {
-		return Quantity(identifier: identifier ?? self.identifier,
-						startTimestamp: startTimestamp ?? self.startTimestamp,
-						endTimestamp: endTimestamp ?? self.endTimestamp,
-						device: device ?? self.device,
-						sourceRevision: sourceRevision ?? self.sourceRevision,
-						harmonized: harmonized ?? self.harmonized)
+    public func copyWith(identifier: String? = nil,
+                         startTimestamp: Double? = nil,
+                         endTimestamp: Double? = nil,
+                         device: Device? = nil,
+                         sourceRevision: SourceRevision? = nil,
+                         harmonized: Harmonized? = nil) -> Quantity {
+        let newQuantity = Quantity(
+            identifier: identifier ?? self.identifier,
+            startTimestamp: startTimestamp ?? self.startTimestamp,
+            endTimestamp: endTimestamp ?? self.endTimestamp,
+            device: device ?? self.device,
+            sourceRevision: sourceRevision ?? self.sourceRevision,
+            harmonized: harmonized ?? self.harmonized
+        )
+        return newQuantity
+    }
+
+    private static func generateHashId(identifier: String,
+                                       startTimestamp: Double,
+                                       endTimestamp: Double,
+                                       harmonizedValue: Double,
+                                       harmonizedUnit: String) -> String {
+        let idString = "\(identifier)_\(startTimestamp)_\(endTimestamp)_\(harmonizedValue)_\(harmonizedUnit)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
     }
 }
 

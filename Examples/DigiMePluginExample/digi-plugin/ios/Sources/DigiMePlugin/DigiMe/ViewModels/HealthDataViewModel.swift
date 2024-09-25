@@ -11,58 +11,49 @@ import DigiMeCore
 import DigiMeHealthKit
 import DigiMeSDK
 import Foundation
-import ModelsR5
 import SwiftData
+import SwiftUI
 
-extension HealthDataViewModel: ExporterDelegate {
-    func exporterDidUpdateProgress(_ progress: Int) {
-        DispatchQueue.main.async {
-            self.progressCounter = progress
-        }
-    }
-}
-
+@MainActor
 class HealthDataViewModel: ObservableObject {
-    @Published var progressCounter: Int = 0
     @Published var shareLocally = false
     @Published var isLoadingData = false
-    @Published var dataFetchComplete = false
     @Published var showErrorBanner = false
     @Published var showSuccessBanner = false
-    @Published var showFileList = false
-    @Published var fileData: Data? = nil
-    @Published var fileName: String? = nil
-    @Published var fhirJson: JSON?
-    @Published var storageFileList: [StorageFileInfo] = []
-    @Published var elapsedTime: String?
-    @Published var errorMessage: String?
+    @Published var showFinishConfirmationDialog = false
+    @Published var exportAutomatically = true
+    @Published var allToggled = true
+    @Published var importFinished = false
+    @Published var exportFinished = false
+    @Published var showDetailedView = false
+    @Published var isExporting = false {
+        didSet {
+            print("isExporting changed to \(isExporting)")
+        }
+    }
+    @Published var backgroundWorkStartTime: Date?
+    @Published var importElapsedTime: TimeInterval = 0
+    @Published var exportElapsedTime: TimeInterval = 0
+    @Published var numberOfExportedFiles: Int = 0
+    @Published var error: Error?
     @Published var successMessage: String?
-    @Published var downloadFileNameWithPath: String = ""
-    @Published var cloudId: String = "" {
-        didSet {
-            UserPreferences.shared().setStorageId(identifier: cloudId, for: activeContract.identifier)
-        }
-    }
-    @Published var activeContract: DigimeContract = Contracts.integration {
-        didSet {
-            updateContract(activeContract)
-        }
-    }
-    @Published private var importRefresher: Timer?
-
-    var isCloudCreated: Bool {
-        return userPreferences.getStorageId(for: activeContract.identifier)?.isEmpty == false
-    }
+    @Published var healthDataTypes: [HealthDataType] = []
+    @Published var progressMessage = "importingData".localized()
+    @Published var sections: [HealthDataExportSection] = []
+    @Published var totalItemsCount: Int = 0
+    @Published var startDate = Date()
+    @Published var endDate = Date()
+    @Published var aggregationOption: AggregationType = .daily
 
     var shareUrls: [URL]?
-    var xmlReportURL: URL?
-    var selectedParentIds: [String]?
+    var modelContainer: ModelContainer
 
-    private let userPreferences = UserPreferences.shared()
+    private let persistenceActor: BackgroundSerialPersistenceActor
 
-    private var modelContext: ModelContext
-    private var modelContainer: ModelContainer
-    private var digiMeService: DigiMe?
+    private var healthDataService: HealthDataService
+    private var backgroundExporter: BackgroundExporter
+    private var cloudId: String
+    private var onComplete: ((Result<[String], Error>) -> Void)?
     private var intervalFormatter: DateComponentsFormatter {
         let fm = DateComponentsFormatter()
         fm.allowedUnits = [.hour, .minute, .second]
@@ -71,458 +62,307 @@ class HealthDataViewModel: ObservableObject {
         return fm
     }
 
-    init(modelContainer: ModelContainer) {
+    init(modelContainer: ModelContainer, cloudId: String, onComplete: ((Result<[String], Error>) -> Void)?) {
         self.modelContainer = modelContainer
-        self.modelContext = ModelContext(modelContainer)
-        activeContract = userPreferences.activeContract ?? Contracts.prodJames
-        cloudId = userPreferences.getStorageId(for: activeContract.identifier) ?? ""
-        initialiseClient()
+        self.persistenceActor = BackgroundSerialPersistenceActor(container: modelContainer)
+        self.cloudId = cloudId
+        self.onComplete = onComplete
+        self.healthDataService = HealthDataService(modelContainer: modelContainer)
+        self.backgroundExporter = BackgroundExporter(modelContainer: modelContainer)
+
+        initToggles()
+        updateAllToggledState()
     }
 
-    // MARK: - Init
-
-    private func initialiseClient() {
-        do {
-            let config = try Configuration(appId: self.activeContract.appId, contractId: self.activeContract.identifier, privateKey: self.activeContract.privateKey, authUsingExternalBrowser: true, baseUrl: self.activeContract.baseURL, cloudBaseUrl: self.activeContract.storageBaseURL)
-            self.digiMeService = DigiMe(configuration: config)
-        }
-        catch {
-            fatalError("Fatal error during DigiMe client initialization.")
-        }
+    var canProceed: Bool {
+        return !isLoadingData && healthDataTypes.contains { $0.isToggled }
     }
 
-    // MARK: - Timer
-
-    private func startUploadTimer() {
-        isLoadingData = true
-        let startTime = Date()
-        importRefresher = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { [weak self] _ in
-            guard
-                let self = self,
-                let elapsed = self.intervalFormatter.string(from: startTime.timeIntervalSinceNow) else {
-
-                self?.elapsedTime = "elapsedTime".localized(with: "0")
-                return
-            }
-
-            self.elapsedTime = "elapsedTime".localized(with: "\(elapsed)")
-            if selectedParentIds == nil || dataFetchComplete {
-                self.stopTimer()
-                stopLoader()
-            }
-        }
-    }
-
-    private func stopTimer() {
-        importRefresher?.invalidate()
-        importRefresher = nil
+    var authorisationTypes: [QuantityType: AggregationType] {
+        let selectedTypes = healthDataTypes.filter { $0.isToggled }.compactMap { $0.type as? QuantityType }
+        return Dictionary(uniqueKeysWithValues: selectedTypes.map { ($0, aggregationOption) })
     }
 
     // MARK: - Control Handlers
 
-    func start() {
-        guard !isLoadingData else {
-            return
+    private var readyToExport: Bool {
+        guard !sections.isEmpty else {
+            return false
         }
 
-        elapsedTime = nil
-        startUploadTimer()
-
-        guard 
-            let parentIds = selectedParentIds,
-            let cloudId = userPreferences.getStorageId(for: activeContract.identifier) else {
-            // skip data retreval
-            return
-        }
-
-        let exporter = BackgroundExporter(modelContainer: modelContainer, delegate: self)
-        exporter.shareAllData(for: parentIds, locally: false, downloadHandler: { [weak self] result in
-            switch result {
-            case .failure(let error):
-                self?.errorMessage = error.description
-                self?.showErrorBanner.toggle()
-            case .success(let file):
-                self?.uploadFile(for: file, cloudId: cloudId)
-            }
-
-        }) { [weak self] _, error in
-            self?.dataFetchComplete = true
-
-            if let error = error {
-                self?.errorMessage = error.localizedDescription
-                self?.showErrorBanner = true
-            }
-        }
-    }
-    
-    func startOver(_ completion: @escaping (() -> Void)) {
-        isLoadingData = true
-        stopTimer()
-        elapsedTime = nil
-        progressCounter = 0
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            // try? self.modelContext.delete(model: HealthDataExportSection.self, where: NSPredicate(value: true), includeSubentities: false)
-            try? self.modelContext.delete(model: HealthDataExportSection.self)
-            try? self.modelContext.delete(model: HealthDataExportFile.self)
-            try? self.modelContext.delete(model: HealthDataExportItem.self)
-
-            self.stopLoader()
-            completion()
+        return sections.contains { section in
+            section.itemsCount > 0 && section.exportSelected
         }
     }
 
-    func loadAppleHealth(from: Date, to: Date, authorisationTypes: [QuantityType], completion: @escaping ((Error?) -> Void)) {
-        isLoadingData = true
-        HealthDataService(modelContainer: modelContainer).loadHealthData(from: from, to: to, authorisationTypes: authorisationTypes) { error in
-            self.stopLoader()
-            completion(error)
-        }
-    }
-
-    func shareDataLocally(for parentIds: [String], completion: @escaping ((Error?) -> Void)) {
-        isLoadingData = true
-        elapsedTime = nil
-        let exporter = BackgroundExporter(modelContainer: modelContainer, delegate: self)
-        exporter.shareAllData(for: parentIds, locally: true) { [weak self] urls, error in
-            self?.stopLoader()
-            if let error = error {
-                completion(error)
-            }
-            else if let urls = urls {
-                self?.shareUrls = urls
-                self?.shareLocally = true
-                completion(nil)
-            }
-        }
-    }
-
-    func shareIndividualItem() {
-        guard let fhirJson = self.fhirJson else {
-            return
-        }
-
+    func resetAllData() async {
         isLoadingData = true
 
-        DispatchQueue.global(qos: .background).async {
-            if let jsonData = try? JSONSerialization.data(withJSONObject: fhirJson, options: []) {
-                self.saveFileLocally(fileData: jsonData, fileName: UUID().uuidString + ".json") { url in
-                    DispatchQueue.main.async {
-                        self.stopLoader()
-                        guard let url = url else {
-                            return
-                        }
+        do {
+            // Clear all data in the database
+            try await persistenceActor.remove(predicate: #Predicate<HealthDataExportSection> { _ in true })
+            try await persistenceActor.remove(predicate: #Predicate<HealthDataExportFile> { _ in true })
+            try await persistenceActor.remove(predicate: #Predicate<HealthDataExportItem> { _ in true })
 
-                        self.shareUrls = [url]
-                        self.shareLocally = true
-                    }
-                }
-            }
-            else {
-                self.stopLoader()
-            }
-        }
-    }
+            // Reset sections
+            sections.removeAll()
 
-    func share(_ data: Data, fileName: String) {
-        isLoadingData = true
-        saveFileLocally(fileData: data, fileName: fileName) { url in
-            DispatchQueue.main.async {
-                self.stopLoader()
-                guard let url = url else {
-                    return
-                }
+            totalItemsCount = 0
+            error = nil
+            successMessage = nil
+            importFinished = false
+            exportFinished = false
+            isExporting = false
+            exportAutomatically = true
+            backgroundWorkStartTime = nil
+            importElapsedTime = 0
+            exportElapsedTime = 0
 
-                self.shareUrls = [url]
-                self.shareLocally = true
-            }
-        }
-    }
-
-    // MARK: - Home View Actions
-
-    func createStorage() {
-        isLoadingData = true
-        digiMeService?.createProvisionalStorage { [weak self] result in
-            self?.stopLoader()
-            guard let self = self else {
-                return
-            }
-
-            switch result {
-            case .success(let storage):
-                self.cloudId = storage.cloudId
-            case .failure(let error):
-                self.errorMessage = error.description
-                self.showErrorBanner.toggle()
-            }
-        }
-    }
-
-    func downloadFile() {
-        guard
-            !cloudId.isEmpty else {
-            errorMessage = "Cloud storage id is missing"
-            showErrorBanner.toggle()
-            return
-        }
-
-        let split = splitFilePath()
-        guard
-            !downloadFileNameWithPath.isEmpty,
-            !split.fileName.isEmpty else {
-            errorMessage = "Invalid file name"
-            showErrorBanner.toggle()
-            return
-        }
-
-        isLoadingData = true
-
-        digiMeService?.downloadStorageFile(storageId: cloudId, fileName: split.fileName, path: split.path) { [weak self] result in
-            self?.stopLoader()
-            switch result {
-            case .success(let response):
-                print("File download is successful")
-                self?.share(response, fileName: split.fileName)
-
-            case .failure(let error):
-                self?.errorMessage = error.description
-                self?.showErrorBanner.toggle()
-            }
-        }
-    }
-
-    func deleteFile() {
-        guard
-            !cloudId.isEmpty else {
-            errorMessage = "Cloud storage id is missing"
-            showErrorBanner.toggle()
-            return
-        }
-
-        let split = splitFilePath()
-        guard
-            !downloadFileNameWithPath.isEmpty,
-            !split.fileName.isEmpty else {
-            errorMessage = "Invalid file name"
-            showErrorBanner.toggle()
-            return
-        }
-
-        isLoadingData = true
-        digiMeService?.deleteStorageFile(storageId: cloudId, fileName: split.fileName, path: split.path) { [weak self] result in
-            self?.stopLoader()
-            switch result {
-            case .success:
-                self?.successMessage = "Delete file succeed"
-                self?.showSuccessBanner.toggle()
-
-            case .failure(let error):
-                self?.errorMessage = error.description
-                self?.showErrorBanner.toggle()
-            }
-        }
-    }
-
-    func deleteFolder() {
-        guard
-            !cloudId.isEmpty else {
-            errorMessage = "Cloud storage id is missing"
-            showErrorBanner.toggle()
-            return
-        }
-
-        let split = splitFilePath()
-        guard
-            !downloadFileNameWithPath.isEmpty,
-            !split.fileName.isEmpty else {
-            errorMessage = "Invalid folder name"
-            showErrorBanner.toggle()
-            return
-        }
-
-        isLoadingData = true
-        digiMeService?.deleteStorageFolder(storageId: cloudId, path: split.path) { [weak self] result in
-            self?.stopLoader()
-            switch result {
-            case .success:
-                self?.successMessage = "Delete folder succeed"
-                self?.showSuccessBanner.toggle()
-
-            case .failure(let error):
-                self?.errorMessage = error.description
-                self?.showErrorBanner.toggle()
-            }
-        }
-    }
-
-    func uploadFile(from url: URL?) {
-        guard
-            let url = url,
-            url.startAccessingSecurityScopedResource(),
-            let data = try? Data(contentsOf: url) else {
-            self.errorMessage = "Error selecting file"
-            self.showErrorBanner.toggle()
-            return
-        }
-
-        guard
-            !cloudId.isEmpty else {
-            errorMessage = "Cloud storage id is missing"
-            showErrorBanner.toggle()
-            return
-        }
-
-        isLoadingData = true
-        digiMeService?.uploadStorageFile(storageId: cloudId, fileName: url.lastPathComponent, data: data) { [weak self] result in
-            self?.stopLoader()
-            switch result {
-            case .success:
-                self?.successMessage = "Upload file succeed"
-                self?.showSuccessBanner.toggle()
-
-            case .failure(let error):
-                self?.errorMessage = error.description
-                self?.showErrorBanner.toggle()
-            }
-        }
-    }
-
-    func fileList() {
-        guard
-            !cloudId.isEmpty else {
-            errorMessage = "Cloud storage id is missing"
-            showErrorBanner.toggle()
-            return
-        }
-        
-        isLoadingData = true
-        digiMeService?.readStorageFileList(storageId: cloudId, path: nil, recursive: true) { [weak self] result in
-            self?.stopLoader()
-            switch result {
-            case .success(let fileList):
-                self?.storageFileList = fileList.files ?? []
-                self?.showFileList = true
-
-            case .failure(let error):
-                self?.errorMessage = error.description
-                self?.showErrorBanner.toggle()
-            }
-        }
-    }
-
-    // MARK: - Private
-
-    private func updateContract(_ contract: DigimeContract) {
-        DispatchQueue.main.async {
-            self.userPreferences.activeContract = contract
-            do {
-                let config = try Configuration(appId: contract.appId, contractId: contract.identifier, privateKey: contract.privateKey, authUsingExternalBrowser: true, baseUrl: contract.baseURL, cloudBaseUrl: contract.storageBaseURL)
-                self.digiMeService = DigiMe(configuration: config)
-            }
-            catch {
-                print("Unable to configure digi.me SDK: \(error)")
-            }
-        }
-    }
-
-    private func stopLoader() {
-        guard Thread.isMainThread else {
-            DispatchQueue.main.async {
-                self.stopLoader()
-            }
-            return
+            // Notify observers that the data has changed
+            objectWillChange.send()
+        } catch {
+            self.error = error
+            showErrorBanner = true
         }
 
         isLoadingData = false
     }
 
-    private func uploadFile(for item: HealthDataExportFileHandler, cloudId: String) {
-        DispatchQueue.global(qos: .default).async {
-            self.updateState(for: item.id, to: .uploading)
-            self.digiMeService?.uploadStorageFile(storageId: cloudId, fileName: item.fileName, data: item.data, path: "apple-health") { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(_):
-                        self?.updateState(for: item.id, to: .uploaded)
-                    case .failure(_):
-                        self?.updateState(for: item.id, to: .error)
+    func loadAppleHealth() {
+        guard startDate <= endDate else {
+            self.error = SDKError.healthDataError(message: "Invalid date range: Start date is after end date.")
+            showErrorBanner = true
+            return
+        }
+        
+        isLoadingData = true
+        let types = authorisationTypes
+        resetElapsedTime()
+        backgroundWorkStartTime = Date()
+        updateElapsedTime()
+
+        Task {
+            do {
+                try await healthDataService.loadHealthData(from: startDate, to: endDate, authorisationTypes: types)
+                await MainActor.run {
+                    isLoadingData = false
+                    importFinished = true
+                    backgroundWorkStartTime = nil
+                    progressMessage = "exportingFiles".localized()
+                    if exportAutomatically {
+                        saveOutputToFiles()
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    isLoadingData = false
+                    self.error = error
+                    showErrorBanner = true
+                }
+            }
+        }
+    }
+
+    func saveOutputToFiles() {
+        isLoadingData = true
+        isExporting = true
+        backgroundWorkStartTime = Date()
+        exportElapsedTime = 0
+        numberOfExportedFiles = 0
+        updateElapsedTime()
+
+        backgroundExporter.loadSectionIds { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch result {
+                case .success(let sectionIds):
+                    self.shareData(for: sectionIds, locally: false)
+                case .failure(let error):
+                    self.error = error
+                    self.showErrorBanner = true
+                    self.isLoadingData = false
+                    self.isExporting = false
+                }
+            }
+        }
+    }
+
+    func shareData(for parentIds: [String], locally: Bool) {
+        isLoadingData = true
+
+        backgroundExporter.shareAllData(for: parentIds, locally: locally, downloadHandler: { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    self.numberOfExportedFiles = self.numberOfExportedFiles + 1
+                default:
+                    break
+                }
+            }
+        }, completion: { [weak self] urls, error in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+
+                self.isLoadingData = false
+                self.isExporting = false
+                self.exportFinished = true
+                self.backgroundWorkStartTime = nil
+
+                if let error = error {
+                    self.error = error
+                    self.showErrorBanner = true
+                } else if let urls = urls {
+                    self.shareUrls = urls
+                    self.numberOfExportedFiles = urls.count
+
+                    if locally {
+                        self.shareLocally = locally
+                    } else {
+                        self.finish()
                     }
                 }
             }
-        }
+        })
     }
 
-    /// Updates the state of a HealthDataExportFile item asynchronously.
-    func updateState(for itemId: UUID, to newState: UploadState) {
-        DispatchQueue.global(qos: .default).async {
-            let context = ModelContext(self.modelContainer)
-            let descriptor = FetchDescriptor<HealthDataExportFile>(predicate: #Predicate<HealthDataExportFile> { $0.id == itemId })
+    func startOver(_ completion: @escaping (() -> Void)) {
+        isLoadingData = true
 
-            if let fileToUpdate = try? context.fetch(descriptor).first {
-                fileToUpdate.uploadState = newState.rawValue
-                try? context.save()
-            }
-        }
-    }
+        error = nil
+        successMessage = nil
+        shareUrls = nil
+        importFinished = false
+        exportFinished = false
+        backgroundWorkStartTime = nil
 
-    // MARK: - Utilities
-
-    func saveFileLocally(fileData: Data, fileName: String, completion: @escaping (URL?) -> Void) {
-        DispatchQueue.global(qos: .background).async {
-            guard let fileURL = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(fileName) else {
-                DispatchQueue.main.async {
-                    completion(nil)
-                }
-                return
-            }
+        Task.detached { [weak self] in
+            guard let self = self else { return }
 
             do {
-                try fileData.write(to: fileURL)
-                DispatchQueue.main.async {
-                    completion(fileURL)
+                try await persistenceActor.remove(predicate: #Predicate<HealthDataExportSection> { _ in true })
+                try await persistenceActor.remove(predicate: #Predicate<HealthDataExportFile> { _ in true })
+                try await persistenceActor.remove(predicate: #Predicate<HealthDataExportItem> { _ in true })
+
+                await MainActor.run {
+                    self.isLoadingData = false
+                    completion()
                 }
-            } 
-            catch {
-                DispatchQueue.main.async {
-                    self.errorMessage = "Error saving file locally: \(error)"
-                    self.showErrorBanner.toggle()
-                    completion(nil)
+            } catch {
+                print("Error clearing data: \(error)")
+                await MainActor.run {
+                    self.isLoadingData = false
+                    completion()
                 }
             }
         }
     }
 
-    private func readFile(named fileName: String) -> Data? {
-        let fileManager = FileManager.default
-        guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            return nil
+    func onCancelTapped() {
+        showFinishConfirmationDialog = false
+    }
+
+    func onProceedToFinishTapped() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.onComplete?(.success((self.shareUrls ?? []).compactMap { $0.absoluteString }))
+        }
+    }
+
+    // MARK: - Sections & data types to query
+
+    func initToggles() {
+        self.healthDataTypes = [
+            HealthDataType(type: QuantityType.height),
+            HealthDataType(type: QuantityType.bodyMass),
+            HealthDataType(type: QuantityType.bodyTemperature),
+            HealthDataType(type: QuantityType.bloodGlucose),
+            HealthDataType(type: QuantityType.oxygenSaturation),
+            HealthDataType(type: QuantityType.respiratoryRate),
+            HealthDataType(type: QuantityType.heartRate),
+            HealthDataType(type: QuantityType.bloodPressureSystolic),
+            HealthDataType(type: QuantityType.bloodPressureDiastolic)
+        ]
+    }
+
+    func toggleAllHealthDataTypes() {
+        let newState = !allToggled
+        for index in healthDataTypes.indices {
+            healthDataTypes[index].isToggled = newState
+        }
+        allToggled = newState
+    }
+
+    func toggleSingleHealthDataType(at index: Int) {
+        healthDataTypes[index].isToggled.toggle()
+        updateAllToggledState()
+    }
+
+    private func updateAllToggledState() {
+        allToggled = healthDataTypes.allSatisfy { $0.isToggled }
+    }
+
+    func updateSectionsAndItemCount() async {
+        do {
+            let fetchDescriptor = FetchDescriptor<HealthDataExportSection>(sortBy: [SortDescriptor(\.typeIdentifier)])
+            let fetchedSections = try await persistenceActor.fetchData(predicate: fetchDescriptor.predicate, sortBy: fetchDescriptor.sortBy)
+
+            let itemCount = try await persistenceActor.count(for: HealthDataExportItem.self)
+
+            await MainActor.run {
+                self.sections = fetchedSections
+                self.totalItemsCount = itemCount
+            }
+        } catch {
+            print("Error fetching data: \(error)")
+        }
+    }
+
+    func toggleSectionExport(_ section: HealthDataExportSection) {
+        Task {
+            section.exportSelected.toggle()
+            do {
+                try await persistenceActor.save()
+            } catch {
+                print("Error saving section toggle: \(error)")
+            }
+        }
+    }
+
+    // MARK: - Timer
+
+    func resetElapsedTime() {
+        importElapsedTime = 0
+        exportElapsedTime = 0
+    }
+
+    func updateElapsedTime() {
+        guard let startTime = backgroundWorkStartTime else {
+            return
         }
 
-        let fileURL = documentsURL.appendingPathComponent(fileName)
-        return try? Data(contentsOf: fileURL)
+        let now = Date()
+        if isExporting {
+            exportElapsedTime = now.timeIntervalSince(startTime)
+            print("Export Elapsed Time Updated: \(exportElapsedTime)")
+        } 
+        else if isLoadingData {
+            importElapsedTime = now.timeIntervalSince(startTime)
+            print("Import Elapsed Time Updated: \(importElapsedTime)")
+        }
     }
 
-    private func splitFilePath() -> (path: String, fileName: String) {
-        let url = URL(fileURLWithPath: downloadFileNameWithPath)
-        let fileName = url.lastPathComponent
-        let path = url.deletingLastPathComponent().path
+    // MARK: - Private
 
-        // Handle the edge case where there's no path component
-        let correctedPath = (path == "." || path.isEmpty) ? "/" : path
-
-        return (correctedPath, fileName)
+    private func finish() {
+        if let urls = shareUrls, !urls.isEmpty {
+            onProceedToFinishTapped()
+        }
+        else if let error = error {
+            onComplete?(.failure(error))
+        }
+        else {
+            error = SDKError.unknown(message: "finishTitleUnsuccessful".localized())
+            showErrorBanner = true
+        }
     }
 }
 
-extension FetchDescriptor {
-    static var filesFetch: FetchDescriptor<HealthDataExportFile> {
-        let descriptor = FetchDescriptor<HealthDataExportFile>(
-            predicate: #Predicate<HealthDataExportFile> { $0.uploadState != 3 && $0.uploadState != 4 },
-            sortBy: [
-                SortDescriptor(\HealthDataExportFile.typeIdentifier)
-            ]
-        )
-        return descriptor
-    }
-}

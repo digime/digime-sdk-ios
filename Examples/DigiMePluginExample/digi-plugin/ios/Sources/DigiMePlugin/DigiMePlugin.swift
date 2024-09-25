@@ -9,6 +9,8 @@
 import Foundation
 import Capacitor
 import UIKit
+import SwiftUI
+import SwiftData
 
 @objc(DigiMePlugin)
 public class DigiMePlugin: CAPPlugin, CAPBridgedPlugin {
@@ -19,62 +21,149 @@ public class DigiMePlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "dismissView", returnType: CAPPluginReturnPromise)
     ]
 
+    private var modelContainer: ModelContainer?
     private weak var presentedViewController: UIViewController?
+    private var currentCall: CAPPluginCall?
+    private var completion: ((Result<[String], Error>) -> Void)?
 
     @objc func fetchHealthData(_ call: CAPPluginCall) {
-        guard let appId = call.getString("appId"),
-              let identifier = call.getString("identifier"),
-              let privateKey = call.getString("privateKey"),
-              let baseURL = call.getString("baseURL"),
-              let storageBaseURL = call.getString("storageBaseURL"),
-              let cloudId = call.getString("cloudId") else {
-
-            call.reject("Missing required parameters")
+        guard let cloudId = call.getString("cloudId") else {
+            call.resolve([
+                "success": false,
+                "error": "Missing required parameters"
+            ])
             return
         }
 
-        print("App ID: \(appId)")
-        print("Identifier: \(identifier)")
-        print("Private Key: \(privateKey.prefix(20))...")
-        print("Base URL: \(baseURL)")
-        print("Storage Base URL: \(storageBaseURL)")
-        print("Cloud ID: \(cloudId)")
+        self.currentCall = call
 
-        print("Preferred Locale Language: \(String(describing: Locale.preferredLanguages.first))")
-        print("Preferred Bundle Language: \(Bundle.main.preferredLocalizations.first ?? "Unknown")")
+        // Initialize ModelContainer
+        do {
+            modelContainer = try ModelContainer(for: HealthDataExportItem.self, HealthDataExportFile.self, HealthDataExportSection.self)
+        } 
+        catch {
+            call.resolve([
+                "success": false,
+                "error": "Failed to initialize ModelContainer: \(error.localizedDescription)"
+            ])
+            return
+        }
 
-        let contract = DigimeContract(name: "",
-                                       appId: appId,
-                                       identifier: identifier,
-                                       privateKey: privateKey,
-                                       baseURL: baseURL,
-                                       storageBaseURL: storageBaseURL)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, let modelContainer = self.modelContainer else {
+                call.resolve([
+                    "success": false,
+                    "error": "ModelContainer not initialized"
+                ])
+                return
+            }
 
-        UserPreferences.shared().setStorageId(identifier: cloudId, for: identifier)
-        UserPreferences.shared().activeContract = contract
-
-        DispatchQueue.main.async {
-            let vc = DigimeMainViewController()
-            vc.modalPresentationStyle = .fullScreen
-            if let rootViewController = self.bridge?.viewController {
-                rootViewController.present(vc, animated: true) {
-                    self.presentedViewController = vc
-                    call.resolve([
-                        "value": "Digi.me Apple Health flow successfully initiated."
+            self.completion = { result in
+                switch result {
+                case .success(let urls):
+                    self.currentCall?.resolve([
+                        "success": true,
+                        "values": urls
+                    ])
+                case .failure(let error):
+                    self.currentCall?.resolve([
+                        "success": false,
+                        "error": error.localizedDescription
                     ])
                 }
-            } 
+
+                self.dismissView(nil)
+            }
+
+            let viewModel = HealthDataViewModel(modelContainer: modelContainer, cloudId: cloudId, onComplete: self.completion)
+            let rootView = ReportDateManagerView(viewModel: viewModel)
+            let hostingController = UIHostingController(rootView: rootView)
+            hostingController.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "close".localized(),
+                style: .plain,
+                target: self,
+                action: #selector(dismissView(_:))
+            )
+
+            let navigationController = UINavigationController(rootViewController: hostingController)
+            navigationController.modalPresentationStyle = .fullScreen
+
+            if let rootViewController = self.bridge?.viewController {
+                rootViewController.present(navigationController, animated: true) {
+                    self.presentedViewController = navigationController
+                }
+            }
             else {
-                call.reject("Unable to get root view controller")
+                call.resolve([
+                    "success": false,
+                    "error": "Unable to get root view controller"
+                ])
             }
         }
     }
 
-    @objc func dismissView(_ call: CAPPluginCall) {
-        DispatchQueue.main.async {
-            self.presentedViewController?.dismiss(animated: true) {
-                call.resolve()
+    public func presentHealthDataView(cloudId: String, from viewController: UIViewController? = nil) {
+        // Initialize ModelContainer
+        do {
+            modelContainer = try ModelContainer(for: HealthDataExportItem.self, HealthDataExportFile.self, HealthDataExportSection.self)
+        }
+        catch {
+            print("Failed to initialize ModelContainer: \(error.localizedDescription)")
+            return
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self, let modelContainer = self.modelContainer else {
+                print("ModelContainer not initialized")
+                return
+            }
+
+            self.completion = { result in
+                switch result {
+                case .success(let urls):
+                    print("Success: \(urls)")
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                }
+
+                self.dismissView(nil)
+            }
+
+            let viewModel = HealthDataViewModel(modelContainer: modelContainer, cloudId: cloudId, onComplete: self.completion)
+            let rootView = ReportDateManagerView(viewModel: viewModel)
+            let hostingController = UIHostingController(rootView: rootView)
+            hostingController.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "close".localized(),
+                style: .plain,
+                target: self,
+                action: #selector(dismissView(_:))
+            )
+
+            let navigationController = UINavigationController(rootViewController: hostingController)
+            navigationController.modalPresentationStyle = .fullScreen
+
+            if let rootViewController = viewController ?? self.bridge?.viewController {
+                rootViewController.present(navigationController, animated: true) {
+                    self.presentedViewController = navigationController
+                }
+            }
+            else {
+                print("Unable to get root view controller")
             }
         }
+    }
+
+    @objc func dismissView(_ sender: Any?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.presentedViewController?.dismiss(animated: true) {
+                if let call = sender as? CAPPluginCall {
+                    call.resolve()
+                }
+            }
+        }
+    }
+
+    @objc func dismissViewFromPlugin(_ call: CAPPluginCall) {
+        dismissView(call)
     }
 }

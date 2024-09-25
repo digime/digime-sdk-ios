@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct DatePickerWithButtons: View {
-	@Binding var showDatePicker: Bool
-	@Binding var showTime: Bool
-	@Binding var date: Date
+    @Binding var showDatePicker: Bool
+    @Binding var showTime: Bool
+    @Binding var date: Date
 
     @State private var tempDate: Date
     private var minDate: Date?
@@ -26,45 +26,45 @@ struct DatePickerWithButtons: View {
         self._tempDate = State(initialValue: date.wrappedValue)
     }
 
-	var body: some View {
-		ZStack {
+    var body: some View {
+        ZStack {
             VStack(alignment: .center) {
                 picker
                     .datePickerStyle(.graphical)
                     .frame(width: 330)
 
-				Divider()
+                Divider()
 
                 HStack(alignment: .top) {
-					Button {
+                    Button {
                         withAnimation {
                             showDatePicker = false
                         }
-					} label: {
+                    } label: {
                         Text("cancel".localized())
                             .foregroundColor(.accentColor)
-					}
+                    }
 
-					Spacer()
+                    Spacer()
 
-					Button {
+                    Button {
                         date = tempDate
                         withAnimation {
                             showDatePicker = false
                         }
-					} label: {
-						Text("save".localized().uppercased())
-							.bold()
+                    } label: {
+                        Text("save".localized().uppercased())
+                            .bold()
                             .foregroundColor(.accentColor)
-					}
-				}
+                    }
+                }
                 .padding(20)
-			}
-			.background(
-				Color(UIColor.tertiarySystemBackground)
-					.cornerRadius(30)
-			)
-		}
+            }
+            .background(
+                Color(UIColor.tertiarySystemBackground)
+                    .cornerRadius(30)
+            )
+        }
         .frame(maxWidth: 380, maxHeight: .infinity, alignment: .center)
         .onAppear {
             tempDate = date

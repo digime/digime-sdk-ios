@@ -8,7 +8,7 @@
 import DigiMeCore
 import Foundation
 
-public enum Metadata: Codable {
+public enum Metadata: Codable, Hashable {
     case string(dictionary: [String: String]?)
     case date(dictionary: [String: Date]?)
     case double(dictionary: [String: Double]?)
@@ -26,7 +26,7 @@ public enum Metadata: Codable {
 }
 
 // MARK: - Metadata: ExpressibleByDictionaryLiteral, Equatable
-extension Metadata: ExpressibleByDictionaryLiteral, Equatable {
+extension Metadata: ExpressibleByDictionaryLiteral {
     public typealias Key = String
     public typealias Value = Any
 
@@ -38,9 +38,8 @@ extension Metadata: ExpressibleByDictionaryLiteral, Equatable {
         
 		do {
             self = try Metadata.make(from: dictionary)
-        }
-		catch {
-            self = [:]
+        } catch {
+            self = .string(dictionary: [:])
         }
     }
 }

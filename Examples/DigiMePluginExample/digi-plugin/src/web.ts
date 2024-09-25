@@ -1,18 +1,25 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { DigiMePlugin } from './definitions';
+import type { DigiMePlugin, DigiMePluginResult } from './definitions';
 
 export class DigiPluginWeb extends WebPlugin implements DigiMePlugin {
     async fetchHealthData(options: {
-    appId: string;
-    identifier: string;
-    privateKey: string;
-    baseURL: string;
-    storageBaseURL: string;
     cloudId: string;
-    }): Promise<{ value: string }> {
+    }): Promise<DigiMePluginResult> {
         console.log('Fetch Health Data', options);
-        return { value: 'Health data fetch initiated (web implementation)' };
+        try {
+            // Simulating a successful response
+            return {
+            success: true,
+            values: ['Health data fetch initiated (web implementation)']
+            };
+        } catch (error) {
+            // Simulating an error response
+            return {
+            success: false,
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+            };
+        }
     }
 
     async dismissView(): Promise<void> {

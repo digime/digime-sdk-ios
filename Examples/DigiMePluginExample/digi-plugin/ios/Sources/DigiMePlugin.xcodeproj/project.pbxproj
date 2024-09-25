@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E6BFF2C2C9306F8004451C6 /* AggregatedHealthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF2B2C9306F8004451C6 /* AggregatedHealthData.swift */; };
+		1E6BFF2E2C930722004451C6 /* AggregationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF2D2C930722004451C6 /* AggregationType.swift */; };
+		1E6BFF312C93075B004451C6 /* HealthDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF2F2C93075B004451C6 /* HealthDataType.swift */; };
+		1E6BFF322C93075B004451C6 /* UploadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF302C93075B004451C6 /* UploadState.swift */; };
+		1E6BFF342C93077F004451C6 /* CombinedBloodPressureStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF332C93077F004451C6 /* CombinedBloodPressureStats.swift */; };
+		1E6BFF362C9307A7004451C6 /* BackgroundSerialPersistenceActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF352C9307A7004451C6 /* BackgroundSerialPersistenceActor.swift */; };
+		1E6BFF3A2C9307C9004451C6 /* JSONCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF372C9307C9004451C6 /* JSONCell.swift */; };
+		1E6BFF3B2C9307C9004451C6 /* JSONTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF382C9307C9004451C6 /* JSONTreeView.swift */; };
+		1E6BFF3D2C9307EC004451C6 /* ModalDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF3C2C9307EC004451C6 /* ModalDialogView.swift */; };
+		1E6BFF3F2C930808004451C6 /* HealthDataToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF3E2C930808004451C6 /* HealthDataToggleView.swift */; };
+		1E6BFF412C93082E004451C6 /* HealthDataProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E6BFF402C93082E004451C6 /* HealthDataProgressView.swift */; };
+		1E6BFF442C931251004451C6 /* Capacitor in Frameworks */ = {isa = PBXBuildFile; productRef = 1E6BFF432C931251004451C6 /* Capacitor */; };
+		1E6BFF462C931251004451C6 /* Cordova in Frameworks */ = {isa = PBXBuildFile; productRef = 1E6BFF452C931251004451C6 /* Cordova */; };
 		1E725B2D2C47E88400B93639 /* BloodDiastolicObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B222C47E88400B93639 /* BloodDiastolicObservationConverter.swift */; };
 		1E725B2E2C47E88400B93639 /* BloodGlucoseObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B232C47E88400B93639 /* BloodGlucoseObservationConverter.swift */; };
 		1E725B2F2C47E88400B93639 /* BloodPressureObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B242C47E88400B93639 /* BloodPressureObservationConverter.swift */; };
@@ -17,7 +30,6 @@
 		1E725B342C47E88400B93639 /* OxygenSaturationObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B292C47E88400B93639 /* OxygenSaturationObservationConverter.swift */; };
 		1E725B352C47E88400B93639 /* RespiratoryRateObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B2A2C47E88400B93639 /* RespiratoryRateObservationConverter.swift */; };
 		1E725B362C47E88400B93639 /* TemperatureObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B2B2C47E88400B93639 /* TemperatureObservationConverter.swift */; };
-		1E725B3C2C47E89700B93639 /* HealthDataPermissionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B372C47E89700B93639 /* HealthDataPermissionType.swift */; };
 		1E725B3D2C47E89700B93639 /* HealthDataExportItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B382C47E89700B93639 /* HealthDataExportItem.swift */; };
 		1E725B3E2C47E89700B93639 /* HealthDataExportSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B392C47E89700B93639 /* HealthDataExportSection.swift */; };
 		1E725B3F2C47E89700B93639 /* FHIRObservationConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E725B3A2C47E89700B93639 /* FHIRObservationConverter.swift */; };
@@ -33,8 +45,6 @@
 		1E9816D22C40662500D8F68A /* HealthDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816832C40662500D8F68A /* HealthDataViewModel.swift */; };
 		1E9816D32C40662500D8F68A /* HealthDataExportItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816852C40662500D8F68A /* HealthDataExportItemsView.swift */; };
 		1E9816D42C40662500D8F68A /* HealthDataPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816862C40662500D8F68A /* HealthDataPermissionView.swift */; };
-		1E9816D52C40662500D8F68A /* HealthDataStorageFileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816872C40662500D8F68A /* HealthDataStorageFileListView.swift */; };
-		1E9816D62C40662500D8F68A /* HealthDataUploadFilesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816882C40662500D8F68A /* HealthDataUploadFilesView.swift */; };
 		1E9816D72C40662500D8F68A /* ReportDateManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816892C40662500D8F68A /* ReportDateManagerView.swift */; };
 		1E9816DB2C40662500D8F68A /* DatePickerWithButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98168F2C40662500D8F68A /* DatePickerWithButtons.swift */; };
 		1E9816DC2C40662500D8F68A /* HighlightedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816902C40662500D8F68A /* HighlightedTextView.swift */; };
@@ -48,26 +58,34 @@
 		1E9816E52C40662500D8F68A /* BackgroundImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98169B2C40662500D8F68A /* BackgroundImporter.swift */; };
 		1E9816E62C40662500D8F68A /* HealthDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E98169C2C40662500D8F68A /* HealthDataService.swift */; };
 		1E9816E72C40662500D8F68A /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E98169E2C40662500D8F68A /* Colors.xcassets */; };
-		1E9816EE2C40662500D8F68A /* ContentView4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816AC2C40662500D8F68A /* ContentView4.swift */; };
-		1E9816EF2C40662500D8F68A /* DigimeMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816AD2C40662500D8F68A /* DigimeMainViewController.swift */; };
 		1E9816F22C40662500D8F68A /* DigiMePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9816B02C40662500D8F68A /* DigiMePlugin.swift */; };
 		1E9816F62C40667300D8F68A /* DigiMeCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1E9816F52C40667300D8F68A /* DigiMeCore */; };
 		1E9816F92C40668600D8F68A /* DigiMeHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1E9816F82C40668600D8F68A /* DigiMeHealthKit */; };
 		1E9816FC2C40669800D8F68A /* DigiMeSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 1E9816FB2C40669800D8F68A /* DigiMeSDK */; };
-		1E9816FF2C406BCF00D8F68A /* Capacitor in Frameworks */ = {isa = PBXBuildFile; productRef = 1E9816FE2C406BCF00D8F68A /* Capacitor */; };
-		1E9817012C406BCF00D8F68A /* Cordova in Frameworks */ = {isa = PBXBuildFile; productRef = 1E9817002C406BCF00D8F68A /* Cordova */; };
-		1E9817042C406C5900D8F68A /* ModelsR5 in Frameworks */ = {isa = PBXBuildFile; productRef = 1E9817032C406C5900D8F68A /* ModelsR5 */; };
-		1E9817082C4074FC00D8F68A /* JSONCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9817062C4074FC00D8F68A /* JSONCell.swift */; };
-		1E9817092C4074FC00D8F68A /* JSONTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9817072C4074FC00D8F68A /* JSONTreeView.swift */; };
 		1E9817132C410FA500D8F68A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E98170D2C410FA500D8F68A /* InfoPlist.strings */; };
 		1E9817142C410FA500D8F68A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E98170F2C410FA500D8F68A /* Localizable.strings */; };
 		1E9817152C410FA500D8F68A /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 1E9817112C410FA500D8F68A /* Localizable.stringsdict */; };
 		1E98171D2C410FB400D8F68A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E9817172C410FB400D8F68A /* InfoPlist.strings */; };
 		1E98171E2C410FB400D8F68A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1E9817192C410FB400D8F68A /* Localizable.strings */; };
 		1E98171F2C410FB400D8F68A /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 1E98171B2C410FB400D8F68A /* Localizable.stringsdict */; };
+		1ECD26642C5FB71D004B706A /* DigiMeCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1ECD26632C5FB71D004B706A /* DigiMeCore */; };
+		1ECD26672C5FB744004B706A /* DigiMeSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 1ECD26662C5FB744004B706A /* DigiMeSDK */; };
+		1ECD266A2C5FB79A004B706A /* DigiMeHealthKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1ECD26692C5FB79A004B706A /* DigiMeHealthKit */; };
+		1ECD266D2C5FB84C004B706A /* ModelsR5 in Frameworks */ = {isa = PBXBuildFile; productRef = 1ECD266C2C5FB84C004B706A /* ModelsR5 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E6BFF2B2C9306F8004451C6 /* AggregatedHealthData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AggregatedHealthData.swift; sourceTree = "<group>"; };
+		1E6BFF2D2C930722004451C6 /* AggregationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AggregationType.swift; sourceTree = "<group>"; };
+		1E6BFF2F2C93075B004451C6 /* HealthDataType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataType.swift; sourceTree = "<group>"; };
+		1E6BFF302C93075B004451C6 /* UploadState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadState.swift; sourceTree = "<group>"; };
+		1E6BFF332C93077F004451C6 /* CombinedBloodPressureStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombinedBloodPressureStats.swift; sourceTree = "<group>"; };
+		1E6BFF352C9307A7004451C6 /* BackgroundSerialPersistenceActor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundSerialPersistenceActor.swift; sourceTree = "<group>"; };
+		1E6BFF372C9307C9004451C6 /* JSONCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONCell.swift; sourceTree = "<group>"; };
+		1E6BFF382C9307C9004451C6 /* JSONTreeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTreeView.swift; sourceTree = "<group>"; };
+		1E6BFF3C2C9307EC004451C6 /* ModalDialogView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalDialogView.swift; sourceTree = "<group>"; };
+		1E6BFF3E2C930808004451C6 /* HealthDataToggleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataToggleView.swift; sourceTree = "<group>"; };
+		1E6BFF402C93082E004451C6 /* HealthDataProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataProgressView.swift; sourceTree = "<group>"; };
 		1E725B222C47E88400B93639 /* BloodDiastolicObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodDiastolicObservationConverter.swift; sourceTree = "<group>"; };
 		1E725B232C47E88400B93639 /* BloodGlucoseObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodGlucoseObservationConverter.swift; sourceTree = "<group>"; };
 		1E725B242C47E88400B93639 /* BloodPressureObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BloodPressureObservationConverter.swift; sourceTree = "<group>"; };
@@ -78,7 +96,6 @@
 		1E725B292C47E88400B93639 /* OxygenSaturationObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OxygenSaturationObservationConverter.swift; sourceTree = "<group>"; };
 		1E725B2A2C47E88400B93639 /* RespiratoryRateObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RespiratoryRateObservationConverter.swift; sourceTree = "<group>"; };
 		1E725B2B2C47E88400B93639 /* TemperatureObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemperatureObservationConverter.swift; sourceTree = "<group>"; };
-		1E725B372C47E89700B93639 /* HealthDataPermissionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataPermissionType.swift; sourceTree = "<group>"; };
 		1E725B382C47E89700B93639 /* HealthDataExportItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataExportItem.swift; sourceTree = "<group>"; };
 		1E725B392C47E89700B93639 /* HealthDataExportSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataExportSection.swift; sourceTree = "<group>"; };
 		1E725B3A2C47E89700B93639 /* FHIRObservationConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FHIRObservationConverter.swift; sourceTree = "<group>"; };
@@ -95,8 +112,6 @@
 		1E9816832C40662500D8F68A /* HealthDataViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataViewModel.swift; sourceTree = "<group>"; };
 		1E9816852C40662500D8F68A /* HealthDataExportItemsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataExportItemsView.swift; sourceTree = "<group>"; };
 		1E9816862C40662500D8F68A /* HealthDataPermissionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataPermissionView.swift; sourceTree = "<group>"; };
-		1E9816872C40662500D8F68A /* HealthDataStorageFileListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataStorageFileListView.swift; sourceTree = "<group>"; };
-		1E9816882C40662500D8F68A /* HealthDataUploadFilesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataUploadFilesView.swift; sourceTree = "<group>"; };
 		1E9816892C40662500D8F68A /* ReportDateManagerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportDateManagerView.swift; sourceTree = "<group>"; };
 		1E98168F2C40662500D8F68A /* DatePickerWithButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerWithButtons.swift; sourceTree = "<group>"; };
 		1E9816902C40662500D8F68A /* HighlightedTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighlightedTextView.swift; sourceTree = "<group>"; };
@@ -110,11 +125,7 @@
 		1E98169B2C40662500D8F68A /* BackgroundImporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundImporter.swift; sourceTree = "<group>"; };
 		1E98169C2C40662500D8F68A /* HealthDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthDataService.swift; sourceTree = "<group>"; };
 		1E98169E2C40662500D8F68A /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
-		1E9816AC2C40662500D8F68A /* ContentView4.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView4.swift; sourceTree = "<group>"; };
-		1E9816AD2C40662500D8F68A /* DigimeMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigimeMainViewController.swift; sourceTree = "<group>"; };
 		1E9816B02C40662500D8F68A /* DigiMePlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigiMePlugin.swift; sourceTree = "<group>"; };
-		1E9817062C4074FC00D8F68A /* JSONCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONCell.swift; path = JSONPreview/JSONCell.swift; sourceTree = "<group>"; };
-		1E9817072C4074FC00D8F68A /* JSONTreeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONTreeView.swift; path = JSONPreview/JSONTreeView.swift; sourceTree = "<group>"; };
 		1E98170C2C410FA500D8F68A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
 		1E98170E2C410FA500D8F68A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		1E9817102C410FA500D8F68A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = Localizable.stringsdict; sourceTree = "<group>"; };
@@ -128,12 +139,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E6BFF462C931251004451C6 /* Cordova in Frameworks */,
 				1E9816F92C40668600D8F68A /* DigiMeHealthKit in Frameworks */,
+				1ECD26672C5FB744004B706A /* DigiMeSDK in Frameworks */,
+				1ECD26642C5FB71D004B706A /* DigiMeCore in Frameworks */,
+				1ECD266D2C5FB84C004B706A /* ModelsR5 in Frameworks */,
+				1ECD266A2C5FB79A004B706A /* DigiMeHealthKit in Frameworks */,
 				1E9816F62C40667300D8F68A /* DigiMeCore in Frameworks */,
 				1E9816FC2C40669800D8F68A /* DigiMeSDK in Frameworks */,
-				1E9817042C406C5900D8F68A /* ModelsR5 in Frameworks */,
-				1E9816FF2C406BCF00D8F68A /* Capacitor in Frameworks */,
-				1E9817012C406BCF00D8F68A /* Cordova in Frameworks */,
+				1E6BFF442C931251004451C6 /* Capacitor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,6 +177,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1E6BFF392C9307C9004451C6 /* JSONPreview */ = {
+			isa = PBXGroup;
+			children = (
+				1E6BFF372C9307C9004451C6 /* JSONCell.swift */,
+				1E6BFF382C9307C9004451C6 /* JSONTreeView.swift */,
+			);
+			path = JSONPreview;
 			sourceTree = "<group>";
 		};
 		1E725B2C2C47E88400B93639 /* Converters */ = {
@@ -196,11 +219,15 @@
 				1E725B3A2C47E89700B93639 /* FHIRObservationConverter.swift */,
 				1E725B2C2C47E88400B93639 /* Converters */,
 				1E9816732C40662500D8F68A /* DigimeContract.swift */,
+				1E6BFF332C93077F004451C6 /* CombinedBloodPressureStats.swift */,
 				1E9816762C40662500D8F68A /* UploadState.swift */,
 				1E725B3B2C47E89700B93639 /* HealthDataExportFile.swift */,
 				1E725B382C47E89700B93639 /* HealthDataExportItem.swift */,
 				1E725B392C47E89700B93639 /* HealthDataExportSection.swift */,
-				1E725B372C47E89700B93639 /* HealthDataPermissionType.swift */,
+				1E6BFF2B2C9306F8004451C6 /* AggregatedHealthData.swift */,
+				1E6BFF2D2C930722004451C6 /* AggregationType.swift */,
+				1E6BFF2F2C93075B004451C6 /* HealthDataType.swift */,
+				1E6BFF302C93075B004451C6 /* UploadState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -235,11 +262,9 @@
 		1E98168A2C40662500D8F68A /* Measurements */ = {
 			isa = PBXGroup;
 			children = (
-				1E9816852C40662500D8F68A /* HealthDataExportItemsView.swift */,
 				1E9816862C40662500D8F68A /* HealthDataPermissionView.swift */,
-				1E9816872C40662500D8F68A /* HealthDataStorageFileListView.swift */,
-				1E9816882C40662500D8F68A /* HealthDataUploadFilesView.swift */,
 				1E9816892C40662500D8F68A /* ReportDateManagerView.swift */,
+				1E9816852C40662500D8F68A /* HealthDataExportItemsView.swift */,
 			);
 			path = Measurements;
 			sourceTree = "<group>";
@@ -247,10 +272,12 @@
 		1E9816972C40662500D8F68A /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				1E9817062C4074FC00D8F68A /* JSONCell.swift */,
-				1E9817072C4074FC00D8F68A /* JSONTreeView.swift */,
+				1E6BFF392C9307C9004451C6 /* JSONPreview */,
 				1E98168F2C40662500D8F68A /* DatePickerWithButtons.swift */,
+				1E6BFF402C93082E004451C6 /* HealthDataProgressView.swift */,
+				1E6BFF3E2C930808004451C6 /* HealthDataToggleView.swift */,
 				1E9816902C40662500D8F68A /* HighlightedTextView.swift */,
+				1E6BFF3C2C9307EC004451C6 /* ModalDialogView.swift */,
 				1E9816912C40662500D8F68A /* NotifyBannerView.swift */,
 				1E9816922C40662500D8F68A /* PDFKitView.swift */,
 				1E9816942C40662500D8F68A /* ShareSheetView.swift */,
@@ -281,6 +308,7 @@
 				1E98169A2C40662500D8F68A /* BackgroundExporter.swift */,
 				1E98169B2C40662500D8F68A /* BackgroundImporter.swift */,
 				1E98169C2C40662500D8F68A /* HealthDataService.swift */,
+				1E6BFF352C9307A7004451C6 /* BackgroundSerialPersistenceActor.swift */,
 			);
 			path = DigiMe;
 			sourceTree = "<group>";
@@ -300,8 +328,6 @@
 			children = (
 				1E98169D2C40662500D8F68A /* DigiMe */,
 				1E9816AB2C40662500D8F68A /* Resources */,
-				1E9816AC2C40662500D8F68A /* ContentView4.swift */,
-				1E9816AD2C40662500D8F68A /* DigimeMainViewController.swift */,
 				1E9816B02C40662500D8F68A /* DigiMePlugin.swift */,
 			);
 			path = DigiMePlugin;
@@ -359,9 +385,12 @@
 				1E9816F52C40667300D8F68A /* DigiMeCore */,
 				1E9816F82C40668600D8F68A /* DigiMeHealthKit */,
 				1E9816FB2C40669800D8F68A /* DigiMeSDK */,
-				1E9816FE2C406BCF00D8F68A /* Capacitor */,
-				1E9817002C406BCF00D8F68A /* Cordova */,
-				1E9817032C406C5900D8F68A /* ModelsR5 */,
+				1ECD26632C5FB71D004B706A /* DigiMeCore */,
+				1ECD26662C5FB744004B706A /* DigiMeSDK */,
+				1ECD26692C5FB79A004B706A /* DigiMeHealthKit */,
+				1ECD266C2C5FB84C004B706A /* ModelsR5 */,
+				1E6BFF432C931251004451C6 /* Capacitor */,
+				1E6BFF452C931251004451C6 /* Cordova */,
 			);
 			productName = DigiMePlugin;
 			productReference = 1E9816582C40660600D8F68A /* DigiMePlugin.framework */;
@@ -392,11 +421,11 @@
 			);
 			mainGroup = 1E00ADC82B19EE9400F09990;
 			packageReferences = (
-				1E9816F42C40667300D8F68A /* XCLocalSwiftPackageReference "../../../../../DigiMeCore" */,
-				1E9816F72C40668600D8F68A /* XCLocalSwiftPackageReference "../../../../../DigiMeHealthKit" */,
-				1E9816FA2C40669800D8F68A /* XCLocalSwiftPackageReference "../../../../../DigiMeSDK" */,
-				1E9816FD2C406BCF00D8F68A /* XCRemoteSwiftPackageReference "capacitor-spm" */,
-				1E9817022C406C5900D8F68A /* XCRemoteSwiftPackageReference "FHIRModels" */,
+				1ECD26622C5FB71D004B706A /* XCLocalSwiftPackageReference "../../../../digime-sdk-ios/DigiMeCore" */,
+				1ECD26652C5FB744004B706A /* XCLocalSwiftPackageReference "../../../../digime-sdk-ios/DigiMeSDK" */,
+				1ECD26682C5FB79A004B706A /* XCLocalSwiftPackageReference "../../../../digime-sdk-ios/DigiMeHealthKit" */,
+				1ECD266B2C5FB84C004B706A /* XCRemoteSwiftPackageReference "FHIRModels" */,
+				1E6BFF422C931251004451C6 /* XCRemoteSwiftPackageReference "capacitor-spm" */,
 			);
 			productRefGroup = 1E00ADD32B19EE9400F09990 /* Products */;
 			projectDirPath = "";
@@ -430,6 +459,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E6BFF3F2C930808004451C6 /* HealthDataToggleView.swift in Sources */,
+				1E6BFF3D2C9307EC004451C6 /* ModalDialogView.swift in Sources */,
+				1E6BFF362C9307A7004451C6 /* BackgroundSerialPersistenceActor.swift in Sources */,
 				1E9816DC2C40662500D8F68A /* HighlightedTextView.swift in Sources */,
 				1E725B352C47E88400B93639 /* RespiratoryRateObservationConverter.swift in Sources */,
 				1E9816DD2C40662500D8F68A /* NotifyBannerView.swift in Sources */,
@@ -438,41 +470,42 @@
 				1E9816DB2C40662500D8F68A /* DatePickerWithButtons.swift in Sources */,
 				1E725B3D2C47E89700B93639 /* HealthDataExportItem.swift in Sources */,
 				1E9816D22C40662500D8F68A /* HealthDataViewModel.swift in Sources */,
+				1E6BFF312C93075B004451C6 /* HealthDataType.swift in Sources */,
 				1E9816CF2C40662500D8F68A /* Previewer.swift in Sources */,
-				1E9816D62C40662500D8F68A /* HealthDataUploadFilesView.swift in Sources */,
 				1E9816D72C40662500D8F68A /* ReportDateManagerView.swift in Sources */,
-				1E9816D52C40662500D8F68A /* HealthDataStorageFileListView.swift in Sources */,
 				1E9816D32C40662500D8F68A /* HealthDataExportItemsView.swift in Sources */,
-				1E725B3C2C47E89700B93639 /* HealthDataPermissionType.swift in Sources */,
+				1E6BFF322C93075B004451C6 /* UploadState.swift in Sources */,
 				1E725B362C47E88400B93639 /* TemperatureObservationConverter.swift in Sources */,
-				1E9816EF2C40662500D8F68A /* DigimeMainViewController.swift in Sources */,
 				1E9816C92C40662500D8F68A /* UploadState.swift in Sources */,
+				1E6BFF342C93077F004451C6 /* CombinedBloodPressureStats.swift in Sources */,
 				1E725B2E2C47E88400B93639 /* BloodGlucoseObservationConverter.swift in Sources */,
 				1E9816CA2C40662500D8F68A /* Contracts.swift in Sources */,
 				1E9816E12C40662500D8F68A /* SourceSelectorButtonStyle.swift in Sources */,
+				1E6BFF412C93082E004451C6 /* HealthDataProgressView.swift in Sources */,
 				1E725B312C47E88400B93639 /* BodyMassObservationConverter.swift in Sources */,
 				1E725B302C47E88400B93639 /* BloodSystolicObservationConverter.swift in Sources */,
 				1E9816D02C40662500D8F68A /* String+Helper.swift in Sources */,
 				1E725B2D2C47E88400B93639 /* BloodDiastolicObservationConverter.swift in Sources */,
+				1E6BFF3B2C9307C9004451C6 /* JSONTreeView.swift in Sources */,
 				1E9816E22C40662500D8F68A /* UploadStateIconView.swift in Sources */,
 				1E725B332C47E88400B93639 /* HeightObservationConverter.swift in Sources */,
 				1E9816E42C40662500D8F68A /* BackgroundExporter.swift in Sources */,
+				1E6BFF2C2C9306F8004451C6 /* AggregatedHealthData.swift in Sources */,
 				1E9816E52C40662500D8F68A /* BackgroundImporter.swift in Sources */,
 				1E725B3F2C47E89700B93639 /* FHIRObservationConverter.swift in Sources */,
 				1E725B3E2C47E89700B93639 /* HealthDataExportSection.swift in Sources */,
 				1E9816DE2C40662500D8F68A /* PDFKitView.swift in Sources */,
 				1E725B322C47E88400B93639 /* HeartRateObservationConverter.swift in Sources */,
-				1E9816EE2C40662500D8F68A /* ContentView4.swift in Sources */,
 				1E725B2F2C47E88400B93639 /* BloodPressureObservationConverter.swift in Sources */,
-				1E9817082C4074FC00D8F68A /* JSONCell.swift in Sources */,
 				1E725B342C47E88400B93639 /* OxygenSaturationObservationConverter.swift in Sources */,
-				1E9817092C4074FC00D8F68A /* JSONTreeView.swift in Sources */,
+				1E6BFF2E2C930722004451C6 /* AggregationType.swift in Sources */,
 				1E725B402C47E89700B93639 /* HealthDataExportFile.swift in Sources */,
 				1E9816E02C40662500D8F68A /* ShareSheetView.swift in Sources */,
 				1E9816D12C40662500D8F68A /* UserPreferences.swift in Sources */,
 				1E9816CE2C40662500D8F68A /* Localization.swift in Sources */,
 				1E9816D42C40662500D8F68A /* HealthDataPermissionView.swift in Sources */,
 				1E9816E62C40662500D8F68A /* HealthDataService.swift in Sources */,
+				1E6BFF3A2C9307C9004451C6 /* JSONCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,22 +780,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		1E9816F42C40667300D8F68A /* XCLocalSwiftPackageReference "../../../../../DigiMeCore" */ = {
+		1ECD26622C5FB71D004B706A /* XCLocalSwiftPackageReference "../../../../digime-sdk-ios/DigiMeCore" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../../DigiMeCore;
+			relativePath = "../../../../digime-sdk-ios/DigiMeCore";
 		};
-		1E9816F72C40668600D8F68A /* XCLocalSwiftPackageReference "../../../../../DigiMeHealthKit" */ = {
+		1ECD26652C5FB744004B706A /* XCLocalSwiftPackageReference "../../../../digime-sdk-ios/DigiMeSDK" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../../DigiMeHealthKit;
+			relativePath = "../../../../digime-sdk-ios/DigiMeSDK";
 		};
-		1E9816FA2C40669800D8F68A /* XCLocalSwiftPackageReference "../../../../../DigiMeSDK" */ = {
+		1ECD26682C5FB79A004B706A /* XCLocalSwiftPackageReference "../../../../digime-sdk-ios/DigiMeHealthKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../../DigiMeSDK;
+			relativePath = "../../../../digime-sdk-ios/DigiMeHealthKit";
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1E9816FD2C406BCF00D8F68A /* XCRemoteSwiftPackageReference "capacitor-spm" */ = {
+		1E6BFF422C931251004451C6 /* XCRemoteSwiftPackageReference "capacitor-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ionic-team/capacitor-spm.git";
 			requirement = {
@@ -770,7 +803,7 @@
 				kind = branch;
 			};
 		};
-		1E9817022C406C5900D8F68A /* XCRemoteSwiftPackageReference "FHIRModels" */ = {
+		1ECD266B2C5FB84C004B706A /* XCRemoteSwiftPackageReference "FHIRModels" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:apple/FHIRModels.git";
 			requirement = {
@@ -781,6 +814,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1E6BFF432C931251004451C6 /* Capacitor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E6BFF422C931251004451C6 /* XCRemoteSwiftPackageReference "capacitor-spm" */;
+			productName = Capacitor;
+		};
+		1E6BFF452C931251004451C6 /* Cordova */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E6BFF422C931251004451C6 /* XCRemoteSwiftPackageReference "capacitor-spm" */;
+			productName = Cordova;
+		};
 		1E9816F52C40667300D8F68A /* DigiMeCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DigiMeCore;
@@ -793,19 +836,21 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = DigiMeSDK;
 		};
-		1E9816FE2C406BCF00D8F68A /* Capacitor */ = {
+		1ECD26632C5FB71D004B706A /* DigiMeCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1E9816FD2C406BCF00D8F68A /* XCRemoteSwiftPackageReference "capacitor-spm" */;
-			productName = Capacitor;
+			productName = DigiMeCore;
 		};
-		1E9817002C406BCF00D8F68A /* Cordova */ = {
+		1ECD26662C5FB744004B706A /* DigiMeSDK */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1E9816FD2C406BCF00D8F68A /* XCRemoteSwiftPackageReference "capacitor-spm" */;
-			productName = Cordova;
+			productName = DigiMeSDK;
 		};
-		1E9817032C406C5900D8F68A /* ModelsR5 */ = {
+		1ECD26692C5FB79A004B706A /* DigiMeHealthKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1E9817022C406C5900D8F68A /* XCRemoteSwiftPackageReference "FHIRModels" */;
+			productName = DigiMeHealthKit;
+		};
+		1ECD266C2C5FB84C004B706A /* ModelsR5 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1ECD266B2C5FB84C004B706A /* XCRemoteSwiftPackageReference "FHIRModels" */;
 			productName = ModelsR5;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -1,5 +1,5 @@
 //
-//  HealthDataPermissionType.swift
+//  HealthDataType.swift
 //  DigiMeSDKExample
 //
 //  Created on 02/04/2024.

@@ -5,7 +5,7 @@
 //  Created on 25.09.20.
 //
 
-
+import CryptoKit
 import HealthKit
 
 public struct ActivitySummary: PayloadIdentifiable {
@@ -21,6 +21,7 @@ public struct ActivitySummary: PayloadIdentifiable {
         public let appleStandHoursUnit: String
     }
 
+    public let id: String
     public let identifier: String
     public let date: String?
     public let harmonized: Harmonized
@@ -35,5 +36,21 @@ public struct ActivitySummary: PayloadIdentifiable {
             .date?
             .formatted(with: Date.iso8601)
         self.harmonized = try activitySummary.harmonize()
+        self.id = Self.generateHashId(identifier: self.identifier, date: self.date, harmonized: self.harmonized)
+    }
+
+    private static func generateHashId(identifier: String, date: String?, harmonized: Harmonized) -> String {
+        let idString = "\(identifier)_\(date ?? "")_\(harmonized.activeEnergyBurned)_\(harmonized.appleExerciseTime)_\(harmonized.appleStandHours)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
     }
 }

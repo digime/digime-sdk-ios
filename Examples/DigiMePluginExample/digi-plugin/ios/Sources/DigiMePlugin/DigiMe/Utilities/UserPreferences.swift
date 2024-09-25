@@ -14,9 +14,7 @@ final class UserPreferences: NSObject {
 	
 	private let userDefaults = UserDefaults.standard
 	private enum Key: String, CaseIterable {
-        case storageId = "kStorageId"
         case readOptions = "kReadOptions"
-        case activeContract = "kActiveContract"
 	}
 	
 	@discardableResult
@@ -27,30 +25,6 @@ final class UserPreferences: NSObject {
 	private static var sharedPreferences: UserPreferences = {
 		return UserPreferences()
 	}()
-
-    // MARK: - Active Contract
-
-    @CodableUserDefault(key: Key.activeContract)
-    var activeContract: DigimeContract?
-
-    // MARK: - Storage
-
-    @CodableUserDefault(key: Key.storageId)
-    private var storageIds: [String: String]?
-
-    func getStorageId(for contractId: String) -> String? {
-        return storageIds?[contractId]
-    }
-
-    func setStorageId(identifier: String, for contractId: String) {
-        var cached = storageIds ?? [:]
-        cached[contractId] = identifier
-        storageIds = cached
-    }
-
-    func clearStorageIds(for contractId: String) {
-        storageIds?[contractId] = nil
-    }
 
     // MARK: - Read Options
     
@@ -74,8 +48,6 @@ final class UserPreferences: NSObject {
     // MARK: - Reset
 
 	func reset() {
-        activeContract = nil
-        storageIds = nil
         readOptions = nil
 	}
 }

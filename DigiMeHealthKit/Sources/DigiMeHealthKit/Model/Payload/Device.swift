@@ -5,9 +5,11 @@
 //  Created on 25.09.20.
 //
 
+import CryptoKit
 import HealthKit
 
 public struct Device: Codable {
+    public let id: String
     public let name: String?
     public let manufacturer: String?
     public let model: String?
@@ -26,6 +28,16 @@ public struct Device: Codable {
         self.softwareVersion = device?.softwareVersion
         self.localIdentifier = device?.localIdentifier
         self.udiDeviceIdentifier = device?.udiDeviceIdentifier
+        self.id = Self.generateHashId(
+            name: self.name,
+            manufacturer: self.manufacturer,
+            model: self.model,
+            hardwareVersion: self.hardwareVersion,
+            firmwareVersion: self.firmwareVersion,
+            softwareVersion: self.softwareVersion,
+            localIdentifier: self.localIdentifier,
+            udiDeviceIdentifier: self.udiDeviceIdentifier
+        )
     }
 
 	public init(name: String?,
@@ -44,6 +56,16 @@ public struct Device: Codable {
         self.softwareVersion = softwareVersion
         self.localIdentifier = localIdentifier
         self.udiDeviceIdentifier = udiDeviceIdentifier
+        self.id = Self.generateHashId(
+            name: name,
+            manufacturer: manufacturer,
+            model: model,
+            hardwareVersion: hardwareVersion,
+            firmwareVersion: firmwareVersion,
+            softwareVersion: softwareVersion,
+            localIdentifier: localIdentifier,
+            udiDeviceIdentifier: udiDeviceIdentifier
+        )
     }
 
     public static func local() -> Device {
@@ -68,6 +90,28 @@ public struct Device: Codable {
 					  localIdentifier: localIdentifier ?? self.localIdentifier,
 					  udiDeviceIdentifier: udiDeviceIdentifier ?? self.udiDeviceIdentifier)
 	}
+
+    private static func generateHashId(name: String?,
+                                       manufacturer: String?,
+                                       model: String?,
+                                       hardwareVersion: String?,
+                                       firmwareVersion: String?,
+                                       softwareVersion: String?,
+                                       localIdentifier: String?,
+                                       udiDeviceIdentifier: String?) -> String {
+        let idString = "\(name ?? "")_\(manufacturer ?? "")_\(model ?? "")_\(hardwareVersion ?? "")_\(firmwareVersion ?? "")_\(softwareVersion ?? "")_\(localIdentifier ?? "")_\(udiDeviceIdentifier ?? "")"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
+    }
 }
 
 // MARK: - Original

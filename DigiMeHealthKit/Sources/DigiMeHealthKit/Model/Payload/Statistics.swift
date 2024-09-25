@@ -5,11 +5,12 @@
 //  Created on 25.09.20.
 //
 
+import CryptoKit
 import DigiMeCore
 import HealthKit
 
 public struct Statistics: PayloadIdentifiable, Sample {
-	public var uid = UUID()
+    public let id: String
 	public let identifier: String
 	public let startTimestamp: Double
 	public let endTimestamp: Double
@@ -27,6 +28,13 @@ public struct Statistics: PayloadIdentifiable, Sample {
 									 min: statistics.minimumQuantity()?.doubleValue(for: unit),
 									 max: statistics.maximumQuantity()?.doubleValue(for: unit),
 									 unit: unit.unitString)
+        self.id = Self.generateHashId(
+            identifier: self.identifier,
+            startTimestamp: self.startTimestamp,
+            endTimestamp: self.endTimestamp,
+            harmonized: self.harmonized,
+            sources: self.sources
+        )
 	}
 	
 	init(statistics: HKStatistics) throws {
@@ -35,6 +43,13 @@ public struct Statistics: PayloadIdentifiable, Sample {
 		self.endTimestamp = statistics.endDate.timeIntervalSince1970
 		self.sources = statistics.sources?.map { Source(source: $0) } ?? []
 		self.harmonized = try statistics.harmonize()
+        self.id = Self.generateHashId(
+            identifier: self.identifier,
+            startTimestamp: self.startTimestamp,
+            endTimestamp: self.endTimestamp,
+            harmonized: self.harmonized,
+            sources: self.sources
+        )
 	}
 	
 	private init(identifier: String, startTimestamp: Double, endTimestamp: Double, harmonized: Harmonized, sources: [Source]) {
@@ -43,6 +58,13 @@ public struct Statistics: PayloadIdentifiable, Sample {
 		self.endTimestamp = endTimestamp
 		self.harmonized = harmonized
 		self.sources = sources
+        self.id = Self.generateHashId(
+            identifier: identifier,
+            startTimestamp: startTimestamp,
+            endTimestamp: endTimestamp,
+            harmonized: harmonized,
+            sources: sources
+        )
 	}
 	
 	public func copyWith(identifier: String? = nil, startTimestamp: Double? = nil, endTimestamp: Double? = nil, harmonized: Harmonized? = nil, sources: [Source]? = nil) -> Statistics {
@@ -71,6 +93,21 @@ public struct Statistics: PayloadIdentifiable, Sample {
 		return Array(Set(array1).union(Set(array2)))
 	}
 	
+    private static func generateHashId(identifier: String, startTimestamp: Double, endTimestamp: Double, harmonized: Harmonized, sources: [Source]) -> String {
+        let idString = "\(identifier)_\(startTimestamp)_\(endTimestamp)_\(harmonized.summary ?? 0)_\(harmonized.average ?? 0)_\(harmonized.recent ?? 0)_\(harmonized.min ?? 0)_\(harmonized.max ?? 0)_\(harmonized.unit)_\(sources.count)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
+    }
+
 	// MARK: - Harmonized
 	
 	public struct Harmonized: Codable {

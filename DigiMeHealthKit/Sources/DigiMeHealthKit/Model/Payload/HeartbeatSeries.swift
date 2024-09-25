@@ -5,11 +5,12 @@
 //  Created on 12.10.21.
 //
 
+import CryptoKit
 import DigiMeCore
 import HealthKit
 
-public struct HeartbeatSeries: PayloadIdentifiable, Sample {
-    public struct Measurement: Codable {
+public struct HeartbeatSeries: PayloadIdentifiable, Sample, Identifiable {
+    public struct Measurement: Codable, Hashable {
         public let timeSinceSeriesStart: Double
         public let precededByGap: Bool
         public let done: Bool
@@ -25,7 +26,7 @@ public struct HeartbeatSeries: PayloadIdentifiable, Sample {
         }
     }
 
-    public struct Harmonized: Codable {
+    public struct Harmonized: Codable, Hashable {
         public let count: Int
         public let measurements: [Measurement]
         public let metadata: Metadata?
@@ -36,16 +37,16 @@ public struct HeartbeatSeries: PayloadIdentifiable, Sample {
             self.metadata = metadata
         }
 
-		public func copyWith(count: Int? = nil,
-							 measurements: [Measurement]? = nil,
-							 metadata: Metadata? = nil) -> Harmonized {
-			return Harmonized(count: count ?? self.count,
-							  measurements: measurements ?? self.measurements,
-							  metadata: metadata ?? self.metadata)
-		}
+        public func copyWith(count: Int? = nil,
+                             measurements: [Measurement]? = nil,
+                             metadata: Metadata? = nil) -> Harmonized {
+            return Harmonized(count: count ?? self.count,
+                              measurements: measurements ?? self.measurements,
+                              metadata: metadata ?? self.metadata)
+        }
     }
 
-    public let uuid: String
+    public let id: String
     public let identifier: String
     public let startTimestamp: Double
     public let endTimestamp: Double
@@ -59,23 +60,59 @@ public struct HeartbeatSeries: PayloadIdentifiable, Sample {
 				device: Device?,
 				sourceRevision: SourceRevision,
 				harmonized: Harmonized) {
-        self.uuid = UUID().uuidString
         self.identifier = identifier
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
         self.device = device
         self.sourceRevision = sourceRevision
         self.harmonized = harmonized
+        self.id = Self.generateHashId(
+            identifier: identifier,
+            startTimestamp: startTimestamp,
+            endTimestamp: endTimestamp,
+            device: device,
+            sourceRevision: sourceRevision,
+            harmonized: harmonized
+        )
     }
 
     init(sample: HKHeartbeatSeriesSample, measurements: [Measurement]) {
-        self.uuid = sample.uuid.uuidString
         self.identifier = sample.sampleType.identifier
         self.startTimestamp = sample.startDate.timeIntervalSince1970
         self.endTimestamp = sample.endDate.timeIntervalSince1970
         self.device = Device(device: sample.device)
         self.sourceRevision = SourceRevision(sourceRevision: sample.sourceRevision)
         self.harmonized = sample.harmonize(measurements: measurements)
+        self.id = Self.generateHashId(
+            identifier: self.identifier,
+            startTimestamp: self.startTimestamp,
+            endTimestamp: self.endTimestamp,
+            device: self.device,
+            sourceRevision: self.sourceRevision,
+            harmonized: self.harmonized
+        )
+    }
+
+    private static func generateHashId(identifier: String,
+                                       startTimestamp: Double,
+                                       endTimestamp: Double,
+                                       device: Device?,
+                                       sourceRevision: SourceRevision,
+                                       harmonized: Harmonized) -> String {
+        let deviceId = device?.id ?? "no_device"
+        let idString = "\(identifier)_\(startTimestamp)_\(endTimestamp)_\(deviceId)_\(sourceRevision.id)_\(harmonized.count)_\(harmonized.measurements.hashValue)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        // Format the hash string as a UUID
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
     }
 }
 

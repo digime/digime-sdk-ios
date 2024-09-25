@@ -241,7 +241,7 @@ struct SourcePickerView: View {
             Toggle("", isOn: $scopeViewModel.isScopeModificationAllowed)
                 .onChange(of: scopeViewModel.isScopeModificationAllowed) { _, value in
                     if !value {
-                        self.reset()
+                        self.resetScopeOptions()
                     }
                 }
         }
@@ -459,7 +459,7 @@ struct SourcePickerView: View {
         .disabled(proceedDisabled)
     }
 
-    private func reset() {
+    private func resetScopeOptions() {
         scopeViewModel.resetSettings()
     }
 

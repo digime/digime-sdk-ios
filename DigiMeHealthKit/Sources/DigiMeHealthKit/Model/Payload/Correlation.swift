@@ -5,6 +5,7 @@
 //  Created on 25.09.20.
 //
 
+import CryptoKit
 import DigiMeCore
 import HealthKit
 
@@ -29,7 +30,7 @@ public struct Correlation: PayloadIdentifiable, Sample {
         }
     }
 
-    public let uuid: String
+    public let id: String
     public let identifier: String
     public let startTimestamp: Double
     public let endTimestamp: Double
@@ -41,12 +42,19 @@ public struct Correlation: PayloadIdentifiable, Sample {
         self.sourceRevision = SourceRevision(
             sourceRevision: correlation.sourceRevision
         )
-        self.uuid = correlation.uuid.uuidString
         self.identifier = correlation.correlationType.identifier
         self.startTimestamp = correlation.startDate.timeIntervalSince1970
         self.endTimestamp = correlation.endDate.timeIntervalSince1970
         self.device = Device(device: correlation.device)
         self.harmonized = try correlation.harmonize()
+        self.id = Self.generateHashId(
+            identifier: self.identifier,
+            startTimestamp: self.startTimestamp,
+            endTimestamp: self.endTimestamp,
+            device: self.device,
+            sourceRevision: self.sourceRevision,
+            harmonized: self.harmonized
+        )
     }
 
 	public init(identifier: String,
@@ -56,13 +64,20 @@ public struct Correlation: PayloadIdentifiable, Sample {
 				sourceRevision: SourceRevision,
 				harmonized: Correlation.Harmonized) {
 		
-        self.uuid = UUID().uuidString
         self.identifier = identifier
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
         self.device = device
         self.sourceRevision = sourceRevision
         self.harmonized = harmonized
+        self.id = Self.generateHashId(
+            identifier: identifier,
+            startTimestamp: startTimestamp,
+            endTimestamp: endTimestamp,
+            device: device,
+            sourceRevision: sourceRevision,
+            harmonized: harmonized
+        )
     }
 
 	public func copyWith(identifier: String? = nil,
@@ -79,6 +94,30 @@ public struct Correlation: PayloadIdentifiable, Sample {
 						   sourceRevision: sourceRevision ?? self.sourceRevision,
 						   harmonized: harmonized ?? self.harmonized)
 	}
+
+    private static func generateHashId(identifier: String,
+                                       startTimestamp: Double,
+                                       endTimestamp: Double,
+                                       device: Device?,
+                                       sourceRevision: SourceRevision,
+                                       harmonized: Harmonized) -> String {
+        let deviceString = device?.id ?? "no_device"
+        let quantitySamplesCount = harmonized.quantitySamples.count
+        let categorySamplesCount = harmonized.categorySamples.count
+
+        let idString = "\(identifier)_\(startTimestamp)_\(endTimestamp)_\(deviceString)_\(sourceRevision.id)_\(quantitySamplesCount)_\(categorySamplesCount)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
+    }
 }
 
 // MARK: - Factory

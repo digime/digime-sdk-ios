@@ -22,32 +22,49 @@ Ensure you have the necessary permissions set up in your iOS app to access Healt
 
 <docgen-index>
 
-fetchHealthData(...)
+* [`fetchHealthData(...)`](#fetchhealthdata)
+* [`dismissView()`](#dismissview)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
 <docgen-api>
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
 ### fetchHealthData(...)
 
 ```typescript
-fetchHealthData(options: {
-  appId: string;
-  identifier: string;
-  privateKey: string;
-  baseURL: string;
-  storageBaseURL: string;
-  cloudId: string;
-}) => Promise<{ value: string; }>
+fetchHealthData(options: { cloudId: string; }) => Promise<DigiMePluginResult>
 ```
 
-Initiates the process to fetch Apple Health data.
+| Param         | Type                              |
+| ------------- | --------------------------------- |
+| **`options`** | <code>{ cloudId: string; }</code> |
 
-**Param** | **Type** | **Description**
---- | --- | ---
-options | `{ appId: string; identifier: string; privateKey: string; baseURL: string; storageBaseURL: string; cloudId: string; }` | Configuration options for data retrieval
+**Returns:** <code>Promise&lt;<a href="#digimepluginresult">DigiMePluginResult</a>&gt;</code>
 
-**Returns:** `Promise<{ value: string; }>`
+--------------------
+
+
+### dismissView()
+
+```typescript
+dismissView() => Promise<void>
+```
+
+--------------------
+
+
+### Interfaces
+
+
+#### DigiMePluginResult
+
+| Prop          | Type                  |
+| ------------- | --------------------- |
+| **`success`** | <code>boolean</code>  |
+| **`values`**  | <code>string[]</code> |
+| **`error`**   | <code>string</code>   |
 
 </docgen-api>
 
@@ -59,11 +76,6 @@ import { DigiPlugin } from 'digi-plugin';
 async function fetchHealthData() {
   try {
     const result = await DigiPlugin.fetchHealthData({
-      appId: "your_app_id",
-      identifier: "your_identifier",
-      privateKey: "your_private_key",
-      baseURL: "your_base_url",
-      storageBaseURL: "your_storage_base_url",
       cloudId: "your_cloud_id"
     });
     console.log('Health data fetch initiated:', result.value);

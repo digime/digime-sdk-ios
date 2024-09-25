@@ -5,12 +5,13 @@
 //  Created on 25.09.20.
 //
 
+import CryptoKit
 import DigiMeCore
 import HealthKit
 
 @available(iOS 14.0, *)
-public struct Electrocardiogram: PayloadIdentifiable, Sample {
-    public struct Harmonized: Codable {
+public struct Electrocardiogram: PayloadIdentifiable, Sample, Identifiable {
+    public struct Harmonized: Codable, Hashable {
         public let averageHeartRate: Double?
         public let averageHeartRateUnit: String
         public let samplingFrequency: Double
@@ -42,8 +43,8 @@ public struct Electrocardiogram: PayloadIdentifiable, Sample {
         }
     }
 	
-    public struct VoltageMeasurement: Codable {
-        public struct Harmonized: Codable {
+    public struct VoltageMeasurement: Codable, Hashable {
+        public struct Harmonized: Codable, Hashable {
             public let value: Double
             public let unit: String
         }
@@ -62,7 +63,7 @@ public struct Electrocardiogram: PayloadIdentifiable, Sample {
         }
     }
 
-    public let uuid: String
+    public let id: String
     public let identifier: String
     public let startTimestamp: Double
     public let endTimestamp: Double
@@ -78,7 +79,6 @@ public struct Electrocardiogram: PayloadIdentifiable, Sample {
 		 sourceRevision: SourceRevision,
 		 numberOfMeasurements: Int,
 		 harmonized: Harmonized) {
-        self.uuid = UUID().uuidString
         self.identifier = identifier
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
@@ -86,10 +86,19 @@ public struct Electrocardiogram: PayloadIdentifiable, Sample {
         self.sourceRevision = sourceRevision
         self.numberOfMeasurements = numberOfMeasurements
         self.harmonized = harmonized
+        self.id = Self.generateHashId(
+            identifier: identifier,
+            startTimestamp: startTimestamp,
+            endTimestamp: endTimestamp,
+            device: device,
+            sourceRevision: sourceRevision,
+            numberOfMeasurements: numberOfMeasurements,
+            harmonized: harmonized
+        )
     }
 
     init(electrocardiogram: HKElectrocardiogram, voltageMeasurements: [Electrocardiogram.VoltageMeasurement]) throws {
-        self.uuid = electrocardiogram.uuid.uuidString
+        self.id = electrocardiogram.uuid.uuidString
         self.identifier = ElectrocardiogramType
             .electrocardiogramType
             .original?
@@ -100,6 +109,28 @@ public struct Electrocardiogram: PayloadIdentifiable, Sample {
         self.numberOfMeasurements = electrocardiogram.numberOfVoltageMeasurements
         self.sourceRevision = SourceRevision(sourceRevision: electrocardiogram.sourceRevision)
         self.harmonized = try electrocardiogram.harmonize(voltageMeasurements: voltageMeasurements)
+    }
+
+    private static func generateHashId(identifier: String,
+                                       startTimestamp: Double,
+                                       endTimestamp: Double,
+                                       device: Device?,
+                                       sourceRevision: SourceRevision,
+                                       numberOfMeasurements: Int,
+                                       harmonized: Harmonized) -> String {
+        let deviceId = device?.id ?? "no_device"
+        let idString = "\(identifier)_\(startTimestamp)_\(endTimestamp)_\(deviceId)_\(sourceRevision.id)_\(numberOfMeasurements)_\(harmonized.hashValue)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
     }
 }
 

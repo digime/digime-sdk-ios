@@ -13,7 +13,7 @@ import ModelsR5
 protocol FHIRObservationConverter {
     var code: String { get }
     var unit: String { get }
-    func convertToObservation(data: Any) -> Observation?
+    func convertToObservation(data: Any, aggregationType: AggregationType) -> Observation?
     func dataConverterType() -> SampleType
     func getCreatedDate(data: Any) -> Date
     func getFormattedValueString(data: Any) -> String

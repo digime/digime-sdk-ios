@@ -5,12 +5,13 @@
 //  Created on 04.10.22.
 //
 
+import CryptoKit
 import DigiMeCore
 import HealthKit
 
 @available(iOS 16.0, *)
-public struct VisionPrescription: PayloadIdentifiable, Sample {
-    public struct PrescriptionType: Codable {
+public struct VisionPrescription: PayloadIdentifiable, Sample, Identifiable {
+    public struct PrescriptionType: Codable, Hashable {
         public let id: Int
         public let detail: String
 
@@ -25,7 +26,7 @@ public struct VisionPrescription: PayloadIdentifiable, Sample {
         }
     }
 
-    public struct Harmonized: Codable {
+    public struct Harmonized: Codable, Hashable {
         public let dateIssuedTimestamp: Double
         public let expirationDateTimestamp: Double?
         public let prescriptionType: PrescriptionType
@@ -39,7 +40,7 @@ public struct VisionPrescription: PayloadIdentifiable, Sample {
         }
     }
 
-    public let uuid: String
+    public let id: String
     public let identifier: String
     public let startTimestamp: Double
     public let endTimestamp: Double
@@ -53,17 +54,24 @@ public struct VisionPrescription: PayloadIdentifiable, Sample {
 		 device: Device?,
 		 sourceRevision: SourceRevision,
 		 harmonized: Harmonized) {
-        self.uuid = UUID().uuidString
         self.identifier = identifier
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
         self.device = device
         self.sourceRevision = sourceRevision
         self.harmonized = harmonized
+        self.id = Self.generateHashId(
+            identifier: identifier,
+            startTimestamp: startTimestamp,
+            endTimestamp: endTimestamp,
+            device: device,
+            sourceRevision: sourceRevision,
+            harmonized: harmonized
+        )
     }
 
     init(visionPrescription: HKVisionPrescription) throws {
-        self.uuid = visionPrescription.uuid.uuidString
+        self.id = visionPrescription.uuid.uuidString
         self.identifier = VisionPrescriptionType
             .visionPrescription
             .original?
@@ -73,6 +81,27 @@ public struct VisionPrescription: PayloadIdentifiable, Sample {
         self.device = Device(device: visionPrescription.device)
         self.sourceRevision = SourceRevision(sourceRevision: visionPrescription.sourceRevision)
         self.harmonized = try visionPrescription.harmonize()
+    }
+
+    private static func generateHashId(identifier: String,
+                                       startTimestamp: Double,
+                                       endTimestamp: Double,
+                                       device: Device?,
+                                       sourceRevision: SourceRevision,
+                                       harmonized: Harmonized) -> String {
+        let deviceId = device?.id ?? "no_device"
+        let idString = "\(identifier)_\(startTimestamp)_\(endTimestamp)_\(deviceId)_\(sourceRevision.id)_\(harmonized.hashValue)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
     }
 }
 

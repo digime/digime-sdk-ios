@@ -1,12 +1,13 @@
-export interface DigiMePlugin {
-    fetchHealthData(options: {
-    appId: string;
-    identifier: string;
-    privateKey: string;
-    baseURL: string;
-    storageBaseURL: string;
-    cloudId: string;
-    }): Promise<{ value: string }>;
+export interface DigiMePluginResult {
+  success: boolean;
+  values?: string[];
+  error?: string;
+}
 
-    dismissView(): Promise<void>;
+export interface DigiMePlugin {
+  fetchHealthData(options: {
+      cloudId: string;
+  }): Promise<DigiMePluginResult>;
+
+  dismissView(): Promise<void>;
 }

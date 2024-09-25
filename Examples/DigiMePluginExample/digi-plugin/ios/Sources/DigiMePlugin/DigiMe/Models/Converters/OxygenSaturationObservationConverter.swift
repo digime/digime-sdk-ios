@@ -13,20 +13,19 @@ import ModelsR5
 import UIKit
 
 struct OxygenSaturationObservationConverter: FHIRObservationConverter {
-    var code: String {
-        return "mmol/L"
-    }
+    let code = "mmol/L"
+    let unit = "%"
 
-    var unit: String {
-        return "%"
-    }
-
-    func convertToObservation(data: Any) -> Observation? {
-        guard let quantityData = data as? DigiMeHealthKit.Quantity else {
+    func convertToObservation(data: Any, aggregationType: AggregationType) -> Observation? {
+        if let data = data as? DigiMeHealthKit.Quantity {
+            return createObservation(data: data)
+        }
+        else if let data = data as? DigiMeHealthKit.Statistics {
+            return createAggregatedBloodOxygenObservation(data: data, aggregationType: aggregationType)
+        }
+        else {
             return nil
         }
-
-        return createObservation(data: quantityData)
     }
 
     func dataConverterType() -> SampleType {
@@ -34,19 +33,27 @@ struct OxygenSaturationObservationConverter: FHIRObservationConverter {
     }
 
     func getCreatedDate(data: Any) -> Date {
-        guard let quantityData = data as? DigiMeHealthKit.Quantity else {
+        if let data = data as? DigiMeHealthKit.Quantity {
+            return Date(timeIntervalSince1970: data.startTimestamp)
+        }
+        else if let data = data as? DigiMeHealthKit.Statistics {
+            return Date(timeIntervalSince1970: data.startTimestamp)
+        }
+        else {
             return Date.date(year: 1970, month: 1, day: 1)
         }
-
-        return Date(timeIntervalSince1970: quantityData.startTimestamp)
     }
 
     func getFormattedValueString(data: Any) -> String {
-        guard let quantityData = data as? DigiMeHealthKit.Quantity else {
+        if let quantityData = data as? DigiMeHealthKit.Quantity {
+            return "\(quantityData.harmonized.value) \(quantityData.harmonized.unit)"
+        }
+        else if let data = data as? DigiMeHealthKit.Statistics {
+            return "MIN \(Int(round(data.harmonized.min ?? 0))), MAX \(Int(round(data.harmonized.max ?? 0))), AVG \(Int(round(data.harmonized.average ?? 0))) \(data.harmonized.unit)"
+        }
+        else {
             return "n/a"
         }
-
-        return "\(quantityData.harmonized.value) \(quantityData.harmonized.unit)"
     }
 
     // MARK: - Private
@@ -57,7 +64,7 @@ struct OxygenSaturationObservationConverter: FHIRObservationConverter {
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Oxygen saturation")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
-        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.id.lowercased())), status: status)
 
         // Create the quantity for the observation value
         let valueQuantity = ModelsR5.Quantity()
@@ -101,5 +108,65 @@ struct OxygenSaturationObservationConverter: FHIRObservationConverter {
         observation.performer = [performer]
         
         return observation
+    }
+
+    private func createAggregatedBloodOxygenObservation(data: DigiMeHealthKit.Statistics, aggregationType: AggregationType) -> Observation? {
+        let minValue = data.harmonized.min ?? 0
+        let maxValue = data.harmonized.max ?? 0
+        let avgValue = data.harmonized.average ?? 0
+
+        let coding = Coding(code: FHIRPrimitive(FHIRString("2708-6")), display: FHIRPrimitive(FHIRString("Oxygen saturation in Arterial blood")), system: FHIRPrimitive(FHIRURI("http://loinc.org")))
+        let code = CodeableConcept(coding: [coding])
+
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.id.lowercased())), status: FHIRPrimitive(ObservationStatus.final))
+
+        let identifier = Identifier(value: FHIRPrimitive(FHIRString("blood-oxygen-summary-\(aggregationType.rawValue)-\(data.id.lowercased())")))
+        observation.identifier = [identifier]
+
+        let categoryCoding = Coding(code: FHIRPrimitive(FHIRString("vital-signs")), display: FHIRPrimitive(FHIRString("Vital Signs")), system: FHIRPrimitive(FHIRURI("http://terminology.hl7.org/CodeSystem/observation-category")))
+        observation.category = [CodeableConcept(coding: [categoryCoding])]
+
+        observation.subject = Reference(display: FHIRPrimitive(FHIRString("Health App Blood Oxygen Observation")), reference: FHIRPrimitive(FHIRString("Patient/healthkit-export")))
+
+        let effectivePeriod = Period(end: FHIRPrimitive(try? DateTime(date: Date(timeIntervalSince1970: data.endTimestamp))), start: FHIRPrimitive(try? DateTime(date: Date(timeIntervalSince1970: data.startTimestamp))))
+        observation.effective = .period(effectivePeriod)
+
+        observation.issued = FHIRPrimitive(try? Instant(date: Date()))
+
+        let valueQuantity = Quantity(code: FHIRPrimitive(FHIRString(self.code)), system: FHIRPrimitive(FHIRURI("http://unitsofmeasure.org")), unit: FHIRPrimitive(FHIRString(self.unit)), value: FHIRPrimitive(FHIRDecimal(floatLiteral: avgValue * 100))) // Convert to percentage
+        observation.value = .quantity(valueQuantity)
+
+        let components: [ObservationComponent] = [
+            createBloodOxygenComponent(code: "Minimum Blood Oxygen", value: minValue),
+            createBloodOxygenComponent(code: "Maximum Blood Oxygen", value: maxValue),
+            createBloodOxygenComponent(code: "Average Blood Oxygen", value: avgValue)
+        ]
+
+        observation.component = components
+
+        let aggregationText: String
+        switch aggregationType {
+        case .daily:
+            aggregationText = "Daily"
+        case .weekly:
+            aggregationText = "Weekly"
+        case .monthly:
+            aggregationText = "Monthly"
+        case .yearly:
+            aggregationText = "Yearly"
+        case .none:
+            aggregationText = ""
+        }
+        code.text = FHIRPrimitive(FHIRString("\(aggregationText) Blood Oxygen Summary".trimmingCharacters(in: .whitespaces)))
+
+        return observation
+    }
+
+    private func createBloodOxygenComponent(code: String, value: Double) -> ObservationComponent {
+        let coding = Coding(code: FHIRPrimitive(FHIRString("2708-6")), display: FHIRPrimitive(FHIRString("Oxygen saturation in Arterial blood")), system: FHIRPrimitive(FHIRURI("http://loinc.org")))
+        let codeableConcept = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString(code)))
+        let quantity = Quantity(code: FHIRPrimitive(FHIRString(self.code)), system: FHIRPrimitive(FHIRURI("http://unitsofmeasure.org")), unit: FHIRPrimitive(FHIRString(self.unit)), value: FHIRPrimitive(FHIRDecimal(floatLiteral: value * 100))) // Convert to percentage
+
+        return ObservationComponent(code: codeableConcept, value: .quantity(quantity))
     }
 }

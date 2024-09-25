@@ -11,43 +11,37 @@ import SwiftData
 
 @Model
 class HealthDataExportItem {
-    var id: UUID
+    @Attribute(.unique) var id: String
     var typeIdentifier: String
     var createdDate: Date
     var stringValue: String
     var parentId: String?
     @Attribute(.externalStorage) var jsonData: Data?
-//    var jsonString: String?
     var isSelected = true
-//    var isPushed = false
 
-    init(typeIdentifier: String, createdDate: Date, stringValue: String, parentId: String? = nil, jsonData: Data? = nil/*, jsonString: String? = nil*/, isSelected: Bool = true/*, isPushed: Bool = false*/) {
-        self.id = UUID()
+    init(id: String, typeIdentifier: String, createdDate: Date, stringValue: String, parentId: String? = nil, jsonData: Data? = nil, isSelected: Bool = true) {
+        self.id = id
         self.typeIdentifier = typeIdentifier
         self.createdDate = createdDate
         self.stringValue = stringValue
         self.parentId = parentId
         self.jsonData = jsonData
-//        self.jsonString = jsonString
         self.isSelected = isSelected
-//        self.isPushed = isPushed
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, typeIdentifier, createdDate, stringValue, parentId, jsonData, /*jsonString,*/ isSelected//, isPushed
+        case id, typeIdentifier, createdDate, stringValue, parentId, jsonData, isSelected
     }
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(UUID.self, forKey: .id)
+        id = try container.decode(String.self, forKey: .id)
         createdDate = try container.decode(Date.self, forKey: .createdDate)
         typeIdentifier = try container.decode(String.self, forKey: .typeIdentifier)
         stringValue = try container.decode(String.self, forKey: .stringValue)
         parentId = try container.decode(String.self, forKey: .parentId)
         jsonData = try container.decodeIfPresent(Data.self, forKey: .jsonData)
-//        jsonString = try container.decodeIfPresent(String.self, forKey: .jsonString)
         isSelected = try container.decode(Bool.self, forKey: .isSelected)
-//        isPushed = try container.decode(Bool.self, forKey: .isPushed)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -58,15 +52,13 @@ class HealthDataExportItem {
         try container.encode(stringValue, forKey: .stringValue)
         try container.encode(parentId, forKey: .parentId)
         try container.encodeIfPresent(jsonData, forKey: .jsonData)
-//        try container.encodeIfPresent(jsonString, forKey: .jsonString)
         try container.encode(isSelected, forKey: .isSelected)
-//        try container.encode(isPushed, forKey: .isPushed)
     }
 }
 
 extension HealthDataExportItem: Identifiable {
     static func == (lhs: HealthDataExportItem, rhs: HealthDataExportItem) -> Bool {
-        return lhs.typeIdentifier == rhs.typeIdentifier
+        return lhs.id == rhs.id
     }
 }
 

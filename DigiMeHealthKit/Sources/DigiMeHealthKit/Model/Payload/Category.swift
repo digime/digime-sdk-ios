@@ -5,11 +5,12 @@
 //  Created on 25.09.20.
 //
 
+import CryptoKit
 import DigiMeCore
 import HealthKit
 
 public struct Category: PayloadIdentifiable, Sample {
-    public struct Harmonized: Codable {
+    public struct Harmonized: Codable, Hashable {
         public let value: Int
         public let description: String
         public let detail: String
@@ -38,7 +39,7 @@ public struct Category: PayloadIdentifiable, Sample {
         }
     }
 
-    public let uuid: String
+    public let id: String
     public let identifier: String
     public let startTimestamp: Double
     public let endTimestamp: Double
@@ -47,7 +48,7 @@ public struct Category: PayloadIdentifiable, Sample {
     public let harmonized: Harmonized
 
     init(categorySample: HKCategorySample) throws {
-        self.uuid = categorySample.uuid.uuidString
+        self.id = categorySample.uuid.uuidString
         self.identifier = categorySample.categoryType.identifier
         self.startTimestamp = categorySample.startDate.timeIntervalSince1970
         self.endTimestamp = categorySample.endDate.timeIntervalSince1970
@@ -63,13 +64,20 @@ public struct Category: PayloadIdentifiable, Sample {
 				sourceRevision: SourceRevision,
 				harmonized: Harmonized) {
 		
-        self.uuid = UUID().uuidString
         self.identifier = identifier
         self.startTimestamp = startTimestamp
         self.endTimestamp = endTimestamp
         self.device = device
         self.sourceRevision = sourceRevision
         self.harmonized = harmonized
+        self.id = Self.generateHashId(
+            identifier: identifier,
+            startTimestamp: startTimestamp,
+            endTimestamp: endTimestamp,
+            device: device,
+            sourceRevision: sourceRevision,
+            harmonized: harmonized
+        )
     }
 
 	public func copyWith(identifier: String? = nil,
@@ -85,6 +93,29 @@ public struct Category: PayloadIdentifiable, Sample {
 						sourceRevision: sourceRevision ?? self.sourceRevision,
 						harmonized: harmonized ?? self.harmonized)
 	}
+
+    private static func generateHashId(
+        identifier: String,
+        startTimestamp: Double,
+        endTimestamp: Double,
+        device: Device?,
+        sourceRevision: SourceRevision,
+        harmonized: Harmonized
+    ) -> String {
+        let deviceId = device?.id ?? "no_device"
+        let idString = "\(identifier)_\(startTimestamp)_\(endTimestamp)_\(deviceId)_\(sourceRevision.id)_\(harmonized.hashValue)"
+        let inputData = Data(idString.utf8)
+        let hashed = SHA256.hash(data: inputData)
+        let hashString = hashed.compactMap { String(format: "%02x", $0) }.joined()
+
+        return String(format: "%@-%@-%@-%@-%@",
+                      String(hashString.prefix(8)),
+                      String(hashString.dropFirst(8).prefix(4)),
+                      String(hashString.dropFirst(12).prefix(4)),
+                      String(hashString.dropFirst(16).prefix(4)),
+                      String(hashString.dropFirst(20).prefix(12))
+        )
+    }
 }
 
 // MARK: - Original
