@@ -29,7 +29,7 @@ class BackgroundImporter {
                 }
 
                 let sectionFetchDescriptor = FetchDescriptor<HealthDataExportSection>(predicate: #Predicate { $0.typeIdentifier == typeIdentifier })
-                var sections = try await persistenceActor.fetchData(predicate: sectionFetchDescriptor.predicate)
+                let sections = try await persistenceActor.fetchData(predicate: sectionFetchDescriptor.predicate)
                 let section = sections.first ?? HealthDataExportSection(typeIdentifier: type.identifier!)
 
                 if sections.isEmpty {

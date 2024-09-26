@@ -13,8 +13,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", branch: "main"),
         .package(url: "https://github.com/apple/FHIRModels.git", branch: "main"),
-        .package(path: "../../digime-sdk-ios/DigiMeSDK"),
-        .package(path: "../../digime-sdk-ios/DigiMeHealthKit")
+        .package(path: "../../../digime-sdk-ios/DigiMeSDK"),
+        .package(path: "../../../digime-sdk-ios/DigiMeHealthKit")
     ],
     targets: [
         .target(
