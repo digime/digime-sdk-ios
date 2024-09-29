@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
 
   s.dependency 'Capacitor'
   s.dependency 'Cordova'
-  s.dependency 'FHIRModels', '~> 0.5.0'
+  s.dependency 'ModelsR5', '~> 0.5.0'
   s.dependency 'DigiMeSDK', '~> 5.0.8'
   s.dependency 'DigiMeHealthKit', '~> 5.0.8'
 
