@@ -16,10 +16,9 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
 
   s.source_files = 'ios/Sources/**/*.{swift,h,m,c,cc,mm,cpp}'
-  s.ios.deployment_target = '13.0'
+  s.ios.deployment_target = '17.0'
 
   s.dependency 'Capacitor'
-  s.dependency 'Cordova'
   s.dependency 'ModelsR5', '~> 0.5.0'
   s.dependency 'DigiMeSDK', '~> 5.0.8'
   s.dependency 'DigiMeHealthKit', '~> 5.0.8'
