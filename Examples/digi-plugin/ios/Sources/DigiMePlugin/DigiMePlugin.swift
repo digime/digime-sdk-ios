@@ -86,6 +86,19 @@ public class DigiMePlugin: CAPPlugin, CAPBridgedPlugin {
             )
 
             let navigationController = UINavigationController(rootViewController: hostingController)
+
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithTransparentBackground()
+            appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.2)
+            appearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterial)
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.label]
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
+
+            navigationController.navigationBar.standardAppearance = appearance
+            navigationController.navigationBar.scrollEdgeAppearance = appearance
+            navigationController.navigationBar.compactAppearance = appearance
+            navigationController.navigationBar.tintColor = .systemBlue
+
             navigationController.modalPresentationStyle = .fullScreen
 
             if let rootViewController = self.bridge?.viewController {
@@ -102,6 +115,7 @@ public class DigiMePlugin: CAPPlugin, CAPBridgedPlugin {
         }
     }
 
+    // Present view from the app delegate directly. Debugging purpose only
     public func presentHealthDataView(cloudId: String, from viewController: UIViewController? = nil) {
         // Initialize ModelContainer
         do {
@@ -140,6 +154,19 @@ public class DigiMePlugin: CAPPlugin, CAPBridgedPlugin {
             )
 
             let navigationController = UINavigationController(rootViewController: hostingController)
+
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithTransparentBackground()
+            appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.2)
+            appearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterial)
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.label]
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
+
+            navigationController.navigationBar.standardAppearance = appearance
+            navigationController.navigationBar.scrollEdgeAppearance = appearance
+            navigationController.navigationBar.compactAppearance = appearance
+            navigationController.navigationBar.tintColor = .systemBlue
+
             navigationController.modalPresentationStyle = .fullScreen
 
             if let rootViewController = viewController ?? self.bridge?.viewController {

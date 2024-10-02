@@ -10,6 +10,7 @@ import Foundation
 
 public class Localization {
     static let module: Bundle = {
+#if SWIFT_PACKAGE
         let bundleName = "DigiPlugin_DigiMePlugin"
 
         let overrides: [URL]
@@ -42,5 +43,8 @@ public class Localization {
             }
         }
         fatalError("unable to find bundle named DigiPlugin_DigiMePlugin")
+#else
+        return Bundle(for: Localization.self)
+#endif
     }()
 }

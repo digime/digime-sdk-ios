@@ -28,7 +28,10 @@ struct HealthDataToggleView: View {
             .labelsHidden()
         }
         .padding(10)
-        .background(RoundedRectangle(cornerRadius: 10).fill(Color(.systemGray6)))
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+            .fill(Color(.systemGray6))
+        )
     }
 }
 

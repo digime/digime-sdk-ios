@@ -43,7 +43,7 @@ class HealthDataViewModel: ObservableObject {
     @Published var totalItemsCount: Int = 0
     @Published var startDate = Date()
     @Published var endDate = Date()
-    @Published var aggregationOption: AggregationType = .daily
+    @Published var aggregationOption: AggregationType = .monthly
 
     var shareUrls: [URL]?
     var modelContainer: ModelContainer

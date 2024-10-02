@@ -12,6 +12,7 @@ import SwiftUI
 import SwiftData
 
 struct HealthDataPermissionView: View {
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject private var viewModel: HealthDataViewModel
     @State private var navigationPath = NavigationPath()
     @State private var updateToggleState = false
@@ -22,38 +23,43 @@ struct HealthDataPermissionView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 10) {
-                Toggle(!viewModel.allToggled ? "turnOnAll".localized() : "turnOffAll".localized(), isOn: Binding(
-                    get: { viewModel.allToggled },
-                    set: { _ in viewModel.toggleAllHealthDataTypes() }
-                ))
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(Color(.systemGray6))
-                        .stroke(Color.accentColor, lineWidth: 2)
-                )
-                .padding(.vertical, 15)
+        ZStack {
+            Color(colorScheme == .dark ? Color.black : Color.white)
+                .edgesIgnoringSafeArea(.all)
 
-                Text("appleHealthDataTypes".localized())
-                    .foregroundColor(.gray)
-                    .textCase(.uppercase)
-
-                ForEach(viewModel.healthDataTypes.indices, id: \.self) { index in
-                    HealthDataToggleView(
-                        healthDataType: viewModel.healthDataTypes[index],
-                        onToggle: {
-                            viewModel.toggleSingleHealthDataType(at: index)
-                        }
+            ScrollView {
+                VStack(alignment: .leading, spacing: 10) {
+                    Toggle(!viewModel.allToggled ? "turnOnAll".localized() : "turnOffAll".localized(), isOn: Binding(
+                        get: { viewModel.allToggled },
+                        set: { _ in viewModel.toggleAllHealthDataTypes() }
+                    ))
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(Color(.systemGray6))
+                            .stroke(Color.accentColor, lineWidth: 2)
                     )
-                }
+                    .padding(.vertical, 15)
 
-                footer
+                    Text("appleHealthDataTypes".localized())
+                        .foregroundColor(.gray)
+                        .textCase(.uppercase)
+
+                    ForEach(viewModel.healthDataTypes.indices, id: \.self) { index in
+                        HealthDataToggleView(
+                            healthDataType: viewModel.healthDataTypes[index],
+                            onToggle: {
+                                viewModel.toggleSingleHealthDataType(at: index)
+                            }
+                        )
+                    }
+
+                    footer
+                }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 20)
+            .scrollIndicators(.hidden)
         }
-        .scrollIndicators(.hidden)
     }
 
     private var footer: some View {

@@ -82,6 +82,7 @@ struct ReportDateManagerView: View {
 
     var body: some View {
         ZStack {
+            Color(UIColor.systemBackground).edgesIgnoringSafeArea([.all])
             NavigationStack(path: $navigationPath) {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 15) {
