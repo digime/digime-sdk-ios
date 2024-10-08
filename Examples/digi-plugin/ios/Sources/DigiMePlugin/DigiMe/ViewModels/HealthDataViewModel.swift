@@ -6,6 +6,7 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import Combine
 import DigiMeCore
 import DigiMeHealthKit
@@ -14,6 +15,7 @@ import Foundation
 import SwiftData
 import SwiftUI
 
+@available(iOS 17.0, *)
 @MainActor
 class HealthDataViewModel: ObservableObject {
     @Published var shareLocally = false
@@ -365,4 +367,5 @@ class HealthDataViewModel: ObservableObject {
         }
     }
 }
+#endif
 

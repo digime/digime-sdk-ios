@@ -6,9 +6,11 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import Foundation
 import SwiftData
 
+@available(iOS 17.0, *)
 @Model
 class HealthDataExportItem {
     @Attribute(.unique) var id: String
@@ -56,14 +58,17 @@ class HealthDataExportItem {
     }
 }
 
+@available(iOS 17.0, *)
 extension HealthDataExportItem: Identifiable {
     static func == (lhs: HealthDataExportItem, rhs: HealthDataExportItem) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
+@available(iOS 17.0, *)
 extension HealthDataExportItem: Comparable {
     static func < (lhs: HealthDataExportItem, rhs: HealthDataExportItem) -> Bool {
         return lhs == rhs
     }
 }
+#endif

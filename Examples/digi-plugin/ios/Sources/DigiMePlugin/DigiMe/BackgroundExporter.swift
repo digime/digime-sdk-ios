@@ -6,12 +6,14 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import DigiMeCore
 import DigiMeHealthKit
 import Foundation
 import SwiftData
 
 /// Export Apple Health data from local database and save it to the app' documents folder
+@available(iOS 17.0, *)
 class BackgroundExporter: ObservableObject {
     private let persistenceActor: BackgroundSerialPersistenceActor
     private var urlsToExport = [URL]()
@@ -193,3 +195,4 @@ class BackgroundExporter: ObservableObject {
         return max(minimumBatchSize, min(maximumBatchSize, dynamicSize))
     }
 }
+#endif

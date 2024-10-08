@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct NotifyBannerView: View {
     var type: NotifyBannerStyle
     var title: String
@@ -55,6 +56,7 @@ struct NotifyBannerView: View {
     }
 }
 
+@available(iOS 17.0, *)
 struct NotifyBannerModifier: ViewModifier {
     @Binding var toast: NotifyBanner?
     @State private var workItem: DispatchWorkItem?
@@ -156,12 +158,14 @@ extension NotifyBannerStyle {
     }
 }
 
+@available(iOS 17.0, *)
 extension View {
     func bannerView(toast: Binding<NotifyBanner?>) -> some View {
         self.modifier(NotifyBannerModifier(toast: toast))
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     VStack {
         NotifyBannerView(

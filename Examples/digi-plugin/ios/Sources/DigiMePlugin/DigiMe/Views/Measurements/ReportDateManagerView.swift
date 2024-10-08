@@ -6,6 +6,7 @@
 //  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import DigiMeCore
 import DigiMeSDK
 import SwiftData
@@ -20,6 +21,7 @@ enum ReportOption {
     case custom
 }
 
+@available(iOS 17.0, *)
 struct ReportDateManagerView: View {
     @StateObject private var viewModel: HealthDataViewModel
     @Environment(\.presentationMode) private var presentationMode
@@ -443,6 +445,7 @@ struct ReportDateManagerView: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     NavigationStack {
         let previewer = try? Previewer()
@@ -450,3 +453,4 @@ struct ReportDateManagerView: View {
         ReportDateManagerView(viewModel: viewModel, navigationPath: .constant(NavigationPath()), startDate: Date(), endDate: Date())
     }
 }
+#endif

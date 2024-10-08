@@ -10,6 +10,7 @@ import SwiftUI
 
 typealias JSON = [String: AnyHashable]
 
+@available(iOS 17.0, *)
 struct JSONTreeView: View {
 	@State private var searchText = ""
 
@@ -107,6 +108,7 @@ extension Array: JSONRepresentable where Element: JSONRepresentable {
 extension JSON: JSONRepresentable {
 }
 
+@available(iOS 17.0, *)
 extension JSONTreeView {
     internal init(_ json: JSONRepresentable, prefix key: String = "", depth: Int = 0) {
         switch json {

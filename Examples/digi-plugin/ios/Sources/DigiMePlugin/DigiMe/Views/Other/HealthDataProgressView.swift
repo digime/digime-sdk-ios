@@ -6,9 +6,11 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import SwiftUI
 import SwiftData
 
+@available(iOS 17.0, *)
 struct HealthDataProgressView: View {
     @ObservedObject private var viewModel: HealthDataViewModel
     @Environment(\.colorScheme) private var colorScheme
@@ -117,3 +119,4 @@ struct HealthDataProgressView: View {
         }
     }
 }
+#endif

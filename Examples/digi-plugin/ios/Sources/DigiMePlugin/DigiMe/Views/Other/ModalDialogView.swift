@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct ModalDialogView: View {
     @Binding var isPresented: Bool
 
@@ -105,6 +106,7 @@ fileprivate struct ContentHeightPreferenceKey: PreferenceKey {
     }
 }
 
+@available(iOS 17.0, *)
 fileprivate struct ModalButtonStyle: ButtonStyle {
     var isDestructive: Bool = false
 
@@ -120,6 +122,7 @@ fileprivate struct ModalButtonStyle: ButtonStyle {
     }
 }
 
+@available(iOS 17.0, *)
 fileprivate struct ModalDialogView_Preview: View {
     @State private var showModal = false
     @State private var messageType: MessageType = .short
@@ -175,6 +178,7 @@ fileprivate struct ModalDialogView_Preview: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     ModalDialogView_Preview()
 }

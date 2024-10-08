@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct JSONCell: View {
 	@Binding var searchQuery: String
 	@State private var isOpen = false

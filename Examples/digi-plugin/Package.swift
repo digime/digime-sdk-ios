@@ -1,10 +1,10 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 5.5
 import PackageDescription
 
 let package = Package(
     name: "DigiPlugin",
     defaultLocalization: "en",
-    platforms: [.iOS(.v17)],
+    platforms: [.iOS(.v13)],
     products: [
         .library(
             name: "DigiPlugin",

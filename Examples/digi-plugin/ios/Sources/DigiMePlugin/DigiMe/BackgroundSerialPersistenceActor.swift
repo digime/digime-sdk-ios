@@ -6,6 +6,7 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import Foundation
 import SwiftData
 
@@ -93,3 +94,4 @@ public actor BackgroundSerialPersistenceActor: ModelActor {
         return list
     }
 }
+#endif

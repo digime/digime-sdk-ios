@@ -6,12 +6,14 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import Combine
 import DigiMeCore
 import DigiMeHealthKit
 import SwiftData
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct HealthDataExportItemsView: View {
     @ObservedObject private var viewModel: HealthDataViewModel
     @Binding private var navigationPath: NavigationPath
@@ -394,6 +396,7 @@ struct HealthDataExportItemsView: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     return NavigationStack {
         let previewer = try? Previewer()
@@ -403,3 +406,4 @@ struct HealthDataExportItemsView: View {
             .modelContainer(previewer!.container)
     }
 }
+#endif

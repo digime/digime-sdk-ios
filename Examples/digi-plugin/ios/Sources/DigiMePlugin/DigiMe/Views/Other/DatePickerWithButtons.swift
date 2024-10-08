@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct DatePickerWithButtons: View {
     @Binding var showDatePicker: Bool
     @Binding var showTime: Bool
@@ -90,6 +91,7 @@ struct DatePickerWithButtons: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     ZStack {
         Color.black.opacity(0.4)

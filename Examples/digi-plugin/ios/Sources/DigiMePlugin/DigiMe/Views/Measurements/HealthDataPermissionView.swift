@@ -6,11 +6,13 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import DigiMeCore
 import DigiMeHealthKit
 import SwiftUI
 import SwiftData
 
+@available(iOS 17.0, *)
 struct HealthDataPermissionView: View {
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject private var viewModel: HealthDataViewModel
@@ -74,6 +76,7 @@ struct HealthDataPermissionView: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     return NavigationStack {
         let previewer = try? Previewer()
@@ -84,3 +87,4 @@ struct HealthDataPermissionView: View {
             .environmentObject(viewModel)
     }
 }
+#endif

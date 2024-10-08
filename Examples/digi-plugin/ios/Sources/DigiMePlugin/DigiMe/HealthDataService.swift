@@ -6,6 +6,7 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import DigiMeCore
 import DigiMeHealthKit
 import DigiMeSDK
@@ -14,6 +15,7 @@ import ModelsR5
 import SwiftData
 import HealthKit
 
+@available(iOS 17.0, *)
 class HealthDataService {
     private let quantityConverters: [QuantityType: FHIRObservationConverter] = [
         .height: HeightObservationConverter(),
@@ -321,3 +323,4 @@ class HealthDataService {
         }
     }
 }
+#endif

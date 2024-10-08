@@ -6,9 +6,11 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import Foundation
 import SwiftData
 
+@available(iOS 17.0, *)
 @Model
 class HealthDataExportFile: Identifiable {
     @Attribute(.unique) var id: UUID
@@ -34,6 +36,7 @@ class HealthDataExportFile: Identifiable {
     }
 }
 
+@available(iOS 17.0, *)
 extension HealthDataExportFile: Equatable {
     static func == (lhs: HealthDataExportFile, rhs: HealthDataExportFile) -> Bool {
         return lhs.typeIdentifier == rhs.typeIdentifier &&
@@ -53,3 +56,4 @@ struct HealthDataExportFileHandler {
     let data: Data
     var uploadState: UploadState
 }
+#endif

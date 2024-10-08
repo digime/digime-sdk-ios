@@ -6,11 +6,13 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import Combine
 import Foundation
 import SwiftData
 import SwiftUI
 
+@available(iOS 17.0, *)
 @Model
 class HealthDataExportSection: Identifiable {
     var id: UUID
@@ -38,14 +40,17 @@ class HealthDataExportSection: Identifiable {
     }
 }
 
+@available(iOS 17.0, *)
 extension HealthDataExportSection: Comparable {
     static func < (lhs: HealthDataExportSection, rhs: HealthDataExportSection) -> Bool {
         return lhs.typeIdentifier < rhs.typeIdentifier
     }
 }
 
+@available(iOS 17.0, *)
 extension HealthDataExportSection: Equatable {
     static func == (lhs: HealthDataExportSection, rhs: HealthDataExportSection) -> Bool {
         return lhs.typeIdentifier == rhs.typeIdentifier
     }
 }
+#endif

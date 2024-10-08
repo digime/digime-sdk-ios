@@ -6,12 +6,14 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import DigiMeCore
 import DigiMeHealthKit
 import Foundation
 import SwiftData
 
 /// Import Apple Health data into local database
+@available(iOS 17.0, *)
 class BackgroundImporter {
     private let persistenceActor: BackgroundSerialPersistenceActor
 
@@ -81,3 +83,4 @@ class BackgroundImporter {
         return max(minimumBatchSize, min(maximumBatchSize, dynamicSize))
     }
 }
+#endif

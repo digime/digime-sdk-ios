@@ -6,10 +6,12 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import DigiMeHealthKit
 import Foundation
 import SwiftData
 
+@available(iOS 17.0, *)
 @MainActor
 struct Previewer {
     let container: ModelContainer
@@ -57,3 +59,4 @@ struct Previewer {
         container.mainContext.insert(file4)
     }
 }
+#endif

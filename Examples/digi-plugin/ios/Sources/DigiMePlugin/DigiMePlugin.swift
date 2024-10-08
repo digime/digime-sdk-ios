@@ -6,12 +6,14 @@
 //  Copyright © 2024 digi.me Limited. All rights reserved.
 //
 
+#if canImport(SwiftData)
 import Foundation
 import Capacitor
 import UIKit
 import SwiftUI
 import SwiftData
 
+@available(iOS 17.0, *)
 @objc(DigiMePlugin)
 public class DigiMePlugin: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "DigiMePlugin"
@@ -194,3 +196,4 @@ public class DigiMePlugin: CAPPlugin, CAPBridgedPlugin {
         dismissView(call)
     }
 }
+#endif

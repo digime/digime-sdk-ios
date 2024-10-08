@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct UploadStateIconView: View {
     var uploadState: UploadState
 
@@ -42,6 +43,7 @@ struct UploadStateIconView: View {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview {
     VStack(alignment: .center, spacing: 20) {
         UploadStateIconView(uploadState: .idle)
