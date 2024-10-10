@@ -114,13 +114,13 @@ struct HealthDataExportItemsView: View {
             showErrorMessage()
             viewModel.showErrorBanner = false
         }
-        .onChange(of: viewModel.showSuccessBanner) { _, newValue in
+        .onChange(of: viewModel.showBanner) { _, newValue in
             guard newValue else {
                 return
             }
 
-            showSuccessMessage()
-            viewModel.showSuccessBanner = false
+            showMessage()
+            viewModel.showBanner = false
         }
         .overlay(
             ModalDialogView(
@@ -385,9 +385,9 @@ struct HealthDataExportItemsView: View {
         }
     }
 
-    private func showSuccessMessage() {
-        if let message = viewModel.successMessage {
-            alert = NotifyBanner(type: .success, title: "success".localized(), message: message, duration: 5)
+    private func showMessage() {
+        if let message = viewModel.notificationMessage {
+            alert = NotifyBanner(type: .info, title: "healthDataImportSummary".localized(), message: message, duration: 5)
         }
     }
 

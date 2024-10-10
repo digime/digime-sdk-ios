@@ -21,7 +21,7 @@ class HealthDataViewModel: ObservableObject {
     @Published var shareLocally = false
     @Published var isLoadingData = false
     @Published var showErrorBanner = false
-    @Published var showSuccessBanner = false
+    @Published var showBanner = false
     @Published var showFinishConfirmationDialog = false
     @Published var exportAutomatically = true
     @Published var allToggled = true
@@ -38,7 +38,7 @@ class HealthDataViewModel: ObservableObject {
     @Published var exportElapsedTime: TimeInterval = 0
     @Published var numberOfExportedFiles: Int = 0
     @Published var error: Error?
-    @Published var successMessage: String?
+    @Published var notificationMessage: String?
     @Published var healthDataTypes: [HealthDataType] = []
     @Published var progressMessage = "importingData".localized()
     @Published var sections: [HealthDataExportSection] = []
@@ -111,7 +111,7 @@ class HealthDataViewModel: ObservableObject {
 
             totalItemsCount = 0
             error = nil
-            successMessage = nil
+            notificationMessage = nil
             importFinished = false
             exportFinished = false
             isExporting = false
@@ -231,7 +231,7 @@ class HealthDataViewModel: ObservableObject {
         isLoadingData = true
 
         error = nil
-        successMessage = nil
+        notificationMessage = nil
         shareUrls = nil
         importFinished = false
         exportFinished = false
@@ -362,8 +362,8 @@ class HealthDataViewModel: ObservableObject {
             onComplete?(.failure(error))
         }
         else {
-            error = SDKError.unknown(message: "finishTitleUnsuccessful".localized())
-            showErrorBanner = true
+            notificationMessage = "finishTitleUnsuccessful".localized()
+            showBanner = true
         }
     }
 }

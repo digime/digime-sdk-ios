@@ -204,11 +204,21 @@ struct ReportDateManagerView: View {
             .onChange(of: selectedOption) { _, _ in
                 updateDates()
             }
-            .onChange(of: viewModel.showErrorBanner) {
+            .onChange(of: viewModel.showErrorBanner) { _, newValue in
+                guard newValue else {
+                    return
+                }
+
                 showErrorMessage()
+                viewModel.showErrorBanner = false
             }
-            .onChange(of: viewModel.showSuccessBanner) {
-                showSuccessMessage()
+            .onChange(of: viewModel.showBanner) { _, newValue in
+                guard newValue else {
+                    return
+                }
+
+                showMessage()
+                viewModel.showBanner = false
             }
             .sheet(isPresented: $viewModel.shareLocally) {
                 ShareSheetView(shareItems: viewModel.shareUrls ?? [])
@@ -429,10 +439,12 @@ struct ReportDateManagerView: View {
         }
     }
 
-    private func showSuccessMessage() {
-        if let message = viewModel.successMessage {
-            alert = NotifyBanner(type: .success, title: "success".localized(), message: message, duration: 5)
+    private func showMessage() {
+        if let message = viewModel.notificationMessage {
+            alert = NotifyBanner(type: .info, title: "healthDataImportSummary".localized(), message: message, duration: 5)
         }
+
+        showProgressView = false
     }
 
     private func showErrorMessage() {
@@ -442,6 +454,8 @@ struct ReportDateManagerView: View {
         else if let message = viewModel.error?.localizedDescription {
             alert = NotifyBanner(type: .error, title: "error".localized(), message: message, duration: 5)
         }
+
+        showProgressView = false
     }
 }
 
