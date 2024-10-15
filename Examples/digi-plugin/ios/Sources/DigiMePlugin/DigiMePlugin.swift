@@ -183,11 +183,12 @@ public class DigiMePlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc func dismissView(_ sender: Any?) {
-        DispatchQueue.main.async { [weak self] in
-            self?.presentedViewController?.dismiss(animated: true) {
-                if let call = sender as? CAPPluginCall {
-                    call.resolve()
-                }
+        DispatchQueue.main.async {
+            if let rootViewController = self.bridge?.viewController {
+                rootViewController.dismiss(animated: true, completion: nil)
+            }
+            else {
+                self.presentedViewController?.dismiss(animated: true, completion: nil)
             }
         }
     }
