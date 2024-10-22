@@ -127,7 +127,7 @@ public class HealthKitFilesDataService: HealthKitFilesDataServiceProtocol {
                 let mapped = MappedFileMetadata(objectCount: month.records.count, objectType: "dailyactivity", serviceGroup: "health & fitness", serviceName: "applehealth")
                 let meta = FileMetadata.mapped(mapped)
                 let jfsFile = File(fileWithId: filename, rawData: jsonData, metadata: meta, updated: updated)
-				let fileListItem = FileListItem(name: filename, objectVersion: "1", updatedDate: updated)
+                let fileListItem = FileListItem(name: filename, updatedDate: updated, objectVersion: "1")
                 files.append(jfsFile)
 				fileListItems.append(fileListItem)
 				fileDownloadHandler?(.success(jfsFile))
