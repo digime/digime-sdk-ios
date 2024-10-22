@@ -1,6 +1,6 @@
 //
 //  VisionPrescriptionType.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 04.10.22.
 //

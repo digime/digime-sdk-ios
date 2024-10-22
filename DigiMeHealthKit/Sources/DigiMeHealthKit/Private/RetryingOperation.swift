@@ -1,6 +1,6 @@
 //
 //  RetryingOperation.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 28/06/2021.
 //  Copyright © 2021 digi.me Limited. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RetryingOperation: AsyncOperation {
+class RetryingOperation: AsyncOperation, @unchecked Sendable {
 
     var exponentialBackoffFactor = 1.5
     var retryCount = 0

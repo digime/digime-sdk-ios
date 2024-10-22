@@ -9,7 +9,7 @@
 import DigiMeCore
 import Foundation
 
-class StorageUploadOperation: RetryingOperation {
+class StorageUploadOperation: RetryingOperation, @unchecked Sendable {
     private let data: Data
     private let configuration: Configuration
     private let storageClient: StorageClient

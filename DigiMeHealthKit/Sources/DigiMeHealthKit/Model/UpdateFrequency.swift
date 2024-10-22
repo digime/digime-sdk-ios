@@ -1,6 +1,6 @@
 //
 //  UpdateFrequency.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 13.11.20.
 //

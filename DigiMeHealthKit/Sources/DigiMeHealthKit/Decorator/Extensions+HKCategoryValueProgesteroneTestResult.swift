@@ -1,14 +1,15 @@
 //
 //  Extensions+HKCategoryValueProgesteroneTestResult.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 04.10.22.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import HealthKit
 
 @available(iOS 15.0, *)
-extension HKCategoryValueProgesteroneTestResult: CustomStringConvertible {
+extension HKCategoryValueProgesteroneTestResult {
     public var description: String {
         "HKCategoryValueProgesteroneTestResult"
     }

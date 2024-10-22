@@ -1,14 +1,15 @@
 //
 //  Extensions+HKCategoryValueEnvironmentalAudioExposureEvent.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 05.09.21.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import HealthKit
 
 @available(iOS 14.0, *)
-extension HKCategoryValueEnvironmentalAudioExposureEvent: CustomStringConvertible {
+extension HKCategoryValueEnvironmentalAudioExposureEvent {
     public var description: String {
         "HKCategoryValueEnvironmentalAudioExposureEvent"
     }

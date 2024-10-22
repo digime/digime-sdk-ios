@@ -9,7 +9,7 @@
 import DigiMeCore
 import Foundation
 
-class FileUploadUnencryptedOperation: RetryingOperation {
+class FileUploadUnencryptedOperation: RetryingOperation, @unchecked Sendable {
 	
 	private let apiClient: APIClient
 	private let data: Data

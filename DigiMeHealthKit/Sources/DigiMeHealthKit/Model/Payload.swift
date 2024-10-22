@@ -1,6 +1,6 @@
 //
 //  Payload.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 15.11.20.
 //

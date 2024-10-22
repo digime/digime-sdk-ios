@@ -1,13 +1,14 @@
 //
 //  Extensions+HKBiologicalSex.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 15.09.20.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import HealthKit
 
-extension HKBiologicalSex: CustomStringConvertible {
+extension HKBiologicalSex {
     public var description: String {
         switch self {
         case .notSet:

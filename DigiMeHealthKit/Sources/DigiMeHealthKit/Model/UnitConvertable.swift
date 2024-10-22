@@ -1,6 +1,6 @@
 //
 //  UnitConvertable.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 16/02/21.
 //

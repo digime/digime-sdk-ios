@@ -9,7 +9,7 @@
 import DigiMeCore
 import Foundation
 
-class LogEventsUploadOperation: RetryingOperation {
+class LogEventsUploadOperation: RetryingOperation, @unchecked Sendable {
 	private let apiClient: APIClient
 	private let jwt: String
 	private let payload: LogEventPayload

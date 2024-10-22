@@ -19,8 +19,6 @@ public struct SourceCountriesRequestCriteria: Codable {
         case id, name, code, json
         case resourceUrl = "resource.url"
         case resourceMimetype = "resource.mimetype"
-        //case resourceResize = "resource.resize"
-        //case resourceType = "resource.type"
     }
 
     public struct Query: Codable {

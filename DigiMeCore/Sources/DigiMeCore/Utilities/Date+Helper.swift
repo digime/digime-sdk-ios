@@ -1,22 +1,12 @@
 //
 //  Date+Helper.swift
-//  DigiMeSDK
+//  DigiMeCore
 //
 //  Created on 17/03/2022.
 //  Copyright © 2022 digi.me Limited. All rights reserved.
 //
 
 import Foundation
-
-extension Date: Strideable {
-    public func distance(to other: Date) -> TimeInterval {
-        return other.timeIntervalSinceReferenceDate - self.timeIntervalSinceReferenceDate
-    }
-
-    public func advanced(by n: TimeInterval) -> Date {
-        return self + n
-    }
-}
 
 public extension Date {
     static func randomDateRange() -> (start: Date, end: Date) {

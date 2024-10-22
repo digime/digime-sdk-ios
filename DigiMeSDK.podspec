@@ -1,4 +1,5 @@
 Pod::Spec.new do |s|
+
     s.name          = "DigiMeSDK"
     s.version       = "5.0.8"
     s.summary       = "digi.me iOS Consent Access SDK"
@@ -9,21 +10,20 @@ Pod::Spec.new do |s|
     s.swift_version = "5.0"
     s.source        = {
         :git => "https://github.com/digime/digime-sdk-ios.git",
-        :branch => "feature/SDK-81",
         :tag => s.version
     }
 
     # Core functionality
     s.subspec 'Core' do |core|
         core.dependency 'DigiMeCore'
-        core.frameworks = "Foundation", "Security", "UIKit", "SafariServices"
+        core.frameworks = "Foundation", "Security"
         core.source_files = "DigiMeSDK/Sources/DigiMeSDK/**/*.swift"
     end
 
     # Core an HealthKit functionality
     s.subspec 'HealthKit' do |healthkit|
         healthkit.dependency 'DigiMeHealthKit'
-        healthkit.frameworks = "Foundation", "Security", "UIKit", "SafariServices"
+        healthkit.frameworks = "Foundation", "CoreLocation", "HealthKit", "Security"
         healthkit.source_files = "DigiMeSDK/Sources/DigiMeSDK/**/*.swift"
     end
 end

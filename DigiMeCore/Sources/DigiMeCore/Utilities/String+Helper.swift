@@ -1,6 +1,6 @@
 //
 //  String+Helper.swift
-//  DigiMeSDK
+//  DigiMeCore
 //
 //  Created on 19/03/2022.
 //  Copyright © 2022 digi.me Limited. All rights reserved.

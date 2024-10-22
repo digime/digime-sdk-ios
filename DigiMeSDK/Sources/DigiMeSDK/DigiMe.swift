@@ -1099,8 +1099,7 @@ public final class DigiMe {
             return nil
         }
 
-        FilePersistentStorage(with: .documentDirectory).store(data: payload, fileName: "\(fileName).uploaded")
-        let route = StorageUploadFileRoute(jwt: jwt, storageId: storageId, applicationId: configuration.appId, fileName: fileName, /*payload: payload,*/ formatedPath: path)
+        let route = StorageUploadFileRoute(jwt: jwt, storageId: storageId, applicationId: configuration.appId, fileName: fileName, formatedPath: path)
         return self.storageClient.makeRequestFileUpload(route, uploadData: payload) { result in
             resultQueue.async {
                 completion(result)

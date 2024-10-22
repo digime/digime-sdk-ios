@@ -9,7 +9,7 @@
 import DigiMeCore
 import Foundation
 
-class FileDownloadOperation: RetryingOperation {
+class FileDownloadOperation: RetryingOperation, @unchecked Sendable {
     
     private let apiClient: APIClient
     private let dataDecryptor: DataDecryptor

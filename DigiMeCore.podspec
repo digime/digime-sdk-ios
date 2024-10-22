@@ -10,11 +10,10 @@ Pod::Spec.new do |s|
     s.swift_version = "5.0"
     s.source       	= {
         :git => "https://github.com/digime/digime-sdk-ios.git",
-        :branch => "feature/SDK-81",
         :tag => s.version
     }
     
     s.source_files 	= "DigiMeCore/Sources/DigiMeCore/**/*.swift"
-    s.frameworks 	= "Foundation", "Security", "UIKit"
+    s.frameworks    = "Foundation", "Security"
 
 end

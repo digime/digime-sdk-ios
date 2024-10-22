@@ -1,8 +1,9 @@
 //
 //  DeviceOnlyServices.swift
-//  DigiMeSDK
+//  DigiMeCore
 //
 //  Created on 09/01/2023.
+//  Copyright © 2023 digi.me Limited. All rights reserved.
 //
 
 import Foundation

@@ -1,6 +1,6 @@
 //
 //  LogEventPayload.swift
-//  DigiMeSDK
+//  DigiMeCore
 //
 //  Created on 11/08/2022.
 //  Copyright © 2022 digi.me Limited. All rights rserved.

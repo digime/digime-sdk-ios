@@ -1,13 +1,14 @@
 //
 //  Extensions+HKCategoryValueCervicalMucusQuality.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 05.09.21.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import HealthKit
 
-extension HKCategoryValueCervicalMucusQuality: CustomStringConvertible {
+extension HKCategoryValueCervicalMucusQuality {
     public var description: String {
         "HKCategoryValueCervicalMucusQuality"
     }

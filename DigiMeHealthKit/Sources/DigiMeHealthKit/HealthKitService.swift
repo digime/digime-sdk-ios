@@ -1,8 +1,9 @@
 //
 //  HealthKitService.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 23.09.20.
+//  Created on 23/09/2020.
+//  Copyright © 2020 digi.me Limited. All rights reserved.
 //
 
 import DigiMeCore
@@ -265,18 +266,6 @@ public class HealthKitService: HealthKitServiceProtocol {
             let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: Double.random(in: 1...10))
             let energy = HKQuantitySample(type: energyType, quantity: energyQuantity, start: start, end: end)
             dataToWrite.append(energy)
-
-            // heart rate
-            let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
-            let heartRateQuantity = HKQuantity(unit: HKUnit.count().unitDivided(by: .minute()), doubleValue: Double.random(in: 1...250))
-            let heartRate = HKQuantitySample(type: heartRateType, quantity: heartRateQuantity, start: start, end: end)
-            dataToWrite.append(heartRate)
-
-            // respiratory rate
-            let respiratoryRateType = HKObjectType.quantityType(forIdentifier: .respiratoryRate)!
-            let respiratoryRateQuantity = HKQuantity(unit: HKUnit.count().unitDivided(by: .minute()), doubleValue: Double.random(in: 1...25))
-            let respiratoryRate = HKQuantitySample(type: respiratoryRateType, quantity: respiratoryRateQuantity, start: start, end: end)
-            dataToWrite.append(respiratoryRate)
 
             counter += 1
         }

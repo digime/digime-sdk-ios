@@ -1,6 +1,6 @@
 //
 //  SourceAccountData.swift
-//  DigiMeSDK
+//  DigiMeCore
 //
 //  Created on 14/07/2023.
 //  Copyright © 2023 digi.me Limited. All rights reserved.

@@ -1,8 +1,9 @@
 //
 //  Extensions+Date.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 14.09.20.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import Foundation

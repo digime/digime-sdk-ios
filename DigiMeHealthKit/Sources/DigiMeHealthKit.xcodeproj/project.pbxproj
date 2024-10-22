@@ -58,7 +58,6 @@
 		1E00B0162B1A739D00F09990 /* Extensions+HKBloodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AFB02B1A739D00F09990 /* Extensions+HKBloodType.swift */; };
 		1E00B0172B1A739D00F09990 /* Extensions+HKStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AFB12B1A739D00F09990 /* Extensions+HKStatistics.swift */; };
 		1E00B0182B1A739D00F09990 /* Extensions+HKWorkoutActivityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AFB22B1A739D00F09990 /* Extensions+HKWorkoutActivityType.swift */; };
-		1E00B0192B1A739D00F09990 /* Extensions+HKCategoryValueAudioExposureEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AFB32B1A739D00F09990 /* Extensions+HKCategoryValueAudioExposureEvent.swift */; };
 		1E00B01A2B1A739D00F09990 /* Extensions+HKActivityMoveMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AFB42B1A739D00F09990 /* Extensions+HKActivityMoveMode.swift */; };
 		1E00B01B2B1A739D00F09990 /* Extensions+HKCategoryValueAppleStandHour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AFB52B1A739D00F09990 /* Extensions+HKCategoryValueAppleStandHour.swift */; };
 		1E00B01C2B1A739D00F09990 /* Extensions+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E00AFB62B1A739D00F09990 /* Extensions+String.swift */; };
@@ -164,7 +163,6 @@
 		1E00AFB02B1A739D00F09990 /* Extensions+HKBloodType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+HKBloodType.swift"; sourceTree = "<group>"; };
 		1E00AFB12B1A739D00F09990 /* Extensions+HKStatistics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+HKStatistics.swift"; sourceTree = "<group>"; };
 		1E00AFB22B1A739D00F09990 /* Extensions+HKWorkoutActivityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+HKWorkoutActivityType.swift"; sourceTree = "<group>"; };
-		1E00AFB32B1A739D00F09990 /* Extensions+HKCategoryValueAudioExposureEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+HKCategoryValueAudioExposureEvent.swift"; sourceTree = "<group>"; };
 		1E00AFB42B1A739D00F09990 /* Extensions+HKActivityMoveMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+HKActivityMoveMode.swift"; sourceTree = "<group>"; };
 		1E00AFB52B1A739D00F09990 /* Extensions+HKCategoryValueAppleStandHour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+HKCategoryValueAppleStandHour.swift"; sourceTree = "<group>"; };
 		1E00AFB62B1A739D00F09990 /* Extensions+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+String.swift"; sourceTree = "<group>"; };
@@ -348,7 +346,6 @@
 				1E00AFB02B1A739D00F09990 /* Extensions+HKBloodType.swift */,
 				1E00AFB12B1A739D00F09990 /* Extensions+HKStatistics.swift */,
 				1E00AFB22B1A739D00F09990 /* Extensions+HKWorkoutActivityType.swift */,
-				1E00AFB32B1A739D00F09990 /* Extensions+HKCategoryValueAudioExposureEvent.swift */,
 				1E00AFB42B1A739D00F09990 /* Extensions+HKActivityMoveMode.swift */,
 				1E00AFB52B1A739D00F09990 /* Extensions+HKCategoryValueAppleStandHour.swift */,
 				1E00AFB62B1A739D00F09990 /* Extensions+String.swift */,
@@ -539,7 +536,6 @@
 				1E00B0452B1A739D00F09990 /* HealthKitReader.swift in Sources */,
 				1E00B04A2B1A739D00F09990 /* HealthKitService.swift in Sources */,
 				1E00B0342B1A739D00F09990 /* Extensions+HKCategoryValueAppleWalkingSteadinessEvent.swift in Sources */,
-				1E00B0192B1A739D00F09990 /* Extensions+HKCategoryValueAudioExposureEvent.swift in Sources */,
 				1E00B0362B1A739D00F09990 /* Extensions+HKCategoryValue.swift in Sources */,
 				1E00B0102B1A739D00F09990 /* HealthKitConfiguration.swift in Sources */,
 				1E00B0432B1A739D00F09990 /* SeriesSampleRetriever.swift in Sources */,

@@ -1,6 +1,6 @@
 //
 //  ApplicationResponse.swift
-//  DigiMeSDK
+//  DigiMeCore
 //
 //  Created on 12/03/2022.
 //  Copyright © 2022 digi.me Limited. All rights reserved.

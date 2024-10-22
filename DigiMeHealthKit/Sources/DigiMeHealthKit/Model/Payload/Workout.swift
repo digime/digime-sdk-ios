@@ -1,6 +1,6 @@
 //
 //  Workout.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 25.09.20.
 //
@@ -188,36 +188,142 @@ extension Workout: Original {
     func asOriginal() throws -> HKWorkout {
         guard let activityType = HKWorkoutActivityType(rawValue: UInt(harmonized.value)) else {
             throw SDKError.invalidType(
-				message: "Workout type: \(harmonized.value) could not be formatted"
+                message: "Workout type: \(harmonized.value) could not be formatted"
             )
         }
-		
-        return HKWorkout(
-            activityType: activityType,
-            start: startTimestamp.asDate,
-            end: endTimestamp.asDate,
-            workoutEvents: try workoutEvents.map { try $0.asOriginal() },
-            totalEnergyBurned: harmonized.totalEnergyBurned != nil
-                ? HKQuantity(
-                    unit: HKUnit.init(from: harmonized.totalEnergyBurnedUnit),
-                    doubleValue: harmonized.totalEnergyBurned!
-                )
-                : nil,
-            totalDistance: harmonized.totalDistance != nil
-                ? HKQuantity(
-                    unit: HKUnit.init(from: harmonized.totalDistanceUnit),
-                    doubleValue: harmonized.totalDistance!
-                )
-                : nil,
-            totalSwimmingStrokeCount: harmonized.totalSwimmingStrokeCount != nil
-                ? HKQuantity(
-                    unit: HKUnit.init(from: harmonized.totalSwimmingStrokeCountUnit),
-                    doubleValue: harmonized.totalSwimmingStrokeCount!
-                )
-                : nil,
-            device: device?.asOriginal(),
-            metadata: harmonized.metadata?.original
-        )
+        
+        if #available(iOS 16.0, *) {
+            // Use HKWorkoutBuilder for iOS 16.0 and later
+            let configuration = HKWorkoutConfiguration()
+            configuration.activityType = activityType
+            
+            let builder = HKWorkoutBuilder(healthStore: HKHealthStore(), configuration: configuration, device: device?.asOriginal())
+            
+            var builderError: Error?
+            
+            // Begin collection
+            builder.beginCollection(withStart: startTimestamp.asDate) { success, error in
+                if let error = error {
+                    builderError = error
+                }
+            }
+            
+            // Add workout events
+            for event in workoutEvents {
+                do {
+                    let originalEvent = try event.asOriginal()
+                    builder.addWorkoutEvents([originalEvent]) { success, error in
+                        if let error = error {
+                            builderError = error
+                        }
+                    }
+                } catch {
+                    builderError = error
+                    break
+                }
+            }
+            
+            // Add quantities if available
+            if let totalEnergyBurned = harmonized.totalEnergyBurned {
+                let quantity = HKQuantity(unit: HKUnit(from: harmonized.totalEnergyBurnedUnit), doubleValue: totalEnergyBurned)
+                let sample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!, quantity: quantity, start: startTimestamp.asDate, end: endTimestamp.asDate)
+                builder.add([sample]) { success, error in
+                    if let error = error {
+                        builderError = error
+                    }
+                }
+            }
+            
+            if let totalDistance = harmonized.totalDistance {
+                let quantity = HKQuantity(unit: HKUnit(from: harmonized.totalDistanceUnit), doubleValue: totalDistance)
+                let sample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!, quantity: quantity, start: startTimestamp.asDate, end: endTimestamp.asDate)
+                builder.add([sample]) { success, error in
+                    if let error = error {
+                        builderError = error
+                    }
+                }
+            }
+            
+            if let totalSwimmingStrokeCount = harmonized.totalSwimmingStrokeCount {
+                let quantity = HKQuantity(unit: HKUnit(from: harmonized.totalSwimmingStrokeCountUnit), doubleValue: totalSwimmingStrokeCount)
+                let sample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .swimmingStrokeCount)!, quantity: quantity, start: startTimestamp.asDate, end: endTimestamp.asDate)
+                builder.add([sample]) { success, error in
+                    if let error = error {
+                        builderError = error
+                    }
+                }
+            }
+            
+            // End collection
+            builder.endCollection(withEnd: endTimestamp.asDate) { success, error in
+                if let error = error {
+                    builderError = error
+                }
+            }
+            
+            // If we encountered any error during the building process, throw it
+            if let builderError = builderError {
+                throw builderError
+            }
+            
+            // Finish workout
+            var workoutResult: HKWorkout?
+            var finishError: Error?
+            builder.finishWorkout { workout, error in
+                if let error = error {
+                    finishError = error
+                } else {
+                    workoutResult = workout
+                }
+            }
+            
+            // Wait for the workout to be finished
+            // Note: In a real-world scenario, you might want to handle this asynchronously
+            while workoutResult == nil && finishError == nil {
+                RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.1))
+            }
+            
+            // If we encountered an error while finishing the workout, throw it
+            if let finishError = finishError {
+                throw finishError
+            }
+            
+            // If we somehow don't have a workout at this point, throw an error
+            guard let finalWorkout = workoutResult else {
+                throw SDKError.invalidValue(message: "Failed to create workout")
+            }
+            
+            return finalWorkout
+            
+        } else {
+            // Fallback for iOS versions prior to 16.0
+            return HKWorkout(
+                activityType: activityType,
+                start: startTimestamp.asDate,
+                end: endTimestamp.asDate,
+                workoutEvents: try workoutEvents.map { try $0.asOriginal() },
+                totalEnergyBurned: harmonized.totalEnergyBurned != nil
+                    ? HKQuantity(
+                        unit: HKUnit(from: harmonized.totalEnergyBurnedUnit),
+                        doubleValue: harmonized.totalEnergyBurned!
+                    )
+                    : nil,
+                totalDistance: harmonized.totalDistance != nil
+                    ? HKQuantity(
+                        unit: HKUnit(from: harmonized.totalDistanceUnit),
+                        doubleValue: harmonized.totalDistance!
+                    )
+                    : nil,
+                totalSwimmingStrokeCount: harmonized.totalSwimmingStrokeCount != nil
+                    ? HKQuantity(
+                        unit: HKUnit(from: harmonized.totalSwimmingStrokeCountUnit),
+                        doubleValue: harmonized.totalSwimmingStrokeCount!
+                    )
+                    : nil,
+                device: device?.asOriginal(),
+                metadata: harmonized.metadata?.original
+            )
+        }
     }
 }
 

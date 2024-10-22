@@ -57,7 +57,7 @@ struct TemperatureObservationConverter: FHIRObservationConverter {
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Body Temperature")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
-        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.id)), status: status)
 
         // Create the quantity for the observation value
         let valueQuantity = ModelsR5.Quantity()

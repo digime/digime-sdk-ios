@@ -1,6 +1,6 @@
 //
 //  ConnectionSecurity.swift
-//  DigiMe
+//  DigiMeCore
 //
 //  Created on 13/04/2023.
 //  Copyright © 2023 digi.me Limited. All rights reserved.

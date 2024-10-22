@@ -1,6 +1,6 @@
 //
 //  Sample.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 14.09.20.
 //

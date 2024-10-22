@@ -1,6 +1,6 @@
 //
 //  HealthKitManager.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 25.09.20.
 //
@@ -44,11 +44,11 @@ public class HealthKitManager {
         }
         var setOfWriteTypes = Set<HKSampleType>()
 		var typesToWrite: [ObjectType] = toWrite
-//#if targetEnvironment(simulator)
-//		if typesToWrite.isEmpty {
-//			typesToWrite.append(contentsOf: FitnessActivityProcessor.defaultTypesToWrite)
-//		}
-//#endif
+#if targetEnvironment(simulator)
+		if typesToWrite.isEmpty {
+			typesToWrite.append(contentsOf: FitnessActivityProcessor.defaultTypesToWrite)
+		}
+#endif
         for type in typesToWrite {
             guard let objectType = type.original as? HKSampleType else {
                 completion(false, SDKError.invalidType(message: "Type \(type) has not HKObjectType representation"))

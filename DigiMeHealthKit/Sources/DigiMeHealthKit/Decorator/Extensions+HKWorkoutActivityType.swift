@@ -1,13 +1,14 @@
 //
 //  Extensions+HKQuantityType.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 01.04.21.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import HealthKit
 
-extension HKWorkoutActivityType: CustomStringConvertible {
+extension HKWorkoutActivityType {
     public var description: String {
         switch self {
         case .americanFootball:

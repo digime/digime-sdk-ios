@@ -85,10 +85,20 @@ struct AppleHealthSummaryView: View {
                                             .foregroundColor(isPressedScope ? .white : .gray)
                                             .font(.footnote)
                                             .onChange(of: scopeViewModel.startDate) { _, newValue in
-                                                scopeViewModel.startDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
+                                                guard let date = newValue else {
+                                                    scopeViewModel.startDateFormatString = ScopeAddView.datePlaceholder
+                                                    return
+                                                }
+                                                
+                                                scopeViewModel.startDateFormatString = scopeViewModel.dateFormatter.string(from: date)
                                             }
                                             .onChange(of: scopeViewModel.endDate) { _, newValue in
-                                                scopeViewModel.endDateFormatString = newValue == nil ? ScopeAddView.datePlaceholder : scopeViewModel.dateFormatter.string(from: newValue!)
+                                                guard let date = newValue else {
+                                                    scopeViewModel.endDateFormatString = ScopeAddView.datePlaceholder
+                                                    return
+                                                }
+                                                
+                                                scopeViewModel.endDateFormatString = scopeViewModel.dateFormatter.string(from: date)
                                             }
 
                                         ScopeObjectTypeIconView(name: "Fitness Activity Summary", size: 30)

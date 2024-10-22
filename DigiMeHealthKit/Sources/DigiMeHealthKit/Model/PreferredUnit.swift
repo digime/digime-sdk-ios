@@ -1,6 +1,6 @@
 //
 //  PreferredUnit.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 16.11.20.
 //

@@ -1,6 +1,6 @@
 //
 //  HealthKitObserver.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 23.09.20.
 //

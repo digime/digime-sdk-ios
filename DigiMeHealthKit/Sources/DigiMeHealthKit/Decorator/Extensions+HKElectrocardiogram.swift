@@ -1,8 +1,9 @@
 //
 //  Extensions+HKElectrocardiogram.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 24.09.20.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import DigiMeCore
@@ -56,7 +57,7 @@ extension HKElectrocardiogram.VoltageMeasurement: Harmonizable {
 // MARK: - CustomStringConvertible
 
 @available(iOS 14.0, *)
-extension HKElectrocardiogram.Classification: CustomStringConvertible {
+extension HKElectrocardiogram.Classification {
     public var description: String {
         switch self {
         case .notSet:
@@ -84,7 +85,7 @@ extension HKElectrocardiogram.Classification: CustomStringConvertible {
 // MARK: - CustomStringConvertible
 
 @available(iOS 14.0, *)
-extension HKElectrocardiogram.SymptomsStatus: CustomStringConvertible {
+extension HKElectrocardiogram.SymptomsStatus {
     public var description: String {
         switch self {
         case .notSet:

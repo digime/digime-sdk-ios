@@ -1,6 +1,6 @@
 //
 //  HealthKitFilesDataService.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 01/04/2022.
 //  Copyright © 2022 digi.me Limited. All rights reserved.

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RetryingOperation: AsyncOperation {
+class RetryingOperation: AsyncOperation, @unchecked Sendable {
 
     var exponentialBackoffFactor = 1.5
     var retryCount = 0

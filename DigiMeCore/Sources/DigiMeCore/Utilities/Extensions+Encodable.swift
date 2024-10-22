@@ -1,8 +1,9 @@
 //
 //  Extensions+Encodable.swift
-//  DigiMeSDK
+//  DigiMeCore
 //
-//  Created on 01.10.20.
+//  Created on 01/10/2020.
+//  Copyright © 2020 digi.me Limited. All rights reserved.
 //
 
 import Foundation

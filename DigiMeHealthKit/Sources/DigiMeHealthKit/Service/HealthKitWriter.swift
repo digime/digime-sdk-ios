@@ -1,6 +1,6 @@
 //
 //  HealthKitWriter.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 24.09.20.
 //
@@ -47,9 +47,42 @@ public class HealthKitWriter {
     public func addCategory(_ samples: [Category], from: Device?, to workout: Workout, completion: @escaping StatusCompletionBlock) {
         do {
             let categorySamples = try samples.map { try $0.asOriginal() }
-            healthStore.add(categorySamples, to: try workout.asOriginal(), completion: completion)
-        }
-		catch {
+            let originalWorkout = try workout.asOriginal()
+            
+            if #available(iOS 17.0, *) {
+                let configuration = HKWorkoutConfiguration()
+                configuration.activityType = originalWorkout.workoutActivityType
+                let builder = HKWorkoutBuilder(healthStore: healthStore, configuration: configuration, device: nil)
+                
+                builder.beginCollection(withStart: originalWorkout.startDate) { success, error in
+                    guard success else {
+                        completion(false, error)
+                        return
+                    }
+                    
+                    builder.add(categorySamples) { success, error in
+                        guard success else {
+                            completion(false, error)
+                            return
+                        }
+                        
+                        builder.endCollection(withEnd: originalWorkout.endDate) { success, error in
+                            guard success else {
+                                completion(false, error)
+                                return
+                            }
+                            
+                            builder.finishWorkout { _, error in
+                                completion(error == nil, error)
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Use deprecated method for iOS versions prior to 17.0
+                healthStore.add(categorySamples, to: originalWorkout, completion: completion)
+            }
+        } catch {
             completion(false, error)
         }
     }
@@ -61,12 +94,45 @@ public class HealthKitWriter {
      - Parameter workout: **Workout** workout
      - Parameter completion: block notifies about operation status
      */
-    public func addQuantitiy(_ samples: [Quantity], from: Device?, to workout: Workout, completion: @escaping StatusCompletionBlock) {
+    public func addQuantity(_ samples: [Quantity], from: Device?, to workout: Workout, completion: @escaping StatusCompletionBlock) {
         do {
             let quantitySamples = try samples.map { try $0.asOriginal() }
-            healthStore.add(quantitySamples, to: try workout.asOriginal(), completion: completion)
-        }
-		catch {
+            let originalWorkout = try workout.asOriginal()
+            
+            if #available(iOS 17.0, *) {
+                let configuration = HKWorkoutConfiguration()
+                configuration.activityType = originalWorkout.workoutActivityType
+                let builder = HKWorkoutBuilder(healthStore: healthStore, configuration: configuration, device: nil)
+                
+                builder.beginCollection(withStart: originalWorkout.startDate) { success, error in
+                    guard success else {
+                        completion(false, error)
+                        return
+                    }
+                    
+                    builder.add(quantitySamples) { success, error in
+                        guard success else {
+                            completion(false, error)
+                            return
+                        }
+                        
+                        builder.endCollection(withEnd: originalWorkout.endDate) { success, error in
+                            guard success else {
+                                completion(false, error)
+                                return
+                            }
+                            
+                            builder.finishWorkout { _, error in
+                                completion(error == nil, error)
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Use deprecated method for iOS versions prior to 17.0
+                healthStore.add(quantitySamples, to: originalWorkout, completion: completion)
+            }
+        } catch {
             completion(false, error)
         }
     }

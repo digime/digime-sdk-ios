@@ -1,6 +1,6 @@
 //
 //  CategoryType.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 05.10.20.
 //
@@ -26,7 +26,6 @@ public enum CategoryType: Int, CaseIterable, SampleType {
     case pregnancy
     case lactation
     case contraceptive
-    case audioExposureEvent
     case environmentalAudioExposureEvent
     case headphoneAudioExposureEvent
     case handwashingEvent
@@ -98,8 +97,6 @@ public enum CategoryType: Int, CaseIterable, SampleType {
             return HKObjectType.categoryType(forIdentifier: .ovulationTestResult)
         case .cervicalMucusQuality:
             return HKObjectType.categoryType(forIdentifier: .cervicalMucusQuality)
-        case .audioExposureEvent:
-			return HKObjectType.categoryType(forIdentifier: .audioExposureEvent)
         case .mindfulSession:
 			return HKObjectType.categoryType(forIdentifier: .mindfulSession)
         case .highHeartRateEvent:

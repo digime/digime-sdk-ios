@@ -1,6 +1,6 @@
 //
 //  Metadata.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 29.10.22.
 //

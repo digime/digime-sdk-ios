@@ -1,8 +1,9 @@
 //
 //  Extensions+HKCategorySample.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 15.09.20.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import DigiMeCore
@@ -16,11 +17,6 @@ extension HKCategorySample: Harmonizable {
         var detail = String()
         let type = try categoryType.parsed()
         switch type {
-        case .audioExposureEvent:
-                if let value = HKCategoryValueAudioExposureEvent(rawValue: value) {
-                    description = value.description
-                    detail = value.detail
-                }
         case .sleepAnalysis:
             if let value = HKCategoryValueSleepAnalysis(rawValue: value) {
                 description = value.description

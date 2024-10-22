@@ -1,6 +1,6 @@
 //
 //  WorkoutRoute.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 24.11.20.
 //

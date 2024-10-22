@@ -15,10 +15,6 @@ struct StorageUploadFileRoute: Route {
     static let method = "POST"
     static let path = "clouds"
 
-//    var requestBody: RequestBody? {
-//        return FilePushBody(data: payload)
-//    }
-
     var pathParameters: [String] {
         return [storageId, "files/apps", applicationId, formatedPath, fileName].compactMap { $0 }
     }
@@ -27,20 +23,11 @@ struct StorageUploadFileRoute: Route {
         ["Authorization": "Bearer " + jwt,
          "contentType": "multipart/form-data"]
     }
-
-//    private struct FilePushBody: RequestBody {
-//        var headers: [String: String] {
-//            [:]
-//        }
-//
-//        var data: Data
-//    }
     
     let jwt: String
     let storageId: String
     let applicationId: String
     let fileName: String
-//    let payload: Data
     let formatedPath: String?
 }
 

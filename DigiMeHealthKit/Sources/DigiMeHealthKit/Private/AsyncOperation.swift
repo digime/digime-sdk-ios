@@ -1,6 +1,6 @@
 //
 //  AsyncOperation.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 28/06/2021.
 //  Copyright © 2021 digi.me Limited. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AsyncOperation: Operation {
+class AsyncOperation: Operation, @unchecked Sendable {
     private let lockQueue = DispatchQueue(label: "me.digi.sdk.asyncoperation", attributes: .concurrent)
     
     override var isAsynchronous: Bool {

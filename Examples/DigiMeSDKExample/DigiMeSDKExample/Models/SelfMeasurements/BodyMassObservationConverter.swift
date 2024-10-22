@@ -56,7 +56,7 @@ struct BodyMassObservationConverter: FHIRObservationConverter {
         let categoryCoding = ModelsR5.Coding(code: "vital-signs", display: "Vital Signs", system: "http://hl7.org/fhir/observation-category")
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Body Weight")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
-        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.id)), status: status)
         let valueQuantity = ModelsR5.Quantity()
         valueQuantity.unit = FHIRPrimitive(FHIRString(data.harmonized.unit))
         valueQuantity.code = FHIRPrimitive(FHIRString(data.harmonized.unit))

@@ -61,7 +61,7 @@ struct BloodPressureObservationConverter: FHIRObservationConverter {
         let code = CodeableConcept(coding: [coding], text: FHIRPrimitive(FHIRString("Blood Pressure")))
         let status = FHIRPrimitive<ObservationStatus>(.final)
 
-        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.uuid)), status: status)
+        let observation = Observation(code: code, id: FHIRPrimitive(FHIRString(data.id)), status: status)
 
         if
             data.harmonized.quantitySamples.count == 2,

@@ -1,14 +1,15 @@
 //
 //  Extensions+HKCategoryValueAppleWalkingSteadinessEvent.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 04.10.22.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import HealthKit
 
 @available(iOS 15.0, *)
-extension HKCategoryValueAppleWalkingSteadinessEvent: CustomStringConvertible {
+extension HKCategoryValueAppleWalkingSteadinessEvent {
     public var description: String {
         "HKCategoryValueAppleWalkingSteadinessEvent"
     }

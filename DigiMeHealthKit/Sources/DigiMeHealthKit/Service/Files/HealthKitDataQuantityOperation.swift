@@ -1,6 +1,6 @@
 //
 //  HealthKitDataQuantityOperation.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 31/03/2022.
 //  Copyright © 2022 digi.me Limited. All rights reserved.
@@ -15,7 +15,7 @@ public struct HealthDataOperationResult: Codable {
     public var data: [String: [FitnessActivitySummary]]
 }
 
-class HealthKitAccountDataQuantityOperation: RetryingOperation {
+class HealthKitAccountDataQuantityOperation: RetryingOperation, @unchecked Sendable {
     var operationCompletion: ((Result<HealthDataOperationResult, SDKError>) -> Void)?
     
     private let startDate: Date

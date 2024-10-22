@@ -1,6 +1,6 @@
 //
 //  ElectrocardiogramType.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 05.10.20.
 //

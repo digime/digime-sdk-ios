@@ -1,6 +1,6 @@
 //
 //  HeartbeatSeries.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 12.10.21.
 //

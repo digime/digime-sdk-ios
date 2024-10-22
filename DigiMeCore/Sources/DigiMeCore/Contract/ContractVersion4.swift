@@ -1,6 +1,6 @@
 //
 //  ContractVersion4.swift
-//  DigiMeSDK
+//  DigiMeCore
 //
 //  Created on 11/11/2019.
 //  Copyright © 2019 digi.me Limited. All rights reserved.

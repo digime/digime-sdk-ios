@@ -1,14 +1,15 @@
 //
 //  Extensions+HKActivityMoveMode.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 27.01.21.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import HealthKit
 
 @available(iOS 14.0, *)
-extension HKActivityMoveMode: CustomStringConvertible {
+extension HKActivityMoveMode {
     public var description: String {
         switch self {
         case .activeEnergy:

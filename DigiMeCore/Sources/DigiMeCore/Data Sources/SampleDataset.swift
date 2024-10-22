@@ -1,6 +1,6 @@
 //
 //  SampleDataset.swift
-//  DigiMeSDK
+//  DigiMeCore
 //
 //  Created on 07/11/2023.
 //  Copyright © 2023 digi.me Limited. All rights reserved.

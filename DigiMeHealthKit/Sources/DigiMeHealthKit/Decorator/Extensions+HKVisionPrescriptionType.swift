@@ -1,14 +1,15 @@
 //
 //  Extensions+HKVisionPrescriptionType.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
-//  Created on 04.10.22.
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
 //
 
 import HealthKit
 
 @available(iOS 16.0, *)
-extension HKVisionPrescriptionType: CustomStringConvertible {
+extension HKVisionPrescriptionType {
     public var description: String {
         "HKVisionPrescriptionType"
     }

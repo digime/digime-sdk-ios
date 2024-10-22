@@ -1,6 +1,6 @@
 //
 //  ElectrocardiogramRetriever.swift
-//  DigiMeSDK
+//  DigiMeHealthKit
 //
 //  Created on 21.10.20.
 //
