@@ -1,6 +1,6 @@
-theme: fullwidth
+theme: apple
 readme: README.md
-documentation: Documentation/guides/*md
+documentation: Sources/DigiMeSDK/DigiMeSDK.docc/*md
 output: docs
 docset_path: docsets/.docset
 clean: true
@@ -16,4 +16,4 @@ build_tool_arguments:
   - -sdk
   - iphoneos
   - -destination
-  - 'platform=iOS Simulator,OS=latest,name=iPhone 14 Pro'
+  - 'platform=iOS Simulator,name=iPhone 14 Pro'

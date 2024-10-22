@@ -6,8 +6,8 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
-import SVProgressHUD
 import UIKit
 
 class OnboardingCoordinator: NSObject, ActivityCoordinating {
@@ -53,11 +53,6 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
     }
     
     func startConsentRequest() {
-        
-        SVProgressHUD.setDefaultMaskType(.black)
-        SVProgressHUD.show(withStatus: "Authorizing...")
-        SVProgressHUD.setContainerView(navigationController.topViewController?.view)
-        
         authorize()
     }
     
@@ -69,7 +64,6 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
             if let error = error {
                 print("digi.me authorization failed with error: \(error)")
                 DispatchQueue.main.async {
-                    SVProgressHUD.dismiss()
                     self.goBack()
                 }
                 
@@ -80,7 +74,6 @@ extension OnboardingCoordinator: ConsentRequestCoordinatingDelegate {
             importing.digimeService = self.digimeService
             self.childCoordinators.append(importing)
             DispatchQueue.main.async {
-                SVProgressHUD.dismiss()
                 importing.begin()
                 self.cache.setConsentDate(consentDate: Date())
             }

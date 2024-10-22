@@ -6,6 +6,7 @@
 //  Copyright © 2018 digi.me. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import Foundation
 
@@ -34,11 +35,12 @@ class ImportRepository: NSObject {
         return orderedGenreSummaries(for: genresCounts)
     }
     var files = [File]()
-    var accounts = [SourceAccount]()
+    var accounts = [SourceAccountData]()
     weak var delegate: ImportRepositoryDelegate?
     
     func process(file: File) {
         files.append(file)
+        FilePersistentStorage(with: .documentDirectory).store(data: file.data, fileName: file.identifier)
         
         let metadata: MappedFileMetadata? = {
             switch file.metadata {
@@ -67,20 +69,20 @@ class ImportRepository: NSObject {
         }
     }
     
-    func process(accountsInfo: AccountsInfo) {
-        accounts = accountsInfo.accounts
+    func process(accountsInfo: [SourceAccountData]) {
+        accounts = accountsInfo
         
         if let accountsData = try? JSONEncoder().encode(accounts) {
-            PersistentStorage.shared.store(data: accountsData, fileName: "accounts.json")
+            FilePersistentStorage(with: .documentDirectory).store(data: accountsData, fileName: "accounts.json")
         }
     }
     
-    func genreSummariesForAccounts(_ filteredAccounts: [SourceAccount]) -> [GenreSummary] {
+    func genreSummariesForAccounts(_ filteredAccounts: [SourceAccountData]) -> [GenreSummary] {
         if accounts.count == filteredAccounts.count {
             return allOrderedGenreSummaries
         }
         
-        let accountIdentifiers = filteredAccounts.compactMap { $0.identifier }
+        let accountIdentifiers = filteredAccounts.compactMap { $0.id }
         if accountIdentifiers.isEmpty {
             return []
         }

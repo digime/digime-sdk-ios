@@ -18,6 +18,8 @@ class AccountsViewController: UIViewController, Storyboarded {
     static var storyboardName = "Analysis"
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+
     var presenter: AccountSelectionPresenter!
     
     private enum Section: Int {
@@ -29,6 +31,16 @@ class AccountsViewController: UIViewController, Storyboarded {
         
         let headerNib = UINib.init(nibName: "StartOverFooterView", bundle: Bundle.main)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "StartOverFooterView")
+    }
+    
+    func hideActivityIndicator() {
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = true
+    }
+    
+    func startActivityIndicator() {
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.startAnimating()
     }
 }
 

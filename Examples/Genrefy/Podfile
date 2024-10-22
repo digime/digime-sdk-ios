@@ -1,9 +1,15 @@
 platform :ios, '13.0'
+
+install! 'cocoapods',
+    :generate_multiple_pod_projects => true,
+    :incremental_installation => true
+
 use_frameworks!
+use_modular_headers!
+
+source 'https://cdn.cocoapods.org/'
 
 target 'Genrefy' do
-    pod 'Kingfisher'
-    pod 'SVProgressHUD'
-		pod 'DigiMeSDK', :path => '../../'
+    pod 'DigiMeSDK/Core'
+    pod 'SwiftLint'
 end
-

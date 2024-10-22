@@ -6,6 +6,7 @@
 //  Copyright © 2020 digi.me. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import UIKit
 
@@ -17,21 +18,12 @@ class DigiMeService {
     
     let repository: ImportRepository
     private let dmeClient: DigiMe
-    private let credentialCache = CredentialCache()
+    private let preferences = UserPreferences.shared()
     private let serialQueue = DispatchQueue(label: "ImportSerializationQueue")
     weak var delegate: DigiMeServiceDelegate?
     
     var isConnected: Bool {
-        credentials != nil
-    }
-    
-    private var credentials: Credentials? {
-        get {
-            credentialCache.credentials(for: AppCoordinator.configuration.contractId)
-        }
-        set {
-            credentialCache.setCredentials(newValue, for: AppCoordinator.configuration.contractId)
-        }
+        (preferences.credentials(for: AppCoordinator.configuration.contractId) != nil)
     }
     
     init(client: DigiMe, repository: ImportRepository) {
@@ -40,10 +32,12 @@ class DigiMeService {
     }
     
     func authorize(readOptions: ReadOptions?, serviceId: Int? = nil, completion: @escaping (SDKError?) -> Void) {
+        let credentials = preferences.credentials(for: AppCoordinator.configuration.contractId)
+        
         dmeClient.authorize(credentials: credentials, serviceId: serviceId, readOptions: readOptions) { result in
             switch result {
             case .success(let newOrRefreshedCredentials):
-                self.credentials = newOrRefreshedCredentials
+                self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: AppCoordinator.configuration.contractId)
                 completion(nil)
                 
             case.failure(let error):
@@ -53,7 +47,12 @@ class DigiMeService {
     }
     
     func getAccounts() {
-        dmeClient.readAccounts() { result in
+        guard let credentials = preferences.credentials(for: AppCoordinator.configuration.contractId) else {
+            print("Attempting to read data before authorizing contract")
+            return
+        }
+        
+        dmeClient.readAccounts(credentials: credentials) { newOrUpdatedCredentials, result in
             switch result {
             case .success(let accountsInfo):
                 self.serialQueue.sync {
@@ -67,7 +66,7 @@ class DigiMeService {
     }
 
     func getSessionData() {
-        guard let credentials = credentials else {
+        guard let credentials = preferences.credentials(for: AppCoordinator.configuration.contractId) else {
             print("Attempting to read data before authorizing contract")
             return
         }
@@ -82,10 +81,12 @@ class DigiMeService {
             case .failure(let error):
                 print("digi.me failed to retrieve file with error: \(error)")
             }
-        } completion: { result in
+        } completion: { newOrRefreshedCredentials, result in
+            self.preferences.setCredentials(newCredentials: newOrRefreshedCredentials, for: AppCoordinator.configuration.contractId)
+            
             switch result {
-            case .success(let (_, refreshedCredentials)):
-                self.credentials = refreshedCredentials
+            case .success(_):
+                print("digi.me successfully downloaded all files.")
                 
             case .failure(let error):
                 print("digi.me failed to complete getting session data with error: \(error)")
@@ -100,21 +101,26 @@ class DigiMeService {
     }
     
     func deleteUser(completion: @escaping (SDKError?) -> Void) {
-        guard let credentials = credentials else {
+        guard let credentials = preferences.credentials(for: AppCoordinator.configuration.contractId) else {
             print("Attempting to delete user before authorizing contract")
             return
         }
         
-        dmeClient.deleteUser(credentials: credentials) { error in
-            self.credentials = nil
-            completion(error)
+        dmeClient.deleteUser(credentials: credentials) { _, result in
+            self.preferences.clearCredentials(for: AppCoordinator.configuration.contractId)
+            switch result {
+            case .success():
+                completion(nil)
+            case .failure(let error):
+                completion(error)
+            }
         }
     }
     
     func lastDayScope() -> Scope {
         let objects = [ServiceObjectType(identifier: 406)]
         let services = [ServiceType(identifier: 19, objectTypes: objects)]
-        let groups = [ServiceGroupScope(identifier: 5, serviceTypes: services)]
+        let groups = [ServiceGroupType(identifier: 5, serviceTypes: services)]
         let timeRanges = [TimeRange.last(amount: 1, unit: .day)]
         return Scope(serviceGroups: groups, timeRanges: timeRanges)
     }

@@ -6,10 +6,11 @@
 //  Copyright © 2018 digi.me. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 
 struct AccountSelectionItem {
     let uid: String
-    let account: SourceAccount
+    let account: SourceAccountData
     let selected: Bool
 }

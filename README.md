@@ -25,7 +25,34 @@
 
 ## Introduction
 
-The digi.me private sharing platform empowers developers to make use of user data from thousands of sources in a way that fully respects a user's privacy, and whilst conforming to GDPR. Our consent driven solution allows you to define exactly what terms you want data by, and the user to see these completely transparently, allowing them to make an informed choice as to whether to grant consent or not.
+The digi.me private sharing platform empowers developers to make use of user data from thousands of sources in a way that fully respects user privacy and conforms to GDPR. Our consent-driven solution allows precise definition of data terms, offering transparent choices to users for granting consent.
+
+## digi.me SDK Structure
+
+The digi.me SDK is split into three primary components to provide modular integration and flexibility:
+
+- **DigiMeSDK**: The main SDK module providing core functionalities and interfaces for integration.
+  
+- **DigiMeCore**: Contains all class definitions and foundational elements used across the SDK.
+  
+- **DigiMeHealthKit**: An independent module that extends the SDK for applications consuming or using Apple Health data. It should be included only if your application intends to access Apple Health data.
+
+## DigiMeSDK
+This is the primary SDK module. It encapsulates the core functionalities required to interact with the digi.me platform. It is designed for straightforward integration into your project.
+
+[Go to DigiMeSDK Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeSDK/documentation/digimesdk/)
+
+## DigiMeCore
+DigiMeCore defines all the classes and fundamental definitions used across the SDK. It serves as the foundational layer upon which DigiMeSDK builds. As a critical dependency module, `DigiMeCore` is automatically included when you integrate `DigiMeSDK` into your project. 
+
+While `DigiMeCore` is automatically included as part of the `DigiMeSDK`, you might find the need to directly access its object definitions and classes. In such cases, you can explicitly import `DigiMeCore` in your Swift classes to utilize its components. 
+
+[Go to DigiMeCore Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeCore/documentation/digimecore/)
+
+## DigiMeHealthKit
+This module provides functionality specific to Apple HealthKit. It's an optional addition to the main SDK for apps that require access to Apple Health data.
+
+[Go to DigiMeHealthKit Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeHealthKit/documentation/digimehealthkit/)
 
 ## Requirements
 
@@ -56,6 +83,30 @@ The digi.me private sharing platform empowers developers to make use of user dat
 import DigiMeSDK
 ```
 
+#### Utilizing Apple Health Functionality
+
+If your application requires access to Apple Health data, you will also need to include the DigiMeHealthKit module.
+
+1. Add DigiMeHealthKit to your Package.swift file:
+
+```Swift
+.package(name: "DigiMeHealthKit", url: "https://github.com/digime/digime-healthkit-ios.git", from: "x.x.x")
+```
+2. Include DigiMeHealthKit in your target's dependencies:
+
+```Swift
+.target(name: "YourTargetName", dependencies: ["DigiMeSDK", "DigiMeHealthKit"]),
+```
+
+#### Import HealthKit Package
+
+When using Apple Health functionality, import **DigiMeHealthKit** in your Swift files to get access to **DigiMeHealthKit** related object definitions:
+
+```Swift
+import DigiMeHealthKit
+```
+
+
 ### Cocoapods
 
 1. Add `DigiMeSDK` to your `Podfile`:
@@ -67,6 +118,7 @@ import DigiMeSDK
 
 	target 'TargetName' do
 		pod 'DigiMeSDK'
+        pod 'DigiMeHealthKit' # If your application requires access to Apple Health data, you will also need to include the DigiMeHealthKit module.
 	end
 	```
 > NOTE
@@ -207,3 +259,9 @@ We ask that when contributing, you ensure your changes meet our [Contribution Gu
 The topics discussed under [Quick Start](getting-started---5-simple-steps) are just a small part of the power digi.me Private Sharing gives to data consumers such as yourself. We highly encourage you to explore the [Documentation](https://digime.github.io/digime-sdk-ios/index.html) for more in-depth examples and guides, as well as troubleshooting advice and showcases of the plethora of capabilities on offer.
 
 Additionally, there are a number of example apps built on digi.me in the examples folder. Feel free to have a look at those to get an insight into the power of Private Sharing.
+
+## Support and Documentation
+
+For more detailed information about the DigiMeSDK and its capabilities, please refer to the [official documentation](https://developers.digi.me).
+
+If you encounter any issues or have questions, please reach out to us at [support@digi.me](mailto:support@digi.me).

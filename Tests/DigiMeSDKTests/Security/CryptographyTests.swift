@@ -43,7 +43,7 @@ class CryptographyTests: XCTestCase {
             let fileInfo = try Data(base64URLEncoded: "e30")!.decoded() as FileInfo
             let response = FileResponse(data: data, info: fileInfo)
 
-            let output = try dataDecryptor.decrypt(response: response)
+			let output = try dataDecryptor.decrypt(response: response, dataIsHashed: true)
             XCTAssert(expectedResult == output, "Failed to decrypt encrypted data.")
         }
         catch {

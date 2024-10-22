@@ -6,6 +6,7 @@
 //  Copyright © 2018 digi.me. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import UIKit
 
@@ -38,8 +39,9 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         
     private let cache = AppStateCache()
     
-    private var filteredAccounts: [SourceAccount] = []
-
+    private var filteredAccounts: [SourceAccountData] = []
+    private var accountsViewController: AccountsViewController?
+    
     private lazy var homeViewController: HomeViewController = {
         let homeVC = HomeViewController.instantiate()
         homeVC.coordinatingDelegate = self
@@ -63,8 +65,8 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
     
         if
             accounts.isEmpty,
-            let persistedData = PersistentStorage.shared.loadData(for: "accounts.json"),
-            let loadedAccounts = try? JSONDecoder().decode([SourceAccount].self, from: persistedData) {
+            let persistedData = FilePersistentStorage(with: .documentDirectory).loadData(for: "accounts.json"),
+            let loadedAccounts = try? JSONDecoder().decode([SourceAccountData].self, from: persistedData) {
                 accounts = loadedAccounts
         }
         
@@ -75,6 +77,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         accountsVC.coordinatingDelegate = self
         accountsVC.tabBarItem = UITabBarItem(title: NSLocalizedString("Settings", comment: ""), image: #imageLiteral(resourceName: "settingsIcon"), tag: BarItemTags.settings.rawValue)
         
+        accountsViewController = accountsVC
         let controllers = [homeViewController, accountsVC]
         tabBarController.viewControllers = controllers
         tabBarController.tabBar.barTintColor = UIColor.black
@@ -108,7 +111,7 @@ class AnalysisCoordinator: NSObject, ActivityCoordinating {
         let songs = repository.recentSongs
         do {
             let songData = try JSONEncoder().encode(songs)
-            PersistentStorage.shared.store(data: songData, fileName: "songs.json")
+            FilePersistentStorage(with: .documentDirectory).store(data: songData, fileName: "songs.json")
         }
         catch {
             print("Unable to encode song data")
@@ -156,7 +159,7 @@ extension AnalysisCoordinator: HomeViewControllerDelegate {
 }
        
 extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
-    func selectedAccountsChanged(selectedAccounts: [SourceAccount]) {
+    func selectedAccountsChanged(selectedAccounts: [SourceAccountData]) {
         // Filter analysis using selected accounts only
         filteredAccounts = selectedAccounts
         if let repository = repository {
@@ -167,13 +170,17 @@ extension AnalysisCoordinator: AccountSelectionCoordinatingDelegate {
 
 extension AnalysisCoordinator: AccountsViewCoordinatingDelegate {
     func reset() {
+        accountsViewController?.startActivityIndicator()
+        
         digimeService?.deleteUser { error in
+            self.accountsViewController?.hideActivityIndicator()
+            
             guard error != nil else {
                 self.displayError()
                 return
             }
             
-            PersistentStorage.shared.reset(fileName: "songs.json")
+            FilePersistentStorage(with: .documentDirectory).reset(fileName: "songs.json")
             
             DispatchQueue.main.async {
                 self.navigationController.popViewController(animated: true)

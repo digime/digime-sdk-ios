@@ -6,6 +6,7 @@
 //  Copyright © 2018 digi.me Limited. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import Foundation
 import UIKit
@@ -23,7 +24,7 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
     var analysisCoordinator: AnalysisCoordinator?
     
     static var configuration: Configuration = {
-        // Get YOUR_APP_ID here - https://go.digi.me/developers/register
+        // Get YOUR_APP_ID here - https://worlddataexchange.com/register
         // Don't forget to replace YOUR_APP_ID part in URLSchemes in Info.plist
         let appId = "YOUR_APP_ID"
         let contractId = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
@@ -92,7 +93,7 @@ u3W6P+D7xkopNDDFki7IcLyaRzKvXjGf8HeKz0YP+XomHb25Bc3A
         // If have data, go to analysis, otherwise onboard
         if digimeService.isConnected {
             if
-                let songData = PersistentStorage.shared.loadData(for: "songs.json"),
+                let songData = FilePersistentStorage(with: .documentDirectory).loadData(for: "songs.json"),
                 let songs = try? JSONDecoder().decode([Song].self, from: songData) {
                 digimeService.repository.process(songs: songs)
             }

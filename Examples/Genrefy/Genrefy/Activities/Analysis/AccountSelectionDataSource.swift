@@ -6,21 +6,22 @@
 //  Copyright © 2018 digi.me. All rights reserved.
 //
 
+import DigiMeCore
 import DigiMeSDK
 import Foundation
 
 class AccountSelectionDataSource {
     weak var coordinatingDelegate: AccountSelectionCoordinatingDelegate?
     
-    private var sortedAccounts: [SourceAccount]
+    private var sortedAccounts: [SourceAccountData]
     var selectedAccountIdentifiers: Set<String>
     
-    init(accounts: [SourceAccount]) {
+    init(accounts: [SourceAccountData]) {
         sortedAccounts = accounts
             .sorted(by: { account1, account2 in
-                return account1.service.name.compare(account2.service.name, options: .caseInsensitive) == .orderedAscending
+                return account1.serviceTypeName.compare(account2.serviceTypeName, options: .caseInsensitive) == .orderedAscending
             })
-        selectedAccountIdentifiers = Set(sortedAccounts.compactMap { $0.identifier })
+        selectedAccountIdentifiers = Set(sortedAccounts.compactMap { $0.id })
     }
     
     func toggleSelection(accountId: String) -> Bool {
@@ -33,7 +34,7 @@ class AccountSelectionDataSource {
         }
         
         let selectedAccounts = sortedAccounts.filter { account in
-            return selectedAccountIdentifiers.contains(account.identifier)
+            return selectedAccountIdentifiers.contains(account.id)
         }
         coordinatingDelegate?.selectedAccountsChanged(selectedAccounts: selectedAccounts)
         
@@ -55,7 +56,7 @@ class AccountSelectionDataSource {
     
     func itemAt(indexPath: IndexPath) -> AccountSelectionItem? {
         let account = sortedAccounts[indexPath.row]
-        let selected = selectedAccountIdentifiers.contains(account.identifier)
-        return AccountSelectionItem(uid: account.identifier, account: account, selected: selected)
+        let selected = selectedAccountIdentifiers.contains(account.id)
+        return AccountSelectionItem(uid: account.id, account: account, selected: selected)
     }
 }

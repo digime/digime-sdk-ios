@@ -1,0 +1,26 @@
+//
+//  Extensions+HKCategoryValueAppleStandHour.swift
+//  DigiMeHealthKit
+//
+//  Created on 05/09/2021.
+//  Copyright © 2021 digi.me Limited. All rights reserved.
+//
+
+import HealthKit
+
+extension HKCategoryValueAppleStandHour {
+    public var description: String {
+        "HKCategoryValueAppleStandHour"
+    }
+	
+    public var detail: String {
+        switch self {
+        case .stood:
+            return "Stood"
+        case .idle:
+            return "Idle"
+        @unknown default:
+            return "Unknown"
+        }
+    }
+}
