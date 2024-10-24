@@ -24,7 +24,7 @@ class AppCoordinator: NSObject, ApplicationCoordinating {
     var analysisCoordinator: AnalysisCoordinator?
     
     static var configuration: Configuration = {
-        // Get YOUR_APP_ID here - https://worlddataexchange.com/register
+#warning("Replace 'YOUR_APP_ID' with your app ID. Get yours from https://worlddataexchange.com/register. Also don't forget to set the app ID in CFBundleURLSchemes.")
         // Don't forget to replace YOUR_APP_ID part in URLSchemes in Info.plist
         let appId = "YOUR_APP_ID"
         let contractId = "yrg1LktWk2gldVk8atD5Pf7Um4c1LnMs"
