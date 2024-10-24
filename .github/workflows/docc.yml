@@ -19,33 +19,25 @@ jobs:
           
       - name: Build Documentation
         run: |
-          # Create temporary directory for documentation
           mkdir -p ./temp_docs
           
-          # Build documentation for DigiMeCore
-          cd DigiMeCore
-          swift package generate-documentation --target DigiMeCore \
-            --output-path ../temp_docs/core \
-            --transform-for-static-hosting \
-            --hosting-base-path digime-sdk-ios/core
+          for scheme in DigiMeSDK DigiMeCore DigiMeHealthKit; do
+            echo "Building documentation for $scheme..."
             
-          # Build documentation for DigiMeHealthKit
-          cd ../DigiMeHealthKit
-          swift package generate-documentation --target DigiMeHealthKit \
-            --output-path ../temp_docs/healthkit \
-            --transform-for-static-hosting \
-            --hosting-base-path digime-sdk-ios/healthkit
+            # Navigate to package directory
+            cd $scheme
             
-          # Build documentation for DigiMeSDK
-          cd ../DigiMeSDK
-          swift package generate-documentation --target DigiMeSDK \
-            --output-path ../temp_docs/sdk \
-            --transform-for-static-hosting \
-            --hosting-base-path digime-sdk-ios/sdk
-            
-          cd ..
+            # Build documentation
+            swift package --allow-writing-to-directory ../temp_docs/$scheme \
+              generate-documentation --target $scheme \
+              --output-path ../temp_docs/$scheme \
+              --transform-for-static-hosting \
+              --hosting-base-path digime-sdk-ios/$scheme
+              
+            cd ..
+          done
           
-          # Create root index.html
+          # Create main index.html
           cat > ./temp_docs/index.html << 'EOL'
           <!DOCTYPE html>
           <html>
@@ -77,19 +69,19 @@ jobs:
               <div class="library">
                 <h2>DigiMe SDK</h2>
                 <p>The main SDK for integrating with DigiMe services.</p>
-                <p><a href="sdk/documentation/digimesdk/">View Documentation</a></p>
+                <p><a href="DigiMeSDK/documentation/digimesdk/">View Documentation</a></p>
               </div>
               
               <div class="library">
                 <h2>DigiMe Core</h2>
                 <p>Core functionality and models used across DigiMe libraries.</p>
-                <p><a href="core/documentation/digimecore/">View Documentation</a></p>
+                <p><a href="DigiMeCore/documentation/digimecore/">View Documentation</a></p>
               </div>
               
               <div class="library">
                 <h2>DigiMe HealthKit</h2>
                 <p>HealthKit integration for DigiMe SDK.</p>
-                <p><a href="healthkit/documentation/digimehealthkit/">View Documentation</a></p>
+                <p><a href="DigiMeHealthKit/documentation/digimehealthkit/">View Documentation</a></p>
               </div>
             </body>
           </html>
