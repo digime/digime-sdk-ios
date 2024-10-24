@@ -19,30 +19,45 @@ jobs:
           
       - name: Build Documentation
         run: |
-          # Create a temporary directory for documentation
           mkdir -p ./temp_docs
           
-          # Build documentation for DigiMeCore
-          xcodebuild docbuild -scheme DigiMeCore \
-            -derivedDataPath /tmp/docbuild_core \
-            -destination 'platform=iOS Simulator,name=iPhone 14'
-          
-          # Build documentation for DigiMeHealthKit
-          xcodebuild docbuild -scheme DigiMeHealthKit \
-            -derivedDataPath /tmp/docbuild_healthkit \
-            -destination 'platform=iOS Simulator,name=iPhone 14'
-            
           # Build documentation for DigiMeSDK
-          xcodebuild docbuild -scheme DigiMeSDK \
-            -derivedDataPath /tmp/docbuild_sdk \
-            -destination 'platform=iOS Simulator,name=iPhone 14'
+          echo "Building documentation for DigiMeSDK..."
+          cd DigiMeSDK
+          swift package \
+            --allow-writing-to-directory ../temp_docs/sdk \
+            generate-documentation \
+            --target DigiMeSDK \
+            --output-path ../temp_docs/sdk \
+            --transform-for-static-hosting \
+            --hosting-base-path digime-sdk-ios/sdk
+          cd ..
+            
+          # Build documentation for DigiMeCore
+          echo "Building documentation for DigiMeCore..."
+          cd DigiMeCore
+          swift package \
+            --allow-writing-to-directory ../temp_docs/core \
+            generate-documentation \
+            --target DigiMeCore \
+            --output-path ../temp_docs/core \
+            --transform-for-static-hosting \
+            --hosting-base-path digime-sdk-ios/core
+          cd ..
+            
+          # Build documentation for DigiMeHealthKit
+          echo "Building documentation for DigiMeHealthKit..."
+          cd DigiMeHealthKit
+          swift package \
+            --allow-writing-to-directory ../temp_docs/healthkit \
+            generate-documentation \
+            --target DigiMeHealthKit \
+            --output-path ../temp_docs/healthkit \
+            --transform-for-static-hosting \
+            --hosting-base-path digime-sdk-ios/healthkit
+          cd ..
           
-          # Copy DocC archives to temp directory
-          cp -r /tmp/docbuild_core/Build/Products/Debug-iphonesimulator/DigiMeCore.doccarchive/* ./temp_docs/core/
-          cp -r /tmp/docbuild_healthkit/Build/Products/Debug-iphonesimulator/DigiMeHealthKit.doccarchive/* ./temp_docs/healthkit/
-          cp -r /tmp/docbuild_sdk/Build/Products/Debug-iphonesimulator/DigiMeSDK.doccarchive/* ./temp_docs/sdk/
-          
-          # Create root index.html
+          # Create main index.html
           cat > ./temp_docs/index.html << 'EOL'
           <!DOCTYPE html>
           <html>
