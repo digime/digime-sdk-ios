@@ -19,28 +19,31 @@ jobs:
           
       - name: Build Documentation
         run: |
-          # Create a temporary directory for documentation
+          # Create temporary directory for documentation
           mkdir -p ./temp_docs
           
           # Build documentation for DigiMeCore
-          xcodebuild docbuild -scheme DigiMeCore \
-            -derivedDataPath /tmp/docbuild_core \
-            -destination 'platform=iOS Simulator,name=iPhone 14'
-          
+          cd DigiMeCore
+          swift package generate-documentation --target DigiMeCore \
+            --output-path ../temp_docs/core \
+            --transform-for-static-hosting \
+            --hosting-base-path digime-sdk-ios/core
+            
           # Build documentation for DigiMeHealthKit
-          xcodebuild docbuild -scheme DigiMeHealthKit \
-            -derivedDataPath /tmp/docbuild_healthkit \
-            -destination 'platform=iOS Simulator,name=iPhone 14'
+          cd ../DigiMeHealthKit
+          swift package generate-documentation --target DigiMeHealthKit \
+            --output-path ../temp_docs/healthkit \
+            --transform-for-static-hosting \
+            --hosting-base-path digime-sdk-ios/healthkit
             
           # Build documentation for DigiMeSDK
-          xcodebuild docbuild -scheme DigiMeSDK \
-            -derivedDataPath /tmp/docbuild_sdk \
-            -destination 'platform=iOS Simulator,name=iPhone 14'
-          
-          # Copy DocC archives to temp directory
-          cp -r /tmp/docbuild_core/Build/Products/Debug-iphonesimulator/DigiMeCore.doccarchive/* ./temp_docs/core/
-          cp -r /tmp/docbuild_healthkit/Build/Products/Debug-iphonesimulator/DigiMeHealthKit.doccarchive/* ./temp_docs/healthkit/
-          cp -r /tmp/docbuild_sdk/Build/Products/Debug-iphonesimulator/DigiMeSDK.doccarchive/* ./temp_docs/sdk/
+          cd ../DigiMeSDK
+          swift package generate-documentation --target DigiMeSDK \
+            --output-path ../temp_docs/sdk \
+            --transform-for-static-hosting \
+            --hosting-base-path digime-sdk-ios/sdk
+            
+          cd ..
           
           # Create root index.html
           cat > ./temp_docs/index.html << 'EOL'
