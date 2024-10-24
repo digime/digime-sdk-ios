@@ -1,0 +1,103 @@
+name: Deploy DocC
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  generate-documentation:
+    runs-on: macos-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+          
+      - name: Build Documentation
+        run: |
+          # Create a temporary directory for documentation
+          mkdir -p ./temp_docs
+          
+          # Build documentation for DigiMeCore
+          xcodebuild docbuild -scheme DigiMeCore \
+            -derivedDataPath /tmp/docbuild_core \
+            -destination 'platform=iOS Simulator,name=iPhone 14'
+          
+          # Build documentation for DigiMeHealthKit
+          xcodebuild docbuild -scheme DigiMeHealthKit \
+            -derivedDataPath /tmp/docbuild_healthkit \
+            -destination 'platform=iOS Simulator,name=iPhone 14'
+            
+          # Build documentation for DigiMeSDK
+          xcodebuild docbuild -scheme DigiMeSDK \
+            -derivedDataPath /tmp/docbuild_sdk \
+            -destination 'platform=iOS Simulator,name=iPhone 14'
+          
+          # Copy DocC archives to temp directory
+          cp -r /tmp/docbuild_core/Build/Products/Debug-iphonesimulator/DigiMeCore.doccarchive/* ./temp_docs/core/
+          cp -r /tmp/docbuild_healthkit/Build/Products/Debug-iphonesimulator/DigiMeHealthKit.doccarchive/* ./temp_docs/healthkit/
+          cp -r /tmp/docbuild_sdk/Build/Products/Debug-iphonesimulator/DigiMeSDK.doccarchive/* ./temp_docs/sdk/
+          
+          # Create root index.html
+          cat > ./temp_docs/index.html << 'EOL'
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>DigiMe iOS SDK Documentation</title>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <style>
+                body { 
+                  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
+                  max-width: 800px; 
+                  margin: 0 auto; 
+                  padding: 20px; 
+                }
+                h1 { color: #333; }
+                .library { 
+                  margin: 20px 0; 
+                  padding: 20px; 
+                  border: 1px solid #ddd; 
+                  border-radius: 8px; 
+                }
+                a { color: #0366d6; text-decoration: none; }
+                a:hover { text-decoration: underline; }
+              </style>
+            </head>
+            <body>
+              <h1>DigiMe iOS SDK Documentation</h1>
+              
+              <div class="library">
+                <h2>DigiMe SDK</h2>
+                <p>The main SDK for integrating with DigiMe services.</p>
+                <p><a href="sdk/documentation/digimesdk/">View Documentation</a></p>
+              </div>
+              
+              <div class="library">
+                <h2>DigiMe Core</h2>
+                <p>Core functionality and models used across DigiMe libraries.</p>
+                <p><a href="core/documentation/digimecore/">View Documentation</a></p>
+              </div>
+              
+              <div class="library">
+                <h2>DigiMe HealthKit</h2>
+                <p>HealthKit integration for DigiMe SDK.</p>
+                <p><a href="healthkit/documentation/digimehealthkit/">View Documentation</a></p>
+              </div>
+            </body>
+          </html>
+          EOL
+          
+          # Create .nojekyll file
+          touch ./temp_docs/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: temp_docs
+          branch: gh-pages
+          clean: true
