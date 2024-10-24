@@ -21,41 +21,41 @@ jobs:
         run: |
           mkdir -p ./temp_docs
           
-          pwd
-          ls -la
-          
           # Build documentation for DigiMeSDK
           echo "Building documentation for DigiMeSDK..."
+          cd DigiMeSDK
           swift package \
-            --allow-writing-to-directory ./temp_docs/sdk \
-            --package-path DigiMeSDK \
+            --allow-writing-to-directory ../temp_docs/sdk \
             generate-documentation \
             --target DigiMeSDK \
-            --output-path ./temp_docs/sdk \
+            --output-path ../temp_docs/sdk \
             --transform-for-static-hosting \
             --hosting-base-path digime-sdk-ios/sdk
+          cd ..
             
           # Build documentation for DigiMeCore
           echo "Building documentation for DigiMeCore..."
+          cd DigiMeCore
           swift package \
-            --allow-writing-to-directory ./temp_docs/core \
-            --package-path DigiMeCore \
+            --allow-writing-to-directory ../temp_docs/core \
             generate-documentation \
             --target DigiMeCore \
-            --output-path ./temp_docs/core \
+            --output-path ../temp_docs/core \
             --transform-for-static-hosting \
             --hosting-base-path digime-sdk-ios/core
+          cd ..
             
           # Build documentation for DigiMeHealthKit
           echo "Building documentation for DigiMeHealthKit..."
+          cd DigiMeHealthKit
           swift package \
-            --allow-writing-to-directory ./temp_docs/healthkit \
-            --package-path DigiMeHealthKit \
+            --allow-writing-to-directory ../temp_docs/healthkit \
             generate-documentation \
             --target DigiMeHealthKit \
-            --output-path ./temp_docs/healthkit \
+            --output-path ../temp_docs/healthkit \
             --transform-for-static-hosting \
             --hosting-base-path digime-sdk-ios/healthkit
+          cd ..
           
           # Create main index.html
           cat > ./temp_docs/index.html << 'EOL'
