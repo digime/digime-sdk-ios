@@ -8,7 +8,6 @@
 
 import DigiMeCore
 import Foundation
-import UIKit
 
 class StorageUploadService {
     private let queue: OperationQueue

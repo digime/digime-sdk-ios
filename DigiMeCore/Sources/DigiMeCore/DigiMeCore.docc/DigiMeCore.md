@@ -19,9 +19,9 @@ This will grant you direct access to the underlying structures and classes defin
 ## DigiMeSDK
 This is the primary SDK module. It encapsulates the core functionalities required to interact with the digi.me platform. It is designed for straightforward integration into your project.
 
-[Go to DigiMeSDK Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeSDK/documentation/digimesdk/)
+[Go to DigiMeSDK Documentation](https://digime.github.io/digime-sdk-ios/DigiMeSDK/documentation/digimesdk/)
 
 ## DigiMeHealthKit
 This module provides functionality specific to Apple HealthKit. It's an optional addition to the main SDK for apps that require access to Apple Health data.
 
-[Go to DigiMeHealthKit Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeHealthKit/documentation/digimehealthkit/)
+[Go to DigiMeHealthKit Documentation](https://digime.github.io/digime-sdk-ios/DigiMeHealthKit/documentation/digimehealthkit/)

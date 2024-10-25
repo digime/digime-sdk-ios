@@ -173,7 +173,6 @@ public class HealthKitService: HealthKitServiceProtocol {
      Inits the instance of **HealthKitService** class.
      Every time when called, the new instance of **HKHealthStore** is created.
      - Requires: Apple Healt App is installed on the device.
-     - Returns: **HealthKitService** instance
      */
     public required init() {
         let healthStore = HKHealthStore()

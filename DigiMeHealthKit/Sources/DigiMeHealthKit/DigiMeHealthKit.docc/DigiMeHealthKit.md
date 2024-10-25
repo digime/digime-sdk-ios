@@ -50,14 +50,14 @@ For more detailed documentation on how to use `DigiMeHealthKit`, please refer to
 ## DigiMeSDK
 This is the primary SDK module. It encapsulates the core functionalities required to interact with the digi.me platform. It is designed for straightforward integration into your project.
 
-[Go to DigiMeSDK Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeSDK/documentation/digimesdk/)
+[Go to DigiMeSDK Documentation](https://digime.github.io/digime-sdk-ios/DigiMeSDK/documentation/digimesdk/)
 
 ## DigiMeCore
 DigiMeCore defines all the classes and fundamental definitions used across the SDK. It serves as the foundational layer upon which DigiMeSDK builds. As a critical dependency module, `DigiMeCore` is automatically included when you integrate `DigiMeSDK` into your project. 
 
 While `DigiMeCore` is automatically included as part of the `DigiMeSDK`, you might find the need to directly access its object definitions and classes. In such cases, you can explicitly import `DigiMeCore` in your Swift classes to utilize its components. 
 
-[Go to DigiMeCore Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeCore/documentation/digimecore/)
+[Go to DigiMeCore Documentation](https://digime.github.io/digime-sdk-ios/DigiMeCore/documentation/digimecore/)
 
 ## Example
 

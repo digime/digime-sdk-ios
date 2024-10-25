@@ -24,12 +24,12 @@ DigiMeCore defines all the classes and fundamental definitions used across the S
 
 While `DigiMeCore` is automatically included as part of the `DigiMeSDK`, you might find the need to directly access its object definitions and classes. In such cases, you can explicitly import `DigiMeCore` in your Swift classes to utilize its components. 
 
-[Go to DigiMeCore Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeCore/documentation/digimecore/)
+[Go to DigiMeCore Documentation](https://digime.github.io/digime-sdk-ios/DigiMeCore/documentation/digimecore/)
 
 ## DigiMeHealthKit
 This module provides functionality specific to Apple HealthKit. It's an optional addition to the main SDK for apps that require access to Apple Health data.
 
-[Go to DigiMeHealthKit Documentation](https://hamiltonalex.github.io/gh-pages/DigiMeHealthKit/documentation/digimehealthkit/)
+[Go to DigiMeHealthKit Documentation](https://digime.github.io/digime-sdk-ios/DigiMeHealthKit/documentation/digimehealthkit/)
 
 
 ## Requirements
