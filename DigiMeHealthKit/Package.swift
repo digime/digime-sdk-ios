@@ -6,7 +6,6 @@ import PackageDescription
 let package = Package(
     name: "DigiMeHealthKit",
     platforms: [
-        .macOS(.v13),
         .iOS(.v13)
     ],
     products: [
