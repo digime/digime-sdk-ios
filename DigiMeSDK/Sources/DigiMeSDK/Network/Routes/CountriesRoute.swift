@@ -14,7 +14,8 @@ struct CountriesRoute: Route {
 
     static let method = "POST"
     static let path = "discovery/countries"
-
+    static let version: APIVersion = .public
+    
     var requestBody: RequestBody? {
         return try? JSONRequestBody(parameters: payload)
     }

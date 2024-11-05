@@ -14,6 +14,7 @@ struct AuthorizeRoute: Route {
     
     static let method = "POST"
     static let path = "oauth/authorize"
+    static let version: APIVersion = .public
     
     var requestBody: RequestBody? {
         let body = AuthorizeBody(options: readOptions)

@@ -14,6 +14,7 @@ struct ContractRoute: Route {
     
     static let method = "GET"
     static let path = "permission-access/contract"
+    static let version: APIVersion = .internal
     
     var queryParameters: [URLQueryItem] {
         return [URLQueryItem(name: "schemaVersion", value: schemaVersion)]

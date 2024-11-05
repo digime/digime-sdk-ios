@@ -14,6 +14,7 @@ struct TriggerSyncRoute: Route {
     
     static let method = "POST"
     static let path = "permission-access/trigger"
+    static let version: APIVersion = .public
     
     var requestBody: RequestBody? {
         let body = TriggerBody(options: readOptions)

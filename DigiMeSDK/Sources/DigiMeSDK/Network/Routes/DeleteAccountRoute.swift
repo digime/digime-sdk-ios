@@ -12,7 +12,8 @@ struct DeleteAccountRoute: Route {
 
     static let method = "DELETE"
     static let path = "permission-access/service/h:accountId"
-
+    static let version: APIVersion = .public
+    
     var customHeaders: [String: String] {
         [
             "Authorization": "Bearer " + jwt,

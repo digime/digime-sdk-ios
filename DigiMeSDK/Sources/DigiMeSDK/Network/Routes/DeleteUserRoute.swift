@@ -13,6 +13,7 @@ struct DeleteUserRoute: Route {
     
     static let method = "DELETE"
     static let path = "user"
+    static let version: APIVersion = .public
     
     var customHeaders: [String: String] {
         ["Authorization": "Bearer " + jwt]

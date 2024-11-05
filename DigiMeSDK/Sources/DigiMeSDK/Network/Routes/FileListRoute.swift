@@ -14,6 +14,7 @@ struct FileListRoute: Route {
     
     static let method = "GET"
     static let path = "permission-access/query"
+    static let version: APIVersion = .public
     
     var pathParameters: [String] {
         [sessionKey]

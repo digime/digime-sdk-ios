@@ -88,6 +88,7 @@
 		1E00AF632B1A3C2E00F09990 /* DigiMeCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1E00AF622B1A3C2E00F09990 /* DigiMeCore */; };
 		1E07EABE2BF4BA5B00ECE9BB /* StorageRetrieveRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E07EABD2BF4BA5B00ECE9BB /* StorageRetrieveRoute.swift */; };
 		1E214D382BEA493E00C05609 /* DigiMeCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1E214D372BEA493E00C05609 /* DigiMeCore */; };
+		1E2B52BA2CDA28A700C97B68 /* APIVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2B52B92CDA28A100C97B68 /* APIVersion.swift */; };
 		1E4ACA1F2BFF876700F91565 /* StorageDeleteFolderRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4ACA1E2BFF876700F91565 /* StorageDeleteFolderRoute.swift */; };
 		1E5197522BF772EE006A7A98 /* StorageReferenceRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5197512BF772EE006A7A98 /* StorageReferenceRoute.swift */; };
 		1E55A5072B72476600945AC1 /* DeleteAccountRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E55A5052B72476600945AC1 /* DeleteAccountRoute.swift */; };
@@ -208,6 +209,7 @@
 		1E00AEA62B19F08400F09990 /* DigiMeSDK.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = DigiMeSDK.docc; sourceTree = "<group>"; };
 		1E00AEB12B1A074000F09990 /* DigiMeSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DigiMeSDK.h; sourceTree = "<group>"; };
 		1E07EABD2BF4BA5B00ECE9BB /* StorageRetrieveRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageRetrieveRoute.swift; sourceTree = "<group>"; };
+		1E2B52B92CDA28A100C97B68 /* APIVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIVersion.swift; sourceTree = "<group>"; };
 		1E4ACA1E2BFF876700F91565 /* StorageDeleteFolderRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageDeleteFolderRoute.swift; sourceTree = "<group>"; };
 		1E5197512BF772EE006A7A98 /* StorageReferenceRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageReferenceRoute.swift; sourceTree = "<group>"; };
 		1E55A5052B72476600945AC1 /* DeleteAccountRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteAccountRoute.swift; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 		1E00AE002B19F00000F09990 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				1E2B52B92CDA28A100C97B68 /* APIVersion.swift */,
 				1E00AE012B19F00000F09990 /* JWT */,
 				1E00AE092B19F00000F09990 /* APIClient.swift */,
 				1EAAFC222BEE632A00B7C41D /* StorageClient.swift */,
@@ -645,6 +648,7 @@
 				1E00AE892B19F00100F09990 /* ReadDataRoute.swift in Sources */,
 				1E00AE7B2B19F00100F09990 /* RequestBody.swift in Sources */,
 				1E616ED52BDC4CF1003F9255 /* SourceTypesRoute.swift in Sources */,
+				1E2B52BA2CDA28A700C97B68 /* APIVersion.swift in Sources */,
 				1E55A5082B72476600945AC1 /* RevokeAccountPermissionRoute.swift in Sources */,
 				1E00AE912B19F00100F09990 /* AuthorizeRoute.swift in Sources */,
 				1E00AE852B19F00100F09990 /* UploadMixpanelEventsRoute.swift in Sources */,

@@ -14,7 +14,8 @@ struct CategoriesRoute: Route {
 
     static let method = "POST"
     static let path = "discovery/categories"
-
+    static let version: APIVersion = .public
+    
     var requestBody: RequestBody? {
         return try? JSONRequestBody(parameters: payload)
     }

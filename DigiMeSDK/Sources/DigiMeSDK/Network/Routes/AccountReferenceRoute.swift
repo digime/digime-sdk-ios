@@ -13,7 +13,8 @@ struct AccountReferenceRoute: Route {
 	
 	static var method = "POST"
 	static var path = "reference"
-	
+    static let version: APIVersion = .public
+    
 	var requestBody: RequestBody? {
 		let body = AccountReferenceBody(type: "accountId", value: accountId)
 		return try? JSONRequestBody(parameters: body)

@@ -13,7 +13,8 @@ struct RevokeAccountPermissionRoute: Route {
 
     static let method = "GET"
     static let path = "permission-access/revoke/h:accountId"
-
+    static let version: APIVersion = .public
+    
     var customHeaders: [String: String] {
         [
             "Authorization": "Bearer " + jwt,

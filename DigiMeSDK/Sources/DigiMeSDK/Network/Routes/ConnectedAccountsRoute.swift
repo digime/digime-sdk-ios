@@ -14,6 +14,7 @@ struct ConnectedAccountsRoute: Route {
     
     static let method = "GET"
     static let path = "permission-access/accounts"
+    static let version: APIVersion = .public
     
     var customHeaders: [String: String] {
         ["Authorization": "Bearer " + jwt]

@@ -13,6 +13,7 @@ struct WriteDataRoute: Route {
     
     static let method = "POST"
     static let path = "permission-access/postbox"
+    static let version: APIVersion = .public
     
     var requestBody: RequestBody? {
         let body = MultipartFormRequestBody()

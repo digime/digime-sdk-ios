@@ -13,4 +13,5 @@ struct WebKeySetRoute: Route {
     
     static let method = "GET"
     static let path = "jwks/oauth"
+    static let version: APIVersion = .public
 }

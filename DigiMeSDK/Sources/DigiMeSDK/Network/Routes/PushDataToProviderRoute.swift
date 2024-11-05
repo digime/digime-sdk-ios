@@ -13,6 +13,7 @@ struct PushDataToProviderRoute: Route {
     
     static let method = "POST"
     static let path = "permission-access/import/h:accountId"
+    static let version: APIVersion = .public
     
     var requestBody: RequestBody? {
        return FilePushBody(data: payload)

@@ -13,6 +13,7 @@ struct ExportReportDataRoute: Route {
     
     static let method = "GET"
     static let path = "export"
+    static let version: APIVersion = .public
     
     var customHeaders: [String: String] {
         ["Accept": "application/octet-stream",

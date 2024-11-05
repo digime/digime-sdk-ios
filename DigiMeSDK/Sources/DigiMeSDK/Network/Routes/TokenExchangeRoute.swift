@@ -13,6 +13,7 @@ struct TokenExchangeRoute: Route {
     
     static let method = "POST"
     static let path = "oauth/token"
+    static let version: APIVersion = .public
     
     var customHeaders: [String: String] {
         ["Authorization": "Bearer " + jwt]

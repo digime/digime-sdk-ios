@@ -13,6 +13,7 @@ struct ServicesRoute: Route {
     
     static let method = "GET"
     static let path = "discovery/services"
+    static let version: APIVersion = .public
     
     var queryParameters: [URLQueryItem] {
         return [URLQueryItem(name: "includeSampleDataOnlySources", value: "true")]

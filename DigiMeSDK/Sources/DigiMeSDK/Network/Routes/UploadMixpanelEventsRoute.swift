@@ -13,7 +13,8 @@ struct UploadMixpanelEventsRoute: Route {
 	
 	static let method = "POST"
 	static let path = "tracking/sdk"
-	
+    static let version: APIVersion = .public
+    
 	var customHeaders: [String: String] {
 		["Authorization": "Bearer " + jwt]
 	}

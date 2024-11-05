@@ -12,6 +12,7 @@ protocol Route {
     associatedtype ResponseType
     static var method: String { get }
     static var path: String { get }
+    static var version: APIVersion { get }
     
     var customHeaders: [String: String] { get }
     var queryParameters: [URLQueryItem] { get }
@@ -19,12 +20,14 @@ protocol Route {
     var requestBody: RequestBody? { get }
     
     func toUrlRequest(with baseUrl: String) -> URLRequest
-    
-    // Throws SDKError or DecodingError
     func parseResponse(data: Data, headers: [AnyHashable: Any]) throws -> ResponseType
 }
 
 extension Route {
+    static var version: APIVersion {
+        return .public
+    }
+    
     var customHeaders: [String: String] {
         [:]
     }
@@ -43,7 +46,7 @@ extension Route {
     
 	func toUrlRequest(with baseUrl: String) -> URLRequest {
         // Add all the parameters
-		var urlComponents = URLComponents(string: baseUrl)!
+        var urlComponents = URLComponents(string: baseUrl + Self.version.value)!
         
         if !queryParameters.isEmpty {
             urlComponents.queryItems = queryParameters

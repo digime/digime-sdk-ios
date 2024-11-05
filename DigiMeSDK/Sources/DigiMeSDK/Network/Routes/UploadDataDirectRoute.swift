@@ -13,7 +13,8 @@ struct UploadDataDirectRoute: Route {
 	
 	static let method = "POST"
 	static let path = "permission-access/import"
-	
+    static let version: APIVersion = .public
+    
 	var requestBody: RequestBody {
 		return FileUploadBody(data: payload)
 	}

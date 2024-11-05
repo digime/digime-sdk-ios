@@ -13,6 +13,7 @@ struct TokenReferenceRoute: Route {
     
     static let method = "POST"
     static let path = "oauth/token/reference"
+    static let version: APIVersion = .public
     
     var customHeaders: [String: String] {
         ["Authorization": "Bearer " + jwt]

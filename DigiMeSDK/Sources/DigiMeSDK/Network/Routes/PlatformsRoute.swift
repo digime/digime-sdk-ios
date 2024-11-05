@@ -14,7 +14,8 @@ struct PlatformsRoute: Route {
 
     static let method = "POST"
     static let path = "discovery/platforms"
-
+    static let version: APIVersion = .public
+    
     var requestBody: RequestBody? {
         return try? JSONRequestBody(parameters: payload)
     }
